@@ -1,0 +1,79 @@
+{
+    "name": "al-code-outline",
+    "displayName": "AL Code Outline",
+    "description": "AL code outline tree provider",
+    "version": "0.0.1",
+    "publisher": "andrzejzwierzchowski",
+    "engines": {
+        "vscode": "^1.19.0"
+	},
+	"author": {
+		"name": "Andrzej Zwierzchowski",
+		"url": "https://anzwdev.wordpress.com/"
+	},
+	"repository": {
+		"url": "https://github.com/anzwdev/al-code-outline"
+	},
+	"license": "LICENSE",
+    "categories": [
+        "Other"
+    ],
+    "activationEvents": [
+		"onView:alOutline"
+    ],
+    "main": "./out/extension",
+	"icon": "resources/alcodeoutline.png",
+    "contributes": {
+		"views": {
+			"explorer": [
+				{
+					"id": "alOutline",
+					"name": "AL Outline",
+					"when": "resourceLangId == 'al'"
+				}
+			]
+		},
+        "commands": [
+			{
+				"command": "alOutline.refresh",
+				"title": "Refresh",
+				"icon": {
+					"light": "resources/light/refresh.svg",
+					"dark": "resources/dark/refresh.svg"
+				}
+			}
+        ],
+		"menus": {
+			"view/title": [
+				{
+					"command": "alOutline.refresh",
+					"when": "view == alOutline",
+					"group": "navigation"
+				}			]
+		},
+		"configuration": [
+			{
+				"title": "AL Code Outline",
+				"properties": {
+					"alOutline.autorefresh": {
+						"type": "boolean",
+						"default": true,
+						"description": "Refresh code outline tree automatically"
+					}
+				}
+			}
+		]    },
+    "scripts": {
+        "vscode:prepublish": "npm run compile",
+        "compile": "tsc -p ./",
+        "watch": "tsc -watch -p ./",
+        "postinstall": "node ./node_modules/vscode/bin/install",
+        "test": "npm run compile && node ./node_modules/vscode/bin/test"
+    },
+    "devDependencies": {
+        "typescript": "^2.6.1",
+        "vscode": "^1.1.6",
+        "@types/node": "^7.0.43",
+        "@types/mocha": "^2.2.42"
+    }
+}
