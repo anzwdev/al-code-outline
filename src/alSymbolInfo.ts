@@ -76,9 +76,6 @@ export class ALSymbolInfo {
         //name
         this.name = this.lspSymbol.name;
         this.alKind = this.GetALKind();
-        
-        //uncomment line below for debug messages
-        //this.name = this.alKind.toString() + ": " + this.lspSymbol.kind.toString() + ": " + this.name;
     }
 
     private GetALKind() : ALSymbolKind {

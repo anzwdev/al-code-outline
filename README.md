@@ -9,7 +9,9 @@ The AL Code Outline extension displays code outline tree of active AL file in th
 
 ![Code outline for a page](resources/screen-page.png)
 
+## Inspiration
 
+This extension has been inspired by "Code Outline" extension created by Patryk Zawadzki and "Tree Data Provider" example from "VS Code Extension Examples". I've decided to create it because I wanted something that could understand AL object structure and to be able to add some AL specific commands to tree nodes in the future. 
 
 ## Settings
 
