@@ -12,6 +12,8 @@ export function activate(context: vscode.ExtensionContext) {
     vscode.window.registerTreeDataProvider('alOutline', alOutlineProvider);
 
     vscode.commands.registerCommand('alOutline.refresh', () => alOutlineProvider.refresh());
+    vscode.commands.registerCommand('alOutline.createCardPage', offset => alOutlineProvider.createCardPage(offset));
+    vscode.commands.registerCommand('alOutline.createListPage', offset => alOutlineProvider.createListPage(offset));
 	vscode.commands.registerCommand('alOutline.openSelection', range => {
 		alOutlineProvider.select(range);
 	});

@@ -2,12 +2,15 @@
 
 ## Features
 
-The AL Code Outline extension displays code outline tree of active AL file in the explorer pane. When you click on one of displayed tree items, code editor will move cursor to that item.  
+The AL Code Outline extension displays code outline tree of active file in the explorer pane. It was initially created to support AL files only, but AL project can also contain other file types for data (xml, json) and client add-ins (javascript, css, html, handlebars) so symbols tree works for them too. Basic functionality that works for all file types allows user to click on one of tree nodes in AL Outline view to move cursor to that symbol in the code editor. For AL file types, extensions tries to extract more information about source code and can display context menu with additional options for some of symbols. 
 
+At this moment, context menu works for 'Table' symbol only and allows user to create new card or list page with all fields from selected table.
 
 ![Code outline for a table](resources/screen-table.png)
 
 ![Code outline for a page](resources/screen-page.png)
+
+![Code outline for a page](resources/screen-pagewizard.png)
 
 ## Inspiration
 

@@ -2,7 +2,7 @@
     "name": "al-code-outline",
     "displayName": "AL Code Outline",
     "description": "AL code outline tree provider",
-    "version": "0.0.2",
+    "version": "0.0.3",
     "publisher": "andrzejzwierzchowski",
     "engines": {
         "vscode": "^1.19.0"
@@ -17,7 +17,7 @@
 	"license": "LICENSE",
     "categories": [
         "Other"
-    ],
+	],
     "activationEvents": [
 		"onView:alOutline"
     ],
@@ -28,8 +28,7 @@
 			"explorer": [
 				{
 					"id": "alOutline",
-					"name": "AL Outline",
-					"when": "resourceLangId == 'al'"
+					"name": "AL Outline"
 				}
 			]
 		},
@@ -41,6 +40,14 @@
 					"light": "resources/light/refresh.svg",
 					"dark": "resources/dark/refresh.svg"
 				}
+			},
+			{
+				"command": "alOutline.createListPage",
+				"title": "Create List Page"
+			},
+			{
+				"command": "alOutline.createCardPage",
+				"title": "Create Card Page"
 			}
         ],
 		"menus": {
@@ -49,7 +56,16 @@
 					"command": "alOutline.refresh",
 					"when": "view == alOutline",
 					"group": "navigation"
-				}			]
+				}],
+			"view/item/context": [
+				{
+					"command": "alOutline.createCardPage",
+					"when": "view == alOutline && viewItem == ALTable"
+				},
+				{
+					"command": "alOutline.createListPage",
+					"when": "view == alOutline && viewItem == ALTable"
+				}]
 		},
 		"configuration": [
 			{

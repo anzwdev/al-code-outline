@@ -1,12 +1,16 @@
 import * as vscode from 'vscode';
 import * as path from 'path';
 import { ALSymbolInfo } from './alSymbolInfo';
+import { ALObjectWriter } from './alObjectWriter';
+import { ALSymbolKind } from './alSymbolKind';
+import { PageBuilder } from './pageBuilder';
 
 export class ALOutlineProvider implements vscode.TreeDataProvider<ALSymbolInfo> {
     private extensionContext : vscode.ExtensionContext;
 	private editor: vscode.TextEditor;
     private rootNode : ALSymbolInfo;
     private autoRefresh : boolean = true;
+    private parserActive : boolean = false;
     
 	private _onDidChangeTreeData: vscode.EventEmitter<ALSymbolInfo | null> = new vscode.EventEmitter<ALSymbolInfo | null>();
 	readonly onDidChangeTreeData: vscode.Event<ALSymbolInfo | null> = this._onDidChangeTreeData.event;
@@ -38,7 +42,7 @@ export class ALOutlineProvider implements vscode.TreeDataProvider<ALSymbolInfo> 
 
 		this.autoRefresh = vscode.workspace.getConfiguration('alOutline').get('autorefresh');
 
-		this.parseTree();
+		this.parseTree(false);
     }    
 
 	private onDocumentChanged(changeEvent: vscode.TextDocumentChangeEvent): void {
@@ -56,17 +60,22 @@ export class ALOutlineProvider implements vscode.TreeDataProvider<ALSymbolInfo> 
         return ((document) && (this.editor) && (this.editor.document) && document.uri.toString() === this.editor.document.uri.toString());
     }
 
+    async createCardPage(treeNode : ALSymbolInfo) {
+        let pageBuilder : PageBuilder = new PageBuilder();
+        await pageBuilder.showCardPageWizard(treeNode);
+    }
+
+    async createListPage(treeNode : ALSymbolInfo) {
+        let pageBuilder : PageBuilder = new PageBuilder();
+        await pageBuilder.showListPageWizard(treeNode);
+    }
+
     //------------------------------------------------------------------
     // tree operations
     //------------------------------------------------------------------
 
 	async refresh(treeNode?: ALSymbolInfo): Promise<void> {
-		await this.parseTree();
-		if (treeNode) {
-			this._onDidChangeTreeData.fire(treeNode);
-		} else {
-			this._onDidChangeTreeData.fire();
-		}
+		await this.parseTree(true);
 	}
 
     //gets document symbols using language server protocol 
@@ -74,17 +83,26 @@ export class ALOutlineProvider implements vscode.TreeDataProvider<ALSymbolInfo> 
         return vscode.commands.executeCommand<vscode.SymbolInformation[]>('vscode.executeDocumentSymbolProvider', document.uri);
     }
 
-    private async parseTree(): Promise<void> {
+    private async parseTree(triggerEvent : boolean): Promise<void> {        
         this.rootNode = null;
 		this.editor = vscode.window.activeTextEditor;
-		if (this.editor && this.editor.document && this.editor.document.languageId === 'al') {
-            //load all symbols
-            let lspSymbols = await this.getLspSymbols(this.editor.document);
-            let alSymbols = lspSymbols.map(symbol => new ALSymbolInfo(symbol));
-            //build symbols tree
-            this.rootNode = new ALSymbolInfo();
-            this.rootNode.appendChildNodes(alSymbols);
-		}
+		if (this.editor && this.editor.document)  {
+            
+            this.rootNode = new ALSymbolInfo(null, this.editor.document.languageId);
+
+            //if (this.editor.document.languageId === 'al') {
+                //load all symbols
+                let lspSymbols = await this.getLspSymbols(this.editor.document);
+                let alSymbols = lspSymbols.map(symbol => new ALSymbolInfo(symbol, this.editor.document.languageId));
+                //build symbols tree
+                this.rootNode.appendChildNodes(alSymbols);
+            //}
+        } else {
+            this.rootNode = new ALSymbolInfo(null, '');            
+        }
+
+        if ((triggerEvent) && (this._onDidChangeTreeData))
+            this._onDidChangeTreeData.fire();
 	}
 
     //------------------------------------------------------------------
@@ -108,6 +126,8 @@ export class ALOutlineProvider implements vscode.TreeDataProvider<ALSymbolInfo> 
                 element.lspSymbol.location.range
             ]
         };
+        //node context
+        treeItem.contextValue = element.getKindName();
 
         return treeItem;
     }
