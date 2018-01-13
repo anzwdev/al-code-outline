@@ -18,6 +18,9 @@
     "categories": [
         "Other"
 	],
+	"keywords": [
+		"al"
+	],
     "activationEvents": [
 		"onView:alOutline"
     ],
