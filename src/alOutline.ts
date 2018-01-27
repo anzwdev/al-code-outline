@@ -23,10 +23,10 @@ export class ALOutlineProvider implements vscode.TreeDataProvider<ALSymbolInfo> 
         this.extensionContext = context;
 
         //initialize change tracking event
-		vscode.window.onDidChangeActiveTextEditor(editor => {
-            if (this.autoRefresh)
-                this.refresh();
-        });
+	//	vscode.window.onDidChangeActiveTextEditor(editor => {
+    //        if (this.autoRefresh)
+    //            this.refresh();
+    //    });
         
         vscode.workspace.onDidChangeTextDocument(e => this.onDocumentChanged(e));
         
@@ -38,6 +38,11 @@ export class ALOutlineProvider implements vscode.TreeDataProvider<ALSymbolInfo> 
         vscode.workspace.onDidSaveTextDocument(document => {
             if ((this.autoRefresh) && (this.documentEquals(document)))
                 this.refresh();            
+        });
+
+        vscode.window.onDidChangeVisibleTextEditors(e => {
+            if (this.autoRefresh)
+                this.refresh();
         });
 
 		this.autoRefresh = vscode.workspace.getConfiguration('alOutline').get('autorefresh');
@@ -83,26 +88,54 @@ export class ALOutlineProvider implements vscode.TreeDataProvider<ALSymbolInfo> 
         return vscode.commands.executeCommand<vscode.SymbolInformation[]>('vscode.executeDocumentSymbolProvider', document.uri);
     }
 
-    private async parseTree(triggerEvent : boolean): Promise<void> {        
-        this.rootNode = null;
-		this.editor = vscode.window.activeTextEditor;
-		if (this.editor && this.editor.document)  {
-            
-            this.rootNode = new ALSymbolInfo(null, this.editor.document.languageId);
+    private isValidTextEditor(textEditor : vscode.TextEditor) {
+        return ((textEditor) && 
+            (textEditor.document) && 
+            (textEditor.document.uri) && 
+            (textEditor.document.uri.scheme !== 'debug') &&
+            (textEditor.document.uri.scheme !== 'output'));
+    }
 
-            //if (this.editor.document.languageId === 'al') {
+    private findValidActiveEditor() : vscode.TextEditor {
+        let activeEditor = vscode.window.activeTextEditor;
+        if (this.isValidTextEditor(activeEditor))
+            return activeEditor;
+        
+        let visibleEditors = vscode.window.visibleTextEditors;
+        if (visibleEditors) {
+            var i : number;
+            for (i=0; i<visibleEditors.length; i++) {
+                if (this.isValidTextEditor(visibleEditors[i]))
+                    return visibleEditors[i];
+            }
+        }
+        return null;
+    }
+
+    private async parseTree(triggerEvent : boolean): Promise<void> {        
+        if (!this.parserActive)
+        {
+            this.parserActive = true;
+            this.rootNode = null;        
+
+            //try to find active text editor with file
+            this.editor = this.findValidActiveEditor();            
+            if (this.editor && this.editor.document)  {
+                this.rootNode = new ALSymbolInfo(null, this.editor.document.languageId);
                 //load all symbols
                 let lspSymbols = await this.getLspSymbols(this.editor.document);
                 let alSymbols = lspSymbols.map(symbol => new ALSymbolInfo(symbol, this.editor.document.languageId));
                 //build symbols tree
                 this.rootNode.appendChildNodes(alSymbols);
-            //}
-        } else {
-            this.rootNode = new ALSymbolInfo(null, '');            
-        }
+            } else {
+                this.rootNode = new ALSymbolInfo(null, '');            
+            }
 
-        if ((triggerEvent) && (this._onDidChangeTreeData))
-            this._onDidChangeTreeData.fire();
+            if ((triggerEvent) && (this._onDidChangeTreeData))
+                this._onDidChangeTreeData.fire();
+            
+            this.parserActive = false;
+        }
 	}
 
     //------------------------------------------------------------------

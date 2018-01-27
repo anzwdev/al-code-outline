@@ -16,7 +16,9 @@ export function activate(context: vscode.ExtensionContext) {
     vscode.commands.registerCommand('alOutline.createListPage', offset => alOutlineProvider.createListPage(offset));
 	vscode.commands.registerCommand('alOutline.openSelection', range => {
 		alOutlineProvider.select(range);
-	});
+    });
+    
+
 }
 
 // this method is called when your extension is deactivated

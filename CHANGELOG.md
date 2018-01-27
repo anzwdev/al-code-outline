@@ -1,5 +1,9 @@
 # Change Log
 
+## 0.0.4
+
+Symbols tree was empty when user switched view to OUTPUT or DEBUG CONSOLE. Symbols were visible for PROBLEMS and TERMINAL views only.
+
 ## 0.0.3
  - First key in a table has different, primary key icon now 
  - AL Outline view is always visible now and displays code structure for file types in the project (i.e. javascript, css, html)
