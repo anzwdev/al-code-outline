@@ -2,7 +2,7 @@
     "name": "al-code-outline",
     "displayName": "AL Code Outline",
     "description": "AL code outline tree provider",
-    "version": "0.0.4",
+    "version": "0.0.5",
     "publisher": "andrzejzwierzchowski",
     "engines": {
         "vscode": "^1.19.0"
@@ -78,6 +78,16 @@
 						"type": "boolean",
 						"default": true,
 						"description": "Refresh code outline tree automatically"
+					},
+					"alOutline.defaultAppArea": {
+						"type": "string",
+						"default": "All",
+						"description": "Default application area for page code generator"
+					},
+					"alOutline.defaultListUsageCategory": {
+						"type": "string",
+						"default": "Lists",
+						"description": "Default usage category for list pages"
 					}
 				}
 			}

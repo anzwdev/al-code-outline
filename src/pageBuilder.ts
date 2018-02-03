@@ -75,7 +75,22 @@ export class PageBuilder {
         writer.writeStartObject("page", objectId, objectName);
         writer.writeLine("");
         writer.writeProperty("PageType", pageType);
-        writer.writeProperty("SourceTable", "\"" + tableSymbol.symbolName + "\"");
+        writer.writeProperty("SourceTable", "\"" + tableSymbol.symbolName.replace("\"", "\"\"") + "\"");
+        writer.writeProperty("Caption", "'" + objectName.replace("'", "''") + "'");
+
+        //usage category and application area for list pages
+        if (pageType === "List") {
+            let appArea : string = vscode.workspace.getConfiguration('alOutline').get('defaultAppArea');
+            let usageCategory : string = vscode.workspace.getConfiguration('alOutline').get('defaultListUsageCategory');
+            
+            if ((usageCategory) && (usageCategory !== "")) {
+                //application area requires useage category to be set
+                if ((appArea) && (appArea !== ""))
+                    writer.writeProperty("ApplicationArea", appArea);
+                writer.writeProperty("UsageCategory", usageCategory);
+            }
+        }
+
         writer.writeLine("");
         
         writer.writeStartLayout();

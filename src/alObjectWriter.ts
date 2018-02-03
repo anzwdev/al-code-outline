@@ -1,12 +1,16 @@
+import * as vscode from 'vscode';
+
 export class ALObjectWriter {
     private content : string;
     private indentText : string;
-    private indentPart : string;     
+    private indentPart : string;  
+    private applicationArea : string;   
 
     constructor() {
         this.content = "";
         this.indentText = "";
         this.indentPart = "    ";
+        this.applicationArea = vscode.workspace.getConfiguration('alOutline').get('defaultAppArea');
     }
 
     public toString() : string {
@@ -45,7 +49,7 @@ export class ALObjectWriter {
         else
             objectIdText = id.toString();
         
-        this.writeLine(type + " " + objectIdText + " \"" + name + "\"");
+        this.writeLine(type + " " + objectIdText + " \"" + name.replace("\"", "\"\"") + "\"");
         this.writeStartBlock();
     }
 
@@ -74,6 +78,8 @@ export class ALObjectWriter {
     public writePageField(fieldName : string) {
         this.writeLine("field(\"" + fieldName + "\";\"" + fieldName + "\")");
         this.writeStartBlock();
+        if ((this.applicationArea) && (this.applicationArea !== ""))
+            this.writeProperty("ApplicationArea", this.applicationArea);
         this.writeEndBlock();
     }
 

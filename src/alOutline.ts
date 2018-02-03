@@ -121,12 +121,14 @@ export class ALOutlineProvider implements vscode.TreeDataProvider<ALSymbolInfo> 
             //try to find active text editor with file
             this.editor = this.findValidActiveEditor();            
             if (this.editor && this.editor.document)  {
-                this.rootNode = new ALSymbolInfo(null, this.editor.document.languageId);
+                let mainTreeNode = new ALSymbolInfo(null, this.editor.document.languageId);
                 //load all symbols
                 let lspSymbols = await this.getLspSymbols(this.editor.document);
                 let alSymbols = lspSymbols.map(symbol => new ALSymbolInfo(symbol, this.editor.document.languageId));
                 //build symbols tree
-                this.rootNode.appendChildNodes(alSymbols);
+                mainTreeNode.appendChildNodes(alSymbols);
+
+                this.rootNode = mainTreeNode;
             } else {
                 this.rootNode = new ALSymbolInfo(null, '');            
             }
