@@ -2,6 +2,8 @@ import { SymbolInformation, SymbolKind, ExtensionContext } from "vscode";
 import * as path from 'path';
 import { ALSymbolKind } from "./alSymbolKind";
 import { WSANOTINITIALISED } from "constants";
+import { ALControlKind } from "./objectlibrary/alControlKind";
+import { ALActionKind } from "./objectlibrary/alActionKind";
 
 export class ALSymbolInfo {
     lspSymbol : SymbolInformation;  //Symbol Information provided by language server protocol
@@ -77,6 +79,8 @@ export class ALSymbolInfo {
     //-----------------------------------------------------
 
     private updateSymbol() {
+        if (!this.lspSymbol)
+            return;
         //name
         this.name = this.lspSymbol.name;
         this.alKind = this.GetALKind();
@@ -328,5 +332,181 @@ export class ALSymbolInfo {
         return null;
 	}
 
+    static createFromSymbolReference(newSymbolKind : ALSymbolKind, newTypeName : string, symbolReference : any) : ALSymbolInfo {
+        var symbolInfo = new ALSymbolInfo(null, null);
+        symbolInfo.loadFromSymbolReference(newSymbolKind, newTypeName, symbolReference);
+        return symbolInfo;
+    }
+
+    loadFromSymbolReference(newSymbolKind : ALSymbolKind, newTypeName : string, symbolReference : any) {
+        this.lspSymbol = null;
+        this.childItems = [];
+        this.parentItem = null;
+        this.symbolName = symbolReference.Name;
+        if (!this.symbolName)
+            this.symbolName = '';
+        if (newTypeName !== '')
+            this.name = newTypeName + ' ' + this.symbolName;
+        else
+            this.name = this.symbolName;
+        this.alKind = newSymbolKind;
+        this.languageId = 'al';
+        this.hasKeys = false;
+    }
+
+    loadFromObjectSymbolReference(newSymbolKind : ALSymbolKind, newTypeName : string, symbolReference : any) {
+        //init symbol header
+        this.loadFromSymbolReference(newSymbolKind, newTypeName, symbolReference);
+        //init child items
+        if (symbolReference.Fields)
+            this.loadBasicSymbolReferences(ALSymbolKind.Field, symbolReference.Fields);
+        if (symbolReference.Keys)
+            this.loadBasicSymbolReferences(ALSymbolKind.Key, symbolReference.Keys);
+        if (symbolReference.Controls)
+            this.loadControlSymbolReferences(symbolReference.Controls);
+        if (symbolReference.Actions)
+            this.loadActionSymbolReferences(symbolReference.Actions);   
+         //this.loadBasicSymbolReferences(ALSymbolKind.Field, symbolReference.DataItems);
+        
+        if (symbolReference.DataItems)
+            this.loadDataItemSymbolReferences(symbolReference.DataItems);   
+        if (symbolReference.Elements)
+            this.loadDataItemSymbolReferences(symbolReference.Elements);   
+        
+        if (symbolReference.ActionChanges)
+            this.loadChangesSymbolReferences('Action Changes', symbolReference.ActionChanges);
+        if (symbolReference.ControlChanges)
+            this.loadChangesSymbolReferences('Control Changes', symbolReference.ControlChanges);
+
+        if (symbolReference.Variables)
+            this.loadBasicSymbolReferences(ALSymbolKind.Variable, symbolReference.Variables);
+        if (symbolReference.Methods)
+            this.loadMethodSymbolReferences(ALSymbolKind.Method, symbolReference.Methods);
+        //control Add-In triggers
+        if (symbolReference.Events)
+            this.loadMethodSymbolReferences(ALSymbolKind.Trigger, symbolReference.Events);
+    }
+
+    private loadBasicSymbolReferences(symbolKind : ALSymbolKind, symbolReferenceList : any[]) {
+        if (symbolReferenceList) {
+            for (var i = 0; i<symbolReferenceList.length; i++) {
+                this.addChild(ALSymbolInfo.createFromSymbolReference(symbolKind, '', symbolReferenceList[i]));
+            }
+        }
+    }
+
+    loadChangesSymbolReferences(changesName : string, symbolReferenceList : any[]) {
+        if (symbolReferenceList) {
+            for (var i = 0; i<symbolReferenceList.length; i++) {
+                var symbolRef = symbolReferenceList[i];
+                var symbolInfo = ALSymbolInfo.createFromSymbolReference(ALSymbolKind.Group, changesName, symbolRef); 
+                this.addChild(symbolInfo);
+                //load symbol actions
+                if (symbolRef.Actions)
+                    symbolInfo.loadActionSymbolReferences(symbolRef.Actions);
+                if (symbolRef.Controls)
+                    symbolInfo.loadControlSymbolReferences(symbolRef.Controls);
+            }
+        }
+    }
+
+
+    loadControlSymbolReferences(symbolReferenceList : any[]) {
+        if (symbolReferenceList) {
+            for (var i = 0; i<symbolReferenceList.length; i++) {
+                var symbolRef = symbolReferenceList[i];
+                var controlKind : ALControlKind = symbolRef.Kind;
+                var symbolInfo = ALSymbolInfo.createFromSymbolReference(this.alControlKindToSymbolKind(controlKind), ALControlKind[controlKind], symbolRef); 
+                this.addChild(symbolInfo);
+                //load symbol controls
+                if (symbolRef.Controls)
+                    symbolInfo.loadControlSymbolReferences(symbolRef.Controls);
+            }
+        }
+    }
+
+    loadActionSymbolReferences(symbolReferenceList : any[]) {
+        if (symbolReferenceList) {
+            for (var i = 0; i<symbolReferenceList.length; i++) {
+                var symbolRef = symbolReferenceList[i];
+                var actionKind : ALActionKind = symbolRef.Kind;
+                var symbolInfo = ALSymbolInfo.createFromSymbolReference(this.alActionKindToSymbolKind(actionKind), ALActionKind[actionKind], symbolRef); 
+                this.addChild(symbolInfo);
+                //load symbol actions
+                if (symbolRef.Actions)
+                    symbolInfo.loadActionSymbolReferences(symbolRef.Actions);
+            }
+        }
+    }
+
+    loadDataItemSymbolReferences(symbolReferenceList : any[]) {
+        if (symbolReferenceList) {
+            for (var i = 0; i<symbolReferenceList.length; i++) {
+                var symbolRef = symbolReferenceList[i];
+                var symbolInfo = ALSymbolInfo.createFromSymbolReference(ALSymbolKind.FieldGroup, 'DataItem', symbolRef); 
+                this.addChild(symbolInfo);
+                //load symbol items
+                if (symbolRef.Columns)
+                    symbolInfo.loadBasicSymbolReferences(ALSymbolKind.Field, symbolRef.Columns);
+                if (symbolRef.DataItems)
+                    symbolInfo.loadActionSymbolReferences(symbolRef.DataItems);
+            }
+        }
+    }
+
+    private alControlKindToSymbolKind(controlKind : ALControlKind) : ALSymbolKind {
+        switch (controlKind) {
+            case ALControlKind.Area:
+            case ALControlKind.Group:
+            case ALControlKind.CueGroup:
+            case ALControlKind.Repeater:
+            case ALControlKind.Fixed:
+            case ALControlKind.Grid:
+                return ALSymbolKind.Group;
+            case ALControlKind.Part:
+            case ALControlKind.SystemPart:
+                return ALSymbolKind.Page;
+            case ALControlKind.Field:
+            case ALControlKind.Label:
+            case ALControlKind.UserControl:
+            case ALControlKind.Chart:
+                return ALSymbolKind.Field; 
+        }
+        return ALSymbolKind.Undefined;
+    }
+
+    private alActionKindToSymbolKind(actionKind : ALActionKind) : ALSymbolKind {
+        switch (actionKind) {
+            case ALActionKind.Group:
+            case ALActionKind.Area:
+                return ALSymbolKind.Group;
+            case ALActionKind.Action:
+                return ALSymbolKind.Action;
+            case ALActionKind.Separator:
+                return ALSymbolKind.Undefined;
+        }
+        return ALSymbolKind.Undefined;
+    }
+
+    private loadMethodSymbolReferences(symbolKind : ALSymbolKind, symbolReferenceList : any[]) {
+        if (symbolReferenceList) {
+            for (var i = 0; i<symbolReferenceList.length; i++) {
+                var symbolInfo = ALSymbolInfo.createFromSymbolReference(symbolKind, '', symbolReferenceList[i]);
+                //build procedure name
+                var parameters = symbolReferenceList[i].Parameters;
+                var paramText = '';
+                if (parameters) {
+                    for (var p=0; p < parameters.length; p++) {
+                        if (p > 0)
+                            paramText = paramText + ', ';
+                        paramText = paramText + parameters[p].Name;
+                    }
+                }
+                symbolInfo.name = symbolInfo.symbolName + '(' + paramText + ')';
+                
+                this.addChild(symbolInfo);
+            }
+        }
+    }
 
 }

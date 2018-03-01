@@ -1,0 +1,12 @@
+<table id="objlisttab">
+    <tr><th>Type</th><th>ID</th><th>Name</th></tr>
+
+    {{#each objectCollections}}
+        {{#if visible}}
+            {{#each objects}}
+                <tr data-objt="{{../objectType}}" data-objid="{{Id}}" onclick="objclick(this)"><td>{{../objectType}}</td><td>{{OId}}</td><td>{{Name}}</td></tr>
+            {{/each}}
+        {{/if}}
+    {{/each}}
+
+</table>

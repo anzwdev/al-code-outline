@@ -1,0 +1,89 @@
+.main {
+}   
+.types {
+    position: fixed;
+    margin:0;
+    padding:0;
+    width: 170px;
+    box-sizing: border-box;
+}
+.types .btnArea {
+    margin:5px 10px;
+    padding:0;
+    box-sizing: border-box;
+}
+.types .btn {
+    margin:0;
+    padding: 4px 10px;
+    width: 150px;
+    box-sizing: border-box;
+    cursor: default;
+}
+.objects {
+    margin: 0;
+    padding: 0 171px;
+    width:100%;
+}
+.objects table {
+    border-collapse: collapse;
+    width:100%;
+}
+.objects th, .objects td {
+    text-align: left;
+    padding: 2px;
+    cursor: default;
+}
+
+.vscode-dark .objects table, .vscode-dark .objects th, .vscode-dark .objects td {
+    border: 1px solid #303030;
+}
+.vscode-dark .btnstd {
+    border: 1px solid #303030;
+    background: #202020;
+    color: #b0b0b0;
+}
+.vscode-dark .btnsel {
+    border: 1px solid #303030;
+    background: #404040;
+    color: #e0e0e0;
+}
+.vscode-dark .objects .objsel td {
+    background-color: #404040;
+    color: #e0e0e0;
+}
+
+.vscode-light .objects table, .vscode-light .objects th, .vscode-light .objects td {
+    border: 1px solid #c0c0c0;
+}
+.vscode-light .btnstd {
+    border: 1px solid #c0c0c0;
+    background: #f7f7f7;
+    color: #202020;
+}
+.vscode-light .btnsel {
+    border: 1px solid #c0c0c0;
+    background: #d0d0d0;
+    color: #404040;
+}
+.vscode-light .objects .objsel td {
+    background-color: #e0e0e0;
+    color: #404040;
+}
+
+.vscode-high-contrast .objects table, .vscode-high-contrast .objects th, .vscode-high-contrast .objects td {
+    border: 1px solid #c0c0c0;
+}
+.vscode-high-contrast .btnstd {
+    border: 1px solid #c0c0c0;
+    background: #f7f7f7;
+    color: #202020;
+}
+.vscode-high-contrast .btnsel {
+    border: 1px solid #c0c0c0;
+    background: #d0d0d0;
+    color: #404040;
+}
+.vscode-high-contrast .objects .objsel td {
+    background-color: #e0e0e0;
+    color: #404040;
+}

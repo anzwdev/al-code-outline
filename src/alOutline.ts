@@ -1,9 +1,7 @@
 import * as vscode from 'vscode';
 import * as path from 'path';
 import { ALSymbolInfo } from './alSymbolInfo';
-import { ALObjectWriter } from './alObjectWriter';
 import { ALSymbolKind } from './alSymbolKind';
-import { PageBuilder } from './pageBuilder';
 
 export class ALOutlineProvider implements vscode.TreeDataProvider<ALSymbolInfo> {
     private extensionContext : vscode.ExtensionContext;
@@ -11,6 +9,7 @@ export class ALOutlineProvider implements vscode.TreeDataProvider<ALSymbolInfo> 
     private rootNode : ALSymbolInfo;
     private autoRefresh : boolean = true;
     private parserActive : boolean = false;
+    private appALSymbolInfo : ALSymbolInfo;
     
 	private _onDidChangeTreeData: vscode.EventEmitter<ALSymbolInfo | null> = new vscode.EventEmitter<ALSymbolInfo | null>();
 	readonly onDidChangeTreeData: vscode.Event<ALSymbolInfo | null> = this._onDidChangeTreeData.event;
@@ -65,14 +64,12 @@ export class ALOutlineProvider implements vscode.TreeDataProvider<ALSymbolInfo> 
         return ((document) && (this.editor) && (this.editor.document) && document.uri.toString() === this.editor.document.uri.toString());
     }
 
-    async createCardPage(treeNode : ALSymbolInfo) {
-        let pageBuilder : PageBuilder = new PageBuilder();
-        await pageBuilder.showCardPageWizard(treeNode);
-    }
-
-    async createListPage(treeNode : ALSymbolInfo) {
-        let pageBuilder : PageBuilder = new PageBuilder();
-        await pageBuilder.showListPageWizard(treeNode);
+    setAppALSymbolInfo(newSymbolInfo : ALSymbolInfo) {
+        this.appALSymbolInfo = newSymbolInfo;
+        this.rootNode = new ALSymbolInfo(null, 'al');
+        this.rootNode.addChild(newSymbolInfo);
+        if (this._onDidChangeTreeData)
+            this._onDidChangeTreeData.fire();
     }
 
     //------------------------------------------------------------------
@@ -129,6 +126,9 @@ export class ALOutlineProvider implements vscode.TreeDataProvider<ALSymbolInfo> 
                 mainTreeNode.appendChildNodes(alSymbols);
 
                 this.rootNode = mainTreeNode;
+            } else if (this.appALSymbolInfo) {
+                this.rootNode = new ALSymbolInfo(null, 'al');
+                this.rootNode.addChild(this.appALSymbolInfo);
             } else {
                 this.rootNode = new ALSymbolInfo(null, '');            
             }
@@ -154,13 +154,14 @@ export class ALOutlineProvider implements vscode.TreeDataProvider<ALSymbolInfo> 
             treeItem.collapsibleState = vscode.TreeItemCollapsibleState.None;
         }
         //node command
-        treeItem.command = {
-            command: 'alOutline.openSelection',
-            title: '',
-            arguments: [
-                element.lspSymbol.location.range
-            ]
-        };
+        if (element.lspSymbol) 
+            treeItem.command = {
+                command: 'alOutline.openSelection',
+                title: '',
+                arguments: [
+                    element.lspSymbol.location.range
+                ]
+            };
         //node context
         treeItem.contextValue = element.getKindName();
 

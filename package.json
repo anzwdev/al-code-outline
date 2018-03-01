@@ -1,11 +1,11 @@
 {
-    "name": "al-code-outline",
-    "displayName": "AL Code Outline",
-    "description": "AL code outline tree provider",
-    "version": "0.0.5",
-    "publisher": "andrzejzwierzchowski",
-    "engines": {
-        "vscode": "^1.19.0"
+	"name": "al-code-outline",
+	"displayName": "AL Code Outline",
+	"description": "AL code outline tree provider",
+	"version": "0.0.6",
+	"publisher": "andrzejzwierzchowski",
+	"engines": {
+		"vscode": "^1.19.0"
 	},
 	"author": {
 		"name": "Andrzej Zwierzchowski",
@@ -15,18 +15,27 @@
 		"url": "https://github.com/anzwdev/al-code-outline"
 	},
 	"license": "LICENSE",
-    "categories": [
-        "Other"
+	"categories": [
+		"Other"
 	],
 	"keywords": [
 		"al"
 	],
-    "activationEvents": [
-		"onView:alOutline"
-    ],
-    "main": "./out/extension",
+	"activationEvents": [
+		"onView:alOutline",
+		"onCommand:alOutline.viewALApp"
+	],
+	"main": "./out/extension",
 	"icon": "resources/alcodeoutline.png",
-    "contributes": {
+	"contributes": {
+		"languages": [
+			{
+				"id": "alapp",
+				"extensions": [
+					".app"
+				]
+			}
+		],
 		"views": {
 			"explorer": [
 				{
@@ -35,7 +44,7 @@
 				}
 			]
 		},
-        "commands": [
+		"commands": [
 			{
 				"command": "alOutline.refresh",
 				"title": "Refresh",
@@ -51,15 +60,32 @@
 			{
 				"command": "alOutline.createCardPage",
 				"title": "Create Card Page"
+			},
+			{
+				"command": "alOutline.createReport",
+				"title": "Create Report"
+			},
+			{
+				"command": "alOutline.createXmlPort",
+				"title": "Create XmlPort"
+			},
+			{
+				"command": "alOutline.createQuery",
+				"title": "Create Query"
+			},
+			{
+				"command": "alOutline.viewALApp",
+				"title": "Open in AL Object Browser"
 			}
-        ],
+		],
 		"menus": {
 			"view/title": [
 				{
 					"command": "alOutline.refresh",
 					"when": "view == alOutline",
 					"group": "navigation"
-				}],
+				}
+			],
 			"view/item/context": [
 				{
 					"command": "alOutline.createCardPage",
@@ -68,7 +94,27 @@
 				{
 					"command": "alOutline.createListPage",
 					"when": "view == alOutline && viewItem == ALTable"
-				}]
+				},
+				{
+					"command": "alOutline.createReport",
+					"when": "view == alOutline && viewItem == ALTable"
+				},
+				{
+					"command": "alOutline.createXmlPort",
+					"when": "view == alOutline && viewItem == ALTable"
+				},
+				{
+					"command": "alOutline.createQuery",
+					"when": "view == alOutline && viewItem == ALTable"
+				}
+			],
+			"explorer/context": [
+				{
+					"command": "alOutline.viewALApp",
+					"group": "navigation",
+					"when": "resourceLangId == alapp"
+				}
+			]
 		},
 		"configuration": [
 			{
@@ -91,18 +137,22 @@
 					}
 				}
 			}
-		]    },
-    "scripts": {
-        "vscode:prepublish": "npm run compile",
-        "compile": "tsc -p ./",
-        "watch": "tsc -watch -p ./",
-        "postinstall": "node ./node_modules/vscode/bin/install",
-        "test": "npm run compile && node ./node_modules/vscode/bin/test"
-    },
-    "devDependencies": {
-        "typescript": "^2.6.1",
-        "vscode": "^1.1.6",
-        "@types/node": "^7.0.43",
-        "@types/mocha": "^2.2.42"
-    }
+		]
+	},
+	"scripts": {
+		"vscode:prepublish": "npm run compile",
+		"compile": "tsc -p ./",
+		"watch": "tsc -watch -p ./",
+		"postinstall": "node ./node_modules/vscode/bin/install",
+		"test": "npm run compile && node ./node_modules/vscode/bin/test"
+	},
+	"devDependencies": {
+		"typescript": "^2.6.1",
+		"vscode": "^1.1.6",
+		"@types/node": "^7.0.43",
+		"@types/mocha": "^2.2.42"
+	},
+	"dependencies": {
+		"adm-zip": "^0.4.7"
+	}
 }

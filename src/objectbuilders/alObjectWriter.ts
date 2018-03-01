@@ -42,6 +42,21 @@ export class ALObjectWriter {
         this.writeLine("}");
     }
 
+    public writeStartNamedBlock(name : string) {
+        this.writeLine(name);
+        this.writeStartBlock();
+    }
+
+    public writeStartNameSourceBlock(blockName : string, propertyName : string, propertySource : string) {
+        this.writeLine(blockName + "(" + propertyName + ";" + propertySource + ")");
+        this.writeStartBlock();
+    }
+
+    public writeNameSourceBlock(blockName : string, propertyName : string, propertySource : string) {
+        this.writeStartNameSourceBlock(blockName, propertyName, propertySource);
+        this.writeEndBlock();
+    }
+
     public writeStartObject(type : string, id : number, name : string) {
         var objectIdText : string;
         if (id == 0)
@@ -66,7 +81,7 @@ export class ALObjectWriter {
         this.writeEndBlock();
     }
 
-    public writeStartControlGroup(type : string, name : string) {
+    public writeStartGroup(type : string, name : string) {
         this.writeLine(type + "(" + name + ")");
         this.writeStartBlock();
     }
@@ -76,11 +91,26 @@ export class ALObjectWriter {
     }
 
     public writePageField(fieldName : string) {
-        this.writeLine("field(\"" + fieldName + "\";\"" + fieldName + "\")");
-        this.writeStartBlock();
+        this.writeStartNameSourceBlock("field", this.encodeName(fieldName), this.encodeName(fieldName));
+        this.writeApplicationArea();
+        this.writeEndBlock();
+    }
+
+    public writeApplicationArea() {
         if ((this.applicationArea) && (this.applicationArea !== ""))
             this.writeProperty("ApplicationArea", this.applicationArea);
-        this.writeEndBlock();
+    }
+
+    public encodeString(text : string) : string {
+        return "'" + text.replace("'", "''") + "'";
+    }
+
+    public encodeName(name : string) : string {
+        return "\"" + name.replace("\"", "\"\"") + "\"";
+    }
+
+    public createName(source : string) : string {
+        return source.replace(/\W/g, '');
     }
 
 }

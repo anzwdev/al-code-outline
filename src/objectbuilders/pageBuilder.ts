@@ -1,11 +1,13 @@
 import * as vscode from 'vscode';
 import { ALObjectWriter } from "./alObjectWriter";
-import { ALSymbolInfo } from "./alSymbolInfo";
-import { ALSymbolKind } from "./alSymbolKind";
+import { ALSymbolInfo } from "../alSymbolInfo";
+import { ALSymbolKind } from "../alSymbolKind";
+import { ObjectBuilder } from './objectBuilder';
 
-export class PageBuilder {
+export class PageBuilder extends ObjectBuilder {
 
     constructor() {
+        super();
     }
 
     //#region Wizards with UI
@@ -17,7 +19,7 @@ export class PageBuilder {
         if (!objectName)
             return;
 
-        this.ShowNewDocument(this.buildListPageForTable(tableSymbol, 0, objectName));
+        this.showNewDocument(this.buildListPageForTable(tableSymbol, 0, objectName));
     }
 
     async showCardPageWizard(tableSymbol : ALSymbolInfo) {
@@ -27,7 +29,7 @@ export class PageBuilder {
         if (!objectName)
             return;
 
-        this.ShowNewDocument(this.buildCardPageForTable(tableSymbol, 0, objectName));
+        this.showNewDocument(this.buildCardPageForTable(tableSymbol, 0, objectName));
     }
 
     //#endregion
@@ -38,21 +40,6 @@ export class PageBuilder {
         return vscode.window.showInputBox({
             value : defaultPageName,
             prompt : "Please enter new page name"});
-    }
-
-    private ShowNewDocument(content : string) {
-        vscode.workspace.openTextDocument({
-            content : content,
-            language : "al"
-        }).then(
-            document => { 
-                vscode.window.showTextDocument(document, {
-                    preview : false
-                });
-            },
-            err => {
-                vscode.window.showErrorMessage(err);
-            });
     }
 
     //#endregion
@@ -75,8 +62,8 @@ export class PageBuilder {
         writer.writeStartObject("page", objectId, objectName);
         writer.writeLine("");
         writer.writeProperty("PageType", pageType);
-        writer.writeProperty("SourceTable", "\"" + tableSymbol.symbolName.replace("\"", "\"\"") + "\"");
-        writer.writeProperty("Caption", "'" + objectName.replace("'", "''") + "'");
+        writer.writeProperty("SourceTable", writer.encodeName(tableSymbol.symbolName));
+        writer.writeProperty("Caption", writer.encodeString(objectName));
 
         //usage category and application area for list pages
         if (pageType === "List") {
@@ -94,9 +81,9 @@ export class PageBuilder {
         writer.writeLine("");
         
         writer.writeStartLayout();
-        writer.writeStartControlGroup("area", "content");
+        writer.writeStartGroup("area", "content");
         
-        writer.writeStartControlGroup(fieldGroupType, "General");
+        writer.writeStartGroup(fieldGroupType, "General");
         
         tableSymbol.childItems.forEach(
             item => {

@@ -1,0 +1,64 @@
+<html>
+    <header>
+        <script src="##PATH##/htmlresources/objectbrowser/js/handlebars.runtime-v4.0.11.js"></script>
+        <script src="##PATH##/htmlresources/objectbrowser/js/jquery.min.js"></script>
+        <script src="##PATH##/htmlresources/objectbrowser/js/jquery.ui.position.min.js"></script>
+        <script src="##PATH##/htmlresources/objectbrowser/js/jquery.contextmenu.min.js"></script>
+        <script src="##PATH##/htmlresources/objectbrowser/js/objectlist.handlebars.js"></script>
+        <script src="##PATH##/htmlresources/objectbrowser/js/objectbrowser.js"></script>
+        <script>
+            var objdata = ##DATA##;
+        </script>
+        <link rel="stylesheet" type="text/css" href="##PATH##/htmlresources/objectbrowser/css/jquery.contextMenu.min.css">
+        <link rel="stylesheet" type="text/css" href="##PATH##/htmlresources/objectbrowser/css/objectbrowser.css">
+    </header>
+    <body style="margin:0;padding:0;">
+            <div class="types">
+                <div class="btnArea">
+                    <div class="btn btnstd" data-mode="Table" onclick="modeBtnClick(this);">Tables</div>
+                </div>
+                <div class="btnArea">
+                    <div class="btn btnstd" data-mode="Page" onclick="modeBtnClick(this)">Pages</div>
+                </div>
+                <div class="btnArea">
+                    <div class="btn btnstd" data-mode="Report" onclick="modeBtnClick(this)">Reports</div>
+                </div>
+                <div class="btnArea">
+                    <div class="btn btnstd" data-mode="XmlPort" onclick="modeBtnClick(this)">Xml Ports</div>
+                </div>
+                <div class="btnArea">
+                    <div class="btn btnstd" data-mode="Query" onclick="modeBtnClick(this)">Queries</div>
+                </div>
+                <div class="btnArea">
+                    <div class="btn btnstd" data-mode="Codeunit" onclick="modeBtnClick(this)">Codeunits</div>
+                </div>
+                <div class="btnArea">
+                    <div class="btn btnstd" data-mode="ControlAddIn" onclick="modeBtnClick(this)">Control Add-Ins</div>
+                </div>
+                <div class="btnArea">
+                    <div class="btn btnstd" data-mode="PageExtension" onclick="modeBtnClick(this)">Page Extensions</div>
+                </div>
+                <div class="btnArea">
+                    <div class="btn btnstd" data-mode="TableExtension" onclick="modeBtnClick(this)">Table Extensions</div>
+                </div>
+                <div class="btnArea">
+                    <div class="btn btnstd" data-mode="Profile" onclick="modeBtnClick(this)">Profiles</div>
+                </div>
+                <div class="btnArea">
+                    <div class="btn btnstd" data-mode="PageCustomization" onclick="modeBtnClick(this)">Page Customizations</div>
+                </div>
+                <div class="btnArea">
+                    <div class="btn btnstd" data-mode="All" onclick="modeBtnClick(this)">All</div>
+                </div>
+
+                <div style="display:none;">
+                    <a id="vscodeLink" href="command:alOutline.appFileObjCommand">L</a>
+                </div>
+            </div>
+    
+            <div id="objects" class="objects">
+            </div>
+
+        </div>        
+    </body>
+</html>
