@@ -1,5 +1,9 @@
 # Change Log
 
+## 0.0.7
+
+- Bug causing AL Language Extension to returnd incorrect SymbolKind value has been fixed by Microsoft so we no longer need workaround fixing it in AL Code Outline, but it should still work if developers are using older version of AL Language Extension
+
 ## 0.0.6
 
 - Code refactoring

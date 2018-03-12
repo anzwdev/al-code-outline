@@ -13,9 +13,12 @@ export class ALSymbolInfo {
     symbolName : string;
     alKind : ALSymbolKind;
     languageId : string;
-    private hasKeys : boolean;    
+    symbolKindEnumFix : number;
+    private hasKeys : boolean;
+
 
     constructor(symbol: SymbolInformation, newLanguageId : string) {
+        this.symbolKindEnumFix = 1;
         this.parentItem = null;
         this.hasKeys = false;
         this.childItems = [];
@@ -45,13 +48,28 @@ export class ALSymbolInfo {
     }
 
     public appendChildNodes(childNodes : ALSymbolInfo[]) {
-        //sort child nodes by position
-
+        var symbolKindFixDetected : boolean = false;
+        var newSymbolKindFixValue : number = 0;
+        
         //add nodes one by one
         this.hasKeys = false;
         var prevChildNode : ALSymbolInfo = this;
         for (var i = 0; i<childNodes.length;i++) {
             var currNode = childNodes[i];
+            
+            //detect if SymbolKind bug has been fixed in this version
+            if (!symbolKindFixDetected) {
+                if (childNodes[i].lspSymbol) {
+                    if ((childNodes[i].lspSymbol.kind + 1) == SymbolKind.Class)
+                        newSymbolKindFixValue = 1;
+                    else
+                        newSymbolKindFixValue = 0;
+                }
+                this.symbolKindEnumFix = newSymbolKindFixValue;
+                symbolKindFixDetected = true;
+            }
+
+            //append child nide
             var parentNode = this.findParent(prevChildNode, currNode);
             parentNode.addChild(currNode);
             prevChildNode = currNode;
@@ -71,6 +89,8 @@ export class ALSymbolInfo {
 
     public setParent(parentItem : ALSymbolInfo) {
         this.parentItem = parentItem;
+        if (parentItem)
+            this.symbolKindEnumFix = parentItem.symbolKindEnumFix;
         this.updateSymbol();
     }
 
@@ -105,7 +125,7 @@ export class ALSymbolInfo {
         if (this.languageId !== 'al')
             return ALSymbolKind.Undefined;
         
-        symbolKind = this.lspSymbol.kind + 1;
+        symbolKind = this.lspSymbol.kind + this.symbolKindEnumFix;
         
         //try to detect al symbol kind
         switch (symbolKind) {
