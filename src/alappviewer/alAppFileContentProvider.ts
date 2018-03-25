@@ -6,6 +6,7 @@ import { ALObjectLibrariesCollection } from '../objectlibrary/alObjectLibrariesC
 import { ALOutlineProvider } from '../alOutline';
 import { PageBuilder } from '../objectbuilders/pageBuilder';
 import { ObjectBuildersCollection } from '../objectbuilders/objectBuildersCollection';
+import { ALObjectRunner } from '../alObjectRunner';
 
 export class ALAppFileContentProvider implements vscode.TextDocumentContentProvider {
     onDidChange?: vscode.Event<vscode.Uri>;
@@ -14,6 +15,7 @@ export class ALAppFileContentProvider implements vscode.TextDocumentContentProvi
     private mainTemplate : string;
     private codeOutlineProvider : ALOutlineProvider;
     private objectBuilders : ObjectBuildersCollection;
+    private alObjectRunner : ALObjectRunner;
 
     constructor(context : vscode.ExtensionContext, objLibraries : ALObjectLibrariesCollection, objBuilders : ObjectBuildersCollection) {
         this.objectLibraries = objLibraries;
@@ -23,6 +25,10 @@ export class ALAppFileContentProvider implements vscode.TextDocumentContentProvi
 
     setOutlineProvider(newValue : ALOutlineProvider) {
         this.codeOutlineProvider = newValue;
+    }
+
+    setALObjectRunner(newValue : ALObjectRunner) {
+        this.alObjectRunner = newValue;
     }
 
     private initTemplate(context: vscode.ExtensionContext) {
@@ -58,6 +64,8 @@ export class ALAppFileContentProvider implements vscode.TextDocumentContentProvi
                     await this.objectBuilders.xmlPortBuilder.showXmlPortWizard(symbolInfo);
                 else if (commandName === 'newquery')
                     await this.objectBuilders.queryBuilder.showQueryWizard(symbolInfo);
+                else if (commandName === 'runinwebclient')
+                    this.alObjectRunner.runInWebClient(symbolInfo);
             }            
         }
 

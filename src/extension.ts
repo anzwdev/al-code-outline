@@ -6,6 +6,7 @@ import { ALOutlineProvider } from './aloutline';
 import { ObjectBuildersCollection } from './objectbuilders/objectBuildersCollection';
 import { ALObjectLibrariesCollection } from './objectlibrary/alObjectLibrariesCollection';
 import { ALAppFileContentProvider } from './alappviewer/alAppFileContentProvider';
+import { ALObjectRunner } from './alObjectRunner';
 
 // this method is called when your extension is activated
 // your extension is activated the very first time the command is executed
@@ -46,8 +47,22 @@ export function activate(context: vscode.ExtensionContext) {
 	vscode.commands.registerCommand('alOutline.openSelection', range => {
 		alOutlineProvider.select(range);
     });
-    
+
+    //object runner
+    const objectRunner = new ALObjectRunner(alOutlineProvider);
+
+    vscode.commands.registerCommand('alOutline.runPage', offset => {
+        objectRunner.runInWebClient(offset);
+    });
+    vscode.commands.registerCommand('alOutline.runTable', offset => {
+        objectRunner.runInWebClient(offset);
+    });
+    vscode.commands.registerCommand('alOutline.runReport', offset => {
+        objectRunner.runInWebClient(offset);
+    });
+
     alAppFileContentProvider.setOutlineProvider(alOutlineProvider);
+    alAppFileContentProvider.setALObjectRunner(objectRunner);
 }
 
 // this method is called when your extension is deactivated

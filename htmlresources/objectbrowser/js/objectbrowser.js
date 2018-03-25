@@ -10,11 +10,15 @@ $(function() {
             items: {
                 "definition": {name: "Go to Definition"},
                 "sep1": "---------",
+                "runinwebclient": {
+                    name: "Run in Web Client",
+                    disabled: function(key, opt) {
+                        var objt = $(this).data("objt"); 
+                        return ((objt != "Table") && (objt != "Page") && (objt != "Report"));
+                    }},
+                "sep2": "---------",
                 /*
                 !!! TO-DO !!!
-                "run": {
-                    name: "Run"},
-                "sep2": "---------",
                 "extend": {
                     name: "New Table Extension",
                     disabled: function(key, opt) {

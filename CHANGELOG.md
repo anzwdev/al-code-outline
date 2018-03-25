@@ -1,5 +1,11 @@
 # Change Log
 
+## 0.0.8
+
+- Run in Web Client action added to the context menu of table, page and report symbols in symbols tree view.
+- Run in Web Client action added to the context menu of table, page and report objects in AL Object Browser
+- Default Web Client port setting (alOutline.webClientPort) added to the extension settings  
+
 ## 0.0.7
 
 - Bug causing AL Language Extension to returnd incorrect SymbolKind value has been fixed by Microsoft so we no longer need workaround fixing it in AL Code Outline, but it should still work if developers are using older version of AL Language Extension

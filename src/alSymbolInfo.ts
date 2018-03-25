@@ -14,10 +14,12 @@ export class ALSymbolInfo {
     alKind : ALSymbolKind;
     languageId : string;
     symbolKindEnumFix : number;
+    alElementId : number;
     private hasKeys : boolean;
 
 
     constructor(symbol: SymbolInformation, newLanguageId : string) {
+        this.alElementId = 0;
         this.symbolKindEnumFix = 1;
         this.parentItem = null;
         this.hasKeys = false;
@@ -337,8 +339,23 @@ export class ALSymbolInfo {
     }
 
     public getKindName() : string {
-        if (this.alKind == ALSymbolKind.Table)
-            return "ALTable";
+        switch (this.alKind) {
+            case ALSymbolKind.Table:
+                return "ALTable";
+            case ALSymbolKind.Page:
+                return "ALPage";
+            case ALSymbolKind.Report:
+                return "ALReport";
+            case ALSymbolKind.Codeunit:
+                return "ALCodeunit";
+            case ALSymbolKind.XmlPort:
+                return "ALXmlPort";
+            case ALSymbolKind.Query:
+                return "ALQuery";
+            case ALSymbolKind.ControlAddIn:
+                return "ALControlAddIn";
+        }
+        
         return this.alKind.toString();
     }
 
@@ -372,6 +389,10 @@ export class ALSymbolInfo {
         this.alKind = newSymbolKind;
         this.languageId = 'al';
         this.hasKeys = false;
+        if (symbolReference.Id)
+            this.alElementId = symbolReference.Id;
+        else
+            this.alElementId = 0;
     }
 
     loadFromObjectSymbolReference(newSymbolKind : ALSymbolKind, newTypeName : string, symbolReference : any) {

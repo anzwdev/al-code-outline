@@ -2,6 +2,7 @@ import * as vscode from 'vscode';
 import * as path from 'path';
 import { ALSymbolInfo } from './alSymbolInfo';
 import { ALSymbolKind } from './alSymbolKind';
+import { ALSourceCodeProcessor } from './alSourceCodeProcessor';
 
 export class ALOutlineProvider implements vscode.TreeDataProvider<ALSymbolInfo> {
     private extensionContext : vscode.ExtensionContext;
@@ -139,6 +140,23 @@ export class ALOutlineProvider implements vscode.TreeDataProvider<ALSymbolInfo> 
             this.parserActive = false;
         }
 	}
+
+    findSymbolObjectId(alSymbol : ALSymbolInfo) {
+        if ((alSymbol.languageId == 'al') && (alSymbol.alElementId == 0)) {
+            var editor = this.findValidActiveEditor();
+            if ((editor) && (editor.document)) {
+                var symbolRange = alSymbol.lspSymbol.location.range;
+                var textRange : vscode.Range = new vscode.Range(0, 0, symbolRange.start.line, symbolRange.start.character)
+                var text : string = editor.document.getText(textRange);
+                //remove comments from text
+                text = ALSourceCodeProcessor.RemoveComments(text);
+                //find last number
+                var newObjectId = ALSourceCodeProcessor.GetLastWordAsNumber(text);
+                if (newObjectId > 0)
+                    alSymbol.alElementId = newObjectId;
+            }
+        }
+    }
 
     //------------------------------------------------------------------
     // TreeDataProvider implementation
