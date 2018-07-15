@@ -19,50 +19,89 @@ export function activate(context: vscode.ExtensionContext) {
     const alAppFileContentProvider = new ALAppFileContentProvider(context, objectLibraries, objectBuildersCollection);
     const alAppRegistration = vscode.workspace.registerTextDocumentContentProvider('alOutline.appViewer', alAppFileContentProvider);
     
-    vscode.commands.registerCommand('alOutline.appFileObjCommand', (objtype : string, objid : number, cmdname : string) => {
-        alAppFileContentProvider.appFileObjCommand(objtype, objid, cmdname);
-    });
+    context.subscriptions.push(
+        vscode.commands.registerCommand(
+            'alOutline.appFileObjCommand', 
+            (objtype : string, objid : number, cmdname : string) => {
+                alAppFileContentProvider.appFileObjCommand(objtype, objid, cmdname);
+            }));
 
-    vscode.commands.registerCommand('alOutline.viewALApp', (fileUri) => {
-        let appUri = fileUri.with( {scheme: 'alOutline.appViewer'});
-        vscode.commands.executeCommand('vscode.previewHtml', appUri, vscode.ViewColumn.Active, 'AL Object Browser');
-        //return vscode.commands.executeCommand('vscode.previewHtml', previewUri, vscode.ViewColumn.Two, 'CSS Property Preview').then((success) => {
-		//}, (reason) => {
-	    //		vscode.window.showErrorMessage(reason);
-        //});
-    });
+    context.subscriptions.push(
+        vscode.commands.registerCommand(
+            'alOutline.viewALApp', 
+            (fileUri) => {
+                let appUri = fileUri.with( {scheme: 'alOutline.appViewer'});
+                vscode.commands.executeCommand('vscode.previewHtml', appUri, vscode.ViewColumn.Active, 'AL Object Browser');
+                //return vscode.commands.executeCommand('vscode.previewHtml', previewUri, vscode.ViewColumn.Two, 'CSS Property Preview').then((success) => {
+                //}, (reason) => {
+                //		vscode.window.showErrorMessage(reason);
+                //});
+            }));
 
     //al code outline
     const alOutlineProvider = new ALOutlineProvider(context);
 
-    vscode.window.registerTreeDataProvider('alOutline', alOutlineProvider);
+    context.subscriptions.push(
+        vscode.window.registerTreeDataProvider('alOutline', alOutlineProvider));
 
-    vscode.commands.registerCommand('alOutline.refresh', () => alOutlineProvider.refresh());
-    vscode.commands.registerCommand('alOutline.createCardPage', offset => objectBuildersCollection.pageBuilder.showCardPageWizard(offset));
-    vscode.commands.registerCommand('alOutline.createListPage', offset => objectBuildersCollection.pageBuilder.showListPageWizard(offset));
-    vscode.commands.registerCommand('alOutline.createReport', offset => objectBuildersCollection.reportBuilder.showReportWizard(offset));
-    vscode.commands.registerCommand('alOutline.createXmlPort', offset => objectBuildersCollection.xmlPortBuilder.showXmlPortWizard(offset));
-    vscode.commands.registerCommand('alOutline.createQuery', offset => objectBuildersCollection.queryBuilder.showQueryWizard(offset));
+    context.subscriptions.push(
+        vscode.commands.registerCommand(
+            'alOutline.refresh', 
+            () => alOutlineProvider.refresh()));
+    context.subscriptions.push(
+        vscode.commands.registerCommand(
+            'alOutline.createCardPage', 
+            offset => objectBuildersCollection.pageBuilder.showCardPageWizard(offset)));
+    context.subscriptions.push(
+        vscode.commands.registerCommand(
+            'alOutline.createListPage', 
+            offset => objectBuildersCollection.pageBuilder.showListPageWizard(offset)));
+    context.subscriptions.push(
+        vscode.commands.registerCommand(
+            'alOutline.createReport', 
+            offset => objectBuildersCollection.reportBuilder.showReportWizard(offset)));
+    context.subscriptions.push(
+        vscode.commands.registerCommand(
+            'alOutline.createXmlPort', 
+            offset => objectBuildersCollection.xmlPortBuilder.showXmlPortWizard(offset)));
+    context.subscriptions.push(
+        vscode.commands.registerCommand(
+            'alOutline.createQuery', 
+            offset => objectBuildersCollection.queryBuilder.showQueryWizard(offset)));
     
-	vscode.commands.registerCommand('alOutline.openSelection', range => {
-		alOutlineProvider.select(range);
-    });
+    context.subscriptions.push(
+        vscode.commands.registerCommand(
+            'alOutline.openSelection', range => {
+                alOutlineProvider.select(range);
+            }));
 
     //object runner
     const objectRunner = new ALObjectRunner(alOutlineProvider);
 
-    vscode.commands.registerCommand('alOutline.runPage', offset => {
-        objectRunner.runInWebClient(offset);
-    });
-    vscode.commands.registerCommand('alOutline.runTable', offset => {
-        objectRunner.runInWebClient(offset);
-    });
-    vscode.commands.registerCommand('alOutline.runReport', offset => {
-        objectRunner.runInWebClient(offset);
-    });
+    context.subscriptions.push(
+        vscode.commands.registerCommand(
+            'alOutline.runPage', offset => {
+                objectRunner.runInWebClient(offset);
+            }));
+
+    context.subscriptions.push(
+        vscode.commands.registerCommand(
+            'alOutline.runTable', 
+            offset => {
+                objectRunner.runInWebClient(offset);
+            }));
+
+    context.subscriptions.push(
+        vscode.commands.registerCommand(
+            'alOutline.runReport', 
+            offset => {
+                objectRunner.runInWebClient(offset);
+            }));
 
     alAppFileContentProvider.setOutlineProvider(alOutlineProvider);
     alAppFileContentProvider.setALObjectRunner(objectRunner);
+
+    alOutlineProvider.refresh();
 }
 
 // this method is called when your extension is deactivated

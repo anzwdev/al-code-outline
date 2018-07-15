@@ -2,7 +2,7 @@
 	"name": "al-code-outline",
 	"displayName": "AL Code Outline",
 	"description": "AL code outline tree provider",
-	"version": "0.0.8",
+	"version": "0.0.9",
 	"publisher": "andrzejzwierzchowski",
 	"engines": {
 		"vscode": "^1.19.0"
@@ -15,13 +15,15 @@
 		"url": "https://github.com/anzwdev/al-code-outline"
 	},
 	"license": "LICENSE",
-	"categories": [
-		"Other"
-	],
+    "categories": [
+        "Other"
+    ],
 	"keywords": [
 		"al"
 	],
 	"activationEvents": [
+		"*",
+		"onLanguage:al",
 		"onView:alOutline",
 		"onCommand:alOutline.viewALApp"
 	],

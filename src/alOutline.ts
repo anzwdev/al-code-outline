@@ -9,7 +9,6 @@ export class ALOutlineProvider implements vscode.TreeDataProvider<ALSymbolInfo> 
 	private editor: vscode.TextEditor;
     private rootNode : ALSymbolInfo;
     private autoRefresh : boolean = true;
-    private parserActive : boolean = false;
     private appALSymbolInfo : ALSymbolInfo;
     
 	private _onDidChangeTreeData: vscode.EventEmitter<ALSymbolInfo | null> = new vscode.EventEmitter<ALSymbolInfo | null>();
@@ -23,10 +22,10 @@ export class ALOutlineProvider implements vscode.TreeDataProvider<ALSymbolInfo> 
         this.extensionContext = context;
 
         //initialize change tracking event
-	//	vscode.window.onDidChangeActiveTextEditor(editor => {
-    //        if (this.autoRefresh)
-    //            this.refresh();
-    //    });
+		vscode.window.onDidChangeActiveTextEditor(editor => {
+            if (this.autoRefresh)
+                this.refresh();
+        });
         
         vscode.workspace.onDidChangeTextDocument(e => this.onDocumentChanged(e));
         
@@ -40,14 +39,16 @@ export class ALOutlineProvider implements vscode.TreeDataProvider<ALSymbolInfo> 
                 this.refresh();            
         });
 
+        /*
         vscode.window.onDidChangeVisibleTextEditors(e => {
             if (this.autoRefresh)
                 this.refresh();
         });
+        */
 
 		this.autoRefresh = vscode.workspace.getConfiguration('alOutline').get('autorefresh');
 
-		this.parseTree(false);
+        this.parseTree(false);
     }    
 
 	private onDocumentChanged(changeEvent: vscode.TextDocumentChangeEvent): void {
@@ -86,59 +87,33 @@ export class ALOutlineProvider implements vscode.TreeDataProvider<ALSymbolInfo> 
         return vscode.commands.executeCommand<vscode.SymbolInformation[]>('vscode.executeDocumentSymbolProvider', document.uri);
     }
 
-    private isValidTextEditor(textEditor : vscode.TextEditor) {
-        return ((textEditor) && 
-            (textEditor.document) && 
-            (textEditor.document.uri) && 
-            (textEditor.document.uri.scheme !== 'debug') &&
-            (textEditor.document.uri.scheme !== 'output'));
-    }
-
     private findValidActiveEditor() : vscode.TextEditor {
-        let activeEditor = vscode.window.activeTextEditor;
-        if (this.isValidTextEditor(activeEditor))
-            return activeEditor;
-        
-        let visibleEditors = vscode.window.visibleTextEditors;
-        if (visibleEditors) {
-            var i : number;
-            for (i=0; i<visibleEditors.length; i++) {
-                if (this.isValidTextEditor(visibleEditors[i]))
-                    return visibleEditors[i];
-            }
-        }
-        return null;
+        return vscode.window.activeTextEditor;
     }
 
     private async parseTree(triggerEvent : boolean): Promise<void> {        
-        if (!this.parserActive)
-        {
-            this.parserActive = true;
-            this.rootNode = null;        
+        this.rootNode = null;        
 
-            //try to find active text editor with file
-            this.editor = this.findValidActiveEditor();            
-            if (this.editor && this.editor.document)  {
-                let mainTreeNode = new ALSymbolInfo(null, this.editor.document.languageId);
-                //load all symbols
-                let lspSymbols = await this.getLspSymbols(this.editor.document);
-                let alSymbols = lspSymbols.map(symbol => new ALSymbolInfo(symbol, this.editor.document.languageId));
-                //build symbols tree
-                mainTreeNode.appendChildNodes(alSymbols);
+        //try to find active text editor with file
+        this.editor = this.findValidActiveEditor();            
+        if (this.editor && this.editor.document)  {
+            let mainTreeNode = new ALSymbolInfo(null, this.editor.document.languageId);
+            //load all symbols
+            let lspSymbols = await this.getLspSymbols(this.editor.document);
+            let alSymbols = lspSymbols.map(symbol => new ALSymbolInfo(symbol, this.editor.document.languageId));
+            //build symbols tree
+            mainTreeNode.appendChildNodes(alSymbols);
 
-                this.rootNode = mainTreeNode;
-            } else if (this.appALSymbolInfo) {
-                this.rootNode = new ALSymbolInfo(null, 'al');
-                this.rootNode.addChild(this.appALSymbolInfo);
-            } else {
-                this.rootNode = new ALSymbolInfo(null, '');            
-            }
-
-            if ((triggerEvent) && (this._onDidChangeTreeData))
-                this._onDidChangeTreeData.fire();
-            
-            this.parserActive = false;
+            this.rootNode = mainTreeNode;
+        } else if (this.appALSymbolInfo) {
+            this.rootNode = new ALSymbolInfo(null, 'al');
+            this.rootNode.addChild(this.appALSymbolInfo);
+        } else {
+            this.rootNode = new ALSymbolInfo(null, '');            
         }
+
+        if ((triggerEvent) && (this._onDidChangeTreeData))
+            this._onDidChangeTreeData.fire();
 	}
 
     findSymbolObjectId(alSymbol : ALSymbolInfo) {
