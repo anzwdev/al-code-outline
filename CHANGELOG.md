@@ -1,5 +1,13 @@
 # Change Log
 
+## 0.0.9
+
+- github issue [#7 AL Outline stops working after Create a Page](https://github.com/anzwdev/al-code-outline/issues/7) fixed 
+- github issue [#5 Seems to be slow or out of sync](https://github.com/anzwdev/al-code-outline/issues/5) fixed
+- github issue [#2 Closing vs code settings does not refresh code tree](https://github.com/anzwdev/al-code-outline/issues/2) fixed
+
+Thank you SirBETE, martinhocosta88 and GreatScott000 for posting your issues and questions. 
+
 ## 0.0.8
 
 - Run in Web Client action added to the context menu of table, page and report symbols in symbols tree view.
