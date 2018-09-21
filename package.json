@@ -2,10 +2,10 @@
 	"name": "al-code-outline",
 	"displayName": "AL Code Outline",
 	"description": "AL code outline tree provider",
-	"version": "0.0.9",
+	"version": "0.0.10",
 	"publisher": "andrzejzwierzchowski",
 	"engines": {
-		"vscode": "^1.19.0"
+		"vscode": "^1.26.0"
 	},
 	"author": {
 		"name": "Andrzej Zwierzchowski",
@@ -14,10 +14,10 @@
 	"repository": {
 		"url": "https://github.com/anzwdev/al-code-outline"
 	},
-	"license": "LICENSE",
-    "categories": [
-        "Other"
-    ],
+	"license": "MIT",
+	"categories": [
+		"Other"
+	],
 	"keywords": [
 		"al"
 	],
@@ -179,12 +179,12 @@
 	},
 	"devDependencies": {
 		"typescript": "^2.6.1",
-		"vscode": "^1.1.6",
-		"@types/node": "^7.0.43",
+		"vscode": "^1.1.21",
+		"@types/node": "^8.10.25",
 		"@types/mocha": "^2.2.42"
 	},
 	"dependencies": {
-		"adm-zip": "^0.4.7",
-		"opn": "^5.3.0"
+		"adm-zip": "^0.4.11",
+		"opn": "^5.4.0"
 	}
 }

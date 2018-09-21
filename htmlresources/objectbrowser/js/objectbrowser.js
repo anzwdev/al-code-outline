@@ -1,6 +1,10 @@
-$(function() {
-    //initialize context menu
+var vscodeContext;
 
+$(function() {
+    //initialize api
+    vscodeContext = acquireVsCodeApi();
+
+    //initialize context menu
     $(function(){
         $('#objects').contextMenu({
             selector: 'tr', 
@@ -90,10 +94,19 @@ function modeBtnClick(btn) {
 }
 
 function execObjCommand(objtype, objid, cmdname) {
+    if (vscodeContext) {
+        vscodeContext.postMessage({
+            objtype : objtype,
+            objid : objid,
+            cmdname : cmdname});
+    }
+
+    /*
     //send command to vs code by navigating to it
     var uri = 'command:alOutline.appFileObjCommand?' + JSON.stringify([objtype, objid, cmdname]);
     $('#vscodeLink').attr('href', uri);
     document.getElementById('vscodeLink').click();
+    */
 }
 
 function selectObject(newSelType, newSelId) {

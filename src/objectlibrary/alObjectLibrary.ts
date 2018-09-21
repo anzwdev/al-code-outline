@@ -78,7 +78,8 @@ export class ALObjectLibrary {
         var objectHeader = this.basicLibrary.findObjectHeader(objectType, objectId);
         if (objectHeader) {
             return vscode.Uri.parse(encodeURI(
-                'al-preview://dynamics/' + objectType + '/' + encodeURIComponent(this.name) + '/' + encodeURIComponent(objectHeader.Name) + '.al'));
+                //'al-preview://dynamics/' + objectType + '/' + encodeURIComponent(this.name) + '/' + encodeURIComponent(objectHeader.Id.toString()) + '/' + encodeURIComponent(objectHeader.Name) + '.dal'));
+                'al-preview://AlLang/' + encodeURIComponent(this.name) + '/' + objectType + '/' + encodeURIComponent(objectHeader.Id.toString()) + '/' + encodeURIComponent(objectHeader.Name) + '.dal'));
         }
         return null;
     }
