@@ -11,12 +11,12 @@ export class ALObjectLibrariesCollection {
     constructor() {
     }
 
-    getLibrary(filePath : string, forceReload : boolean) {
+    async getLibrary(filePath : string, forceReload : boolean) : Promise<ALObjectLibrary> {
         var library : ALObjectLibrary = this.findLibrary(filePath);
         var append : boolean = (!library);
         if (!library)
             library = new ALObjectLibrary();
-        library.loadFromAppFile(filePath, forceReload);
+        await library.loadFromAppFile(filePath, forceReload);
         if (append)
             this.librariesCache.push(library);        
         return library;
@@ -30,8 +30,8 @@ export class ALObjectLibrariesCollection {
         return null;
     }
 
-    getBasicLibrary(filePath : string, forceReload : boolean) : ALBasicLibrary {
-        var library : ALObjectLibrary = this.getLibrary(filePath, forceReload);
+   async getBasicLibrary(filePath : string, forceReload : boolean) : Promise<ALBasicLibrary> {
+        var library : ALObjectLibrary = await this.getLibrary(filePath, forceReload);
         if (library)
             return library.basicLibrary;
         return null;
@@ -56,7 +56,7 @@ export class ALObjectLibrariesCollection {
         return null;
     }
 
-    protected async runGoToDefinitionOnAlFile(sourceCode : string, posLine : number, posColumn : number, lastSourceLine : number, lastSourceColumn : number) {
+    protected async runGoToDefinitionOnAlFile(progress : any, sourceCode : string, posLine : number, posColumn : number, lastSourceLine : number, lastSourceColumn : number) {
         if ((!vscode.workspace.workspaceFolders) || (vscode.workspace.workspaceFolders.length == 0))
             return;
         let fs = require('fs');
@@ -64,6 +64,8 @@ export class ALObjectLibrariesCollection {
         let tempFolderUri = path.join(vscode.workspace.workspaceFolders[0].uri.fsPath, ".allangtemp");
         if (!fs.existsSync(tempFolderUri))
             fs.mkdirSync(tempFolderUri);
+
+        progress.report({ increment: 0, message: "Preparing object reference" });
 
         //create file
         let edit = new vscode.WorkspaceEdit();
@@ -74,6 +76,8 @@ export class ALObjectLibrariesCollection {
         edit = new vscode.WorkspaceEdit();
         edit.insert(tempFileUri, new vscode.Position(0, 0), sourceCode);
         await vscode.workspace.applyEdit(edit);
+
+        progress.report({ increment: 33, message: "Downloading object definition" });
         
         //download document symbols
         let pos = new vscode.Position(posLine, posColumn);
@@ -84,9 +88,13 @@ export class ALObjectLibrariesCollection {
         edit.delete(tempFileUri, new vscode.Range(0, 0, lastSourceLine, lastSourceColumn));
         await vscode.workspace.applyEdit(edit);
 
+        /*
         edit = new vscode.WorkspaceEdit();
-        edit.deleteFile(tempFileUri, {ignoreIfNotExists : true});
+        edit.deleteFile(tempFileUri, {ignoreIfNotExists : true});        
         await vscode.workspace.applyEdit(edit);
+        */
+       
+        progress.report({ increment: 66, message: "Opening object definition" });
 
         //go to definition
         if ((list) && (list.length > 0)) {
@@ -105,18 +113,17 @@ export class ALObjectLibrariesCollection {
 
     }
 
-    protected goToAlObjectDefinition(objectType : string, objectName : string) {
+    protected async goToAlObjectDefinition(progress : any, objectType : string, objectName : string) {
         objectName = '"' + objectName.replace('"', '""') + '"';       
         let sourceCode : string = 'codeunit 0 "ALLangServerProxy" \n' +
             '{\n' +
             'var\n' +
             'a : ' + objectType + ' ' +  objectName + ';\n' +
             '}\n';
-        this.runGoToDefinitionOnAlFile(sourceCode, 3, objectType.length + 6, 5, 0);
+        await this.runGoToDefinitionOnAlFile(progress, sourceCode, 3, objectType.length + 6, 5, 0);
     }
 
-    goToDefinition(objectType : string, objectId : number) {       
-        
+    protected async goToDefinitionAsync(progress : any, objectType : string, objectId : number) {
         //find object name
         let symbolInfo : ALSymbolInfo = this.findALSymbolInfo(objectType, objectId);
         if (symbolInfo == null)
@@ -126,23 +133,18 @@ export class ALObjectLibrariesCollection {
         if (objectType == "table")
             objectType = "record";
         
-        this.goToAlObjectDefinition(objectType, symbolInfo.symbolName);       
-        
-        /*
-        var uri = this.findObjectUri(objectType, objectId);
-        if (uri) {
-            vscode.workspace.openTextDocument(uri).then(
-                document => { 
-                    vscode.window.showTextDocument(document, {
-                        preview : false
-                    });
-                },
-                err => {
-                    vscode.window.showErrorMessage(err);
-                });
-        }
-        */
-        
+        await this.goToAlObjectDefinition(progress, objectType, symbolInfo.symbolName);       
+    }
+
+    goToDefinition(objectType : string, objectId : number) {       
+        vscode.window.withProgress({
+			location: vscode.ProgressLocation.Notification,
+			title: "Loading object definition",
+			cancellable: false
+		}, (progress, token) => {
+			progress.report({ increment: 0 });
+            return this.goToDefinitionAsync(progress, objectType, objectId);            
+        });
     }
 
 }

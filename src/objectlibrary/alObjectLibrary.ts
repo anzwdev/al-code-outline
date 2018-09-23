@@ -23,17 +23,38 @@ export class ALObjectLibrary {
     constructor() {
     }
 
-    loadFromAppFile(filePath : string, forceReload : boolean) {
+    async loadFromAppFile(filePath : string, forceReload : boolean) {
+        await vscode.window.withProgress({
+			location: vscode.ProgressLocation.Notification,
+			title: "Opening application package.",
+			cancellable: false
+		}, (progress, token) => {
+            progress.report({ increment : 0 });
+            
+            //var p = new Promise(resolve => {
+            return this.loadFromAppFileWithProgress(progress, filePath, forceReload);
+            //    resolve();
+            //});
+            
+            //return p;
+        });
+    }
+
+    protected async loadFromAppFileWithProgress(progress : any, filePath : string, forceReload : boolean) {
         var fs = require('fs');
         var AdmZip = require('adm-zip');
 
         //load zip file into memory
         var offset = 40;
+
         var stats = fs.statSync(filePath);
 
         //check if file should be reloaded
         if ((this.sourceFilePath === filePath) && (!forceReload) && (stats.size === this.sourceSize) && (stats.mtimeMs === this.sourceDateTimeMs))
             return;
+
+        progress.report({ increment : 10, message : 'Extracting symbols from the application package.'});
+
         this.sourceFilePath = filePath;
         this.sourceSize = stats.size;
         this.sourceDateTimeMs = stats.mtimeMs;
@@ -49,9 +70,13 @@ export class ALObjectLibrary {
         var zip = new AdmZip(buffer);      
         var zipEntry = zip.getEntry('SymbolReference.json');
         var jsonObjectList  = zip.readAsText(zipEntry).trim();
-                
+
+        progress.report({ increment : 40, message : 'Loading extracted symbols.'});        
+
         //parse symbol references
         var symbolReferences = JSON.parse(jsonObjectList);
+
+        progress.report({ increment : 80, message : 'Processing loaded symbols.'});
 
         this.appId = symbolReferences.AppId;
         this.name = symbolReferences.Name;

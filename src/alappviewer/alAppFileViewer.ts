@@ -18,6 +18,7 @@ export class ALAppFileViewer {
     private panel : vscode.WebviewPanel | undefined;
     private title : string;
     private disposables : vscode.Disposable[] = [];
+    private fileUri : vscode.Uri;
 
     constructor(context : vscode.ExtensionContext, objLibraries : ALObjectLibrariesCollection, objBuilders : ObjectBuildersCollection,
         outlineProvider : ALOutlineProvider, objectRunner : ALObjectRunner, uri : vscode.Uri) {
@@ -25,8 +26,9 @@ export class ALAppFileViewer {
         this.objectBuilders = objBuilders;
         this.codeOutlineProvider = outlineProvider;
         this.alObjectRunner = objectRunner;
+        this.fileUri = uri;
         this.initTemplate(context);
-        this.htmlContent = this.getHtmlContent(uri);
+        this.htmlContent = "";
         this.title = path.parse(uri.fsPath).base;
         this.panel = undefined;        
     }
@@ -50,15 +52,17 @@ export class ALAppFileViewer {
         this.mainTemplate = content.replace(new RegExp('##PATH##', 'g'), extensionPath);
     }
 
-    private getHtmlContent(uri: vscode.Uri): string {
-        var symbolInfo = this.objectLibraries.getBasicLibrary(uri.fsPath, false);
+    private async getHtmlContent(uri: vscode.Uri): Promise<string> {
+        var symbolInfo = await this.objectLibraries.getBasicLibrary(uri.fsPath, false);
         var symbolInfoJson = JSON.stringify(symbolInfo);        
         //build page
         var html = this.mainTemplate.replace('##DATA##', symbolInfoJson);
         return html;
     }
 
-    open() {
+    async open() {
+        this.htmlContent = await this.getHtmlContent(this.fileUri);
+        
         this.panel = vscode.window.createWebviewPanel("al-code-outline.appViewer", this.title, vscode.ViewColumn.Active, {
             enableScripts : true
         });
