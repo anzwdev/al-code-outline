@@ -14,24 +14,31 @@ export enum ALSymbolKind {
     ControlAddIn = 11,
     Profile = 12,
     PageCustomization = 13,
+    Enum = 14,
+    DotNetPackage = 15,
     //Object specific child symbols
-    Property = 14,
+    Property = 16,
     //Code
-    Variable = 15,
-    Constant = 16,
-	Parameter = 17,
-    Method = 18,
-    Trigger = 19,
-    EventPublisher = 20,
-    EventSubscriber = 21,
+    Variable = 17,
+    Constant = 18,
+	Parameter = 19,
+    Method = 20,
+    Trigger = 21,
+    EventPublisher = 22,
+    EventSubscriber = 23,
     //Tables
-    Field = 22,
-    PrimaryKey = 23,
-    Key = 24,
-    FieldGroup = 25,
+    Field = 24,
+    PrimaryKey = 25,
+    Key = 26,
+    FieldGroup = 27,
     //Pages
-    Group = 26,
-    Action = 27,
+    Group = 28,
+    Action = 29,
     //Other special symbols
-    SymbolGroup = 28
+    SymbolGroup = 30,
+    //Enums
+    EnumValue = 31,
+    //DotNet
+    DotNetAssembly = 32,
+    DotNetType = 33
 }

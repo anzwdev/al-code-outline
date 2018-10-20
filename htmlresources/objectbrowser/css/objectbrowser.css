@@ -11,6 +11,9 @@
     padding:0;
     width: 170px;
     box-sizing: border-box;
+    overflow-x: hidden;
+    overflow-y: scroll;
+    height: 100%;
 }
 .types .btnArea {
     margin:5px 10px;

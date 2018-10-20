@@ -23,6 +23,8 @@ export class ALBasicLibrary {
         this.objectCollections.push(new ALBasicObjectHeadersCollection('TableExtension', symbolRef.TableExtensions));
         this.objectCollections.push(new ALBasicObjectHeadersCollection('Profile', symbolRef.Profiles));
         this.objectCollections.push(new ALBasicObjectHeadersCollection('PageCustomization', symbolRef.PageCustomizations));
+        this.objectCollections.push(new ALBasicObjectHeadersCollection('DotNetPackage', symbolRef.DotNetPackages));
+        this.objectCollections.push(new ALBasicObjectHeadersCollection('Enum', symbolRef.EnumTypes));
     }
 
     private findObjectsCollection(objectType : string) : ALBasicObjectHeadersCollection {
