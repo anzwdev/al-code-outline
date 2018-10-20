@@ -95,7 +95,7 @@ export class ALSymbolInfo {
 
         let symbol : ALSymbolInfo = new ALSymbolInfo(symbolInfo, 'al');
         symbol.alKind = ALSymbolKind.SymbolGroup;
-        symbol.name = name;
+        symbol.name = name;        
         this.addChild(symbol, true);
 
         this.childGroups[name] = symbol;
@@ -269,11 +269,17 @@ export class ALSymbolInfo {
         if (symbolName.startsWith("systempart "))
             return ALSymbolKind.Group;
 
+        //enum
+        if (symbolName.startsWith("enum value "))
+            return ALSymbolKind.EnumValue;
+        if (symbolName.startsWith("enum "))
+            return ALSymbolKind.Enum;
+
         return ALSymbolKind.Undefined;       
     }
 
     private GetALVariableKind() : ALSymbolKind {
-        return ALSymbolKind.Variable;
+        return ALSymbolKind.Variable;    
     }
 
     //-------------------------------------------------------
@@ -343,7 +349,28 @@ export class ALSymbolInfo {
                 return "tree-group.svg";
             case ALSymbolKind.Action:
                 return "tree-action.svg";
+            //Enums
+            case ALSymbolKind.Enum:
+                return 'tree-module.svg';
+            case ALSymbolKind.EnumValue:
+                return 'tree-field.svg';
+            //dotnet
+            case ALSymbolKind.DotNetPackage:
+                return 'tree-module.svg';
+            case ALSymbolKind.DotNetAssembly:
+                return 'tree-module.svg';
+            case ALSymbolKind.DotNetType:
+                return 'tree-class.svg';
+            
+            //groups
+            case ALSymbolKind.SymbolGroup:
+                return this.getSymbolGroupIconName();
+
         }
+        return null;
+    }
+
+    private getSymbolGroupIconName() : string {
         return null;
     }
 
