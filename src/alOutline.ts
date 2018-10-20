@@ -9,7 +9,9 @@ export class ALOutlineProvider implements vscode.TreeDataProvider<ALSymbolInfo> 
 	private editor: vscode.TextEditor;
     private rootNode : ALSymbolInfo;
     private autoRefresh : boolean = true;
+    public groupObjectMembers : boolean = true;
     private appALSymbolInfo : ALSymbolInfo;
+    private appALSymbolInfoWithGroups : ALSymbolInfo;
     
 	private _onDidChangeTreeData: vscode.EventEmitter<ALSymbolInfo | null> = new vscode.EventEmitter<ALSymbolInfo | null>();
 	readonly onDidChangeTreeData: vscode.Event<ALSymbolInfo | null> = this._onDidChangeTreeData.event;
@@ -39,17 +41,34 @@ export class ALOutlineProvider implements vscode.TreeDataProvider<ALSymbolInfo> 
                 this.refresh();            
         });
 
-        /*
-        vscode.window.onDidChangeVisibleTextEditors(e => {
-            if (this.autoRefresh)
-                this.refresh();
+        vscode.workspace.onDidChangeConfiguration(data => {
+            this.autoRefresh = vscode.workspace.getConfiguration('alOutline').get('autorefresh');
+            this.groupObjectMembers = vscode.workspace.getConfiguration('alOutline').get('groupObjectMembers');
         });
-        */
 
-		this.autoRefresh = vscode.workspace.getConfiguration('alOutline').get('autorefresh');
-
+        this.autoRefresh = vscode.workspace.getConfiguration('alOutline').get('autorefresh');
+        //this.groupObjectMembers = vscode.workspace.getConfiguration('alOutline').get('groupObjectMembers');
+        this.groupObjectMembers = this.extensionContext.globalState.get<boolean>("alOutline.groupObjectMembers", true);
+        this.updateContext();
         this.parseTree(false);
     }    
+
+    public setGroupMembersMode(newMode : boolean) {
+        if (this.groupObjectMembers != newMode) {
+            this.groupObjectMembers = newMode;
+            this.extensionContext.globalState.update("alOutline.groupObjectMembers", this.groupObjectMembers);
+            this.updateContext();           
+            this.refresh();
+        }
+    }
+
+    private updateContext() {
+        //this is undocumented vs code command
+        //vs code team is working on other solution, but this is the only way to create our own context values
+        //more information can be found here:
+        //  https://github.com/Microsoft/vscode/issues/10471
+        vscode.commands.executeCommand('setContext', 'alOutlineGroupObjectMembers', this.groupObjectMembers);
+    }
 
 	private onDocumentChanged(changeEvent: vscode.TextDocumentChangeEvent): void {
         if ((this.autoRefresh) && (this.documentEquals(changeEvent.document)))
@@ -68,10 +87,25 @@ export class ALOutlineProvider implements vscode.TreeDataProvider<ALSymbolInfo> 
 
     setAppALSymbolInfo(newSymbolInfo : ALSymbolInfo) {
         this.appALSymbolInfo = newSymbolInfo;
-        this.rootNode = new ALSymbolInfo(null, 'al');
-        this.rootNode.addChild(newSymbolInfo);
+        this.appALSymbolInfoWithGroups = null;
+        this.refreshALAppSymbolInfo();
         if (this._onDidChangeTreeData)
             this._onDidChangeTreeData.fire();
+    }
+
+    protected refreshALAppSymbolInfo() {
+        let symbolInfo : ALSymbolInfo;
+        if (this.groupObjectMembers) {
+            if (this.appALSymbolInfoWithGroups == null)
+                this.appALSymbolInfoWithGroups = this.appALSymbolInfo.cloneWithGroups();
+            symbolInfo = this.appALSymbolInfoWithGroups;
+        }
+        else
+            symbolInfo = this.appALSymbolInfo;
+                
+        this.rootNode = new ALSymbolInfo(null, 'al');
+        this.rootNode.addChild(symbolInfo, this.groupObjectMembers);
+    
     }
 
     //------------------------------------------------------------------
@@ -93,7 +127,7 @@ export class ALOutlineProvider implements vscode.TreeDataProvider<ALSymbolInfo> 
 
     private async parseTree(triggerEvent : boolean): Promise<void> {        
         this.rootNode = null;        
-
+        
         //try to find active text editor with file
         this.editor = this.findValidActiveEditor();            
         if (this.editor && this.editor.document)  {
@@ -102,12 +136,15 @@ export class ALOutlineProvider implements vscode.TreeDataProvider<ALSymbolInfo> 
             let lspSymbols = await this.getLspSymbols(this.editor.document);
             let alSymbols = lspSymbols.map(symbol => new ALSymbolInfo(symbol, this.editor.document.languageId));
             //build symbols tree
-            mainTreeNode.appendChildNodes(alSymbols);
+            mainTreeNode.appendChildNodes(alSymbols, this.groupObjectMembers);
 
             this.rootNode = mainTreeNode;
+
+            this.appALSymbolInfo = null;
+            this.appALSymbolInfoWithGroups = null;
+
         } else if (this.appALSymbolInfo) {
-            this.rootNode = new ALSymbolInfo(null, 'al');
-            this.rootNode.addChild(this.appALSymbolInfo);
+            this.refreshALAppSymbolInfo();
         } else {
             this.rootNode = new ALSymbolInfo(null, '');            
         }
@@ -166,6 +203,5 @@ export class ALOutlineProvider implements vscode.TreeDataProvider<ALSymbolInfo> 
             return element.childItems;
         return this.rootNode ? this.rootNode.childItems : [];
     }
-
 
 }

@@ -31,5 +31,7 @@ export enum ALSymbolKind {
     FieldGroup = 25,
     //Pages
     Group = 26,
-    Action = 27
+    Action = 27,
+    //Other special symbols
+    SymbolGroup = 28
 }

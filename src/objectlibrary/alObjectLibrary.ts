@@ -43,6 +43,8 @@ export class ALObjectLibrary {
     protected async loadFromAppFileWithProgress(progress : any, filePath : string, forceReload : boolean) {
         var fs = require('fs');
         var AdmZip = require('adm-zip');
+        //build symbols without grouping
+        let groupSymbols : boolean = false; 
 
         //load zip file into memory
         var offset = 40;
@@ -84,19 +86,18 @@ export class ALObjectLibrary {
         this.version = symbolReferences.Version;
         this.basicLibrary = new ALBasicLibrary(this.name, symbolReferences);    //creates basic library and assigns negative Ids to symbol references without them
 
-        //build symbol dictionaries
-        this.alSymbolReferences["Table"] = this.buildObjectSymbolInfoList(ALSymbolKind.Table, "Table", symbolReferences.Tables);
-        this.alSymbolReferences["Page"] = this.buildObjectSymbolInfoList(ALSymbolKind.Page, "Page", symbolReferences.Pages);
-        this.alSymbolReferences['Report'] = this.buildObjectSymbolInfoList(ALSymbolKind.Report, "Report", symbolReferences.Reports);
-        this.alSymbolReferences['XmlPort'] = this.buildObjectSymbolInfoList(ALSymbolKind.XmlPort, "XmlPort", symbolReferences.XmlPorts);
-        this.alSymbolReferences['Query'] = this.buildObjectSymbolInfoList(ALSymbolKind.Query, "Query", symbolReferences.Queries);
-        this.alSymbolReferences["Codeunit"] = this.buildObjectSymbolInfoList(ALSymbolKind.Codeunit, "Codeunit", symbolReferences.Codeunits);
-        this.alSymbolReferences['ControlAddIn'] = this.buildObjectSymbolInfoList(ALSymbolKind.ControlAddIn, "Control AddIn", symbolReferences.ControlAddIns);
-        this.alSymbolReferences['PageExtension'] = this.buildObjectSymbolInfoList(ALSymbolKind.PageExtension, "Page Extension", symbolReferences.PageExtensions);
-        this.alSymbolReferences['TableExtension'] = this.buildObjectSymbolInfoList(ALSymbolKind.TableExtension, "Table Extension", symbolReferences.TableExtensions);
-        this.alSymbolReferences['Profile'] = this.buildObjectSymbolInfoList(ALSymbolKind.Profile, "Profile", symbolReferences.Profiles);
-        this.alSymbolReferences['PageCustomization'] = this.buildObjectSymbolInfoList(ALSymbolKind.PageCustomization, "Page Customization", symbolReferences.PageCustomizations);
-
+        //build symbol dictionaries        
+        this.alSymbolReferences["Table"] = this.buildObjectSymbolInfoList(ALSymbolKind.Table, "Table", symbolReferences.Tables, groupSymbols);
+        this.alSymbolReferences["Page"] = this.buildObjectSymbolInfoList(ALSymbolKind.Page, "Page", symbolReferences.Pages, groupSymbols);
+        this.alSymbolReferences['Report'] = this.buildObjectSymbolInfoList(ALSymbolKind.Report, "Report", symbolReferences.Reports, groupSymbols);
+        this.alSymbolReferences['XmlPort'] = this.buildObjectSymbolInfoList(ALSymbolKind.XmlPort, "XmlPort", symbolReferences.XmlPorts, groupSymbols);
+        this.alSymbolReferences['Query'] = this.buildObjectSymbolInfoList(ALSymbolKind.Query, "Query", symbolReferences.Queries, groupSymbols);
+        this.alSymbolReferences["Codeunit"] = this.buildObjectSymbolInfoList(ALSymbolKind.Codeunit, "Codeunit", symbolReferences.Codeunits, groupSymbols);
+        this.alSymbolReferences['ControlAddIn'] = this.buildObjectSymbolInfoList(ALSymbolKind.ControlAddIn, "Control AddIn", symbolReferences.ControlAddIns, groupSymbols);
+        this.alSymbolReferences['PageExtension'] = this.buildObjectSymbolInfoList(ALSymbolKind.PageExtension, "Page Extension", symbolReferences.PageExtensions, groupSymbols);
+        this.alSymbolReferences['TableExtension'] = this.buildObjectSymbolInfoList(ALSymbolKind.TableExtension, "Table Extension", symbolReferences.TableExtensions, groupSymbols);
+        this.alSymbolReferences['Profile'] = this.buildObjectSymbolInfoList(ALSymbolKind.Profile, "Profile", symbolReferences.Profiles, groupSymbols);
+        this.alSymbolReferences['PageCustomization'] = this.buildObjectSymbolInfoList(ALSymbolKind.PageCustomization, "Page Customization", symbolReferences.PageCustomizations, groupSymbols);
     }
 
     findObjectUri(objectType : string, objectId : number) : vscode.Uri {
@@ -116,12 +117,12 @@ export class ALObjectLibrary {
         return null;
     }
 
-    private buildObjectSymbolInfoList(newSymbolKind : ALSymbolKind, newTypeName : string, refList : any[]) : ALSymbolInfo[] {
-        var symbolList : ALSymbolInfo[] = [];
+    private buildObjectSymbolInfoList(newSymbolKind : ALSymbolKind, newTypeName : string, refList : any[], groupSymbols : boolean) : ALSymbolInfo[] {
+        let symbolList : ALSymbolInfo[] = [];
         if (refList) {        
             for (var i=0; i<refList.length; i++) {
                 var symbolInfo = new ALSymbolInfo(null, null);
-                symbolInfo.loadFromObjectSymbolReference(newSymbolKind, newTypeName, refList[i]);
+                symbolInfo.loadFromObjectSymbolReference(newSymbolKind, newTypeName, refList[i], groupSymbols);
                 symbolList[refList[i].Id] = symbolInfo;
             }
         }

@@ -4,6 +4,10 @@ $(function() {
     //initialize api
     vscodeContext = acquireVsCodeApi();
 
+    window.addEventListener('message', event => {
+        processMessage(event.data);
+    });
+
     //initialize context menu
     $(function(){
         $('#objects').contextMenu({
@@ -58,16 +62,27 @@ $(function() {
         });
     });
     
+    vscodeContext.postMessage({
+        command: 'documentLoaded'
+    });
+
     //reload data
-    setMode('Table');
+    //setMode('Table', false);
 });
 
 var dataMode = '';
 var selType = '';
 var selId = 0;
+var objdata = {};
 
-function setMode(newMode) {
-    if (dataMode == newMode)
+function processMessage(data) {
+    objdata = data.data;
+
+    setMode('Table', true);
+}
+
+function setMode(newMode, reload) {
+    if ((dataMode == newMode) && (!reload))
         return;
 
     if (dataMode)
@@ -90,7 +105,7 @@ function renderData() {
 }
 
 function modeBtnClick(btn) {
-    setMode(btn.dataset.mode);
+    setMode(btn.dataset.mode, false);
 }
 
 function execObjCommand(objtype, objid, cmdname) {
@@ -100,13 +115,6 @@ function execObjCommand(objtype, objid, cmdname) {
             objid : objid,
             cmdname : cmdname});
     }
-
-    /*
-    //send command to vs code by navigating to it
-    var uri = 'command:alOutline.appFileObjCommand?' + JSON.stringify([objtype, objid, cmdname]);
-    $('#vscodeLink').attr('href', uri);
-    document.getElementById('vscodeLink').click();
-    */
 }
 
 function selectObject(newSelType, newSelId) {

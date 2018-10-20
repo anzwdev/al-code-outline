@@ -1,5 +1,10 @@
 .main {
-}   
+}
+.loading {
+    display: block;
+    margin: 20px;
+    padding: 10px 30px;
+}
 .types {
     position: fixed;
     margin:0;

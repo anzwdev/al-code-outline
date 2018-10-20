@@ -52,16 +52,16 @@ export class ALAppFileViewer {
         this.mainTemplate = content.replace(new RegExp('##PATH##', 'g'), extensionPath);
     }
 
-    private async getHtmlContent(uri: vscode.Uri): Promise<string> {
+    private async loadObjects(uri: vscode.Uri) {
         var symbolInfo = await this.objectLibraries.getBasicLibrary(uri.fsPath, false);
-        var symbolInfoJson = JSON.stringify(symbolInfo);        
-        //build page
-        var html = this.mainTemplate.replace('##DATA##', symbolInfoJson);
-        return html;
+        if (symbolInfo)
+            this.panel.webview.postMessage({
+                data: symbolInfo
+            });
     }
 
     async open() {
-        this.htmlContent = await this.getHtmlContent(this.fileUri);
+        this.htmlContent = this.mainTemplate; //temp await this.getHtmlContent(this.fileUri);
         
         this.panel = vscode.window.createWebviewPanel("al-code-outline.appViewer", this.title, vscode.ViewColumn.Active, {
             enableScripts : true
@@ -76,8 +76,13 @@ export class ALAppFileViewer {
             }
         }, null, this.disposables);
         this.panel.webview.onDidReceiveMessage(m => {
-            if (m)
-                this.appFileObjCommand(m.objtype, m.objid, m.cmdname);
+            if (m) {
+                if ((m.command) && (m.command == "documentLoaded")) {
+                    this.loadObjects(this.fileUri);
+                } else {
+                    this.appFileObjCommand(m.objtype, m.objid, m.cmdname);
+                }
+            }                
         }, null, this.disposables);
 
     }
@@ -93,8 +98,9 @@ export class ALAppFileViewer {
         else {
             var symbolInfo = this.objectLibraries.findALSymbolInfo(objType, objId);
             if (symbolInfo) {
-                if ((commandName === 'selected') && (this.codeOutlineProvider))
+                if ((commandName === 'selected') && (this.codeOutlineProvider)) {
                     this.codeOutlineProvider.setAppALSymbolInfo(symbolInfo);
+                }
                 else if (commandName === 'newcardpage')
                     await this.objectBuilders.pageBuilder.showCardPageWizard(symbolInfo);
                 else if (commandName === 'newlistpage')
@@ -109,25 +115,6 @@ export class ALAppFileViewer {
                     this.alObjectRunner.runInWebClient(symbolInfo);
             }            
         }
-
-        /*
-        if (commandName === 'selected') {
-            var symbolInfo = this.objectLibraries.findALSymbolInfo(objType, objId);
-            if (this.codeOutlineProvider) 
-                this.codeOutlineProvider.setAppALSymbolInfo(symbolInfo);
-        }
-        else if (commandName === 'newcardpage') {
-            var symbolInfo = this.objectLibraries.findALSymbolInfo(objType, objId);
-            let pageBuilder : PageBuilder = new PageBuilder();
-            await pageBuilder.showCardPageWizard(symbolInfo);
-        }
-        else if (commandName === 'newlistpage') {
-            var symbolInfo = this.objectLibraries.findALSymbolInfo(objType, objId);
-            let pageBuilder : PageBuilder = new PageBuilder();
-            await pageBuilder.showListPageWizard(symbolInfo);
-        }
-        */
-
     }
 
 

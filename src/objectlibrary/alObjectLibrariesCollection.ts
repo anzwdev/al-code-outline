@@ -137,6 +137,13 @@ export class ALObjectLibrariesCollection {
     }
 
     goToDefinition(objectType : string, objectId : number) {       
+        let enabled : boolean = vscode.workspace.getConfiguration('alOutline').get('enableLanguageServerProxy');
+        
+        if (!enabled) {
+            vscode.window.showWarningMessage("Go to definition can only be invoked from al source code. Please switch 'alOutline.enableLanguageServerProxy' setting in VS Code settings to true, to allow AL Object Browser to insert temporary, empty al file into your project and invoke 'go to definition' command from there.", { modal: true });
+            return;
+        }
+        
         vscode.window.withProgress({
 			location: vscode.ProgressLocation.Notification,
 			title: "Loading object definition",
