@@ -47,8 +47,7 @@ export class ALOutlineProvider implements vscode.TreeDataProvider<ALSymbolInfo> 
         });
 
         this.autoRefresh = vscode.workspace.getConfiguration('alOutline').get('autorefresh');
-        //this.groupObjectMembers = vscode.workspace.getConfiguration('alOutline').get('groupObjectMembers');
-        this.groupObjectMembers = this.extensionContext.globalState.get<boolean>("alOutline.groupObjectMembers", true);
+        this.groupObjectMembers = this.extensionContext.globalState.get<boolean>("alOutline.groupObjectMembers", false);
         this.updateContext();
         this.parseTree(false);
     }    
@@ -134,10 +133,11 @@ export class ALOutlineProvider implements vscode.TreeDataProvider<ALSymbolInfo> 
             let mainTreeNode = new ALSymbolInfo(null, this.editor.document.languageId);
             //load all symbols
             let lspSymbols = await this.getLspSymbols(this.editor.document);
-            let alSymbols = lspSymbols.map(symbol => new ALSymbolInfo(symbol, this.editor.document.languageId));
-            //build symbols tree
-            mainTreeNode.appendChildNodes(alSymbols, this.groupObjectMembers);
-
+            if (lspSymbols) {
+                let alSymbols = lspSymbols.map(symbol => new ALSymbolInfo(symbol, this.editor.document.languageId));
+                //build symbols tree
+                mainTreeNode.appendChildNodes(alSymbols, this.groupObjectMembers);
+            }
             this.rootNode = mainTreeNode;
 
             this.appALSymbolInfo = null;

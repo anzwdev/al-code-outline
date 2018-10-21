@@ -38,7 +38,8 @@ export enum ALSymbolKind {
     SymbolGroup = 30,
     //Enums
     EnumValue = 31,
+    EnumExtension = 32,
     //DotNet
-    DotNetAssembly = 32,
-    DotNetType = 33
+    DotNetAssembly = 33,
+    DotNetType = 34
 }

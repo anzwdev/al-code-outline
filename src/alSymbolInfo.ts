@@ -131,6 +131,7 @@ export class ALSymbolInfo {
         (this.alKind == ALSymbolKind.PageExtension) ||
         (this.alKind == ALSymbolKind.ControlAddIn) ||
         (this.alKind == ALSymbolKind.Enum) ||
+        (this.alKind == ALSymbolKind.EnumExtension) ||
         (this.alKind == ALSymbolKind.DotNetPackage));
     }
 
@@ -274,6 +275,8 @@ export class ALSymbolInfo {
             return ALSymbolKind.EnumValue;
         if (symbolName.startsWith("enum "))
             return ALSymbolKind.Enum;
+        if (symbolName.startsWith("enumextension "))
+            return ALSymbolKind.EnumExtension;
 
         return ALSymbolKind.Undefined;       
     }
@@ -354,6 +357,8 @@ export class ALSymbolInfo {
                 return 'tree-module.svg';
             case ALSymbolKind.EnumValue:
                 return 'tree-field.svg';
+            case ALSymbolKind.EnumExtension:
+                return 'tree-module.svg';
             //dotnet
             case ALSymbolKind.DotNetPackage:
                 return 'tree-module.svg';
