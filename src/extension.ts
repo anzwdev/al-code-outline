@@ -29,14 +29,6 @@ export function activate(context: vscode.ExtensionContext) {
             () => alOutlineProvider.refresh()));
     context.subscriptions.push(
         vscode.commands.registerCommand(
-            'alOutline.groupMembers', 
-            () => alOutlineProvider.setGroupMembersMode(true)));
-    context.subscriptions.push(
-        vscode.commands.registerCommand(
-            'alOutline.ungroupMembers', 
-            () => alOutlineProvider.setGroupMembersMode(false)));
-    context.subscriptions.push(
-        vscode.commands.registerCommand(
         'alOutline.createCardPage', 
         offset => objectBuildersCollection.pageBuilder.showCardPageWizard(offset)));
     context.subscriptions.push(

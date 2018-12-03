@@ -9,7 +9,6 @@ export class ALOutlineProvider implements vscode.TreeDataProvider<ALSymbolInfo> 
 	private editor: vscode.TextEditor;
     private rootNode : ALSymbolInfo;
     private autoRefresh : boolean = true;
-    public groupObjectMembers : boolean = true;
     private appALSymbolInfo : ALSymbolInfo;
     private appALSymbolInfoWithGroups : ALSymbolInfo;
     
@@ -43,31 +42,11 @@ export class ALOutlineProvider implements vscode.TreeDataProvider<ALSymbolInfo> 
 
         vscode.workspace.onDidChangeConfiguration(data => {
             this.autoRefresh = vscode.workspace.getConfiguration('alOutline').get('autorefresh');
-            this.groupObjectMembers = vscode.workspace.getConfiguration('alOutline').get('groupObjectMembers');
         });
 
         this.autoRefresh = vscode.workspace.getConfiguration('alOutline').get('autorefresh');
-        this.groupObjectMembers = this.extensionContext.globalState.get<boolean>("alOutline.groupObjectMembers", false);
-        this.updateContext();
         this.parseTree(false);
     }    
-
-    public setGroupMembersMode(newMode : boolean) {
-        if (this.groupObjectMembers != newMode) {
-            this.groupObjectMembers = newMode;
-            this.extensionContext.globalState.update("alOutline.groupObjectMembers", this.groupObjectMembers);
-            this.updateContext();           
-            this.refresh();
-        }
-    }
-
-    private updateContext() {
-        //this is undocumented vs code command
-        //vs code team is working on other solution, but this is the only way to create our own context values
-        //more information can be found here:
-        //  https://github.com/Microsoft/vscode/issues/10471
-        vscode.commands.executeCommand('setContext', 'alOutlineGroupObjectMembers', this.groupObjectMembers);
-    }
 
 	private onDocumentChanged(changeEvent: vscode.TextDocumentChangeEvent): void {
         if ((this.autoRefresh) && (this.documentEquals(changeEvent.document)))
@@ -93,17 +72,10 @@ export class ALOutlineProvider implements vscode.TreeDataProvider<ALSymbolInfo> 
     }
 
     protected refreshALAppSymbolInfo() {
-        let symbolInfo : ALSymbolInfo;
-        if (this.groupObjectMembers) {
-            if (this.appALSymbolInfoWithGroups == null)
-                this.appALSymbolInfoWithGroups = this.appALSymbolInfo.cloneWithGroups();
-            symbolInfo = this.appALSymbolInfoWithGroups;
-        }
-        else
-            symbolInfo = this.appALSymbolInfo;
+        let symbolInfo : ALSymbolInfo = this.appALSymbolInfo;
                 
         this.rootNode = new ALSymbolInfo(null, 'al');
-        this.rootNode.addChild(symbolInfo, this.groupObjectMembers);
+        this.rootNode.addChild(symbolInfo);
     
     }
 
@@ -116,8 +88,8 @@ export class ALOutlineProvider implements vscode.TreeDataProvider<ALSymbolInfo> 
 	}
 
     //gets document symbols using language server protocol 
-    private getLspSymbols(document: vscode.TextDocument): Thenable<vscode.SymbolInformation[]> {
-        return vscode.commands.executeCommand<vscode.SymbolInformation[]>('vscode.executeDocumentSymbolProvider', document.uri);
+    private getLspSymbols(document: vscode.TextDocument): Thenable<vscode.SymbolInformation[] | vscode.DocumentSymbol[]> {
+        return vscode.commands.executeCommand<vscode.SymbolInformation[] | vscode.DocumentSymbol[]>('vscode.executeDocumentSymbolProvider', document.uri);
     }
 
     private findValidActiveEditor() : vscode.TextEditor {
@@ -133,10 +105,20 @@ export class ALOutlineProvider implements vscode.TreeDataProvider<ALSymbolInfo> 
             let mainTreeNode = new ALSymbolInfo(null, this.editor.document.languageId);
             //load all symbols
             let lspSymbols = await this.getLspSymbols(this.editor.document);
-            if (lspSymbols) {
-                let alSymbols = lspSymbols.map(symbol => new ALSymbolInfo(symbol, this.editor.document.languageId));
-                //build symbols tree
-                mainTreeNode.appendChildNodes(alSymbols, this.groupObjectMembers);
+            if ((lspSymbols) && (lspSymbols.length > 0)) {
+                let anySymbol : any = lspSymbols[0];
+                if (anySymbol.children) {
+                    let docSymbolList : vscode.DocumentSymbol[] = lspSymbols as vscode.DocumentSymbol[];
+                    let alDocSymbols = docSymbolList.map(symbol => new ALSymbolInfo(symbol, this.editor.document.languageId));
+                    for (let docSymbolIndex = 0; docSymbolIndex < alDocSymbols.length; docSymbolIndex++) {
+                        mainTreeNode.addChild(alDocSymbols[docSymbolIndex]);
+                    }
+                } else {
+                    let symbolInfoList : vscode.SymbolInformation[] = lspSymbols as vscode.SymbolInformation[];
+                    let alSymbols = symbolInfoList.map(symbol => new ALSymbolInfo(symbol, this.editor.document.languageId));
+                    //build symbols tree
+                    mainTreeNode.appendSymbolInfoChildNodes(alSymbols);
+                }
             }
             this.rootNode = mainTreeNode;
 
@@ -157,7 +139,7 @@ export class ALOutlineProvider implements vscode.TreeDataProvider<ALSymbolInfo> 
         if ((alSymbol.languageId == 'al') && (alSymbol.alElementId == 0)) {
             var editor = this.findValidActiveEditor();
             if ((editor) && (editor.document)) {
-                var symbolRange = alSymbol.lspSymbol.location.range;
+                var symbolRange = alSymbol.range;
                 var textRange : vscode.Range = new vscode.Range(0, 0, symbolRange.start.line, symbolRange.start.character)
                 var text : string = editor.document.getText(textRange);
                 //remove comments from text
@@ -184,12 +166,12 @@ export class ALOutlineProvider implements vscode.TreeDataProvider<ALSymbolInfo> 
             treeItem.collapsibleState = vscode.TreeItemCollapsibleState.None;
         }
         //node command
-        if (element.lspSymbol) 
+        if (element.selectionRange) 
             treeItem.command = {
                 command: 'alOutline.openSelection',
                 title: '',
                 arguments: [
-                    element.lspSymbol.location.range
+                    element.selectionRange
                 ]
             };
         //node context

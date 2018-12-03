@@ -84,11 +84,11 @@ export class XmlPortBuilder extends ObjectBuilder {
 
         writer.writeStartNameSourceBlock("tableelement", tableElementName, writer.encodeName(tableSymbol.symbolName));
 
-        tableSymbol.childItems.forEach(
+        let fieldList : ALSymbolInfo[] = [];
+        tableSymbol.getAllSymbolsByKind(ALSymbolKind.Field, fieldList);
+        fieldList.forEach(
             item => {
-                if (item.alKind == ALSymbolKind.Field) {
-                    writer.writeNameSourceBlock(fieldNodeName, writer.createName(item.symbolName), tableElementName + "." + writer.encodeName(item.symbolName));
-                }
+                writer.writeNameSourceBlock(fieldNodeName, writer.createName(item.symbolName), tableElementName + "." + writer.encodeName(item.symbolName));
             }
         );
 

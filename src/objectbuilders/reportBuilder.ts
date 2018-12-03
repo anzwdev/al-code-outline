@@ -59,11 +59,11 @@ export class ReportBuilder extends ObjectBuilder {
 
         writer.writeStartNameSourceBlock("dataitem", dataSetName, writer.encodeName(tableSymbol.symbolName));
 
-        tableSymbol.childItems.forEach(
+        let fieldList : ALSymbolInfo[] = [];
+        tableSymbol.getAllSymbolsByKind(ALSymbolKind.Field, fieldList);
+        fieldList.forEach(
             item => {
-                if (item.alKind == ALSymbolKind.Field) {
-                    writer.writeNameSourceBlock("column", writer.createName(item.symbolName), writer.encodeName(item.symbolName));
-                }
+                writer.writeNameSourceBlock("column", writer.createName(item.symbolName), writer.encodeName(item.symbolName));
             }
         );
 

@@ -104,8 +104,12 @@ export class ALObjectLibrary {
         var objectHeader = this.basicLibrary.findObjectHeader(objectType, objectId);
         if (objectHeader) {
             return vscode.Uri.parse(encodeURI(
-                //'al-preview://dynamics/' + objectType + '/' + encodeURIComponent(this.name) + '/' + encodeURIComponent(objectHeader.Id.toString()) + '/' + encodeURIComponent(objectHeader.Name) + '.dal'));
-                'al-preview://allang/' + encodeURIComponent(this.name) + '/' + objectType + '/' + encodeURIComponent(objectHeader.Id.toString()) + '/' + encodeURIComponent(objectHeader.Name) + '.dal'));
+                //old uri working with old, Nav 2018 AL Extension 
+                'al-preview://dynamics/' + objectType + '/' + encodeURIComponent(this.name) + '/' + encodeURIComponent(objectHeader.Id.toString()) + '/' + encodeURIComponent(objectHeader.Name) + '.dal'));
+                
+                //new uri from Business Central, but it requires standard 'go-do-definition' language
+                //server command to be invoked first
+                //'al-preview://allang/' + encodeURIComponent(this.name) + '/' + objectType + '/' + encodeURIComponent(objectHeader.Id.toString()) + '/' + encodeURIComponent(objectHeader.Name) + '.dal'));
         }
         return null;
     }

@@ -2,10 +2,11 @@
 
 ## 0.0.10
 
-- github issue [#8 Go to definition no more working](https://github.com/anzwdev/al-code-outline/issues/8) fixed. Go to definition in app file viewer no longer calls al-preview document content provider directly, as it opens empty document. New solution injects al file with empty codeunit with just a single variable declaration into .allangtemp folder, calls standard "go to definition" on that variable type and then removes the file. This functionality is disabled by default as not everybody might want to insert temp al file into projects.
-- npm references updated
-- AL Object Browser updated to use webviews api instead of obsolete html text document provider
+- fix to make outline work with symbols returned by the latest version of AL Language extension
+- github issue [#8 Go to definition no more working](https://github.com/anzwdev/al-code-outline/issues/8) fixed, but fix is disabled by default as it requires temporary al file to be injected into  
+- obsolete vs code text document provider api used by APP file viewer replaced by webviews
 - missing DotNetPackage and Enum object types added to the AL Object Browser 
+- AL outline crash on documents without symbols fixed 
 
 Thank you KristofKlein for reporting issue #8
 

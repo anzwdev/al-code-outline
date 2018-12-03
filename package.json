@@ -48,14 +48,6 @@
 		},
 		"commands": [
 			{
-				"command": "alOutline.groupMembers",
-				"title": "Group"
-			},
-			{
-				"command": "alOutline.ungroupMembers",
-				"title": "Ungroup"
-			},
-			{
 				"command": "alOutline.refresh",
 				"title": "Refresh",
 				"icon": {
@@ -106,16 +98,6 @@
 					"command": "alOutline.refresh",
 					"when": "view == alOutline",
 					"group": "navigation"
-				},
-				{					
-					"command": "alOutline.groupMembers",
-					"when": "view == alOutline && !alOutlineGroupObjectMembers",
-					"group": "menus"
-				},
-				{					
-					"command": "alOutline.ungroupMembers",
-					"when": "view == alOutline && alOutlineGroupObjectMembers",
-					"group": "menus"
 				}
 			],
 			"view/item/context": [

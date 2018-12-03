@@ -85,11 +85,11 @@ export class PageBuilder extends ObjectBuilder {
         
         writer.writeStartGroup(fieldGroupType, "General");
         
-        tableSymbol.childItems.forEach(
+        let fieldList : ALSymbolInfo[] = [];
+        tableSymbol.getAllSymbolsByKind(ALSymbolKind.Field, fieldList);
+        fieldList.forEach(
             item => {
-                if (item.alKind == ALSymbolKind.Field) {
-                    writer.writePageField(item.symbolName);
-                }
+                writer.writePageField(item.symbolName);
             }
         );
         

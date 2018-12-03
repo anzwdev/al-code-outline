@@ -1,4 +1,4 @@
-import { SymbolInformation, SymbolKind, ExtensionContext, Location } from "vscode";
+import { SymbolInformation, SymbolKind, ExtensionContext, Location, DocumentSymbol, Range } from "vscode";
 import * as path from 'path';
 import { ALSymbolKind } from "./alSymbolKind";
 import { WSANOTINITIALISED } from "constants";
@@ -6,7 +6,8 @@ import { ALControlKind } from "./objectlibrary/alControlKind";
 import { ALActionKind } from "./objectlibrary/alActionKind";
 
 export class ALSymbolInfo {
-    lspSymbol : SymbolInformation;  //Symbol Information provided by language server protocol
+    vscodeSymbolInfo : SymbolInformation | undefined;
+    vscodeDocSymbol : DocumentSymbol | undefined;    
     childItems : ALSymbolInfo[];
     parentItem : ALSymbolInfo;
     name : string;
@@ -14,53 +15,70 @@ export class ALSymbolInfo {
     alKind : ALSymbolKind;
     languageId : string;
     alElementId : number;
+    range : Range;
+    selectionRange : Range | undefined;
+    private lspKind : SymbolKind;
     private hasKeys : boolean;
     private childGroups : any = {};
+    fromReferences : boolean;
 
-    constructor(symbol: SymbolInformation, newLanguageId : string) {
+    constructor(symbol: SymbolInformation | DocumentSymbol | undefined, newLanguageId : string) {
         this.alElementId = 0;
         this.parentItem = null;
         this.hasKeys = false;
         this.childItems = [];
-        this.lspSymbol = symbol;
-        this.languageId = newLanguageId;
-        if (this.lspSymbol) {
-            this.name = this.lspSymbol.name;
+        this.languageId = newLanguageId;          
+        this.vscodeDocSymbol = undefined;
+        this.vscodeSymbolInfo = undefined;
+        this.selectionRange = undefined;
+        this.fromReferences = false;
+
+        if (symbol) {
+            let anySymbol : any = symbol;
             this.alKind = ALSymbolKind.Undefined;
+            if (anySymbol.children) {
+                this.vscodeDocSymbol = symbol as DocumentSymbol;
+                this.name = this.vscodeDocSymbol.name;
+                this.range = this.vscodeDocSymbol.range;
+                this.selectionRange = new Range(this.vscodeDocSymbol.selectionRange.start, this.vscodeDocSymbol.selectionRange.start);
+                this.lspKind = this.vscodeDocSymbol.kind;
+            } else {
+                this.vscodeSymbolInfo = symbol as SymbolInformation;
+                this.name = this.vscodeSymbolInfo.name;
+                this.range = this.vscodeSymbolInfo.location.range;
+                this.selectionRange = this.range;
+                this.lspKind = this.vscodeSymbolInfo.kind;
+            }
         } else {
             this.name = "";
             this.alKind = ALSymbolKind.TreeRoot;
         }
         this.updateSymbol();
+
+        //add DocumentSymbol child symbols
+        if (this.vscodeDocSymbol) {
+            for (let childIndex = 0; childIndex<this.vscodeDocSymbol.children.length; childIndex++) {
+                this.addChild(new ALSymbolInfo(this.vscodeDocSymbol.children[childIndex], newLanguageId));
+            }
+        }
+
     }
 
-    //----------------------------------------------------
-    // clone with groups
-    //----------------------------------------------------
-
-    public cloneWithGroups() : ALSymbolInfo {
-        let item : ALSymbolInfo = new ALSymbolInfo(this.lspSymbol, this.languageId);
-        //copy all fields        
-        item.lspSymbol = this.lspSymbol;
-        item.name = this.name;
-        item.symbolName = this.symbolName;
-        item.alKind = this.alKind;
-        item.languageId = this.languageId;
-        item.alElementId = this.alElementId;
-        //clone child items
-        for (let i=0; i < this.childItems.length; i++) {
-            item.addChild(this.childItems[i].cloneWithGroups(), true);
-        }
-        return item;
+    getAllSymbolsByKind(forKind : ALSymbolKind, outputSymbols:ALSymbolInfo[]) {
+        if (this.alKind == forKind)
+            outputSymbols.push(this);
+        if (this.childItems)
+            for (let i=0; i<this.childItems.length; i++)
+                this.childItems[i].getAllSymbolsByKind(forKind, outputSymbols);
     }
 
     //----------------------------------------------------
     // child nodes operations
     //----------------------------------------------------
 
-    private findParent(prevNode : ALSymbolInfo, currNode : ALSymbolInfo) : ALSymbolInfo {
+    private findSymbolInfoParent(prevNode : ALSymbolInfo, currNode : ALSymbolInfo) : ALSymbolInfo {
         var parentNode = prevNode;
-        while ((parentNode) && (parentNode.lspSymbol) && ((parentNode.lspSymbol.name != currNode.lspSymbol.containerName) || (parentNode.alKind == ALSymbolKind.SymbolGroup))) {
+        while ((parentNode) && (parentNode.vscodeSymbolInfo) && ((parentNode.vscodeSymbolInfo.name != currNode.vscodeSymbolInfo.containerName) || (parentNode.alKind == ALSymbolKind.SymbolGroup))) {
             parentNode = parentNode.parentItem;
         }
         if (parentNode)
@@ -68,7 +86,7 @@ export class ALSymbolInfo {
         return this;
     }
 
-    public appendChildNodes(childNodes : ALSymbolInfo[], groupSymbols : boolean) {
+    public appendSymbolInfoChildNodes(childNodes : ALSymbolInfo[]) {
         var symbolKindFixDetected : boolean = false;
         var newSymbolKindFixValue : number = 0;
         
@@ -78,25 +96,25 @@ export class ALSymbolInfo {
         for (var i = 0; i<childNodes.length;i++) {
             var currNode = childNodes[i];
             //append child node
-            var parentNode = this.findParent(prevChildNode, currNode);
-            parentNode.addChild(currNode, groupSymbols);
+            var parentNode = this.findSymbolInfoParent(prevChildNode, currNode);
+            parentNode.addChild(currNode);
             prevChildNode = currNode;
         }
     }  
 
-    protected getGroup(name : string, forSymbol : ALSymbolInfo) : ALSymbolInfo {
+    protected getSymbolInfoGroup(name : string, forSymbol : ALSymbolInfo) : ALSymbolInfo {
         //try to find symbol
         if (this.childGroups[name])
             return this.childGroups[name];
         
         let symbolInfo : SymbolInformation = null;
-        if (forSymbol.lspSymbol)
-            symbolInfo = new SymbolInformation(name, SymbolKind.Null, forSymbol.lspSymbol.containerName, forSymbol.lspSymbol.location);
+        if (forSymbol.vscodeSymbolInfo)
+            symbolInfo = new SymbolInformation(name, SymbolKind.Null, forSymbol.vscodeSymbolInfo.containerName, forSymbol.vscodeSymbolInfo.location);
 
         let symbol : ALSymbolInfo = new ALSymbolInfo(symbolInfo, 'al');
         symbol.alKind = ALSymbolKind.SymbolGroup;
         symbol.name = name;        
-        this.addChild(symbol, true);
+        this.addChild(symbol);
 
         this.childGroups[name] = symbol;
 
@@ -135,12 +153,12 @@ export class ALSymbolInfo {
         (this.alKind == ALSymbolKind.DotNetPackage));
     }
 
-    public addChild(childItem : ALSymbolInfo, groupSymbols : boolean) {       
-        if ((groupSymbols) && (this.isALObject())) {
+    public addChild(childItem : ALSymbolInfo) {       
+        if (((childItem.vscodeSymbolInfo) || (childItem.fromReferences)) && (this.isALObject())) {
             let groupName : string = childItem.getGroupName();
             if (groupName != "") {
-                let group : ALSymbolInfo = this.getGroup(groupName, childItem);
-                group.addChild(childItem, true);
+                let group : ALSymbolInfo = this.getSymbolInfoGroup(groupName, childItem);
+                group.addChild(childItem);
                 return;
             }
         }
@@ -164,10 +182,9 @@ export class ALSymbolInfo {
     //-----------------------------------------------------
 
     private updateSymbol() {
-        if (!this.lspSymbol)
+        if ((!this.vscodeDocSymbol) && (!this.vscodeSymbolInfo))
             return;
-        //name
-        this.name = this.lspSymbol.name;
+        
         this.alKind = this.GetALKind();
         this.symbolName = this.name;
 
@@ -177,9 +194,12 @@ export class ALSymbolInfo {
             if ((startPos >= 0) && (startPos < endPos))
                 this.symbolName = this.name.substr(startPos + 1, endPos - startPos - 1);
             else {
-                startPos = this.name.indexOf(" ");
+                endPos = this.symbolName.lastIndexOf(":");
+                if (endPos > 0)
+                    this.symbolName = this.symbolName.substr(0, endPos);
+                startPos = this.symbolName.indexOf(" ");
                 if (startPos >= 0)
-                    this.symbolName = this.name.substr(startPos + 1);
+                    this.symbolName = this.symbolName.substr(startPos + 1);
             }
         }
 
@@ -190,7 +210,7 @@ export class ALSymbolInfo {
             return ALSymbolKind.Undefined;
         
         //try to detect al symbol kind
-        switch (this.lspSymbol.kind) {
+        switch (this.lspKind) {
             case SymbolKind.Class:
                 return this.GetALObjectKind();
             case SymbolKind.Variable:
@@ -381,7 +401,7 @@ export class ALSymbolInfo {
 
     //standard icon names for langages different than al
     private getStdIconName() : string {
-        switch (this.lspSymbol.kind) {
+        switch (this.lspKind) {
             case SymbolKind.Class:
                 return 'tree-class.svg';
             case SymbolKind.Constant:
@@ -467,7 +487,9 @@ export class ALSymbolInfo {
     }
 
     loadFromSymbolReference(newSymbolKind : ALSymbolKind, newTypeName : string, symbolReference : any) {
-        this.lspSymbol = null;
+        this.vscodeDocSymbol = undefined;
+        this.vscodeSymbolInfo = undefined;
+        this.fromReferences = true;
         this.childItems = [];
         this.parentItem = null;
         this.symbolName = symbolReference.Name;
@@ -556,7 +578,7 @@ export class ALSymbolInfo {
                 let symbolRef = symbolReferenceList[i];
                 let symbolInfo = new ALSymbolInfo(null, 'al');
                 symbolInfo.loadFromEnumValue(i, symbolRef);
-                this.addChild(symbolInfo, false);
+                this.addChild(symbolInfo);
             }
         }
     }
@@ -566,7 +588,7 @@ export class ALSymbolInfo {
             for (let i=0; i<symbolReferenceList.length; i++) {
                 var symbolRef = symbolReferenceList[i];
                 var symbolInfo = ALSymbolInfo.createFromSymbolReference(ALSymbolKind.DotNetAssembly, '', symbolRef); 
-                this.addChild(symbolInfo, false);
+                this.addChild(symbolInfo);
                 //load type definitions
                 if (symbolRef.TypeDeclarations)
                     symbolInfo.loadDotNetTypeDeclarations(symbolRef.TypeDeclarations);
@@ -580,7 +602,7 @@ export class ALSymbolInfo {
                 var symbolRef = symbolReferenceList[i];
                 var symbolInfo = new ALSymbolInfo(null, 'al');
                 symbolInfo.loadFromDotNetType(symbolRef);
-                this.addChild(symbolInfo, false);
+                this.addChild(symbolInfo);
             }
         }
     }
@@ -588,7 +610,7 @@ export class ALSymbolInfo {
     private loadBasicSymbolReferences(symbolKind : ALSymbolKind, symbolReferenceList : any[]) {
         if (symbolReferenceList) {
             for (var i = 0; i<symbolReferenceList.length; i++) {
-                this.addChild(ALSymbolInfo.createFromSymbolReference(symbolKind, '', symbolReferenceList[i]), false);
+                this.addChild(ALSymbolInfo.createFromSymbolReference(symbolKind, '', symbolReferenceList[i]));
             }
         }
     }
@@ -598,7 +620,7 @@ export class ALSymbolInfo {
             for (var i = 0; i<symbolReferenceList.length; i++) {
                 var symbolRef = symbolReferenceList[i];
                 var symbolInfo = ALSymbolInfo.createFromSymbolReference(ALSymbolKind.Group, changesName, symbolRef); 
-                this.addChild(symbolInfo, false);
+                this.addChild(symbolInfo);
                 //load symbol actions
                 if (symbolRef.Actions)
                     symbolInfo.loadActionSymbolReferences(symbolRef.Actions);
@@ -615,7 +637,7 @@ export class ALSymbolInfo {
                 var symbolRef = symbolReferenceList[i];
                 var controlKind : ALControlKind = symbolRef.Kind;
                 var symbolInfo = ALSymbolInfo.createFromSymbolReference(this.alControlKindToSymbolKind(controlKind), ALControlKind[controlKind], symbolRef); 
-                this.addChild(symbolInfo, false);
+                this.addChild(symbolInfo);
                 //load symbol controls
                 if (symbolRef.Controls)
                     symbolInfo.loadControlSymbolReferences(symbolRef.Controls);
@@ -629,7 +651,7 @@ export class ALSymbolInfo {
                 var symbolRef = symbolReferenceList[i];
                 var actionKind : ALActionKind = symbolRef.Kind;
                 var symbolInfo = ALSymbolInfo.createFromSymbolReference(this.alActionKindToSymbolKind(actionKind), ALActionKind[actionKind], symbolRef); 
-                this.addChild(symbolInfo, false);
+                this.addChild(symbolInfo);
                 //load symbol actions
                 if (symbolRef.Actions)
                     symbolInfo.loadActionSymbolReferences(symbolRef.Actions);
@@ -642,7 +664,7 @@ export class ALSymbolInfo {
             for (var i = 0; i<symbolReferenceList.length; i++) {
                 var symbolRef = symbolReferenceList[i];
                 var symbolInfo = ALSymbolInfo.createFromSymbolReference(ALSymbolKind.FieldGroup, 'DataItem', symbolRef); 
-                this.addChild(symbolInfo, false);
+                this.addChild(symbolInfo);
                 //load symbol items
                 if (symbolRef.Columns)
                     symbolInfo.loadBasicSymbolReferences(ALSymbolKind.Field, symbolRef.Columns);
@@ -702,7 +724,7 @@ export class ALSymbolInfo {
                 }
                 symbolInfo.name = symbolInfo.symbolName + '(' + paramText + ')';
                 
-                this.addChild(symbolInfo, false);
+                this.addChild(symbolInfo);
             }
         }
     }
