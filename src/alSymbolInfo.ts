@@ -36,18 +36,18 @@ export class ALSymbolInfo {
         if (symbol) {
             let anySymbol : any = symbol;
             this.alKind = ALSymbolKind.Undefined;
-            if (anySymbol.children) {
-                this.vscodeDocSymbol = symbol as DocumentSymbol;
-                this.name = this.vscodeDocSymbol.name;
-                this.range = this.vscodeDocSymbol.range;
-                this.selectionRange = new Range(this.vscodeDocSymbol.selectionRange.start, this.vscodeDocSymbol.selectionRange.start);
-                this.lspKind = this.vscodeDocSymbol.kind;
-            } else {
+            if (anySymbol.containerName) {
                 this.vscodeSymbolInfo = symbol as SymbolInformation;
                 this.name = this.vscodeSymbolInfo.name;
                 this.range = this.vscodeSymbolInfo.location.range;
                 this.selectionRange = this.range;
                 this.lspKind = this.vscodeSymbolInfo.kind;
+            } else {
+                this.vscodeDocSymbol = symbol as DocumentSymbol;
+                this.name = this.vscodeDocSymbol.name;
+                this.range = this.vscodeDocSymbol.range;
+                this.selectionRange = new Range(this.vscodeDocSymbol.selectionRange.start, this.vscodeDocSymbol.selectionRange.start);
+                this.lspKind = this.vscodeDocSymbol.kind;
             }
         } else {
             this.name = "";

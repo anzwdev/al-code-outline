@@ -106,18 +106,27 @@ export class ALOutlineProvider implements vscode.TreeDataProvider<ALSymbolInfo> 
             //load all symbols
             let lspSymbols = await this.getLspSymbols(this.editor.document);
             if ((lspSymbols) && (lspSymbols.length > 0)) {
-                let anySymbol : any = lspSymbols[0];
-                if (anySymbol.children) {
+                
+                //check if this is symbol info
+                let isSymbolInfoList : boolean = false;
+                
+                for (let idx = 0; ((idx<lspSymbols.length) && (!isSymbolInfoList)); idx++) {
+                    let anySymbol : any = lspSymbols[idx];
+                    if (anySymbol.containerName)
+                        isSymbolInfoList = true;
+                }                
+                
+                if (isSymbolInfoList) {
+                    let symbolInfoList : vscode.SymbolInformation[] = lspSymbols as vscode.SymbolInformation[];
+                    let alSymbols = symbolInfoList.map(symbol => new ALSymbolInfo(symbol, this.editor.document.languageId));
+                    //build symbols tree
+                    mainTreeNode.appendSymbolInfoChildNodes(alSymbols);
+                } else {
                     let docSymbolList : vscode.DocumentSymbol[] = lspSymbols as vscode.DocumentSymbol[];
                     let alDocSymbols = docSymbolList.map(symbol => new ALSymbolInfo(symbol, this.editor.document.languageId));
                     for (let docSymbolIndex = 0; docSymbolIndex < alDocSymbols.length; docSymbolIndex++) {
                         mainTreeNode.addChild(alDocSymbols[docSymbolIndex]);
                     }
-                } else {
-                    let symbolInfoList : vscode.SymbolInformation[] = lspSymbols as vscode.SymbolInformation[];
-                    let alSymbols = symbolInfoList.map(symbol => new ALSymbolInfo(symbol, this.editor.document.languageId));
-                    //build symbols tree
-                    mainTreeNode.appendSymbolInfoChildNodes(alSymbols);
                 }
             }
             this.rootNode = mainTreeNode;
