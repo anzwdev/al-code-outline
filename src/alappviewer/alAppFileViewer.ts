@@ -93,29 +93,24 @@ export class ALAppFileViewer {
     }    
 
     protected async appFileObjCommand(objType : string, objId : number, commandName : string) {
-        if (commandName === 'definition')
-            this.objectLibraries.goToDefinition(objType, objId);
-        else {
-            var symbolInfo = this.objectLibraries.findALSymbolInfo(objType, objId);
-            if (symbolInfo) {
-                if ((commandName === 'selected') && (this.codeOutlineProvider)) {
-                    this.codeOutlineProvider.setAppALSymbolInfo(symbolInfo);
-                }
-                else if (commandName === 'newcardpage')
-                    await this.objectBuilders.pageBuilder.showCardPageWizard(symbolInfo);
-                else if (commandName === 'newlistpage')
-                    await this.objectBuilders.pageBuilder.showListPageWizard(symbolInfo);
-                else if (commandName === 'newreport')
-                    await this.objectBuilders.reportBuilder.showReportWizard(symbolInfo);
-                else if (commandName === 'newxmlport')
-                    await this.objectBuilders.xmlPortBuilder.showXmlPortWizard(symbolInfo);
-                else if (commandName === 'newquery')
-                    await this.objectBuilders.queryBuilder.showQueryWizard(symbolInfo);
-                else if (commandName === 'runinwebclient')
-                    this.alObjectRunner.runInWebClient(symbolInfo);
-            }            
-        }
+        var symbolInfo = this.objectLibraries.findALSymbolInfo(objType, objId);
+        if (symbolInfo) {
+            if ((commandName === 'selected') && (this.codeOutlineProvider)) {
+                this.codeOutlineProvider.setAppALSymbolInfo(symbolInfo);
+            }
+            else if (commandName === 'newcardpage')
+                await this.objectBuilders.pageBuilder.showCardPageWizard(symbolInfo);
+            else if (commandName === 'newlistpage')
+                await this.objectBuilders.pageBuilder.showListPageWizard(symbolInfo);
+            else if (commandName === 'newreport')
+                await this.objectBuilders.reportBuilder.showReportWizard(symbolInfo);
+            else if (commandName === 'newxmlport')
+                await this.objectBuilders.xmlPortBuilder.showXmlPortWizard(symbolInfo);
+            else if (commandName === 'newquery')
+                await this.objectBuilders.queryBuilder.showQueryWizard(symbolInfo);
+            else if (commandName === 'runinwebclient')
+                this.alObjectRunner.runInWebClient(symbolInfo);
+        }            
     }
-
 
 }

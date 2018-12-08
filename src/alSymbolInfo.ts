@@ -124,16 +124,16 @@ export class ALSymbolInfo {
     protected getGroupName() : string {
         switch (this.alKind) {
             case ALSymbolKind.Method:
-                return 'Procedures';
+                return 'procedures';
             case ALSymbolKind.PrimaryKey:
             case ALSymbolKind.Key:
-                return 'Keys';
+                return 'keys';
             case ALSymbolKind.Field:
-                return 'Fields';
+                return 'fields';
             case ALSymbolKind.Variable:
-                return 'Variables'; 
+                return 'var'; 
             case ALSymbolKind.Trigger:
-                return 'Triggers';
+                return 'triggers';
         }
         return "";
     }
@@ -218,7 +218,7 @@ export class ALSymbolInfo {
             case SymbolKind.Method:
                 return ALSymbolKind.Method;
             case SymbolKind.Function:
-                return ALSymbolKind.Trigger;
+                return ALSymbolKind.Method;
             case SymbolKind.Field:
                 return ALSymbolKind.Field;
             case SymbolKind.Property:
@@ -318,6 +318,8 @@ export class ALSymbolInfo {
                 return this.getStdIconName();
             case ALSymbolKind.Table:
                 return "tree-table.svg";
+            case ALSymbolKind.SymbolGroup:
+                return "tree-class.svg";
             case ALSymbolKind.UndefinedObject:
                 return "tree-class.svg";
             case ALSymbolKind.Codeunit:

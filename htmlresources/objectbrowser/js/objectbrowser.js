@@ -16,8 +16,10 @@ $(function() {
                 execObjCommand($(this).data("objt"), $(this).data("objid"), key);
             },
             items: {
+                /*
                 "definition": {name: "Go to Definition"},
                 "sep1": "---------",
+                */
                 "runinwebclient": {
                     name: "Run in Web Client",
                     disabled: function(key, opt) {

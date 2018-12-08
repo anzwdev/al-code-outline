@@ -3,7 +3,7 @@
 ## 0.0.10
 
 - fix to make outline work with symbols returned by the latest version of AL Language extension
-- github issue [#8 Go to definition no more working](https://github.com/anzwdev/al-code-outline/issues/8) fixed, but fix is disabled by default as it requires temporary al file to be injected into  
+- github issue [#8 Go to definition no more working](https://github.com/anzwdev/al-code-outline/issues/8) - go to definition function removed from AL Object Browser because of changes in Microsoft "AL Language" extension.   
 - obsolete vs code text document provider api used by APP file viewer replaced by webviews
 - missing DotNetPackage and Enum object types added to the AL Object Browser 
 - AL outline crash on documents without symbols fixed 

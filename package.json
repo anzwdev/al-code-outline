@@ -146,11 +146,6 @@
 			{
 				"title": "AL Code Outline",
 				"properties": {
-					"alOutline.enableLanguageServerProxy" : {
-						"type": "boolean",
-						"default": false,
-						"description": "Inject empty al file into workspace to call go-to-definition on al types"
-					},
 					"alOutline.autorefresh": {
 						"type": "boolean",
 						"default": true,
