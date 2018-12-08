@@ -501,6 +501,11 @@ export class ALSymbolInfo {
             this.name = newTypeName + ' ' + this.symbolName;
         else
             this.name = this.symbolName;
+
+        if ((symbolReference.TypeDefinition) && (symbolReference.TypeDefinition.Name))
+            this.name = this.name + " : " + symbolReference.TypeDefinition.Name;
+
+
         this.alKind = newSymbolKind;
         this.languageId = 'al';
         this.hasKeys = false;
