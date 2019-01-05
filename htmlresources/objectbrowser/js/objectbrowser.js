@@ -5,10 +5,73 @@ $(function() {
     vscodeContext = acquireVsCodeApi();
 
     window.addEventListener('message', event => {
-        processMessage(event.data);
+        if (event.msgtype == 'objectsLoaded') {
+            processMessage(event.data);
+        }
+    });
+    
+    vscodeContext.postMessage({
+        command: 'documentLoaded'
     });
 
-    //initialize context menu
+    //reload data
+    //setMode('Table', false);
+});
+
+var dataMode = '';
+var selType = '';
+var selId = 0;
+var objdata = {};
+
+function processMessage(data) {
+    objdata = data.data;
+
+    setMode('Table', true);
+}
+
+function setMode(newMode, reload) {
+    if ((dataMode == newMode) && (!reload))
+        return;
+
+    if (dataMode)
+        $("div[data-mode='" + dataMode + "']").attr('class', 'btn btnstd');
+
+    for (var i=0; i<objdata.objectCollections.length; i++) {
+        objdata.objectCollections[i].visible = ((newMode == objdata.objectCollections[i].objectType) || (newMode === 'All'));
+    }
+
+    dataMode = newMode;
+    if (dataMode)
+        $("div[data-mode='" + dataMode + "']").attr('class', 'btn btnsel');
+
+    renderData();
+}
+
+function renderData() {
+    $('#objects').html(Handlebars.templates.objectlist(objdata));
+    $("tr[data-objt='" + selType + "'][data-objid='" + selId + "']").attr('class', 'objsel');
+
+    initContextMenus();
+}
+
+function initContextMenus() {
+    $(function(){
+        $('#objhead').contextMenu({
+            selector: 'th',
+            callback: function(key, options) {
+                execFilterCommand($(this).text(), key);
+            },
+            items: {
+                "filterObjects": {
+                    name: "Filter on Column"
+                },
+                "clearFilters": {
+                    name: "Clear All Filters"
+                }
+            }
+        })
+    });
+
     $(function(){
         $('#objects').contextMenu({
             selector: 'tr', 
@@ -63,47 +126,6 @@ $(function() {
             }
         });
     });
-    
-    vscodeContext.postMessage({
-        command: 'documentLoaded'
-    });
-
-    //reload data
-    //setMode('Table', false);
-});
-
-var dataMode = '';
-var selType = '';
-var selId = 0;
-var objdata = {};
-
-function processMessage(data) {
-    objdata = data.data;
-
-    setMode('Table', true);
-}
-
-function setMode(newMode, reload) {
-    if ((dataMode == newMode) && (!reload))
-        return;
-
-    if (dataMode)
-        $("div[data-mode='" + dataMode + "']").attr('class', 'btn btnstd');
-
-    for (var i=0; i<objdata.objectCollections.length; i++) {
-        objdata.objectCollections[i].visible = ((newMode == objdata.objectCollections[i].objectType) || (newMode === 'All'));
-    }
-
-    dataMode = newMode;
-    if (dataMode)
-        $("div[data-mode='" + dataMode + "']").attr('class', 'btn btnsel');
-
-    renderData();
-}
-
-function renderData() {
-    $('#objects').html(Handlebars.templates.objectlist(objdata));
-    $("tr[data-objt='" + selType + "'][data-objid='" + selId + "']").attr('class', 'objsel');
 }
 
 function modeBtnClick(btn) {
@@ -113,9 +135,19 @@ function modeBtnClick(btn) {
 function execObjCommand(objtype, objid, cmdname) {
     if (vscodeContext) {
         vscodeContext.postMessage({
+            command : 'execObjCommand',
             objtype : objtype,
             objid : objid,
             cmdname : cmdname});
+    }
+}
+
+function execFilterCommand(headColumn, cmdname) {
+    if (vscodeContext) {
+        vscodeContext.postMessage({
+            command    : "execFilterCommand",
+            headColumn : headColumn,
+            cmdname    : cmdname});
     }
 }
 
