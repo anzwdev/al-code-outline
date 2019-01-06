@@ -4,7 +4,9 @@
     {{#each objectCollections}}
         {{#if visible}}
             {{#each objects}}
-                <tr class="objrow" data-objt="{{../objectType}}" data-objid="{{Id}}" data-objname="{{Name}}" onclick="objclick(this)"><td>{{../objectType}}</td><td>{{OId}}</td><td>{{Name}}</td></tr>
+                {{#if objvisible}}
+                    <tr class="objrow" data-objt="{{../objectType}}" data-objid="{{Id}}" data-objname="{{Name}}" onclick="objclick(this)"><td>{{../objectType}}</td><td>{{OId}}</td><td>{{Name}}</td></tr>
+                {{/if}}
             {{/each}}
         {{/if}}
     {{/each}}

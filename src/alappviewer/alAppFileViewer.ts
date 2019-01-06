@@ -56,6 +56,7 @@ export class ALAppFileViewer {
         var symbolInfo = await this.objectLibraries.getBasicLibrary(uri.fsPath, false);
         if (symbolInfo)
             this.panel.webview.postMessage({
+                msgtype: 'objectsLoaded',
                 data: symbolInfo
             });
     }
@@ -81,12 +82,10 @@ export class ALAppFileViewer {
                     this.loadObjects(this.fileUri);
                 }
                 else if (m.command == "execFilterCommand") {
-                    if (m.cmdname == "filterObjects") {
-                        this.filterObjects(m.headColumn);
-                    }
-                    else if (m.cmdname == "clearFilters") {
-                        this.clearFilters();
-                    }
+                    this.filterObjects(m.headColumn, m.currentIdFilter);
+                }
+                else if (m.command == "errorInFilter") {
+                    vscode.window.showErrorMessage('Invalid filter: ' + m.message);
                 }
                 else {
                     this.appFileObjCommand(m.objtype, m.objid, m.cmdname);
@@ -124,38 +123,43 @@ export class ALAppFileViewer {
 
     //#region Filter View
 
-    private async filterObjects(column: string) {
+    private async filterObjects(column: string, currentIdFilter: string) {
         if (column == "Type") {
             const objTypes = ['Table', 'Page', 'Report', 'XmlPort', 'Query', 'Codeunit', 'ControlAddIn', 'PageExtension', 'TableExtension', 'Profile', 'PageCustomization', 'Enum', 'DotNetPackage'];
             const values = await vscode.window.showQuickPick(objTypes, { canPickMany: true, placeHolder: 'Select the object type(s) to filter on.' });
             if (values) {
-                vscode.window.showInformationMessage('Set filter on: ' + values); //TODO: Send back to objectbrowser.js
+                this.panel.webview.postMessage({
+                    msgtype: 'filterObjects',
+                    column: column,
+                    filterSet: values
+                });
             }
         }
         else if (column == "ID") {
-            let regexp = new RegExp('^ID([0-9&\|><]|(in[0-9]+\.\.[0-9]+)|(<>)|(<=)|(ID)|(>=))+$');
+            let regexp = new RegExp('^(((=)|(<>)|(>)|(>=)|(<)|(<=)|([0-9]+\\.\\.))?\s*[0-9]+)(\s*((\\|)|(&))\s*((=?)|(<>)|(>)|(>=)|(<)|(<=)|([0-9]+\\.\\.))\s*[0-9]+\s*)*$');
             const filterExpr = await vscode.window.showInputBox({
-                value  : 'ID',
-                prompt : 'Please enter an ID filter expression.',
+                value  : currentIdFilter,
+                prompt : 'Please enter an ID filter expression (e.g., "10..20|>=50").',
                 validateInput: (text: string): string | undefined => {
                     if (!regexp.test(text)) {
-                        if (text.indexOf("ID") == -1) {
-                            return 'Filter expression needs an ID variable.'
-                        }
-                        else {
-                            return 'Valid operators for ID filter are: |, &, >, >=, <, <=, .., <>';
-                        }
+                        return 'Valid operators for ID filter are: |, &, =, <>, >, >=, <, <=, ..';
                     } else {
                         return undefined;
                     }
                 }
             });
-            vscode.window.showInformationMessage('Set filter on: ' + filterExpr); //TODO: Send back to objectbrowser.js
+            if (filterExpr) {
+                this.panel.webview.postMessage({
+                    msgtype: 'filterObjects',
+                    column: column,
+                    filterExpr: filterExpr
+                });
+            }
         }
-    }
-
-    private clearFilters() {
-        vscode.window.showInformationMessage('Cleared all filters');
+        else if (column == "Name") {
+            //TODO: Do something with Name filtering
+            vscode.window.showErrorMessage('Filtering not implemented yet for the "Name" column!');
+        }
     }
 
     //#endregion

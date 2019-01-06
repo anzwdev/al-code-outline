@@ -5,9 +5,7 @@ $(function() {
     vscodeContext = acquireVsCodeApi();
 
     window.addEventListener('message', event => {
-        if (event.msgtype == 'objectsLoaded') {
-            processMessage(event.data);
-        }
+        processMessage(event.data);
     });
     
     vscodeContext.postMessage({
@@ -23,10 +21,102 @@ var selType = '';
 var selId = 0;
 var objdata = {};
 
-function processMessage(data) {
-    objdata = data.data;
+var filterActive = false;
+var filterType = [];
+var filterId = undefined;
+var filterIdExpr = undefined;
+
+function processMessage(msg_data) {
+    if (event.data.msgtype == 'objectsLoaded') {
+        processObjectsLoadedMessage(msg_data);
+    }
+    else if (event.data.msgtype == 'filterObjects') {
+        processFilterObjectsMessage(msg_data);
+    }
+}
+
+function processObjectsLoadedMessage(msg_data) {
+    objdata = msg_data.data;
 
     setMode('Table', true);
+}
+
+function processFilterObjectsMessage(msg_data) {
+    var column = msg_data.column;
+    filterActive = true;
+    if (column == 'Type') {
+        filterType = msg_data.filterSet;
+    }
+    else if (column == 'ID') {
+        filterIdExpr = msg_data.filterExpr;
+        try {
+            filterId = compileFilter(column, filterIdExpr);
+        }
+        catch (e) {
+            vscodeContext.postMessage({
+                command    : "errorInFilter",
+                message : filterIdExpr});
+            filterIdExpr = undefined;
+        }
+    }
+
+    applyObjectFilters();
+
+    renderData();
+}
+
+function applyObjectFilters() {
+    for (var i=0; i<objdata.objectCollections.length; i++) {
+        // First, check if the object was visible based on the datamode (or otherwise was filtered out by the current selection).
+        var inMode = ((dataMode === 'All') || (dataMode == objdata.objectCollections[i].objectType));
+        if (!inMode) {
+            objdata.objectCollections[i].visible = false;
+            continue;
+        }
+
+        // Case: No filters active, so we can set everything from this collection to be visible:
+        if (!filterActive) {
+            objdata.objectCollections[i].visible = true;
+            var objects = objdata.objectCollections[i].objects;
+            for (var j=0; j<objects.length; j++) {
+                objects[j].objvisible = true;
+            }
+            return;
+        }
+
+        // Next, check if there is a filter on the 'Type' column, and whether the object is contained in it.
+        var inTypeFilter = (filterType === undefined || filterType.length == 0) || filterType.includes(objdata.objectCollections[i].objectType);
+        if (!inTypeFilter) {
+            objdata.objectCollections[i].visible = false;
+            continue;
+        }
+
+        // If the above all holds, then the object should be visible in the browser.
+        objdata.objectCollections[i].visible = true;
+
+        // Now check per object.
+        var objects = objdata.objectCollections[i].objects;
+        for (var j=0; j<objects.length; j++) {
+            var inIdFilter = (filterId === undefined) || filterId({ID: objects[j].OId});
+            if (!inIdFilter) {
+                objects[j].objvisible = false;
+                continue;
+            }
+
+            objects[j].objvisible = true;
+        }
+    }
+}
+
+function clearObjectFilters() {
+    filterType = [];
+    filterId = undefined;
+    filterIdExpr = undefined;
+    filterActive = false;
+
+    applyObjectFilters();
+    
+    renderData();
 }
 
 function setMode(newMode, reload) {
@@ -36,11 +126,10 @@ function setMode(newMode, reload) {
     if (dataMode)
         $("div[data-mode='" + dataMode + "']").attr('class', 'btn btnstd');
 
-    for (var i=0; i<objdata.objectCollections.length; i++) {
-        objdata.objectCollections[i].visible = ((newMode == objdata.objectCollections[i].objectType) || (newMode === 'All'));
-    }
-
     dataMode = newMode;
+
+    applyObjectFilters();
+
     if (dataMode)
         $("div[data-mode='" + dataMode + "']").attr('class', 'btn btnsel');
 
@@ -66,7 +155,10 @@ function initContextMenus() {
                     name: "Filter on Column"
                 },
                 "clearFilters": {
-                    name: "Clear All Filters"
+                    name: "Clear All Filters",
+                    disabled: function(key, opt) {
+                        return !filterActive;
+                    }
                 }
             }
         })
@@ -144,10 +236,15 @@ function execObjCommand(objtype, objid, cmdname) {
 
 function execFilterCommand(headColumn, cmdname) {
     if (vscodeContext) {
-        vscodeContext.postMessage({
-            command    : "execFilterCommand",
-            headColumn : headColumn,
-            cmdname    : cmdname});
+        if (cmdname == "filterObjects") {
+            vscodeContext.postMessage({
+                command    : "execFilterCommand",
+                headColumn : headColumn,
+                currentIdFilter: filterIdExpr});
+        }
+        else if (cmdname == "clearFilters") {
+            clearObjectFilters();
+        }
     }
 }
 
