@@ -68,6 +68,17 @@ export class ALObjectWriter {
         this.writeStartBlock();
     }
 
+    public writeStartExtensionObject(type : string, id : number, extname : string, targetName : string) {
+        var objectIdText : string;
+        if (id == 0)
+            objectIdText = 'id';
+        else
+            objectIdText = id.toString();
+        
+        this.writeLine(type + " " + objectIdText + " \"" + extname.replace("\"", "\"\"") + "\"" + " extends " + "\"" + targetName + "\"");
+        this.writeStartBlock();
+    }
+
     public writeEndObject() {
         this.writeEndBlock();
     }
@@ -78,6 +89,24 @@ export class ALObjectWriter {
     }
 
     public writeEndLayout() {
+        this.writeEndBlock();
+    }
+
+    public writeStartActions() {
+        this.writeLine("actions");
+        this.writeStartBlock();
+    }
+
+    public writeEndActions() {
+        this.writeEndBlock();
+    }
+
+    public writeStartFields() {
+        this.writeLine("fields");
+        this.writeStartBlock();
+    }
+
+    public writeEndFields() {
         this.writeEndBlock();
     }
 
