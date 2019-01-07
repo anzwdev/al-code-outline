@@ -16,6 +16,9 @@ It is also possible to view symbols from symbol reference packages. Extension ad
 
 ![Code outline for a page](resources/screen-page.png)
 
+## Contributors
+
+- rvanbekkum: "New Page Extension" and "New Table Extension" options in AL Object Browser
 
 ## Inspiration
 

@@ -2,13 +2,16 @@
 
 ## 0.0.10
 
+- new option to create page and table extensions from AL Object Browser added by rvanbekkum
 - fix to make outline work with symbols returned by the latest version of AL Language extension
 - github issue [#8 Go to definition no more working](https://github.com/anzwdev/al-code-outline/issues/8) - go to definition function removed from AL Object Browser because of changes in Microsoft "AL Language" extension.   
 - obsolete vs code text document provider api used by APP file viewer replaced by webviews
 - missing DotNetPackage and Enum object types added to the AL Object Browser 
 - AL outline crash on documents without symbols fixed 
 
-Thank you KristofKlein for reporting issue #8
+### Thank You
+ - rvanbekkum for page and table extension functionality 
+ - KristofKlein for reporting issue #8
 
 ## 0.0.9
 

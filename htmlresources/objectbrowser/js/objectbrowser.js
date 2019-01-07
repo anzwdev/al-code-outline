@@ -182,14 +182,7 @@ function initContextMenus() {
                         return ((objt != "Table") && (objt != "Page") && (objt != "Report"));
                     }},
                 "sep2": "---------",
-                /*
-                !!! TO-DO !!!
-                "extend": {
-                    name: "New Table Extension",
-                    disabled: function(key, opt) {
-                        return ($(this).data("objt") != "Table");
-                    }},
-                */
+                // New Base Objects
                 "newcardpage": {
                     name: "New Card Page",
                     disabled: function(key, opt) {
@@ -214,6 +207,18 @@ function initContextMenus() {
                     name: "New Query",
                     disabled: function(key, opt) {
                         return ($(this).data("objt") != "Table");
+                    }},
+                "sep3": "---------",
+                // New Extension Objects
+                "extendtable": {
+                    name: "New Table Extension",
+                    disabled: function(key, opt) {
+                        return ($(this).data("objt") != "Table");
+                    }},
+                "extendpage": {
+                    name: "New Page Extension",
+                    disabled: function(key, opt) {
+                     return ($(this).data("objt") != "Page");
                     }},
             }
         });

@@ -118,6 +118,10 @@ export class ALAppFileViewer {
                 await this.objectBuilders.queryBuilder.showQueryWizard(symbolInfo);
             else if (commandName === 'runinwebclient')
                 this.alObjectRunner.runInWebClient(symbolInfo);
+            else if (commandName === 'extendtable')
+                await this.objectBuilders.tableExtBuilder.showTableExtWizard(symbolInfo);
+            else if (commandName === 'extendpage')
+                await this.objectBuilders.pageExtBuilder.showPageExtWizard(symbolInfo);
         }            
     }
 

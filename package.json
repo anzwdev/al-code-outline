@@ -94,7 +94,7 @@
 		],
 		"menus": {
 			"view/title": [
-				{					
+				{
 					"command": "alOutline.refresh",
 					"when": "view == alOutline",
 					"group": "navigation"
