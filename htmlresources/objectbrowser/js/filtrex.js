@@ -135,8 +135,10 @@ function idFilterParser() {
                 ['<> NUMBER', code(['Number(', 'prop(data, \'ID\')', '!=', 2, ')'])],
                 ['< NUMBER', code(['Number(', 'prop(data, \'ID\')', '<', 2, ')'])],
                 ['<= NUMBER', code(['Number(', 'prop(data, \'ID\')', '<=', 2, ')'])],
+                ['.. NUMBER', code(['Number(', 'prop(data, \'ID\')', '<=', 2, ')'])],
                 ['> NUMBER', code(['Number(', 'prop(data, \'ID\')', '>', 2, ')'])],
                 ['>= NUMBER', code(['Number(', 'prop(data, \'ID\')', '>=', 2, ')'])],
+                ['NUMBER ..', code(['Number(', 'prop(data, \'ID\')', '>=', 1, ')'])],
                 ['NUMBER', code(['Number(', 'prop(data, \'ID\')', '==', 1, ')'])]
             ]
         }

@@ -21,10 +21,12 @@ var selType = '';
 var selId = 0;
 var objdata = {};
 
-var filterActive = false;
 var filterType = [];
+var filterTypeActive = false;
 var filterId = undefined;
 var filterIdExpr = undefined;
+var filterIdActive = false;
+var filterActive = false;
 
 function processMessage(msg_data) {
     if (event.data.msgtype == 'objectsLoaded') {
@@ -43,22 +45,31 @@ function processObjectsLoadedMessage(msg_data) {
 
 function processFilterObjectsMessage(msg_data) {
     var column = msg_data.column;
-    filterActive = true;
     if (column == 'Type') {
         filterType = msg_data.filterSet;
     }
     else if (column == 'ID') {
-        filterIdExpr = msg_data.filterExpr;
-        try {
-            filterId = compileFilter(column, filterIdExpr);
-        }
-        catch (e) {
-            vscodeContext.postMessage({
-                command    : "errorInFilter",
-                message : filterIdExpr});
+        if (!(msg_data.filterExpr)) {
+            filterId = undefined;
             filterIdExpr = undefined;
         }
+        else {
+            filterIdExpr = msg_data.filterExpr;
+            try {
+                filterId = compileFilter(column, filterIdExpr);
+            }
+            catch (e) {
+                vscodeContext.postMessage({
+                    command    : "errorInFilter",
+                    message : filterIdExpr});
+                filterIdExpr = undefined;
+            }
+        }
     }
+
+    filterTypeActive = (filterType !== undefined && filterType.length > 0);
+    filterIdActive = filterId !== undefined;
+    filterActive = filterTypeActive || filterIdActive;
 
     applyObjectFilters();
 
@@ -81,11 +92,11 @@ function applyObjectFilters() {
             for (var j=0; j<objects.length; j++) {
                 objects[j].objvisible = true;
             }
-            return;
+            continue;
         }
 
         // Next, check if there is a filter on the 'Type' column, and whether the object is contained in it.
-        var inTypeFilter = (filterType === undefined || filterType.length == 0) || filterType.includes(objdata.objectCollections[i].objectType);
+        var inTypeFilter = !filterTypeActive || filterType.includes(objdata.objectCollections[i].objectType);
         if (!inTypeFilter) {
             objdata.objectCollections[i].visible = false;
             continue;
@@ -97,7 +108,7 @@ function applyObjectFilters() {
         // Now check per object.
         var objects = objdata.objectCollections[i].objects;
         for (var j=0; j<objects.length; j++) {
-            var inIdFilter = (filterId === undefined) || filterId({ID: objects[j].OId});
+            var inIdFilter = !filterIdActive || filterId({ID: objects[j].OId});
             if (!inIdFilter) {
                 objects[j].objvisible = false;
                 continue;
@@ -112,6 +123,9 @@ function clearObjectFilters() {
     filterType = [];
     filterId = undefined;
     filterIdExpr = undefined;
+
+    filterTypeActive = false;
+    filterIdActive = false;
     filterActive = false;
 
     applyObjectFilters();

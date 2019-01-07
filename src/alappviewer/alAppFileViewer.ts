@@ -140,10 +140,11 @@ export class ALAppFileViewer {
             }
         }
         else if (column == "ID") {
-            let regexp = new RegExp('^(((=)|(<>)|(>)|(>=)|(<)|(<=)|([0-9]+\\.\\.))?\s*[0-9]+)(\s*((\\|)|(&))\s*((=?)|(<>)|(>)|(>=)|(<)|(<=)|([0-9]+\\.\\.))\s*[0-9]+\s*)*$');
+            let regexp = new RegExp('^\s*|(((((=?)|(<>)|(>)|(>=)|(<)|(<=)|(\\.\\.))\s*[0-9]+)|([0-9]+\s*\\.\\.\s*[0-9]*))(\s*((\\|)|(&))\s*(((=?)|(<>)|(>)|(>=)|(<)|(<=)|(\\.\\.))\s*[0-9]+\s*)|([0-9]+\s*\\.\\.\s*[0-9]*))*)$');
             const filterExpr = await vscode.window.showInputBox({
                 value  : currentIdFilter,
                 prompt : 'Please enter an ID filter expression (e.g., "10..20|>=50").',
+                ignoreFocusOut: true,
                 validateInput: (text: string): string | undefined => {
                     if (!regexp.test(text)) {
                         return 'Valid operators for ID filter are: |, &, =, <>, >, >=, <, <=, ..';
@@ -152,7 +153,7 @@ export class ALAppFileViewer {
                     }
                 }
             });
-            if (filterExpr) {
+            if (filterExpr !== undefined) {
                 this.panel.webview.postMessage({
                     msgtype: 'filterObjects',
                     column: column,
