@@ -26,6 +26,9 @@ var filterTypeActive = false;
 var filterId = undefined;
 var filterIdExpr = undefined;
 var filterIdActive = false;
+var filterName = undefined;
+var filterNameExpr = undefined;
+var filterNameActive = false;
 var filterActive = false;
 
 function processMessage(msg_data) {
@@ -56,20 +59,43 @@ function processFilterObjectsMessage(msg_data) {
         else {
             filterIdExpr = msg_data.filterExpr;
             try {
-                filterId = compileFilter(column, filterIdExpr);
+                filterId = compileFilter('int', filterIdExpr);
             }
             catch (e) {
                 vscodeContext.postMessage({
-                    command    : "errorInFilter",
+                    command    : 'errorInFilter',
                     message : filterIdExpr});
+
+                filterId = undefined;
                 filterIdExpr = undefined;
+            }
+        }
+    }
+    else if (column == 'Name') {
+        if (!(msg_data.filterExpr)) {
+            filterName = undefined;
+            filterNameExpr = undefined;
+        }
+        else {
+            filterNameExpr = msg_data.filterExpr;
+            try {
+                filterName = compileFilter('text', filterNameExpr);
+            }
+            catch (e) {
+                vscodeContext.postMessage({
+                    command    : 'errorInFilter',
+                    message : filterNameExpr});
+                
+                filterName = undefined;
+                filterNameExpr = undefined;
             }
         }
     }
 
     filterTypeActive = (filterType !== undefined && filterType.length > 0);
     filterIdActive = filterId !== undefined;
-    filterActive = filterTypeActive || filterIdActive;
+    filterNameActive = filterName !== undefined;
+    filterActive = filterTypeActive || filterIdActive || filterNameActive;
 
     applyObjectFilters();
 
@@ -108,8 +134,14 @@ function applyObjectFilters() {
         // Now check per object.
         var objects = objdata.objectCollections[i].objects;
         for (var j=0; j<objects.length; j++) {
-            var inIdFilter = !filterIdActive || filterId({ID: objects[j].OId});
+            var inIdFilter = !filterIdActive || filterId({INT: objects[j].OId});
             if (!inIdFilter) {
+                objects[j].objvisible = false;
+                continue;
+            }
+
+            var inNameFilter = !filterNameActive || filterName({TEXT: objects[j].Name});
+            if (!inNameFilter) {
                 objects[j].objvisible = false;
                 continue;
             }
@@ -123,9 +155,12 @@ function clearObjectFilters() {
     filterType = [];
     filterId = undefined;
     filterIdExpr = undefined;
+    filterName = undefined;
+    filterNameExpr = undefined;
 
     filterTypeActive = false;
     filterIdActive = false;
+    filterNameActive = false;
     filterActive = false;
 
     applyObjectFilters();
@@ -259,7 +294,8 @@ function execFilterCommand(headColumn, cmdname) {
             vscodeContext.postMessage({
                 command    : "execFilterCommand",
                 headColumn : headColumn,
-                currentIdFilter: filterIdExpr});
+                currentIdFilter: filterIdExpr,
+                currentNameFilter: filterNameExpr});
         }
         else if (cmdname == "clearFilters") {
             clearObjectFilters();

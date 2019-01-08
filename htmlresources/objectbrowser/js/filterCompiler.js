@@ -27,17 +27,23 @@
  *
  * Includes Jison by Zachary Carter. See http://jison.org/
  */
-function compileFilter(column, expression) {
+function compileFilter(type, expression) {
     // Building the original parser is the heaviest part. Do it
     // once and cache the result in our own function.
-    if (column == "ID") {
-        if (!compileFilter.idFilterParser) {
-            compileFilter.idFilterParser = idFilterParser();
+    if (type == 'int') {
+        if (!compileFilter.intFilterParser) {
+            compileFilter.intFilterParser = intFilterParser();
         }
-        compileFilter.parser = compileFilter.idFilterParser;
+        compileFilter.parser = compileFilter.intFilterParser;
+    }
+    else if (type == 'text') {
+        if (!compileFilter.textFilterParser) {
+            compileFilter.textFilterParser = textFilterParser();
+        }
+        compileFilter.parser = compileFilter.textFilterParser;
     }
     else {
-        throw 'Unsupported filter column: ' + column;
+        throw 'Unsupported filter type: ' + type;
     }
 
     var tree = compileFilter.parser.parse(expression);
@@ -69,7 +75,7 @@ function compileFilter(column, expression) {
     };
 }
 
-function idFilterParser() {
+function intFilterParser() {
 
     // Language parser powered by Jison <http://zaach.github.com/jison/>,
     // which is a pure JavaScript implementation of
@@ -111,11 +117,6 @@ function idFilterParser() {
                 ['$', 'return "EOF";'],
             ]
         },
-        // Operator precedence - lowest precedence first.
-        // See http://www.gnu.org/software/bison/manual/html_node/Precedence.html
-        // for a good explanation of how it works in Bison (and hence, Jison).
-        // Different languages have different rules, but this seems a good starting
-        // point: http://en.wikipedia.org/wiki/Order_of_operations#Programming_languages
         operators: [
             ['left', '|'],
             ['left', '&'],
@@ -130,16 +131,80 @@ function idFilterParser() {
                 ['e & e', code(['Number(', 1, '&&', 3, ')'])],
                 ['e | e' , code(['Number(', 1, '||', 3, ')'])],
                 ['( e )'  , code([2])],
-                ['NUMBER .. NUMBER', code(['Number(', 'prop(data, \'ID\')', '>=', 1, '&&', 'prop(data, \'ID\')', '<=', 3, ')'])],
-                ['= NUMBER', code(['Number(', 'prop(data, \'ID\')', '==', 2, ')'])],
-                ['<> NUMBER', code(['Number(', 'prop(data, \'ID\')', '!=', 2, ')'])],
-                ['< NUMBER', code(['Number(', 'prop(data, \'ID\')', '<', 2, ')'])],
-                ['<= NUMBER', code(['Number(', 'prop(data, \'ID\')', '<=', 2, ')'])],
-                ['.. NUMBER', code(['Number(', 'prop(data, \'ID\')', '<=', 2, ')'])],
-                ['> NUMBER', code(['Number(', 'prop(data, \'ID\')', '>', 2, ')'])],
-                ['>= NUMBER', code(['Number(', 'prop(data, \'ID\')', '>=', 2, ')'])],
-                ['NUMBER ..', code(['Number(', 'prop(data, \'ID\')', '>=', 1, ')'])],
-                ['NUMBER', code(['Number(', 'prop(data, \'ID\')', '==', 1, ')'])]
+                ['NUMBER .. NUMBER', code(['Number(', 'prop(data, \'INT\')', '>=', 1, '&&', 'prop(data, \'INT\')', '<=', 3, ')'])],
+                ['= NUMBER', code(['Number(', 'prop(data, \'INT\')', '==', 2, ')'])],
+                ['<> NUMBER', code(['Number(', 'prop(data, \'INT\')', '!=', 2, ')'])],
+                ['< NUMBER', code(['Number(', 'prop(data, \'INT\')', '<', 2, ')'])],
+                ['<= NUMBER', code(['Number(', 'prop(data, \'INT\')', '<=', 2, ')'])],
+                ['.. NUMBER', code(['Number(', 'prop(data, \'INT\')', '<=', 2, ')'])],
+                ['> NUMBER', code(['Number(', 'prop(data, \'INT\')', '>', 2, ')'])],
+                ['>= NUMBER', code(['Number(', 'prop(data, \'INT\')', '>=', 2, ')'])],
+                ['NUMBER ..', code(['Number(', 'prop(data, \'INT\')', '>=', 1, ')'])],
+                ['NUMBER', code(['Number(', 'prop(data, \'INT\')', '==', 1, ')'])]
+            ]
+        }
+    };
+    return new Jison.Parser(grammar);
+}
+
+function textFilterParser() {
+
+    var Jison = require('jison'),
+    bnf = require('jison/bnf');
+
+    function code(args, skipParentheses) {
+        var argsJs = args.map(function(a) {
+            return typeof(a) == 'number' ? ('$' + a) : JSON.stringify(a);
+        }).join(',');
+
+        return skipParentheses
+                ? '$$ = [' + argsJs + '];'
+                : '$$ = ["(", ' + argsJs + ', ")"];';
+    }
+
+    var grammar = {
+        // Lexical tokens
+        lex: {
+            rules: [
+                ['\\(', 'return "(";'],
+                ['\\)', 'return ")";'],
+                ['=', 'return "=";'],
+                ['<>', 'return "<>";'],
+                ['&', 'return "&";'],
+                ['\\|' , 'return "|";'],
+                ['@', 'return "@";'],
+
+                ['\\s+',  ''], // skip whitespace
+
+                ['[^\(\)=<>&\|@]+',
+                 `yytext = JSON.stringify(yytext);
+                  return "REGEX";`
+                ],
+
+                // End
+                ['$', 'return "EOF";'],
+            ]
+        },
+        operators: [
+            ['left', '|'],
+            ['left', '&'],
+        ],
+        // Grammar
+        bnf: {
+            expressions: [ // Entry point
+                ['e EOF', 'return $1;']
+            ],
+            e: [
+                ['e & e', code(['Number(', 1, '&&', 3, ')'])],
+                ['e | e' , code(['Number(', 1, '||', 3, ')'])],
+                ['( e )'  , code([2])],
+                ['<> r', code(['!', 2])],
+                ['= r', code([2])],
+                ['r', code([1])]
+            ],
+            r: [
+                ['@ REGEX', code(['RegExp(', '"^" + ', 2, '.replace(/\\*/g, ".*").replace(/\\?/g, ".")', '+ "$"', ', "i")', '.test(', 'prop(data, \'TEXT\')', ')'])],
+                ['REGEX', code(['RegExp(', '"^" + ', 1, '.replace(/\\*/g, ".*").replace(/\\?/g, ".")', '+ "$"', ')', '.test(', 'prop(data, \'TEXT\')', ')'])]
             ]
         }
     };

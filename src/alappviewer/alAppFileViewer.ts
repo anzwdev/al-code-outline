@@ -82,7 +82,7 @@ export class ALAppFileViewer {
                     this.loadObjects(this.fileUri);
                 }
                 else if (m.command == "execFilterCommand") {
-                    this.filterObjects(m.headColumn, m.currentIdFilter);
+                    this.filterObjects(m.headColumn, m.currentIdFilter, m.currentNameFilter);
                 }
                 else if (m.command == "errorInFilter") {
                     vscode.window.showErrorMessage('Invalid filter: ' + m.message);
@@ -127,7 +127,7 @@ export class ALAppFileViewer {
 
     //#region Filter View
 
-    private async filterObjects(column: string, currentIdFilter: string) {
+    private async filterObjects(column: string, currentIdFilter: string, currentNameFilter: string) {
         if (column == "Type") {
             const objTypes = ['Table', 'Page', 'Report', 'XmlPort', 'Query', 'Codeunit', 'ControlAddIn', 'PageExtension', 'TableExtension', 'Profile', 'PageCustomization', 'Enum', 'DotNetPackage'];
             const values = await vscode.window.showQuickPick(objTypes, { canPickMany: true, placeHolder: 'Select the object type(s) to filter on.' });
@@ -162,8 +162,26 @@ export class ALAppFileViewer {
             }
         }
         else if (column == "Name") {
-            //TODO: Do something with Name filtering
-            vscode.window.showErrorMessage('Filtering not implemented yet for the "Name" column!');
+            let regexp = new RegExp('^\s*|((@?((=?)|(<>))[^\(\)=<>&\|@]+)(\s*((\\|)|(&))\s*(@?((=?)|(<>))[^\(\)=<>&\|@]+))*)$');
+            const filterExpr = await vscode.window.showInputBox({
+                value  : currentNameFilter,
+                prompt : 'Please enter a filter expression (e.g., "<>@Item*").',
+                ignoreFocusOut: true,
+                validateInput: (text: string): string | undefined => {
+                    if (!regexp.test(text)) {
+                        return 'Valid operators for ID filter are: |, &, =, <>, @, ?, *';
+                    } else {
+                        return undefined;
+                    }
+                }
+            });
+            if (filterExpr !== undefined) {
+                this.panel.webview.postMessage({
+                    msgtype: 'filterObjects',
+                    column: column,
+                    filterExpr: filterExpr
+                });
+            }
         }
     }
 
