@@ -1,6 +1,8 @@
 import * as vscode from 'vscode';
 import { ALObjectWriter } from "./alObjectWriter";
 import { ALSymbolInfo } from "../alSymbolInfo";
+import { ALSymbolKind } from '../alSymbolKind';
+import { FileBuilder } from './fileBuilder';
 import { ObjectBuilder } from './objectBuilder';
 
 export class TableExtBuilder extends ObjectBuilder {
@@ -12,9 +14,13 @@ export class TableExtBuilder extends ObjectBuilder {
     //#region Wizards with UI
 
     async showTableExtWizard(tableSymbol : ALSymbolInfo) {
-        let extObjectIdString : string = await this.getTableExtId(
-            "0"
-        );
+        const extObjType : ALSymbolKind = ALSymbolKind.TableExtension;
+
+        let extObjectIdString : string = "0";
+        let promptForObjectId: boolean = vscode.workspace.getConfiguration('alOutline').get('promptForObjectId');
+        if (promptForObjectId) {
+            extObjectIdString = await this.getTableExtId(extObjectIdString);
+        }
 
         if (!extObjectIdString) {
             extObjectIdString = "0";
@@ -25,15 +31,23 @@ export class TableExtBuilder extends ObjectBuilder {
             return;
         }
 
-        let extObjectName : string = await this.getTableExtName(
-            tableSymbol.symbolName.replace(/ /g,'') + "Ext"
-        );
+        let extObjectName: string = FileBuilder.getPatternGeneratedExtensionObjectName(extObjType, extObjectId, tableSymbol);
+        let promptForObjectName: boolean = vscode.workspace.getConfiguration('alOutline').get('promptForObjectName');
+        if (promptForObjectName) {
+            extObjectName = await this.getTableExtName(extObjectName);
+        }
         
         if (!extObjectName) {
             return;
         }
 
-        this.showNewDocument(this.buildTableExtForTable(tableSymbol, extObjectId, extObjectName));
+        let stripChars: string = vscode.workspace.getConfiguration('alOutline').get('stripNonAlphanumericCharactersFromObjectNames');
+        if (stripChars) {
+            extObjectName = FileBuilder.stripNonAlphaNumericCharacters(extObjectName);
+        }
+        
+        let fileName : string = FileBuilder.getPatternGeneratedExtensionObjectFileName(extObjType, extObjectId, extObjectName, tableSymbol);
+        this.showNewDocument(this.buildTableExtForTable(tableSymbol, extObjectId, extObjectName), fileName, extObjType);
     }
 
     //#endregion
