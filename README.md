@@ -29,8 +29,17 @@ This extension has been inspired by "Code Outline" extension created by Patryk Z
 This extension contributes the following settings:
 
 * `alOutline.autorefresh`: refresh code outline tree automatically
+* `alOutline.autoGenerateFiles`: automatically generate files for newly created objects
+* `alOutline.autoGenerateFileDirectory`: the default directory to create files in, relative to the root directory (e.g., \"Source\<ObjectType\>\")
 * `alOutline.defaultAppArea`: default application area for page code generator
 * `alOutline.defaultListUsageCategory`: default usage category for list pages
+* `alOutline.extensionObjectFileNamePattern`: default file naming pattern for new extension objects
+* `alOutline.extensionObjectNamePattern`: default naming pattern for new extension objects
+* `alOutline.fullObjectFileNamePattern`: default naming pattern for new extension objects
+* `alOutline.promptForObjectId`: when generating a new object, ask the user to input the object ID.
+* `alOutline.promptForObjectName`: when generating a new object, ask the user to input the object name
+* `alOutline.promptForFilePath`: when generating a new file, ask the user to specify a path relative to the root of the project-folder
+* `alOutline.stripNonAlphanumericCharactersFromObjectNames`: always strip non-alphanumeric characters from generated object names
 * `alOutline.webClientPort`: web client port number, use 0 for default http/https ports
 
 ## Known Issues

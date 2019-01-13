@@ -159,7 +159,7 @@
 					"alOutline.autoGenerateFileDirectory": {
 						"type": "string",
 						"default": "",
-						"description": "The default directory to create files in relative to the root directory (e.g., \"Source\\<ObjectType>\")."
+						"description": "The default directory to create files in, relative to the root directory (e.g., \"Source\\<ObjectType>\")."
 					},
 					"alOutline.defaultAppArea": {
 						"type": "string",
