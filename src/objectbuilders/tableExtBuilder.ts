@@ -16,56 +16,16 @@ export class TableExtBuilder extends ObjectBuilder {
     async showTableExtWizard(tableSymbol : ALSymbolInfo) {
         const extObjType : ALSymbolKind = ALSymbolKind.TableExtension;
 
-        let extObjectIdString : string = "0";
-        let promptForObjectId: boolean = vscode.workspace.getConfiguration('alOutline').get('promptForObjectId');
-        if (promptForObjectId) {
-            extObjectIdString = await this.getTableExtId(extObjectIdString);
-        }
-
-        if (!extObjectIdString) {
-            extObjectIdString = "0";
-        }
-        
-        let extObjectId : number = Number(extObjectIdString);
-        if (isNaN(extObjectId)) {
-            return;
-        }
+        let extObjectId : number = await this.getObjectId("Please enter an ID for the table extension.", 0);
 
         let extObjectName: string = FileBuilder.getPatternGeneratedExtensionObjectName(extObjType, extObjectId, tableSymbol);
-        let promptForObjectName: boolean = vscode.workspace.getConfiguration('alOutline').get('promptForObjectName');
-        if (promptForObjectName) {
-            extObjectName = await this.getTableExtName(extObjectName);
-        }
-        
+        extObjectName = await this.getObjectName("Please enter a name for the table extension.", extObjectName);
         if (!extObjectName) {
             return;
-        }
-
-        let stripChars: string = vscode.workspace.getConfiguration('alOutline').get('stripNonAlphanumericCharactersFromObjectNames');
-        if (stripChars) {
-            extObjectName = FileBuilder.stripNonAlphaNumericCharacters(extObjectName);
         }
         
         let fileName : string = FileBuilder.getPatternGeneratedExtensionObjectFileName(extObjType, extObjectId, extObjectName, tableSymbol);
         this.showNewDocument(this.buildTableExtForTable(tableSymbol, extObjectId, extObjectName), fileName, extObjType);
-    }
-
-    //#endregion
-
-    //#region UI functions
-
-    private getTableExtId(defaultExtName : string) : Thenable<string> {
-        return vscode.window.showInputBox({
-            value : defaultExtName,
-            prompt : "Please enter an id for the table extension."
-        });
-    }
-
-    private getTableExtName(defaultExtName : string) : Thenable<string> {
-        return vscode.window.showInputBox({
-            value : defaultExtName,
-            prompt : "Please enter a name for the table extension."
-        });
     }
 
     //#endregion

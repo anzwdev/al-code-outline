@@ -31,7 +31,7 @@ export class FileBuilder {
         if (promptForFilePath) {
             relativeFileDir = await vscode.window.showInputBox({
                 value  : relativeFileDir,
-                prompt : 'Please enter a directory, relative to the root, to create the new file in.',
+                prompt : 'Please specify a directory, relative to the root, to create the new file in.',
                 ignoreFocusOut: true
             });
         }
@@ -86,7 +86,25 @@ export class FileBuilder {
 
     //#region Object / File Pattern
 
-    public static getPatternGeneratedExtensionObjectName(extensionType: ALSymbolKind, extensionId: number, baseSymbolInfo: ALSymbolInfo) {
+    public static getPatternGeneratedFullObjectFileName(objectType: ALSymbolKind, objectId: number, objectName: string) : string {
+        let pattern: string = vscode.workspace.getConfiguration('alOutline').get('fullObjectFileNamePattern');
+        return this.replaceAllFullObjPatterns(pattern, objectType, objectId, objectName) + '.al';
+    }
+
+    private static replaceAllFullObjPatterns(pattern: string, objectType: ALSymbolKind, objectId: number, objectName: string) : string {
+        let output = pattern;
+
+        output = this.replacePattern(output, '<ObjectType>', this.getObjectTypeFromSymbolInfo(objectType));
+        output = this.replacePattern(output, '<ObjectTypeShort>', this.getObjectTypeAbbreviation(objectType));
+        output = this.replacePattern(output, '<ObjectId>', objectId.toString());
+        if (objectName) {
+            output = this.replacePattern(output, '<ObjectName>', this.stripNonAlphaNumericCharacters(objectName));
+        }
+
+        return output;
+    }
+
+    public static getPatternGeneratedExtensionObjectName(extensionType: ALSymbolKind, extensionId: number, baseSymbolInfo: ALSymbolInfo) : string {
         let pattern: string = vscode.workspace.getConfiguration('alOutline').get('extensionObjectNamePattern');
         let objectName: string = this.replaceAllExtensionPatterns(pattern, extensionType, extensionId, '', baseSymbolInfo);
 
@@ -97,12 +115,12 @@ export class FileBuilder {
         return objectName;
     }
 
-    public static getPatternGeneratedExtensionObjectFileName(extensionType: ALSymbolKind, extensionId: number, extensionObjectName: string, baseSymbolInfo: ALSymbolInfo) {
+    public static getPatternGeneratedExtensionObjectFileName(extensionType: ALSymbolKind, extensionId: number, extensionObjectName: string, baseSymbolInfo: ALSymbolInfo) : string {
         let pattern: string = vscode.workspace.getConfiguration('alOutline').get('extensionObjectFileNamePattern');
         return this.replaceAllExtensionPatterns(pattern, extensionType, extensionId, extensionObjectName, baseSymbolInfo) + '.al';
     }
 
-    private static replaceAllExtensionPatterns(pattern: string, extensionType: ALSymbolKind, extensionId: number, extensionObjectName: string, baseSymbolInfo: ALSymbolInfo) {
+    private static replaceAllExtensionPatterns(pattern: string, extensionType: ALSymbolKind, extensionId: number, extensionObjectName: string, baseSymbolInfo: ALSymbolInfo) : string {
         let output = pattern;
 
         output = this.replacePattern(output, '<ObjectType>', this.getObjectTypeFromSymbolInfo(extensionType));
@@ -113,11 +131,13 @@ export class FileBuilder {
         }
         output = this.replacePattern(output, '<BaseName>', this.getObjectNameFromSymbolInfo(baseSymbolInfo));
         output = this.replacePattern(output, '<BaseId>', this.getObjectIdFromSymbolInfo(baseSymbolInfo).toString());
+        output = this.replacePattern(output, '<BaseType>', this.getObjectTypeFromSymbolInfo(baseSymbolInfo.alKind));
+        output = this.replacePattern(output, '<BaseTypeShort>', this.getObjectTypeAbbreviation(baseSymbolInfo.alKind));
 
         return output;
     }
 
-    private static getPatternGeneratedRelativeFilePath(objectType: ALSymbolKind) {
+    private static getPatternGeneratedRelativeFilePath(objectType: ALSymbolKind) : string {
         let output: string = vscode.workspace.getConfiguration('alOutline').get('autoGenerateFileDirectory');
         
         output = this.replacePattern(output, '<ObjectType>', this.getObjectTypeFromSymbolInfo(objectType));
@@ -157,7 +177,7 @@ export class FileBuilder {
         }
     }
 
-    private static replacePattern(name: string, pattern: string, replaceWith: string) {
+    private static replacePattern(name: string, pattern: string, replaceWith: string) : string {
         return name.replace(new RegExp(this.escapeRegExpInPattern(pattern), 'g'), replaceWith);
     }
 

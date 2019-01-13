@@ -53,4 +53,82 @@ export class ObjectBuilder {
                 vscode.window.showErrorMessage(err);
             });
     }
+
+    protected async getObjectId(promptText: string, defaultObjectId: number) : Promise<number> {
+        let objectIdString : string = defaultObjectId.toString();
+        if (this.shouldPromptForObjectId()) {
+            objectIdString = await this.promptForObjectId(promptText, objectIdString);
+        }
+
+        if (!objectIdString) {
+            objectIdString = "0";
+        }
+        
+        let objectId : number = Number(objectIdString);
+        if (isNaN(objectId)) {
+            return 0;
+        }
+
+        return objectId;
+    }
+
+    protected async getObjectName(promptText: string, defaultObjectName : string) : Promise<string | undefined> {
+        let objectName : string = defaultObjectName;
+        if (this.shouldPromptForObjectName()) {
+            objectName = await this.promptForObjectName(promptText, objectName);
+        }
+
+        if (!objectName) {
+            return objectName;
+        }
+
+        if (this.shouldStripCharacters()) {
+            objectName = FileBuilder.stripNonAlphaNumericCharacters(objectName);
+        }
+
+        return objectName;
+    }
+
+    //#region UI functions
+
+    private promptForObjectId(promptText: string, defaultObjectId : string) : Thenable<string | undefined> {
+        return vscode.window.showInputBox({
+            value : defaultObjectId,
+            prompt : promptText,
+            validateInput: (text: string): string | undefined => {
+                let objectId : number = Number(text);
+                if (isNaN(objectId)) {
+                    return 'Only numbers are allowed for object IDs.'
+                }
+                else {
+                    return undefined;
+                }
+            }
+        });
+    }
+
+    private promptForObjectName(promptText: string, defaultObjectName : string) : Thenable<string | undefined> {
+        return vscode.window.showInputBox({
+            value : defaultObjectName,
+            prompt : promptText
+        });
+    }
+
+    //#endregion
+
+    //#region Setting Helper Functions
+
+    private shouldPromptForObjectId() : boolean {
+        return vscode.workspace.getConfiguration('alOutline').get('promptForObjectId');
+    }
+
+    private shouldPromptForObjectName() : boolean {
+        return vscode.workspace.getConfiguration('alOutline').get('promptForObjectName');
+    }
+
+    private shouldStripCharacters() : boolean {
+        return vscode.workspace.getConfiguration('alOutline').get('stripNonAlphanumericCharactersFromObjectNames');
+    }
+
+    //#endregion
 }
