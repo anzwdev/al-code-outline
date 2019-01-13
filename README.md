@@ -35,7 +35,7 @@ This extension contributes the following settings:
 * `alOutline.defaultListUsageCategory`: default usage category for list pages
 * `alOutline.extensionObjectFileNamePattern`: default file naming pattern for new extension objects
 * `alOutline.extensionObjectNamePattern`: default naming pattern for new extension objects
-* `alOutline.fullObjectFileNamePattern`: default naming pattern for new extension objects
+* `alOutline.fullObjectFileNamePattern`: default file naming pattern for new full objects
 * `alOutline.promptForObjectId`: when generating a new object, ask the user to input the object ID.
 * `alOutline.promptForObjectName`: when generating a new object, ask the user to input the object name
 * `alOutline.promptForFilePath`: when generating a new file, ask the user to specify a path relative to the root of the project-folder
