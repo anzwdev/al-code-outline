@@ -1,5 +1,9 @@
 # Change Log
 
+## 0.0.11
+
+- another great modification added by rvanbekkum - filtering in AL Object Browser. Thank You!
+
 ## 0.0.10
 
 - new option to create page and table extensions from AL Object Browser added by rvanbekkum
