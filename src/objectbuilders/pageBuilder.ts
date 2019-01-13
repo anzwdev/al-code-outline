@@ -2,6 +2,7 @@ import * as vscode from 'vscode';
 import { ALObjectWriter } from "./alObjectWriter";
 import { ALSymbolInfo } from "../alSymbolInfo";
 import { ALSymbolKind } from "../alSymbolKind";
+import { FileBuilder } from './fileBuilder';
 import { ObjectBuilder } from './objectBuilder';
 
 export class PageBuilder extends ObjectBuilder {
@@ -13,33 +14,35 @@ export class PageBuilder extends ObjectBuilder {
     //#region Wizards with UI
 
     async showListPageWizard(tableSymbol : ALSymbolInfo) {
-        let objectName : string = await this.getPageName(
-            tableSymbol.symbolName.trim() + " List");
-        
-        if (!objectName)
-            return;
+        const objType : ALSymbolKind = ALSymbolKind.Page;
 
-        this.showNewDocument(this.buildListPageForTable(tableSymbol, 0, objectName));
+        let objectId : number = await this.getObjectId("Please enter an ID for the list page.", 0);
+
+        let objectName : string = tableSymbol.symbolName.trim() + " List";
+        objectName = await this.getObjectName("Please enter a name for the list page.", objectName);
+        
+        if (!objectName) {
+            return;
+        }
+
+        let fileName : string = FileBuilder.getPatternGeneratedFullObjectFileName(objType, objectId, objectName);
+        this.showNewDocument(this.buildListPageForTable(tableSymbol, objectId, objectName), fileName, objType);
     }
 
     async showCardPageWizard(tableSymbol : ALSymbolInfo) {
-        let objectName : string = await this.getPageName(
-            tableSymbol.symbolName.trim() + " Card");
+        const objType : ALSymbolKind = ALSymbolKind.Page;
+
+        let objectId : number = await this.getObjectId("Please enter an ID for the card page.", 0);
+
+        let objectName : string = tableSymbol.symbolName.trim() + " Card";
+        objectName = await this.getObjectName("Please enter a name for the card page.", objectName);
         
-        if (!objectName)
+        if (!objectName) {
             return;
+        }
 
-        this.showNewDocument(this.buildCardPageForTable(tableSymbol, 0, objectName));
-    }
-
-    //#endregion
-
-    //#region UI functions
-
-    private getPageName(defaultPageName : string) : Thenable<string> {
-        return vscode.window.showInputBox({
-            value : defaultPageName,
-            prompt : "Please enter new page name"});
+        let fileName : string = FileBuilder.getPatternGeneratedFullObjectFileName(objType, objectId, objectName);
+        this.showNewDocument(this.buildCardPageForTable(tableSymbol, objectId, objectName), fileName, objType);
     }
 
     //#endregion

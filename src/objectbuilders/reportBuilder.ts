@@ -1,8 +1,9 @@
 import * as vscode from 'vscode';
-import { ObjectBuilder } from "./objectBuilder";
-import { ALSymbolInfo } from "../alSymbolInfo";
 import { ALObjectWriter } from './alObjectWriter';
+import { ALSymbolInfo } from "../alSymbolInfo";
 import { ALSymbolKind } from '../alSymbolKind';
+import { FileBuilder } from './fileBuilder';
+import { ObjectBuilder } from "./objectBuilder";
 
 export class ReportBuilder extends ObjectBuilder {
 
@@ -13,23 +14,19 @@ export class ReportBuilder extends ObjectBuilder {
     //#region Wizards with UI
 
     async showReportWizard(tableSymbol : ALSymbolInfo) {
-        let objectName : string = await this.getReportName(
-            tableSymbol.symbolName.trim() + " Report");
+        const objType : ALSymbolKind = ALSymbolKind.Report;
+
+        let objectId : number = await this.getObjectId("Please enter an ID for the report object.", 0);
+
+        let objectName : string = tableSymbol.symbolName.trim() + " Report";
+        objectName = await this.getObjectName("Please enter a name for the report object.", objectName);
         
-        if (!objectName)
+        if (!objectName) {
             return;
+        }
 
-        this.showNewDocument(this.buildReportForTable(tableSymbol, 0, objectName));
-    }
-
-    //#endregion
-
-    //#region UI functions
-
-    private getReportName(defaultName : string) : Thenable<string> {
-        return vscode.window.showInputBox({
-            value : defaultName,
-            prompt : "Please enter new report name"});
+        let fileName : string = FileBuilder.getPatternGeneratedFullObjectFileName(objType, objectId, objectName);
+        this.showNewDocument(this.buildReportForTable(tableSymbol, objectId, objectName), fileName, objType);
     }
 
     //#endregion
