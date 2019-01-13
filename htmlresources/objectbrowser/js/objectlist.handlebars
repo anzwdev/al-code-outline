@@ -1,10 +1,12 @@
 <table id="objlisttab">
-    <tr><th>Type</th><th>ID</th><th>Name</th></tr>
+    <tr id="objhead" class="objhead"><th>Type</th><th>ID</th><th>Name</th></tr>
 
     {{#each objectCollections}}
         {{#if visible}}
             {{#each objects}}
-                <tr data-objt="{{../objectType}}" data-objid="{{Id}}" data-objname="{{Name}}" onclick="objclick(this)"><td>{{../objectType}}</td><td>{{OId}}</td><td>{{Name}}</td></tr>
+                {{#if objvisible}}
+                    <tr class="objrow" data-objt="{{../objectType}}" data-objid="{{Id}}" data-objname="{{Name}}" onclick="objclick(this)"><td>{{../objectType}}</td><td>{{OId}}</td><td>{{Name}}</td></tr>
+                {{/if}}
             {{/each}}
         {{/if}}
     {{/each}}

@@ -56,6 +56,7 @@ export class ALAppFileViewer {
         var symbolInfo = await this.objectLibraries.getBasicLibrary(uri.fsPath, false);
         if (symbolInfo)
             this.panel.webview.postMessage({
+                msgtype: 'objectsLoaded',
                 data: symbolInfo
             });
     }
@@ -79,7 +80,14 @@ export class ALAppFileViewer {
             if (m) {
                 if ((m.command) && (m.command == "documentLoaded")) {
                     this.loadObjects(this.fileUri);
-                } else {
+                }
+                else if (m.command == "execFilterCommand") {
+                    this.filterObjects(m.headColumn, m.currentIdFilter, m.currentNameFilter);
+                }
+                else if (m.command == "errorInFilter") {
+                    vscode.window.showErrorMessage('Invalid filter: ' + m.message);
+                }
+                else {
                     this.appFileObjCommand(m.objtype, m.objid, m.cmdname);
                 }
             }                
@@ -116,5 +124,67 @@ export class ALAppFileViewer {
                 await this.objectBuilders.pageExtBuilder.showPageExtWizard(symbolInfo);
         }            
     }
+
+    //#region Filter View
+
+    private async filterObjects(column: string, currentIdFilter: string, currentNameFilter: string) {
+        if (column == "Type") {
+            const objTypes = ['Table', 'Page', 'Report', 'XmlPort', 'Query', 'Codeunit', 'ControlAddIn', 'PageExtension', 'TableExtension', 'Profile', 'PageCustomization', 'Enum', 'DotNetPackage'];
+            const values = await vscode.window.showQuickPick(objTypes, { canPickMany: true, placeHolder: 'Select the object type(s) to filter on.' });
+            if (values) {
+                this.panel.webview.postMessage({
+                    msgtype: 'filterObjects',
+                    column: column,
+                    filterSet: values
+                });
+            }
+        }
+        else if (column == "ID") {
+            let regexp = new RegExp('^\s*|(((((=?)|(<>)|(>)|(>=)|(<)|(<=)|(\\.\\.))\s*[0-9]+)|([0-9]+\s*\\.\\.\s*[0-9]*))(\s*((\\|)|(&))\s*(((=?)|(<>)|(>)|(>=)|(<)|(<=)|(\\.\\.))\s*[0-9]+\s*)|([0-9]+\s*\\.\\.\s*[0-9]*))*)$');
+            const filterExpr = await vscode.window.showInputBox({
+                value  : currentIdFilter,
+                prompt : 'Please enter an ID filter expression (e.g., "10..20|>=50").',
+                ignoreFocusOut: true,
+                validateInput: (text: string): string | undefined => {
+                    if (!regexp.test(text)) {
+                        return 'Valid operators for ID filter are: |, &, =, <>, >, >=, <, <=, ..';
+                    } else {
+                        return undefined;
+                    }
+                }
+            });
+            if (filterExpr !== undefined) {
+                this.panel.webview.postMessage({
+                    msgtype: 'filterObjects',
+                    column: column,
+                    filterExpr: filterExpr
+                });
+            }
+        }
+        else if (column == "Name") {
+            let regexp = new RegExp('^\s*|((@?((=?)|(<>))[^\(\)=<>&\|@]+)(\s*((\\|)|(&))\s*(@?((=?)|(<>))[^\(\)=<>&\|@]+))*)$');
+            const filterExpr = await vscode.window.showInputBox({
+                value  : currentNameFilter,
+                prompt : 'Please enter a filter expression (e.g., "<>@Item*").',
+                ignoreFocusOut: true,
+                validateInput: (text: string): string | undefined => {
+                    if (!regexp.test(text)) {
+                        return 'Valid operators for ID filter are: |, &, =, <>, @, ?, *';
+                    } else {
+                        return undefined;
+                    }
+                }
+            });
+            if (filterExpr !== undefined) {
+                this.panel.webview.postMessage({
+                    msgtype: 'filterObjects',
+                    column: column,
+                    filterExpr: filterExpr
+                });
+            }
+        }
+    }
+
+    //#endregion
 
 }
