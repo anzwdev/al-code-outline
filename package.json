@@ -161,6 +161,11 @@
 						"default": "",
 						"description": "The default directory to create files in, relative to the root directory (e.g., \"Source\\<ObjectType>\")."
 					},
+					"alOutline.autoShowFiles": {
+						"type": "boolean",
+						"default": true,
+						"description": "Automatically show any newly created files in the editor."
+					},
 					"alOutline.defaultAppArea": {
 						"type": "string",
 						"default": "All",

@@ -23,9 +23,12 @@ export class ObjectBuilder {
                 if (path) {
                     vscode.workspace.openTextDocument(path).then(
                         document => {
-                            vscode.window.showTextDocument(document, {
-                                preview : false
-                            });
+                            let autoShowDocument: boolean = vscode.workspace.getConfiguration('alOutline').get('autoShowFiles');
+                            if (autoShowDocument) {
+                                vscode.window.showTextDocument(document, {
+                                    preview : false
+                                });
+                            }
                         },
                         err => {
                             vscode.window.showErrorMessage(err);
