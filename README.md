@@ -31,6 +31,7 @@ This extension contributes the following settings:
 * `alOutline.autorefresh`: refresh code outline tree automatically
 * `alOutline.autoGenerateFiles`: automatically generate files for newly created objects
 * `alOutline.autoGenerateFileDirectory`: the default directory to create files in, relative to the root directory (e.g., \"Source\<ObjectType\>\")
+* `alOutline.autoShowFiles`: automatically show any newly created files in the editor
 * `alOutline.defaultAppArea`: default application area for page code generator
 * `alOutline.defaultListUsageCategory`: default usage category for list pages
 * `alOutline.extensionObjectFileNamePattern`: default file naming pattern for new extension objects
