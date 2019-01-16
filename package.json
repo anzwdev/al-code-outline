@@ -151,6 +151,21 @@
 						"default": true,
 						"description": "Refresh code outline tree automatically"
 					},
+					"alOutline.autoGenerateFiles": {
+						"type": "boolean",
+						"default": true,
+						"description": "Automatically generate files for newly created objects."
+					},
+					"alOutline.autoGenerateFileDirectory": {
+						"type": "string",
+						"default": "",
+						"description": "The default directory to create files in, relative to the root directory (e.g., \"Source\\<ObjectType>\")."
+					},
+					"alOutline.autoShowFiles": {
+						"type": "boolean",
+						"default": true,
+						"description": "Automatically show any newly created files in the editor."
+					},
 					"alOutline.defaultAppArea": {
 						"type": "string",
 						"default": "All",
@@ -160,6 +175,41 @@
 						"type": "string",
 						"default": "Lists",
 						"description": "Default usage category for list pages"
+					},
+					"alOutline.extensionObjectFileNamePattern": {
+						"type": "string",
+						"default": "<ObjectTypeShort><BaseId>-Ext<ObjectId>.<ObjectName>",
+						"description": "Default file naming pattern for new extension objects."
+					},
+					"alOutline.extensionObjectNamePattern": {
+						"type": "string",
+						"default": "<BaseName>Ext",
+						"description": "Default naming pattern for new extension objects."
+					},
+					"alOutline.fullObjectFileNamePattern": {
+						"type": "string",
+						"default": "<ObjectTypeShort><ObjectId>.<ObjectName>",
+						"description": "Default file naming pattern for new full objects."
+					},
+					"alOutline.promptForObjectId": {
+						"type": "boolean",
+						"default": true,
+						"description": "When generating a new object, ask the user to input the object ID."
+					},
+					"alOutline.promptForObjectName": {
+						"type": "boolean",
+						"default": true,
+						"description": "When generating a new object, ask the user to input the object name."
+					},
+					"alOutline.promptForFilePath": {
+						"type": "boolean",
+						"default": false,
+						"description": "When generating a new file, ask the user to specify a path relative to the root of the project-folder."
+					},
+					"alOutline.stripNonAlphanumericCharactersFromObjectNames": {
+						"type": "boolean",
+						"default": false,
+						"description": "Always strip non-alphanumeric characters from generated object names."
 					},
 					"alOutline.webClientPort": {
 						"type": "number",

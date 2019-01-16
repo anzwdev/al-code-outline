@@ -1,8 +1,9 @@
 import * as vscode from 'vscode';
-import { ObjectBuilder } from "./objectBuilder";
-import { ALSymbolInfo } from "../alSymbolInfo";
 import { ALObjectWriter } from './alObjectWriter';
+import { ALSymbolInfo } from "../alSymbolInfo";
 import { ALSymbolKind } from '../alSymbolKind';
+import { FileBuilder } from './fileBuilder';
+import { ObjectBuilder } from "./objectBuilder";
 
 export class XmlPortBuilder extends ObjectBuilder {
 
@@ -13,11 +14,16 @@ export class XmlPortBuilder extends ObjectBuilder {
     //#region Wizards with UI
 
     async showXmlPortWizard(tableSymbol : ALSymbolInfo) {
-        let objectName : string = await this.getXmlPortName(
-            tableSymbol.symbolName.trim() + " XmlPort");
+        const objType : ALSymbolKind = ALSymbolKind.XmlPort;
+
+        let objectId : number = await this.getObjectId("Please enter an ID for the xmlport object.", 0);
+
+        let objectName : string = tableSymbol.symbolName.trim() + " XmlPort";
+        objectName = await this.getObjectName("Please enter a name for the xmlport object.", objectName);
         
-        if (!objectName)
+        if (!objectName) {
             return;
+        }
 
         //ask user to select table field node type
         let fieldAsAttributeText = "Table fields as xml attributes";
@@ -37,17 +43,8 @@ export class XmlPortBuilder extends ObjectBuilder {
         if ((!selectedNodeType) || (!selectedNodeType.label))
             return;
         
-        this.showNewDocument(this.buildXmlPortForTable(tableSymbol, 0, objectName, (selectedNodeType.label == fieldAsElementText)));
-    }
-
-    //#endregion
-
-    //#region UI functions
-
-    private getXmlPortName(defaultName : string) : Thenable<string> {
-        return vscode.window.showInputBox({
-            value : defaultName,
-            prompt : "Please enter new xmlport name"});
+        let fileName : string = FileBuilder.getPatternGeneratedFullObjectFileName(objType, objectId, objectName);
+        this.showNewDocument(this.buildXmlPortForTable(tableSymbol, objectId, objectName, (selectedNodeType.label == fieldAsElementText)), fileName, objType);
     }
 
     //#endregion

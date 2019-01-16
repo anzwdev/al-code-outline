@@ -1,8 +1,9 @@
 import * as vscode from 'vscode';
-import { ObjectBuilder } from "./objectBuilder";
-import { ALSymbolInfo } from "../alSymbolInfo";
 import { ALObjectWriter } from './alObjectWriter';
+import { ALSymbolInfo } from "../alSymbolInfo";
 import { ALSymbolKind } from '../alSymbolKind';
+import { FileBuilder } from './fileBuilder';
+import { ObjectBuilder } from "./objectBuilder";
 
 export class QueryBuilder extends ObjectBuilder {
 
@@ -13,23 +14,19 @@ export class QueryBuilder extends ObjectBuilder {
     //#region Wizards with UI
 
     async showQueryWizard(tableSymbol : ALSymbolInfo) {
-        let objectName : string = await this.getQueryName(
-            tableSymbol.symbolName.trim() + " Query");
+        const objType : ALSymbolKind = ALSymbolKind.Query;
+
+        let objectId : number = await this.getObjectId("Please enter an ID for the query object.", 0);
+
+        let objectName : string = tableSymbol.symbolName.trim() + " Query";
+        objectName = await this.getObjectName("Please enter a name for the query object.", objectName);
         
-        if (!objectName)
+        if (!objectName) {
             return;
+        }
 
-        this.showNewDocument(this.buildQueryForTable(tableSymbol, 0, objectName));
-    }
-
-    //#endregion
-    
-    //#region UI functions
-
-    private getQueryName(defaultName : string) : Thenable<string> {
-        return vscode.window.showInputBox({
-            value : defaultName,
-            prompt : "Please enter new query name"});
+        let fileName : string = FileBuilder.getPatternGeneratedFullObjectFileName(objType, objectId, objectName);
+        this.showNewDocument(this.buildQueryForTable(tableSymbol, objectId, objectName), fileName, objType);
     }
 
     //#endregion

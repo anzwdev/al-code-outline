@@ -64,7 +64,10 @@ export class ALObjectWriter {
         else
             objectIdText = id.toString();
         
-        this.writeLine(type + " " + objectIdText + " \"" + name.replace("\"", "\"\"") + "\"");
+        name = name.replace("\"", "\"\"");
+        name = this.escapeObjectName(name);
+
+        this.writeLine(type + " " + objectIdText + " " + name);
         this.writeStartBlock();
     }
 
@@ -75,7 +78,12 @@ export class ALObjectWriter {
         else
             objectIdText = id.toString();
         
-        this.writeLine(type + " " + objectIdText + " \"" + extname.replace("\"", "\"\"") + "\"" + " extends " + "\"" + targetName + "\"");
+        extname = extname.replace("\"", "\"\"");
+        extname = this.escapeObjectName(extname);
+        targetName = this.escapeObjectName(targetName);
+
+        this.writeLine(type + " " + objectIdText + " " + extname + " extends " + targetName);
+        
         this.writeStartBlock();
     }
 
@@ -136,6 +144,13 @@ export class ALObjectWriter {
 
     public encodeName(name : string) : string {
         return "\"" + name.replace("\"", "\"\"") + "\"";
+    }
+
+    public escapeObjectName(name : string) : string {
+        if (/\W/.test(name)) {
+            name = "\"" + name + "\"";
+        }
+        return name;
     }
 
     public createName(source : string) : string {

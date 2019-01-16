@@ -1,6 +1,8 @@
 import * as vscode from 'vscode';
 import { ALObjectWriter } from "./alObjectWriter";
 import { ALSymbolInfo } from "../alSymbolInfo";
+import { ALSymbolKind } from '../alSymbolKind';
+import { FileBuilder } from './fileBuilder';
 import { ObjectBuilder } from './objectBuilder';
 
 export class PageExtBuilder extends ObjectBuilder {
@@ -12,46 +14,18 @@ export class PageExtBuilder extends ObjectBuilder {
     //#region Wizards with UI
 
     async showPageExtWizard(pageSymbol : ALSymbolInfo) {
-        let extObjectIdString : string = await this.getPageExtId(
-            "0"
-        );
-
-        if (!extObjectIdString) {
-            extObjectIdString = "0";
-        }
+        const extObjType : ALSymbolKind = ALSymbolKind.PageExtension;
         
-        let extObjectId : number = Number(extObjectIdString);
-        if (isNaN(extObjectId)) {
-            return;
-        }
+        let extObjectId : number = await this.getObjectId("Please enter an ID for the page extension.", 0);
 
-        let extObjectName : string = await this.getPageExtName(
-            pageSymbol.symbolName.replace(/ /g,'') + "Ext"
-        );
-        
+        let extObjectName: string = FileBuilder.getPatternGeneratedExtensionObjectName(extObjType, extObjectId, pageSymbol);
+        extObjectName = await this.getObjectName("Please enter a name for the page extension.", extObjectName);
         if (!extObjectName) {
             return;
         }
 
-        this.showNewDocument(this.buildPageExtForPage(pageSymbol, extObjectId, extObjectName));
-    }
-
-    //#endregion
-
-    //#region UI functions
-
-    private getPageExtId(defaultExtName : string) : Thenable<string> {
-        return vscode.window.showInputBox({
-            value : defaultExtName,
-            prompt : "Please enter an id for the page extension."
-        });
-    }
-
-    private getPageExtName(defaultExtName : string) : Thenable<string> {
-        return vscode.window.showInputBox({
-            value : defaultExtName,
-            prompt : "Please enter a name for the page extension."
-        });
+        let fileName : string = FileBuilder.getPatternGeneratedExtensionObjectFileName(extObjType, extObjectId, extObjectName, pageSymbol);
+        this.showNewDocument(this.buildPageExtForPage(pageSymbol, extObjectId, extObjectName), fileName, extObjType);
     }
 
     //#endregion

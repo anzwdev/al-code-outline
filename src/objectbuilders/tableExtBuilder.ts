@@ -1,6 +1,8 @@
 import * as vscode from 'vscode';
 import { ALObjectWriter } from "./alObjectWriter";
 import { ALSymbolInfo } from "../alSymbolInfo";
+import { ALSymbolKind } from '../alSymbolKind';
+import { FileBuilder } from './fileBuilder';
 import { ObjectBuilder } from './objectBuilder';
 
 export class TableExtBuilder extends ObjectBuilder {
@@ -12,46 +14,18 @@ export class TableExtBuilder extends ObjectBuilder {
     //#region Wizards with UI
 
     async showTableExtWizard(tableSymbol : ALSymbolInfo) {
-        let extObjectIdString : string = await this.getTableExtId(
-            "0"
-        );
+        const extObjType : ALSymbolKind = ALSymbolKind.TableExtension;
 
-        if (!extObjectIdString) {
-            extObjectIdString = "0";
-        }
-        
-        let extObjectId : number = Number(extObjectIdString);
-        if (isNaN(extObjectId)) {
-            return;
-        }
+        let extObjectId : number = await this.getObjectId("Please enter an ID for the table extension.", 0);
 
-        let extObjectName : string = await this.getTableExtName(
-            tableSymbol.symbolName.replace(/ /g,'') + "Ext"
-        );
-        
+        let extObjectName: string = FileBuilder.getPatternGeneratedExtensionObjectName(extObjType, extObjectId, tableSymbol);
+        extObjectName = await this.getObjectName("Please enter a name for the table extension.", extObjectName);
         if (!extObjectName) {
             return;
         }
-
-        this.showNewDocument(this.buildTableExtForTable(tableSymbol, extObjectId, extObjectName));
-    }
-
-    //#endregion
-
-    //#region UI functions
-
-    private getTableExtId(defaultExtName : string) : Thenable<string> {
-        return vscode.window.showInputBox({
-            value : defaultExtName,
-            prompt : "Please enter an id for the table extension."
-        });
-    }
-
-    private getTableExtName(defaultExtName : string) : Thenable<string> {
-        return vscode.window.showInputBox({
-            value : defaultExtName,
-            prompt : "Please enter a name for the table extension."
-        });
+        
+        let fileName : string = FileBuilder.getPatternGeneratedExtensionObjectFileName(extObjType, extObjectId, extObjectName, tableSymbol);
+        this.showNewDocument(this.buildTableExtForTable(tableSymbol, extObjectId, extObjectName), fileName, extObjType);
     }
 
     //#endregion
