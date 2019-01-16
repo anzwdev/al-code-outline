@@ -2,7 +2,7 @@
 	"name": "al-code-outline",
 	"displayName": "AL Code Outline",
 	"description": "AL code outline tree provider",
-	"version": "0.0.11",
+	"version": "0.0.12",
 	"publisher": "andrzejzwierzchowski",
 	"engines": {
 		"vscode": "^1.26.0"
@@ -153,7 +153,7 @@
 					},
 					"alOutline.autoGenerateFiles": {
 						"type": "boolean",
-						"default": true,
+						"default": false,
 						"description": "Automatically generate files for newly created objects."
 					},
 					"alOutline.autoGenerateFileDirectory": {

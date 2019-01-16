@@ -18,7 +18,9 @@ It is also possible to view symbols from symbol reference packages. Extension ad
 
 ## Contributors
 
-- rvanbekkum: "New Page Extension" and "New Table Extension" options in AL Object Browser
+- rvanbekkum: 
+  * "New Page Extension" and "New Table Extension" options in AL Object Browser
+  * Ability to save generated objects in files inside project folder
 
 ## Inspiration
 
@@ -42,6 +44,22 @@ This extension contributes the following settings:
 * `alOutline.promptForFilePath`: when generating a new file, ask the user to specify a path relative to the root of the project-folder
 * `alOutline.stripNonAlphanumericCharactersFromObjectNames`: always strip non-alphanumeric characters from generated object names
 * `alOutline.webClientPort`: web client port number, use 0 for default http/https ports
+
+These special variables can be used in `alOutline.fullObjectFileNamePattern` setting:
+* `<ObjectType>` - object type name
+* `<ObjectTypeShort>` - short object type name
+* `<ObjectId>` - object id
+* `<ObjectName>` - object name
+
+These special variables can be used in `alOutline.extensionObjectNamePattern` and `alOutline.extensionObjectFileNamePattern` settings
+* `<ObjectType>` - object type name
+* `<ObjectTypeShort>` - short object type name
+* `<ObjectId>` - object id
+* `<ObjectName>` - object name
+* `<BaseName>` - base object name
+* `<BaseId>` - base object id
+* `<BaseType>` - base object type name
+* `<BaseTypeShort>` - short base object type name
 
 ## Known Issues
 
