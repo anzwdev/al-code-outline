@@ -17,6 +17,9 @@ export class PageExtBuilder extends ObjectBuilder {
         const extObjType : ALSymbolKind = ALSymbolKind.PageExtension;
         
         let extObjectId : number = await this.getObjectId("Please enter an ID for the page extension.", 0);
+        if (extObjectId < 0) {
+            return;
+        }
 
         let extObjectName: string = FileBuilder.getPatternGeneratedExtensionObjectName(extObjType, extObjectId, pageSymbol);
         extObjectName = await this.getObjectName("Please enter a name for the page extension.", extObjectName);

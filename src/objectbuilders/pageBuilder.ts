@@ -17,6 +17,9 @@ export class PageBuilder extends ObjectBuilder {
         const objType : ALSymbolKind = ALSymbolKind.Page;
 
         let objectId : number = await this.getObjectId("Please enter an ID for the list page.", 0);
+        if (objectId < 0) {
+            return;
+        }
 
         let objectName : string = tableSymbol.symbolName.trim() + " List";
         objectName = await this.getObjectName("Please enter a name for the list page.", objectName);
@@ -33,6 +36,9 @@ export class PageBuilder extends ObjectBuilder {
         const objType : ALSymbolKind = ALSymbolKind.Page;
 
         let objectId : number = await this.getObjectId("Please enter an ID for the card page.", 0);
+        if (objectId < 0) {
+            return;
+        }
 
         let objectName : string = tableSymbol.symbolName.trim() + " Card";
         objectName = await this.getObjectName("Please enter a name for the card page.", objectName);

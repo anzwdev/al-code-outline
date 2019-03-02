@@ -64,12 +64,12 @@ export class ObjectBuilder {
         }
 
         if (!objectIdString) {
-            objectIdString = "0";
+            return -1;
         }
         
         let objectId : number = Number(objectIdString);
         if (isNaN(objectId)) {
-            return 0;
+            return -1;
         }
 
         return objectId;
