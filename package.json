@@ -205,6 +205,9 @@
 			}
 		]
 	},
+	"extensionDependencies": [
+		"waldo.crs-al-language-extension"
+	],
 	"scripts": {
 		"vscode:prepublish": "npm run compile",
 		"compile": "tsc -p ./",
