@@ -17,6 +17,9 @@ export class QueryBuilder extends ObjectBuilder {
         const objType : ALSymbolKind = ALSymbolKind.Query;
 
         let objectId : number = await this.getObjectId("Please enter an ID for the query object.", 0);
+        if (objectId < 0) {
+            return;
+        }
 
         let objectName : string = tableSymbol.symbolName.trim() + " Query";
         objectName = await this.getObjectName("Please enter a name for the query object.", objectName);

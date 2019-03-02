@@ -17,6 +17,9 @@ export class ReportBuilder extends ObjectBuilder {
         const objType : ALSymbolKind = ALSymbolKind.Report;
 
         let objectId : number = await this.getObjectId("Please enter an ID for the report object.", 0);
+        if (objectId < 0) {
+            return;
+        }
 
         let objectName : string = tableSymbol.symbolName.trim() + " Report";
         objectName = await this.getObjectName("Please enter a name for the report object.", objectName);

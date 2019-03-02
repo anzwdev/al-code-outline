@@ -17,6 +17,9 @@ export class XmlPortBuilder extends ObjectBuilder {
         const objType : ALSymbolKind = ALSymbolKind.XmlPort;
 
         let objectId : number = await this.getObjectId("Please enter an ID for the xmlport object.", 0);
+        if (objectId < 0) {
+            return;
+        }
 
         let objectName : string = tableSymbol.symbolName.trim() + " XmlPort";
         objectName = await this.getObjectName("Please enter a name for the xmlport object.", objectName);

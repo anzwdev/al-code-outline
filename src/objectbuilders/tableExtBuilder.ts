@@ -17,6 +17,9 @@ export class TableExtBuilder extends ObjectBuilder {
         const extObjType : ALSymbolKind = ALSymbolKind.TableExtension;
 
         let extObjectId : number = await this.getObjectId("Please enter an ID for the table extension.", 0);
+        if (extObjectId < 0) {
+            return;
+        }
 
         let extObjectName: string = FileBuilder.getPatternGeneratedExtensionObjectName(extObjType, extObjectId, tableSymbol);
         extObjectName = await this.getObjectName("Please enter a name for the table extension.", extObjectName);
