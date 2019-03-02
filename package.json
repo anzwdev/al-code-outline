@@ -2,10 +2,10 @@
 	"name": "al-code-outline",
 	"displayName": "AL Code Outline",
 	"description": "AL code outline tree provider",
-	"version": "0.0.12",
+	"version": "0.0.13",
 	"publisher": "andrzejzwierzchowski",
 	"engines": {
-		"vscode": "^1.26.0"
+		"vscode": "^1.30.0"
 	},
 	"author": {
 		"name": "Andrzej Zwierzchowski",
@@ -176,21 +176,6 @@
 						"default": "Lists",
 						"description": "Default usage category for list pages"
 					},
-					"alOutline.extensionObjectFileNamePattern": {
-						"type": "string",
-						"default": "<ObjectTypeShort><BaseId>-Ext<ObjectId>.<ObjectName>",
-						"description": "Default file naming pattern for new extension objects."
-					},
-					"alOutline.extensionObjectNamePattern": {
-						"type": "string",
-						"default": "<BaseName>Ext",
-						"description": "Default naming pattern for new extension objects."
-					},
-					"alOutline.fullObjectFileNamePattern": {
-						"type": "string",
-						"default": "<ObjectTypeShort><ObjectId>.<ObjectName>",
-						"description": "Default file naming pattern for new full objects."
-					},
 					"alOutline.promptForObjectId": {
 						"type": "boolean",
 						"default": true,
@@ -228,10 +213,10 @@
 		"test": "npm run compile && node ./node_modules/vscode/bin/test"
 	},
 	"devDependencies": {
-		"typescript": "^2.6.1",
-		"vscode": "^1.1.21",
+		"@types/mocha": "^2.2.42",
 		"@types/node": "^8.10.25",
-		"@types/mocha": "^2.2.42"
+		"typescript": "^2.6.1",
+		"vscode": "^1.1.30"
 	},
 	"dependencies": {
 		"adm-zip": "^0.4.11",

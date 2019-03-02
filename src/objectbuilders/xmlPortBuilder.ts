@@ -43,7 +43,7 @@ export class XmlPortBuilder extends ObjectBuilder {
         if ((!selectedNodeType) || (!selectedNodeType.label))
             return;
         
-        let fileName : string = FileBuilder.getPatternGeneratedFullObjectFileName(objType, objectId, objectName);
+        let fileName : string = await FileBuilder.getPatternGeneratedFullObjectFileName(objType, objectId, objectName);
         this.showNewDocument(this.buildXmlPortForTable(tableSymbol, objectId, objectName, (selectedNodeType.label == fieldAsElementText)), fileName, objType);
     }
 

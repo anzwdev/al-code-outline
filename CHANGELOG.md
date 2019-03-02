@@ -1,14 +1,17 @@
 # Change Log
 
+## 0.0.13
+ - Most of file and object name patters removed and redirected to functionality that has already beed implemented by Waldo in  crs-al-language-extension. These settings have been removed:
+    * `alOutline.extensionObjectFileNamePattern`: default file naming pattern for new extension objects
+    * `alOutline.extensionObjectNamePattern`: default naming pattern for new extension objects
+    * `alOutline.fullObjectFileNamePattern`: default file naming pattern for new full objects
+
 ## 0.0.12
 
 - new functionality allowing to automatically save generated object on disk in project folder has been implemented by rvanbekkum. These settings allowing to setup that functionality have been added:
     * `alOutline.autoGenerateFiles` setting : automatically generate files for newly created objects
     * `alOutline.autoGenerateFileDirectory`: the default directory to create files in, relative to the root directory (e.g., \"Source\<ObjectType\>\")
     * `alOutline.autoShowFiles`: automatically show any newly created files in the editor
-    * `alOutline.extensionObjectFileNamePattern`: default file naming pattern for new extension objects
-    * `alOutline.extensionObjectNamePattern`: default naming pattern for new extension objects
-    * `alOutline.fullObjectFileNamePattern`: default file naming pattern for new full objects
     * `alOutline.promptForObjectId`: when generating a new object, ask the user to input the object ID.
     * `alOutline.promptForObjectName`: when generating a new object, ask the user to input the object name
     * `alOutline.promptForFilePath`: when generating a new file, ask the user to specify a path relative to the root of the project-folder

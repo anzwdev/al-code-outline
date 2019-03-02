@@ -18,13 +18,13 @@ export class PageExtBuilder extends ObjectBuilder {
         
         let extObjectId : number = await this.getObjectId("Please enter an ID for the page extension.", 0);
 
-        let extObjectName: string = FileBuilder.getPatternGeneratedExtensionObjectName(extObjType, extObjectId, pageSymbol);
+        let extObjectName: string = await FileBuilder.getPatternGeneratedExtensionObjectName(extObjType, extObjectId, pageSymbol);
         extObjectName = await this.getObjectName("Please enter a name for the page extension.", extObjectName);
         if (!extObjectName) {
             return;
         }
 
-        let fileName : string = FileBuilder.getPatternGeneratedExtensionObjectFileName(extObjType, extObjectId, extObjectName, pageSymbol);
+        let fileName : string = await FileBuilder.getPatternGeneratedExtensionObjectFileName(extObjType, extObjectId, extObjectName, pageSymbol);
         this.showNewDocument(this.buildPageExtForPage(pageSymbol, extObjectId, extObjectName), fileName, extObjType);
     }
 

@@ -36,30 +36,11 @@ This extension contributes the following settings:
 * `alOutline.autoShowFiles`: automatically show any newly created files in the editor
 * `alOutline.defaultAppArea`: default application area for page code generator
 * `alOutline.defaultListUsageCategory`: default usage category for list pages
-* `alOutline.extensionObjectFileNamePattern`: default file naming pattern for new extension objects
-* `alOutline.extensionObjectNamePattern`: default naming pattern for new extension objects
-* `alOutline.fullObjectFileNamePattern`: default file naming pattern for new full objects
 * `alOutline.promptForObjectId`: when generating a new object, ask the user to input the object ID.
 * `alOutline.promptForObjectName`: when generating a new object, ask the user to input the object name
 * `alOutline.promptForFilePath`: when generating a new file, ask the user to specify a path relative to the root of the project-folder
 * `alOutline.stripNonAlphanumericCharactersFromObjectNames`: always strip non-alphanumeric characters from generated object names
 * `alOutline.webClientPort`: web client port number, use 0 for default http/https ports
-
-These special variables can be used in `alOutline.fullObjectFileNamePattern` setting:
-* `<ObjectType>` - object type name
-* `<ObjectTypeShort>` - short object type name
-* `<ObjectId>` - object id
-* `<ObjectName>` - object name
-
-These special variables can be used in `alOutline.extensionObjectNamePattern` and `alOutline.extensionObjectFileNamePattern` settings
-* `<ObjectType>` - object type name
-* `<ObjectTypeShort>` - short object type name
-* `<ObjectId>` - object id
-* `<ObjectName>` - object name
-* `<BaseName>` - base object name
-* `<BaseId>` - base object id
-* `<BaseType>` - base object type name
-* `<BaseTypeShort>` - short base object type name
 
 ## Known Issues
 

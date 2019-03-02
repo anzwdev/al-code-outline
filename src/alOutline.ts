@@ -108,15 +108,15 @@ export class ALOutlineProvider implements vscode.TreeDataProvider<ALSymbolInfo> 
             if ((lspSymbols) && (lspSymbols.length > 0)) {
                 
                 //check if this is symbol info
-                let isSymbolInfoList : boolean = false;
+                let isDocumentSymbolList : boolean = false;
                 
-                for (let idx = 0; ((idx<lspSymbols.length) && (!isSymbolInfoList)); idx++) {
+                for (let idx = 0; ((idx<lspSymbols.length) && (!isDocumentSymbolList)); idx++) {
                     let anySymbol : any = lspSymbols[idx];
-                    if (anySymbol.containerName)
-                        isSymbolInfoList = true;
+                    if ((anySymbol.children) && (anySymbol.children.length > 0))
+                        isDocumentSymbolList = true;
                 }                
                 
-                if (isSymbolInfoList) {
+                if (!isDocumentSymbolList) {
                     let symbolInfoList : vscode.SymbolInformation[] = lspSymbols as vscode.SymbolInformation[];
                     let alSymbols = symbolInfoList.map(symbol => new ALSymbolInfo(symbol, this.editor.document.languageId));
                     //build symbols tree

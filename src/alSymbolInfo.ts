@@ -36,7 +36,7 @@ export class ALSymbolInfo {
         if (symbol) {
             let anySymbol : any = symbol;
             this.alKind = ALSymbolKind.Undefined;
-            if (anySymbol.containerName) {
+            if ((anySymbol.containerName) && ((!anySymbol.children) || (anySymbol.children.length == 0))) {
                 this.vscodeSymbolInfo = symbol as SymbolInformation;
                 this.name = this.vscodeSymbolInfo.name;
                 this.range = this.vscodeSymbolInfo.location.range;

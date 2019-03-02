@@ -25,7 +25,7 @@ export class PageBuilder extends ObjectBuilder {
             return;
         }
 
-        let fileName : string = FileBuilder.getPatternGeneratedFullObjectFileName(objType, objectId, objectName);
+        let fileName : string = await FileBuilder.getPatternGeneratedFullObjectFileName(objType, objectId, objectName);
         this.showNewDocument(this.buildListPageForTable(tableSymbol, objectId, objectName), fileName, objType);
     }
 
@@ -41,7 +41,7 @@ export class PageBuilder extends ObjectBuilder {
             return;
         }
 
-        let fileName : string = FileBuilder.getPatternGeneratedFullObjectFileName(objType, objectId, objectName);
+        let fileName : string = await FileBuilder.getPatternGeneratedFullObjectFileName(objType, objectId, objectName);
         this.showNewDocument(this.buildCardPageForTable(tableSymbol, objectId, objectName), fileName, objType);
     }
 

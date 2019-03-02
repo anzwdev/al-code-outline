@@ -3,6 +3,7 @@ import * as path from 'path';
 import * as vscode from 'vscode';
 import { ALSymbolKind } from '../alSymbolKind';
 import { ALSymbolInfo } from '../alSymbolInfo';
+import { CRSALLangExtHelper } from '../crsAlLangExtHelper';
 
 export class FileBuilder {
     public static async generateObjectFile(content: string, fileName: string, objectType: ALSymbolKind): Promise<string | undefined> {
@@ -25,7 +26,7 @@ export class FileBuilder {
 
         // Determine the directory to place the files in; create the directory if it does not exist yet.
         const baseFileDir : string = workspaceFolder.uri.fsPath;
-        let relativeFileDir : string = this.getPatternGeneratedRelativeFilePath(objectType);
+        let relativeFileDir : string = await this.getPatternGeneratedRelativeFilePath(objectType);
 
         const promptForFilePath: boolean = vscode.workspace.getConfiguration('alOutline').get('promptForFilePath');
         if (promptForFilePath) {
@@ -86,62 +87,63 @@ export class FileBuilder {
 
     //#region Object / File Pattern
 
-    public static getPatternGeneratedFullObjectFileName(objectType: ALSymbolKind, objectId: number, objectName: string) : string {
-        let pattern: string = vscode.workspace.getConfiguration('alOutline').get('fullObjectFileNamePattern');
-        return this.replaceAllFullObjPatterns(pattern, objectType, objectId, objectName) + '.al';
+    public static SymbolKindToCrsName(symbolKind : ALSymbolKind) {
+        switch (symbolKind) {
+            case ALSymbolKind.Table: return 'table';
+            case ALSymbolKind.Codeunit: return 'codeunit';
+            case ALSymbolKind.Page: return 'page';
+            case ALSymbolKind.Report: return 'report';
+            case ALSymbolKind.Query: return 'query';
+            case ALSymbolKind.XmlPort: return 'xmlport';
+            case ALSymbolKind.TableExtension: return 'tableextension';
+            case ALSymbolKind.PageExtension: return 'pageextension';
+            case ALSymbolKind.ControlAddIn: return 'controladdin';
+            case ALSymbolKind.Profile: return 'profile';
+            case ALSymbolKind.PageCustomization: return 'pagecustomization';
+            case ALSymbolKind.Enum: return 'enum';
+            case ALSymbolKind.DotNetPackage: return 'dotnetpackage';
+            case ALSymbolKind.EnumExtension: return 'enumextension';
+       }
+        return '';
     }
 
-    private static replaceAllFullObjPatterns(pattern: string, objectType: ALSymbolKind, objectId: number, objectName: string) : string {
-        let output = pattern;
 
-        output = this.replacePattern(output, '<ObjectType>', this.getObjectTypeFromSymbolInfo(objectType));
-        output = this.replacePattern(output, '<ObjectTypeShort>', this.getObjectTypeAbbreviation(objectType));
-        output = this.replacePattern(output, '<ObjectId>', objectId.toString());
-        if (objectName) {
-            output = this.replacePattern(output, '<ObjectName>', this.stripNonAlphaNumericCharacters(objectName));
-        }
+    public static async getPatternGeneratedFullObjectFileName(objectType: ALSymbolKind, objectId: number, objectName: string) : Promise<string> {
+        let crsLangExt = await CRSALLangExtHelper.GetCrsAlLangExt();
+        if (crsLangExt)
+            return crsLangExt.ObjectNamesApi.GetObjectFileName(this.SymbolKindToCrsName(objectType), objectId.toString(), objectName);
+        return objectName + '.al';
+   }
 
-        return output;
+    public static async getPatternGeneratedExtensionObjectName(extensionType: ALSymbolKind, extensionId: number, baseSymbolInfo: ALSymbolInfo) : Promise<string> {
+        let crsLangExt = await CRSALLangExtHelper.GetCrsAlLangExt();
+        if (crsLangExt)
+            return await crsLangExt.ObjectNamesApi.GetObjectExtensionName(
+                this.SymbolKindToCrsName(extensionType), extensionId.toString(), '',
+                this.getObjectIdFromSymbolInfo(baseSymbolInfo).toString(), this.getObjectNameFromSymbolInfo(baseSymbolInfo));
+        return '';
     }
 
-    public static getPatternGeneratedExtensionObjectName(extensionType: ALSymbolKind, extensionId: number, baseSymbolInfo: ALSymbolInfo) : string {
-        let pattern: string = vscode.workspace.getConfiguration('alOutline').get('extensionObjectNamePattern');
-        let objectName: string = this.replaceAllExtensionPatterns(pattern, extensionType, extensionId, '', baseSymbolInfo);
-
-        let stripChars: string = vscode.workspace.getConfiguration('alOutline').get('stripNonAlphanumericCharactersFromObjectNames');
-        if (stripChars) {
-            objectName = this.stripNonAlphaNumericCharacters(objectName);
-        }
-        return objectName;
+    public static async getPatternGeneratedExtensionObjectFileName(extensionType: ALSymbolKind, extensionId: number, extensionObjectName: string, baseSymbolInfo: ALSymbolInfo) : Promise<string> {
+        let crsLangExt = await CRSALLangExtHelper.GetCrsAlLangExt();
+        if (crsLangExt)
+            return await crsLangExt.ObjectNamesApi.GetObjectExtensionFileName(
+                this.SymbolKindToCrsName(extensionType), extensionId.toString(), extensionObjectName,
+                this.getObjectIdFromSymbolInfo(baseSymbolInfo).toString(), this.getObjectNameFromSymbolInfo(baseSymbolInfo));
+        return extensionObjectName + '.al';
     }
 
-    public static getPatternGeneratedExtensionObjectFileName(extensionType: ALSymbolKind, extensionId: number, extensionObjectName: string, baseSymbolInfo: ALSymbolInfo) : string {
-        let pattern: string = vscode.workspace.getConfiguration('alOutline').get('extensionObjectFileNamePattern');
-        return this.replaceAllExtensionPatterns(pattern, extensionType, extensionId, extensionObjectName, baseSymbolInfo) + '.al';
-    }
-
-    private static replaceAllExtensionPatterns(pattern: string, extensionType: ALSymbolKind, extensionId: number, extensionObjectName: string, baseSymbolInfo: ALSymbolInfo) : string {
-        let output = pattern;
-
-        output = this.replacePattern(output, '<ObjectType>', this.getObjectTypeFromSymbolInfo(extensionType));
-        output = this.replacePattern(output, '<ObjectTypeShort>', this.getObjectTypeAbbreviation(extensionType));
-        output = this.replacePattern(output, '<ObjectId>', extensionId.toString());
-        if (extensionObjectName) {
-            output = this.replacePattern(output, '<ObjectName>', this.stripNonAlphaNumericCharacters(extensionObjectName));
-        }
-        output = this.replacePattern(output, '<BaseName>', this.getObjectNameFromSymbolInfo(baseSymbolInfo));
-        output = this.replacePattern(output, '<BaseId>', this.getObjectIdFromSymbolInfo(baseSymbolInfo).toString());
-        output = this.replacePattern(output, '<BaseType>', this.getObjectTypeFromSymbolInfo(baseSymbolInfo.alKind));
-        output = this.replacePattern(output, '<BaseTypeShort>', this.getObjectTypeAbbreviation(baseSymbolInfo.alKind));
-
-        return output;
-    }
-
-    private static getPatternGeneratedRelativeFilePath(objectType: ALSymbolKind) : string {
+    private static async getPatternGeneratedRelativeFilePath(objectType: ALSymbolKind) : Promise<string> {
+        let typeName = this.getObjectTypeFromSymbolInfo(objectType);
+        let shortTypeName : string = '';                
         let output: string = vscode.workspace.getConfiguration('alOutline').get('autoGenerateFileDirectory');
         
-        output = this.replacePattern(output, '<ObjectType>', this.getObjectTypeFromSymbolInfo(objectType));
-        output = this.replacePattern(output, '<ObjectTypeShort>', this.getObjectTypeAbbreviation(objectType));
+        let crsLangExt = await CRSALLangExtHelper.GetCrsAlLangExt();
+        if (crsLangExt)
+            shortTypeName = crsLangExt.ObjectNamesApi.GetBestPracticeAbbreviatedObjectType(this.SymbolKindToCrsName(objectType));
+
+        output = this.replacePattern(output, '<ObjectType>', typeName);
+        output = this.replacePattern(output, '<ObjectTypeShort>', shortTypeName);
 
         return output;
     } 
@@ -156,25 +158,6 @@ export class FileBuilder {
 
     private static getObjectTypeFromSymbolInfo(alSymbolKind: ALSymbolKind): string {
         return ALSymbolKind[alSymbolKind];
-    }
-
-    private static getObjectTypeAbbreviation(alSymbolKind: ALSymbolKind): string {
-        switch (alSymbolKind) {
-            case ALSymbolKind.Table: return 'Tab';
-            case ALSymbolKind.Page: return 'Pag';
-            case ALSymbolKind.Report: return 'Rep';
-            case ALSymbolKind.XmlPort: return 'Xml';
-            case ALSymbolKind.Query: return 'Que';
-            case ALSymbolKind.Codeunit: return 'Cod';
-            case ALSymbolKind.PageExtension: return 'Pag';
-            case ALSymbolKind.TableExtension: return 'Tab';
-            case ALSymbolKind.Profile: return 'Prof';
-            case ALSymbolKind.PageCustomization: return 'Pag';
-            case ALSymbolKind.Enum: return 'Enu';
-            case ALSymbolKind.EnumExtension: return 'Enu';
-            case ALSymbolKind.DotNetPackage: return 'DotNet';
-            default: return "";
-        }
     }
 
     private static replacePattern(name: string, pattern: string, replaceWith: string) : string {
