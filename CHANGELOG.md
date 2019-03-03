@@ -1,5 +1,9 @@
 # Change Log
 
+## 0.0.13
+
+- Small object wizard bugfix by rvanbekkum. Pressing ESC during object id selection was not closing new object wizard.
+
 ## 0.0.12
 
 - new functionality allowing to automatically save generated object on disk in project folder has been implemented by rvanbekkum. These settings allowing to setup that functionality have been added:

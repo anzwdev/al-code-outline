@@ -2,10 +2,10 @@
 	"name": "al-code-outline",
 	"displayName": "AL Code Outline",
 	"description": "AL code outline tree provider",
-	"version": "0.0.12",
+	"version": "0.0.13",
 	"publisher": "andrzejzwierzchowski",
 	"engines": {
-		"vscode": "^1.26.0"
+		"vscode": "^1.30.0"
 	},
 	"author": {
 		"name": "Andrzej Zwierzchowski",
@@ -228,10 +228,10 @@
 		"test": "npm run compile && node ./node_modules/vscode/bin/test"
 	},
 	"devDependencies": {
-		"typescript": "^2.6.1",
-		"vscode": "^1.1.21",
+		"@types/mocha": "^2.2.42",
 		"@types/node": "^8.10.25",
-		"@types/mocha": "^2.2.42"
+		"typescript": "^2.6.1",
+		"vscode": "^1.1.30"
 	},
 	"dependencies": {
 		"adm-zip": "^0.4.11",
