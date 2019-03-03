@@ -28,7 +28,7 @@ export class QueryBuilder extends ObjectBuilder {
             return;
         }
 
-        let fileName : string = FileBuilder.getPatternGeneratedFullObjectFileName(objType, objectId, objectName);
+        let fileName : string = await FileBuilder.getPatternGeneratedFullObjectFileName(objType, objectId, objectName);
         this.showNewDocument(this.buildQueryForTable(tableSymbol, objectId, objectName), fileName, objType);
     }
 

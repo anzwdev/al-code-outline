@@ -3,7 +3,7 @@ import { ALSymbolKind } from '../alSymbolKind';
 import { FileBuilder } from './fileBuilder';
 
 export class ObjectBuilder {
-    
+  
     constructor() {
     }
 

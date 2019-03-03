@@ -176,21 +176,6 @@
 						"default": "Lists",
 						"description": "Default usage category for list pages"
 					},
-					"alOutline.extensionObjectFileNamePattern": {
-						"type": "string",
-						"default": "<ObjectTypeShort><BaseId>-Ext<ObjectId>.<ObjectName>",
-						"description": "Default file naming pattern for new extension objects."
-					},
-					"alOutline.extensionObjectNamePattern": {
-						"type": "string",
-						"default": "<BaseName>Ext",
-						"description": "Default naming pattern for new extension objects."
-					},
-					"alOutline.fullObjectFileNamePattern": {
-						"type": "string",
-						"default": "<ObjectTypeShort><ObjectId>.<ObjectName>",
-						"description": "Default file naming pattern for new full objects."
-					},
 					"alOutline.promptForObjectId": {
 						"type": "boolean",
 						"default": true,
@@ -220,6 +205,9 @@
 			}
 		]
 	},
+	"extensionDependencies": [
+		"waldo.crs-al-language-extension"
+	],
 	"scripts": {
 		"vscode:prepublish": "npm run compile",
 		"compile": "tsc -p ./",

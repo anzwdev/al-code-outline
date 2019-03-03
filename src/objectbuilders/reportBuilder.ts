@@ -28,7 +28,7 @@ export class ReportBuilder extends ObjectBuilder {
             return;
         }
 
-        let fileName : string = FileBuilder.getPatternGeneratedFullObjectFileName(objType, objectId, objectName);
+        let fileName : string = await FileBuilder.getPatternGeneratedFullObjectFileName(objType, objectId, objectName);
         this.showNewDocument(this.buildReportForTable(tableSymbol, objectId, objectName), fileName, objType);
     }
 
