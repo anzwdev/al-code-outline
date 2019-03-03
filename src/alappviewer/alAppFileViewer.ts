@@ -63,11 +63,11 @@ export class ALAppFileViewer {
 
     async open() {
         this.htmlContent = this.mainTemplate; //temp await this.getHtmlContent(this.fileUri);
-        
         this.panel = vscode.window.createWebviewPanel("al-code-outline.appViewer", this.title, vscode.ViewColumn.Active, {
-            enableScripts : true
+            enableScripts : true,
+            retainContextWhenHidden: true
         });
-
+       
         this.updateWebView();
 
         this.panel.onDidDispose(() => this.dispose(), null, this.disposables);
