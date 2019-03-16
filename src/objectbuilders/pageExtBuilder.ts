@@ -14,6 +14,9 @@ export class PageExtBuilder extends ObjectBuilder {
     //#region Wizards with UI
 
     async showPageExtWizard(pageSymbol : ALSymbolInfo) {
+        if (!FileBuilder.checkCrsExtensionFileNamePatternRequired())
+            return;
+
         const extObjType : ALSymbolKind = ALSymbolKind.PageExtension;
         
         let extObjectId : number = await this.getObjectId("Please enter an ID for the page extension.", 0);

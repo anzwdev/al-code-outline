@@ -4,6 +4,7 @@ import * as vscode from 'vscode';
 import { ALSymbolKind } from '../alSymbolKind';
 import { ALSymbolInfo } from '../alSymbolInfo';
 import { CRSALLangExtHelper } from '../crsAlLangExtHelper';
+import { ObjectBuilder } from './objectBuilder';
 
 export class FileBuilder {
     public static async generateObjectFile(content: string, fileName: string, objectType: ALSymbolKind): Promise<string | undefined> {
@@ -107,17 +108,59 @@ export class FileBuilder {
         return '';
     }
 
+    public static getPromptForFileName() : boolean {
+        let value : boolean = vscode.workspace.getConfiguration('alOutline').get('promptForFilePath');
+        return value;
+    }
+
+    public static checkCrsFileNamePatternRequired() : boolean {
+        if ((!FileBuilder.getPromptForFileName()) && (!FileBuilder.hasCrsFileNamePattern())) {
+            vscode.window.showErrorMessage('File name pattern for new objects has not been specified in CRS.FileNamePattern setting. Please go to Visual Studio Code settings and update it or enable file path prompt by switching alOutline.promptForFilePath setting to true.');
+            return false;
+        }
+        return true;
+    }
+
+    public static checkCrsExtensionFileNamePatternRequired() : boolean {
+        if ((!FileBuilder.getPromptForFileName()) && (!FileBuilder.hasCrsExtensionFileNamePattern())) {
+            vscode.window.showErrorMessage('File name pattern for extension objects has not been specified in CRS.FileNamePatternExtensions setting. Please go to Visual Studio Code settings and update it or enable file path prompt by switching alOutline.promptForFilePath setting to true.');
+            return false;
+        }
+        return true;
+    }
+
+
+    public static hasCrsFileNamePattern() : boolean {
+        let patternText = vscode.workspace.getConfiguration('CRS', null).get('FileNamePattern');
+        if (!patternText)
+            return false;
+        return true;
+    }
+
+    public static hasCrsExtensionFileNamePattern() : boolean {
+        let patternText = vscode.workspace.getConfiguration('CRS', null).get('FileNamePatternExtensions');
+        if (!patternText)
+            return false;
+        return true;
+    }
+
+    public static hasCrsExtensionObjectNamePattern() {
+        let patternText = vscode.workspace.getConfiguration('CRS', null).get('ExtensionObjectNamePattern');
+        if (!patternText)
+            return false;
+        return true;
+    }
 
     public static async getPatternGeneratedFullObjectFileName(objectType: ALSymbolKind, objectId: number, objectName: string) : Promise<string> {
         let crsLangExt = await CRSALLangExtHelper.GetCrsAlLangExt();
-        if (crsLangExt)
+        if ((crsLangExt) && (this.hasCrsFileNamePattern()))
             return crsLangExt.ObjectNamesApi.GetObjectFileName(this.SymbolKindToCrsName(objectType), objectId.toString(), objectName);
         return objectName + '.al';
    }
 
-    public static async getPatternGeneratedExtensionObjectName(extensionType: ALSymbolKind, extensionId: number, baseSymbolInfo: ALSymbolInfo) : Promise<string> {
+    public static async getPatternGeneratedExtensionObjectName(extensionType: ALSymbolKind, extensionId: number, baseSymbolInfo: ALSymbolInfo) : Promise<string> {       
         let crsLangExt = await CRSALLangExtHelper.GetCrsAlLangExt();
-        if (crsLangExt)
+        if ((crsLangExt) && (this.hasCrsExtensionObjectNamePattern()))
             return await crsLangExt.ObjectNamesApi.GetObjectExtensionName(
                 this.SymbolKindToCrsName(extensionType), extensionId.toString(), '',
                 this.getObjectIdFromSymbolInfo(baseSymbolInfo).toString(), this.getObjectNameFromSymbolInfo(baseSymbolInfo));
@@ -126,14 +169,14 @@ export class FileBuilder {
 
     public static async getPatternGeneratedExtensionObjectFileName(extensionType: ALSymbolKind, extensionId: number, extensionObjectName: string, baseSymbolInfo: ALSymbolInfo) : Promise<string> {
         let crsLangExt = await CRSALLangExtHelper.GetCrsAlLangExt();
-        if (crsLangExt)
+        if ((crsLangExt) && (this.hasCrsExtensionFileNamePattern()))
             return await crsLangExt.ObjectNamesApi.GetObjectExtensionFileName(
                 this.SymbolKindToCrsName(extensionType), extensionId.toString(), extensionObjectName,
                 this.getObjectIdFromSymbolInfo(baseSymbolInfo).toString(), this.getObjectNameFromSymbolInfo(baseSymbolInfo));
         return extensionObjectName + '.al';
     }
 
-    private static async getPatternGeneratedRelativeFilePath(objectType: ALSymbolKind) : Promise<string> {
+    private static async getPatternGeneratedRelativeFilePath(objectType: ALSymbolKind) : Promise<string> {       
         let typeName = this.getObjectTypeFromSymbolInfo(objectType);
         let shortTypeName : string = '';                
         let output: string = vscode.workspace.getConfiguration('alOutline').get('autoGenerateFileDirectory');

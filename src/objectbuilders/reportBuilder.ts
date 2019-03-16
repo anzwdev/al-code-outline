@@ -14,6 +14,9 @@ export class ReportBuilder extends ObjectBuilder {
     //#region Wizards with UI
 
     async showReportWizard(tableSymbol : ALSymbolInfo) {
+        if (!FileBuilder.checkCrsFileNamePatternRequired())
+            return;
+            
         const objType : ALSymbolKind = ALSymbolKind.Report;
 
         let objectId : number = await this.getObjectId("Please enter an ID for the report object.", 0);

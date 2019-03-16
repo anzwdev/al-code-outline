@@ -14,6 +14,9 @@ export class PageBuilder extends ObjectBuilder {
     //#region Wizards with UI
 
     async showListPageWizard(tableSymbol : ALSymbolInfo) {
+        if (!FileBuilder.checkCrsFileNamePatternRequired())
+            return;
+
         const objType : ALSymbolKind = ALSymbolKind.Page;
 
         let objectId : number = await this.getObjectId("Please enter an ID for the list page.", 0);
@@ -33,6 +36,9 @@ export class PageBuilder extends ObjectBuilder {
     }
 
     async showCardPageWizard(tableSymbol : ALSymbolInfo) {
+        if (!FileBuilder.checkCrsFileNamePatternRequired())
+            return;
+            
         const objType : ALSymbolKind = ALSymbolKind.Page;
 
         let objectId : number = await this.getObjectId("Please enter an ID for the card page.", 0);
