@@ -31,7 +31,7 @@ templates['objectlist'] = template({"1":function(container,depth0,helpers,partia
 },"compiler":[7,">= 4.0.0"],"main":function(container,depth0,helpers,partials,data,blockParams,depths) {
     var stack1;
 
-  return "<table id=\"objlisttab\">\r\n    <tr id=\"objhead\" class=\"objhead\"><th>Type</th><th>ID</th><th>Name</th></tr>\r\n\r\n"
+  return "<table id=\"objlisttab\" data-rs-selectable data-rs-class=\"objsel\">\r\n    <tr id=\"objhead\" class=\"objhead\"><th>Type</th><th>ID</th><th>Name</th></tr>\r\n\r\n"
     + ((stack1 = helpers.each.call(depth0 != null ? depth0 : (container.nullContext || {}),(depth0 != null ? depth0.objectCollections : depth0),{"name":"each","hash":{},"fn":container.program(1, data, 0, blockParams, depths),"inverse":container.noop,"data":data})) != null ? stack1 : "")
     + "\r\n</table>\r\n";
 },"useData":true,"useDepths":true});

@@ -305,13 +305,13 @@ function execFilterCommand(headColumn, cmdname) {
 
 function selectObject(newSelType, newSelId) {
     if ((newSelType != selType) || (newSelId != selId)) {
-        //update view
-        $("tr[data-objt='" + selType + "'][data-objid='" + selId + "']").attr('class', '');
-        selType = newSelType;
-        selId = newSelId;
-        $("tr[data-objt='" + selType + "'][data-objid='" + selId + "']").attr('class', 'objsel');
-        //notify vscode extension
-        execObjCommand(selType, selId, "selected");
+        // //update view
+        // $("tr[data-objt='" + selType + "'][data-objid='" + selId + "']").attr('class', '');
+        // selType = newSelType;
+        // selId = newSelId;
+        // $("tr[data-objt='" + selType + "'][data-objid='" + selId + "']").attr('class', 'objsel');
+        // //notify vscode extension
+        // execObjCommand(selType, selId, "selected");
     }
 }
 
