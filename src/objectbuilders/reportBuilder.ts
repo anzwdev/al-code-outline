@@ -32,7 +32,8 @@ export class ReportBuilder extends ObjectBuilder {
         }
 
         let fileName : string = await FileBuilder.getPatternGeneratedFullObjectFileName(objType, objectId, objectName);
-        this.showNewDocument(this.buildReportForTable(tableSymbol, objectId, objectName), fileName, objType);
+        let relativeFileDir: string = await this.getRelativeFileDir(objType);
+        this.showNewDocument(this.buildReportForTable(tableSymbol, objectId, objectName), fileName, relativeFileDir);
     }
 
     //#endregion

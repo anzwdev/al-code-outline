@@ -32,7 +32,8 @@ export class PageBuilder extends ObjectBuilder {
         }
 
         let fileName : string = await FileBuilder.getPatternGeneratedFullObjectFileName(objType, objectId, objectName);
-        this.showNewDocument(this.buildListPageForTable(tableSymbol, objectId, objectName), fileName, objType);
+        let relativeFileDir: string = await this.getRelativeFileDir(objType);
+        this.showNewDocument(this.buildListPageForTable(tableSymbol, objectId, objectName), fileName, relativeFileDir);
     }
 
     async showCardPageWizard(tableSymbol : ALSymbolInfo) {
@@ -54,7 +55,8 @@ export class PageBuilder extends ObjectBuilder {
         }
 
         let fileName : string = await FileBuilder.getPatternGeneratedFullObjectFileName(objType, objectId, objectName);
-        this.showNewDocument(this.buildCardPageForTable(tableSymbol, objectId, objectName), fileName, objType);
+        let relativeFileDir: string = await this.getRelativeFileDir(objType);
+        this.showNewDocument(this.buildCardPageForTable(tableSymbol, objectId, objectName), fileName, relativeFileDir);
     }
 
     //#endregion

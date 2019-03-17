@@ -7,7 +7,7 @@ import { CRSALLangExtHelper } from '../crsAlLangExtHelper';
 import { ObjectBuilder } from './objectBuilder';
 
 export class FileBuilder {
-    public static async generateObjectFile(content: string, fileName: string, objectType: ALSymbolKind): Promise<string | undefined> {
+    public static async generateObjectFile(content: string, fileName: string, relativeFileDir: string): Promise<string | undefined> {
         // Determine the project root directory.
         let workspaceFolderCount: number = vscode.workspace.workspaceFolders.length;
         if (workspaceFolderCount < 1) {
@@ -27,17 +27,6 @@ export class FileBuilder {
 
         // Determine the directory to place the files in; create the directory if it does not exist yet.
         const baseFileDir : string = workspaceFolder.uri.fsPath;
-        let relativeFileDir : string = await this.getPatternGeneratedRelativeFilePath(objectType);
-
-        const promptForFilePath: boolean = vscode.workspace.getConfiguration('alOutline').get('promptForFilePath');
-        if (promptForFilePath) {
-            relativeFileDir = await vscode.window.showInputBox({
-                value  : relativeFileDir,
-                prompt : 'Please specify a directory, relative to the root, to create the new file in.',
-                ignoreFocusOut: true
-            });
-        }
-        
         const newFileDirectory : string = path.join(baseFileDir, relativeFileDir);
 
         if (relativeFileDir) {
@@ -176,7 +165,7 @@ export class FileBuilder {
         return extensionObjectName + '.al';
     }
 
-    private static async getPatternGeneratedRelativeFilePath(objectType: ALSymbolKind) : Promise<string> {       
+    public static async getPatternGeneratedRelativeFilePath(objectType: ALSymbolKind) : Promise<string> {       
         let typeName = this.getObjectTypeFromSymbolInfo(objectType);
         let shortTypeName : string = '';                
         let output: string = vscode.workspace.getConfiguration('alOutline').get('autoGenerateFileDirectory');

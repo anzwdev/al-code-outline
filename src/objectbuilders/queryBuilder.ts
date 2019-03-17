@@ -32,7 +32,8 @@ export class QueryBuilder extends ObjectBuilder {
         }
 
         let fileName : string = await FileBuilder.getPatternGeneratedFullObjectFileName(objType, objectId, objectName);
-        this.showNewDocument(this.buildQueryForTable(tableSymbol, objectId, objectName), fileName, objType);
+        let relativeFileDir: string = await this.getRelativeFileDir(objType);
+        this.showNewDocument(this.buildQueryForTable(tableSymbol, objectId, objectName), fileName, relativeFileDir);
     }
 
     //#endregion

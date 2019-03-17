@@ -50,7 +50,8 @@ export class XmlPortBuilder extends ObjectBuilder {
             return;
         
         let fileName : string = await FileBuilder.getPatternGeneratedFullObjectFileName(objType, objectId, objectName);
-        this.showNewDocument(this.buildXmlPortForTable(tableSymbol, objectId, objectName, (selectedNodeType.label == fieldAsElementText)), fileName, objType);
+        let relativeFileDir: string = await this.getRelativeFileDir(objType);
+        this.showNewDocument(this.buildXmlPortForTable(tableSymbol, objectId, objectName, (selectedNodeType.label == fieldAsElementText)), fileName, relativeFileDir);
     }
 
     //#endregion

@@ -31,7 +31,8 @@ export class TableExtBuilder extends ObjectBuilder {
         }
         
         let fileName : string = await FileBuilder.getPatternGeneratedExtensionObjectFileName(extObjType, extObjectId, extObjectName, tableSymbol);
-        this.showNewDocument(this.buildTableExtForTable(tableSymbol, extObjectId, extObjectName), fileName, extObjType);
+        let relativeFileDir: string = await this.getRelativeFileDir(extObjType);
+        this.showNewDocument(this.buildTableExtForTable(tableSymbol, extObjectId, extObjectName), fileName, relativeFileDir);
     }
 
     //#endregion

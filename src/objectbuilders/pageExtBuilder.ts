@@ -4,6 +4,7 @@ import { ALSymbolInfo } from "../alSymbolInfo";
 import { ALSymbolKind } from '../alSymbolKind';
 import { FileBuilder } from './fileBuilder';
 import { ObjectBuilder } from './objectBuilder';
+import { relative } from 'path';
 
 export class PageExtBuilder extends ObjectBuilder {
 
@@ -31,7 +32,8 @@ export class PageExtBuilder extends ObjectBuilder {
         }
 
         let fileName : string = await FileBuilder.getPatternGeneratedExtensionObjectFileName(extObjType, extObjectId, extObjectName, pageSymbol);
-        this.showNewDocument(this.buildPageExtForPage(pageSymbol, extObjectId, extObjectName), fileName, extObjType);
+        let relativeFileDir: string = await this.getRelativeFileDir(extObjType);
+        this.showNewDocument(this.buildPageExtForPage(pageSymbol, extObjectId, extObjectName), fileName, relativeFileDir);
     }
 
     //#endregion
