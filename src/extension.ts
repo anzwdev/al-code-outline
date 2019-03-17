@@ -30,11 +30,11 @@ export function activate(context: vscode.ExtensionContext) {
     context.subscriptions.push(
         vscode.commands.registerCommand(
         'alOutline.createCardPage', 
-        offset => objectBuildersCollection.pageBuilder.showCardPageWizard(offset)));
+        offset => objectBuildersCollection.pageBuilder.showPageWizard(offset, 'Card')));
     context.subscriptions.push(
         vscode.commands.registerCommand(
             'alOutline.createListPage', 
-            offset => objectBuildersCollection.pageBuilder.showListPageWizard(offset)));
+            offset => objectBuildersCollection.pageBuilder.showPageWizard(offset, 'Page')));
     context.subscriptions.push(
         vscode.commands.registerCommand(
             'alOutline.createReport', 
