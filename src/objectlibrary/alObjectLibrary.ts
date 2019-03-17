@@ -60,7 +60,7 @@ export class ALObjectLibrary {
         this.sourceDateTimeMs = stats.mtimeMs;
 
         var fileSizeInBytes = stats.size - offset;
-        var buffer : Buffer = new Buffer(fileSizeInBytes);
+        let buffer : Buffer = Buffer.alloc(fileSizeInBytes);
 
         var fileDesc = fs.openSync(filePath, 'r');
         fs.readSync(fileDesc, buffer, 0, fileSizeInBytes, offset);

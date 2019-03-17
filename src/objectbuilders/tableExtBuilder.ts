@@ -14,6 +14,9 @@ export class TableExtBuilder extends ObjectBuilder {
     //#region Wizards with UI
 
     async showTableExtWizard(tableSymbol : ALSymbolInfo) {
+        if (!FileBuilder.checkCrsExtensionFileNamePatternRequired())
+            return;
+            
         const extObjType : ALSymbolKind = ALSymbolKind.TableExtension;
 
         let extObjectId : number = await this.getObjectId("Please enter an ID for the table extension.", 0);

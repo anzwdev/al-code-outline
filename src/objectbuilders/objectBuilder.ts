@@ -8,7 +8,7 @@ export class ObjectBuilder {
     }
 
     protected showNewDocument(content : string, fileName?: string, objectType?: ALSymbolKind) {
-        let autoGenerateFile: boolean = vscode.workspace.getConfiguration('alOutline').get('autoGenerateFiles');
+        let autoGenerateFile: boolean = this.shouldAutoGenerateFiles();
         if (autoGenerateFile && fileName) {
             this.showNewGeneratedFile(content, fileName, objectType);
         }
@@ -131,6 +131,10 @@ export class ObjectBuilder {
 
     private shouldStripCharacters() : boolean {
         return vscode.workspace.getConfiguration('alOutline').get('stripNonAlphanumericCharactersFromObjectNames');
+    }
+
+    protected shouldAutoGenerateFiles() : boolean {
+        return vscode.workspace.getConfiguration('alOutline').get('autoGenerateFiles');
     }
 
     //#endregion

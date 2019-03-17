@@ -14,6 +14,9 @@ export class XmlPortBuilder extends ObjectBuilder {
     //#region Wizards with UI
 
     async showXmlPortWizard(tableSymbol : ALSymbolInfo) {
+        if (!FileBuilder.checkCrsFileNamePatternRequired())
+            return;
+            
         const objType : ALSymbolKind = ALSymbolKind.XmlPort;
 
         let objectId : number = await this.getObjectId("Please enter an ID for the xmlport object.", 0);
