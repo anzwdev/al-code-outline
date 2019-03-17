@@ -15,7 +15,7 @@ export class PageExtBuilder extends ObjectBuilder {
     //#region Wizards with UI
 
     async showMultiPageExtWizard(pageSymbols: ALSymbolInfo[]) {
-        if (!FileBuilder.checkCrsExtensionFileNamePatternRequired())
+        if (!FileBuilder.checkCrsExtensionFileNamePatternRequired() || !FileBuilder.checkCrsExtensionObjectNamePatternRequired(true))
             return;
 
         const extObjType : ALSymbolKind = ALSymbolKind.PageExtension;
@@ -37,7 +37,7 @@ export class PageExtBuilder extends ObjectBuilder {
     }
 
     async showPageExtWizard(pageSymbol : ALSymbolInfo) {
-        if (!FileBuilder.checkCrsExtensionFileNamePatternRequired())
+        if (!FileBuilder.checkCrsExtensionFileNamePatternRequired() || !FileBuilder.checkCrsExtensionObjectNamePatternRequired(false))
             return;
 
         const extObjType : ALSymbolKind = ALSymbolKind.PageExtension;

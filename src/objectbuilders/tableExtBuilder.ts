@@ -14,7 +14,7 @@ export class TableExtBuilder extends ObjectBuilder {
     //#region Wizards with UI
 
     async showMultiTableExtWizard(tableSymbols: ALSymbolInfo[]) {
-        if (!FileBuilder.checkCrsExtensionFileNamePatternRequired())
+        if (!FileBuilder.checkCrsExtensionFileNamePatternRequired() || !FileBuilder.checkCrsExtensionObjectNamePatternRequired(true))
             return;
 
         const extObjType : ALSymbolKind = ALSymbolKind.TableExtension;
@@ -36,7 +36,7 @@ export class TableExtBuilder extends ObjectBuilder {
     }
 
     async showTableExtWizard(tableSymbol : ALSymbolInfo) {
-        if (!FileBuilder.checkCrsExtensionFileNamePatternRequired())
+        if (!FileBuilder.checkCrsExtensionFileNamePatternRequired() || !FileBuilder.checkCrsExtensionObjectNamePatternRequired(false))
             return;
             
         const extObjType : ALSymbolKind = ALSymbolKind.TableExtension;
