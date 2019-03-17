@@ -13,6 +13,32 @@ export class XmlPortBuilder extends ObjectBuilder {
 
     //#region Wizards with UI
 
+    async showMultiXmlPortWizard(tableSymbols: ALSymbolInfo[]) {
+        if (!FileBuilder.checkCrsExtensionFileNamePatternRequired())
+            return;
+
+        const objType : ALSymbolKind = ALSymbolKind.XmlPort;
+
+        let startObjectId: number = await this.getObjectId(`Please enter a starting ID for the xmlport objects.`, 0);
+        if (startObjectId < 0) {
+            return;
+        }
+
+        let fieldsAsElements: boolean | undefined = await this.promptForFieldsAsElements();
+        if (fieldsAsElements === undefined) {
+            return;
+        }
+        let relativeFileDir: string = await this.getRelativeFileDir(objType);
+
+        for (let i = 0; i < tableSymbols.length; i++) {
+            let tableSymbol = tableSymbols[i];
+            let objectId: number = startObjectId + i;
+            let objectName : string = this.getDefaultXmlPortName(tableSymbol);
+
+            await this.createAndShowNewXmlPort(tableSymbol, objType, objectId, objectName, fieldsAsElements, relativeFileDir);
+        }
+    }
+
     async showXmlPortWizard(tableSymbol : ALSymbolInfo) {
         if (!FileBuilder.checkCrsFileNamePatternRequired())
             return;
@@ -24,34 +50,25 @@ export class XmlPortBuilder extends ObjectBuilder {
             return;
         }
 
-        let objectName : string = tableSymbol.symbolName.trim() + " XmlPort";
+        let objectName : string = this.getDefaultXmlPortName(tableSymbol);
         objectName = await this.getObjectName("Please enter a name for the xmlport object.", objectName);
         
         if (!objectName) {
             return;
         }
 
-        //ask user to select table field node type
-        let fieldAsAttributeText = "Table fields as xml attributes";
-        let fieldAsElementText = "Table fields as xml elements";
-
-        let fieldNodeTypes = [
-            { 
-                label: fieldAsAttributeText, 
-                description: ""
-            },
-            {
-                label : fieldAsElementText,
-                description : ""
-            }];
-
-        let selectedNodeType = await vscode.window.showQuickPick(fieldNodeTypes);
-        if ((!selectedNodeType) || (!selectedNodeType.label))
+        let fieldsAsElements: boolean | undefined = await this.promptForFieldsAsElements();
+        if (!fieldsAsElements) {
             return;
+        }
         
-        let fileName : string = await FileBuilder.getPatternGeneratedFullObjectFileName(objType, objectId, objectName);
         let relativeFileDir: string = await this.getRelativeFileDir(objType);
-        this.showNewDocument(this.buildXmlPortForTable(tableSymbol, objectId, objectName, (selectedNodeType.label == fieldAsElementText)), fileName, relativeFileDir);
+        await this.createAndShowNewXmlPort(tableSymbol, objType, objectId, objectName, fieldsAsElements, relativeFileDir);
+    }
+
+    private async createAndShowNewXmlPort(tableSymbol: ALSymbolInfo, objType: ALSymbolKind, objectId: number, objectName: string, fieldsAsElements: boolean, relativeFileDir: string) {
+        let fileName : string = await FileBuilder.getPatternGeneratedFullObjectFileName(objType, objectId, objectName);
+        this.showNewDocument(this.buildXmlPortForTable(tableSymbol, objectId, objectName, fieldsAsElements), fileName, relativeFileDir);
     }
 
     //#endregion
@@ -124,4 +141,33 @@ export class XmlPortBuilder extends ObjectBuilder {
 
     //#endregion
 
+    //#region Helper Methods
+
+    private async promptForFieldsAsElements() : Promise<boolean | undefined> {
+        let fieldAsAttributeText = "Table fields as xml attributes";
+        let fieldAsElementText = "Table fields as xml elements";
+
+        let fieldNodeTypes = [
+            { 
+                label: fieldAsAttributeText, 
+                description: ""
+            },
+            {
+                label : fieldAsElementText,
+                description : ""
+            }];
+
+        let selectedNodeType = await vscode.window.showQuickPick(fieldNodeTypes);
+        if ((!selectedNodeType) || (!selectedNodeType.label)) {
+            return undefined;
+        }
+        
+        return (selectedNodeType.label == fieldAsElementText);
+    }
+
+    private getDefaultXmlPortName(tableSymbol: ALSymbolInfo) : string {
+        return `${tableSymbol.symbolName.trim()} XmlPort`;
+    }
+    
+    //#endregion
 }

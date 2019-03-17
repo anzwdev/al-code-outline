@@ -13,6 +13,28 @@ export class TableExtBuilder extends ObjectBuilder {
 
     //#region Wizards with UI
 
+    async showMultiTableExtWizard(tableSymbols: ALSymbolInfo[]) {
+        if (!FileBuilder.checkCrsExtensionFileNamePatternRequired())
+            return;
+
+        const extObjType : ALSymbolKind = ALSymbolKind.TableExtension;
+
+        let startObjectId: number = await this.getObjectId("Please enter a starting ID for the table extensions.", 0);
+        if (startObjectId < 0) {
+            return;
+        }
+
+        let relativeFileDir: string = await this.getRelativeFileDir(extObjType);
+
+        for (let i = 0; i < tableSymbols.length; i++) {
+            let tableSymbol = tableSymbols[i];
+            let extObjectId: number = startObjectId + i;
+            let extObjectName: string = await FileBuilder.getPatternGeneratedExtensionObjectName(extObjType, extObjectId, tableSymbol);
+
+            await this.createAndShowNewTableExtension(tableSymbol, extObjType, extObjectId, extObjectName, relativeFileDir);
+        }
+    }
+
     async showTableExtWizard(tableSymbol : ALSymbolInfo) {
         if (!FileBuilder.checkCrsExtensionFileNamePatternRequired())
             return;
@@ -30,8 +52,12 @@ export class TableExtBuilder extends ObjectBuilder {
             return;
         }
         
-        let fileName : string = await FileBuilder.getPatternGeneratedExtensionObjectFileName(extObjType, extObjectId, extObjectName, tableSymbol);
         let relativeFileDir: string = await this.getRelativeFileDir(extObjType);
+        await this.createAndShowNewTableExtension(tableSymbol, extObjType, extObjectId, extObjectName, relativeFileDir);
+    }
+
+    private async createAndShowNewTableExtension(tableSymbol: ALSymbolInfo, extObjType: ALSymbolKind, extObjectId: number, extObjectName: string, relativeFileDir: string) {
+        let fileName : string = await FileBuilder.getPatternGeneratedExtensionObjectFileName(extObjType, extObjectId, extObjectName, tableSymbol);
         this.showNewDocument(this.buildTableExtForTable(tableSymbol, extObjectId, extObjectName), fileName, relativeFileDir);
     }
 

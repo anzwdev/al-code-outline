@@ -13,6 +13,28 @@ export class QueryBuilder extends ObjectBuilder {
 
     //#region Wizards with UI
 
+    async showMultiQueryWizard(tableSymbols: ALSymbolInfo[]) {
+        if (!FileBuilder.checkCrsExtensionFileNamePatternRequired())
+            return;
+
+        const objType : ALSymbolKind = ALSymbolKind.Query;
+
+        let startObjectId: number = await this.getObjectId(`Please enter a starting ID for the query objects.`, 0);
+        if (startObjectId < 0) {
+            return;
+        }
+
+        let relativeFileDir: string = await this.getRelativeFileDir(objType);
+
+        for (let i = 0; i < tableSymbols.length; i++) {
+            let tableSymbol = tableSymbols[i];
+            let objectId: number = startObjectId + i;
+            let objectName : string = this.getDefaultQueryName(tableSymbol);
+
+            await this.createAndShowNewQuery(tableSymbol, objType, objectId, objectName, relativeFileDir);
+        }
+    }
+
     async showQueryWizard(tableSymbol : ALSymbolInfo) {
         if (!FileBuilder.checkCrsFileNamePatternRequired())
             return;
@@ -24,15 +46,19 @@ export class QueryBuilder extends ObjectBuilder {
             return;
         }
 
-        let objectName : string = tableSymbol.symbolName.trim() + " Query";
+        let objectName : string = this.getDefaultQueryName(tableSymbol);
         objectName = await this.getObjectName("Please enter a name for the query object.", objectName);
         
         if (!objectName) {
             return;
         }
 
-        let fileName : string = await FileBuilder.getPatternGeneratedFullObjectFileName(objType, objectId, objectName);
         let relativeFileDir: string = await this.getRelativeFileDir(objType);
+        await this.createAndShowNewQuery(tableSymbol, objType, objectId, objectName, relativeFileDir);
+    }
+
+    private async createAndShowNewQuery(tableSymbol: ALSymbolInfo, objType: ALSymbolKind, objectId: number, objectName: string, relativeFileDir: string) {
+        let fileName : string = await FileBuilder.getPatternGeneratedFullObjectFileName(objType, objectId, objectName);
         this.showNewDocument(this.buildQueryForTable(tableSymbol, objectId, objectName), fileName, relativeFileDir);
     }
 
@@ -84,4 +110,11 @@ export class QueryBuilder extends ObjectBuilder {
         
     //#endregion
 
+    //#region Helper Methods
+
+    private getDefaultQueryName(tableSymbol: ALSymbolInfo) : string {
+        return `${tableSymbol.symbolName.trim()} Query`;
+    }
+    
+    //#endregion
 }
