@@ -87,8 +87,11 @@ export class ALAppFileViewer {
                 else if (m.command == "errorInFilter") {
                     vscode.window.showErrorMessage('Invalid filter: ' + m.message);
                 }
-                else {
-                    this.appFileObjCommand(m.objtype, m.objid, m.cmdname);
+                else if (m.command == "updatePivotObj") {
+                    this.updatePivotObjCommand(m.objtype, m.objid);
+                }
+                else if (m.command == "execObjCommand") {
+                    this.appFileObjCommand(m.objtype, m.objid, m.selobjids, m.cmdname);
                 }
             }                
         }, null, this.disposables);
@@ -100,13 +103,10 @@ export class ALAppFileViewer {
             this.panel.webview.html = this.htmlContent;
     }    
 
-    protected async appFileObjCommand(objType : string, objId : number, commandName : string) {
-        var symbolInfo = this.objectLibraries.findALSymbolInfo(objType, objId);
+    protected async appFileObjCommand(objType : string, objId : number, selObjIds: number[], commandName : string) {
+        var symbolInfo = this.objectLibraries.findALSymbolInfo(objType, objId); //TODO: Generate multiple objects, if multiple are selected.
         if (symbolInfo) {
-            if ((commandName === 'selected') && (this.codeOutlineProvider)) {
-                this.codeOutlineProvider.setAppALSymbolInfo(symbolInfo);
-            }
-            else if (commandName === 'newcardpage')
+            if (commandName === 'newcardpage')
                 await this.objectBuilders.pageBuilder.showCardPageWizard(symbolInfo);
             else if (commandName === 'newlistpage')
                 await this.objectBuilders.pageBuilder.showListPageWizard(symbolInfo);
@@ -123,6 +123,13 @@ export class ALAppFileViewer {
             else if (commandName === 'extendpage')
                 await this.objectBuilders.pageExtBuilder.showPageExtWizard(symbolInfo);
         }            
+    }
+
+    protected async updatePivotObjCommand(objType: string, objId: number) {
+        var symbolInfo = this.objectLibraries.findALSymbolInfo(objType, objId);
+        if (symbolInfo && this.codeOutlineProvider) {
+            this.codeOutlineProvider.setAppALSymbolInfo(symbolInfo);
+        }
     }
 
     //#region Filter View
