@@ -106,6 +106,13 @@ export class ALAppFileViewer {
     protected async appFileObjCommand(objType : string, objId : number, selObjIds: number[], commandName : string) {
         var multipleObjects = (selObjIds.length > 1) && (commandName !== 'runinwebclient');
         if (multipleObjects) {
+            if (selObjIds.length > 100) {
+                let action: string = await vscode.window.showWarningMessage(`You are about to run this command for ${selObjIds.length} objects. Do you want to continue?`, {modal: true}, 'Yes', 'No');
+                if (action !== 'Yes') {
+                    return;
+                }
+            }
+
             var symbolInfoList = this.objectLibraries.findALSymbolInfoList(objType, selObjIds);
             if (symbolInfoList) {
                 if (commandName === 'newcardpage')
