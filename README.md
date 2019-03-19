@@ -8,6 +8,8 @@ For AL file types, extension tries to extract a bit more information from the la
 
 It is also possible to view symbols from symbol reference packages. Extension adds a new "Open in AL Object Browser" entry to explorer contect menu for *.app files. It opens a view that looks similar to c/al object designer. Selecting object entry in this view updates code outline view. It can also display context menu with options to show object definition and run table based object generators. Right click on object list column header opens another context menu (added by rvanbekkum), which allows to apply filter to the list.
 
+It is also possible to select multiple rows in AL Object Browser by clicking on the lines with Ctrl or Shift keys pressed or by pressing Ctrl+A (another great rvanbekkum contribution). When multiple rows are selected, object generators will generate new files for all of them.
+
 ![Symbols browser](resources/screen-objectbrowser.gif)
 
 ![Page generator](resources/screen-wizard.gif)
@@ -15,6 +17,8 @@ It is also possible to view symbols from symbol reference packages. Extension ad
 ![Code outline for a table](resources/screen-table.png)
 
 ![Code outline for a page](resources/screen-page.png)
+
+![Multiple objects selection in symbols browser](resources/screen-browserselection.png)
 
 ## Contributors
 
