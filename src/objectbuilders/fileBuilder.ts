@@ -7,7 +7,7 @@ import { CRSALLangExtHelper } from '../crsAlLangExtHelper';
 import { ObjectBuilder } from './objectBuilder';
 
 export class FileBuilder {
-    public static async generateObjectFile(content: string, fileName: string, objectType: ALSymbolKind): Promise<string | undefined> {
+    public static async generateObjectFile(content: string, fileName: string, relativeFileDir: string): Promise<string | undefined> {
         // Determine the project root directory.
         let workspaceFolderCount: number = vscode.workspace.workspaceFolders.length;
         if (workspaceFolderCount < 1) {
@@ -27,17 +27,6 @@ export class FileBuilder {
 
         // Determine the directory to place the files in; create the directory if it does not exist yet.
         const baseFileDir : string = workspaceFolder.uri.fsPath;
-        let relativeFileDir : string = await this.getPatternGeneratedRelativeFilePath(objectType);
-
-        const promptForFilePath: boolean = vscode.workspace.getConfiguration('alOutline').get('promptForFilePath');
-        if (promptForFilePath) {
-            relativeFileDir = await vscode.window.showInputBox({
-                value  : relativeFileDir,
-                prompt : 'Please specify a directory, relative to the root, to create the new file in.',
-                ignoreFocusOut: true
-            });
-        }
-        
         const newFileDirectory : string = path.join(baseFileDir, relativeFileDir);
 
         if (relativeFileDir) {
@@ -108,27 +97,45 @@ export class FileBuilder {
         return '';
     }
 
-    public static getPromptForFileName() : boolean {
-        let value : boolean = vscode.workspace.getConfiguration('alOutline').get('promptForFilePath');
-        return value;
+    public static getAutoGenerateFiles() : boolean {
+        return vscode.workspace.getConfiguration('alOutline').get('autoGenerateFiles');
+    }
+
+    public static getPromptForObjectName() : boolean {
+        return vscode.workspace.getConfiguration('alOutline').get('promptForObjectName');
     }
 
     public static checkCrsFileNamePatternRequired() : boolean {
-        if ((!FileBuilder.getPromptForFileName()) && (!FileBuilder.hasCrsFileNamePattern())) {
-            vscode.window.showErrorMessage('File name pattern for new objects has not been specified in CRS.FileNamePattern setting. Please go to Visual Studio Code settings and update it or enable file path prompt by switching alOutline.promptForFilePath setting to true.');
+        // If files are automatically generated AND no file naming pattern is available, then give an error that the file name pattern setting needs to be added.
+        if (FileBuilder.getAutoGenerateFiles() && !FileBuilder.hasCrsFileNamePattern()) {
+            vscode.window.showErrorMessage('File name pattern for new objects has not been specified in the "CRS.FileNamePattern" setting. Please add this setting to your VS Code workspace or user settings.');
             return false;
         }
         return true;
     }
 
     public static checkCrsExtensionFileNamePatternRequired() : boolean {
-        if ((!FileBuilder.getPromptForFileName()) && (!FileBuilder.hasCrsExtensionFileNamePattern())) {
-            vscode.window.showErrorMessage('File name pattern for extension objects has not been specified in CRS.FileNamePatternExtensions setting. Please go to Visual Studio Code settings and update it or enable file path prompt by switching alOutline.promptForFilePath setting to true.');
+        // If files are automatically generated AND no extension file naming pattern is available, then give an error that the extension file name pattern setting needs to be added.
+        if (FileBuilder.getAutoGenerateFiles() && !FileBuilder.hasCrsExtensionFileNamePattern()) {
+            vscode.window.showErrorMessage('File name pattern for extension objects has not been specified in the "CRS.FileNamePatternExtensions" setting. Please add this setting to your VS Code workspace or user settings.');
             return false;
         }
         return true;
     }
 
+    public static checkCrsExtensionObjectNamePatternRequired(multipleObjects: boolean) : boolean {
+        // When multiple objects are generated, a prompt for the extension object name is not shown, so we need a pattern -> if not available, then this setting needs to be set first.
+        if (multipleObjects && !FileBuilder.hasCrsExtensionObjectNamePattern()) {
+            vscode.window.showErrorMessage('Extension object name pattern has not been specified in the "CRS.ExtensionObjectNamePattern" setting. Please add this setting to your VS Code workspace or user settings.');
+            return false;
+        }
+        // When a single object is generated, the name can either come from a pattern or from the user via a prompt -> if both are unavailable/disabled, then either of these settings need to be added/enabled.
+        else if (!multipleObjects && !FileBuilder.hasCrsExtensionObjectNamePattern() && !FileBuilder.getPromptForObjectName()) {
+            vscode.window.showErrorMessage('The "CRS.ExtensionObjectNamePattern" setting is undefined and the "alOutline.promptForObjectName" setting is disabled. Please update your VS Code workspace or user settings.');
+            return false;
+        }
+        return true;
+    }
 
     public static hasCrsFileNamePattern() : boolean {
         let patternText = vscode.workspace.getConfiguration('CRS', null).get('FileNamePattern');
@@ -176,7 +183,7 @@ export class FileBuilder {
         return extensionObjectName + '.al';
     }
 
-    private static async getPatternGeneratedRelativeFilePath(objectType: ALSymbolKind) : Promise<string> {       
+    public static async getPatternGeneratedRelativeFilePath(objectType: ALSymbolKind) : Promise<string> {       
         let typeName = this.getObjectTypeFromSymbolInfo(objectType);
         let shortTypeName : string = '';                
         let output: string = vscode.workspace.getConfiguration('alOutline').get('autoGenerateFileDirectory');

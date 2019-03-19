@@ -87,8 +87,11 @@ export class ALAppFileViewer {
                 else if (m.command == "errorInFilter") {
                     vscode.window.showErrorMessage('Invalid filter: ' + m.message);
                 }
-                else {
-                    this.appFileObjCommand(m.objtype, m.objid, m.cmdname);
+                else if (m.command == "updatePivotObj") {
+                    this.updatePivotObjCommand(m.objtype, m.objid);
+                }
+                else if (m.command == "execObjCommand") {
+                    this.appFileObjCommand(m.objtype, m.objid, m.selobjids, m.cmdname);
                 }
             }                
         }, null, this.disposables);
@@ -100,29 +103,62 @@ export class ALAppFileViewer {
             this.panel.webview.html = this.htmlContent;
     }    
 
-    protected async appFileObjCommand(objType : string, objId : number, commandName : string) {
-        var symbolInfo = this.objectLibraries.findALSymbolInfo(objType, objId);
-        if (symbolInfo) {
-            if ((commandName === 'selected') && (this.codeOutlineProvider)) {
-                this.codeOutlineProvider.setAppALSymbolInfo(symbolInfo);
+    protected async appFileObjCommand(objType : string, objId : number, selObjIds: number[], commandName : string) {
+        var multipleObjects = (selObjIds.length > 1) && (commandName !== 'runinwebclient');
+        if (multipleObjects) {
+            if (selObjIds.length > 100) {
+                let action: string = await vscode.window.showWarningMessage(`You are about to run this command for ${selObjIds.length} objects. Do you want to continue?`, {modal: true}, 'Yes', 'No');
+                if (action !== 'Yes') {
+                    return;
+                }
             }
-            else if (commandName === 'newcardpage')
-                await this.objectBuilders.pageBuilder.showCardPageWizard(symbolInfo);
-            else if (commandName === 'newlistpage')
-                await this.objectBuilders.pageBuilder.showListPageWizard(symbolInfo);
-            else if (commandName === 'newreport')
-                await this.objectBuilders.reportBuilder.showReportWizard(symbolInfo);
-            else if (commandName === 'newxmlport')
-                await this.objectBuilders.xmlPortBuilder.showXmlPortWizard(symbolInfo);
-            else if (commandName === 'newquery')
-                await this.objectBuilders.queryBuilder.showQueryWizard(symbolInfo);
-            else if (commandName === 'runinwebclient')
-                this.alObjectRunner.runInWebClient(symbolInfo);
-            else if (commandName === 'extendtable')
-                await this.objectBuilders.tableExtBuilder.showTableExtWizard(symbolInfo);
-            else if (commandName === 'extendpage')
-                await this.objectBuilders.pageExtBuilder.showPageExtWizard(symbolInfo);
-        }            
+
+            var symbolInfoList = this.objectLibraries.findALSymbolInfoList(objType, selObjIds);
+            if (symbolInfoList) {
+                if (commandName === 'newcardpage')
+                    await this.objectBuilders.pageBuilder.showMultiPageWizard(symbolInfoList, 'Card');
+                else if (commandName === 'newlistpage')
+                    await this.objectBuilders.pageBuilder.showMultiPageWizard(symbolInfoList, 'List');
+                else if (commandName === 'newreport')
+                    await this.objectBuilders.reportBuilder.showMultiReportWizard(symbolInfoList);
+                else if (commandName === 'newxmlport')
+                    await this.objectBuilders.xmlPortBuilder.showMultiXmlPortWizard(symbolInfoList);
+                else if (commandName === 'newquery')
+                    await this.objectBuilders.queryBuilder.showMultiQueryWizard(symbolInfoList);
+                else if (commandName === 'extendtable')
+                    await this.objectBuilders.tableExtBuilder.showMultiTableExtWizard(symbolInfoList);
+                else if (commandName === 'extendpage')
+                    await this.objectBuilders.pageExtBuilder.showMultiPageExtWizard(symbolInfoList);
+            }
+        }
+        else {
+            var symbolInfo = this.objectLibraries.findALSymbolInfo(objType, objId);
+            if (symbolInfo) {
+                if (commandName === 'newcardpage')
+                    await this.objectBuilders.pageBuilder.showPageWizard(symbolInfo, 'Card');
+                else if (commandName === 'newlistpage')
+                    await this.objectBuilders.pageBuilder.showPageWizard(symbolInfo, 'List');
+                else if (commandName === 'newreport')
+                    await this.objectBuilders.reportBuilder.showReportWizard(symbolInfo);
+                else if (commandName === 'newxmlport')
+                    await this.objectBuilders.xmlPortBuilder.showXmlPortWizard(symbolInfo);
+                else if (commandName === 'newquery')
+                    await this.objectBuilders.queryBuilder.showQueryWizard(symbolInfo);
+                else if (commandName === 'runinwebclient')
+                    this.alObjectRunner.runInWebClient(symbolInfo);
+                else if (commandName === 'extendtable')
+                    await this.objectBuilders.tableExtBuilder.showTableExtWizard(symbolInfo);
+                else if (commandName === 'extendpage')
+                    await this.objectBuilders.pageExtBuilder.showPageExtWizard(symbolInfo);
+            }   
+        }         
+    }
+
+    protected async updatePivotObjCommand(objType: string, objId: number) {
+        var symbolInfo = this.objectLibraries.findALSymbolInfo(objType, objId);
+        if (symbolInfo && this.codeOutlineProvider) {
+            this.codeOutlineProvider.setAppALSymbolInfo(symbolInfo);
+        }
     }
 
     //#region Filter View

@@ -1,11 +1,11 @@
-<table id="objlisttab">
+<table id="objlisttab" data-rs-selectable data-rs-class="objsel">
     <tr id="objhead" class="objhead"><th>Type</th><th>ID</th><th>Name</th></tr>
 
     {{#each objectCollections}}
         {{#if visible}}
             {{#each objects}}
                 {{#if objvisible}}
-                    <tr class="objrow" data-objt="{{../objectType}}" data-objid="{{Id}}" data-objname="{{Name}}" onclick="objclick(this)"><td>{{../objectType}}</td><td>{{OId}}</td><td>{{Name}}</td></tr>
+                    <tr class="objrow" data-objt="{{../objectType}}" data-objid="{{Id}}" data-objname="{{Name}}" onclick="objclick(this)" tabindex="0"><td>{{../objectType}}</td><td>{{OId}}</td><td>{{Name}}</td></tr>
                 {{/if}}
             {{/each}}
         {{/if}}

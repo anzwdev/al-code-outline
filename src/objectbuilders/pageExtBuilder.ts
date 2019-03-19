@@ -4,6 +4,7 @@ import { ALSymbolInfo } from "../alSymbolInfo";
 import { ALSymbolKind } from '../alSymbolKind';
 import { FileBuilder } from './fileBuilder';
 import { ObjectBuilder } from './objectBuilder';
+import { relative } from 'path';
 
 export class PageExtBuilder extends ObjectBuilder {
 
@@ -13,8 +14,30 @@ export class PageExtBuilder extends ObjectBuilder {
 
     //#region Wizards with UI
 
+    async showMultiPageExtWizard(pageSymbols: ALSymbolInfo[]) {
+        if (!FileBuilder.checkCrsExtensionFileNamePatternRequired() || !FileBuilder.checkCrsExtensionObjectNamePatternRequired(true))
+            return;
+
+        const extObjType : ALSymbolKind = ALSymbolKind.PageExtension;
+
+        let startObjectId: number = await this.getObjectId("Please enter a starting ID for the page extensions.", 0);
+        if (startObjectId < 0) {
+            return;
+        }
+
+        let relativeFileDir: string = await this.getRelativeFileDir(extObjType);
+
+        for (let i = 0; i < pageSymbols.length; i++) {
+            let pageSymbol = pageSymbols[i];
+            let extObjectId: number = startObjectId + i;
+            let extObjectName: string = await FileBuilder.getPatternGeneratedExtensionObjectName(extObjType, extObjectId, pageSymbol);
+
+            await this.createAndShowNewPageExtension(pageSymbol, extObjType, extObjectId, extObjectName, relativeFileDir);
+        }
+    }
+
     async showPageExtWizard(pageSymbol : ALSymbolInfo) {
-        if (!FileBuilder.checkCrsExtensionFileNamePatternRequired())
+        if (!FileBuilder.checkCrsExtensionFileNamePatternRequired() || !FileBuilder.checkCrsExtensionObjectNamePatternRequired(false))
             return;
 
         const extObjType : ALSymbolKind = ALSymbolKind.PageExtension;
@@ -30,8 +53,13 @@ export class PageExtBuilder extends ObjectBuilder {
             return;
         }
 
+        let relativeFileDir: string = await this.getRelativeFileDir(extObjType);
+        await this.createAndShowNewPageExtension(pageSymbol, extObjType, extObjectId, extObjectName, relativeFileDir);
+    }
+
+    private async createAndShowNewPageExtension(pageSymbol: ALSymbolInfo, extObjType: ALSymbolKind, extObjectId: number, extObjectName: string, relativeFileDir: string) {
         let fileName : string = await FileBuilder.getPatternGeneratedExtensionObjectFileName(extObjType, extObjectId, extObjectName, pageSymbol);
-        this.showNewDocument(this.buildPageExtForPage(pageSymbol, extObjectId, extObjectName), fileName, extObjType);
+        this.showNewDocument(this.buildPageExtForPage(pageSymbol, extObjectId, extObjectName), fileName, relativeFileDir);
     }
 
     //#endregion

@@ -13,6 +13,28 @@ export class ReportBuilder extends ObjectBuilder {
 
     //#region Wizards with UI
 
+    async showMultiReportWizard(tableSymbols: ALSymbolInfo[]) {
+        if (!FileBuilder.checkCrsExtensionFileNamePatternRequired())
+            return;
+
+        const objType : ALSymbolKind = ALSymbolKind.Report;
+
+        let startObjectId: number = await this.getObjectId(`Please enter a starting ID for the report objects.`, 0);
+        if (startObjectId < 0) {
+            return;
+        }
+
+        let relativeFileDir: string = await this.getRelativeFileDir(objType);
+
+        for (let i = 0; i < tableSymbols.length; i++) {
+            let tableSymbol = tableSymbols[i];
+            let objectId: number = startObjectId + i;
+            let objectName : string = this.getDefaultReportName(tableSymbol);
+
+            await this.createAndShowNewReport(tableSymbol, objType, objectId, objectName, relativeFileDir);
+        }
+    }
+
     async showReportWizard(tableSymbol : ALSymbolInfo) {
         if (!FileBuilder.checkCrsFileNamePatternRequired())
             return;
@@ -24,15 +46,20 @@ export class ReportBuilder extends ObjectBuilder {
             return;
         }
 
-        let objectName : string = tableSymbol.symbolName.trim() + " Report";
+        let objectName : string = this.getDefaultReportName(tableSymbol);
         objectName = await this.getObjectName("Please enter a name for the report object.", objectName);
         
         if (!objectName) {
             return;
         }
 
+        let relativeFileDir: string = await this.getRelativeFileDir(objType);
+        await this.createAndShowNewReport(tableSymbol, objType, objectId, objectName, relativeFileDir);
+    }
+
+    private async createAndShowNewReport(tableSymbol: ALSymbolInfo, objType: ALSymbolKind, objectId: number, objectName: string, relativeFileDir: string) {
         let fileName : string = await FileBuilder.getPatternGeneratedFullObjectFileName(objType, objectId, objectName);
-        this.showNewDocument(this.buildReportForTable(tableSymbol, objectId, objectName), fileName, objType);
+        this.showNewDocument(this.buildReportForTable(tableSymbol, objectId, objectName), fileName, relativeFileDir);
     }
 
     //#endregion
@@ -97,4 +124,11 @@ export class ReportBuilder extends ObjectBuilder {
 
     //#endregion
 
+    //#region Helper Methods
+
+    private getDefaultReportName(tableSymbol: ALSymbolInfo) : string {
+        return `${tableSymbol.symbolName.trim()} Report`;
+    }
+    
+    //#endregion
 }

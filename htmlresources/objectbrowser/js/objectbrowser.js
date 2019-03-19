@@ -17,8 +17,8 @@ $(function() {
 });
 
 var dataMode = '';
-var selType = '';
-var selId = 0;
+var pivotType = '';
+var pivotId = 0;
 var objdata = {};
 
 var filterType = [];
@@ -187,7 +187,7 @@ function setMode(newMode, reload) {
 
 function renderData() {
     $('#objects').html(Handlebars.templates.objectlist(objdata));
-    $("tr[data-objt='" + selType + "'][data-objid='" + selId + "']").attr('class', 'objsel');
+    $("tr[data-objt='" + pivotType + "'][data-objid='" + pivotId + "']").attr('class', 'objsel');
 
     initContextMenus();
 }
@@ -284,6 +284,7 @@ function execObjCommand(objtype, objid, cmdname) {
             command : 'execObjCommand',
             objtype : objtype,
             objid : objid,
+            selobjids: getSelectedObjectIds(objtype),
             cmdname : cmdname});
     }
 }
@@ -303,18 +304,48 @@ function execFilterCommand(headColumn, cmdname) {
     }
 }
 
+function updatePivotObject(objtype, objid) {
+    if (vscodeContext) {
+        vscodeContext.postMessage({
+            command : "updatePivotObj",
+            objtype : objtype,
+            objid   : objid
+        });
+    }
+}
+
+function getSelectedObjectIds(objtype) {
+    var selectedIds = [];
+    $('#objlisttab').selectedrows().each(function (idx, selectedrow)
+    {
+        if (selectedrow.dataset.objt === objtype) {
+            selectedIds.push(selectedrow.dataset.objid);
+        }
+    });
+    return selectedIds;
+}
+
 function selectObject(newSelType, newSelId) {
-    if ((newSelType != selType) || (newSelId != selId)) {
-        //update view
-        $("tr[data-objt='" + selType + "'][data-objid='" + selId + "']").attr('class', '');
-        selType = newSelType;
-        selId = newSelId;
-        $("tr[data-objt='" + selType + "'][data-objid='" + selId + "']").attr('class', 'objsel');
-        //notify vscode extension
-        execObjCommand(selType, selId, "selected");
+    if ((newSelType != pivotType) || (newSelId != pivotId)) {
+        // update view
+        pivotType = newSelType;
+        pivotId = newSelId;
+        // notify vscode extension (to view the corresponding outline)
+        updatePivotObject(pivotType, pivotId);
     }
 }
 
 function objclick(item) {
     selectObject(item.dataset.objt, item.dataset.objid);
 }
+
+$(document).keydown(function(evt)
+{
+    // Disable text-select from ctrl+A.
+	if (evt.ctrlKey) {          
+		if (evt.keyCode == 65) {                         
+			evt.preventDefault();
+			return false;
+		}            
+	}
+});

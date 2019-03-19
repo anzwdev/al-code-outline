@@ -56,4 +56,11 @@ export class ALObjectLibrariesCollection {
         return null;
     }
 
+    findALSymbolInfoList(objectType: string, objectIds: number[]) : ALSymbolInfo[] {
+        let symbolInfoList: ALSymbolInfo[] = [];
+        objectIds.forEach(objectId => {
+            symbolInfoList.push(this.findALSymbolInfo(objectType, objectId));
+        });
+        return symbolInfoList;
+    }
 }

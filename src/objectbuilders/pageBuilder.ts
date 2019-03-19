@@ -13,48 +13,65 @@ export class PageBuilder extends ObjectBuilder {
 
     //#region Wizards with UI
 
-    async showListPageWizard(tableSymbol : ALSymbolInfo) {
-        if (!FileBuilder.checkCrsFileNamePatternRequired())
+    async showMultiPageWizard(tableSymbols: ALSymbolInfo[], pageType: string) {
+        if (!FileBuilder.checkCrsExtensionFileNamePatternRequired())
             return;
 
         const objType : ALSymbolKind = ALSymbolKind.Page;
 
-        let objectId : number = await this.getObjectId("Please enter an ID for the list page.", 0);
-        if (objectId < 0) {
+        let startObjectId: number = await this.getObjectId(`Please enter a starting ID for the ${pageType} pages.`, 0);
+        if (startObjectId < 0) {
             return;
         }
 
-        let objectName : string = tableSymbol.symbolName.trim() + " List";
-        objectName = await this.getObjectName("Please enter a name for the list page.", objectName);
-        
-        if (!objectName) {
-            return;
-        }
+        let relativeFileDir: string = await this.getRelativeFileDir(objType);
 
-        let fileName : string = await FileBuilder.getPatternGeneratedFullObjectFileName(objType, objectId, objectName);
-        this.showNewDocument(this.buildListPageForTable(tableSymbol, objectId, objectName), fileName, objType);
+        for (let i = 0; i < tableSymbols.length; i++) {
+            let tableSymbol = tableSymbols[i];
+            let objectId: number = startObjectId + i;
+            let objectName : string = this.getDefaultPageName(tableSymbol, pageType);
+
+            await this.createAndShowNewPage(tableSymbol, objType, objectId, objectName, pageType, relativeFileDir);
+        }
     }
 
-    async showCardPageWizard(tableSymbol : ALSymbolInfo) {
+    async showPageWizard(tableSymbol : ALSymbolInfo, pageType: string) {
         if (!FileBuilder.checkCrsFileNamePatternRequired())
             return;
-            
+
         const objType : ALSymbolKind = ALSymbolKind.Page;
 
-        let objectId : number = await this.getObjectId("Please enter an ID for the card page.", 0);
+        let objectId : number = await this.getObjectId(`Please enter an ID for the ${pageType} page.`, 0);
         if (objectId < 0) {
             return;
         }
 
-        let objectName : string = tableSymbol.symbolName.trim() + " Card";
-        objectName = await this.getObjectName("Please enter a name for the card page.", objectName);
+        let objectName : string = this.getDefaultPageName(tableSymbol, pageType);
+        objectName = await this.getObjectName(`Please enter a name for the ${pageType} page.`, objectName);
         
         if (!objectName) {
             return;
         }
 
+        let relativeFileDir: string = await this.getRelativeFileDir(objType);
+        await this.createAndShowNewPage(tableSymbol, objType, objectId, objectName, pageType, relativeFileDir);
+    }
+
+    private async createAndShowNewPage(tableSymbol: ALSymbolInfo, objType: ALSymbolKind, objectId: number, objectName: string, pageType: string, relativeFileDir: string) {
         let fileName : string = await FileBuilder.getPatternGeneratedFullObjectFileName(objType, objectId, objectName);
-        this.showNewDocument(this.buildCardPageForTable(tableSymbol, objectId, objectName), fileName, objType);
+        let pageContents: string;
+        if (pageType === 'List') {
+            pageContents = this.buildListPageForTable(tableSymbol, objectId, objectName);
+        }
+        else if (pageType === 'Card') {
+            pageContents = this.buildCardPageForTable(tableSymbol, objectId, objectName);
+        }
+        else {
+            vscode.window.showErrorMessage(`Page generator for page type: ${pageType} not implemented.`)
+            return;
+        }
+
+        this.showNewDocument(pageContents, fileName, relativeFileDir);
     }
 
     //#endregion
@@ -122,4 +139,11 @@ export class PageBuilder extends ObjectBuilder {
 
     //#endregion
 
+    //#region Helper Methods
+
+    private getDefaultPageName(tableSymbol: ALSymbolInfo, pageType: string) : string {
+        return `${tableSymbol.symbolName.trim()} ${pageType}`;
+    }
+    
+    //#endregion
 }
