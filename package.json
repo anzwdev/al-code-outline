@@ -2,7 +2,7 @@
 	"name": "al-code-outline",
 	"displayName": "AL Code Outline",
 	"description": "AL code outline tree provider",
-	"version": "0.0.13",
+	"version": "0.0.14",
 	"publisher": "andrzejzwierzchowski",
 	"engines": {
 		"vscode": "^1.30.0"
