@@ -1,4 +1,4 @@
-# AL Code Outline for Visual Studio Code
+# AL Code Outline 2.0 for Visual Studio Code
 
 ## Features
 
