@@ -1,6 +1,31 @@
-# AL Code Outline 2.0 for Visual Studio Code
+# AZ AL Dev Tools (AL Code Outline 2.0) for Visual Studio Code
+
+This extension was originally named 'AL Code Outline' because it started as AL code outline panel from which it was possible to run different code generators on AL syntax nodes. Each new version was adding new features and they were no longer available from code outline panel only. Microsoft also added standard outline view to VS Code. Because of all these changes AL Outline panel is no longer main feature of this extension so original name has been changed to 'AZ AL Dev Tools' to emphasize that it is set of many different tools for AL developers
 
 ## Features
+
+### Code outline view 
+
+'AL Outline' panel displays code outline of currently active editor. It looks like standard VS Code Outline view, but supports syntax nodes types specific to AL, display custom icons and allows to invoke some commands on them using context menu. It also supports other document types, so it can be used instead of standard outline view if AL project contains other files (i.e. javascript or css control add-ins files). 
+
+### Object browser
+
+
+### File wizards
+
+
+## Contributors
+
+- rvanbekkum: 
+  * "New Page Extension" and "New Table Extension" options in AL Object Browser
+  * Ability to save generated objects in files inside project folder
+
+------------------------
+OLD CONTENT BELOW
+TO-DO!
+------------------------
+
+
 
 The AL Code Outline extension displays code outline of active file in the explorer pane. It was initially created to support AL files only, but AL project can also contain other file types for data (xml, json) and client add-ins (javascript, css, html, handlebars) so symbols tree works for them too. Basic functionality allows user to click on one of symbols tree nodes to move cursor to that symbol in the code editor. 
 
@@ -20,11 +45,6 @@ It is also possible to select multiple rows in AL Object Browser by clicking on 
 
 ![Multiple objects selection in symbols browser](resources/screen-browserselection.png)
 
-## Contributors
-
-- rvanbekkum: 
-  * "New Page Extension" and "New Table Extension" options in AL Object Browser
-  * Ability to save generated objects in files inside project folder
 
 ## Inspiration
 

@@ -1,5 +1,9 @@
 # Change Log
 
+## 2.0.0
+
+
+
 ## 0.0.15
 
  - Another great rvanbekkum contribution -it is now possible to select multiple rows in AL Object Browser by clicking on them with Ctrl or Shift key pressed or by using Ctrl+A keyboard shortcut. Object code generators are run for all selected objects.
