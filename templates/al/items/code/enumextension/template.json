@@ -1,0 +1,17 @@
+{
+    "name" : "AL Enum Extension",
+    "description" : "Al enum extension wizard",
+    "defaultName" : "Enum Extension.al",
+    "sortOrder" : "260",
+    "category" : "AL/Code",
+    "iconLight" : "EnumSnippet_Light.svg",
+    "iconDark" : "EnumSnippet_Dark.svg",
+    "wizardName" : "azALDevTools.alEnumExtWizard",
+    "elements" : [
+        {
+            "fileName" : "file.al.data",
+            "targetName" : "$itemname$.al",
+            "replaceParameters" : true
+        }
+    ]
+}

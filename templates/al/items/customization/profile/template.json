@@ -1,0 +1,16 @@
+{
+    "name" : "AL Profile",
+    "description" : "New al profile",
+    "defaultName" : "MyProfile.al",
+    "sortOrder" : "300",
+    "category" : "AL/Customization",
+    "iconLight" : "icon-light.svg",
+    "iconDark" : "icon-dark.svg",
+    "elements" : [
+        {
+            "fileName" : "file.al.data",
+            "targetName" : "$itemname$.al",
+            "replaceParameters" : true
+        }
+    ]
+}

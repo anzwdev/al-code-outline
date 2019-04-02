@@ -1,0 +1,17 @@
+{
+    "name" : "AL XmlPort",
+    "description" : "New al xml port wizard. Allows to select xml port source table and fields.",
+    "defaultName" : "New XmlPort.al",
+    "sortOrder" : "500",
+    "category" : "AL/Data",
+    "iconLight" : "icon-light.svg",
+    "iconDark" : "icon-dark.svg",
+    "wizardName" : "azALDevTools.alXmlPortWizard",
+    "elements" : [
+        {
+            "fileName" : "file.al.data",
+            "targetName" : "$itemname$.al",
+            "replaceParameters" : true
+        }
+    ]
+}

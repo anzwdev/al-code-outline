@@ -1,0 +1,17 @@
+{
+    "name" : "AL Report",
+    "description" : "New al report wizard. Allows to select report source table and fields.",
+    "defaultName" : "New Report.al",
+    "sortOrder" : "400",
+    "category" : "AL/Data",
+    "iconLight" : "icon-light.svg",
+    "iconDark" : "icon-dark.svg",
+    "wizardName" : "azALDevTools.alReportWizard",
+    "elements" : [
+        {
+            "fileName" : "file.al.data",
+            "targetName" : "$itemname$.al",
+            "replaceParameters" : true
+        }
+    ]
+}

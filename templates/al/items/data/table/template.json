@@ -1,0 +1,16 @@
+{
+    "name" : "AL Table",
+    "description" : "New empty al table",
+    "defaultName" : "New Table.al",
+    "sortOrder" : "100",
+    "category" : "AL/Data",
+    "iconLight" : "icon-light.svg",
+    "iconDark" : "icon-dark.svg",
+    "elements" : [
+        {
+            "fileName" : "file.al.data",
+            "targetName" : "$itemname$.al",
+            "replaceParameters" : true
+        }
+    ]
+}

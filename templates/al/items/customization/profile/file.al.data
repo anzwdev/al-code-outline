@@ -1,0 +1,6 @@
+profile "$itemname$" 
+{
+    Description = '$itemname$';
+    RoleCenter = RoleCenter;
+    Customizations = Customizations;
+}

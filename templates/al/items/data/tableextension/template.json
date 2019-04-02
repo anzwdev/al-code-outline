@@ -1,0 +1,16 @@
+{
+    "name" : "AL Table Extension",
+    "description" : "New empty al table extension",
+    "defaultName" : "New Table Extension.al",
+    "sortOrder" : "150",
+    "category" : "AL/Data",
+    "iconLight" : "icon-light.svg",
+    "iconDark" : "icon-dark.svg",
+    "elements" : [
+        {
+            "fileName" : "file.al.data",
+            "targetName" : "$itemname$.al",
+            "replaceParameters" : true
+        }
+    ]
+}

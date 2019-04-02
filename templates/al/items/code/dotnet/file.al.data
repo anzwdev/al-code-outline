@@ -1,0 +1,7 @@
+dotnet
+{
+    assembly(AssemblyName)
+    {
+        type(TypeName;AliasName){}
+    }
+}

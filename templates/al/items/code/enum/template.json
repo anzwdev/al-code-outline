@@ -1,0 +1,17 @@
+{
+    "name" : "AL Enum",
+    "description" : "New al enum wizard",
+    "defaultName" : "New Enum.al",
+    "sortOrder" : "250",
+    "category" : "AL/Code",
+    "iconLight" : "Enumerator_Light.svg",
+    "iconDark" : "Enumerator_Dark.svg",
+    "wizardName" : "azALDevTools.alEnumWizard",
+    "elements" : [
+        {
+            "fileName" : "file.al.data",
+            "targetName" : "$itemname$.al",
+            "replaceParameters" : true
+        }
+    ]
+}

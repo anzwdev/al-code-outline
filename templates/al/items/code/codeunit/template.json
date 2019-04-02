@@ -1,0 +1,16 @@
+{
+    "name" : "AL Codeunit",
+    "description" : "New empty al codeunit",
+    "defaultName" : "New Codeunit.al",
+    "sortOrder" : "200",
+    "category" : "AL/Code",
+    "iconLight" : "icon-light.svg",
+    "iconDark" : "icon-dark.svg",
+    "elements" : [
+        {
+            "fileName" : "file.al.data",
+            "targetName" : "$itemname$.al",
+            "replaceParameters" : true
+        }
+    ]
+}

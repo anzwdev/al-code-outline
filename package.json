@@ -1,8 +1,8 @@
 {
 	"name": "al-code-outline",
-	"displayName": "AL Code Outline",
-	"description": "AL code outline tree provider",
-	"version": "0.0.15",
+	"displayName": "AZ AL Dev Tools (AL Code Outline)",
+	"description": "AL Development Tools: AL code outline, object browser, object wizards",
+	"version": "2.0.0",
 	"publisher": "andrzejzwierzchowski",
 	"engines": {
 		"vscode": "^1.30.0"
@@ -206,6 +206,7 @@
 		]
 	},
 	"extensionDependencies": [
+        "visualzoran.vz-file-templates",
 		"waldo.crs-al-language-extension"
 	],
 	"scripts": {
@@ -223,6 +224,8 @@
 	},
 	"dependencies": {
 		"adm-zip": "^0.4.11",
-		"opn": "^5.4.0"
+		"opn": "^5.4.0",
+		"vscode-languageclient": "^5.2.1",
+		"vz-file-templates": "^1.0.1"
 	}
 }

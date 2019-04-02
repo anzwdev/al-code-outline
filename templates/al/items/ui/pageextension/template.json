@@ -1,0 +1,16 @@
+{
+    "name" : "AL Page Extension",
+    "description" : "New empty al page extension",
+    "defaultName" : "New Page Extension.al",
+    "sortOrder" : "350",
+    "category" : "AL/UI",
+    "iconLight" : "icon-light.svg",
+    "iconDark" : "icon-dark.svg",
+    "elements" : [
+        {
+            "fileName" : "file.al.data",
+            "targetName" : "$itemname$.al",
+            "replaceParameters" : true
+        }
+    ]
+}
