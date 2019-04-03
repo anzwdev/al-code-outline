@@ -10,7 +10,7 @@
     "elements" : [
         {
             "fileName" : "file.al.data",
-            "targetName" : "$itemname$.al",
+            "targetName" : "$objectfilename$",
             "replaceParameters" : true
         }
     ]

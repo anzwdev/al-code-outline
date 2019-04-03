@@ -24,7 +24,7 @@ export class ALPageWizardPage extends ALTableBasedWizardPage {
         return "azALDevTools.ALPageWizard";
     }
 
-    protected finishWizard(data : any) : boolean {
+    protected async finishWizard(data : any) : Promise<boolean> {
         //build parameters
         this._pageWizardData.objectId = data.objectId;
         this._pageWizardData.objectName = data.objectName;
@@ -64,6 +64,8 @@ export class ALPageWizardPage extends ALTableBasedWizardPage {
         //build new object
         var builder : ALPageSyntaxBuilder = new ALPageSyntaxBuilder();
         var source = builder.buildFromPageWizardData(this._pageWizardData);
+
+        await this.setObjectFileName("page", data.objectId, data.objectName);
 
         //run template
         this._templateRunSettings.setTextReplacement("$wizardoutput$", source);

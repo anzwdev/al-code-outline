@@ -23,7 +23,7 @@ export class ALQueryWizardPage extends ALTableBasedWizardPage {
         return "azALDevTools.ALQueryWizard";
     }
 
-    protected finishWizard(data : any) : boolean {
+    protected async finishWizard(data : any) : Promise<boolean> {
         //build parameters
         this._queryWizardData.objectId = data.objectId;
         this._queryWizardData.objectName = data.objectName;
@@ -45,6 +45,8 @@ export class ALQueryWizardPage extends ALTableBasedWizardPage {
         //build new object
         var builder : ALQuerySyntaxBuilder = new ALQuerySyntaxBuilder();
         var source = builder.buildFromQueryWizardData(this._queryWizardData);
+
+        await this.setObjectFileName("query", data.objectId, data.objectName);
 
         //run template
         this._templateRunSettings.setTextReplacement("$wizardoutput$", source);

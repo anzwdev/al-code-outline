@@ -23,7 +23,7 @@ export class ALXmlPortWizardPage extends ALTableBasedWizardPage {
         return "azALDevTools.ALXmlPortWizard";
     }
 
-    protected finishWizard(data : any) : boolean {
+    protected async finishWizard(data : any) : Promise<boolean> {
         //build parameters
         this._xmlPortWizardData.objectId = data.objectId;
         this._xmlPortWizardData.objectName = data.objectName;
@@ -39,6 +39,8 @@ export class ALXmlPortWizardPage extends ALTableBasedWizardPage {
         //build new object
         var builder : ALXmlPortSyntaxBuilder = new ALXmlPortSyntaxBuilder();
         var source = builder.buildFromXmlPortWizardData(this._xmlPortWizardData);
+
+        await this.setObjectFileName("xmlport", data.objectId, data.objectName);
 
         //run template
         this._templateRunSettings.setTextReplacement("$wizardoutput$", source);

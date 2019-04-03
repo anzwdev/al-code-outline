@@ -6,6 +6,7 @@ import { ProjectItemWizardPage } from './projectItemWizardPage';
 import { ALEnumExtWizardData } from './alEnumExtWizardData';
 import { ALEnumExtSyntaxBuilder } from '../syntaxbuilders/alEnumExtSyntaxBuilder';
 import { DevToolsExtensionContext } from '../../devToolsExtensionContext';
+import { CRSALLangExtHelper } from '../../crsAlLangExtHelper';
 
 export class ALEnumExtWizardPage extends ProjectItemWizardPage {
     private _enumExtWizardData : ALEnumExtWizardData;
@@ -44,7 +45,7 @@ export class ALEnumExtWizardPage extends ProjectItemWizardPage {
         return "azALDevTools.ALEnumExtWizard";
     }
 
-    protected finishWizard(data : any) : boolean {
+    protected async finishWizard(data : any) : Promise<boolean> {
         //build parameters
         this._enumExtWizardData.objectId = data.objectId;
         this._enumExtWizardData.objectName = data.objectName;
@@ -61,6 +62,9 @@ export class ALEnumExtWizardPage extends ProjectItemWizardPage {
         //build new object
         var builder : ALEnumExtSyntaxBuilder = new ALEnumExtSyntaxBuilder();
         var source = builder.buildFromEnumExtWizardData(this._enumExtWizardData);
+
+        //set object file name
+        await this.setExtObjectFileName("enumextension", data.objectId, data.objectName, data.baseEnum);
 
         //run template
         this._templateRunSettings.setTextReplacement("$wizardoutput$", source);

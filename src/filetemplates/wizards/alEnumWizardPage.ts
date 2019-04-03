@@ -32,7 +32,7 @@ export class ALEnumWizardPage extends ProjectItemWizardPage {
         return "azALDevTools.ALEnumWizard";
     }
 
-    protected finishWizard(data : any) : boolean {
+    protected async finishWizard(data : any) : Promise<boolean> {
         //build parameters
         this._enumWizardData.objectId = data.objectId;
         this._enumWizardData.objectName = data.objectName;
@@ -43,6 +43,8 @@ export class ALEnumWizardPage extends ProjectItemWizardPage {
         //build new object
         var builder : ALEnumSyntaxBuilder = new ALEnumSyntaxBuilder();
         var source = builder.buildFromEnumWizardData(this._enumWizardData);
+
+        await this.setObjectFileName("enum", data.objectId, data.objectName);
 
         //run template
         this._templateRunSettings.setTextReplacement("$wizardoutput$", source);

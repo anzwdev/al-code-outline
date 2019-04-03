@@ -70,7 +70,5 @@ export class ALTableBasedWizardPage extends ProjectItemWizardPage {
         
         return false;
     }
-
-
     
 }
