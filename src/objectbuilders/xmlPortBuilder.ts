@@ -1,9 +1,9 @@
 import * as vscode from 'vscode';
 import { ALObjectWriter } from './alObjectWriter';
-import { ALSymbolInfo } from "../alSymbolInfo";
-import { ALSymbolKind } from '../alSymbolKind';
 import { FileBuilder } from './fileBuilder';
 import { ObjectBuilder } from "./objectBuilder";
+import { AZSymbolInformation } from '../symbollibraries/azSymbolInformation';
+import { AZSymbolKind } from '../symbollibraries/azSymbolKind';
 
 export class XmlPortBuilder extends ObjectBuilder {
 
@@ -13,11 +13,18 @@ export class XmlPortBuilder extends ObjectBuilder {
 
     //#region Wizards with UI
 
-    async showMultiXmlPortWizard(tableSymbols: ALSymbolInfo[]) {
+    async showWizard(tableSymbols: AZSymbolInformation[]) {
+        if (tableSymbols.length == 1)
+            await this.showXmlPortWizard(tableSymbols[0]);
+        else
+            await this.showMultiXmlPortWizard(tableSymbols);
+    }
+
+    async showMultiXmlPortWizard(tableSymbols: AZSymbolInformation[]) {
         if (!FileBuilder.checkCrsExtensionFileNamePatternRequired())
             return;
 
-        const objType : ALSymbolKind = ALSymbolKind.XmlPort;
+        const objType : AZSymbolKind = AZSymbolKind.XmlPortObject;
 
         let startObjectId: number = await this.getObjectId(`Please enter a starting ID for the xmlport objects.`, 0);
         if (startObjectId < 0) {
@@ -39,11 +46,11 @@ export class XmlPortBuilder extends ObjectBuilder {
         }
     }
 
-    async showXmlPortWizard(tableSymbol : ALSymbolInfo) {
+    async showXmlPortWizard(tableSymbol : AZSymbolInformation) {
         if (!FileBuilder.checkCrsFileNamePatternRequired())
             return;
             
-        const objType : ALSymbolKind = ALSymbolKind.XmlPort;
+        const objType : AZSymbolKind = AZSymbolKind.XmlPortObject;
 
         let objectId : number = await this.getObjectId("Please enter an ID for the xmlport object.", 0);
         if (objectId < 0) {
@@ -66,7 +73,7 @@ export class XmlPortBuilder extends ObjectBuilder {
         await this.createAndShowNewXmlPort(tableSymbol, objType, objectId, objectName, fieldsAsElements, relativeFileDir);
     }
 
-    private async createAndShowNewXmlPort(tableSymbol: ALSymbolInfo, objType: ALSymbolKind, objectId: number, objectName: string, fieldsAsElements: boolean, relativeFileDir: string) {
+    private async createAndShowNewXmlPort(tableSymbol: AZSymbolInformation, objType: AZSymbolKind, objectId: number, objectName: string, fieldsAsElements: boolean, relativeFileDir: string) {
         let fileName : string = await FileBuilder.getPatternGeneratedFullObjectFileName(objType, objectId, objectName);
         this.showNewDocument(this.buildXmlPortForTable(tableSymbol, objectId, objectName, fieldsAsElements), fileName, relativeFileDir);
     }
@@ -75,7 +82,7 @@ export class XmlPortBuilder extends ObjectBuilder {
   
     //#region Report builders
 
-    buildXmlPortForTable(tableSymbol : ALSymbolInfo, objectId : number, objectName : string, fieldsAsElements : boolean) : string {
+    buildXmlPortForTable(tableSymbol : AZSymbolInformation, objectId : number, objectName : string, fieldsAsElements : boolean) : string {
         //generate file content
         let writer : ALObjectWriter = new ALObjectWriter();
 
@@ -92,8 +99,8 @@ export class XmlPortBuilder extends ObjectBuilder {
         return writer.toString();
     }
 
-    private appendSchema(writer : ALObjectWriter, tableSymbol : ALSymbolInfo, fieldsAsElements : boolean) {       
-        var tableElementName = writer.createName(tableSymbol.symbolName);
+    private appendSchema(writer : ALObjectWriter, tableSymbol : AZSymbolInformation, fieldsAsElements : boolean) {       
+        var tableElementName = writer.createName(tableSymbol.name);
         var fieldNodeName : string;
         if (fieldsAsElements)
             fieldNodeName = "fieldelement";
@@ -103,13 +110,13 @@ export class XmlPortBuilder extends ObjectBuilder {
         writer.writeStartNamedBlock("schema");
         writer.writeStartGroup("textelement", "RootNodeName");
 
-        writer.writeStartNameSourceBlock("tableelement", tableElementName, writer.encodeName(tableSymbol.symbolName));
+        writer.writeStartNameSourceBlock("tableelement", tableElementName, writer.encodeName(tableSymbol.name));
 
-        let fieldList : ALSymbolInfo[] = [];
-        tableSymbol.getAllSymbolsByKind(ALSymbolKind.Field, fieldList);
+        let fieldList : AZSymbolInformation[] = [];
+        tableSymbol.collectChildSymbols(AZSymbolKind.Field, fieldList);
         fieldList.forEach(
             item => {
-                writer.writeNameSourceBlock(fieldNodeName, writer.createName(item.symbolName), tableElementName + "." + writer.encodeName(item.symbolName));
+                writer.writeNameSourceBlock(fieldNodeName, writer.createName(item.name), tableElementName + "." + writer.encodeName(item.name));
             }
         );
 
@@ -165,8 +172,8 @@ export class XmlPortBuilder extends ObjectBuilder {
         return (selectedNodeType.label == fieldAsElementText);
     }
 
-    private getDefaultXmlPortName(tableSymbol: ALSymbolInfo) : string {
-        return `${tableSymbol.symbolName.trim()} XmlPort`;
+    private getDefaultXmlPortName(tableSymbol: AZSymbolInformation) : string {
+        return `${tableSymbol.name.trim()} XmlPort`;
     }
     
     //#endregion

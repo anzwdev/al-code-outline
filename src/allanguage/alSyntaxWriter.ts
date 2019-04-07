@@ -1,4 +1,4 @@
-'use strict';
+import * as vscode from 'vscode';
 
 export class ALSyntaxWriter {
     private content : string;
@@ -10,7 +10,7 @@ export class ALSyntaxWriter {
         this.content = "";
         this.indentText = "";
         this.indentPart = "    ";
-        this.applicationArea = "All";
+        this.applicationArea = vscode.workspace.getConfiguration('alOutline').get('defaultAppArea');
     }
 
     public toString() : string {
@@ -57,13 +57,33 @@ export class ALSyntaxWriter {
         this.writeEndBlock();
     }
 
-    public writeStartObject(type : string, id : string, name : string) {       
-        this.writeLine(type + " " + id + " \"" + name.replace("\"", "\"\"") + "\"");
+    public writeStartObject(type : string, id : string, name : string) {
+        var objectIdText : string;
+        if (id == '')
+            objectIdText = 'id';
+        else
+            objectIdText = id.toString();
+        
+        name = name.replace("\"", "\"\"");
+        name = this.escapeObjectName(name);
+
+        this.writeLine(type + " " + objectIdText + " " + name);
         this.writeStartBlock();
     }
 
-    public writeStartObjectExtension(type : string, id : string, name : string, baseObjectName : string) {       
-        this.writeLine(type + " " + id + " \"" + name.replace("\"", "\"\"") + "\" extends \"" + baseObjectName.replace("\"", "\"\"") + "\"");
+    public writeStartExtensionObject(type : string, id : string, extname : string, targetName : string) {
+        var objectIdText : string;
+        if (id == '')
+            objectIdText = 'id';
+        else
+            objectIdText = id.toString();
+        
+        extname = extname.replace("\"", "\"\"");
+        extname = this.escapeObjectName(extname);
+        targetName = this.escapeObjectName(targetName);
+
+        this.writeLine(type + " " + objectIdText + " " + extname + " extends " + targetName);
+        
         this.writeStartBlock();
     }
 
@@ -77,6 +97,24 @@ export class ALSyntaxWriter {
     }
 
     public writeEndLayout() {
+        this.writeEndBlock();
+    }
+
+    public writeStartActions() {
+        this.writeLine("actions");
+        this.writeStartBlock();
+    }
+
+    public writeEndActions() {
+        this.writeEndBlock();
+    }
+
+    public writeStartFields() {
+        this.writeLine("fields");
+        this.writeStartBlock();
+    }
+
+    public writeEndFields() {
         this.writeEndBlock();
     }
 
@@ -114,6 +152,13 @@ export class ALSyntaxWriter {
 
     public encodeName(name : string) : string {
         return "\"" + name.replace("\"", "\"\"") + "\"";
+    }
+
+    public escapeObjectName(name : string) : string {
+        if (/\W/.test(name)) {
+            name = "\"" + name + "\"";
+        }
+        return name;
     }
 
     public createName(source : string) : string {

@@ -1,5 +1,7 @@
 'use strict';
 
+import { AZSymbolKind } from "../symbollibraries/azSymbolKind";
+
 export class ALSyntaxHelper {
     static nameCharacters = '0123456789QWERTYUIOPLKJHGFDSAZXCVBNMqwertyuioplkjhgfdsazxcvbnm-_"';
 
@@ -58,4 +60,26 @@ export class ALSyntaxHelper {
         return (text <= ' ');
     }
 
+    static kindToVariableType(kind : AZSymbolKind) : string | undefined {
+        switch (kind) {
+            case AZSymbolKind.TableObject:
+                return "record";
+            case AZSymbolKind.CodeunitObject:
+                return "codeunit";
+            case AZSymbolKind.PageObject:
+                return "page";
+            case AZSymbolKind.ReportObject:
+                return "report";
+            case AZSymbolKind.QueryObject:
+                return "query";
+            case AZSymbolKind.XmlPortObject:
+                return "xmlport";
+            case AZSymbolKind.ControlAddInObject:
+                return "usercontrol";
+            case AZSymbolKind.EnumType:
+                return "enum";
+        }
+        return undefined;
+    }
+    
 }

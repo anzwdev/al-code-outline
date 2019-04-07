@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html>
+    <header>
+        <script src="##EXTENSIONPATH##/htmlresources/lib/jquery/jquery.min.js"></script>
+        <script src="##EXTENSIONPATH##/htmlresources/lib/jquery-ui-position/jquery.ui.position.min.js"></script>
+        <script src="##EXTENSIONPATH##/htmlresources/lib/jquery-context-menu/js/jquery.contextmenu.min.js"></script>
+        <script src="##EXTENSIONPATH##/htmlresources/lib/filtercompiler/filterCompiler.js"></script>
+        <script src="##EXTENSIONPATH##/htmlresources/alsymbolsbrowser/js/alsymbolkind.js"></script>
+        <script src="##EXTENSIONPATH##/htmlresources/alsymbolsbrowser/js/treecontrol.js"></script>
+        <script src="##EXTENSIONPATH##/htmlresources/alsymbolsbrowser/js/symbolsbrowser.js"></script>
+        <script src="##EXTENSIONPATH##/htmlresources/alsymbolsbrowser/js/startup.js"></script>        
+        <link rel="stylesheet" type="text/css" href="##EXTENSIONPATH##/htmlresources/lib/jquery-context-menu/css/jquery.contextMenu.min.css">
+        <link rel="stylesheet" type="text/css" href="##EXTENSIONPATH##/htmlresources/alsymbolsbrowser/css/symbolsbrowser.css">
+    
+        <style>
+            .ico-action { background: url('##EXTENSIONPATH##/resources/images/dark/tree-action.svg') }
+            .ico-class { background: url('##EXTENSIONPATH##/resources/images/dark/tree-class.svg') }
+            .ico-codeunit { background: url('##EXTENSIONPATH##/resources/images/dark/tree-codeunit.svg') }
+            .ico-constant { background: url('##EXTENSIONPATH##/resources/images/dark/tree-constant.svg') }
+            .ico-controladdin { background: url('##EXTENSIONPATH##/resources/images/dark/tree-controladdin.svg') }
+            .ico-eventpublisher { background: url('##EXTENSIONPATH##/resources/images/dark/tree-eventpublisher.svg') }
+            .ico-eventsubscriber { background: url('##EXTENSIONPATH##/resources/images/dark/tree-eventsubscriber.svg') }
+            .ico-field { background: url('##EXTENSIONPATH##/resources/images/dark/tree-field.svg') }
+            .ico-fieldgroup { background: url('##EXTENSIONPATH##/resources/images/dark/tree-fieldgroup.svg') }
+            .ico-function { background: url('##EXTENSIONPATH##/resources/images/dark/tree-function.svg') }
+            .ico-group { background: url('##EXTENSIONPATH##/resources/images/dark/tree-group.svg') }
+            .ico-interface { background: url('##EXTENSIONPATH##/resources/images/dark/tree-interface.svg') }
+            .ico-key { background: url('##EXTENSIONPATH##/resources/images/dark/tree-key.svg') }
+            .ico-method { background: url('##EXTENSIONPATH##/resources/images/dark/tree-method.svg') }
+            .ico-module { background: url('##EXTENSIONPATH##/resources/images/dark/tree-module.svg') }
+            .ico-page { background: url('##EXTENSIONPATH##/resources/images/dark/tree-page.svg') }
+            .ico-pagecustomization { background: url('##EXTENSIONPATH##/resources/images/dark/tree-pagecustomization.svg') }
+            .ico-pageextension { background: url('##EXTENSIONPATH##/resources/images/dark/tree-pageextension.svg') }
+            .ico-parameter { background: url('##EXTENSIONPATH##/resources/images/dark/tree-parameter.svg') }
+            .ico-primarykey { background: url('##EXTENSIONPATH##/resources/images/dark/tree-primarykey.svg') }
+            .ico-profile { background: url('##EXTENSIONPATH##/resources/images/dark/tree-profile.svg') }
+            .ico-property { background: url('##EXTENSIONPATH##/resources/images/dark/tree-property.svg') }
+            .ico-query { background: url('##EXTENSIONPATH##/resources/images/dark/tree-query.svg') }
+            .ico-report { background: url('##EXTENSIONPATH##/resources/images/dark/tree-report.svg') }
+            .ico-table { background: url('##EXTENSIONPATH##/resources/images/dark/tree-table.svg') }
+            .ico-tableextension { background: url('##EXTENSIONPATH##/resources/images/dark/tree-tableextension.svg') }
+            .ico-trigger { background: url('##EXTENSIONPATH##/resources/images/dark/tree-trigger.svg') }
+            .ico-undefined { background: url('##EXTENSIONPATH##/resources/images/dark/tree-undefined.svg') }
+            .ico-variable { background: url('##EXTENSIONPATH##/resources/images/dark/tree-variable.svg') }
+            .ico-xmlport { background: url('##EXTENSIONPATH##/resources/images/dark/tree-xmlport.svg') }
+        </style>
+    
+    </header>
+    <body style="margin:0;padding:0">
+        <div id="search">
+            <input type="text" id="searchtext" name="searchtext" tabindex="1">
+            <button class="btn" id="searchbtn" tabindex="2">Search</button>
+        </div>
+        <div id="content">
+            <div class="contentcol">
+                <div class="contcolhdr">
+                    <div class="contcolname">Objects</div>
+                    <div class="contcoltb">
+                        <button id="objidsbtn" class="tbarbtn" tabindex="3">Hide Ids</button>
+                    </div>
+                </div>
+                <div id="objects" class="symbolscont" tabindex="4">Loading symbols, please wait...</div>
+            </div>
+            <div class="contentcol">
+                <div class="contcolhdr">
+                    <div class="contcolname">Selected Object</div>
+                    <div class="contcoltb">
+                        <button id="symidsbtn" class="tbarbtn" tabindex="5">Hide Ids</button>
+                    </div>
+                </div>
+                <div id="symbols" class="symbolscont" tabindex="6"></div>
+            </div>
+        </div>
+    </body>
+</html>

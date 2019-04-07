@@ -42,6 +42,12 @@ function processMessage(msg_data) {
 
 function processObjectsLoadedMessage(msg_data) {
     objdata = msg_data.data;
+    //process data
+    if ((objdata) && (objdata.objectCollections)) {
+        for (let i=0; i<objdata.objectCollections.length; i++) {
+            objdata.objectCollections[i].objectType = symbolKindToObjectType(objdata.objectCollections[i].kind);       
+        }
+    }
 
     setMode('Table', true);
 }
@@ -102,6 +108,40 @@ function processFilterObjectsMessage(msg_data) {
     renderData();
 }
 
+function symbolKindToObjectType(kind) {
+    switch (kind)
+    {
+        case ALSymbolKind.TableObjectList:
+            return "Table";
+        case ALSymbolKind.PageObjectList:
+            return "Page";
+        case ALSymbolKind.ReportObjectList:
+            return "Report";
+        case ALSymbolKind.XmlPortObjectList:
+            return "XmlPort";
+        case ALSymbolKind.QueryObjectList:
+            return "Query";
+        case ALSymbolKind.CodeunitObjectList:
+            return "Codeunit";
+        case ALSymbolKind.ControlAddInObjectList:
+            return "ControlAddIn";
+        case ALSymbolKind.PageExtensionObjectList:
+            return "PageExtension";
+        case ALSymbolKind.TableExtensionObjectList:
+            return "TableExtension";
+        case ALSymbolKind.ProfileObjectList:
+            return "Profile";
+        case ALSymbolKind.PageCustomizationObjectList:
+            return "PageCustomization";
+        case ALSymbolKind.EnumTypeList:
+            return "Enum";
+        case ALSymbolKind.DotNetPackageList:
+            return "DotNetPackage";
+        default:
+            return "Undefined";
+    }
+}
+
 function applyObjectFilters() {
     for (var i=0; i<objdata.objectCollections.length; i++) {
         // First, check if the object was visible based on the datamode (or otherwise was filtered out by the current selection).
@@ -114,7 +154,7 @@ function applyObjectFilters() {
         // Case: No filters active, so we can set everything from this collection to be visible:
         if (!filterActive) {
             objdata.objectCollections[i].visible = true;
-            var objects = objdata.objectCollections[i].objects;
+            var objects = objdata.objectCollections[i].childSymbols;
             for (var j=0; j<objects.length; j++) {
                 objects[j].objvisible = true;
             }
@@ -132,15 +172,15 @@ function applyObjectFilters() {
         objdata.objectCollections[i].visible = true;
 
         // Now check per object.
-        var objects = objdata.objectCollections[i].objects;
+        var objects = objdata.objectCollections[i].childSymbols;
         for (var j=0; j<objects.length; j++) {
-            var inIdFilter = !filterIdActive || filterId({INT: objects[j].OId});
+            var inIdFilter = !filterIdActive || filterId({INT: objects[j].id});
             if (!inIdFilter) {
                 objects[j].objvisible = false;
                 continue;
             }
 
-            var inNameFilter = !filterNameActive || filterName({TEXT: objects[j].Name});
+            var inNameFilter = !filterNameActive || filterName({TEXT: objects[j].name});
             if (!inNameFilter) {
                 objects[j].objvisible = false;
                 continue;
@@ -217,7 +257,7 @@ function initContextMenus() {
         $('#objects').contextMenu({
             selector: 'tr', 
             callback: function(key, options) {
-                execObjCommand($(this).data("objt"), $(this).data("objid"), key);
+                execObjCommand($(this)[0], $(this).data("objt"), $(this).data("objk"), $(this).data("objid"), key);
             },
             items: {
                 /*
@@ -278,13 +318,15 @@ function modeBtnClick(btn) {
     setMode(btn.dataset.mode, false);
 }
 
-function execObjCommand(objtype, objid, cmdname) {
+function execObjCommand(selectedrow, objtype, objkind, objid, cmdname) {
     if (vscodeContext) {
         vscodeContext.postMessage({
             command : 'execObjCommand',
             objtype : objtype,
+            objkind : objkind,
             objid : objid,
-            selobjids: getSelectedObjectIds(objtype),
+            path : getSymbolRef(selectedrow),
+            selobj: getSelectedObjectIds(objtype),
             cmdname : cmdname});
     }
 }
@@ -304,14 +346,21 @@ function execFilterCommand(headColumn, cmdname) {
     }
 }
 
-function updatePivotObject(objtype, objid) {
+function updatePivotObject(path) {
     if (vscodeContext) {
         vscodeContext.postMessage({
             command : "updatePivotObj",
-            objtype : objtype,
-            objid   : objid
+            path : path
         });
     }
+}
+
+function getSymbolRef(selectedrow) {
+    return {   
+        pkind: selectedrow.dataset.pkind,
+        idx : selectedrow.dataset.objidx,               
+        kind: selectedrow.dataset.objk, 
+        id: selectedrow.dataset.objid};
 }
 
 function getSelectedObjectIds(objtype) {
@@ -319,24 +368,24 @@ function getSelectedObjectIds(objtype) {
     $('#objlisttab').selectedrows().each(function (idx, selectedrow)
     {
         if (selectedrow.dataset.objt === objtype) {
-            selectedIds.push(selectedrow.dataset.objid);
+            selectedIds.push(getSymbolRef(selectedrow));
         }
     });
     return selectedIds;
 }
 
-function selectObject(newSelType, newSelId) {
+function selectObject(newSelType, newSelId, path) {
     if ((newSelType != pivotType) || (newSelId != pivotId)) {
         // update view
         pivotType = newSelType;
         pivotId = newSelId;
         // notify vscode extension (to view the corresponding outline)
-        updatePivotObject(pivotType, pivotId);
+        updatePivotObject(path);
     }
 }
 
 function objclick(item) {
-    selectObject(item.dataset.objt, item.dataset.objid);
+    selectObject(item.dataset.objt, item.dataset.objid, getSymbolRef(item));
 }
 
 $(document).keydown(function(evt)

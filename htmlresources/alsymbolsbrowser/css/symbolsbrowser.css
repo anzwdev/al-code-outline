@@ -1,0 +1,133 @@
+body {
+    position: absolute;
+    left: 0;
+    right: 0;
+    top: 0;
+    bottom: 0;
+    display: flex;
+    flex-direction: column;
+}
+#search {
+    flex: 0 0 auto;
+    display: flex;
+}
+#search button {
+    flex: 0 0 auto;
+    margin: 5px;
+}
+#search input {
+    flex: 1 1 auto;
+    margin: 5px 0px 5px 5px;
+}
+#content {
+    flex: 1 1 auto;
+    display: flex;
+    flex-direction: row;
+    align-items: stretch;
+    justify-content: stretch;
+}
+#objects {
+    flex: 1 1 auto;
+}
+#symbols {
+    flex: 1 1 250px;
+}
+.contentcol {
+    flex: 1 1 50%;
+    display: flex;
+    flex-direction: column;
+    align-items: stretch;
+    justify-content: stretch;
+}
+.contcolhdr {
+    display:flex;
+    flex-direction: row;
+    align-items: stretch;
+    justify-content: stretch;
+    flex: 0 0 auto;
+    overflow: hidden;
+    background-color: var(--vscode-sideBarSectionHeader-background);
+    color: var(--vscode-sideBarSectionHeader-foreground);
+    padding: 2px 5px;
+}
+.contcolname {
+    flex: 1 1 auto;
+    overflow: hidden;
+    font-size: var(--font-size);
+    font-weight: bold;    
+    font-family: var(--font-family);    
+}
+.contcoltb {
+    overflow: hidden;
+    display: flex;
+    flex-direction: row;
+    align-items: stretch;
+    justify-content: flex-end;
+}
+.symbolscont {
+    border: 1px solid var(--vscode-panel-border);
+    overflow: auto;
+}
+.treeitem {
+    font-weight: normal;
+    cursor: default;
+}
+.treeitem .shead {
+    display: flex;    
+    align-items: center;
+    justify-content: flex-start;
+    padding: 2px 0px
+}
+.treeitem .shead:hover {
+    background-color: var(--vscode-list-hoverBackground);
+    color: var(--vscode-list-hoverForeground);
+}
+.symbolscont:focus .treeitem .selected, .symbolscont:focus .treeitem .selected:hover {
+    background-color: var(--vscode-list-activeSelectionBackground) !important;
+    color: var(--vscode-list-activeSelectionForeground) !important;
+}
+.treeitem .selected {
+    background-color: var(--vscode-list-inactiveSelectionBackground) !important;
+    color: var(--vscode-list-inactiveSelectionForeground) !important;
+}
+.treeitem .ico {
+    flex: 0 0 16px;
+    width: 16px;
+    height: 16px;
+    background-repeat: no-repeat;
+    background-position: center;
+    background-size: contain;
+}
+.treeitem .cap {
+    flex: 1 1 auto;
+    padding: 0px 2px 0px 6px;
+    white-space: nowrap;
+}
+.treelist {
+    padding: 0px 0px 0px 10px;
+}
+.btn {
+    background-color: var(--vscode-button-background);
+    color: var(--vscode-button-foreground);
+    border: 0px solid var(--vscode-panel-border);
+    font-size: var(--font-size);
+    font-weight: var(--font-weight);    
+    font-family: var(--font-family);
+    padding:5px;
+}
+.btn:hover {
+    background-color: var(--vscode-button-hoverBackground);
+}
+
+.tbarbtn {
+    background-color: var(--vscode-button-background);
+    color: var(--vscode-button-foreground);
+    border: 0px solid var(--vscode-panel-border);
+    font-size: var(--font-size);
+    font-weight: var(--font-weight);
+    font-family: var(--font-family);
+    padding:2px;
+}
+.tbarbtn:hover {
+    background-color: var(--vscode-button-hoverBackground);
+}

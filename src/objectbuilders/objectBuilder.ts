@@ -1,6 +1,6 @@
 import * as vscode from 'vscode';
-import { ALSymbolKind } from '../alSymbolKind';
 import { FileBuilder } from './fileBuilder';
+import { AZSymbolKind } from '../symbollibraries/azSymbolKind';
 
 export class ObjectBuilder {
   
@@ -92,7 +92,7 @@ export class ObjectBuilder {
         return objectName;
     }
 
-    protected async getRelativeFileDir(objectType : ALSymbolKind) : Promise<string | undefined> {
+    protected async getRelativeFileDir(objectType : AZSymbolKind) : Promise<string | undefined> {
         let relativeFileDir : string = await FileBuilder.getPatternGeneratedRelativeFilePath(objectType);
         if (this.shouldPromptForFileDir() && this.shouldAutoGenerateFiles()) {
             relativeFileDir = await this.promptForFileDir('Please specify a directory, relative to the root, to create the new file(s) in.', relativeFileDir);

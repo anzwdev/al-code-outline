@@ -1,9 +1,9 @@
 import * as vscode from 'vscode';
 import { ALObjectWriter } from "./alObjectWriter";
-import { ALSymbolInfo } from "../alSymbolInfo";
-import { ALSymbolKind } from '../alSymbolKind';
 import { FileBuilder } from './fileBuilder';
 import { ObjectBuilder } from './objectBuilder';
+import { AZSymbolInformation } from '../symbollibraries/azSymbolInformation';
+import { AZSymbolKind } from '../symbollibraries/azSymbolKind';
 
 export class TableExtBuilder extends ObjectBuilder {
 
@@ -13,11 +13,18 @@ export class TableExtBuilder extends ObjectBuilder {
 
     //#region Wizards with UI
 
-    async showMultiTableExtWizard(tableSymbols: ALSymbolInfo[]) {
+    async showWizard(tableSymbols: AZSymbolInformation[]) {
+        if (tableSymbols.length == 1)
+            await this.showTableExtWizard(tableSymbols[0]);
+        else
+            await this.showMultiTableExtWizard(tableSymbols);
+    }
+
+    async showMultiTableExtWizard(tableSymbols: AZSymbolInformation[]) {
         if (!FileBuilder.checkCrsExtensionFileNamePatternRequired() || !FileBuilder.checkCrsExtensionObjectNamePatternRequired(true))
             return;
 
-        const extObjType : ALSymbolKind = ALSymbolKind.TableExtension;
+        const extObjType : AZSymbolKind = AZSymbolKind.TableExtensionObject;
 
         let startObjectId: number = await this.getObjectId("Please enter a starting ID for the table extensions.", 0);
         if (startObjectId < 0) {
@@ -35,11 +42,11 @@ export class TableExtBuilder extends ObjectBuilder {
         }
     }
 
-    async showTableExtWizard(tableSymbol : ALSymbolInfo) {
+    async showTableExtWizard(tableSymbol : AZSymbolInformation) {
         if (!FileBuilder.checkCrsExtensionFileNamePatternRequired() || !FileBuilder.checkCrsExtensionObjectNamePatternRequired(false))
             return;
             
-        const extObjType : ALSymbolKind = ALSymbolKind.TableExtension;
+        const extObjType : AZSymbolKind = AZSymbolKind.TableExtensionObject;
 
         let extObjectId : number = await this.getObjectId("Please enter an ID for the table extension.", 0);
         if (extObjectId < 0) {
@@ -56,7 +63,7 @@ export class TableExtBuilder extends ObjectBuilder {
         await this.createAndShowNewTableExtension(tableSymbol, extObjType, extObjectId, extObjectName, relativeFileDir);
     }
 
-    private async createAndShowNewTableExtension(tableSymbol: ALSymbolInfo, extObjType: ALSymbolKind, extObjectId: number, extObjectName: string, relativeFileDir: string) {
+    private async createAndShowNewTableExtension(tableSymbol: AZSymbolInformation, extObjType: AZSymbolKind, extObjectId: number, extObjectName: string, relativeFileDir: string) {
         let fileName : string = await FileBuilder.getPatternGeneratedExtensionObjectFileName(extObjType, extObjectId, extObjectName, tableSymbol);
         this.showNewDocument(this.buildTableExtForTable(tableSymbol, extObjectId, extObjectName), fileName, relativeFileDir);
     }
@@ -65,11 +72,11 @@ export class TableExtBuilder extends ObjectBuilder {
 
     //#region Table Extension builders
 
-    private buildTableExtForTable(tableSymbol : ALSymbolInfo, objectId : number, extObjectName : string) : string {
+    private buildTableExtForTable(tableSymbol : AZSymbolInformation, objectId : number, extObjectName : string) : string {
         
         let writer : ALObjectWriter = new ALObjectWriter();
 
-        writer.writeStartExtensionObject("tableextension", objectId, extObjectName, tableSymbol.symbolName);
+        writer.writeStartExtensionObject("tableextension", objectId, extObjectName, tableSymbol.name);
         
         writer.writeStartFields();
 

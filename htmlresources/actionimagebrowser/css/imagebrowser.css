@@ -1,0 +1,28 @@
+#content {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    justify-content: flex-start;
+    align-items: flex-start;    
+}
+.image {
+    flex: 0 0 120px;    
+    height: 60px;    
+    margin: 2px;
+    padding: 4px;
+    display: flex;
+    overflow: hidden;
+    flex-direction: column;
+    align-items: center;
+    justify-content: flex-start;
+    border: 1px solid var(--vscode-panel-border);
+}
+.image .img {    
+    flex: 0 0 auto;
+    margin: 0;
+}
+.image .name {
+    flex: 1 1 auto;
+    overflow: hidden;
+    margin: 6px 0px 0px 0px;
+}
