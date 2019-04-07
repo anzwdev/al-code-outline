@@ -159,51 +159,26 @@ export enum AZSymbolKind {
     Null = 50030,
     Object = 50031,
     Struct = 50032,
-    Operator = 50033
+    Operator = 50033,
 
+    PageRepeater = 50034,
 
+    //events
+    IntegrationEventDeclaration = 50035,
+    BusinessEventDeclaration = 50036,
+    EventSubscriberDeclaration = 50037,
+    //tests
+    TestDeclaration = 50038,
+    ConfirmHandlerDeclaration = 50039,
+    FilterPageHandlerDeclaration = 50040,
+    HyperlinkHandlerDeclaration = 50041,
+    MessageHandlerDeclaration = 50042,
+    ModalPageHandlerDeclaration = 50043,
+    PageHandlerDeclaration = 50044,
+    ReportHandlerDeclaration = 50045,
+    RequestPageHandlerDeclaration = 50046,
+    SendNotificationHandlerDeclaration = 50047,
+    SessionSettingsHandlerDeclaration = 50048,
+    StrMenuHandlerDeclaration = 50049
 
-    /*
-    //Object types
-    UndefinedObject = 100,
-	Table = 101,
-	Codeunit = 102,
-	Page = 103,
-	Report = 104,
-	Query = 105,
-    XmlPort = 106,
-    TableExtension = 107,
-    PageExtension = 108,
-    ControlAddIn = 109,
-    Profile = 110,
-    PageCustomization = 111,
-    Enum = 112,
-    DotNetPackage = 113,
-
-    //Object specific child symbols
-    Property = 200,
-    //Code
-    Variable = 201,
-    Constant = 202,
-    Parameter = 203,
-    Method = 204,
-    Function = 205,
-    Trigger = 206,
-    EventPublisher = 207,
-    EventSubscriber = 208,
-    //Tables
-    Field = 209,
-    PrimaryKey = 210,
-    Key = 211,
-    FieldGroup = 212,
-    //Pages
-    Group = 213,
-    Action = 214,
-    //Enums
-    EnumValue = 215,
-    EnumExtension = 216,
-    //DotNet
-    DotNetAssembly = 217,
-    DotNetType = 218
-    */
 }

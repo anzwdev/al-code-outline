@@ -160,8 +160,26 @@ export class AZSymbolInformation {
             case AZSymbolKind.Constant : return 'constant';
             case AZSymbolKind.Parameter : return 'parameter';
             case AZSymbolKind.MethodDeclaration : return 'method';
-            case AZSymbolKind.LocalMethodDeclaration : return 'method';
+            case AZSymbolKind.LocalMethodDeclaration : return 'methodprivate';
             case AZSymbolKind.TriggerDeclaration : return 'trigger';
+            //events
+            case AZSymbolKind.IntegrationEventDeclaration: return 'eventpublisher';
+            case AZSymbolKind.BusinessEventDeclaration: return 'eventpublisher';
+            case AZSymbolKind.EventSubscriberDeclaration: return 'eventsubscriber';
+            //tests
+            case AZSymbolKind.TestDeclaration: return 'test';
+            case AZSymbolKind.ConfirmHandlerDeclaration: return 'testcontroller';
+            case AZSymbolKind.FilterPageHandlerDeclaration: return 'testcontroller';
+            case AZSymbolKind.HyperlinkHandlerDeclaration: return 'testcontroller';
+            case AZSymbolKind.MessageHandlerDeclaration: return 'testcontroller';
+            case AZSymbolKind.ModalPageHandlerDeclaration: return 'testcontroller';
+            case AZSymbolKind.PageHandlerDeclaration: return 'testcontroller';
+            case AZSymbolKind.ReportHandlerDeclaration: return 'testcontroller';
+            case AZSymbolKind.RequestPageHandlerDeclaration: return 'testcontroller';
+            case AZSymbolKind.SendNotificationHandlerDeclaration: return 'testcontroller';
+            case AZSymbolKind.SessionSettingsHandlerDeclaration: return 'testcontroller';
+            case AZSymbolKind.StrMenuHandlerDeclaration: return 'testcontroller';
+
             //!!case ALSymbolKind.EventPublisher : return 'eventpublisher';
             //!!case ALSymbolKind.EventSubscriber : return 'eventsubscriber';
             case AZSymbolKind.Field : return 'field';
@@ -170,6 +188,7 @@ export class AZSymbolInformation {
             case AZSymbolKind.FieldGroup : return 'fieldgroup';
             case AZSymbolKind.PageArea: return 'group';
             case AZSymbolKind.PageGroup : return 'group';
+            case AZSymbolKind.PageRepeater: return '';
             
             case AZSymbolKind.PageActionGroup: return 'group';
             case AZSymbolKind.PageActionArea: return 'group';

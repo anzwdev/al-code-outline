@@ -157,5 +157,26 @@ var ALSymbolKind = {
     Null : 50030,
     Object : 50031,
     Struct : 50032,
-    Operator : 50033
+    Operator : 50033,
+
+    PageRepeater = 50034,
+
+    //events
+    IntegrationEventDeclaration = 50035,
+    BusinessEventDeclaration = 50036,
+    EventSubscriberDeclaration = 50037,
+    //tests
+    TestDeclaration = 50038,
+    ConfirmHandlerDeclaration = 50039,
+    FilterPageHandlerDeclaration = 50040,
+    HyperlinkHandlerDeclaration = 50041,
+    MessageHandlerDeclaration = 50042,
+    ModalPageHandlerDeclaration = 50043,
+    PageHandlerDeclaration = 50044,
+    ReportHandlerDeclaration = 50045,
+    RequestPageHandlerDeclaration = 50046,
+    SendNotificationHandlerDeclaration = 50047,
+    SessionSettingsHandlerDeclaration = 50048,
+    StrMenuHandlerDeclaration = 50049
+
 };
