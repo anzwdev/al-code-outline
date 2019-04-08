@@ -180,15 +180,16 @@ export class AZSymbolInformation {
             case AZSymbolKind.SessionSettingsHandlerDeclaration: return 'testcontroller';
             case AZSymbolKind.StrMenuHandlerDeclaration: return 'testcontroller';
 
-            //!!case ALSymbolKind.EventPublisher : return 'eventpublisher';
-            //!!case ALSymbolKind.EventSubscriber : return 'eventsubscriber';
             case AZSymbolKind.Field : return 'field';
             case AZSymbolKind.PrimaryKey : return 'primarykey';
             case AZSymbolKind.Key : return 'key';
             case AZSymbolKind.FieldGroup : return 'fieldgroup';
             case AZSymbolKind.PageArea: return 'group';
             case AZSymbolKind.PageGroup : return 'group';
-            case AZSymbolKind.PageRepeater: return '';
+            case AZSymbolKind.PageRepeater: return 'repeater';
+            case AZSymbolKind.PagePart: return 'pagepart';
+            case AZSymbolKind.PageChartPart: return 'chartpart';
+            case AZSymbolKind.PageSystemPart: return 'systempart';
             
             case AZSymbolKind.PageActionGroup: return 'group';
             case AZSymbolKind.PageActionArea: return 'group';
