@@ -28,6 +28,17 @@ class ObjectBrowser {
 
         this.initializeContextMenu();
 
+        //initialize splitter
+        Split(['#olpanel', '#odpanel'], {
+            minSize: 0,
+            gutter: function (index, direction) {
+                var gutter = document.createElement('div')
+                gutter.className = 'gutter gutter-' + direction
+                return gutter
+            },
+            gutterSize: 6
+        })
+
         // Handle messages sent from the extension to the webview
         var me = this;
         window.addEventListener('message', event => {

@@ -214,20 +214,21 @@ export class AZSymbolInformation {
             case AZSymbolKind.RequestPage: return 'page';
         
             //reports
-            case AZSymbolKind.ReportDataSetSection: return 'class';
-            case AZSymbolKind.ReportLabelsSection: return 'class';
+            case AZSymbolKind.ReportDataSetSection: return 'codeunit';
+            case AZSymbolKind.ReportLabelsSection: return 'codeunit';
             case AZSymbolKind.ReportDataItem: return 'table';
             case AZSymbolKind.ReportColumn: return 'field';
             case AZSymbolKind.ReportLabel: return 'variable';
             case AZSymbolKind.ReportLabelMultilanguage: return 'variable';
         
             //queries
-            case AZSymbolKind.QueryElements: return 'class';
+            case AZSymbolKind.QueryElements: return 'codeunit';
             case AZSymbolKind.QueryDataItem: return 'table';
             case AZSymbolKind.QueryColumn: return 'field';
             case AZSymbolKind.QueryFilter: return 'parameter';
 
             //groups
+            case AZSymbolKind.PageLayout:
             case AZSymbolKind.VarSection:
             case AZSymbolKind.ParameterList:
             case AZSymbolKind.KeyList:

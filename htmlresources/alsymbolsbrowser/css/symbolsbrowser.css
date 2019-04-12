@@ -32,8 +32,14 @@ body {
 #symbols {
     flex: 1 1 250px;
 }
+.gutter {
+    float: left;
+    background-color: var(--vscode-panel-border);
+    cursor: ew-resize;
+    margin: 0;
+}
 .contentcol {
-    flex: 1 1 50%;
+    flex: 1 1 auto;
     display: flex;
     flex-direction: column;
     align-items: stretch;

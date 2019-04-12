@@ -11,6 +11,7 @@ import { AZSymbolKind } from './azSymbolKind';
 import { ALControlKind } from './alControlKind';
 import { ALActionKind } from './alActionKind';
 import { AsyncFileManager } from '../tools/asyncFileManager';
+import { ALSyntaxHelper } from '../allanguage/alSyntaxHelper';
 
 export class ALAppSymbolsLibrary extends AZSymbolsLibrary {
     filePath : string;
@@ -157,9 +158,9 @@ export class ALAppSymbolsLibrary extends AZSymbolsLibrary {
 
         //init child items
         if (data.Fields)
-            this.loadBasicSymbolReferences('Fields', symbol, AZSymbolKind.Field, data.Fields, (symbolKind == AZSymbolKind.TableObject));
+            this.loadBasicSymbolReferences('fields', symbol, AZSymbolKind.FieldList, AZSymbolKind.Field, data.Fields, (symbolKind == AZSymbolKind.TableObject));
         if (data.Keys)
-            this.loadBasicSymbolReferences('Keys', symbol, AZSymbolKind.Key, data.Keys, false);
+            this.loadBasicSymbolReferences('keys', symbol, AZSymbolKind.KeyList, AZSymbolKind.Key, data.Keys, false);
         if (data.Controls)
             this.loadControlSymbolReferences(symbol, data.Controls);
         if (data.Actions)
@@ -177,12 +178,12 @@ export class ALAppSymbolsLibrary extends AZSymbolsLibrary {
             this.loadChangesSymbolReferences(symbol, 'Control Changes', data.ControlChanges);
 
         if (data.Variables)
-            this.loadBasicSymbolReferences('Variables', symbol, AZSymbolKind.VariableDeclaration, data.Variables, false);
+            this.loadBasicSymbolReferences('var', symbol, AZSymbolKind.VarSection, AZSymbolKind.VariableDeclaration, data.Variables, false);
         if (data.Methods)
-            this.loadMethodSymbolReferences('Procedures', symbol, AZSymbolKind.MethodDeclaration, AZSymbolKind.LocalMethodDeclaration, data.Methods);
+            this.loadMethodSymbolReferences('procedures', symbol, AZSymbolKind.MethodDeclaration, AZSymbolKind.LocalMethodDeclaration, data.Methods);
         //control Add-In triggers
         if (data.Events)
-            this.loadMethodSymbolReferences('Triggers', symbol, AZSymbolKind.TriggerDeclaration, AZSymbolKind.TriggerDeclaration, data.Events);
+            this.loadMethodSymbolReferences('Ttriggers', symbol, AZSymbolKind.TriggerDeclaration, AZSymbolKind.TriggerDeclaration, data.Events);
 
         //enum values
         if (data.Values)
@@ -302,11 +303,11 @@ export class ALAppSymbolsLibrary extends AZSymbolsLibrary {
         if (symbolReferenceList) {
             for (let i = 0; i<symbolReferenceList.length; i++) {
                 let symbolRef = symbolReferenceList[i];
-                let alSymbol = this.loadSymbolFromReference(AZSymbolKind.FieldGroup, 'DataItem', symbolRef, false);
+                let alSymbol = this.loadSymbolFromReference(AZSymbolKind.ReportDataItem, 'DataItem', symbolRef, false);
                 parent.addChildItem(alSymbol);
                 //load symbol items
                 if (symbolRef.Columns)
-                    this.loadBasicSymbolReferences('', alSymbol, AZSymbolKind.Field, symbolRef.Columns, false);
+                    this.loadBasicSymbolReferences('', alSymbol, AZSymbolKind.SymbolGroup, AZSymbolKind.ReportColumn, symbolRef.Columns, false);
                 if (symbolRef.DataItems)
                     this.loadDataItemSymbolReferences(alSymbol, symbolRef.DataItems);
             }
@@ -315,6 +316,15 @@ export class ALAppSymbolsLibrary extends AZSymbolsLibrary {
 
     protected loadActionSymbolReferences(parent : AZSymbolInformation, symbolReferenceList : any[]) {
         if (symbolReferenceList) {
+            //page layout
+            if ((parent.kind == AZSymbolKind.PageObject) || 
+                (parent.kind == AZSymbolKind.PageExtensionObject) ||
+                (parent.kind == AZSymbolKind.RequestPage)) {
+                let actions = AZSymbolInformation.create(AZSymbolKind.PageActionList, 'actions');
+                parent.addChildItem(actions);
+                parent = actions;
+            }
+
             for (let i = 0; i<symbolReferenceList.length; i++) {
                 let symbolRef = symbolReferenceList[i];
                 let actionKind : ALActionKind = symbolRef.Kind;
@@ -329,6 +339,15 @@ export class ALAppSymbolsLibrary extends AZSymbolsLibrary {
 
     protected loadControlSymbolReferences(parent : AZSymbolInformation, symbolReferenceList : any[]) {
         if (symbolReferenceList) {
+            //page layout
+            if ((parent.kind == AZSymbolKind.PageObject) || 
+                (parent.kind == AZSymbolKind.PageExtensionObject) ||
+                (parent.kind == AZSymbolKind.RequestPage)) {
+                let layout = AZSymbolInformation.create(AZSymbolKind.PageLayout, 'layout');
+                parent.addChildItem(layout);
+                parent = layout;
+            }
+
             for (let i = 0; i<symbolReferenceList.length; i++) {
                 let symbolRef = symbolReferenceList[i];
                 let controlKind : ALControlKind = symbolRef.Kind;
@@ -341,11 +360,11 @@ export class ALAppSymbolsLibrary extends AZSymbolsLibrary {
         }
     }
 
-    protected loadBasicSymbolReferences(groupName : string, parent : AZSymbolInformation, symbolKind : AZSymbolKind, symbolReferenceList : any[], loadIds : boolean) {
+    protected loadBasicSymbolReferences(groupName : string, parent : AZSymbolInformation, groupKind: AZSymbolKind, symbolKind : AZSymbolKind, symbolReferenceList : any[], loadIds : boolean) {
         if (symbolReferenceList) {
             let listParent : AZSymbolInformation;
             if (groupName != '') {
-                listParent = AZSymbolInformation.create(AZSymbolKind.SymbolGroup, groupName);
+                listParent = AZSymbolInformation.create(groupKind, groupName);
                 parent.addChildItem(listParent);
             } else
                 listParent = parent;
@@ -361,7 +380,7 @@ export class ALAppSymbolsLibrary extends AZSymbolsLibrary {
    
     protected loadSymbolFromReference(symbolKind : AZSymbolKind, namePrefix : string, data : any, loadIds : boolean) : AZSymbolInformation {
         let name : string = (data.Name)?data.Name:'';
-        let fullName : string = name;
+        let fullName : string = ALSyntaxHelper.toNameText(name);
         if (namePrefix !== '')
             fullName = namePrefix + ' ' + fullName;
         
@@ -369,16 +388,16 @@ export class ALAppSymbolsLibrary extends AZSymbolsLibrary {
         symbol.fullName = fullName.trim();
 
         if ((data.TypeDefinition) && (data.TypeDefinition.Name))
-            symbol.fullName = symbol.fullName + " : " + data.TypeDefinition.Name;
+            symbol.fullName = symbol.fullName + ": " + data.TypeDefinition.Name;
 
         if ((data.FieldNames) && (data.FieldNames.length > 0)) {
             let fieldList = '';
             for (let i=0; i<data.FieldNames.length; i++) {
                 if (i > 0)
                     fieldList = fieldList + ", ";
-                fieldList = fieldList + data.FieldNames[i];
+                fieldList = fieldList + ALSyntaxHelper.toNameText(data.FieldNames[i]);
             }
-            symbol.fullName = symbol.fullName + " : " + fieldList;
+            symbol.fullName = symbol.fullName + ": " + fieldList;
         }
 
         if ((data.Id) && (loadIds))

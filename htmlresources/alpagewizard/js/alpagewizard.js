@@ -82,10 +82,47 @@ var wizard = {
     },
 
     loadTables : function() {
-        if (this._data)
-            wizardHelper.setElementOptions("#tablelist", this._data.tableList, false);
+        if (this._data)        
+            //wizardHelper.setElementOptions("#tablelist", this._data.tableList, false);
+            this.initAutoComplete()
         else
             $("#tablelist").html("");
+    },
+
+    initAutoComplete : function() {
+        let me = this;
+        let allowedChars = new RegExp(/^[a-zA-Z\s]+$/)
+
+        autocomplete({
+			input: document.getElementById('srctable'),
+			minLength: 1,
+			onSelect: function (item, inputfield) {
+				inputfield.value = item.label
+			},
+			fetch: function (text, callback) {
+				var match = text.toLowerCase();
+				callback(me._data.tableList.filter(function(n) { return n.toLowerCase().indexOf(match) !== -1; }));
+			},
+			render: function(item, value) {
+				var itemElement = document.createElement("div");
+				if (allowedChars.test(value)) {
+					var regex = new RegExp(value, 'gi');
+					var inner = item.replace(regex, function(match) { return "<strong>" + match + "</strong>" });
+					itemElement.innerHTML = inner;
+				} else {
+					itemElement.textContent = item;
+				}
+				return itemElement;
+			},
+			emptyMsg: "No countries found",
+			customize: function(input, inputRect, container, maxHeight) {
+				if (maxHeight < 100) {
+					container.style.top = "";
+					container.style.bottom = (window.innerHeight - inputRect.bottom + input.offsetHeight) + "px";
+					container.style.maxHeight = "140px";
+				}
+			}
+		})
     },
 
     setFields : function(data) {

@@ -6,6 +6,8 @@ export class ALSyntaxHelper {
     static nameCharacters = '0123456789QWERTYUIOPLKJHGFDSAZXCVBNMqwertyuioplkjhgfdsazxcvbnm-_"';
 
     static toNameText(name : string) : string {
+        if (name.search(/\W/) < 0)
+            return name;
         return "\"" + name.replace(new RegExp("\"", "g"), "\"\"") + "\"";
     }
 
