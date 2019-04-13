@@ -38,9 +38,6 @@ export class ALAppSymbolsLibrary extends AZSymbolsLibrary {
         this._fileModified = -1;
     }
   
-    /*
-    !!!TO-DO
-    !!!This function should replace object loading functionality in the future, when language server will have bigger symbols functionality
     protected async loadInternalAsync(forceReload : boolean) : Promise<boolean> {
         try {
             let request : ToolsPackageSymbolsRequest = new ToolsPackageSymbolsRequest(this.filePath);
@@ -59,13 +56,11 @@ export class ALAppSymbolsLibrary extends AZSymbolsLibrary {
             vscode.window.showErrorMessage(msg);
             return false;
         }
-
         return true;
-
     }
-    */
+   
 
-    protected async loadInternalAsync(forceReload : boolean) : Promise<boolean> {
+    protected async loadInternalAsync2(forceReload : boolean) : Promise<boolean> {
         try {
             let fileManager : AsyncFileManager = new AsyncFileManager();
             let AdmZip = require('adm-zip');
