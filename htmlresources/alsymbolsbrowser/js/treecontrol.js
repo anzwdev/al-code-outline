@@ -77,7 +77,7 @@ class TreeControl {
         if (this._data)
             this.appendDataHtml(element, this._data);
         else
-            element.innerHTML = this.emptyContent;
+            element.innerText = this.emptyContent;
     }
 
     appendDataHtml(parent, data) {
@@ -103,9 +103,9 @@ class TreeControl {
                 let cap = document.createElement('div');
                 cap.className = "cap";
                 if ((this._showIds) && (data.id))
-                    cap.innerHTML  = data.id + ' ' + data.fullName;
+                    cap.innerText  = data.id + ' ' + data.fullName;
                 else
-                    cap.innerHTML = data.fullName;
+                    cap.innerText = data.fullName;
                 shead.appendChild(cap);
 
                 main.appendChild(shead);
@@ -156,6 +156,24 @@ class TreeControl {
             (symbol.kind == ALSymbolKind.EnumExtensionType) ||
             (symbol.kind == ALSymbolKind.DotNetPackage));
     }
+
+    //#region Node scrolling
+
+    scrollToNode(node) {
+        let mainElement = document.getElementById(this._controlId);
+        let mainTop = mainElement.offsetTop;
+        let viewTop = mainElement.scrollTop;
+        let viewBottom = viewTop + mainElement.clientHeight;
+        let nodeTop = node.offsetTop - mainTop;
+        let nodeBottom = nodeTop + node.offsetHeight;
+
+        if (nodeTop < viewTop)
+            node.scrollIntoView(true);
+        else if (nodeBottom > viewBottom)
+            node.scrollIntoView(false);
+    }
+
+    //#endregion
 
     //#region Sorting
 
@@ -390,9 +408,12 @@ class TreeControl {
                 this.clearSelection(true);
 
             if (this._selSymbol)
-                this.setSelectionState(this._selSymbol, true);                    
+                this.setSelectionState(this._selSymbol, true);
         }
-            
+
+        if (node)
+            this.scrollToNode(node);
+
         /*
         if (!($(node).hasClass('selected'))) {
             if (this._selNode != null)
@@ -427,12 +448,9 @@ class TreeControl {
     }
 
     toggleNodeSelection(node) {
-
     }
 
     selectNodeRange(node) {
-
-
     }
 
     //#endregion
@@ -553,6 +571,8 @@ class TreeControl {
 
     //#endregion
 
+    //#region Event handlers
+
     onIdsBtnClick(e) {
         this.setShowIds(!this._showIds);
     }
@@ -627,5 +647,7 @@ class TreeControl {
         }
 
     }
+
+    //#endregion
 
 }
