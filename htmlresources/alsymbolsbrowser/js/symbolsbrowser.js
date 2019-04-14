@@ -45,7 +45,11 @@ class ObjectBrowser {
             me.onMessage(event.data);
         });
 
-        document.getElementById('searchtext').addEventListener('keydown', event => {
+        document.getElementById('searchid').addEventListener('keydown', event => {
+            me.onSearchKeyDown(event);
+        });
+
+        document.getElementById('searchname').addEventListener('keydown', event => {
             me.onSearchKeyDown(event);
         });
 
@@ -122,7 +126,7 @@ class ObjectBrowser {
     onMessage(message) {     
         switch (message.command) {
             case 'setSearch':
-                $('#searchtext').val(message.data);
+                $('#searchname').val(message.data);
                 break;
             case 'setData':
                 this._objTree.setData(message.data);
@@ -164,12 +168,7 @@ class ObjectBrowser {
     }
 
     search() {
-        this._objTree.filterData('', $('#searchtext').val());
-
-        //this.sendMessage({
-        //    command: 'search',
-        //    text: $('#searchtext').val()
-        //});
+        this._objTree.filterData($('#searchid').val(), $('#searchname').val());
     }
 
     onSearchKeyDown(e) {

@@ -88,7 +88,7 @@ class TreeControl {
                 main.dataset.idx = data.idx;
 
                 let shead = document.createElement('div');
-                shead.className = "shead";
+                shead.className = this.getSymbolCssClass(data);
                 shead.dataset.uid = data.uid;
                 shead.dataset.kind = data.kind;
                 shead.alsymbolnode = data;
@@ -127,6 +127,14 @@ class TreeControl {
                 this.detachHtmlElement(data);
             }
         }
+    }
+
+    getSymbolCssClass(symbol) {
+        if ((!symbol) || (!symbol.childSymbols) || (symbol.childSymbols.length == 0))
+            return  "shead sheadnoexp";
+        if (symbol.collapsed)
+            return "shead sheadcol";
+        return "shead sheadexp";        
     }
 
     detachHtmlElement(data) {
@@ -308,11 +316,14 @@ class TreeControl {
         let element = $(node)[0];
         let symbol = element.alsymbolnode;
         if (symbol) {
-            symbol.collapsed = !symbol.collapsed;
-            if (symbol.collapsed)
-                $(node).next('.treelist').hide();
-            else
-                $(node).next('.treelist').show();
+            if ((symbol.childSymbols) && (symbol.childSymbols.length > 0)) {
+                symbol.collapsed = !symbol.collapsed;
+                if (symbol.collapsed)
+                    $(node).next('.treelist').hide();
+                else
+                    $(node).next('.treelist').show();
+                node.className = this.getSymbolCssClass(symbol);
+            }
         } else
             $(node).next('.treelist').toggle();
     }

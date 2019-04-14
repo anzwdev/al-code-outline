@@ -1,41 +1,12 @@
 # AZ AL Dev Tools (AL Code Outline 2.0) for Visual Studio Code
 
-This extension was originally named 'AL Code Outline' because it started as AL code outline panel from which it was possible to run different code generators on AL syntax nodes. Each new version was adding new features and they were no longer available from code outline panel only. Microsoft also added standard outline view to VS Code. Because of all these changes AL Outline panel is no longer main feature of this extension so original name has been changed to 'AZ AL Dev Tools' to emphasize that it is set of many different tools for AL developers
+This extension was originally named 'AL Code Outline' because it started as AL code outline panel from which it was possible to run different code generators on AL syntax nodes. Each new version has been adding new features, some of them were no longer related to the AL code outline panel. In the current version, outline panel is no longer the main extension feature, it has become a collection of different al development tools, so it seems that the name should be updated to reflect functionality changes.
 
 ## Features
 
 ### Code outline view 
 
-'AL Outline' panel displays code outline of currently active editor. It looks like standard VS Code Outline view, but supports syntax nodes types specific to AL, display custom icons and allows to invoke some commands on them using context menu. It also supports other document types, so it can be used instead of standard outline view if AL project contains other files (i.e. javascript or css control add-ins files). 
-
-### Object browser
-
-
-### File wizards
-
-
-## Contributors
-
-- rvanbekkum: 
-  * "New Page Extension" and "New Table Extension" options in AL Object Browser
-  * Ability to save generated objects in files inside project folder
-
-------------------------
-OLD CONTENT BELOW
-TO-DO!
-------------------------
-
-
-
-The AL Code Outline extension displays code outline of active file in the explorer pane. It was initially created to support AL files only, but AL project can also contain other file types for data (xml, json) and client add-ins (javascript, css, html, handlebars) so symbols tree works for them too. Basic functionality allows user to click on one of symbols tree nodes to move cursor to that symbol in the code editor. 
-
-For AL file types, extension tries to extract a bit more information from the language server and can display context menu with additional options for some of the symbols. At this moment, context menu allows user to run pages, reports and tables in the web client and to create new card and list pages, reports, xmlports and queries with all fields from selected table symbols.
-
-It is also possible to view symbols from symbol reference packages. Extension adds a new "Open in AL Object Browser" entry to explorer contect menu for *.app files. It opens a view that looks similar to c/al object designer. Selecting object entry in this view updates code outline view. It can also display context menu with options to show object definition and run table based object generators. Right click on object list column header opens another context menu (added by rvanbekkum), which allows to apply filter to the list.
-
-It is also possible to select multiple rows in AL Object Browser by clicking on the lines with Ctrl or Shift keys pressed or by pressing Ctrl+A (another great rvanbekkum contribution). When multiple rows are selected, object generators will generate new files for all of them.
-
-![Symbols browser](resources/screen-objectbrowser.gif)
+'AL Outline' panel displays code outline of currently active editor. Basic functionality allows user to click on one of symbols tree nodes to move cursor to that symbol in the code editor. It looks like standard VS Code Outline view, but supports syntax nodes types specific to AL, display custom icons and allows to invoke some commands on them using context menu. Currently symbol context menu allows user to run pages, reports and tables in the web client and to create new card and list pages, reports, xmlports and queries with all fields from selected table symbols.
 
 ![Page generator](resources/screen-wizard.gif)
 
@@ -43,8 +14,34 @@ It is also possible to select multiple rows in AL Object Browser by clicking on 
 
 ![Code outline for a page](resources/screen-page.png)
 
+It also supports other document types, so it can be used instead of standard outline view if AL project contains other files (i.e. javascript or css control add-ins files). 
+
+### Object browser
+
+Extension adds a new "Open in AL Object Browser" entry to explorer contect menu for *.app files. It opens a view that looks similar to c/al object designer. When user selects object entry in this view, al code outline is updated with that object symbols. Right mouse click on object in the browser displays a context menu with options to show object definition and run table based object generators. Right click on object list column header opens another context menu (added by rvanbekkum), which allows to apply filter to the list.
+
+It is also possible to select multiple rows in AL Object Browser by clicking on the lines with Ctrl or Shift keys pressed or by pressing Ctrl+A (another great rvanbekkum contribution). When multiple rows are selected, object generators will generate new files for all of them.
+
+![Symbols browser](resources/screen-objectbrowser.gif)
+
 ![Multiple objects selection in symbols browser](resources/screen-browserselection.png)
 
+### File wizards
+
+When this extension is installed, it also installs 'VZ File Templates' extension to allow users to select new file templates in a window that looks like the one from big Visual Studio. This extension registers there a few new AL file templates and wizards that help users to specify new object properties and select which fields should be added to these objects. Template selector is available in 'Explorer' panel context menu under 'New File from Template' option.
+
+## Contributors
+
+- rvanbekkum: 
+  * "New Page Extension" and "New Table Extension" options in AL Object Browser
+  * Ability to save generated objects in files inside project folder
+  * Object browser search
+
+## Integration with other Visual Studio Code extension
+
+This extension uses functionalioty from thse Visual Studio Code extensions
+- CRS AL Language Extension 
+- VZ File Templates
 
 ## Inspiration
 

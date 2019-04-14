@@ -51,8 +51,6 @@
 .vscode-dark .ico-undefined, .vscode-high-contrast .ico-undefined { background: url('../../../resources/images/dark/tree-undefined.svg') }
 .vscode-dark .ico-variable, .vscode-high-contrast .ico-variable { background: url('../../../resources/images/dark/tree-variable.svg') }
 .vscode-dark .ico-xmlport, .vscode-high-contrast .ico-xmlport { background: url('../../../resources/images/dark/tree-xmlport.svg') }
-.vscode-dark .treeexpand, .vscode-high-contrast .treeexpand { background: url('../../../resources/images/dark/tree-expandright.svg') }
-.vscode-dark .treecollapse, .vscode-high-contrast .treecollapse { background: url('../../../resources/images/dark/tree-collapseup.svg') }
 
 .vscode-light .ico-action { background: url('../../../resources/images/light/tree-action.svg') }
 .vscode-light .ico-chartpart { background: url('../../../resources/images/light/tree-chartpart.svg') }
@@ -107,5 +105,3 @@
 .vscode-light .ico-undefined { background: url('../../../resources/images/light/tree-undefined.svg') }
 .vscode-light .ico-variable { background: url('../../../resources/images/light/tree-variable.svg') }
 .vscode-light .ico-xmlport { background: url('../../../resources/images/light/tree-xmlport.svg') }
-.vscode-light .treeexpand { background: url('../../../resources/images/light/tree-expandright.svg') }
-.vscode-light .treecollapse { background: url('../../../resources/images/light/tree-collapseup.svg') }

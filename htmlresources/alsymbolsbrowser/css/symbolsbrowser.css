@@ -15,8 +15,13 @@ body {
     flex: 0 0 auto;
     margin: 5px;
 }
+#searchid {
+    flex: 1 1 30%;
+}
+#searchname {
+    flex: 1 1 70%;
+}
 #search input {
-    flex: 1 1 auto;
     margin: 5px 0px 5px 5px;
 }
 #content {
@@ -84,6 +89,30 @@ body {
     justify-content: flex-start;
     padding: 2px 0px
 }
+
+.treeitem .sheadcol:before, .treeitem .sheadexp:before, .treeitem .sheadnoexp:before {
+    content: "";
+    flex: 0 0 16px;
+    width: 16px;
+    height: 16px;
+    background-repeat: no-repeat;
+    background-position: center;
+    background-size: contain;
+}
+.vscode-dark .treeitem .sheadcol:before, .vscode-high-contrast .treeitem .sheadcol:before {
+    background: url('../../../resources/images/dark/tree-expandright.svg')
+}
+.vscode-dark .treeitem .sheadexp:before, .vscode-high-contrast .treeitem .sheadexp:before {
+    background: url('../../../resources/images/dark/tree-collapseup.svg')
+}
+.vscode-light .treeitem .sheadcol:before {
+    background: url('../../../resources/images/light/tree-expandright.svg')
+}
+.vscode-light .treeitem .sheadexp:before {
+    background: url('../../../resources/images/light/tree-collapseup.svg')
+}
+
+
 .treeitem .shead:hover {
     background-color: var(--vscode-list-hoverBackground);
     color: var(--vscode-list-hoverForeground);
