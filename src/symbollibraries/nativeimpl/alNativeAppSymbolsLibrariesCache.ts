@@ -1,10 +1,10 @@
-import { ALAppSymbolsLibrary } from "./alAppSymbolsLibrary";
-import { DevToolsExtensionContext } from "../devToolsExtensionContext";
-
 'use strict';
 
-export class ALAppSymbolsLibrariesCache {
-    protected _cache : ALAppSymbolsLibrary[];
+import { DevToolsExtensionContext } from "../../devToolsExtensionContext";
+import { ALNativeAppSymbolsLibrary } from "./alNativeAppSymbolsLibrary";
+
+export class ALNativeAppSymbolsLibrariesCache {
+    protected _cache : ALNativeAppSymbolsLibrary[];
     protected _context : DevToolsExtensionContext;
 
     constructor(context : DevToolsExtensionContext) {
@@ -23,7 +23,7 @@ export class ALAppSymbolsLibrariesCache {
                 return this._cache[i];
         }
         //create new library
-        let library : ALAppSymbolsLibrary = new ALAppSymbolsLibrary(this._context, filePath);
+        let library : ALNativeAppSymbolsLibrary = new ALNativeAppSymbolsLibrary(this._context, filePath);
         this._cache.push(library);
         return library;
     }

@@ -12,7 +12,7 @@ export class ToolsLangServerClient implements vscode.Disposable {
     _context : vscode.ExtensionContext;
     _childProcess : cp.ChildProcess | undefined;
     _connection : rpc.MessageConnection | undefined;
-    _alExtensionPath : string;
+    _alExtensionPath : string;    
 
     constructor(context : vscode.ExtensionContext, alExtensionPath : string) {
         this._context = context;
@@ -40,7 +40,7 @@ export class ToolsLangServerClient implements vscode.Disposable {
         this._connection.listen();
     }
 
-    public async GetALDocumentSymbols(params : ToolsDocumentSymbolsRequest) : Promise<ToolsDocumentSymbolsResponse|undefined> {
+    public async getALDocumentSymbols(params : ToolsDocumentSymbolsRequest) : Promise<ToolsDocumentSymbolsResponse|undefined> {
         if (!this._connection)
             return undefined;
                 
@@ -49,7 +49,7 @@ export class ToolsLangServerClient implements vscode.Disposable {
         return val;
     }
 
-    public async GetAppPackageSymbols(params : ToolsPackageSymbolsRequest) : Promise<ToolsPackageSymbolsResponse|undefined> {
+    public async getAppPackageSymbols(params : ToolsPackageSymbolsRequest) : Promise<ToolsPackageSymbolsResponse|undefined> {
         if (!this._connection)
             return undefined;
                 
@@ -58,5 +58,10 @@ export class ToolsLangServerClient implements vscode.Disposable {
         return val;
     }
 
+    public isEnabled() : boolean {
+        if (this._connection)
+            return true;        
+        return false;
+    }
 
 }

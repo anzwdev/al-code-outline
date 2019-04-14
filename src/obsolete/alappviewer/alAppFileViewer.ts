@@ -3,7 +3,6 @@
 import * as vscode from 'vscode';
 import * as path from 'path';
 import { ALObjectRunner } from '../../alObjectRunner';
-import { ALAppSymbolsLibrary } from '../../symbollibraries/alAppSymbolsLibrary';
 import { ALAppFileViewerData } from './alAppFileViewerData';
 import { AZSymbolInformation } from '../../symbollibraries/azSymbolInformation';
 import { PageBuilder } from '../../objectbuilders/pageBuilder';
@@ -14,6 +13,7 @@ import { PageExtBuilder } from '../../objectbuilders/pageExtBuilder';
 import { TableExtBuilder } from '../../objectbuilders/tableExtBuilder';
 import { DevToolsExtensionContext } from '../../devToolsExtensionContext';
 import { AZSymbolKind } from '../../symbollibraries/azSymbolKind';
+import { AZSymbolsLibrary } from '../../symbollibraries/azSymbolsLibrary';
 
 export class ALAppFileViewer {
     private mainTemplate : string;
@@ -22,9 +22,9 @@ export class ALAppFileViewer {
     private title : string;
     private disposables : vscode.Disposable[] = [];
     private context: DevToolsExtensionContext;
-    public symbolsLibrary : ALAppSymbolsLibrary | undefined;
+    public symbolsLibrary : AZSymbolsLibrary | undefined;
 
-    constructor(devToolsContext : DevToolsExtensionContext, symbolsLib : ALAppSymbolsLibrary) {
+    constructor(devToolsContext : DevToolsExtensionContext, symbolsLib : AZSymbolsLibrary) {
         this.symbolsLibrary = symbolsLib;
         this.title = this.symbolsLibrary.displayName;
         if (this.title == "")

@@ -17,19 +17,20 @@ import { ALAppSymbolsLibrary } from './symbollibraries/alAppSymbolsLibrary';
 import { ALSymbolsBrowser } from './alsymbolsbrowser/alSymbolsBrowser';
 import { ALActionImageBrowser } from './actionimagebrowser/alActionImageBrowser';
 import { ALAppFileViewer } from './obsolete/alappviewer/alAppFileViewer';
-import { ALAppSymbolsLibrariesCache } from './symbollibraries/alAppSymbolsLibrariesCache';
 import { PageBuilder } from './objectbuilders/pageBuilder';
 import { ReportBuilder } from './objectbuilders/reportBuilder';
 import { XmlPortBuilder } from './objectbuilders/xmlPortBuilder';
 import { QueryBuilder } from './objectbuilders/queryBuilder';
+import { ALNativeAppSymbolsLibrariesCache } from './symbollibraries/nativeimpl/alNativeAppSymbolsLibrariesCache';
+import { AZSymbolsLibrary } from './symbollibraries/azSymbolsLibrary';
 
 // this method is called when your extension is activated
 // your extension is activated the very first time the command is executed
 export function activate(context: vscode.ExtensionContext) {
     const toolsExtensionContext : DevToolsExtensionContext = new DevToolsExtensionContext(context);
     const symbolsTreeProvider : SymbolsTreeProvider = new SymbolsTreeProvider(toolsExtensionContext);
-    const librariesCache : ALAppSymbolsLibrariesCache = new ALAppSymbolsLibrariesCache(toolsExtensionContext);
-    
+    let nativeAppCache: ALNativeAppSymbolsLibrariesCache | undefined = undefined;
+
 	context.subscriptions.push(toolsExtensionContext);
 
     //document symbols tree provider
@@ -56,7 +57,18 @@ export function activate(context: vscode.ExtensionContext) {
             'azALDevTools.viewALApp', 
             (fileUri) => {
                 let uri : vscode.Uri = fileUri;
-                let lib : ALAppSymbolsLibrary = librariesCache.getOrCreate(uri.fsPath);
+                let lib : AZSymbolsLibrary;
+
+                if (toolsExtensionContext.toolsLangServerClient.isEnabled())
+                    lib = new ALAppSymbolsLibrary(toolsExtensionContext, uri.fsPath);
+                else {
+                    //if language server is not available on this platform or with currently active
+                    //version of Microsoft AL Extension, then we have to use simplified native implementation
+                    //of app package reader
+                    if (!nativeAppCache)
+                        nativeAppCache = new ALNativeAppSymbolsLibrariesCache(toolsExtensionContext);
+                    lib = nativeAppCache.getOrCreate(uri.fsPath);
+                }
 
                 let useNewViewer = vscode.workspace.getConfiguration('alOutline').get('enableFeaturePreview');
                 if (useNewViewer) {

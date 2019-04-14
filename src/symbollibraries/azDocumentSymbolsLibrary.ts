@@ -64,7 +64,7 @@ export class AZDocumentSymbolsLibrary extends AZSymbolsLibrary {
                     source = "";
         
                 let request : ToolsDocumentSymbolsRequest = new ToolsDocumentSymbolsRequest(source, this._docUri.fsPath);
-                let response : ToolsDocumentSymbolsResponse | undefined = await this._context.toolsLangServerClient.GetALDocumentSymbols(request);
+                let response : ToolsDocumentSymbolsResponse | undefined = await this._context.toolsLangServerClient.getALDocumentSymbols(request);
                 if ((response) && (response.root)) {
                     this.rootSymbol = AZSymbolInformation.fromAny(response.root);                    
                     //merge symbols with symbols returned from Microsoft AL Language Extension
