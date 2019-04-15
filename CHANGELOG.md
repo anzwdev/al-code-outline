@@ -1,8 +1,10 @@
 # Change Log
 
-## 2.0.0
+## 1.0.0
 
-
+ - Code outline symbols and app files processing moved to external C# language server
+ - New file parser can detect function types and display different icons for them in the outline view
+ - Preview of the new AL Symbols Browser, it can be turned on in the settings by switching alOutline.enableFeaturePreview to true 
 
 ## 0.0.15
 

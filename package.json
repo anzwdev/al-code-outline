@@ -1,8 +1,8 @@
 {
 	"name": "al-code-outline",
 	"displayName": "AL Code Outline",
-	"description": "AL Development Tools: AL code outline, object browser, object wizards",
-	"version": "2.0.0",
+	"description": "AL Development Tools: AL code outline, object browser, object creators",
+	"version": "1.0.0",
 	"publisher": "andrzejzwierzchowski",
 	"engines": {
 		"vscode": "^1.30.0"
