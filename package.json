@@ -213,7 +213,6 @@
 		]
 	},
 	"extensionDependencies": [
-        "visualzoran.vz-file-templates",
 		"waldo.crs-al-language-extension"
 	],
 	"scripts": {
