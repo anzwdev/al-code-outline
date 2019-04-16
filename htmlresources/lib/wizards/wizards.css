@@ -1,0 +1,150 @@
+body {
+    width: 100%;
+    height: 100%;
+    margin: 0;
+    position: absolute;
+    display: flex;
+    flex-direction: column;
+    align-items: stretch;
+    justify-content: stretch;
+}
+header {
+    flex: 0 0 0;
+}
+
+.main {
+    /*
+    position: absolute;
+    top:0;
+    bottom:0;
+    left:0;
+    right:0;
+    */
+
+    flex: 1 1 auto;
+    display: flex;
+    flex-direction: column;
+    align-items: stretch;
+    overflow: hidden;
+}
+.header {
+    flex: 0 0 40px;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: flex-start;
+}
+.title {
+    margin: 0px 10px;
+    font-size: 20pt;
+    color: var(--vscode-panelTitle-activeForeground);
+}
+.footer {
+    flex: 0 0 60px;
+    display:flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: flex-end;
+}
+.wizard {
+    flex: 1 1 auto;
+    display:flex;
+    flex-direction: column;
+    align-items: stretch;
+    justify-content: stretch;
+}
+.formlinecenter {
+    margin: 0px 10px;
+    flex: 0 1 32px;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: center;
+}
+.formcaptionct {
+    padding: 0 5px;
+}
+.formfieldct {
+    padding: 0 5px;
+}
+.formline {
+    margin: 0px 10px;
+    flex: 0 1 32px;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: stretch;
+}
+.formheader {
+    flex: 1 1 auto;   
+}
+.formcaption {
+    flex: 0 0 200px;
+}
+.formfield {
+    flex: 1 1 auto;
+    display: flex;
+    flex-direction: row;
+    align-items: stretch;
+    justify-content: stretch;
+}
+.formfield .fulltext, .formfield .fullopt {
+    flex: 1 1 auto;
+}
+.formfield .fixedtext, .formfield .fixedopt {
+    flex: 0 1 200px;
+}
+
+.multiselect {
+    flex: 1 1 auto;
+    margin: 10px;
+    display: flex;
+    flex-direction: row;
+    justify-content: stretch;
+}
+.multiselsrc,  .multiseldest {
+    flex: 1 1 0;
+    display: flex;
+    flex-direction: column;
+    align-items: stretch;
+    justify-content: stretch;
+}
+.multiselbtns {
+    flex: 0 0 80px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+}
+.mselbtn {
+    flex: 0 0 60px;
+    width: 70px;
+    margin: 5px 5px;
+}
+.msellist {
+    flex: 1 1 auto;
+}
+.mselcaption {
+    flex: 0 0 26px;
+}
+.mselbtn, .button {
+    background-color: var(--vscode-button-background);
+    color: var(--vscode-button-foreground);
+    border: 0px solid var(--vscode-panel-border);
+    font-size: var(--font-size);
+    font-weight: var(--font-weight);    
+    font-family: var(--font-family);
+}
+.mselbtn:hover, .button:hover {
+    background-color: var(--vscode-button-hoverBackground);
+}
+.button {
+    margin: 3px 6px 3px 0px;
+    width: 80px;
+    padding:5px;
+}
+input, select {
+    background: var(--vscode-input-background);
+    border: 1px solid var(--vscode-panel-border);
+    color: var(--vscode-input-foreground);
+}

@@ -1,9 +1,9 @@
 import * as vscode from 'vscode';
 import { ALObjectWriter } from './alObjectWriter';
-import { ALSymbolInfo } from "../alSymbolInfo";
-import { ALSymbolKind } from '../alSymbolKind';
 import { FileBuilder } from './fileBuilder';
 import { ObjectBuilder } from "./objectBuilder";
+import { AZSymbolInformation } from '../symbollibraries/azSymbolInformation';
+import { AZSymbolKind } from '../symbollibraries/azSymbolKind';
 
 export class ReportBuilder extends ObjectBuilder {
 
@@ -13,11 +13,19 @@ export class ReportBuilder extends ObjectBuilder {
 
     //#region Wizards with UI
 
-    async showMultiReportWizard(tableSymbols: ALSymbolInfo[]) {
+    async showWizard(tableSymbols: AZSymbolInformation[]) {
+        if (tableSymbols.length == 1)
+            await this.showReportWizard(tableSymbols[0]);
+        else
+            await this.showMultiReportWizard(tableSymbols);
+    }
+
+
+    async showMultiReportWizard(tableSymbols: AZSymbolInformation[]) {
         if (!FileBuilder.checkCrsExtensionFileNamePatternRequired())
             return;
 
-        const objType : ALSymbolKind = ALSymbolKind.Report;
+        const objType : AZSymbolKind = AZSymbolKind.ReportObject;
 
         let startObjectId: number = await this.getObjectId(`Please enter a starting ID for the report objects.`, 0);
         if (startObjectId < 0) {
@@ -35,11 +43,11 @@ export class ReportBuilder extends ObjectBuilder {
         }
     }
 
-    async showReportWizard(tableSymbol : ALSymbolInfo) {
+    async showReportWizard(tableSymbol : AZSymbolInformation) {
         if (!FileBuilder.checkCrsFileNamePatternRequired())
             return;
             
-        const objType : ALSymbolKind = ALSymbolKind.Report;
+        const objType : AZSymbolKind = AZSymbolKind.ReportObject;
 
         let objectId : number = await this.getObjectId("Please enter an ID for the report object.", 0);
         if (objectId < 0) {
@@ -57,7 +65,7 @@ export class ReportBuilder extends ObjectBuilder {
         await this.createAndShowNewReport(tableSymbol, objType, objectId, objectName, relativeFileDir);
     }
 
-    private async createAndShowNewReport(tableSymbol: ALSymbolInfo, objType: ALSymbolKind, objectId: number, objectName: string, relativeFileDir: string) {
+    private async createAndShowNewReport(tableSymbol: AZSymbolInformation, objType: AZSymbolKind, objectId: number, objectName: string, relativeFileDir: string) {
         let fileName : string = await FileBuilder.getPatternGeneratedFullObjectFileName(objType, objectId, objectName);
         this.showNewDocument(this.buildReportForTable(tableSymbol, objectId, objectName), fileName, relativeFileDir);
     }
@@ -66,7 +74,7 @@ export class ReportBuilder extends ObjectBuilder {
   
     //#region Report builders
 
-    buildReportForTable(tableSymbol : ALSymbolInfo, objectId : number, objectName : string) : string {
+    buildReportForTable(tableSymbol : AZSymbolInformation, objectId : number, objectName : string) : string {
         //generate file content
         let writer : ALObjectWriter = new ALObjectWriter();
 
@@ -83,17 +91,17 @@ export class ReportBuilder extends ObjectBuilder {
         return writer.toString();
     }
 
-    private appendDataSet(writer : ALObjectWriter, tableSymbol : ALSymbolInfo) {
-        var dataSetName = writer.createName(tableSymbol.symbolName);
+    private appendDataSet(writer : ALObjectWriter, tableSymbol : AZSymbolInformation) {
+        var dataSetName = writer.createName(tableSymbol.name);
         writer.writeStartNamedBlock("dataset");
 
-        writer.writeStartNameSourceBlock("dataitem", dataSetName, writer.encodeName(tableSymbol.symbolName));
+        writer.writeStartNameSourceBlock("dataitem", dataSetName, writer.encodeName(tableSymbol.name));
 
-        let fieldList : ALSymbolInfo[] = [];
-        tableSymbol.getAllSymbolsByKind(ALSymbolKind.Field, fieldList);
+        let fieldList : AZSymbolInformation[] = [];
+        tableSymbol.collectChildSymbols(AZSymbolKind.Field, fieldList);
         fieldList.forEach(
             item => {
-                writer.writeNameSourceBlock("column", writer.createName(item.symbolName), writer.encodeName(item.symbolName));
+                writer.writeNameSourceBlock("column", writer.createName(item.name), writer.encodeName(item.name));
             }
         );
 
@@ -126,8 +134,8 @@ export class ReportBuilder extends ObjectBuilder {
 
     //#region Helper Methods
 
-    private getDefaultReportName(tableSymbol: ALSymbolInfo) : string {
-        return `${tableSymbol.symbolName.trim()} Report`;
+    private getDefaultReportName(tableSymbol: AZSymbolInformation) : string {
+        return `${tableSymbol.name.trim()} Report`;
     }
     
     //#endregion

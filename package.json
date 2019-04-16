@@ -1,8 +1,8 @@
 {
 	"name": "al-code-outline",
 	"displayName": "AL Code Outline",
-	"description": "AL code outline tree provider",
-	"version": "0.0.15",
+	"description": "AL Development Tools: AL code outline, object browser, object creators",
+	"version": "1.0.0",
 	"publisher": "andrzejzwierzchowski",
 	"engines": {
 		"vscode": "^1.30.0"
@@ -22,10 +22,10 @@
 		"al"
 	],
 	"activationEvents": [
-		"*",
 		"onLanguage:al",
-		"onView:alOutline",
-		"onCommand:alOutline.viewALApp"
+		"onView:azALDevTools_SymbolsTreeProvider",
+		"onCommand:azALDevTools.viewALApp",
+		"onCommand:azALDevTools.viewActionImages"
 	],
 	"main": "./out/extension",
 	"icon": "resources/alcodeoutline.png",
@@ -40,19 +40,28 @@
 		],
 		"views": {
 			"explorer": [
-				{
-					"id": "alOutline",
-					"name": "AL Outline"
+                {
+                    "id": "azALDevTools_SymbolsTreeProvider",
+                    "name": "AL Outline"
 				}
 			]
 		},
 		"commands": [
+            {
+                "command": "azALDevTools.viewALApp",
+                "title": "Open in AL Object Browser"
+            },
+            {
+                "category": "AZ AL Dev Tools",
+                "command": "azALDevTools.viewActionImages",
+                "title": "Show Action Images"
+            },
 			{
-				"command": "alOutline.refresh",
+				"command": "azALDevTools.refreshOutlineView",
 				"title": "Refresh",
 				"icon": {
-					"light": "resources/light/refresh.svg",
-					"dark": "resources/dark/refresh.svg"
+					"light": "resources/images/light/refresh.svg",
+					"dark": "resources/images/dark/refresh.svg"
 				}
 			},
 			{
@@ -75,10 +84,7 @@
 				"command": "alOutline.createQuery",
 				"title": "Create Query"
 			},
-			{
-				"command": "alOutline.viewALApp",
-				"title": "Open in AL Object Browser"
-			},
+
 			{
 				"command": "alOutline.runPage",
 				"title": "Run in Web Client"
@@ -95,62 +101,63 @@
 		"menus": {
 			"view/title": [
 				{
-					"command": "alOutline.refresh",
-					"when": "view == alOutline",
+					"command": "azALDevTools.refreshOutlineView",
+					"when": "view == azALDevTools_SymbolsTreeProvider",
 					"group": "navigation"
 				}
 			],
 			"view/item/context": [
 				{
 					"command": "alOutline.runPage",
-					"when": "view == alOutline && viewItem == ALPage"
+					"when": "view == azALDevTools_SymbolsTreeProvider && viewItem == PageObject"
 				},
 				{
 					"command": "alOutline.runReport",
-					"when": "view == alOutline && viewItem == ALReport"
+					"when": "view == azALDevTools_SymbolsTreeProvider && viewItem == ReportObject"
 				},
 				{
 					"command": "alOutline.runTable",
-					"when": "view == alOutline && viewItem == ALTable"
+					"when": "view == azALDevTools_SymbolsTreeProvider && viewItem == TableObject"
 				},
 				{
 					"command": "alOutline.createCardPage",
-					"when": "view == alOutline && viewItem == ALTable"
+					"when": "view == alOuazALDevTools_SymbolsTreeProvidertline && viewItem == TableObject"
 				},
 				{
 					"command": "alOutline.createListPage",
-					"when": "view == alOutline && viewItem == ALTable"
+					"when": "view == azALDevTools_SymbolsTreeProvider && viewItem == TableObject"
 				},
 				{
 					"command": "alOutline.createReport",
-					"when": "view == alOutline && viewItem == ALTable"
+					"when": "view == azALDevTools_SymbolsTreeProvider && viewItem == TableObject"
 				},
 				{
 					"command": "alOutline.createXmlPort",
-					"when": "view == alOutline && viewItem == ALTable"
+					"when": "view == azALDevTools_SymbolsTreeProvider && viewItem == TableObject"
 				},
 				{
 					"command": "alOutline.createQuery",
-					"when": "view == alOutline && viewItem == ALTable"
+					"when": "view == azALDevTools_SymbolsTreeProvider && viewItem == TableObject"
 				}
-			],
+			],			
 			"explorer/context": [
-				{
-					"command": "alOutline.viewALApp",
-					"group": "navigation",
-					"when": "resourceLangId == alapp"
-				}
+                {
+                    "command": "azALDevTools.viewALApp",
+                    "group": "navigation",
+                    "when": "resourceLangId == alapp"
+                }
 			]
 		},
 		"configuration": [
 			{
 				"title": "AL Code Outline",
 				"properties": {
-					"alOutline.autorefresh": {
+					"alOutline.enableFeaturePreview": {
 						"type": "boolean",
-						"default": true,
-						"description": "Refresh code outline tree automatically"
+						"default": false,
+						"description": "Enable preview of future, unstable features"
 					},
+
 					"alOutline.autoGenerateFiles": {
 						"type": "boolean",
 						"default": false,
@@ -223,6 +230,8 @@
 	},
 	"dependencies": {
 		"adm-zip": "^0.4.11",
-		"opn": "^5.4.0"
+		"opn": "^5.4.0",
+		"vscode-languageclient": "^5.2.1",
+		"vz-file-templates": "^1.0.1"
 	}
 }

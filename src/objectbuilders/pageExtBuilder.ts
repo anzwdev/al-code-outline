@@ -1,10 +1,10 @@
 import * as vscode from 'vscode';
 import { ALObjectWriter } from "./alObjectWriter";
-import { ALSymbolInfo } from "../alSymbolInfo";
-import { ALSymbolKind } from '../alSymbolKind';
 import { FileBuilder } from './fileBuilder';
 import { ObjectBuilder } from './objectBuilder';
 import { relative } from 'path';
+import { AZSymbolInformation } from '../symbollibraries/azSymbolInformation';
+import { AZSymbolKind } from '../symbollibraries/azSymbolKind';
 
 export class PageExtBuilder extends ObjectBuilder {
 
@@ -14,11 +14,18 @@ export class PageExtBuilder extends ObjectBuilder {
 
     //#region Wizards with UI
 
-    async showMultiPageExtWizard(pageSymbols: ALSymbolInfo[]) {
+    async showWizard(tableSymbols: AZSymbolInformation[]) {
+        if (tableSymbols.length == 1)
+            await this.showPageExtWizard(tableSymbols[0]);
+        else
+            await this.showMultiPageExtWizard(tableSymbols);
+    }
+
+    async showMultiPageExtWizard(pageSymbols: AZSymbolInformation[]) {
         if (!FileBuilder.checkCrsExtensionFileNamePatternRequired() || !FileBuilder.checkCrsExtensionObjectNamePatternRequired(true))
             return;
 
-        const extObjType : ALSymbolKind = ALSymbolKind.PageExtension;
+        const extObjType : AZSymbolKind = AZSymbolKind.PageExtensionObject;
 
         let startObjectId: number = await this.getObjectId("Please enter a starting ID for the page extensions.", 0);
         if (startObjectId < 0) {
@@ -36,11 +43,11 @@ export class PageExtBuilder extends ObjectBuilder {
         }
     }
 
-    async showPageExtWizard(pageSymbol : ALSymbolInfo) {
+    async showPageExtWizard(pageSymbol : AZSymbolInformation) {
         if (!FileBuilder.checkCrsExtensionFileNamePatternRequired() || !FileBuilder.checkCrsExtensionObjectNamePatternRequired(false))
             return;
 
-        const extObjType : ALSymbolKind = ALSymbolKind.PageExtension;
+        const extObjType : AZSymbolKind = AZSymbolKind.PageExtensionObject;
         
         let extObjectId : number = await this.getObjectId("Please enter an ID for the page extension.", 0);
         if (extObjectId < 0) {
@@ -57,7 +64,7 @@ export class PageExtBuilder extends ObjectBuilder {
         await this.createAndShowNewPageExtension(pageSymbol, extObjType, extObjectId, extObjectName, relativeFileDir);
     }
 
-    private async createAndShowNewPageExtension(pageSymbol: ALSymbolInfo, extObjType: ALSymbolKind, extObjectId: number, extObjectName: string, relativeFileDir: string) {
+    private async createAndShowNewPageExtension(pageSymbol: AZSymbolInformation, extObjType: AZSymbolKind, extObjectId: number, extObjectName: string, relativeFileDir: string) {
         let fileName : string = await FileBuilder.getPatternGeneratedExtensionObjectFileName(extObjType, extObjectId, extObjectName, pageSymbol);
         this.showNewDocument(this.buildPageExtForPage(pageSymbol, extObjectId, extObjectName), fileName, relativeFileDir);
     }
@@ -66,11 +73,11 @@ export class PageExtBuilder extends ObjectBuilder {
 
     //#region Page Extension builders
 
-    private buildPageExtForPage(pageSymbol : ALSymbolInfo, objectId : number, extObjectName : string) : string {
+    private buildPageExtForPage(pageSymbol : AZSymbolInformation, objectId : number, extObjectName : string) : string {
         
         let writer : ALObjectWriter = new ALObjectWriter();
 
-        writer.writeStartExtensionObject("pageextension", objectId, extObjectName, pageSymbol.symbolName);
+        writer.writeStartExtensionObject("pageextension", objectId, extObjectName, pageSymbol.name);
         
         writer.writeStartLayout();
 

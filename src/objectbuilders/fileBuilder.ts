@@ -1,10 +1,9 @@
 import * as fs from 'fs';
 import * as path from 'path';
 import * as vscode from 'vscode';
-import { ALSymbolKind } from '../alSymbolKind';
-import { ALSymbolInfo } from '../alSymbolInfo';
 import { CRSALLangExtHelper } from '../crsAlLangExtHelper';
-import { ObjectBuilder } from './objectBuilder';
+import { AZSymbolKind } from '../symbollibraries/azSymbolKind';
+import { AZSymbolInformation } from '../symbollibraries/azSymbolInformation';
 
 export class FileBuilder {
     public static async generateObjectFile(content: string, fileName: string, relativeFileDir: string): Promise<string | undefined> {
@@ -77,22 +76,22 @@ export class FileBuilder {
 
     //#region Object / File Pattern
 
-    public static SymbolKindToCrsName(symbolKind : ALSymbolKind) {
+    public static SymbolKindToCrsName(symbolKind : AZSymbolKind) {
         switch (symbolKind) {
-            case ALSymbolKind.Table: return 'table';
-            case ALSymbolKind.Codeunit: return 'codeunit';
-            case ALSymbolKind.Page: return 'page';
-            case ALSymbolKind.Report: return 'report';
-            case ALSymbolKind.Query: return 'query';
-            case ALSymbolKind.XmlPort: return 'xmlport';
-            case ALSymbolKind.TableExtension: return 'tableextension';
-            case ALSymbolKind.PageExtension: return 'pageextension';
-            case ALSymbolKind.ControlAddIn: return 'controladdin';
-            case ALSymbolKind.Profile: return 'profile';
-            case ALSymbolKind.PageCustomization: return 'pagecustomization';
-            case ALSymbolKind.Enum: return 'enum';
-            case ALSymbolKind.DotNetPackage: return 'dotnetpackage';
-            case ALSymbolKind.EnumExtension: return 'enumextension';
+            case AZSymbolKind.TableObject: return 'table';
+            case AZSymbolKind.CodeunitObject: return 'codeunit';
+            case AZSymbolKind.PageObject: return 'page';
+            case AZSymbolKind.ReportObject: return 'report';
+            case AZSymbolKind.QueryObject: return 'query';
+            case AZSymbolKind.XmlPortObject: return 'xmlport';
+            case AZSymbolKind.TableExtensionObject: return 'tableextension';
+            case AZSymbolKind.PageExtensionObject: return 'pageextension';
+            case AZSymbolKind.ControlAddInObject: return 'controladdin';
+            case AZSymbolKind.ProfileObject: return 'profile';
+            case AZSymbolKind.PageCustomizationObject: return 'pagecustomization';
+            case AZSymbolKind.EnumType: return 'enum';
+            case AZSymbolKind.DotNetPackage: return 'dotnetpackage';
+            case AZSymbolKind.EnumExtensionType: return 'enumextension';
        }
         return '';
     }
@@ -158,14 +157,14 @@ export class FileBuilder {
         return true;
     }
 
-    public static async getPatternGeneratedFullObjectFileName(objectType: ALSymbolKind, objectId: number, objectName: string) : Promise<string> {
+    public static async getPatternGeneratedFullObjectFileName(objectType: AZSymbolKind, objectId: number, objectName: string) : Promise<string> {
         let crsLangExt = await CRSALLangExtHelper.GetCrsAlLangExt();
         if ((crsLangExt) && (this.hasCrsFileNamePattern()))
             return crsLangExt.ObjectNamesApi.GetObjectFileName(this.SymbolKindToCrsName(objectType), objectId.toString(), objectName);
         return objectName + '.al';
    }
 
-    public static async getPatternGeneratedExtensionObjectName(extensionType: ALSymbolKind, extensionId: number, baseSymbolInfo: ALSymbolInfo) : Promise<string> {       
+    public static async getPatternGeneratedExtensionObjectName(extensionType: AZSymbolKind, extensionId: number, baseSymbolInfo: AZSymbolInformation) : Promise<string> {       
         let crsLangExt = await CRSALLangExtHelper.GetCrsAlLangExt();
         if ((crsLangExt) && (this.hasCrsExtensionObjectNamePattern()))
             return await crsLangExt.ObjectNamesApi.GetObjectExtensionName(
@@ -174,7 +173,7 @@ export class FileBuilder {
         return '';
     }
 
-    public static async getPatternGeneratedExtensionObjectFileName(extensionType: ALSymbolKind, extensionId: number, extensionObjectName: string, baseSymbolInfo: ALSymbolInfo) : Promise<string> {
+    public static async getPatternGeneratedExtensionObjectFileName(extensionType: AZSymbolKind, extensionId: number, extensionObjectName: string, baseSymbolInfo: AZSymbolInformation) : Promise<string> {
         let crsLangExt = await CRSALLangExtHelper.GetCrsAlLangExt();
         if ((crsLangExt) && (this.hasCrsExtensionFileNamePattern()))
             return await crsLangExt.ObjectNamesApi.GetObjectExtensionFileName(
@@ -183,7 +182,7 @@ export class FileBuilder {
         return extensionObjectName + '.al';
     }
 
-    public static async getPatternGeneratedRelativeFilePath(objectType: ALSymbolKind) : Promise<string> {       
+    public static async getPatternGeneratedRelativeFilePath(objectType: AZSymbolKind) : Promise<string> {       
         let typeName = this.getObjectTypeFromSymbolInfo(objectType);
         let shortTypeName : string = '';                
         let output: string = vscode.workspace.getConfiguration('alOutline').get('autoGenerateFileDirectory');
@@ -198,16 +197,17 @@ export class FileBuilder {
         return output;
     } 
 
-    private static getObjectIdFromSymbolInfo(alSymbolInfo: ALSymbolInfo): number {
-        return alSymbolInfo.alElementId;
+    private static getObjectIdFromSymbolInfo(alSymbolInfo: AZSymbolInformation): number {
+        return alSymbolInfo.id;
     }
 
-    private static getObjectNameFromSymbolInfo(alSymbolInfo: ALSymbolInfo): string {
-        return this.stripNonAlphaNumericCharacters(alSymbolInfo.symbolName);
+    private static getObjectNameFromSymbolInfo(alSymbolInfo: AZSymbolInformation): string {
+        return this.stripNonAlphaNumericCharacters(alSymbolInfo.name);
     }
 
-    private static getObjectTypeFromSymbolInfo(alSymbolKind: ALSymbolKind): string {
-        return ALSymbolKind[alSymbolKind];
+    private static getObjectTypeFromSymbolInfo(alSymbolKind: AZSymbolKind): string {
+        //return ALSymbolKind[alSymbolKind];
+        return this.SymbolKindToCrsName(alSymbolKind);
     }
 
     private static replacePattern(name: string, pattern: string, replaceWith: string) : string {

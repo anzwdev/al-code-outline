@@ -1,0 +1,28 @@
+
+.autocomplete {
+    background: var(--vscode-dropdown-background);
+    z-index: 1000;
+    overflow: auto;
+    box-sizing: border-box;
+    border: 1px solid var(--vscode-dropdown-border);
+}
+
+.autocomplete * {
+    font: inherit;
+}
+
+.autocomplete > div {
+    padding: 0 4px;
+}
+
+.autocomplete .group {
+    background: var(--vscode-dropdown-background);
+}
+
+.autocomplete > div:hover:not(.group),
+.autocomplete > div.selected {
+    background:var(--vscode-list-activeSelectionBackground);
+    color: var(--vscode-list-activeSelectionForeground);
+    cursor: pointer;
+}
+

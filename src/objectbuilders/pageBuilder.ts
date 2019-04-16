@@ -1,9 +1,9 @@
 import * as vscode from 'vscode';
 import { ALObjectWriter } from "./alObjectWriter";
-import { ALSymbolInfo } from "../alSymbolInfo";
-import { ALSymbolKind } from "../alSymbolKind";
 import { FileBuilder } from './fileBuilder';
 import { ObjectBuilder } from './objectBuilder';
+import { AZSymbolInformation } from '../symbollibraries/azSymbolInformation';
+import { AZSymbolKind } from '../symbollibraries/azSymbolKind';
 
 export class PageBuilder extends ObjectBuilder {
 
@@ -13,11 +13,18 @@ export class PageBuilder extends ObjectBuilder {
 
     //#region Wizards with UI
 
-    async showMultiPageWizard(tableSymbols: ALSymbolInfo[], pageType: string) {
+    async showWizard(tableSymbols: AZSymbolInformation[], pageType: string) {
+        if (tableSymbols.length == 1)
+            await this.showPageWizard(tableSymbols[0], pageType);
+        else
+            await this.showMultiPageWizard(tableSymbols, pageType);
+    }
+
+    async showMultiPageWizard(tableSymbols: AZSymbolInformation[], pageType: string) {
         if (!FileBuilder.checkCrsExtensionFileNamePatternRequired())
             return;
 
-        const objType : ALSymbolKind = ALSymbolKind.Page;
+        const objType : AZSymbolKind = AZSymbolKind.PageObject;
 
         let startObjectId: number = await this.getObjectId(`Please enter a starting ID for the ${pageType} pages.`, 0);
         if (startObjectId < 0) {
@@ -35,11 +42,11 @@ export class PageBuilder extends ObjectBuilder {
         }
     }
 
-    async showPageWizard(tableSymbol : ALSymbolInfo, pageType: string) {
+    async showPageWizard(tableSymbol : AZSymbolInformation, pageType: string) {
         if (!FileBuilder.checkCrsFileNamePatternRequired())
             return;
 
-        const objType : ALSymbolKind = ALSymbolKind.Page;
+        const objType : AZSymbolKind = AZSymbolKind.PageObject;
 
         let objectId : number = await this.getObjectId(`Please enter an ID for the ${pageType} page.`, 0);
         if (objectId < 0) {
@@ -57,7 +64,7 @@ export class PageBuilder extends ObjectBuilder {
         await this.createAndShowNewPage(tableSymbol, objType, objectId, objectName, pageType, relativeFileDir);
     }
 
-    private async createAndShowNewPage(tableSymbol: ALSymbolInfo, objType: ALSymbolKind, objectId: number, objectName: string, pageType: string, relativeFileDir: string) {
+    private async createAndShowNewPage(tableSymbol: AZSymbolInformation, objType: AZSymbolKind, objectId: number, objectName: string, pageType: string, relativeFileDir: string) {
         let fileName : string = await FileBuilder.getPatternGeneratedFullObjectFileName(objType, objectId, objectName);
         let pageContents: string;
         if (pageType === 'List') {
@@ -78,15 +85,15 @@ export class PageBuilder extends ObjectBuilder {
 
     //#region Page builders
 
-    buildListPageForTable(tableSymbol : ALSymbolInfo, objectId : number, objectName : string) : string {
+    buildListPageForTable(tableSymbol : AZSymbolInformation, objectId : number, objectName : string) : string {
         return this.buildPageForTable(tableSymbol, objectId, objectName, "List", "repeater");
     }
     
-    buildCardPageForTable(tableSymbol : ALSymbolInfo, objectId : number, objectName : string) : string {
+    buildCardPageForTable(tableSymbol : AZSymbolInformation, objectId : number, objectName : string) : string {
         return this.buildPageForTable(tableSymbol, objectId, objectName, "Card", "group");
     }
 
-    private buildPageForTable(tableSymbol : ALSymbolInfo, objectId : number, objectName : string, pageType : string, fieldGroupType : string) : string {
+    private buildPageForTable(tableSymbol : AZSymbolInformation, objectId : number, objectName : string, pageType : string, fieldGroupType : string) : string {
        
         //generate file content
         let writer : ALObjectWriter = new ALObjectWriter();
@@ -94,7 +101,7 @@ export class PageBuilder extends ObjectBuilder {
         writer.writeStartObject("page", objectId, objectName);
         writer.writeLine("");
         writer.writeProperty("PageType", pageType);
-        writer.writeProperty("SourceTable", writer.encodeName(tableSymbol.symbolName));
+        writer.writeProperty("SourceTable", writer.encodeName(tableSymbol.name));
         writer.writeProperty("Caption", writer.encodeString(objectName));
 
         //usage category and application area for list pages
@@ -117,11 +124,11 @@ export class PageBuilder extends ObjectBuilder {
         
         writer.writeStartGroup(fieldGroupType, "General");
         
-        let fieldList : ALSymbolInfo[] = [];
-        tableSymbol.getAllSymbolsByKind(ALSymbolKind.Field, fieldList);
+        let fieldList : AZSymbolInformation[] = [];
+        tableSymbol.collectChildSymbols(AZSymbolKind.Field, fieldList);
         fieldList.forEach(
             item => {
-                writer.writePageField(item.symbolName);
+                writer.writePageField(item.name);
             }
         );
         
@@ -141,8 +148,8 @@ export class PageBuilder extends ObjectBuilder {
 
     //#region Helper Methods
 
-    private getDefaultPageName(tableSymbol: ALSymbolInfo, pageType: string) : string {
-        return `${tableSymbol.symbolName.trim()} ${pageType}`;
+    private getDefaultPageName(tableSymbol: AZSymbolInformation, pageType: string) : string {
+        return `${tableSymbol.name.trim()} ${pageType}`;
     }
     
     //#endregion

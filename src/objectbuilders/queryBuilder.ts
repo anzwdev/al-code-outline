@@ -1,9 +1,9 @@
 import * as vscode from 'vscode';
 import { ALObjectWriter } from './alObjectWriter';
-import { ALSymbolInfo } from "../alSymbolInfo";
-import { ALSymbolKind } from '../alSymbolKind';
 import { FileBuilder } from './fileBuilder';
 import { ObjectBuilder } from "./objectBuilder";
+import { AZSymbolInformation } from '../symbollibraries/azSymbolInformation';
+import { AZSymbolKind } from '../symbollibraries/azSymbolKind';
 
 export class QueryBuilder extends ObjectBuilder {
 
@@ -13,11 +13,18 @@ export class QueryBuilder extends ObjectBuilder {
 
     //#region Wizards with UI
 
-    async showMultiQueryWizard(tableSymbols: ALSymbolInfo[]) {
+    async showWizard(tableSymbols: AZSymbolInformation[]) {
+        if (tableSymbols.length == 1)
+            await this.showQueryWizard(tableSymbols[0]);
+        else
+            await this.showMultiQueryWizard(tableSymbols);
+    }
+
+    async showMultiQueryWizard(tableSymbols: AZSymbolInformation[]) {
         if (!FileBuilder.checkCrsExtensionFileNamePatternRequired())
             return;
 
-        const objType : ALSymbolKind = ALSymbolKind.Query;
+        const objType : AZSymbolKind = AZSymbolKind.QueryObject;
 
         let startObjectId: number = await this.getObjectId(`Please enter a starting ID for the query objects.`, 0);
         if (startObjectId < 0) {
@@ -35,11 +42,11 @@ export class QueryBuilder extends ObjectBuilder {
         }
     }
 
-    async showQueryWizard(tableSymbol : ALSymbolInfo) {
+    async showQueryWizard(tableSymbol : AZSymbolInformation) {
         if (!FileBuilder.checkCrsFileNamePatternRequired())
             return;
             
-        const objType : ALSymbolKind = ALSymbolKind.Query;
+        const objType : AZSymbolKind = AZSymbolKind.QueryObject;
 
         let objectId : number = await this.getObjectId("Please enter an ID for the query object.", 0);
         if (objectId < 0) {
@@ -57,7 +64,7 @@ export class QueryBuilder extends ObjectBuilder {
         await this.createAndShowNewQuery(tableSymbol, objType, objectId, objectName, relativeFileDir);
     }
 
-    private async createAndShowNewQuery(tableSymbol: ALSymbolInfo, objType: ALSymbolKind, objectId: number, objectName: string, relativeFileDir: string) {
+    private async createAndShowNewQuery(tableSymbol: AZSymbolInformation, objType: AZSymbolKind, objectId: number, objectName: string, relativeFileDir: string) {
         let fileName : string = await FileBuilder.getPatternGeneratedFullObjectFileName(objType, objectId, objectName);
         this.showNewDocument(this.buildQueryForTable(tableSymbol, objectId, objectName), fileName, relativeFileDir);
     }
@@ -66,7 +73,7 @@ export class QueryBuilder extends ObjectBuilder {
       
     //#region Query builders
 
-    buildQueryForTable(tableSymbol : ALSymbolInfo, objectId : number, objectName : string) : string {
+    buildQueryForTable(tableSymbol : AZSymbolInformation, objectId : number, objectName : string) : string {
         //generate file content
         let writer : ALObjectWriter = new ALObjectWriter();
 
@@ -89,17 +96,17 @@ export class QueryBuilder extends ObjectBuilder {
         return writer.toString();
     }
 
-    private appendElements(writer : ALObjectWriter, tableSymbol : ALSymbolInfo) {
-        var dataItemName = writer.createName(tableSymbol.symbolName);
+    private appendElements(writer : ALObjectWriter, tableSymbol : AZSymbolInformation) {
+        var dataItemName = writer.createName(tableSymbol.name);
         writer.writeStartNamedBlock("elements");
 
-        writer.writeStartNameSourceBlock("dataitem", dataItemName, writer.encodeName(tableSymbol.symbolName));
+        writer.writeStartNameSourceBlock("dataitem", dataItemName, writer.encodeName(tableSymbol.name));
 
-        let fieldList : ALSymbolInfo[] = [];
-        tableSymbol.getAllSymbolsByKind(ALSymbolKind.Field, fieldList);
+        let fieldList : AZSymbolInformation[] = [];
+        tableSymbol.collectChildSymbols(AZSymbolKind.Field, fieldList);
         fieldList.forEach(
             item => {
-                writer.writeNameSourceBlock("column", writer.createName(item.symbolName), writer.encodeName(item.symbolName));
+                writer.writeNameSourceBlock("column", writer.createName(item.name), writer.encodeName(item.name));
             }
         );
 
@@ -112,8 +119,8 @@ export class QueryBuilder extends ObjectBuilder {
 
     //#region Helper Methods
 
-    private getDefaultQueryName(tableSymbol: ALSymbolInfo) : string {
-        return `${tableSymbol.symbolName.trim()} Query`;
+    private getDefaultQueryName(tableSymbol: AZSymbolInformation) : string {
+        return `${tableSymbol.name.trim()} Query`;
     }
     
     //#endregion

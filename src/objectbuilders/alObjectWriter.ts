@@ -133,6 +133,14 @@ export class ALObjectWriter {
         this.writeEndBlock();
     }
 
+    public writeApiPageField(fieldName : string) {
+        let name : string = this.createApiName(fieldName);
+        this.writeStartNameSourceBlock("field", this.encodeName(name), this.encodeName(fieldName));
+        this.writeProperty("Caption", this.encodeString(name));
+        this.writeApplicationArea();
+        this.writeEndBlock();
+    }
+
     public writeApplicationArea() {
         if ((this.applicationArea) && (this.applicationArea !== ""))
             this.writeProperty("ApplicationArea", this.applicationArea);
@@ -155,6 +163,10 @@ export class ALObjectWriter {
 
     public createName(source : string) : string {
         return source.replace(/\W/g, '');
+    }
+
+    public createApiName(source : string) : string {
+        return source.replace(/[^A-Za-z]/g, '');
     }
 
 }

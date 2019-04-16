@@ -1,0 +1,107 @@
+.vscode-dark .ico-action, .vscode-high-contrast .ico-action { background: url('../../../resources/images/dark/tree-action.svg') }
+.vscode-dark .ico-chartpart, .vscode-high-contrast .ico-chartpart { background: url('../../../resources/images/dark/tree-chartpart.svg') }
+.vscode-dark .ico-class, .vscode-high-contrast .ico-class { background: url('../../../resources/images/dark/tree-class.svg') }
+.vscode-dark .ico-codeunit, .vscode-high-contrast .ico-codeunit { background: url('../../../resources/images/dark/tree-codeunit.svg') }
+.vscode-dark .ico-constant, .vscode-high-contrast .ico-constant { background: url('../../../resources/images/dark/tree-constant.svg') }
+.vscode-dark .ico-controladdin, .vscode-high-contrast .ico-controladdin { background: url('../../../resources/images/dark/tree-controladdin.svg') }
+.vscode-dark .ico-dotnetasm, .vscode-high-contrast .ico-dotnetasm { background: url('../../../resources/images/dark/tree-dotnetasm.svg') }
+.vscode-dark .ico-dotnetclass, .vscode-high-contrast .ico-dotnetclass { background: url('../../../resources/images/dark/tree-dotnetclass.svg') }
+.vscode-dark .ico-dotnetlib, .vscode-high-contrast .ico-dotnetlib { background: url('../../../resources/images/dark/tree-dotnetlib.svg') }
+.vscode-dark .ico-enum, .vscode-high-contrast .ico-enum { background: url('../../../resources/images/dark/tree-enum.svg') }
+.vscode-dark .ico-enumext, .vscode-high-contrast .ico-enumext { background: url('../../../resources/images/dark/tree-enumext.svg') }
+.vscode-dark .ico-enumval, .vscode-high-contrast .ico-enumval { background: url('../../../resources/images/dark/tree-enumval.svg') }
+.vscode-dark .ico-eventpublisher, .vscode-high-contrast .ico-eventpublisher { background: url('../../../resources/images/dark/tree-eventpublisher.svg') }
+.vscode-dark .ico-eventsubscriber, .vscode-high-contrast .ico-eventsubscriber { background: url('../../../resources/images/dark/tree-eventsubscriber.svg') }
+.vscode-dark .ico-field, .vscode-high-contrast .ico-field { background: url('../../../resources/images/dark/tree-field.svg') }
+.vscode-dark .ico-fieldgroup, .vscode-high-contrast .ico-fieldgroup { background: url('../../../resources/images/dark/tree-fieldgroup.svg') }
+.vscode-dark .ico-function, .vscode-high-contrast .ico-function { background: url('../../../resources/images/dark/tree-function.svg') }
+.vscode-dark .ico-group, .vscode-high-contrast .ico-group { background: url('../../../resources/images/dark/tree-group.svg') }
+.vscode-dark .ico-interface, .vscode-high-contrast .ico-interface { background: url('../../../resources/images/dark/tree-interface.svg') }
+.vscode-dark .ico-key, .vscode-high-contrast .ico-key { background: url('../../../resources/images/dark/tree-key.svg') }
+.vscode-dark .ico-method, .vscode-high-contrast .ico-method { background: url('../../../resources/images/dark/tree-method.svg') }
+.vscode-dark .ico-methodprivate, .vscode-high-contrast .ico-methodprivate { background: url('../../../resources/images/dark/tree-methodprivate.svg') }
+.vscode-dark .ico-methodprotected, .vscode-high-contrast .ico-methodprotected { background: url('../../../resources/images/dark/tree-methodprotected.svg') }
+.vscode-dark .ico-module, .vscode-high-contrast .ico-module { background: url('../../../resources/images/dark/tree-module.svg') }
+.vscode-dark .ico-page, .vscode-high-contrast .ico-page { background: url('../../../resources/images/dark/tree-page.svg') }
+.vscode-dark .ico-pagecustomization, .vscode-high-contrast .ico-pagecustomization { background: url('../../../resources/images/dark/tree-pagecustomization.svg') }
+.vscode-dark .ico-pageextension, .vscode-high-contrast .ico-pageextension { background: url('../../../resources/images/dark/tree-pageextension.svg') }
+.vscode-dark .ico-pagepart, .vscode-high-contrast .ico-pagepart { background: url('../../../resources/images/dark/tree-pagepart.svg') }
+.vscode-dark .ico-parameter, .vscode-high-contrast .ico-parameter { background: url('../../../resources/images/dark/tree-parameter.svg') }
+.vscode-dark .ico-primarykey, .vscode-high-contrast .ico-primarykey { background: url('../../../resources/images/dark/tree-primarykey.svg') }
+.vscode-dark .ico-profile, .vscode-high-contrast .ico-profile { background: url('../../../resources/images/dark/tree-profile.svg') }
+.vscode-dark .ico-property, .vscode-high-contrast .ico-property { background: url('../../../resources/images/dark/tree-property.svg') }
+.vscode-dark .ico-query, .vscode-high-contrast .ico-query { background: url('../../../resources/images/dark/tree-query.svg') }
+.vscode-dark .ico-repeater, .vscode-high-contrast .ico-repeater { background: url('../../../resources/images/dark/tree-repeater.svg') }
+.vscode-dark .ico-report, .vscode-high-contrast .ico-report { background: url('../../../resources/images/dark/tree-report.svg') }
+.vscode-dark .ico-systempart, .vscode-high-contrast .ico-systempart { background: url('../../../resources/images/dark/tree-systempart.svg') }
+.vscode-dark .ico-table, .vscode-high-contrast .ico-table { background: url('../../../resources/images/dark/tree-table.svg') }
+.vscode-dark .ico-tableextension, .vscode-high-contrast .ico-tableextension { background: url('../../../resources/images/dark/tree-tableextension.svg') }
+.vscode-dark .ico-test, .vscode-high-contrast .ico-test { background: url('../../../resources/images/dark/tree-test.svg') }
+.vscode-dark .ico-testconfiguration, .vscode-high-contrast .ico-testconfiguration { background: url('../../../resources/images/dark/tree-testconfiguration.svg') }
+.vscode-dark .ico-testcontroller, .vscode-high-contrast .ico-testcontroller { background: url('../../../resources/images/dark/tree-testcontroller.svg') }
+.vscode-dark .ico-testgroup, .vscode-high-contrast .ico-testgroup { background: url('../../../resources/images/dark/tree-testgroup.svg') }
+.vscode-dark .ico-testjob, .vscode-high-contrast .ico-testjob { background: url('../../../resources/images/dark/tree-testjob.svg') }
+.vscode-dark .ico-testmanager, .vscode-high-contrast .ico-testmanager { background: url('../../../resources/images/dark/tree-testmanager.svg') }
+.vscode-dark .ico-testplan, .vscode-high-contrast .ico-testplan { background: url('../../../resources/images/dark/tree-testplan.svg') }
+.vscode-dark .ico-testproject, .vscode-high-contrast .ico-testproject { background: url('../../../resources/images/dark/tree-testproject.svg') }
+.vscode-dark .ico-testrun, .vscode-high-contrast .ico-testrun { background: url('../../../resources/images/dark/tree-testrun.svg') }
+.vscode-dark .ico-testrunner, .vscode-high-contrast .ico-testrunner { background: url('../../../resources/images/dark/tree-testrunner.svg') }
+.vscode-dark .ico-testsuitedynamic, .vscode-high-contrast .ico-testsuitedynamic { background: url('../../../resources/images/dark/tree-testsuitedynamic.svg') }
+.vscode-dark .ico-trigger, .vscode-high-contrast .ico-trigger { background: url('../../../resources/images/dark/tree-trigger.svg') }
+.vscode-dark .ico-undefined, .vscode-high-contrast .ico-undefined { background: url('../../../resources/images/dark/tree-undefined.svg') }
+.vscode-dark .ico-variable, .vscode-high-contrast .ico-variable { background: url('../../../resources/images/dark/tree-variable.svg') }
+.vscode-dark .ico-xmlport, .vscode-high-contrast .ico-xmlport { background: url('../../../resources/images/dark/tree-xmlport.svg') }
+
+.vscode-light .ico-action { background: url('../../../resources/images/light/tree-action.svg') }
+.vscode-light .ico-chartpart { background: url('../../../resources/images/light/tree-chartpart.svg') }
+.vscode-light .ico-class { background: url('../../../resources/images/light/tree-class.svg') }
+.vscode-light .ico-codeunit { background: url('../../../resources/images/light/tree-codeunit.svg') }
+.vscode-light .ico-constant { background: url('../../../resources/images/light/tree-constant.svg') }
+.vscode-light .ico-controladdin { background: url('../../../resources/images/light/tree-controladdin.svg') }
+.vscode-light .ico-dotnetasm { background: url('../../../resources/images/light/tree-dotnetasm.svg') }
+.vscode-light .ico-dotnetclass { background: url('../../../resources/images/light/tree-dotnetclass.svg') }
+.vscode-light .ico-dotnetlib { background: url('../../../resources/images/light/tree-dotnetlib.svg') }
+.vscode-light .ico-enum { background: url('../../../resources/images/light/tree-enum.svg') }
+.vscode-light .ico-enumext { background: url('../../../resources/images/light/tree-enumext.svg') }
+.vscode-light .ico-enumval { background: url('../../../resources/images/light/tree-enumval.svg') }
+.vscode-light .ico-eventpublisher { background: url('../../../resources/images/light/tree-eventpublisher.svg') }
+.vscode-light .ico-eventsubscriber { background: url('../../../resources/images/light/tree-eventsubscriber.svg') }
+.vscode-light .ico-field { background: url('../../../resources/images/light/tree-field.svg') }
+.vscode-light .ico-fieldgroup { background: url('../../../resources/images/light/tree-fieldgroup.svg') }
+.vscode-light .ico-function { background: url('../../../resources/images/light/tree-function.svg') }
+.vscode-light .ico-group { background: url('../../../resources/images/light/tree-group.svg') }
+.vscode-light .ico-interface { background: url('../../../resources/images/light/tree-interface.svg') }
+.vscode-light .ico-key { background: url('../../../resources/images/light/tree-key.svg') }
+.vscode-light .ico-method { background: url('../../../resources/images/light/tree-method.svg') }
+.vscode-light .ico-methodprivate { background: url('../../../resources/images/light/tree-methodprivate.svg') }
+.vscode-light .ico-methodprotected { background: url('../../../resources/images/light/tree-methodprotected.svg') }
+.vscode-light .ico-module { background: url('../../../resources/images/light/tree-module.svg') }
+.vscode-light .ico-page { background: url('../../../resources/images/light/tree-page.svg') }
+.vscode-light .ico-pagecustomization { background: url('../../../resources/images/light/tree-pagecustomization.svg') }
+.vscode-light .ico-pageextension { background: url('../../../resources/images/light/tree-pageextension.svg') }
+.vscode-light .ico-pagepart { background: url('../../../resources/images/light/tree-pagepart.svg') }
+.vscode-light .ico-parameter { background: url('../../../resources/images/light/tree-parameter.svg') }
+.vscode-light .ico-primarykey { background: url('../../../resources/images/light/tree-primarykey.svg') }
+.vscode-light .ico-profile { background: url('../../../resources/images/light/tree-profile.svg') }
+.vscode-light .ico-property { background: url('../../../resources/images/light/tree-property.svg') }
+.vscode-light .ico-query { background: url('../../../resources/images/light/tree-query.svg') }
+.vscode-light .ico-repeater { background: url('../../../resources/images/light/tree-repeater.svg') }
+.vscode-light .ico-report { background: url('../../../resources/images/light/tree-report.svg') }
+.vscode-light .ico-systempart { background: url('../../../resources/images/light/tree-systempart.svg') }
+.vscode-light .ico-table { background: url('../../../resources/images/light/tree-table.svg') }
+.vscode-light .ico-tableextension { background: url('../../../resources/images/light/tree-tableextension.svg') }
+.vscode-light .ico-test { background: url('../../../resources/images/light/tree-test.svg') }
+.vscode-light .ico-testconfiguration { background: url('../../../resources/images/light/tree-testconfiguration.svg') }
+.vscode-light .ico-testcontroller { background: url('../../../resources/images/light/tree-testcontroller.svg') }
+.vscode-light .ico-testgroup { background: url('../../../resources/images/light/tree-testgroup.svg') }
+.vscode-light .ico-testjob { background: url('../../../resources/images/light/tree-testjob.svg') }
+.vscode-light .ico-testmanager { background: url('../../../resources/images/light/tree-testmanager.svg') }
+.vscode-light .ico-testplan { background: url('../../../resources/images/light/tree-testplan.svg') }
+.vscode-light .ico-testproject { background: url('../../../resources/images/light/tree-testproject.svg') }
+.vscode-light .ico-testrun { background: url('../../../resources/images/light/tree-testrun.svg') }
+.vscode-light .ico-testrunner { background: url('../../../resources/images/light/tree-testrunner.svg') }
+.vscode-light .ico-testsuitedynamic { background: url('../../../resources/images/light/tree-testsuitedynamic.svg') }
+.vscode-light .ico-trigger { background: url('../../../resources/images/light/tree-trigger.svg') }
+.vscode-light .ico-undefined { background: url('../../../resources/images/light/tree-undefined.svg') }
+.vscode-light .ico-variable { background: url('../../../resources/images/light/tree-variable.svg') }
+.vscode-light .ico-xmlport { background: url('../../../resources/images/light/tree-xmlport.svg') }

@@ -34,6 +34,7 @@ This extension has been inspired by "Code Outline" extension created by Patryk Z
 
 This extension contributes the following settings:
 
+* `alOutline.enableFeaturePreview`: enable preview of future, unstable features
 * `alOutline.autorefresh`: refresh code outline tree automatically
 * `alOutline.autoGenerateFiles`: automatically generate files for newly created objects
 * `alOutline.autoGenerateFileDirectory`: the default directory to create files in, relative to the root directory (e.g., \"Source\<ObjectType\>\")
