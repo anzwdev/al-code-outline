@@ -1,5 +1,9 @@
 # Change Log
 
+## 1.0.1
+
+ - Language server target .net framework changed from 4.7.2 to 4.7
+
 ## 1.0.0
 
  - Code outline symbols and app files processing moved to external C# language server
