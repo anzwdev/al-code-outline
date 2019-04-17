@@ -51,6 +51,8 @@ export class AZDocumentSymbolsLibrary extends AZSymbolsLibrary {
         //get document symbols
         let editor : vscode.TextEditor | undefined = this.findTextEditor(this._docUri);
         if (editor) {
+            if ((editor.document) && (editor.document.uri))
+                this._docUri = editor.document.uri;
             let symbolsLoad : Thenable<vscode.SymbolInformation[] | vscode.DocumentSymbol[] | undefined> =
                 vscode.commands.executeCommand<vscode.SymbolInformation[] | vscode.DocumentSymbol[]>('vscode.executeDocumentSymbolProvider', this._docUri);
 
@@ -63,7 +65,11 @@ export class AZDocumentSymbolsLibrary extends AZSymbolsLibrary {
                 else
                     source = "";
         
-                let request : ToolsDocumentSymbolsRequest = new ToolsDocumentSymbolsRequest(source, this._docUri.fsPath);
+                let documentPath : string = "";
+                if ((this._docUri) && (this._docUri.fsPath))
+                    documentPath = this._docUri.fsPath;
+
+                let request : ToolsDocumentSymbolsRequest = new ToolsDocumentSymbolsRequest(source, documentPath);
                 let response : ToolsDocumentSymbolsResponse | undefined = await this._context.toolsLangServerClient.getALDocumentSymbols(request);
                 if ((response) && (response.root)) {
                     this.rootSymbol = AZSymbolInformation.fromAny(response.root);                    

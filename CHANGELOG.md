@@ -1,5 +1,11 @@
 # Change Log
 
+## 1.0.2
+
+ - Nav 2018 AL Extension support added to the language server
+ - Active AL extension detection when multiple version of the extension are installed
+ - Empty outline view at startup bug fixed
+
 ## 1.0.1
 
  - Language server target .net framework changed from 4.7.2 to 4.7

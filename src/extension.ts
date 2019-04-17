@@ -24,6 +24,8 @@ export function activate(context: vscode.ExtensionContext) {
     const symbolsTreeProvider : SymbolsTreeProvider = new SymbolsTreeProvider(toolsExtensionContext);
     let nativeAppCache: ALNativeAppSymbolsLibrariesCache | undefined = undefined;
 
+    toolsExtensionContext.activeDocumentSymbols.loadAsync(false);
+
 	context.subscriptions.push(toolsExtensionContext);
 
     //document symbols tree provider

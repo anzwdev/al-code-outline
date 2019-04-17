@@ -2,7 +2,7 @@
 	"name": "al-code-outline",
 	"displayName": "AL Code Outline",
 	"description": "AL Development Tools: AL code outline, object browser, object creators",
-	"version": "1.0.1",
+	"version": "1.0.2",
 	"publisher": "andrzejzwierzchowski",
 	"engines": {
 		"vscode": "^1.30.0"
@@ -25,7 +25,8 @@
 		"onLanguage:al",
 		"onView:azALDevTools_SymbolsTreeProvider",
 		"onCommand:azALDevTools.viewALApp",
-		"onCommand:azALDevTools.viewActionImages"
+		"onCommand:azALDevTools.viewActionImages",
+		"onCommand:azALDevTools.refreshOutlineView"
 	],
 	"main": "./out/extension",
 	"icon": "resources/alcodeoutline.png",

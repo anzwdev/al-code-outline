@@ -14,19 +14,33 @@ export class ALLangServerProxy {
         this.checkExtensionPath();
     }
 
+    protected getALExtension() : any {
+        let alStoreExtension = vscode.extensions.getExtension("ms-dynamics-smb.al"); 
+        let alFileExtension = vscode.extensions.getExtension("Microsoft.al");
+
+        if ((alStoreExtension) && (alFileExtension)) {
+            if (alStoreExtension.isActive)
+                return alStoreExtension;
+            if (alFileExtension.isActive)
+                return alFileExtension;
+            return alStoreExtension;
+        }
+
+        if (alStoreExtension)
+            return alStoreExtension;
+
+        return alFileExtension;
+    }
+
     protected checkExtensionPath() {
-        let alExtension = vscode.extensions.getExtension("ms-dynamics-smb.al");
-        if (!alExtension)
-            alExtension = vscode.extensions.getExtension("Microsoft.al");
+        let alExtension = this.getALExtension();
         if (alExtension)
             this.extensionPath = alExtension.extensionPath;
     }
 
     protected checkLanguageClient() : boolean {
         if (!this.langClient) {
-            let alExtension = vscode.extensions.getExtension("ms-dynamics-smb.al");
-            if (!alExtension)
-                alExtension = vscode.extensions.getExtension("Microsoft.al");
+            let alExtension = this.getALExtension();
             if ((!alExtension) || (!alExtension.isActive))
                 return false;
 
