@@ -100,16 +100,16 @@ body {
     background-size: contain;
 }
 .vscode-dark .treeitem .sheadcol:before, .vscode-high-contrast .treeitem .sheadcol:before {
-    background: url('../../../resources/images/dark/tree-expandright.svg')
+    background: url('../../../resources/images/dark/tree-expand.svg')
 }
 .vscode-dark .treeitem .sheadexp:before, .vscode-high-contrast .treeitem .sheadexp:before {
-    background: url('../../../resources/images/dark/tree-collapseup.svg')
+    background: url('../../../resources/images/dark/tree-collapse.svg')
 }
 .vscode-light .treeitem .sheadcol:before {
-    background: url('../../../resources/images/light/tree-expandright.svg')
+    background: url('../../../resources/images/light/tree-expand.svg')
 }
 .vscode-light .treeitem .sheadexp:before {
-    background: url('../../../resources/images/light/tree-collapseup.svg')
+    background: url('../../../resources/images/light/tree-collapse.svg')
 }
 
 
@@ -150,9 +150,21 @@ body {
     font-family: var(--font-family);
     padding:5px;
 }
-.btn:hover {
+.btn:hover, .icobtn:hover {
     background-color: var(--vscode-button-hoverBackground);
 }
+.icobtn {
+    flex: 0 0 31px;
+    background-color: var(--vscode-button-background);
+    color: var(--vscode-button-foreground);
+    border: 0px solid var(--vscode-panel-border);
+    width: 31px;
+    background-repeat: no-repeat;
+    background-position: center;
+    background-size: contain;
+}
+
+
 
 .tbarbtn {
     background-color: var(--vscode-button-background);

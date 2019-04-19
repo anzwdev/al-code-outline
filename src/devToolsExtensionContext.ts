@@ -23,6 +23,15 @@ export class DevToolsExtensionContext implements vscode.Disposable {
         this.activeDocumentSymbols = new AZActiveDocumentSymbolsLibrary(this);    
     }
 
+    getUseSymbolsBrowser() : boolean {
+        let useSymbolsBrowser = this.vscodeExtensionContext.globalState.get<boolean>("azALDevTools.useSymbolsBrowser");
+        return useSymbolsBrowser;
+    }
+
+    setUseSymbolsBrowser(newValue : boolean) {
+        this.vscodeExtensionContext.globalState.update("azALDevTools.useSymbolsBrowser", newValue);
+    }
+
     dispose() {
     }
 

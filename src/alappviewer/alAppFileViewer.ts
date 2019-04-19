@@ -2,18 +2,19 @@
 
 import * as vscode from 'vscode';
 import * as path from 'path';
-import { ALObjectRunner } from '../../alObjectRunner';
+import { ALObjectRunner } from '../alObjectRunner';
 import { ALAppFileViewerData } from './alAppFileViewerData';
-import { AZSymbolInformation } from '../../symbollibraries/azSymbolInformation';
-import { PageBuilder } from '../../objectbuilders/pageBuilder';
-import { QueryBuilder } from '../../objectbuilders/queryBuilder';
-import { ReportBuilder } from '../../objectbuilders/reportBuilder';
-import { XmlPortBuilder } from '../../objectbuilders/xmlPortBuilder';
-import { PageExtBuilder } from '../../objectbuilders/pageExtBuilder';
-import { TableExtBuilder } from '../../objectbuilders/tableExtBuilder';
-import { DevToolsExtensionContext } from '../../devToolsExtensionContext';
-import { AZSymbolKind } from '../../symbollibraries/azSymbolKind';
-import { AZSymbolsLibrary } from '../../symbollibraries/azSymbolsLibrary';
+import { AZSymbolInformation } from '../symbollibraries/azSymbolInformation';
+import { PageBuilder } from '../objectbuilders/pageBuilder';
+import { QueryBuilder } from '../objectbuilders/queryBuilder';
+import { ReportBuilder } from '../objectbuilders/reportBuilder';
+import { XmlPortBuilder } from '../objectbuilders/xmlPortBuilder';
+import { PageExtBuilder } from '../objectbuilders/pageExtBuilder';
+import { TableExtBuilder } from '../objectbuilders/tableExtBuilder';
+import { DevToolsExtensionContext } from '../devToolsExtensionContext';
+import { AZSymbolKind } from '../symbollibraries/azSymbolKind';
+import { AZSymbolsLibrary } from '../symbollibraries/azSymbolsLibrary';
+import { ALSymbolsBrowser } from '../alsymbolsbrowser/alSymbolsBrowser';
 
 export class ALAppFileViewer {
     private mainTemplate : string;
@@ -21,7 +22,7 @@ export class ALAppFileViewer {
     private panel : vscode.WebviewPanel | undefined;
     private title : string;
     private disposables : vscode.Disposable[] = [];
-    private context: DevToolsExtensionContext;
+    private _devToolsContext: DevToolsExtensionContext;
     public symbolsLibrary : AZSymbolsLibrary | undefined;
 
     constructor(devToolsContext : DevToolsExtensionContext, symbolsLib : AZSymbolsLibrary) {
@@ -29,7 +30,7 @@ export class ALAppFileViewer {
         this.title = this.symbolsLibrary.displayName;
         if (this.title == "")
             this.title = "AL Object Browser";
-        this.context = devToolsContext;
+        this._devToolsContext = devToolsContext;
 
         this.initTemplate();
         this.htmlContent = "";
@@ -48,11 +49,11 @@ export class ALAppFileViewer {
     }
 
     private initTemplate() {
-        var extensionPath = vscode.Uri.file(this.context.vscodeExtensionContext.extensionPath).with({scheme : 'vscode-resource' });
+        var extensionPath = vscode.Uri.file(this._devToolsContext.vscodeExtensionContext.extensionPath).with({scheme : 'vscode-resource' });
         var fs = require('fs');
-        var filePath = this.context.vscodeExtensionContext.asAbsolutePath(path.join('htmlresources', 'objectbrowser', 'objectbrowser.html'));
+        var filePath = this._devToolsContext.vscodeExtensionContext.asAbsolutePath(path.join('htmlresources', 'objectbrowser', 'objectbrowser.html'));
         var content = fs.readFileSync(filePath, 'utf8');
-        this.mainTemplate = content.replace(new RegExp('##PATH##', 'g'), extensionPath);
+        this.mainTemplate = content.replace(new RegExp('##EXTENSIONPATH##', 'g'), extensionPath);
     }
 
     private async loadObjects() {
@@ -96,6 +97,9 @@ export class ALAppFileViewer {
                 }
                 else if (m.command == "execObjCommand") {
                     this.appFileObjCommand(m.objtype, m.objid, m.path, m.selobj, m.cmdname);
+                }
+                else if (m.command == "showTreeView") {
+                    this.showTreeView();
                 }
             }                
         }, null, this.disposables);
@@ -197,7 +201,7 @@ export class ALAppFileViewer {
     protected updatePivotObjCommand(path: any) {
         let rootSymbol : AZSymbolInformation = AZSymbolInformation.create(AZSymbolKind.Document, 'Symbol');
         rootSymbol.addChildItem(this.findSymbol(path));
-        this.context.activeDocumentSymbols.setRootSymbol(rootSymbol);
+        this._devToolsContext.activeDocumentSymbols.setRootSymbol(rootSymbol);
     }
 
     //#region Filter View
@@ -261,5 +265,12 @@ export class ALAppFileViewer {
     }
 
     //#endregion
+
+    protected showTreeView() {
+        this._devToolsContext.setUseSymbolsBrowser(true);
+        this.panel.dispose();
+        let objectBrowser : ALSymbolsBrowser = new ALSymbolsBrowser(this._devToolsContext, this.symbolsLibrary);
+        objectBrowser.show();
+    }
 
 }

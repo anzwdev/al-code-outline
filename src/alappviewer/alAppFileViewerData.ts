@@ -1,6 +1,6 @@
-import { AZSymbolInformation } from "../../symbollibraries/azSymbolInformation";
-import { AZSymbolsLibrary } from "../../symbollibraries/azSymbolsLibrary";
-import { AZSymbolKind } from "../../symbollibraries/azSymbolKind";
+import { AZSymbolInformation } from "../symbollibraries/azSymbolInformation";
+import { AZSymbolsLibrary } from "../symbollibraries/azSymbolsLibrary";
+import { AZSymbolKind } from "../symbollibraries/azSymbolKind";
 
 export class ALAppFileViewerData {
     objectCollections: AZSymbolInformation[];

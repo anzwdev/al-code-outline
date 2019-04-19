@@ -9,7 +9,7 @@ import { SymbolsTreeProvider } from './outlineview/symbolsTreeProvider';
 import { ALAppSymbolsLibrary } from './symbollibraries/alAppSymbolsLibrary';
 import { ALSymbolsBrowser } from './alsymbolsbrowser/alSymbolsBrowser';
 import { ALActionImageBrowser } from './actionimagebrowser/alActionImageBrowser';
-import { ALAppFileViewer } from './obsolete/alappviewer/alAppFileViewer';
+import { ALAppFileViewer } from './alappviewer/alAppFileViewer';
 import { PageBuilder } from './objectbuilders/pageBuilder';
 import { ReportBuilder } from './objectbuilders/reportBuilder';
 import { XmlPortBuilder } from './objectbuilders/xmlPortBuilder';
@@ -54,6 +54,8 @@ export function activate(context: vscode.ExtensionContext) {
                 let uri : vscode.Uri = fileUri;
                 let lib : AZSymbolsLibrary;
 
+                
+
                 if (toolsExtensionContext.toolsLangServerClient.isEnabled())
                     lib = new ALAppSymbolsLibrary(toolsExtensionContext, uri.fsPath);
                 else {
@@ -65,9 +67,9 @@ export function activate(context: vscode.ExtensionContext) {
                     lib = nativeAppCache.getOrCreate(uri.fsPath);
                 }
 
-                let useNewViewer = vscode.workspace.getConfiguration('alOutline').get('enableFeaturePreview');
-                if (useNewViewer) {
-                    let objectBrowser : ALSymbolsBrowser = new ALSymbolsBrowser(context, lib);
+                //let useNewViewer = vscode.workspace.getConfiguration('alOutline').get('enableFeaturePreview');
+                if (toolsExtensionContext.getUseSymbolsBrowser()) {
+                    let objectBrowser : ALSymbolsBrowser = new ALSymbolsBrowser(toolsExtensionContext, lib);
                     objectBrowser.show();
                 } else {
                     let appViewer : ALAppFileViewer = new ALAppFileViewer(toolsExtensionContext, lib);

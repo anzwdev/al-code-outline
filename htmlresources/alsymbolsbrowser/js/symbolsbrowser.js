@@ -57,6 +57,12 @@ class ObjectBrowser {
             me.search();
         });
 
+        document.getElementById('listbtn').addEventListener('click', event => {
+            me.sendMessage({
+                command: 'showlist'
+            });
+        });
+
         this.sendMessage({
             command: 'documentLoaded'
         });

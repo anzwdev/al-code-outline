@@ -10,25 +10,27 @@ import { ALLangServerProxy } from '../allanguage/alLangServerProxy';
 import { AZSymbolInformation } from '../symbollibraries/azSymbolInformation';
 import { AZSymbolKind } from '../symbollibraries/azSymbolKind';
 import { PageBuilder } from '../objectbuilders/pageBuilder';
+import { DevToolsExtensionContext } from '../devToolsExtensionContext';
+import { ALAppFileViewer } from '../alappviewer/alAppFileViewer';
 
 export class ALSymbolsBrowser extends BaseWebViewEditor {
     protected _library : AZSymbolsLibrary;
     protected _selectedObject : AZSymbolInformation | undefined;
     protected _searchText : string;
     protected _searchResult : AZSymbolInformation | undefined;
-    protected _objectRunner : ALObjectRunner | undefined;
     protected _showObjectIds : boolean;
+    protected _devToolsContext : DevToolsExtensionContext;
 
-    constructor(context : vscode.ExtensionContext,  library : AZSymbolsLibrary) {
+    constructor(devToolsContext : DevToolsExtensionContext,  library : AZSymbolsLibrary) {
         let name : string = library.displayName;
         if (name == '')
             name =  'AL Object Browser';
-        super(context, library.displayName);
+        super(devToolsContext.vscodeExtensionContext, library.displayName);
+        this._devToolsContext = devToolsContext;
         this._searchText = '';
         this._searchResult = undefined;
         this._library = library;
         this._selectedObject = undefined;
-        this._objectRunner = undefined;
         this._showObjectIds = false;
     }
 
@@ -66,6 +68,9 @@ export class ALSymbolsBrowser extends BaseWebViewEditor {
             return true;
 
         switch (message.command) {
+            case 'showlist':
+                this.showListView();
+                break;
             case 'objselected':
                 this.onObjectSelected(message.path);
                 return true;
@@ -203,10 +208,15 @@ export class ALSymbolsBrowser extends BaseWebViewEditor {
     protected runInWebClient(path : number[] | undefined) {
         let alSymbol : AZSymbolInformation | undefined = this._library.getObjectSymbolByPath(path);
         if (alSymbol) {
-            //!!!if (!this._objectRunner)
-            //!!!    this._objectRunner = new ALObjectRunner();
-            //!!!this._objectRunner.runInWebClientAsync(alSymbol);
+            ALObjectRunner.runInWebClient(alSymbol);
         }
+    }
+
+    protected showListView() {
+        this._devToolsContext.setUseSymbolsBrowser(false);
+        this._panel.dispose();
+        let appViewer : ALAppFileViewer = new ALAppFileViewer(this._devToolsContext, this._library);
+        appViewer.open();
     }
 
 } 

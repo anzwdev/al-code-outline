@@ -1,16 +1,16 @@
 <html>
     <header>
-        <script src="##PATH##/htmlresources/objectbrowser/js/filterCompiler.js"></script>
-        <script src="##PATH##/htmlresources/objectbrowser/js/handlebars.runtime-v4.0.11.js"></script>
-        <script src="##PATH##/htmlresources/objectbrowser/js/jquery.min.js"></script>
-        <script src="##PATH##/htmlresources/objectbrowser/js/jquery.ui.position.min.js"></script>
-        <script src="##PATH##/htmlresources/objectbrowser/js/jquery.contextmenu.min.js"></script>
-        <script src="##PATH##/htmlresources/objectbrowser/js/jquery.rowselector.js"></script>
-        <script src="##PATH##/htmlresources/objectbrowser/js/objectlist.handlebars.js"></script>
-        <script src="##PATH##/htmlresources/alsymbolsbrowser/js/alsymbolkind.js"></script>
-        <script src="##PATH##/htmlresources/objectbrowser/js/objectbrowser.js"></script>
-        <link rel="stylesheet" type="text/css" href="##PATH##/htmlresources/objectbrowser/css/jquery.contextMenu.min.css">
-        <link rel="stylesheet" type="text/css" href="##PATH##/htmlresources/objectbrowser/css/objectbrowser.css">
+        <script src="##EXTENSIONPATH##/htmlresources/lib/handlebars/handlebars.runtime-v4.0.11.js"></script>
+        <script src="##EXTENSIONPATH##/htmlresources/lib/jquery/jquery.min.js"></script>
+        <script src="##EXTENSIONPATH##/htmlresources/lib/jquery-ui-position/jquery.ui.position.min.js"></script>
+        <script src="##EXTENSIONPATH##/htmlresources/lib/jquery-context-menu/js/jquery.contextmenu.min.js"></script>
+        <script src="##EXTENSIONPATH##/htmlresources/lib/jquery-rowselector/jquery.rowselector.js"></script>
+        <script src="##EXTENSIONPATH##/htmlresources/lib/filtercompiler/filterCompiler.js"></script>
+        <script src="##EXTENSIONPATH##/htmlresources/alsymbolsbrowser/js/alsymbolkind.js"></script>
+        <script src="##EXTENSIONPATH##/htmlresources/objectbrowser/js/objectlist.handlebars.js"></script>
+        <script src="##EXTENSIONPATH##/htmlresources/objectbrowser/js/objectbrowser.js"></script>
+        <link rel="stylesheet" type="text/css" href="##EXTENSIONPATH##/htmlresources/lib/jquery-context-menu/css/jquery.contextMenu.min.css">
+        <link rel="stylesheet" type="text/css" href="##EXTENSIONPATH##/htmlresources/objectbrowser/css/objectbrowser.css">
     </header>
     <body style="margin:0;padding:0;">
             <div class="types">
@@ -56,9 +56,8 @@
                 <div class="btnArea">
                     <div class="btn btnstd" data-mode="All" onclick="modeBtnClick(this)">All</div>
                 </div>
-
-                <div style="display:none;">
-                    <a id="vscodeLink" href="command:alOutline.appFileObjCommand">L</a>
+                <div class="btnArea">
+                    <div class="btn btnstd" onclick="treeViewClick()">Tree View</div>
                 </div>
             </div>
     

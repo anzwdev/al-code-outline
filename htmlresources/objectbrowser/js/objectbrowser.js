@@ -388,6 +388,12 @@ function objclick(item) {
     selectObject(item.dataset.objt, item.dataset.objid, getSymbolRef(item));
 }
 
+function treeViewClick() {
+    vscodeContext.postMessage({
+        command: 'showTreeView'
+    });    
+}
+
 $(document).keydown(function(evt)
 {
     // Disable text-select from ctrl+A.
