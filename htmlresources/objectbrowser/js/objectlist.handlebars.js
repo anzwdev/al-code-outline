@@ -21,6 +21,8 @@ templates['objectlist'] = template({"1":function(container,depth0,helpers,partia
     + alias2(((helper = (helper = helpers.kind || (depth0 != null ? depth0.kind : depth0)) != null ? helper : alias4),(typeof helper === alias5 ? helper.call(alias3,{"name":"kind","hash":{},"data":data}) : helper)))
     + " data-pkind="
     + alias2(alias1((depths[1] != null ? depths[1].kind : depths[1]), depth0))
+    + " data-pidx="
+    + alias2(alias1((depths[1] != null ? depths[1].idx : depths[1]), depth0))
     + " data-objidx="
     + alias2(((helper = (helper = helpers.idx || (depth0 != null ? depth0.idx : depth0)) != null ? helper : alias4),(typeof helper === alias5 ? helper.call(alias3,{"name":"idx","hash":{},"data":data}) : helper)))
     + " data-objid=\""

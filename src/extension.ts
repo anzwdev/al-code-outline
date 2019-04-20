@@ -9,13 +9,13 @@ import { SymbolsTreeProvider } from './outlineview/symbolsTreeProvider';
 import { ALAppSymbolsLibrary } from './symbollibraries/alAppSymbolsLibrary';
 import { ALSymbolsBrowser } from './alsymbolsbrowser/alSymbolsBrowser';
 import { ALActionImageBrowser } from './actionimagebrowser/alActionImageBrowser';
-import { ALAppFileViewer } from './alappviewer/alAppFileViewer';
 import { PageBuilder } from './objectbuilders/pageBuilder';
 import { ReportBuilder } from './objectbuilders/reportBuilder';
 import { XmlPortBuilder } from './objectbuilders/xmlPortBuilder';
 import { QueryBuilder } from './objectbuilders/queryBuilder';
 import { ALNativeAppSymbolsLibrariesCache } from './symbollibraries/nativeimpl/alNativeAppSymbolsLibrariesCache';
 import { AZSymbolsLibrary } from './symbollibraries/azSymbolsLibrary';
+import { ALObjectsBrowser } from './alsymbolsbrowser/alObjectsBrowser';
 
 // this method is called when your extension is activated
 // your extension is activated the very first time the command is executed
@@ -69,11 +69,11 @@ export function activate(context: vscode.ExtensionContext) {
 
                 //let useNewViewer = vscode.workspace.getConfiguration('alOutline').get('enableFeaturePreview');
                 if (toolsExtensionContext.getUseSymbolsBrowser()) {
-                    let objectBrowser : ALSymbolsBrowser = new ALSymbolsBrowser(toolsExtensionContext, lib);
-                    objectBrowser.show();
+                    let symbolsBrowser : ALSymbolsBrowser = new ALSymbolsBrowser(toolsExtensionContext, lib);
+                    symbolsBrowser.show();
                 } else {
-                    let appViewer : ALAppFileViewer = new ALAppFileViewer(toolsExtensionContext, lib);
-                    appViewer.open();    
+                    let objectsBrowser : ALObjectsBrowser = new ALObjectsBrowser(toolsExtensionContext, lib);
+                    objectsBrowser.show();
                 }
     }));
 

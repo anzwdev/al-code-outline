@@ -1,8 +1,8 @@
 import { AZSymbolInformation } from "../symbollibraries/azSymbolInformation";
-import { AZSymbolsLibrary } from "../symbollibraries/azSymbolsLibrary";
 import { AZSymbolKind } from "../symbollibraries/azSymbolKind";
+import { AZSymbolsLibrary } from "../symbollibraries/azSymbolsLibrary";
 
-export class ALAppFileViewerData {
+export class ALObjectsBrowserData {
     objectCollections: AZSymbolInformation[];
 
     constructor(library: AZSymbolsLibrary) {
@@ -33,5 +33,4 @@ export class ALAppFileViewerData {
         if (symbol)
             this.objectCollections.push(symbol);
     }
-
 }

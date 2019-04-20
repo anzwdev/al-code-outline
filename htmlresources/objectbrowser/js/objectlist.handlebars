@@ -5,7 +5,7 @@
         {{#if visible}}
             {{#each childSymbols}}
                 {{#if objvisible}}
-                    <tr class="objrow" data-objt="{{../objectType}}" data-objk={{kind}} data-pkind={{../kind}} data-objidx={{idx}} data-objid="{{id}}" data-objname="{{name}}" onclick="objclick(this)" tabindex="0"><td>{{../objectType}}</td><td>{{id}}</td><td>{{name}}</td></tr>
+                    <tr class="objrow" data-objt="{{../objectType}}" data-objk={{kind}} data-pkind={{../kind}} data-pidx={{../idx}} data-objidx={{idx}} data-objid="{{id}}" data-objname="{{name}}" onclick="objclick(this)" tabindex="0"><td>{{../objectType}}</td><td>{{id}}</td><td>{{name}}</td></tr>
                 {{/if}}
             {{/each}}
         {{/if}}

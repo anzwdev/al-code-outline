@@ -92,14 +92,6 @@ class ObjectBrowser {
                         return ((kind != ALSymbolKind.TableObject) && (kind != ALSymbolKind.PageObject) && (kind != ALSymbolKind.ReportObject));
                     }},
                 "sep2": "---------",
-                /*
-                !!! TO-DO !!!
-                "extend": {
-                    name: "New Table Extension",
-                    disabled: function(key, opt) {
-                        return ($(this).data("objt") != "Table");
-                    }},
-                */
                 "newcardpage": {
                     name: "New Card Page",
                     disabled: function(key, opt) {
@@ -124,6 +116,18 @@ class ObjectBrowser {
                     name: "New Query",
                     disabled: function(key, opt) {
                         return (Number($(this).data("kind")) != ALSymbolKind.TableObject);
+                    }},
+                "sep3": "---------",
+                // New Extension Objects
+                "extendtable": {
+                    name: "New Table Extension",
+                    disabled: function(key, opt) {
+                        return (Number($(this).data("kind")) != ALSymbolKind.TableObject);
+                    }},
+                "extendpage": {
+                    name: "New Page Extension",
+                    disabled: function(key, opt) {
+                        return (Number($(this).data("kind")) != ALSymbolKind.PageObject);
                     }},
             }
         });

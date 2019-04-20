@@ -1,19 +1,52 @@
 .main {
 }
+
+body {
+    position: absolute;
+    left: 0;
+    right: 0;
+    top: 0;
+    bottom: 0;
+    display: flex;
+    flex-direction: column;
+}
+
+.header {
+    flex: 0 0 auto;
+    display: flex;
+    flex-direction: row;
+    padding: 5px 10px;
+    justify-content: space-between;
+    align-items: center;
+}
+.headtitle {
+    flex: 1 1 auto;
+    font-size: 12px;
+}
+.headtoolbar {
+    flex: 0 0 auto;
+    text-align: right;
+}
+
+.content {
+    flex: 1 1 auto;
+    display: flex;
+    flex-direction: row;
+}
+
+
 .loading {
     display: block;
     margin: 20px;
     padding: 10px 30px;
 }
 .types {
-    position: fixed;
+    flex: 0 0 170px;
     margin:0;
     padding:0;
-    width: 170px;
     box-sizing: border-box;
     overflow-x: hidden;
     overflow-y: scroll;
-    height: 100%;
 }
 .types .btnArea {
     margin:5px 10px;
@@ -28,9 +61,10 @@
     cursor: default;
 }
 .objects {
+    flex: 1 1 auto;
     margin: 0;
-    padding: 0 171px;
-    width:100%;
+    padding: 0;
+    overflow: scroll;
 }
 .objects table {
     border-collapse: collapse;
@@ -94,4 +128,17 @@
 .vscode-high-contrast .objects .objsel td {
     background-color: #e0e0e0;
     color: #404040;
+}
+
+.tbarbtn {
+    background-color: var(--vscode-button-background);
+    color: var(--vscode-button-foreground);
+    border: 0px solid var(--vscode-panel-border);
+    font-size: var(--font-size);
+    font-weight: var(--font-weight);
+    font-family: var(--font-family);
+    padding:4px 10px;
+}
+.tbarbtn:hover {
+    background-color: var(--vscode-button-hoverBackground);
 }

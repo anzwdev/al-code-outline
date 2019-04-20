@@ -257,13 +257,11 @@ function initContextMenus() {
         $('#objects').contextMenu({
             selector: 'tr', 
             callback: function(key, options) {
-                execObjCommand($(this)[0], $(this).data("objt"), $(this).data("objk"), $(this).data("objid"), key);
+                execObjCommand(key, $(this)[0], $(this).data("objt"));
             },
             items: {
-                /*
                 "definition": {name: "Go to Definition"},
                 "sep1": "---------",
-                */
                 "runinwebclient": {
                     name: "Run in Web Client",
                     disabled: function(key, opt) {
@@ -318,16 +316,12 @@ function modeBtnClick(btn) {
     setMode(btn.dataset.mode, false);
 }
 
-function execObjCommand(selectedrow, objtype, objkind, objid, cmdname) {
+function execObjCommand(cmdname, selectedrow, objtype) {
     if (vscodeContext) {
         vscodeContext.postMessage({
-            command : 'execObjCommand',
-            objtype : objtype,
-            objkind : objkind,
-            objid : objid,
+            command : cmdname,
             path : getSymbolRef(selectedrow),
-            selobj: getSelectedObjectIds(objtype),
-            cmdname : cmdname});
+            selpaths: getSelectedObjectIds(objtype)});
     }
 }
 
@@ -356,11 +350,11 @@ function updatePivotObject(path) {
 }
 
 function getSymbolRef(selectedrow) {
-    return {   
-        pkind: selectedrow.dataset.pkind,
-        idx : selectedrow.dataset.objidx,               
-        kind: selectedrow.dataset.objk, 
-        id: selectedrow.dataset.objid};
+    let path = [
+        selectedrow.dataset.objidx,
+        selectedrow.dataset.pidx
+    ];
+    return path;
 }
 
 function getSelectedObjectIds(objtype) {

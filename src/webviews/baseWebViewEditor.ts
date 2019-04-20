@@ -107,6 +107,12 @@ export class BaseWebViewEditor {
                     this._documentLoaded = true;
                     this.onDocumentLoaded();
                     return true;
+                case 'showInformation':
+                    vscode.window.showInformationMessage(message.message);
+                    return true;
+                case 'showError':
+                    vscode.window.showErrorMessage(message.message);
+                    return true;
             }
         }
         
