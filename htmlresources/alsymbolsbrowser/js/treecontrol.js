@@ -24,7 +24,7 @@ class TreeControl {
         let element = document.getElementById(controlId);
         let that = this;
         element.addEventListener('click', function(e) { that.onClick(e); }, true);
-        element.addEventListener('keydown', function(e) { that.onKeyPress(e); });
+        element.addEventListener('keydown', function(e) { that.onKeyDown(e); });
 
         let idsBtn = document.getElementById(this._idsBtnId);
         idsBtn.addEventListener('click', function(e) { that.onIdsBtnClick(e); });
@@ -387,31 +387,33 @@ class TreeControl {
                 this.setSelectionState(this._visibleSymbolList[i], true);
             }
         } else {
-            for (let i=0; i<=_visibleSymbolList.length; i++) {
+            for (let i=0; i<=this._visibleSymbolList.length; i++) {
                 this.setSelectionState(this._visibleSymbolList[i], ((i>=fromIdx) && (i<=toIdx)));
             }
         }
     }
 
-    selectNode(node, ctrlKey, shiftKey) {
+    selectNode(node, ctrlKey, shiftKey, keyboardEvent) {
         let toggleMode = ((ctrlKey) && (!shiftKey));
         let rangeMode = ((!ctrlKey) && (shiftKey));
 
         let symbol = this.getNodeSymbol(node);
-        
+
         if ((this._selSymbol) && (symbol) && (this._selSymbol.visualidx == symbol.visualidx))
             return;
 
         if (rangeMode) {
-            let fromIdx = 0;
-            if (this._selSymbol)
-                fromIdx = this._selSymbol.visualidx;
-            this.selectRange(fromIdx, this._selSymbol.visualidx);
+            if (symbol) {
+                let fromIdx = 0;
+                if (this._selSymbol)
+                    fromIdx = this._selSymbol.visualidx;
+                this.selectRange(fromIdx, symbol.visualidx, true);
+                if (keyboardEvent) {
+                    this._selSymbol = symbol;
+                    this._selNode = node;   
+                }
+            }
         } else {
-            //if (!toggleMode)
-            //    if (this._selSymbol)
-            //        this.setSelectionState(this._selSymbol, false);
-
             this._selSymbol = symbol;
             this._selNode = node;   
 
@@ -424,16 +426,6 @@ class TreeControl {
 
         if (node)
             this.scrollToNode(node);
-
-        /*
-        if (!($(node).hasClass('selected'))) {
-            if (this._selNode != null)
-                $(this._selNode).removeClass('selected');
-            this._selNode = node;
-            if (this._selNode != null)
-                $(this._selNode).addClass('selected');
-        }
-        */
 
         if (this.onNodeSelected)
             this.onNodeSelected(this._selNode);
@@ -456,12 +448,6 @@ class TreeControl {
 
         //select new symbol
         $(this._selNode).addClass('selected');
-    }
-
-    toggleNodeSelection(node) {
-    }
-
-    selectNodeRange(node) {
     }
 
     //#endregion
@@ -573,11 +559,27 @@ class TreeControl {
     }
 
     nextPageNode(node) {
-        return this.nextNode(node);
+        let mainElement = document.getElementById(this._controlId);
+        let targetTop = node.offsetTop - node.offsetHeight + mainElement.clientHeight;
+        do {
+            let currIdx = node.alsymbolnode.visualidx;
+            node = this.nextNode(node);
+            if (node.alsymbolnode.visualidx == currIdx)
+                return node;
+        } while (node.offsetTop < targetTop);
+        return node;
     }
 
     prevPageNode(node) {
-        return this.prevNode(node);
+        let mainElement = document.getElementById(this._controlId);
+        let targetTop = node.offsetTop + node.offsetHeight - mainElement.clientHeight;
+        do {
+            let currIdx = node.alsymbolnode.visualidx;
+            node = this.prevNode(node);
+            if (node.alsymbolnode.visualidx == currIdx)
+                return node;
+        } while (node.offsetTop > targetTop);
+        return node;
     }
 
     //#endregion
@@ -591,7 +593,7 @@ class TreeControl {
     onNodeClick(node, ctrlKey, shiftKey) {
         if ((!ctrlKey) && (!shiftKey))
             this.toggleNode(node);
-        this.selectNode(node, ctrlKey, shiftKey);
+        this.selectNode(node, ctrlKey, shiftKey, false);
     }
 
     onClick(e) {
@@ -601,11 +603,17 @@ class TreeControl {
             this.onNodeClick(nodeList[0], e.ctrlKey, e.shiftKey);
     }
 
-    onKeyPress(e) {
+    onKeyDown(e) {
         let handled = false;
         let nodeList;
 
         switch (e.which) {
+            case 65:    //A
+                if (e.ctrlKey) {
+                    this.selectAll();
+                    handled = true;
+                }
+                break;
             case 37:    //left
                 //has visible child
                 if (this._selNode) {
@@ -613,9 +621,9 @@ class TreeControl {
                     if (nodeList.length > 0)
                         nodeList.hide();
                     else 
-                        this.selectNode(this.parentNode(this._selNode), e.ctrlKey, e.shiftKey);
+                        this.selectNode(this.parentNode(this._selNode), e.ctrlKey, e.shiftKey, true);
                 } else
-                    this.selectNode(this.firstNode(), e.ctrlKey, e.shiftKey);
+                    this.selectNode(this.firstNode(), e.ctrlKey, e.shiftKey, true);
                 handled = true;
                 break;
             case 39:    //right
@@ -627,27 +635,27 @@ class TreeControl {
                 handled = true;
                 break;
             case 38:    //up
-                this.selectNode(this.prevNode(this._selNode), e.ctrlKey, e.shiftKey);
+                this.selectNode(this.prevNode(this._selNode), e.ctrlKey, e.shiftKey, true);
                 handled = true;
                 break;
             case 40:    //down
-                this.selectNode(this.nextNode(this._selNode), e.ctrlKey, e.shiftKey);
+                this.selectNode(this.nextNode(this._selNode), e.ctrlKey, e.shiftKey, true);
                 handled = true;
                 break;
             case 33:    //page up
-                this.selectNode(this.prevPageNode(this._selNode), e.ctrlKey, e.shiftKey);
+                this.selectNode(this.prevPageNode(this._selNode), e.ctrlKey, e.shiftKey, true);
                 handled = true;
                 break;
             case 34:    //page down
-                this.selectNode(this.nextPageNode(this._selNode), e.ctrlKey, e.shiftKey);
+                this.selectNode(this.nextPageNode(this._selNode), e.ctrlKey, e.shiftKey, true);
                 handled = true;
                 break;
             case 36:    //home
-                this.selectNode(this.firstNode(), e.ctrlKey, e.shiftKey);
+                this.selectNode(this.firstNode(), e.ctrlKey, e.shiftKey, true);
                 handled = true;
                 break;
             case 35:    //end
-                this.selectNode(this.lastNode(), e.ctrlKey, e.shiftKey);
+                this.selectNode(this.lastNode(), e.ctrlKey, e.shiftKey, true);
                 handled = true;
                 break;
         }
@@ -657,6 +665,7 @@ class TreeControl {
             return false;
         }
 
+        return true;
     }
 
     //#endregion

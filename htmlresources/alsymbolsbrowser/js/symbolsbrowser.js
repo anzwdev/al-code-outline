@@ -8,6 +8,23 @@ class ObjectBrowser {
         this._objTree = new TreeControl('objects', 'objidsbtn', true);
         this._symTree = new TreeControl('symbols', 'symidsbtn', false);
 
+        //prevent standard Ctrl+A inside tree elements
+        $('body').on('keydown', '.symbolscont', function(evt)
+        {
+            if ((!evt.ctrlKey) || (evt.keyCode !== 65))
+                return;
+            evt.preventDefault();
+            return false;
+        });
+        // Prevent text select from shift + click inside tree elements 
+        $('body').on('mousedown', '.symbolscont', function(evt)
+        {
+            if (evt.shiftKey || evt.ctrlKey) {
+                evt.preventDefault();
+            }
+        });
+
+
         this._objTree.emptyContent = 'There is nothing to show.';
         this._objTree.onNodeSelected = function(node) { 
             that.onNodeSelected(node); 
