@@ -3,10 +3,12 @@ import { AZSymbolKind } from "../symbollibraries/azSymbolKind";
 import { AZSymbolsLibrary } from "../symbollibraries/azSymbolsLibrary";
 
 export class ALObjectsBrowserData {
+    name : string;
     objectCollections: AZSymbolInformation[];
 
     constructor(library: AZSymbolsLibrary) {
         this.objectCollections = [];
+        this.name = library.displayName;
         this.collectObjects(library);
     }
 

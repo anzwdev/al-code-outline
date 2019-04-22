@@ -32,16 +32,21 @@ var filterNameActive = false;
 var filterActive = false;
 
 function processMessage(msg_data) {
-    if (event.data.msgtype == 'objectsLoaded') {
+    if (msg_data.msgtype == 'objectsLoaded') {
         processObjectsLoadedMessage(msg_data);
     }
-    else if (event.data.msgtype == 'filterObjects') {
+    else if (msg_data.msgtype == 'filterObjects') {
         processFilterObjectsMessage(msg_data);
     }
 }
 
 function processObjectsLoadedMessage(msg_data) {
     objdata = msg_data.data;
+    let name = 'AL Objects Browser';
+    if (objdata.name)
+        name = name + ' - ' + objdata.name;
+    $('#headtitle').html(name);
+
     //process data
     if ((objdata) && (objdata.objectCollections)) {
         for (let i=0; i<objdata.objectCollections.length; i++) {

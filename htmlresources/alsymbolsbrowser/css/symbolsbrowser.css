@@ -7,6 +7,19 @@ body {
     display: flex;
     flex-direction: column;
 }
+input, select {
+    background: var(--vscode-input-background);
+    border: 1px solid var(--vscode-panel-border);
+    color: var(--vscode-input-foreground);
+}
+input:focus, select:focus, div:focus {
+    outline-color: var(--vscode-focusBorder) !important;
+}
+button:focus {
+    outline-style: double;
+    outline-color: var(--vscode-focusBorder) !important;
+}
+
 #search {
     flex: 0 0 auto;
     display: flex;
