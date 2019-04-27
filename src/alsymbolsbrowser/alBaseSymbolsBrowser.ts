@@ -117,7 +117,7 @@ export class ALBaseSymbolsBrowser extends BaseWebViewEditor {
     }
 
     protected async createPageExt(path : number[] | undefined, selPaths: number[][] | undefined) {
-        let symbolList = await this.getObjectsFromPath(selPaths, AZSymbolKind.TableObject);
+        let symbolList = await this.getObjectsFromPath(selPaths, AZSymbolKind.PageObject);
         if (symbolList) {
             let builder : PageExtBuilder = new PageExtBuilder();
             builder.showWizard(symbolList);

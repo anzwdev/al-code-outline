@@ -166,8 +166,8 @@
   font-family: inherit;
   font-size: inherit;
   list-style-type: none;
-  background: #fff;
-  border: 1px solid #bebebe;
+  background: var(--vscode-menu-background);
+  border: 1px solid var(--vscode-menu-background);
   border-radius: .2em;
   -webkit-box-shadow: 0 2px 5px rgba(0, 0, 0, .5);
           box-shadow: 0 2px 5px rgba(0, 0, 0, .5);
@@ -179,18 +179,18 @@
      -moz-box-sizing: content-box;
           box-sizing: content-box;
   padding: .2em 2em;
-  color: #2f2f2f;
+  color: var(--vscode-menu-foreground);
   -webkit-user-select: none;
      -moz-user-select: none;
       -ms-user-select: none;
           user-select: none; 
-  background-color: #fff;
+  background-color: var(--vscode-menu-background);
 }
 
 .context-menu-separator {
   padding: 0; 
-  margin: .35em 0;
-  border-bottom: 1px solid #e6e6e6;
+  margin: .35em 1em;
+  border-bottom: 1px solid var(--vscode-editorBracketMatch-border);
 }
 
 .context-menu-item > label > input,
@@ -202,19 +202,19 @@
 }
 
 .context-menu-item.context-menu-hover {
-  color: #fff;
+  color: var(--vscode-menu-selectionForeground);
   cursor: pointer; 
-  background-color: #2980b9;
+  background-color: var(--vscode-menu-selectionBackground);
 }
 
 .context-menu-item.context-menu-disabled {
-  color: #bbb;
+  color: var(--vscode-editorBracketMatch-border);
   cursor: default; 
-  background-color: #fff;
+  background-color: var(--vscode-menu-background);
 }
 
 .context-menu-input.context-menu-hover {
-  color: #2f2f2f; 
+  color: var(--vscode-menu-selectionForeground);
   cursor: default;
 }
 

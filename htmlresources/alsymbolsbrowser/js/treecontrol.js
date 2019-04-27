@@ -298,7 +298,7 @@ class TreeControl {
     applyNameFilter(data) {
         if (data) {
             if (this.isObjectSymbol(data)) {
-                if (!this._nameFilter({TEXT: data.fullName}))
+                if (!this._nameFilter({TEXT: data.name}))
                     data.visible = false;
             }
             if (data.childSymbols) {

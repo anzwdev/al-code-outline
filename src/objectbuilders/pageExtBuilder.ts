@@ -14,11 +14,11 @@ export class PageExtBuilder extends ObjectBuilder {
 
     //#region Wizards with UI
 
-    async showWizard(tableSymbols: AZSymbolInformation[]) {
-        if (tableSymbols.length == 1)
-            await this.showPageExtWizard(tableSymbols[0]);
+    async showWizard(symbols: AZSymbolInformation[]) {
+        if (symbols.length == 1)
+            await this.showPageExtWizard(symbols[0]);
         else
-            await this.showMultiPageExtWizard(tableSymbols);
+            await this.showMultiPageExtWizard(symbols);
     }
 
     async showMultiPageExtWizard(pageSymbols: AZSymbolInformation[]) {
@@ -55,6 +55,8 @@ export class PageExtBuilder extends ObjectBuilder {
         }
 
         let extObjectName: string = await FileBuilder.getPatternGeneratedExtensionObjectName(extObjType, extObjectId, pageSymbol);
+        if (!extObjectName)
+            extObjectName = pageSymbol.name + ' Extension';
         extObjectName = await this.getObjectName("Please enter a name for the page extension.", extObjectName);
         if (!extObjectName) {
             return;

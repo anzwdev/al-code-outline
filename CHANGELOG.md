@@ -1,5 +1,16 @@
 # Change Log
 
+## 1.0.4
+
+ - Github issue #25 fixed - Incorrect sorting of objects in AL Object Browser
+ - Github issue #26 fixed - Generating Page Extensions no longer working
+ - Github issue #27 fixed - Name Filter in 'TreeView' Object Browser filters on Type + Name
+ Thank you rvanbekkum for reporting these problems 
+
+## 1.0.3
+
+ - It is now possible to switch AL Object Browser view between list view looking like Nav Object Designer and tree view looking like C# class browser in Visual Studio
+
 ## 1.0.2
 
  - Nav 2018 AL Extension support added to the language server

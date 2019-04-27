@@ -54,6 +54,8 @@ export class TableExtBuilder extends ObjectBuilder {
         }
 
         let extObjectName: string = await FileBuilder.getPatternGeneratedExtensionObjectName(extObjType, extObjectId, tableSymbol);
+        if (!extObjectName)
+            extObjectName = tableSymbol.name + ' Extension';
         extObjectName = await this.getObjectName("Please enter a name for the table extension.", extObjectName);
         if (!extObjectName) {
             return;

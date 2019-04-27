@@ -50,11 +50,28 @@ function processObjectsLoadedMessage(msg_data) {
     //process data
     if ((objdata) && (objdata.objectCollections)) {
         for (let i=0; i<objdata.objectCollections.length; i++) {
-            objdata.objectCollections[i].objectType = symbolKindToObjectType(objdata.objectCollections[i].kind);       
+            objdata.objectCollections[i].objectType = symbolKindToObjectType(objdata.objectCollections[i].kind);
+            sortData(objdata.objectCollections[i]);
         }
     }
 
     setMode('Table', true);
+}
+
+function sortData(data) {       
+    if (data && data.childSymbols && (data.childSymbols.length > 1)) {
+        data.childSymbols.sort(function(a,b) {
+            if (a.id < b.id)
+                return -1;
+            if (a.id > b.id)
+                return 1;
+            if (a.fullName < b.fullName)
+                return -1;
+            if (a.fullName > b.fullName)
+                return 1;
+            return 0;                    
+        });
+    }
 }
 
 function processFilterObjectsMessage(msg_data) {
