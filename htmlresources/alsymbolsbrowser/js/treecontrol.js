@@ -269,6 +269,10 @@ class TreeControl {
             this.applyIdFilter(this._data);
         if (this._nameFilter)
             this.applyNameFilter(this._data);
+
+        this.hideEmptyGroups(this._data);
+        this._data.visible = true;
+
         this.renderData();
     }
 
@@ -306,6 +310,21 @@ class TreeControl {
                     this.applyNameFilter(data.childSymbols[i]);
             }
         }
+    }
+
+    hideEmptyGroups(data) {
+        if (!this.isObjectSymbol(data)) {
+            let visibleChild = false;
+            if (data.childSymbols) {
+                for (let i=0; i<data.childSymbols.length;i++) {
+                    this.hideEmptyGroups(data.childSymbols[i]);
+                    if (data.childSymbols[i].visible)
+                        visibleChild = true;
+                }                
+            }
+            data.visible = visibleChild;
+        }
+
     }
 
     //#endregion

@@ -70,7 +70,7 @@ export class ALBaseSymbolsBrowser extends BaseWebViewEditor {
         if (!selPaths)
             return undefined;
 
-        let objList = await this._library.getSymbolListByPath(selPaths, kind);
+        let objList = await this._library.getSymbolsListByPathAsync(selPaths, kind);
         if (!objList)
             return undefined;
 
@@ -133,8 +133,9 @@ export class ALBaseSymbolsBrowser extends BaseWebViewEditor {
     }
 
     protected async goToDefinition(path : number[] | undefined) {
-        let alSymbol : AZSymbolInformation | undefined = this._library.getObjectSymbolByPath(path);
-        if (alSymbol) {
+        let alSymbolList : AZSymbolInformation[] | undefined = await this._library.getSymbolsListByPathAsync([path], AZSymbolKind.AnyALObject);
+        if ((alSymbolList) && (alSymbolList.length > 0)) {
+            let alSymbol : AZSymbolInformation = alSymbolList[0];
             //get data type name
             let typeName : string | undefined = ALSyntaxHelper.kindToVariableType(alSymbol.kind);
             if (!typeName) {
@@ -162,12 +163,15 @@ export class ALBaseSymbolsBrowser extends BaseWebViewEditor {
         }
     }
 
-    protected runInWebClient(path : number[] | undefined) {
-        let alSymbol : AZSymbolInformation | undefined = this._library.getObjectSymbolByPath(path);
-        if (alSymbol) {
-            ALObjectRunner.runInWebClient(alSymbol);
+    protected async runInWebClient(path : number[] | undefined) {
+        let alSymbolList : AZSymbolInformation[] | undefined = await this._library.getSymbolsListByPathAsync([path], AZSymbolKind.AnyALObject);
+        if ((alSymbolList) && (alSymbolList.length > 0)) {
+            this._devToolsContext.objectRunner.runSymbolAsync(alSymbolList[0]);
         }
     }
 
+    protected onPanelClosed() {
+        this._library.unloadAsync();
+    }
 
 }

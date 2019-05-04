@@ -20,10 +20,12 @@ export class ALNativeAppSymbolsLibrary extends AZSymbolsLibrary {
     private _fileSize : number;
     private _fileModified : number;
     protected _context : DevToolsExtensionContext;
+    protected _allSymbols : AZSymbolInformation | undefined;
 
     constructor(context : DevToolsExtensionContext, sourceFilePath : string) {
         super();
         
+        this._allSymbols = undefined;
         this._context = context;
         this.filePath = sourceFilePath;
         this.applicationId = '';
@@ -91,22 +93,35 @@ export class ALNativeAppSymbolsLibrary extends AZSymbolsLibrary {
         fullName = fullName.trim();
 
         //load root symbol
-        this.rootSymbol = AZSymbolInformation.create(AZSymbolKind.Library, fullName);
+        this._allSymbols = AZSymbolInformation.create(AZSymbolKind.Package, fullName);
 
         //load symbol references
-        this.rootSymbol.addChildItem(this.loadObjectSymbolList('Tables', 'Table', AZSymbolKind.TableObjectList, AZSymbolKind.TableObject, symbolReferences.Tables));
-        this.rootSymbol.addChildItem(this.loadObjectSymbolList('Pages', 'Page', AZSymbolKind.PageObjectList,  AZSymbolKind.PageObject, symbolReferences.Pages));
-        this.rootSymbol.addChildItem(this.loadObjectSymbolList('Reports', 'Report', AZSymbolKind.ReportObjectList, AZSymbolKind.ReportObject, symbolReferences.Reports));
-        this.rootSymbol.addChildItem(this.loadObjectSymbolList('Xml Ports', 'XmlPort', AZSymbolKind.XmlPortObjectList, AZSymbolKind.XmlPortObject, symbolReferences.XmlPorts));
-        this.rootSymbol.addChildItem(this.loadObjectSymbolList('Queries', 'Query', AZSymbolKind.QueryObjectList, AZSymbolKind.QueryObject, symbolReferences.Queries));
-        this.rootSymbol.addChildItem(this.loadObjectSymbolList('Codeunits', 'Codeunit', AZSymbolKind.CodeunitObjectList, AZSymbolKind.CodeunitObject, symbolReferences.Codeunits));
-        this.rootSymbol.addChildItem(this.loadObjectSymbolList('Control Add-ins', 'ControlAddIn', AZSymbolKind.ControlAddInObjectList, AZSymbolKind.ControlAddInObject, symbolReferences.ControlAddIns));
-        this.rootSymbol.addChildItem(this.loadObjectSymbolList('Page Extensions', 'PageExtension', AZSymbolKind.PageExtensionObjectList, AZSymbolKind.PageExtensionObject, symbolReferences.PageExtensions));
-        this.rootSymbol.addChildItem(this.loadObjectSymbolList('Table Extensions', 'TableExtension', AZSymbolKind.TableExtensionObjectList, AZSymbolKind.TableExtensionObject, symbolReferences.TableExtensions));
-        this.rootSymbol.addChildItem(this.loadObjectSymbolList('Profiles', 'Profile', AZSymbolKind.ProfileObjectList, AZSymbolKind.ProfileObject, symbolReferences.Profiles));
-        this.rootSymbol.addChildItem(this.loadObjectSymbolList('Page Customizations', 'PageCustomization', AZSymbolKind.PageCustomizationObjectList, AZSymbolKind.PageCustomizationObject, symbolReferences.PageCustomizations));
-        this.rootSymbol.addChildItem(this.loadObjectSymbolList('DotNet Packages', 'DotNetPackage', AZSymbolKind.DotNetPackageList, AZSymbolKind.DotNetPackage, symbolReferences.DotNetPackages));
-        this.rootSymbol.addChildItem(this.loadObjectSymbolList('Enums', 'Enum', AZSymbolKind.EnumTypeList, AZSymbolKind.EnumType, symbolReferences.EnumTypes));
+        this._allSymbols.addChildItem(this.loadObjectSymbolList('Tables', 'Table', AZSymbolKind.TableObjectList, AZSymbolKind.TableObject, symbolReferences.Tables));
+        this._allSymbols.addChildItem(this.loadObjectSymbolList('Pages', 'Page', AZSymbolKind.PageObjectList,  AZSymbolKind.PageObject, symbolReferences.Pages));
+        this._allSymbols.addChildItem(this.loadObjectSymbolList('Reports', 'Report', AZSymbolKind.ReportObjectList, AZSymbolKind.ReportObject, symbolReferences.Reports));
+        this._allSymbols.addChildItem(this.loadObjectSymbolList('Xml Ports', 'XmlPort', AZSymbolKind.XmlPortObjectList, AZSymbolKind.XmlPortObject, symbolReferences.XmlPorts));
+        this._allSymbols.addChildItem(this.loadObjectSymbolList('Queries', 'Query', AZSymbolKind.QueryObjectList, AZSymbolKind.QueryObject, symbolReferences.Queries));
+        this._allSymbols.addChildItem(this.loadObjectSymbolList('Codeunits', 'Codeunit', AZSymbolKind.CodeunitObjectList, AZSymbolKind.CodeunitObject, symbolReferences.Codeunits));
+        this._allSymbols.addChildItem(this.loadObjectSymbolList('Control Add-ins', 'ControlAddIn', AZSymbolKind.ControlAddInObjectList, AZSymbolKind.ControlAddInObject, symbolReferences.ControlAddIns));
+        this._allSymbols.addChildItem(this.loadObjectSymbolList('Page Extensions', 'PageExtension', AZSymbolKind.PageExtensionObjectList, AZSymbolKind.PageExtensionObject, symbolReferences.PageExtensions));
+        this._allSymbols.addChildItem(this.loadObjectSymbolList('Table Extensions', 'TableExtension', AZSymbolKind.TableExtensionObjectList, AZSymbolKind.TableExtensionObject, symbolReferences.TableExtensions));
+        this._allSymbols.addChildItem(this.loadObjectSymbolList('Profiles', 'Profile', AZSymbolKind.ProfileObjectList, AZSymbolKind.ProfileObject, symbolReferences.Profiles));
+        this._allSymbols.addChildItem(this.loadObjectSymbolList('Page Customizations', 'PageCustomization', AZSymbolKind.PageCustomizationObjectList, AZSymbolKind.PageCustomizationObject, symbolReferences.PageCustomizations));
+        this._allSymbols.addChildItem(this.loadObjectSymbolList('DotNet Packages', 'DotNetPackage', AZSymbolKind.DotNetPackageList, AZSymbolKind.DotNetPackage, symbolReferences.DotNetPackages));
+        this._allSymbols.addChildItem(this.loadObjectSymbolList('Enums', 'Enum', AZSymbolKind.EnumTypeList, AZSymbolKind.EnumType, symbolReferences.EnumTypes));
+
+    }
+
+    public updateObjectList() {
+        if (this._allSymbols) {
+            this._allSymbols.updateTree(true);
+            this.rootSymbol = this._allSymbols.toObjectTree();
+        } else
+            this.rootSymbol = undefined;
+    }
+
+    protected getSymbolByPath(path : number[] | undefined) : AZSymbolInformation | undefined {
+        return this.getSymbolByPathWithRoot(this._allSymbols, path);
     }
 
     protected loadObjectSymbolList(name : string, symbolPrefix : string, groupKind: AZSymbolKind, symbolKind : AZSymbolKind, data : any) : AZSymbolInformation | undefined {       

@@ -6,6 +6,7 @@ import { AZSymbolInformation } from '../symbollibraries/azSymbolInformation';
 import { DevToolsExtensionContext } from '../devToolsExtensionContext';
 import { ALBaseSymbolsBrowser } from './alBaseSymbolsBrowser';
 import { ALObjectsBrowser } from './alObjectsBrowser';
+import { AZSymbolKind } from '../symbollibraries/azSymbolKind';
 
 /**
  * AL Symbols Browser
@@ -40,7 +41,7 @@ export class ALSymbolsBrowser extends ALBaseSymbolsBrowser {
     protected updateObjects() {        
         this.sendMessage({
             command : 'setData',
-            data : this._library.objectListRootSymbol
+            data : this._library.rootSymbol
         });
     }
 
@@ -60,8 +61,12 @@ export class ALSymbolsBrowser extends ALBaseSymbolsBrowser {
         return false;
     }
 
-    protected onObjectSelected(path : number[] | undefined) {       
-        this._selectedObject = this._library.getObjectSymbolByPath(path);
+    protected async onObjectSelected(path : number[] | undefined) {       
+        let symbolList : AZSymbolInformation[] | undefined = await this._library.getSymbolsListByPathAsync([path], AZSymbolKind.AnyALObject);
+        if ((symbolList) && (symbolList.length > 0))
+            this._selectedObject = symbolList[0];
+        else        
+            this._selectedObject = undefined;
         if (this._selectedObject)
             this.sendMessage({
                 command: 'setSelObjData',

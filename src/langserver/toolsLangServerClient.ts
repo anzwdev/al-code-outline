@@ -7,6 +7,11 @@ import { ToolsDocumentSymbolsRequest } from './toolsDocumentSymbolsRequest';
 import { ToolsDocumentSymbolsResponse } from './toolsDocumentSymbolsResponse';
 import { ToolsPackageSymbolsRequest } from './toolsPackageSymbolsRequest';
 import { ToolsPackageSymbolsResponse } from './toolsPackageSymbolsResponse';
+import { ToolsProjectSymbolsRequest } from './toolsProjectSymbolsRequest';
+import { ToolsProjectSymbolsResponse } from './toolsProjectSymbolsResponse';
+import { ToolsLibrarySymbolsDetailsRequest } from './toolsLibrarySymbolsDetailsRequest';
+import { ToolsLibrarySymbolsDetailsResponse } from './toolsLibrarySymbolsDetailsResponse';
+import { ToolsCloseSymbolsLibraryRequest } from './toolsCloseSymbolsLibraryRequest';
 
 export class ToolsLangServerClient implements vscode.Disposable {
     _context : vscode.ExtensionContext;
@@ -56,6 +61,32 @@ export class ToolsLangServerClient implements vscode.Disposable {
         let reqType = new rpc.RequestType<ToolsPackageSymbolsRequest, ToolsPackageSymbolsResponse, void, void>('al/packagesymbols');
         let val = await this._connection.sendRequest(reqType, params);
         return val;
+    }
+
+    public async getProjectSymbols(params : ToolsProjectSymbolsRequest) : Promise<ToolsProjectSymbolsResponse|undefined> {
+        if (!this._connection)
+            return undefined;
+                
+        let reqType = new rpc.RequestType<ToolsProjectSymbolsRequest, ToolsProjectSymbolsResponse, void, void>('al/projectsymbols');
+        let val = await this._connection.sendRequest(reqType, params);
+        return val;
+    }
+
+    public async getLibrarySymbolsDetails(params : ToolsLibrarySymbolsDetailsRequest) : Promise<ToolsLibrarySymbolsDetailsResponse|undefined> {
+        if (!this._connection)
+            return undefined;
+                
+        let reqType = new rpc.RequestType<ToolsLibrarySymbolsDetailsRequest, ToolsLibrarySymbolsDetailsResponse, void, void>('al/librarysymbolsdetails');
+        let val = await this._connection.sendRequest(reqType, params);
+        return val;
+    }
+
+    public closeSymbolsLibrary(params: ToolsCloseSymbolsLibraryRequest) {
+        if (!this._connection)
+            return undefined;
+
+        let reqType = new rpc.NotificationType<ToolsCloseSymbolsLibraryRequest, void>('al/closesymbolslibrary');;
+        this._connection.sendNotification(reqType, params);
     }
 
     public isEnabled() : boolean {

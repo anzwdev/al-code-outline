@@ -17,7 +17,6 @@ export class AZDocumentSymbolsLibrary extends AZSymbolsLibrary {
 
     constructor(context : DevToolsExtensionContext, docUri : vscode.Uri | undefined) {
         super();
-        this.objectListEnabled = false;
         this._context = context;
         this._docUri = docUri;
         this._reloadRequired = true;

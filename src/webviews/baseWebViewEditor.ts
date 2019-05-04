@@ -87,6 +87,14 @@ export class BaseWebViewEditor {
             this.processWebViewMessage(message);
         }, null, this._disposables);
 
+        this._panel.onDidDispose(e => {
+            this.onPanelClosed();
+        });
+
+    }
+
+    protected onPanelClosed() {
+        
     }
 
     protected reloadWebViewContent() {

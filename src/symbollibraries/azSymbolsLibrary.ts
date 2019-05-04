@@ -8,9 +8,7 @@ export class AZSymbolsLibrary {
     displayName : string;
     name : string;
     rootSymbol : AZSymbolInformation | undefined;
-    objectListRootSymbol : AZSymbolInformation | undefined;
     showObjectIds : Boolean;
-    objectListEnabled : boolean;
 
     private _onSymbolsChanged: vscode.EventEmitter<AZSymbolsLibrary> = new vscode.EventEmitter<AZSymbolsLibrary>();
 	readonly onSymbolsChanged: vscode.Event<AZSymbolsLibrary> = this._onSymbolsChanged.event;
@@ -20,8 +18,6 @@ export class AZSymbolsLibrary {
         this.displayName = '';
         this.name = '';
         this.rootSymbol = undefined;
-        this.objectListRootSymbol = undefined;
-        this.objectListEnabled = true;
     }
 
     async loadAsync(forceReload : boolean) : Promise<boolean> {
@@ -45,6 +41,9 @@ export class AZSymbolsLibrary {
         return false;
     }
 
+    public async unloadAsync() {        
+    }
+
     public clear() {
         this.displayName ='';
         this.name = '';
@@ -53,52 +52,30 @@ export class AZSymbolsLibrary {
 
     protected clearSymbols() {
         this.rootSymbol = undefined;
-        this.objectListRootSymbol = undefined;
     }
 
     public updateObjectList() {
         if (this.rootSymbol) {
             this.rootSymbol.updateTree(true);
-            if (this.objectListEnabled)
-                this.objectListRootSymbol = this.rootSymbol.toObjectTree();
         }
     }
 
-    public search(text : string) : AZSymbolInformation | undefined {
-        if ((text) && (this.objectListRootSymbol) && (text != ''))
-            return this.objectListRootSymbol.search(text);
-        return undefined;
-    }
-
-    public getObjectSymbolByPath(path : number[] | undefined) : AZSymbolInformation | undefined {
-        let object : AZSymbolInformation | undefined = this.getSymbolByPath(path);
-        if ((object) && (object.isALObject()))
-            return object;
-        return undefined;
-    }
-
-    public getObjectSymbolListByPath(pathList: number[][]) : AZSymbolInformation[] {
-        let symbolList : AZSymbolInformation[] = [];
-        for (let i=0; i<pathList.length; i++) {
-            let symbol = this.getObjectSymbolByPath(pathList[i]);
-            if (symbol)
-                symbolList.push(symbol);
-        }
-        return symbolList;
-    }
-
-    public getSymbolListByPath(pathList: number[][], kind : AZSymbolKind) : AZSymbolInformation[] {
+    public async getSymbolsListByPathAsync(pathList: number[][], kind : AZSymbolKind) : Promise<AZSymbolInformation[]> {
         let symbolList : AZSymbolInformation[] = [];
         for (let i=0; i<pathList.length; i++) {
             let symbol = this.getSymbolByPath(pathList[i]);
-            if ((symbol) && (symbol.kind == kind))
+            if ((symbol) && ((symbol.kind == kind) || ((kind == AZSymbolKind.AnyALObject) && (symbol.isALObject()))))
                 symbolList.push(symbol);
         }
         return symbolList;
     }
 
-    public getSymbolByPath(path : number[] | undefined) : AZSymbolInformation | undefined {
-        if ((this.rootSymbol) && (path) && (path.length > 0)) {
+    protected getSymbolByPath(path : number[] | undefined) : AZSymbolInformation | undefined {
+        return this.getSymbolByPathWithRoot(this.rootSymbol, path);
+    }
+
+    protected getSymbolByPathWithRoot(root: AZSymbolInformation, path : number[] | undefined) : AZSymbolInformation | undefined {
+        if ((root) && (path) && (path.length > 0)) {
             let symbol : AZSymbolInformation = this.rootSymbol;
             for (let i=path.length-1; i>=0; i--) {
                 if ((!symbol.childSymbols) || (path[i] >= symbol.childSymbols.length))

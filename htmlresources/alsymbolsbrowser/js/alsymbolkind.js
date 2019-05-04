@@ -1,10 +1,6 @@
 var ALSymbolKind = {
 
     Undefined : 0,
-    Library : 1,
-    Document : 2,
-    SymbolGroup : 3,
-
 
     CompilationUnit : 227,
 
@@ -177,6 +173,12 @@ var ALSymbolKind = {
     RequestPageHandlerDeclaration : 50046,
     SendNotificationHandlerDeclaration : 50047,
     SessionSettingsHandlerDeclaration : 50048,
-    StrMenuHandlerDeclaration : 50049
+    StrMenuHandlerDeclaration : 50049,
+
+    ProjectDefinition : 50050,
+    PackagesList : 50051,
+    Dependencies : 50052,
+    Document : 50053,
+    SymbolGroup : 50054
 
 };

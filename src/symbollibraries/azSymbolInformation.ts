@@ -60,7 +60,6 @@ export class AZSymbolInformation {
         if (source.childSymbols)
             for (let i=0; i<source.childSymbols.length; i++)
                 obj.addChildItem(AZSymbolInformation.fromAny(source.childSymbols[i]));
-
         return obj;
     }    
 
@@ -139,7 +138,7 @@ export class AZSymbolInformation {
     protected getIconName() : string {
         switch (this.kind) {
             case AZSymbolKind.Class : return 'class';
-            case AZSymbolKind.Library : return 'module';
+            case AZSymbolKind.Package : return 'module';
             case AZSymbolKind.SymbolGroup : return 'module';
             case AZSymbolKind.Undefined : return 'undefined';
             case AZSymbolKind.TableObject : return 'table';
@@ -243,26 +242,6 @@ export class AZSymbolInformation {
                 return 'codeunit';
         }
         return 'undefined';
-    }
-
-    public search(text : string) : AZSymbolInformation | undefined {
-        if (this.kind != AZSymbolKind.Library)
-            if ((this.fullName.indexOf(text) >= 0) || ((this.id != 0) && (this.id.toString().startsWith(text))))
-                return this.createCopy(true);
-
-        let copy : AZSymbolInformation | undefined = undefined;
-        if (this.childSymbols) {
-            for (let i=0; i<this.childSymbols.length; i++) {
-                let item : AZSymbolInformation | undefined = this.childSymbols[i].search(text);
-                if (item) {
-                    if (!copy)
-                        copy = this.createCopy(false);
-                    copy.addChildItem(item);
-                }
-            }
-        }
-
-        return copy;
     }
 
     public collectChildSymbols(symbolKind: AZSymbolKind, outList : AZSymbolInformation[]) {

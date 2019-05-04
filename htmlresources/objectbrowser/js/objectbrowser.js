@@ -29,6 +29,9 @@ var filterIdActive = false;
 var filterName = undefined;
 var filterNameExpr = undefined;
 var filterNameActive = false;
+var filterPackage = undefined;
+var filterPackageExpr = undefined;
+var filterPackageActive = false;
 var filterActive = false;
 
 function processMessage(msg_data) {
@@ -119,11 +122,32 @@ function processFilterObjectsMessage(msg_data) {
             }
         }
     }
+    else if (column == 'Package') {
+        if (!(msg_data.filterExpr)) {
+            filterPackage = undefined;
+            filterPackageExpr = undefined;
+        }
+        else {
+            filterPackageExpr = msg_data.filterExpr;
+            try {
+                filterPackage = compileFilter('text', filterPackageExpr);
+            }
+            catch (e) {
+                vscodeContext.postMessage({
+                    command    : 'errorInFilter',
+                    message : filterPackageExpr});
+                
+                filterPackage = undefined;
+                filterPackageExpr = undefined;
+            }
+        }
+    }
 
     filterTypeActive = (filterType !== undefined && filterType.length > 0);
     filterIdActive = filterId !== undefined;
     filterNameActive = filterName !== undefined;
-    filterActive = filterTypeActive || filterIdActive || filterNameActive;
+    filterPackageActive = filterPackage !== undefined;
+    filterActive = filterTypeActive || filterIdActive || filterNameActive || filterPackageActive;
 
     applyObjectFilters();
 
@@ -208,6 +232,12 @@ function applyObjectFilters() {
                 continue;
             }
 
+            var inPackageFilter = !filterPackageActive || filterPackage({TEXT: objects[j].library});
+            if (!inPackageFilter) {
+                objects[j].objvisible = false;
+                continue;
+            }
+
             objects[j].objvisible = true;
         }
     }
@@ -219,10 +249,13 @@ function clearObjectFilters() {
     filterIdExpr = undefined;
     filterName = undefined;
     filterNameExpr = undefined;
+    filterPackage = undefined;
+    filterPackageExpr = undefined;
 
     filterTypeActive = false;
     filterIdActive = false;
     filterNameActive = false;
+    filterPackageActive = false;
     filterActive = false;
 
     applyObjectFilters();

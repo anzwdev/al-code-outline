@@ -62,9 +62,11 @@ export class ALObjectsBrowser extends ALBaseSymbolsBrowser {
         return false;
     }
 
-    protected updatePivotObjCommand(path: any) {
+    protected async updatePivotObjCommand(path: any) {
         let rootSymbol : AZSymbolInformation = AZSymbolInformation.create(AZSymbolKind.Document, 'Symbol');
-        rootSymbol.addChildItem(this._library.getSymbolByPath(path));
+        let symbolList : AZSymbolInformation[] | undefined = await this._library.getSymbolsListByPathAsync([path], AZSymbolKind.AnyALObject);
+        if ((symbolList) && (symbolList.length > 0))        
+            rootSymbol.addChildItem(symbolList[0]);
         this._devToolsContext.activeDocumentSymbols.setRootSymbol(rootSymbol);
     }
 
@@ -119,7 +121,29 @@ export class ALObjectsBrowser extends ALBaseSymbolsBrowser {
                 ignoreFocusOut: true,
                 validateInput: (text: string): string | undefined => {
                     if (!regexp.test(text)) {
-                        return 'Valid operators for ID filter are: |, &, =, <>, @, ?, *';
+                        return 'Valid operators for Name filter are: |, &, =, <>, @, ?, *';
+                    } else {
+                        return undefined;
+                    }
+                }
+            });
+            if (filterExpr !== undefined) {
+                this.sendMessage({
+                    msgtype: 'filterObjects',
+                    column: column,
+                    filterExpr: filterExpr
+                });
+            }
+        }
+        else if (column == "Package") {
+            let regexp = new RegExp('^\s*|((@?((=?)|(<>))[^\(\)=<>&\|@]+)(\s*((\\|)|(&))\s*(@?((=?)|(<>))[^\(\)=<>&\|@]+))*)$');
+            const filterExpr = await vscode.window.showInputBox({
+                value  : currentNameFilter,
+                prompt : 'Please enter a filter expression (e.g., "<>@Application*").',
+                ignoreFocusOut: true,
+                validateInput: (text: string): string | undefined => {
+                    if (!regexp.test(text)) {
+                        return 'Valid operators for Package filter are: |, &, =, <>, @, ?, *';
                     } else {
                         return undefined;
                     }

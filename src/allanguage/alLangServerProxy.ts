@@ -4,14 +4,19 @@ import * as vscode from 'vscode';
 import * as path from 'path';
 import * as vscodelangclient from 'vscode-languageclient';
 import { ALSyntaxHelper } from './alSyntaxHelper';
+import { Version } from '../tools/version';
 
 export class ALLangServerProxy {
     private langClient : vscodelangclient.LanguageClient | undefined;
     public extensionPath : string | undefined;
+    public version : Version;
+    public majorVersionNumber : number;
 
     constructor() {
+        this.version = new Version();
+        this.majorVersionNumber = 0;
         this.langClient = undefined;
-        this.checkExtensionPath();
+        this.checkExtensionProperties();
     }
 
     protected getALExtension() : any {
@@ -32,10 +37,13 @@ export class ALLangServerProxy {
         return alFileExtension;
     }
 
-    protected checkExtensionPath() {
+    protected checkExtensionProperties() {
         let alExtension = this.getALExtension();
-        if (alExtension)
+        if (alExtension) {
             this.extensionPath = alExtension.extensionPath;
+            if (alExtension.packageJSON) 
+                this.version.parse(alExtension.packageJSON.version);
+        }
     }
 
     protected checkLanguageClient() : boolean {
@@ -50,6 +58,7 @@ export class ALLangServerProxy {
                 else
                     this.langClient = alExtension.exports.languageServerClient;
             }
+
 
         }
         return true;
@@ -256,17 +265,18 @@ export class ALLangServerProxy {
 
                 let docPos : vscode.Location | undefined;
 
-                let launchFilePath = path.join(vscode.workspace.workspaceFolders[0].uri.fsPath, '.vscode/launch.json');
-                let config = vscode.workspace.getConfiguration("launch", vscode.Uri.file(launchFilePath));
-                let allConfigList : any[] | undefined = config.get("configurations");
-                if (!allConfigList)
-                    return undefined;
-                let configList = allConfigList.filter(p => p.type === 'al');
-
-                if ((configList) && (configList.length > 0)) { 
+                let launchConfiguration = await this.getLaunchConfiguration();
+                //let launchFilePath = path.join(vscode.workspace.workspaceFolders[0].uri.fsPath, '.vscode/launch.json');
+                //let config = vscode.workspace.getConfiguration("launch", vscode.Uri.file(launchFilePath));
+                //let allConfigList : any[] | undefined = config.get("configurations");
+                //if (!allConfigList)
+                //    return undefined;
+                //let configList = allConfigList.filter(p => p.type === 'al');
+                //if ((configList) && (configList.length > 0)) { 
+                if (launchConfiguration) {
 
                     let docPosTemp : any = await this.langClient.sendRequest<any>('al/gotodefinition', {
-                        launchConfiguration : configList[0],
+                        launchConfiguration : launchConfiguration,
                         textDocumentPositionParams : {
                             textDocument : {
                                 uri : docUri.toString()
@@ -301,5 +311,34 @@ export class ALLangServerProxy {
         });
     }
 
+    async getLaunchConfiguration() : Promise<any|undefined> {
+        let launchFilePath = path.join(vscode.workspace.workspaceFolders[0].uri.fsPath, '.vscode/launch.json');
+        let config = vscode.workspace.getConfiguration("launch", vscode.Uri.file(launchFilePath));
+        let allConfigList : any[] | undefined = config.get("configurations");
+        if (!allConfigList)
+            return undefined;
+        let configList = allConfigList.filter(p => p.type === 'al');
+        if ((!configList) || (configList.length == 0))
+            return undefined;
+        if (configList.length == 1)
+            return configList[0];
+        //select configuration from drop down list
+        let configItems : string[] = [];
+        for (let i=0; i<configList.length; i++) {
+            if (configList[i].name)
+                configItems.push(configList[i].name);
+        }
+        let selectedItem = await vscode.window.showQuickPick(configItems, {
+            placeHolder: 'Please select launch configuration'
+        });
+        if (selectedItem) {
+            for (let i=0; i<configList.length; i++) {
+                if (configList[i].name == selectedItem)
+                    return configList[i];
+            }
+        }
+
+        return undefined;
+    }
 
 }

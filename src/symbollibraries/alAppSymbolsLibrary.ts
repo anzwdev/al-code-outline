@@ -5,17 +5,15 @@ import * as vscode from 'vscode';
 import { ToolsPackageSymbolsRequest } from '../langserver/toolsPackageSymbolsRequest';
 import { ToolsPackageSymbolsResponse } from '../langserver/toolsPackageSymbolsResponse';
 import { DevToolsExtensionContext } from '../devToolsExtensionContext';
-import { AZSymbolsLibrary } from './azSymbolsLibrary';
 import { AZSymbolInformation } from './azSymbolInformation';
 import { AZSymbolKind } from './azSymbolKind';
+import { ALBaseServerSideLibrary } from './alBaseServerSideLibrary';
 
-export class ALAppSymbolsLibrary extends AZSymbolsLibrary {
+export class ALAppSymbolsLibrary extends ALBaseServerSideLibrary {
     filePath : string;
-    protected _context : DevToolsExtensionContext;
 
     constructor(context : DevToolsExtensionContext, sourceFilePath : string) {
-        super();
-        this._context = context;
+        super(context);
         this.filePath = sourceFilePath;
         this.displayName = path.parse(sourceFilePath).base; 
     }
@@ -28,6 +26,8 @@ export class ALAppSymbolsLibrary extends AZSymbolsLibrary {
                 this.rootSymbol = AZSymbolInformation.fromAny(response.root);
             else
                 this.rootSymbol = AZSymbolInformation.create(AZSymbolKind.Document, this.displayName);
+            if (response)
+                this._libraryId = response.libraryId;
         }
         catch (e) {
             let msg : string = 'Loading symbols from file "' + this.filePath + '" failed.';

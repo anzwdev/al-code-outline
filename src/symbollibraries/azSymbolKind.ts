@@ -3,10 +3,7 @@
 export enum AZSymbolKind {
 
     Undefined = 0,
-    Library = 1,
-    Document = 2,
-    SymbolGroup = 3,
-
+    //Library = 1,            //change number
 
     CompilationUnit = 227,
 
@@ -179,6 +176,14 @@ export enum AZSymbolKind {
     RequestPageHandlerDeclaration = 50046,
     SendNotificationHandlerDeclaration = 50047,
     SessionSettingsHandlerDeclaration = 50048,
-    StrMenuHandlerDeclaration = 50049
+    StrMenuHandlerDeclaration = 50049,
+
+    ProjectDefinition = 50050,
+    PackagesList = 50051,
+    Dependencies = 50052,
+    Document = 50053,
+    SymbolGroup = 50054,
+
+    AnyALObject = 50055         //any symbol, used in requests to specify kind of objects
 
 }

@@ -16,6 +16,7 @@ import { QueryBuilder } from './objectbuilders/queryBuilder';
 import { ALNativeAppSymbolsLibrariesCache } from './symbollibraries/nativeimpl/alNativeAppSymbolsLibrariesCache';
 import { AZSymbolsLibrary } from './symbollibraries/azSymbolsLibrary';
 import { ALObjectsBrowser } from './alsymbolsbrowser/alObjectsBrowser';
+import { ALProjectSymbolsLibrary } from './symbollibraries/alProjectSymbolsLibrary';
 
 // this method is called when your extension is activated
 // your extension is activated the very first time the command is executed
@@ -54,8 +55,6 @@ export function activate(context: vscode.ExtensionContext) {
                 let uri : vscode.Uri = fileUri;
                 let lib : AZSymbolsLibrary;
 
-                
-
                 if (toolsExtensionContext.toolsLangServerClient.isEnabled())
                     lib = new ALAppSymbolsLibrary(toolsExtensionContext, uri.fsPath);
                 else {
@@ -67,15 +66,36 @@ export function activate(context: vscode.ExtensionContext) {
                     lib = nativeAppCache.getOrCreate(uri.fsPath);
                 }
 
-                //let useNewViewer = vscode.workspace.getConfiguration('alOutline').get('enableFeaturePreview');
-                if (toolsExtensionContext.getUseSymbolsBrowser()) {
-                    let symbolsBrowser : ALSymbolsBrowser = new ALSymbolsBrowser(toolsExtensionContext, lib);
-                    symbolsBrowser.show();
-                } else {
-                    let objectsBrowser : ALObjectsBrowser = new ALObjectsBrowser(toolsExtensionContext, lib);
-                    objectsBrowser.show();
-                }
+                toolsExtensionContext.showSymbolsBrowser(lib);
     }));
+
+    context.subscriptions.push(
+        vscode.commands.registerCommand(
+            'azALDevTools.showAllProjectSymbols',
+            () => {
+                if ((vscode.workspace.workspaceFolders) && (vscode.workspace.workspaceFolders.length > 0)) {
+                    let lib : ALProjectSymbolsLibrary = new ALProjectSymbolsLibrary(toolsExtensionContext,
+                        true,
+                        vscode.workspace.workspaceFolders[0].uri.fsPath);
+                    toolsExtensionContext.showSymbolsBrowser(lib);
+                }                
+            }
+        )
+    );
+
+    context.subscriptions.push(
+        vscode.commands.registerCommand(
+            'azALDevTools.showProjectSymbolsWithoutDep',
+            () => {
+                if ((vscode.workspace.workspaceFolders) && (vscode.workspace.workspaceFolders.length > 0)) {
+                    let lib : ALProjectSymbolsLibrary = new ALProjectSymbolsLibrary(toolsExtensionContext,
+                        false,
+                        vscode.workspace.workspaceFolders[0].uri.fsPath);
+                    toolsExtensionContext.showSymbolsBrowser(lib);
+                }                
+            }
+        )
+    );
 
     //al action images viewer
     context.subscriptions.push(
@@ -86,7 +106,7 @@ export function activate(context: vscode.ExtensionContext) {
                 actionImageBrowser.show();
             }
         )
-    );
+    );        
 
     //----------------------------------
     //Outline context menu commands
@@ -135,19 +155,19 @@ export function activate(context: vscode.ExtensionContext) {
         context.subscriptions.push(
             vscode.commands.registerCommand(
                 'alOutline.runPage', offset => {
-                    ALObjectRunner.runInWebClient(offset);
+                    toolsExtensionContext.objectRunner.runSymbolAsync(offset);
                 }));
         context.subscriptions.push(
             vscode.commands.registerCommand(
                 'alOutline.runTable', 
                 offset => {
-                    ALObjectRunner.runInWebClient(offset);
+                    toolsExtensionContext.objectRunner.runSymbolAsync(offset);
                 }));
         context.subscriptions.push(
             vscode.commands.registerCommand(
                 'alOutline.runReport', 
                 offset => {
-                    ALObjectRunner.runInWebClient(offset);
+                    toolsExtensionContext.objectRunner.runSymbolAsync(offset);
                 }));
 
     return toolsExtensionContext;

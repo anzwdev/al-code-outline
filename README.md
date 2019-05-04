@@ -1,24 +1,55 @@
-# AL Code Outline for Visual Studio Code
+# AL Code Outline/AZ AL Dev Tools for Visual Studio Code
+
+This extension was originally named 'AL Code Outline' because it started as AL code outline panel from which it was possible to run different code generators on AL syntax nodes. Each new version has been adding new features, some of them were no longer related to the AL code outline panel. Current version of the extension is a collection of different al development tools and al outline panel is just one of them, so it seems that the name should be updated to reflect functionality changes.
 
 ## Features
 
-The AL Code Outline extension displays code outline of active file in the explorer pane. It was initially created to support AL files only, but AL project can also contain other file types for data (xml, json) and client add-ins (javascript, css, html, handlebars) so symbols tree works for them too. Basic functionality allows user to click on one of symbols tree nodes to move cursor to that symbol in the code editor. 
+"AL Code Outline/AZ AL Dev Tools" extension is a collection of these tools designed to help with AL extension development:
+- Symbols browser
+- AL symbols outline panel
+- AL code generators
+- Action images browser
 
-For AL file types, extension tries to extract a bit more information from the language server and can display context menu with additional options for some of the symbols. At this moment, context menu allows user to run pages, reports and tables in the web client and to create new card and list pages, reports, xmlports and queries with all fields from selected table symbols.
+### Symbols browser
 
-It is also possible to view symbols from symbol reference packages. Extension adds a new "Open in AL Object Browser" entry to explorer contect menu for *.app files. It opens a view that looks similar to c/al object designer. Selecting object entry in this view updates code outline view. It can also display context menu with options to show object definition and run table based object generators. Right click on object list column header opens another context menu (added by rvanbekkum), which allows to apply filter to the list.
+Symbols browser shows list of AL objects, allows to select one of them and then display details of that symbol. It is also possible to select multiple objects (by clicking on nodes with Ctrl key or using Ctrl+A) and then use context menu to run one of code generator on them. Browser can display symbols in 2 modes - list and tree view. In tree view screen is split into two parts showing objects tree on the left side and selected symbol on the right. In list view browser shows flat list of symbols and uses "AL Outline" panel to show details of selected object.
 
-It is also possible to select multiple rows in AL Object Browser by clicking on the lines with Ctrl or Shift keys pressed or by pressing Ctrl+A (another great rvanbekkum contribution). When multiple rows are selected, object generators will generate new files for all of them.
+Both views allow to filter data, tree view shows filter fields at the top of the screen, list view uses context menu on the header fields to set or clear filters.
 
-![Symbols browser](resources/screen-objectbrowser.gif)
+Tree view also supports keyboard navigation using arrow keys.
 
-![Page generator](resources/screen-wizard.gif)
+Symbols browser can display symbols from:
+    - *.app symbols file by right clicking on it and using "Open in AL Browser" command from the context menu
+    - current project symbols with all dependencies defined in app.json by running "AZ AL Dev Tools: Show All Project Symbols" from the "Command Palette"
+    - current project symbols without dependencies by running "AZ AL Dev Tools: Show Project Symbols without Dependencies" from the "Command Palette"
 
-![Code outline for a table](resources/screen-table.png)
+![*.app symbols browser (list)](resources/screen2-symbolsbrowserlist.png)
 
-![Code outline for a page](resources/screen-page.png)
+![*.app symbols browser (tree)](resources/screen2-symbolsbrowsertree.png)
 
-![Multiple objects selection in symbols browser](resources/screen-browserselection.png)
+![Project symbols browser](resources/screen2-projectsymbolstree.png)
+
+### AL symbols outline panel
+
+'AL Outline' panel displays code outline of the currently active editor. Basic functionality allows user to click on one of the symbols tree nodes to move cursor to that symbol in the code editor. It looks like standard VS Code Outline view, but supports syntax node types specific to AL, display custom icons and allows to invoke some commands on them using context menu. Currently symbol context menu allows user to run pages, reports and tables in the web client and run code generators to create new card and list pages, reports, xmlports and queries with all fields from selected table symbols. For tables and pages it is also possible to create page or table extension.
+
+It also supports other document types, so it can be used instead of standard outline view if AL project contains other files (i.e. javascript or css control add-ins files).
+
+![AL outline panel](resources/screen2-outline.png)
+
+![AL outline panel context menu](resources/screen2-outlinemenu.png)
+
+### AL code generators
+
+Extension contains code generators that can create new card and list pages, reports, xmlports and queries with all fields from selected table symbols. It can also create empty page or table extension from page or table symbols. Generators can be invoked using context menu on symbols in "AL Outline" view and in "Symbols Browser". 
+
+When new objects are created, generators use "CRS AL Language Extension" templates functionality to suggest file names.
+
+### Action images browser
+
+Extension adds new "AZ AL Dev Tools: Show Action Images" command to the "Command Palette" to load all available action images from active Microsoft AL Language extenstion and show them on a single web view panel. 
+
+![Action images](resources/screen2-actionimages.png)
 
 ## Contributors
 
@@ -28,7 +59,7 @@ It is also possible to select multiple rows in AL Object Browser by clicking on 
 
 ## Inspiration
 
-This extension has been inspired by "Code Outline" extension created by Patryk Zawadzki and "Tree Data Provider" example from "VS Code Extension Examples". I've decided to create it because I wanted something that could understand AL object structure and to be able to add some AL specific commands to tree nodes in the future. 
+This extension has originally been inspired by "Code Outline" extension created by Patryk Zawadzki and "Tree Data Provider" example from "VS Code Extension Examples". I've decided to create it because I wanted something that could understand AL object structure and to be able to add some AL specific commands to tree nodes in the future. 
 
 ## Settings
 

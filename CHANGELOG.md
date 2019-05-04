@@ -1,10 +1,22 @@
 # Change Log
 
+## 1.0.5
+
+ - Extension name change to 'AL Code Outline/AZ AL Dev Tools'
+ - Extension README update
+ - New commands:
+   - "AZ AL Dev Tools: Show All Project Symbols"
+   - "AZ AL Dev Tools: Show Project Symbols without Dependencies"
+   - "AZ AL Dev Tools: Show Action Images"
+ - If the latest version of Microsoft AL Extension is active, "Run Object in Web Client" functionality uses new ability to start debugger without compiling and deploying solution to the server 
+ - App files and project symbols processing moved to c# language server to improve performance
+
 ## 1.0.4
 
  - Github issue #25 fixed - Incorrect sorting of objects in AL Object Browser
  - Github issue #26 fixed - Generating Page Extensions no longer working
  - Github issue #27 fixed - Name Filter in 'TreeView' Object Browser filters on Type + Name
+
  Thank you rvanbekkum for reporting these problems 
 
 ## 1.0.3
