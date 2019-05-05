@@ -1,6 +1,6 @@
 {
 	"name": "al-code-outline",
-	"displayName": "AL Code Outline/AZ AL Dev Tools",
+	"displayName": "AZ AL Dev Tools/AL Code Outline",
 	"description": "AZ AL Development Tools: AL code outline, object browser, object creators",
 	"version": "1.0.5",
 	"publisher": "andrzejzwierzchowski",
@@ -23,6 +23,7 @@
 	],
 	"activationEvents": [
 		"onLanguage:al",
+		"onLanguage:alapp",
 		"onView:azALDevTools_SymbolsTreeProvider",
 		"onCommand:azALDevTools.viewALApp",
 		"onCommand:azALDevTools.viewActionImages",

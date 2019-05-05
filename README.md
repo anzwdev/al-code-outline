@@ -1,10 +1,10 @@
-# AL Code Outline/AZ AL Dev Tools for Visual Studio Code
+# AZ AL Dev Tools/AL Code Outline for Visual Studio Code
 
 This extension was originally named 'AL Code Outline' because it started as AL code outline panel from which it was possible to run different code generators on AL syntax nodes. Each new version has been adding new features, some of them were no longer related to the AL code outline panel. Current version of the extension is a collection of different al development tools and al outline panel is just one of them, so it seems that the name should be updated to reflect functionality changes.
 
 ## Features
 
-"AL Code Outline/AZ AL Dev Tools" extension is a collection of these tools designed to help with AL extension development:
+"AZ AL Dev Tools/AL Code Outline" extension is a collection of these tools designed to help with AL extension development:
 - Symbols browser
 - AL symbols outline panel
 - AL code generators
@@ -19,9 +19,9 @@ Both views allow to filter data, tree view shows filter fields at the top of the
 Tree view also supports keyboard navigation using arrow keys.
 
 Symbols browser can display symbols from:
-    - *.app symbols file by right clicking on it and using "Open in AL Browser" command from the context menu
-    - current project symbols with all dependencies defined in app.json by running "AZ AL Dev Tools: Show All Project Symbols" from the "Command Palette"
-    - current project symbols without dependencies by running "AZ AL Dev Tools: Show Project Symbols without Dependencies" from the "Command Palette"
+ - *.app symbols file by right clicking on it and using "Open in AL Browser" command from the context menu
+ - current project symbols with all dependencies defined in app.json by running "AZ AL Dev Tools: Show All Project Symbols" from the "Command Palette"
+ - current project symbols without dependencies by running "AZ AL Dev Tools: Show Project Symbols without Dependencies" from the "Command Palette"
 
 ![*.app symbols browser (list)](resources/screen2-symbolsbrowserlist.png)
 
@@ -47,7 +47,7 @@ When new objects are created, generators use "CRS AL Language Extension" templat
 
 ### Action images browser
 
-Extension adds new "AZ AL Dev Tools: Show Action Images" command to the "Command Palette" to load all available action images from active Microsoft AL Language extenstion and show them on a single web view panel. 
+Extension adds new "AZ AL Dev Tools: Show Action Images" command to the "Command Palette" to load all available action images from active Microsoft AL Language extension and show them on a single web view panel. 
 
 ![Action images](resources/screen2-actionimages.png)
 
@@ -56,6 +56,7 @@ Extension adds new "AZ AL Dev Tools: Show Action Images" command to the "Command
 - rvanbekkum: 
   * "New Page Extension" and "New Table Extension" options in AL Object Browser
   * Ability to save generated objects in files inside project folder
+  * AL Object Browser filters
 
 ## Inspiration
 

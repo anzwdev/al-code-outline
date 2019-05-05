@@ -2,7 +2,7 @@
 
 ## 1.0.5
 
- - Extension name change to 'AL Code Outline/AZ AL Dev Tools'
+ - Extension name change to 'AZ AL Dev Tools/AL Code Outline'
  - Extension README update
  - New commands:
    - "AZ AL Dev Tools: Show All Project Symbols"
