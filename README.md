@@ -8,6 +8,7 @@ This extension was originally named 'AL Code Outline' because it started as AL c
 - Symbols browser
 - AL symbols outline panel
 - AL code generators
+- Code actions
 - Action images browser
 
 ### Symbols browser
@@ -44,6 +45,16 @@ It also supports other document types, so it can be used instead of standard out
 Extension contains code generators that can create new card and list pages, reports, xmlports and queries with all fields from selected table symbols. It can also create empty page or table extension from page or table symbols. Generators can be invoked using context menu on symbols in "AL Outline" view and in "Symbols Browser". 
 
 When new objects are created, generators use "CRS AL Language Extension" templates functionality to suggest file names.
+
+### Code actions
+
+Extension adds VS Code editor code actions to some of al elements to help developers modify or insert code quickly. At this moment "Add multiple fields" code action is available when cursor is at these elements in the editor:
+ - "group" and "repeater" on pages
+ - "group", "repeater", "addfirst", "addlast", "addafter" and "addbefore" on page extensions
+ - "dataitem" on reports
+ - "dataitem" on queries 
+
+![Add multiple fields](resources/screen2-addfieldscodeaction.gif)
 
 ### Action images browser
 

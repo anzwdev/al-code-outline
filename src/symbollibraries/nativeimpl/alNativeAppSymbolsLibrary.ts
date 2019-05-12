@@ -114,7 +114,7 @@ export class ALNativeAppSymbolsLibrary extends AZSymbolsLibrary {
 
     public updateObjectList() {
         if (this._allSymbols) {
-            this._allSymbols.updateTree(true);
+            this._allSymbols.updateTree(true, this._twoWayTree);
             this.rootSymbol = this._allSymbols.toObjectTree();
         } else
             this.rootSymbol = undefined;

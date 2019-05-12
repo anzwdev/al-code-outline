@@ -1,5 +1,14 @@
 # Change Log
 
+## 1.0.6
+
+ - "Add multiple fields" code action added to
+   - "group" and "repeater" elements on pages
+   - "group", "repeated", "addfirst", "addlast", "addafter" and "addbefore" elements on page extensions
+   - "dataitem" element on reports
+   - "dataitem" element on queries
+ - Updated list of referenced nodejs modules
+
 ## 1.0.5
 
  - Extension name change to 'AZ AL Dev Tools/AL Code Outline'
