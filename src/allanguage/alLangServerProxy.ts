@@ -10,11 +10,9 @@ export class ALLangServerProxy {
     private langClient : vscodelangclient.LanguageClient | undefined;
     public extensionPath : string | undefined;
     public version : Version;
-    public majorVersionNumber : number;
 
     constructor() {
         this.version = new Version();
-        this.majorVersionNumber = 0;
         this.langClient = undefined;
         this.checkExtensionProperties();
     }
@@ -81,14 +79,13 @@ export class ALLangServerProxy {
                         if (!this.langClient)
                             return undefined;
 
-                            let docPath : string = path.join(vscode.workspace.workspaceFolders[0].uri.fsPath, '.vscode\\temp-al-proxy.al');
-                            let docUri : vscode.Uri = vscode.Uri.file(docPath);
+                        let docPath : string = path.join(vscode.workspace.workspaceFolders[0].uri.fsPath, '.vscode\\temp-al-proxy.al');
+                        let docUri : vscode.Uri = vscode.Uri.file(docPath);
     
-                            //let fs = require('fs');
-                            //if (!fs.existsSync(docPath)) {
-                            //    fs.writeFileSync(docPath, '', 'utf8');
-                            //}
-    
+                        //let fs = require('fs');
+                        //if (!fs.existsSync(docPath)) {
+                        //    fs.writeFileSync(docPath, '', 'utf8');
+                        //}
                     
                         //open virtual document
                         this.langClient.sendNotification('textDocument/didOpen', { textDocument: {
@@ -112,7 +109,31 @@ export class ALLangServerProxy {
                             },
                             context : undefined
                         }, token);
-                
+
+                        //clear document content
+                        this.langClient.sendNotification('textDocument/didChange', {
+                            textDocument: {
+                                uri: docUri.toString()                                
+                            },
+                            contentChanges: [
+                                {
+                                    range: {
+                                        start: {
+                                            line: 0,
+                                            character: 0
+                                        },
+                                        end: {
+                                            line: lastSourceLine,
+                                            character: lastSourceColumn
+                                        }
+
+                                    },
+                                    rangeLength: sourceCode.length,
+                                    text: ''
+                                }
+                            ]
+                        });
+
                         //close document
                         this.langClient.sendNotification('textDocument/didClose', { textDocument: {
                             uri: docUri.toString()
@@ -182,6 +203,28 @@ export class ALLangServerProxy {
 
         return out;
         
+    }
+
+    async getAvailablePageFieldList(pageName : string) : Promise<string[]> {
+        pageName = ALSyntaxHelper.toNameText(pageName);
+
+        let fileContent = "pageextension 0 _symbolcache extends " + pageName + "\n{\nlayout\n{\naddfirst(undefined)\n{\nfield()\n}\n}\n}";
+        let list = await this.getCompletionForSourceCode("Loading list of table fields.", fileContent,
+            6, 6, 9, 1);
+
+        //process results
+        let out : string[] = [];
+        
+        if (list && list.items) {
+            for (let i=0; i<list.items.length; i++) {
+                let item = list.items[i];
+                if (item.kind == vscode.CompletionItemKind.Field) {
+                    out.push(ALSyntaxHelper.fromNameText(item.label));
+                }
+            }
+        }
+
+        return out;
     }
 
     async getFieldList(tableName : string) : Promise<string[]> {

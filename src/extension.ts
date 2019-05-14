@@ -2,12 +2,9 @@
 // The module 'vscode' contains the VS Code extensibility API
 // Import the module and reference it with the alias vscode in your code below
 import * as vscode from 'vscode';
-import * as vzFileTemplates from 'vz-file-templates';
-import { ALObjectRunner } from './alObjectRunner';
 import { DevToolsExtensionContext } from './devToolsExtensionContext';
 import { SymbolsTreeProvider } from './outlineview/symbolsTreeProvider';
 import { ALAppSymbolsLibrary } from './symbollibraries/alAppSymbolsLibrary';
-import { ALSymbolsBrowser } from './alsymbolsbrowser/alSymbolsBrowser';
 import { ALActionImageBrowser } from './actionimagebrowser/alActionImageBrowser';
 import { PageBuilder } from './objectbuilders/pageBuilder';
 import { ReportBuilder } from './objectbuilders/reportBuilder';
@@ -15,8 +12,8 @@ import { XmlPortBuilder } from './objectbuilders/xmlPortBuilder';
 import { QueryBuilder } from './objectbuilders/queryBuilder';
 import { ALNativeAppSymbolsLibrariesCache } from './symbollibraries/nativeimpl/alNativeAppSymbolsLibrariesCache';
 import { AZSymbolsLibrary } from './symbollibraries/azSymbolsLibrary';
-import { ALObjectsBrowser } from './alsymbolsbrowser/alObjectsBrowser';
 import { ALProjectSymbolsLibrary } from './symbollibraries/alProjectSymbolsLibrary';
+import { ALCodeActionsProvider } from './codeactions/alCodeActionsProvider';
 
 // this method is called when your extension is activated
 // your extension is activated the very first time the command is executed
@@ -169,6 +166,11 @@ export function activate(context: vscode.ExtensionContext) {
                 offset => {
                     toolsExtensionContext.objectRunner.runSymbolAsync(offset);
                 }));
+
+    //code actions
+    let alCodeActionsProvider : ALCodeActionsProvider = new ALCodeActionsProvider(toolsExtensionContext);
+    context.subscriptions.push(
+        vscode.languages.registerCodeActionsProvider('al', alCodeActionsProvider));
 
     return toolsExtensionContext;
 }

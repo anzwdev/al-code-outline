@@ -17,6 +17,8 @@ export class AZDocumentSymbolsLibrary extends AZSymbolsLibrary {
 
     constructor(context : DevToolsExtensionContext, docUri : vscode.Uri | undefined) {
         super();
+        this._twoWayTree = true;
+        
         this._context = context;
         this._docUri = docUri;
         this._reloadRequired = true;
@@ -235,195 +237,32 @@ export class AZDocumentSymbolsLibrary extends AZSymbolsLibrary {
 
     //#endregion
 
-    /*
-    protected loadFromSymbolInformationList(parent: ALSymbolInfo, symbols : vscode.SymbolInformation[]) {
-        if (symbols) {
-            let stack : ALSymbolInfo[] = [];
-            //add nodes one by one
-            stack.push(parent);
+    //#region Symbols search
 
-            for (let i = 0; i<symbols.length;i++) {
-                let currNode : ALSymbolInfo = this.createFromVSCodeSymbol(symbols[i].kind, symbols[i].name);
-                //append child node
-                while ((stack.length > 1) && (stack[stack.length - 1].name != symbols[i].containerName)) {
-                    stack.pop();
-                }
-                stack[stack.length - 1].addChildItem(currNode);
-                stack.push(currNode);
-            }
-        }
+    findSymbolInRange(range: vscode.Range) : AZSymbolInformation | undefined {
+        if (!this.rootSymbol)
+            return undefined;
+        return this.findSymbolInRangeInt(this.rootSymbol, range);
     }
 
-    protected loadFromDocumentSymbolList(parent: ALSymbolInfo, symbols : vscode.DocumentSymbol[]) {
-        if (symbols) {
-            for (let i=0; i<symbols.length; i++) {            
-                let alSymbol = this.createFromVSCodeSymbol(symbols[i].kind, symbols[i].name);
-                this.loadFromDocumentSymbolList(alSymbol, symbols[i].children);
-                parent.addChildItem(alSymbol);
-            }
-        }
-    }
-
-    protected getSymbolPrefix(kind : ALSymbolKind) : string {
-        switch (kind) {
-            case ALSymbolKind.Field:
-                return "Field ";
-            case ALSymbolKind.PageObject:
-                return "Page ";
-            case ALSymbolKind.TableObject:
-                return "Table ";
-        }        
-        return "";
-    }
-
-    protected createFromVSCodeSymbol(vscodeSymbolKind : vscode.SymbolKind, name : string) : ALSymbolInfo {
-        let symbol : ALSymbolInfo = ALSymbolInfo.create(this.vsSymbolKindToAlSymbolKind(vscodeSymbolKind, name), ALSyntaxHelper.fromNameText(name));
-        let prefix : string = this.getSymbolPrefix(symbol.kind);
-
-        //update symbol name
-        if (symbol.kind == ALSymbolKind.Field) {
-            let pos : number = name.lastIndexOf(':');
-            if (pos >= 0)
-                name = name.substr(0, pos).trim();
-        }
-        //symbol name prefix
-        if ((prefix != "") && (name.startsWith(prefix)))
-            name = name.substr(prefix.length).trim();
-        //update name
-        symbol.name = ALSyntaxHelper.fromNameText(name);
-
-        return symbol;
-    }
-
-    protected vsSymbolKindToAlSymbolKind(vscodeSymbolKind : vscode.SymbolKind, name : string) : ALSymbolKind {
-        switch (vscodeSymbolKind) {
-            case vscode.SymbolKind.File:
-                return ALSymbolKind.Document;
-            case vscode.SymbolKind.Module:
-                return ALSymbolKind.SymbolGroup;
-            case vscode.SymbolKind.Namespace:
-                return ALSymbolKind.SymbolGroup;
-            case vscode.SymbolKind.Package:
-                return ALSymbolKind.SymbolGroup;
-            case vscode.SymbolKind.Class:
-                return this.classNameToAlSymbolKind(name);
-            case vscode.SymbolKind.Method:
-                return ALSymbolKind.MethodDeclaration;
-            case vscode.SymbolKind.Property:
-                return ALSymbolKind.Property;
-            case vscode.SymbolKind.Field:
-                return ALSymbolKind.Field;
-            case vscode.SymbolKind.Constructor:
-                return ALSymbolKind.MethodDeclaration;
-            case vscode.SymbolKind.Enum:
-                return ALSymbolKind.EnumType;
-            case vscode.SymbolKind.Interface:
-                return ALSymbolKind.UndefinedObject;
-            case vscode.SymbolKind.Function:
-                return ALSymbolKind.MethodDeclaration;
-            case vscode.SymbolKind.Variable:
-                return ALSymbolKind.Variable;
-            case vscode.SymbolKind.Constant:
-                return ALSymbolKind.Constant;
-            case vscode.SymbolKind.String:
-                return ALSymbolKind.Constant;
-            case vscode.SymbolKind.Number:
-                return ALSymbolKind.Constant;
-            case vscode.SymbolKind.Boolean:
-                return ALSymbolKind.Constant;
-            case vscode.SymbolKind.Array:
-                return ALSymbolKind.Variable;
-            case vscode.SymbolKind.Object:
-                return this.objectNameToAlSymbolKind(name);
-            case vscode.SymbolKind.Key:
-                return ALSymbolKind.Key;
-            case vscode.SymbolKind.Null:
-                return ALSymbolKind.Constant;
-            case vscode.SymbolKind.EnumMember:
-                return ALSymbolKind.EnumValue;
-            case vscode.SymbolKind.Struct:
-                return ALSymbolKind.UndefinedObject;
-            case vscode.SymbolKind.Event:
-                return ALSymbolKind.EventPublisher;
-            case vscode.SymbolKind.Operator:
-                return ALSymbolKind.Undefined;
-            case vscode.SymbolKind.TypeParameter:
-                return ALSymbolKind.Parameter;
-        }
-
-        return ALSymbolKind.Undefined;
-    }
-
-    protected classNameToAlSymbolKind(symbolName : string) : ALSymbolKind {
-        symbolName = symbolName.toLowerCase();
-        if (symbolName.startsWith("table"))
-            return ALSymbolKind.Table;
-        if (symbolName.startsWith("codeunit"))
-            return ALSymbolKind.Codeunit;
-        if (symbolName.startsWith("page"))
-            return ALSymbolKind.Page;
-        if (symbolName.startsWith("report"))
-            return ALSymbolKind.Report;
-        if (symbolName.startsWith("query"))
-            return ALSymbolKind.Query;
-        if (symbolName.startsWith("xmlport"))
-            return ALSymbolKind.XmlPort;
-        if (symbolName.startsWith("tableextension"))
-            return ALSymbolKind.TableExtension;
-        if (symbolName.startsWith("pageextension"))
-            return ALSymbolKind.PageExtension;
-        return ALSymbolKind.UndefinedObject;
-    }
-
-    protected objectNameToAlSymbolKind(symbolName : string) : ALSymbolKind {
-        symbolName = symbolName.toLowerCase();
-        if (symbolName.startsWith("tableextension"))
-            return ALSymbolKind.TableExtension;
-        if (symbolName.startsWith("pageextension"))
-            return ALSymbolKind.PageExtension;
-        if (symbolName.startsWith("key "))
-            return ALSymbolKind.Key;
-        if (symbolName.startsWith("fieldgroup"))
-            return ALSymbolKind.FieldGroup;
-        if (symbolName.startsWith("action "))
-            return ALSymbolKind.Action;
+    protected findSymbolInRangeInt(symbol: AZSymbolInformation, range: vscode.Range) : AZSymbolInformation | undefined {
+        let found : AZSymbolInformation | undefined = undefined;
         
-        //page fields
-        if (symbolName.startsWith("field "))
-            return ALSymbolKind.Field;
-        if (symbolName.startsWith("usercontrol "))
-            return ALSymbolKind.Field;
-        if (symbolName.startsWith("label "))
-            return ALSymbolKind.Constant;
+        if (symbol.range.intersectVsRange(range)) {
+            found = symbol;
+        }
 
-        //page field group controls
-        if (symbolName.startsWith("group "))
-            return ALSymbolKind.Group;
-        if (symbolName.startsWith("cuegroup "))
-            return ALSymbolKind.Group;
-        if (symbolName.startsWith("fixed "))
-            return ALSymbolKind.Group;
-        if (symbolName.startsWith("grid "))
-            return ALSymbolKind.Group;
-        if (symbolName.startsWith("area "))
-            return ALSymbolKind.Group;
-        if (symbolName.startsWith("repeater "))
-            return ALSymbolKind.Group;
-        if (symbolName.startsWith("part "))
-            return ALSymbolKind.Group;
-        if (symbolName.startsWith("systempart "))
-            return ALSymbolKind.Group;
+        if (symbol.childSymbols) {
+            for (let i=0; i<symbol.childSymbols.length; i++) {
+                let foundChild = this.findSymbolInRangeInt(symbol.childSymbols[i], range);
+                if (foundChild)
+                    return foundChild;
+            }
+        }
 
-        //enum
-        if (symbolName.startsWith("enum value "))
-            return ALSymbolKind.EnumValue;
-        if (symbolName.startsWith("enum "))
-            return ALSymbolKind.Enum;
-        if (symbolName.startsWith("enumextension "))
-            return ALSymbolKind.EnumExtension;
-
-        return ALSymbolKind.Undefined;       
+        return found;
     }
-    */
+
+    //#region
 
 } 

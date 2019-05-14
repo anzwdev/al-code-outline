@@ -96,6 +96,25 @@ export class FileBuilder {
         return '';
     }
 
+    public static SymbolKindToCamelCaseName(symbolKind : AZSymbolKind) {
+        switch (symbolKind) {
+            case AZSymbolKind.TableObject: return 'Table';
+            case AZSymbolKind.CodeunitObject: return 'Codeunit';
+            case AZSymbolKind.PageObject: return 'Page';
+            case AZSymbolKind.ReportObject: return 'Report';
+            case AZSymbolKind.QueryObject: return 'Query';
+            case AZSymbolKind.XmlPortObject: return 'XmlPort';
+            case AZSymbolKind.TableExtensionObject: return 'TableExtension';
+            case AZSymbolKind.PageExtensionObject: return 'PageExtension';
+            case AZSymbolKind.ControlAddInObject: return 'ControlAddIn';
+            case AZSymbolKind.ProfileObject: return 'Profile';
+            case AZSymbolKind.PageCustomizationObject: return 'PageCustomization';
+            case AZSymbolKind.EnumType: return 'Enum';
+            case AZSymbolKind.DotNetPackage: return 'DotNetPackage';
+            case AZSymbolKind.EnumExtensionType: return 'EnumExtension';
+       }
+        return '';
+    }
     public static getAutoGenerateFiles() : boolean {
         return vscode.workspace.getConfiguration('alOutline').get('autoGenerateFiles');
     }
@@ -184,6 +203,7 @@ export class FileBuilder {
 
     public static async getPatternGeneratedRelativeFilePath(objectType: AZSymbolKind) : Promise<string> {       
         let typeName = this.getObjectTypeFromSymbolInfo(objectType);
+        let typeNameCC = this.SymbolKindToCamelCaseName(objectType);
         let shortTypeName : string = '';                
         let output: string = vscode.workspace.getConfiguration('alOutline').get('autoGenerateFileDirectory');
         
@@ -191,7 +211,8 @@ export class FileBuilder {
         if (crsLangExt)
             shortTypeName = crsLangExt.ObjectNamesApi.GetBestPracticeAbbreviatedObjectType(this.SymbolKindToCrsName(objectType));
 
-        output = this.replacePattern(output, '<ObjectType>', typeName);
+        output = this.replacePattern(output, '<ObjectTypeLC>', typeName);
+        output = this.replacePattern(output, '<ObjectType>', typeNameCC);
         output = this.replacePattern(output, '<ObjectTypeShort>', shortTypeName);
 
         return output;

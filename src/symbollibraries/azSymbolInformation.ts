@@ -14,6 +14,10 @@ export class AZSymbolInformation {
     childSymbols : AZSymbolInformation[] | undefined;
     range: TextRange | undefined;
     selectionRange : TextRange | undefined;
+    contentRange: TextRange | undefined;
+    source: string | undefined;
+    extends: string | undefined;
+    parent: AZSymbolInformation | undefined;
 
     constructor() {
         this.id = 0;
@@ -26,6 +30,10 @@ export class AZSymbolInformation {
         this.childSymbols = undefined;
         this.range = undefined;
         this.selectionRange = undefined;
+        this.contentRange = undefined;
+        this.source = undefined;
+        this.extends = undefined;
+        this.parent = undefined;
     }
 
     public static create(newKind : AZSymbolKind, newName : string) {
@@ -56,6 +64,12 @@ export class AZSymbolInformation {
             obj.range = TextRange.fromAny(source.range);
         if (source.selectionRange)
             obj.selectionRange = TextRange.fromAny(source.selectionRange);
+        if (source.contentRange)
+            obj.contentRange = TextRange.fromAny(source.contentRange);
+        if (source.source)
+            obj.source = source.source;
+        if (source.extends)
+            obj.extends = source.extends;
 
         if (source.childSymbols)
             for (let i=0; i<source.childSymbols.length; i++)
@@ -121,7 +135,7 @@ export class AZSymbolInformation {
         }
     }
 
-    public updateTree(updateChildItems : boolean) {
+    public updateTree(updateChildItems : boolean, twoWayTree: boolean) {
         //update icon
         this.icon = this.getIconName();
 
@@ -130,7 +144,9 @@ export class AZSymbolInformation {
             for (let i=0; i<this.childSymbols.length; i++)
             {
                 this.childSymbols[i].idx = i;
-                this.childSymbols[i].updateTree(true);
+                if (twoWayTree)
+                    this.childSymbols[i].parent = this;
+                this.childSymbols[i].updateTree(true, twoWayTree);
             }
         }
     }
@@ -282,6 +298,20 @@ export class AZSymbolInformation {
             }
         }
         return undefined;
+    }
+
+    public findParentByKind(parentKind: AZSymbolKind) {
+        let symbol = this.parent;
+        while ((symbol) && (symbol.kind != parentKind))
+            symbol = symbol.parent;
+        return symbol;
+    }
+
+    public findParentByKindList(parentKind: AZSymbolKind[]) {
+        let symbol = this.parent;
+        while ((symbol) && (parentKind.indexOf(symbol.kind) < 0))
+            symbol = symbol.parent;
+        return symbol;
     }
 
 }

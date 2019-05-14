@@ -28,6 +28,11 @@ export class ALSyntaxWriter {
             this.indentText = "";
     }
 
+    public setIndent(value : number) {
+        let text : string = " ";
+        this.indentText = text.repeat(value);
+    }
+
     public writeLine(line : string) {
         this.content += (this.indentText + line + "\n");
     }

@@ -25,7 +25,7 @@ export class ALBaseServerSideLibrary extends AZSymbolsLibrary {
             for (let i=0; i<data.symbols.length; i++) {
                 let symbol = AZSymbolInformation.fromAny(data.symbols[i]);
                 if (symbol) {
-                    symbol.updateTree(true);
+                    symbol.updateTree(true, this._twoWayTree);
                     symbolList.push(symbol);
                 }
             }

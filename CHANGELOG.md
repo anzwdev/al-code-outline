@@ -1,5 +1,18 @@
 # Change Log
 
+## 1.0.6
+
+ - "Add multiple fields" code action added to
+   - "group" and "repeater" elements on pages
+   - "group", "repeated", "addfirst", "addlast", "addafter" and "addbefore" elements on page extensions
+   - "dataitem" element on reports
+   - "dataitem" element on queries
+ - Updated list of referenced nodejs modules
+ - Github issue #28 fixed - <ObjectType> placeholder for camel-cased folder names. 
+ - Github issue #29 fixed - Bug with generating objects from AL Object Browser without selecting row
+
+ Thank you rvanbekkum for reporting issues #28 and #29
+
 ## 1.0.5
 
  - Extension name change to 'AZ AL Dev Tools/AL Code Outline'

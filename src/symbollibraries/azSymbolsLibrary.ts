@@ -8,7 +8,8 @@ export class AZSymbolsLibrary {
     displayName : string;
     name : string;
     rootSymbol : AZSymbolInformation | undefined;
-    showObjectIds : Boolean;
+    showObjectIds : boolean;
+    protected _twoWayTree: boolean;
 
     private _onSymbolsChanged: vscode.EventEmitter<AZSymbolsLibrary> = new vscode.EventEmitter<AZSymbolsLibrary>();
 	readonly onSymbolsChanged: vscode.Event<AZSymbolsLibrary> = this._onSymbolsChanged.event;
@@ -18,6 +19,7 @@ export class AZSymbolsLibrary {
         this.displayName = '';
         this.name = '';
         this.rootSymbol = undefined;
+        this._twoWayTree = false;
     }
 
     async loadAsync(forceReload : boolean) : Promise<boolean> {
@@ -56,7 +58,7 @@ export class AZSymbolsLibrary {
 
     public updateObjectList() {
         if (this.rootSymbol) {
-            this.rootSymbol.updateTree(true);
+            this.rootSymbol.updateTree(true, this._twoWayTree);
         }
     }
 
