@@ -8,6 +8,10 @@
    - "dataitem" element on reports
    - "dataitem" element on queries
  - Updated list of referenced nodejs modules
+ - Github issue #28 fixed - <ObjectType> placeholder for camel-cased folder names. 
+ - Github issue #29 fixed - Bug with generating objects from AL Object Browser without selecting row
+
+ Thank you rvanbekkum for reporting issues #28 and #29
 
 ## 1.0.5
 

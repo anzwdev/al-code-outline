@@ -10,11 +10,9 @@ export class ALLangServerProxy {
     private langClient : vscodelangclient.LanguageClient | undefined;
     public extensionPath : string | undefined;
     public version : Version;
-    public majorVersionNumber : number;
 
     constructor() {
         this.version = new Version();
-        this.majorVersionNumber = 0;
         this.langClient = undefined;
         this.checkExtensionProperties();
     }

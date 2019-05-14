@@ -31,7 +31,7 @@ export class ALBaseSymbolsBrowser extends BaseWebViewEditor {
 
     protected processWebViewMessage(message : any) : boolean {
         if (super.processWebViewMessage(message))
-            return true;
+            return true;        
 
         switch (message.command) {
             case 'definition':

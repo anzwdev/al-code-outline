@@ -371,12 +371,38 @@ function modeBtnClick(btn) {
     setMode(btn.dataset.mode, false);
 }
 
+function arraysEq(array1, array2) {
+    if (array1.length != array2.length)
+        return false;
+    for (let i=0; i<array1.length;i++) {
+        if (array1[i] != array2[i])
+            return false;
+    }
+    return true;
+}
+
+function containsPath(pathlist, path) {
+    for (let i=0; i<pathlist.length; i++) {
+        if (arraysEq(path, pathlist[i]))
+            return true;
+    }
+    return false;
+}
+
 function execObjCommand(cmdname, selectedrow, objtype) {
     if (vscodeContext) {
+        //merge path with selectedpaths
+        let path = getSymbolRef(selectedrow);
+        let selpaths = getSelectedObjectIds(objtype);
+        if (!selpaths)
+            selpaths = [];
+        if ((path) && (!containsPath(selpaths, path)))
+            selpaths.push(path);
+  
         vscodeContext.postMessage({
             command : cmdname,
-            path : getSymbolRef(selectedrow),
-            selpaths: getSelectedObjectIds(objtype)});
+            path : path,
+            selpaths: selpaths});
     }
 }
 

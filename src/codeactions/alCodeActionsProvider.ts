@@ -19,6 +19,9 @@ export class ALCodeActionsProvider implements vscode.CodeActionProvider {
     }
 
     provideCodeActions(document: vscode.TextDocument, range: vscode.Range | vscode.Selection, context: vscode.CodeActionContext, token: vscode.CancellationToken): vscode.ProviderResult<(vscode.Command | vscode.CodeAction)[]> {
+        if (this._toolsExtensionContext.alLangProxy.version.major < 1)
+            return [];
+
         let actions: vscode.CodeAction[] = [];
 
         let symbol = this._toolsExtensionContext.activeDocumentSymbols.findSymbolInRange(range);
