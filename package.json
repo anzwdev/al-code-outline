@@ -2,7 +2,7 @@
 	"name": "al-code-outline",
 	"displayName": "AZ AL Dev Tools/AL Code Outline",
 	"description": "AZ AL Development Tools: AL code outline, object browser, object creators",
-	"version": "1.0.6",
+	"version": "1.0.7",
 	"publisher": "andrzejzwierzchowski",
 	"engines": {
 		"vscode": "^1.30.0"
@@ -252,7 +252,6 @@
 	"dependencies": {
 		"adm-zip": "^0.4.11",
 		"opn": "^5.4.0",
-		"vscode-languageclient": "^5.2.1",
-		"vz-file-templates": "^1.0.1"
+		"vscode-languageclient": "^5.2.1"
 	}
 }

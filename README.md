@@ -5,11 +5,24 @@ This extension was originally named 'AL Code Outline' because it started as AL c
 ## Features
 
 "AZ AL Dev Tools/AL Code Outline" extension is a collection of these tools designed to help with AL extension development:
+- AL objects wizards
 - Symbols browser
 - AL symbols outline panel
 - AL code generators
 - Code actions
 - Action images browser
+
+### AL objects wizards
+
+Extensions add new "New AL File Wizard" item to EXPLORER context menu. It allows to run one of these wizards to create new AL object file:
+   - Page Wizard
+   - XmlPort Wizard
+   - Report Wizard
+   - Query Wizard
+   - Enum Wizard
+   - Enum Extension Wizard
+
+ ![Page Wizard](resources/screen2-pagewizard.gif)
 
 ### Symbols browser
 
