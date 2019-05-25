@@ -4,7 +4,8 @@
         <script src="##EXTENSIONPATH##/htmlresources/lib/jquery/jquery.min.js"></script>
         <script src="##EXTENSIONPATH##/htmlresources/lib/jquery-ui/jquery-ui.min.js"></script>
         <script src="##EXTENSIONPATH##/htmlresources/lib/autocomplete/autocomplete.js"></script>
-        <script src="##EXTENSIONPATH##/htmlresources/lib/wizards/wizards.js"></script>
+        <script src="##EXTENSIONPATH##/htmlresources/lib/filteredlist/filteredlist.js"></script>
+        <script src="##EXTENSIONPATH##/htmlresources/lib/wizards/tablebasedobjectwizard.js"></script>
         <script src="##EXTENSIONPATH##/htmlresources/alquerywizard/js/alquerywizard.js"></script>
         <link rel="stylesheet" type="text/css" href="##EXTENSIONPATH##/htmlresources/lib/jquery-ui/jquery-ui.min.css">
         <link rel="stylesheet" type="text/css" href="##EXTENSIONPATH##/htmlresources/lib/autocomplete/autocomplete.css">
@@ -97,6 +98,7 @@
                 <div class="multiselect">
                     <div class="multiselsrc">
                         <div class="mselcaption">Available Fields:</div>
+                        <input class="mselfilter" id="srcfieldsfilter" type="text" placeholder="Enter fields filter...">
                         <select class="msellist" id="srcfields" multiple="multiple" ondblclick="wizard.onMoveFieldsRight()"></select>
                     </div>
 
@@ -109,6 +111,7 @@
 
                     <div class="multiseldest">
                         <div class="mselcaption">Selected Fields:</div>
+                        <input class="mselfilter" id="destfieldsfilter" type="text" placeholder="Enter fields filter...">
                         <select class="msellist" id="destfields" multiple="multiple" ondblclick="wizard.onMoveFieldsLeft()">
                         </select>
                     </div>

@@ -8,6 +8,8 @@ import { ALObjectRunner } from './alObjectRunner';
 import { AZSymbolsLibrary } from './symbollibraries/azSymbolsLibrary';
 import { ALSymbolsBrowser } from './alsymbolsbrowser/alSymbolsBrowser';
 import { ALObjectsBrowser } from './alsymbolsbrowser/alObjectsBrowser';
+import { ALOutlineService } from './services/alOutlineService';
+import { ALObjectWizardsService } from './services/alObjectWizardsService';
 
 export class DevToolsExtensionContext implements vscode.Disposable {
     alLangProxy : ALLangServerProxy;    
@@ -15,6 +17,9 @@ export class DevToolsExtensionContext implements vscode.Disposable {
     toolsLangServerClient : ToolsLangServerClient;
     activeDocumentSymbols : AZActiveDocumentSymbolsLibrary;
     objectRunner : ALObjectRunner;
+    alOutlineService : ALOutlineService;
+    alWizardsService : ALObjectWizardsService;
+
 
     constructor(context : vscode.ExtensionContext) {
         this.alLangProxy = new ALLangServerProxy()
@@ -27,6 +32,10 @@ export class DevToolsExtensionContext implements vscode.Disposable {
         this.toolsLangServerClient = new ToolsLangServerClient(context, alExtensionPath);
         this.activeDocumentSymbols = new AZActiveDocumentSymbolsLibrary(this);
         this.objectRunner = new ALObjectRunner(this);
+
+        this.alOutlineService = new ALOutlineService(this);
+        this.alWizardsService = new ALObjectWizardsService(this);
+    
     }
 
     getUseSymbolsBrowser() : boolean {
