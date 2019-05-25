@@ -29,7 +29,8 @@
 		"onCommand:azALDevTools.viewActionImages",
 		"onCommand:azALDevTools.showAllProjectSymbols",
 		"onCommand:azALDevTools.showProjectSymbolsWithoutDep",
-		"onCommand:azALDevTools.refreshOutlineView"
+		"onCommand:azALDevTools.refreshOutlineView",
+		"onCommand:azALDevTools.newALFile"
 	],
 	"main": "./out/extension",
 	"icon": "resources/alcodeoutline.png",
@@ -109,6 +110,10 @@
 			{
 				"command": "alOutline.runTable",
 				"title": "Run in Web Client"
+			},
+			{
+				"command": "azALDevTools.newALFile",
+				"title": "New AL File Wizard"
 			}
 		],
 		"menus": {
@@ -158,12 +163,16 @@
 					"command": "azALDevTools.viewALApp",
 					"group": "navigation",
 					"when": "resourceLangId == alapp"
+				},
+				{
+					"command": "azALDevTools.newALFile",
+					"group": "navigation"
 				}
 			]
 		},
 		"configuration": [
 			{
-				"title": "AL Code Outline",
+				"title": "AZ AL Dev Tools/AL Code Outline",
 				"properties": {
 					"alOutline.enableFeaturePreview": {
 						"type": "boolean",

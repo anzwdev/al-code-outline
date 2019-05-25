@@ -1,11 +1,10 @@
-import * as vscode from 'vscode';
-import { ALObjectWriter } from './alObjectWriter';
-import { FileBuilder } from './fileBuilder';
-import { ObjectBuilder } from "./objectBuilder";
-import { AZSymbolInformation } from '../symbollibraries/azSymbolInformation';
-import { AZSymbolKind } from '../symbollibraries/azSymbolKind';
+import { FileBuilder } from '../fileBuilder';
+import { AZSymbolInformation } from '../../symbollibraries/azSymbolInformation';
+import { AZSymbolKind } from '../../symbollibraries/azSymbolKind';
+import { ALSymbolsBasedWizard } from './alSymbolsBasedWizard';
+import { ALSyntaxWriter } from '../../allanguage/alSyntaxWriter';
 
-export class QueryBuilder extends ObjectBuilder {
+export class ALSymbolsBasedQueryWizard extends ALSymbolsBasedWizard {
 
     constructor() {
         super();
@@ -75,9 +74,9 @@ export class QueryBuilder extends ObjectBuilder {
 
     buildQueryForTable(tableSymbol : AZSymbolInformation, objectId : number, objectName : string) : string {
         //generate file content
-        let writer : ALObjectWriter = new ALObjectWriter();
+        let writer : ALSyntaxWriter = new ALSyntaxWriter();
 
-        writer.writeStartObject("query", objectId, objectName);
+        writer.writeStartObject("query", objectId.toString(), objectName);
         writer.writeProperty("QueryType", "Normal");
         writer.writeLine("");
 
@@ -96,7 +95,7 @@ export class QueryBuilder extends ObjectBuilder {
         return writer.toString();
     }
 
-    private appendElements(writer : ALObjectWriter, tableSymbol : AZSymbolInformation) {
+    private appendElements(writer : ALSyntaxWriter, tableSymbol : AZSymbolInformation) {
         var dataItemName = writer.createName(tableSymbol.name);
         writer.writeStartNamedBlock("elements");
 

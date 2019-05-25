@@ -64,7 +64,7 @@ export class ALSyntaxWriter {
 
     public writeStartObject(type : string, id : string, name : string) {
         var objectIdText : string;
-        if (id == '')
+        if ((id == '') || (id == '0'))
             objectIdText = 'id';
         else
             objectIdText = id.toString();
@@ -78,7 +78,7 @@ export class ALSyntaxWriter {
 
     public writeStartExtensionObject(type : string, id : string, extname : string, targetName : string) {
         var objectIdText : string;
-        if (id == '')
+        if ((id == '') || (id == '0'))
             objectIdText = 'id';
         else
             objectIdText = id.toString();

@@ -6,14 +6,15 @@ import { DevToolsExtensionContext } from './devToolsExtensionContext';
 import { SymbolsTreeProvider } from './outlineview/symbolsTreeProvider';
 import { ALAppSymbolsLibrary } from './symbollibraries/alAppSymbolsLibrary';
 import { ALActionImageBrowser } from './actionimagebrowser/alActionImageBrowser';
-import { PageBuilder } from './objectbuilders/pageBuilder';
-import { ReportBuilder } from './objectbuilders/reportBuilder';
-import { XmlPortBuilder } from './objectbuilders/xmlPortBuilder';
-import { QueryBuilder } from './objectbuilders/queryBuilder';
+import { ALSymbolsBasedPageWizard } from './objectwizards/symbolwizards/alSymbolsBasedPageWizard';
+import { ALSymbolsBasedReportWizard } from './objectwizards/symbolwizards/alSymbolsBasedReportWizard';
+import { ALSymbolsBasedXmlPortWizard } from './objectwizards/symbolwizards/alSymbolsBasedXmlPortWizard';
+import { ALSymbolsBasedQueryWizard } from './objectwizards/symbolwizards/alSymbolsBasedQueryWizard';
 import { ALNativeAppSymbolsLibrariesCache } from './symbollibraries/nativeimpl/alNativeAppSymbolsLibrariesCache';
 import { AZSymbolsLibrary } from './symbollibraries/azSymbolsLibrary';
 import { ALProjectSymbolsLibrary } from './symbollibraries/alProjectSymbolsLibrary';
 import { ALCodeActionsProvider } from './codeactions/alCodeActionsProvider';
+import { ALObjectWizardsService } from './services/alObjectWizardsService';
 
 // this method is called when your extension is activated
 // your extension is activated the very first time the command is executed
@@ -118,35 +119,35 @@ export function activate(context: vscode.ExtensionContext) {
         vscode.commands.registerCommand(
         'alOutline.createCardPage', 
         offset => {
-            let builder = new PageBuilder();
+            let builder = new ALSymbolsBasedPageWizard();
             builder.showPageWizard(offset, 'Card');
         }));
     context.subscriptions.push(
         vscode.commands.registerCommand(
             'alOutline.createListPage', 
             offset => {
-                let builder = new PageBuilder();
+                let builder = new ALSymbolsBasedPageWizard();
                 builder.showPageWizard(offset, 'List');
         }));
     context.subscriptions.push(
         vscode.commands.registerCommand(
             'alOutline.createReport', 
             offset => {
-                let builder = new ReportBuilder();
+                let builder = new ALSymbolsBasedReportWizard();
                 builder.showReportWizard(offset);
         }));
     context.subscriptions.push(
         vscode.commands.registerCommand(
             'alOutline.createXmlPort', 
             offset => {
-                let builder = new XmlPortBuilder();
+                let builder = new ALSymbolsBasedXmlPortWizard();
                 builder.showXmlPortWizard(offset);
         }));
     context.subscriptions.push(
         vscode.commands.registerCommand(
             'alOutline.createQuery', 
             offset => {
-                let builder = new QueryBuilder();
+                let builder = new ALSymbolsBasedQueryWizard();
                 builder.showQueryWizard(offset);
         }));
         context.subscriptions.push(
@@ -166,6 +167,8 @@ export function activate(context: vscode.ExtensionContext) {
                 offset => {
                     toolsExtensionContext.objectRunner.runSymbolAsync(offset);
                 }));
+
+    let alWizardsService = new ALObjectWizardsService(toolsExtensionContext);
 
     //code actions
     let alCodeActionsProvider : ALCodeActionsProvider = new ALCodeActionsProvider(toolsExtensionContext);

@@ -148,3 +148,10 @@ input, select {
     border: 1px solid var(--vscode-panel-border);
     color: var(--vscode-input-foreground);
 }
+input:focus, select:focus, div:focus {
+    outline-color: var(--vscode-focusBorder) !important;
+}
+button:focus {
+    outline-style: double;
+    outline-color: var(--vscode-focusBorder) !important;
+}

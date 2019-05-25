@@ -1,11 +1,11 @@
 import * as vscode from 'vscode';
-import { ALObjectWriter } from "./alObjectWriter";
-import { FileBuilder } from './fileBuilder';
-import { ObjectBuilder } from './objectBuilder';
-import { AZSymbolInformation } from '../symbollibraries/azSymbolInformation';
-import { AZSymbolKind } from '../symbollibraries/azSymbolKind';
+import { AZSymbolInformation } from '../../symbollibraries/azSymbolInformation';
+import { AZSymbolKind } from '../../symbollibraries/azSymbolKind';
+import { ALSymbolsBasedWizard } from './alSymbolsBasedWizard';
+import { FileBuilder } from '../fileBuilder';
+import { ALSyntaxWriter } from '../../allanguage/alSyntaxWriter';
 
-export class PageBuilder extends ObjectBuilder {
+export class ALSymbolsBasedPageWizard extends ALSymbolsBasedWizard {
 
     constructor() {
         super();
@@ -96,9 +96,9 @@ export class PageBuilder extends ObjectBuilder {
     private buildPageForTable(tableSymbol : AZSymbolInformation, objectId : number, objectName : string, pageType : string, fieldGroupType : string) : string {
        
         //generate file content
-        let writer : ALObjectWriter = new ALObjectWriter();
+        let writer : ALSyntaxWriter = new ALSyntaxWriter();
 
-        writer.writeStartObject("page", objectId, objectName);
+        writer.writeStartObject("page", objectId.toString(), objectName);
         writer.writeLine("");
         writer.writeProperty("PageType", pageType);
         writer.writeProperty("SourceTable", writer.encodeName(tableSymbol.name));

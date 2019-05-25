@@ -1,11 +1,11 @@
 import * as vscode from 'vscode';
-import { ALObjectWriter } from "./alObjectWriter";
-import { FileBuilder } from './fileBuilder';
-import { ObjectBuilder } from './objectBuilder';
-import { AZSymbolInformation } from '../symbollibraries/azSymbolInformation';
-import { AZSymbolKind } from '../symbollibraries/azSymbolKind';
+import { FileBuilder } from '../fileBuilder';
+import { AZSymbolInformation } from '../../symbollibraries/azSymbolInformation';
+import { AZSymbolKind } from '../../symbollibraries/azSymbolKind';
+import { ALSymbolsBasedWizard } from './alSymbolsBasedWizard';
+import { ALSyntaxWriter } from '../../allanguage/alSyntaxWriter';
 
-export class TableExtBuilder extends ObjectBuilder {
+export class ALSymbolsBasedTableExtWizard extends ALSymbolsBasedWizard {
 
     constructor() {
         super();
@@ -76,9 +76,9 @@ export class TableExtBuilder extends ObjectBuilder {
 
     private buildTableExtForTable(tableSymbol : AZSymbolInformation, objectId : number, extObjectName : string) : string {
         
-        let writer : ALObjectWriter = new ALObjectWriter();
+        let writer : ALSyntaxWriter = new ALSyntaxWriter();
 
-        writer.writeStartExtensionObject("tableextension", objectId, extObjectName, tableSymbol.name);
+        writer.writeStartExtensionObject("tableextension", objectId.toString(), extObjectName, tableSymbol.name);
         
         writer.writeStartFields();
 
