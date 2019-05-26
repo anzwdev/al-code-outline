@@ -95,6 +95,10 @@ class EnumExtWizard {
 
     onFinish() {
         this.collectStepData(true);
+
+        if (!this.canFinish())
+            return;
+            
         this.sendMessage({
             command: "finishClick",
             data: {
@@ -121,6 +125,17 @@ class EnumExtWizard {
         this._data.firstValueId = $("#firstvalueid").val();
         this._data.valueList = $("#valuelist").val();
         this._data.captionList = $("#captionlist").val();
+    }
+
+    canFinish() {
+        if ((!this._data.objectName) || (this._data.objectName == '')) {
+            this.sendMessage({
+                command: 'showError',
+                message: 'Please enter object name.'
+            });
+            return false;
+        }
+        return true;
     }
 
 }

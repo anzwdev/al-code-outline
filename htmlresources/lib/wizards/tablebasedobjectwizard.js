@@ -151,4 +151,15 @@ class TableBasedObjectWizard {
     setStep(newStep) {
     }
 
+    canFinish() {
+        if ((!this._data.objectName) || (this._data.objectName == '')) {
+            this.sendMessage({
+                command: 'showError',
+                message: 'Please enter object name.'
+            });
+            return false;
+        }
+        return true;
+    }
+
 }

@@ -38,6 +38,10 @@ class QueryWizard extends TableBasedObjectWizard {
    
     onFinish() {
         this.collectStepData(true);
+
+        if (!this.canFinish())
+            return;
+            
         this.sendMessage({
             command: "finishClick",
             data: {

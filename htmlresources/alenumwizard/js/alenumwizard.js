@@ -2,7 +2,7 @@ class EnumWizard {
 
     constructor() {
         //initialize properties
-        _step = 1;
+        this._step = 1;
         this._vscode = acquireVsCodeApi();
        
         // Handle messages sent from the extension to the webview
@@ -41,6 +41,10 @@ class EnumWizard {
    
     onFinish() {
         this.collectStepData(true);
+
+        if (!this.canFinish())
+            return;
+            
         this.sendMessage({
             command: "finishClick",
             data: {
@@ -65,6 +69,17 @@ class EnumWizard {
         this._data.valueList = $("#valuelist").val();
         this._data.captionList = $("#captionlist").val();
         this._data.extensible = $("#extensible").prop("checked");
+    }
+
+    canFinish() {
+        if ((!this._data.objectName) || (this._data.objectName == '')) {
+            this.sendMessage({
+                command: 'showError',
+                message: 'Please enter object name.'
+            });
+            return false;
+        }
+        return true;
     }
 
 }

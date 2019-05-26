@@ -30,6 +30,10 @@ class XmlPortWizard extends TableBasedObjectWizard {
 
     onFinish() {
         this.collectStepData();
+
+        if (!this.canFinish())
+            return;
+            
         this.sendMessage({
             command: "finishClick",
             data: {
