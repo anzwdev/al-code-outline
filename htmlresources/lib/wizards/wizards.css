@@ -7,20 +7,13 @@ body {
     flex-direction: column;
     align-items: stretch;
     justify-content: stretch;
+    padding: 0 0 !important;
 }
 header {
     flex: 0 0 0;
 }
 
 .main {
-    /*
-    position: absolute;
-    top:0;
-    bottom:0;
-    left:0;
-    right:0;
-    */
-
     flex: 1 1 auto;
     display: flex;
     flex-direction: column;
@@ -121,6 +114,10 @@ header {
     width: 70px;
     margin: 5px 5px;
 }
+.mselfilter {
+    flex: 0 0 auto;
+    margin: 0 0 3px 0;
+}
 .msellist {
     flex: 1 1 auto;
 }
@@ -147,4 +144,11 @@ input, select {
     background: var(--vscode-input-background);
     border: 1px solid var(--vscode-panel-border);
     color: var(--vscode-input-foreground);
+}
+input:focus, select:focus, div:focus {
+    outline-color: var(--vscode-focusBorder) !important;
+}
+button:focus {
+    outline-style: double;
+    outline-color: var(--vscode-focusBorder) !important;
 }

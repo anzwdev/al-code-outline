@@ -1,60 +1,27 @@
 import * as vscode from 'vscode';
-import { FileBuilder } from './fileBuilder';
-import { AZSymbolKind } from '../symbollibraries/azSymbolKind';
+import { FileBuilder } from '../fileBuilder';
+import { AZSymbolKind } from '../../symbollibraries/azSymbolKind';
 
-export class ObjectBuilder {
+export class ALSymbolsBasedWizard {
   
     constructor() {
     }
 
-    protected showNewDocument(content : string, fileName?: string, relativeFileDir?: string) {
+    protected async showNewDocument(content : string, fileName?: string, relativeFileDir?: string) {
         let autoGenerateFile: boolean = this.shouldAutoGenerateFiles();
         if (autoGenerateFile && fileName) {
             this.showNewGeneratedFile(content, fileName, relativeFileDir);
         }
         else {
-            this.showNewUntitledDocument(content);
+            FileBuilder.showNewUntitledDocument(content);
         }
     }
 
-    private showNewGeneratedFile(content : string, fileName : string, relativeFileDir: string) {
-        FileBuilder.generateObjectFile(content, fileName, relativeFileDir).then(
-            path => {
-                if (path) {
-                    vscode.workspace.openTextDocument(path).then(
-                        document => {
-                            let autoShowDocument: boolean = vscode.workspace.getConfiguration('alOutline').get('autoShowFiles');
-                            if (autoShowDocument) {
-                                vscode.window.showTextDocument(document, {
-                                    preview : false
-                                });
-                            }
-                        },
-                        err => {
-                            vscode.window.showErrorMessage(err);
-                        }
-                    );
-                }
-            },
-            err => {
-                vscode.window.showErrorMessage(err);
-            }
-        );
-    }
-
-    private showNewUntitledDocument(content: string) {
-        vscode.workspace.openTextDocument({
-            content : content,
-            language : "al"
-        }).then(
-            document => { 
-                vscode.window.showTextDocument(document, {
-                    preview : false
-                });
-            },
-            err => {
-                vscode.window.showErrorMessage(err);
-            });
+    private async showNewGeneratedFile(content : string, fileName : string, relativeFileDir: string) {
+        let autoShowDocument: boolean = vscode.workspace.getConfiguration('alOutline').get('autoShowFiles');
+        let filePath = await FileBuilder.generateObjectFileInRelativeDir(content, fileName, relativeFileDir);
+        if ((filePath) && (autoShowDocument))
+            FileBuilder.showFile(filePath);
     }
 
     protected async getObjectId(promptText: string, defaultObjectId: number) : Promise<number> {

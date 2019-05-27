@@ -1,0 +1,180 @@
+<!DOCTYPE html>
+<html>
+    <header>
+        <script src="##EXTENSIONPATH##/htmlresources/lib/jquery/jquery.min.js"></script>
+        <script src="##EXTENSIONPATH##/htmlresources/lib/jquery-ui/jquery-ui.min.js"></script>
+        <script src="##EXTENSIONPATH##/htmlresources/lib/autocomplete/autocomplete.js"></script>
+        <script src="##EXTENSIONPATH##/htmlresources/lib/wizards/wizards.js"></script>
+        <script src="##EXTENSIONPATH##/htmlresources/lib/filteredlist/filteredlist.js"></script>
+        <script src="##EXTENSIONPATH##/htmlresources/lib/wizards/tablebasedobjectwizard.js"></script>
+        <script src="##EXTENSIONPATH##/htmlresources/alpagewizard/js/alpagewizard.js"></script>
+        <link rel="stylesheet" type="text/css" href="##EXTENSIONPATH##/htmlresources/lib/jquery-ui/jquery-ui.min.css">
+        <link rel="stylesheet" type="text/css" href="##EXTENSIONPATH##/htmlresources/lib/autocomplete/autocomplete.css">
+        <link rel="stylesheet" type="text/css" href="##EXTENSIONPATH##/htmlresources/lib/wizards/wizards.css">
+        <link rel="stylesheet" type="text/css" href="##EXTENSIONPATH##/htmlresources/alpagewizard/css/alpagewizard.css">
+    </header>
+    <body>
+        <div id="main" class="main">
+            <div id="header" class="header">
+                <div class="title">New Page Wizard</div>
+            </div>
+
+            <div id="wizardstep1" class="wizard">
+
+                <div class="formline">
+                    <div class="formheader">Please enter page properties.</div>
+                </div>
+                        
+                <div class="formline">
+                    <div class="formcaption">Object Id:</div>
+                    <div class="formfield">
+                        <input type="text" id="objectid" name="objectid" class="fixedtext">
+                    </div>
+                </div>
+        
+                <div class="formline">
+                    <div class="formcaption">Object Name:</div>
+                    <div class="formfield">
+                        <input type="text" id="objectname" name="objectname" class="fulltext">
+                    </div>
+                </div>
+    
+                <div class="formline">
+                    <div class="formcaption">Source Table Name:</div>
+                    <div class="formfield">
+                        <input type="text" id="srctable" name="srctable" class="fulltext" />
+                    </div>
+                </div>
+
+                <div class="formline">
+                    <div class="formcaption">Page Type:</div>
+                    <div class="formfield">
+                        <select id="pagetype" class="fixedopt" onchange="wizard.onPageTypeChanged()">
+                            <option value="Card">Card</option>
+                            <option value="List">List</option>
+                            <option value="RoleCenter">RoleCenter</option>
+                            <option value="ListPart">ListPart</option>
+                            <option value="Document">Document</option>
+                            <option value="Worksheet">Worksheet</option>
+                            <option value="ListPlus">ListPlus</option>
+                            <option value="ConfirmationDialog">ConfirmationDialog</option>
+                            <option value="NavigationPane">NavigatePane</option>
+                            <option value="StandardDialog">StandardDialog</option>
+                            <option value="API">API</option>
+                            <option value="HeadlinePart">HeadlinePart</option>                          
+                        </select>
+                    </div>
+                </div>
+
+                <div id="fasttabsline" class="formline">
+                    <div class="formcaption">Fast Tabs:</div>
+                    <div class="formfield">
+                        <input type="text" id="fasttabs" name="fasttabs" class="fulltext">
+                    </div>
+                </div>
+
+                
+                <div id="apipublisherline" class="formline">
+                    <div class="formcaption">API Publisher:</div>
+                    <div class="formfield">
+                        <input type="text" id="apipublisher" name="apipublisher" class="fulltext">
+                    </div>
+                </div>
+                <div id="apigroupline" class="formline">
+                    <div class="formcaption">API Group:</div>
+                    <div class="formfield">
+                        <input type="text" id="apigroup" name="apigroup" class="fulltext">
+                    </div>
+                </div>
+                <div id="apiversionline" class="formline">
+                    <div class="formcaption">API Version:</div>
+                    <div class="formfield">
+                        <input type="text" id="apiversion" name="apiversion" class="fulltext">
+                    </div>
+                </div>
+                <div id="entitynameline" class="formline">
+                    <div class="formcaption">Entity Name:</div>
+                    <div class="formfield">
+                        <input type="text" id="entityname" name="entityname" class="fulltext">
+                    </div>
+                </div>
+                <div id="entitysetnameline" class="formline">
+                    <div class="formcaption">EntitySet Name:</div>
+                    <div class="formfield">
+                        <input type="text" id="entitysetname" name="entitysetname" class="fulltext">
+                    </div>
+                </div>
+
+
+
+                <div id="apparealine" class="formline">
+                    <div class="formcaption">Application Area:</div>
+                    <div class="formfield">
+                        <input type="text" id="apparea" name="apparea" class="fixedtext" />
+                        <datalist id="tablelist"></datalist>
+                    </div>
+                </div>
+
+                <div id="usagecatline" class="formline">
+                    <div class="formcaption">Usage Category:</div>
+                    <div class="formfield">
+                        <select id="usagecat" class="fixedopt">
+                            <option value="None">None</option>
+                            <option value="Administration">Administration</option>
+                            <option value="Documents">Documents</option>
+                            <option value="History">History</option>
+                            <option value="Lists">Lists</option>
+                            <option value="ReportsAndAnalysis">ReportsAndAnalysis</option>
+                            <option value="Tasks">Tasks</option>
+                        </select>
+                    </div>
+                </div>
+               
+            </div>
+
+            <div id="wizardstep2" class="wizard">
+
+                <div class="formline">
+                    <div class="formheader">Please select page fields.</div>
+                </div>
+
+                <div id="activefasttabline" class="formlinecenter">
+                    <div class="formcaptionct">Edit fields for fast tab:</div>
+                    <div class="formfieldct"><select id="activefasttab" onchange="wizard.onActiveFastTabChanged()"></select></div>
+                </div>
+
+                <div class="multiselect">
+                    <div class="multiselsrc" id="srcfieldsdiv">
+                        <div class="mselcaption" id="srcfieldscapt">Available Fields:</div>
+                        <input class="mselfilter" id="srcfieldsfilter" type="text" placeholder="Enter fields filter...">
+                        <select class="msellist" id="srcfields" multiple="multiple" ondblclick="wizard.onMoveFieldsRight()"></select>
+                    </div>
+
+                    <div class="multiselbtns">
+                        <div><button class="mselbtn" onclick="wizard.onMoveFieldsRight()">&gt;</button></div>
+                        <div><button class="mselbtn" onclick="wizard.onMoveAllRight()">&gt;&gt;</button></div>
+                        <div><button class="mselbtn" onclick="wizard.onMoveAllLeft()">&lt;&lt;</button></div>
+                        <div><button class="mselbtn" onclick="wizard.onMoveFieldsLeft()">&lt;</button></div>
+                    </div>
+
+                    <div class="multiseldest" id="destfieldsdiv">
+                        <div class="mselcaption" id="destfieldscapt">Selected Fields:</div>
+                        <input class="mselfilter" id="destfieldsfilter" type="text" placeholder="Enter fields filter...">
+                        <select class="msellist" id="destfields" multiple="multiple" ondblclick="wizard.onMoveFieldsLeft()">
+                        </select>
+                    </div>
+
+                </div>
+
+            </div>
+
+            <div id="footer" class="footer">
+                <button id="prevBtn" class="button" onclick="wizard.onPrev()">Previous</button>
+                <button id="nextBtn" class="button" onclick="wizard.onNext()">Next</button>
+                <button id="finishBtn" class="button" onclick="wizard.onFinish()">Finish</button>
+                <button id="cancelBtn" class="button" onclick="wizard.onCancel()">Cancel</button>
+            </div>
+        </div>
+
+    </body>
+</html>

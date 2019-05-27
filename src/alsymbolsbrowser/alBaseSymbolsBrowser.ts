@@ -6,14 +6,13 @@ import { DevToolsExtensionContext } from '../devToolsExtensionContext';
 import { AZSymbolsLibrary } from '../symbollibraries/azSymbolsLibrary';
 import { AZSymbolInformation } from '../symbollibraries/azSymbolInformation';
 import { AZSymbolKind } from '../symbollibraries/azSymbolKind';
-import { PageBuilder } from '../objectbuilders/pageBuilder';
-import { QueryBuilder } from '../objectbuilders/queryBuilder';
-import { ReportBuilder } from '../objectbuilders/reportBuilder';
-import { XmlPortBuilder } from '../objectbuilders/xmlPortBuilder';
-import { PageExtBuilder } from '../objectbuilders/pageExtBuilder';
-import { TableExtBuilder } from '../objectbuilders/tableExtBuilder';
+import { ALSymbolsBasedPageWizard } from '../objectwizards/symbolwizards/alSymbolsBasedPageWizard';
+import { ALSymbolsBasedQueryWizard } from '../objectwizards/symbolwizards/alSymbolsBasedQueryWizard';
+import { ALSymbolsBasedReportWizard } from '../objectwizards/symbolwizards/alSymbolsBasedReportWizard';
+import { ALSymbolsBasedXmlPortWizard } from '../objectwizards/symbolwizards/alSymbolsBasedXmlPortWizard';
+import { ALSymbolsBasedPageExtWizard } from '../objectwizards/symbolwizards/alSymbolsBasedPageExtWizard';
+import { ALSymbolsBasedTableExtWizard } from '../objectwizards/symbolwizards/alSymbolsBasedTableExtWizard';
 import { ALSyntaxHelper } from '../allanguage/alSyntaxHelper';
-import { ALObjectRunner } from '../alObjectRunner';
 
 /** Base class for AL Object and AL Symbol browsers */
 export class ALBaseSymbolsBrowser extends BaseWebViewEditor {
@@ -87,7 +86,7 @@ export class ALBaseSymbolsBrowser extends BaseWebViewEditor {
     protected async createPage(path : number[] | undefined, selPaths: number[][] | undefined, pageType : string) {
         let symbolList = await this.getObjectsFromPath(selPaths, AZSymbolKind.TableObject);
         if (symbolList) {
-            let builder : PageBuilder = new PageBuilder();
+            let builder : ALSymbolsBasedPageWizard = new ALSymbolsBasedPageWizard();
             await builder.showWizard(symbolList, pageType);
         }
     }
@@ -95,7 +94,7 @@ export class ALBaseSymbolsBrowser extends BaseWebViewEditor {
     protected async createQuery(path : number[] | undefined, selPaths: number[][] | undefined) {
         let symbolList = await this.getObjectsFromPath(selPaths, AZSymbolKind.TableObject);
         if (symbolList) {
-            let builder : QueryBuilder = new QueryBuilder();
+            let builder : ALSymbolsBasedQueryWizard = new ALSymbolsBasedQueryWizard();
             builder.showWizard(symbolList);
         }
     }
@@ -103,7 +102,7 @@ export class ALBaseSymbolsBrowser extends BaseWebViewEditor {
     protected async createReport(path : number[] | undefined, selPaths: number[][] | undefined) {
         let symbolList = await this.getObjectsFromPath(selPaths, AZSymbolKind.TableObject);
         if (symbolList) {
-            let builder : ReportBuilder = new ReportBuilder();
+            let builder : ALSymbolsBasedReportWizard = new ALSymbolsBasedReportWizard();
             builder.showWizard(symbolList);
         }
     }
@@ -111,7 +110,7 @@ export class ALBaseSymbolsBrowser extends BaseWebViewEditor {
     protected async createXmlPort(path : number[] | undefined, selPaths: number[][] | undefined) {
         let symbolList = await this.getObjectsFromPath(selPaths, AZSymbolKind.TableObject);
         if (symbolList) {
-            let builder : XmlPortBuilder = new XmlPortBuilder();
+            let builder : ALSymbolsBasedXmlPortWizard = new ALSymbolsBasedXmlPortWizard();
             builder.showWizard(symbolList);
         }
     }
@@ -119,7 +118,7 @@ export class ALBaseSymbolsBrowser extends BaseWebViewEditor {
     protected async createPageExt(path : number[] | undefined, selPaths: number[][] | undefined) {
         let symbolList = await this.getObjectsFromPath(selPaths, AZSymbolKind.PageObject);
         if (symbolList) {
-            let builder : PageExtBuilder = new PageExtBuilder();
+            let builder : ALSymbolsBasedPageExtWizard = new ALSymbolsBasedPageExtWizard();
             builder.showWizard(symbolList);
         }
     }
@@ -127,7 +126,7 @@ export class ALBaseSymbolsBrowser extends BaseWebViewEditor {
     protected async createTableExt(path : number[] | undefined, selPaths: number[][] | undefined) {
         let symbolList = await this.getObjectsFromPath(selPaths, AZSymbolKind.TableObject);
         if (symbolList) {
-            let builder : TableExtBuilder = new TableExtBuilder();
+            let builder : ALSymbolsBasedTableExtWizard = new ALSymbolsBasedTableExtWizard();
             builder.showWizard(symbolList);
         }
     }

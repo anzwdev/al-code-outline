@@ -1,12 +1,11 @@
 import * as vscode from 'vscode';
-import { ALObjectWriter } from "./alObjectWriter";
-import { FileBuilder } from './fileBuilder';
-import { ObjectBuilder } from './objectBuilder';
-import { relative } from 'path';
-import { AZSymbolInformation } from '../symbollibraries/azSymbolInformation';
-import { AZSymbolKind } from '../symbollibraries/azSymbolKind';
+import { FileBuilder } from '../fileBuilder';
+import { AZSymbolInformation } from '../../symbollibraries/azSymbolInformation';
+import { AZSymbolKind } from '../../symbollibraries/azSymbolKind';
+import { ALSymbolsBasedWizard } from './alSymbolsBasedWizard';
+import { ALSyntaxWriter } from '../../allanguage/alSyntaxWriter';
 
-export class PageExtBuilder extends ObjectBuilder {
+export class ALSymbolsBasedPageExtWizard extends ALSymbolsBasedWizard {
 
     constructor() {
         super();
@@ -77,9 +76,9 @@ export class PageExtBuilder extends ObjectBuilder {
 
     private buildPageExtForPage(pageSymbol : AZSymbolInformation, objectId : number, extObjectName : string) : string {
         
-        let writer : ALObjectWriter = new ALObjectWriter();
+        let writer : ALSyntaxWriter = new ALSyntaxWriter();
 
-        writer.writeStartExtensionObject("pageextension", objectId, extObjectName, pageSymbol.name);
+        writer.writeStartExtensionObject("pageextension", objectId.toString(), extObjectName, pageSymbol.name);
         
         writer.writeStartLayout();
 

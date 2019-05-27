@@ -1,5 +1,17 @@
 # Change Log
 
+## 1.0.7
+ - New al objects wizards:
+   - Page Wizard
+   - XmlPort Wizard
+   - Report Wizard
+   - Query Wizard
+   - Enum Wizard
+   - Enum Extension Wizard
+ - Github issue #31 fixes - Code action "Add multiple fields": Don't always surround with quotes
+
+ Thank you rvanbekkum for reporting issue #31
+
 ## 1.0.6
 
  - "Add multiple fields" code action added to

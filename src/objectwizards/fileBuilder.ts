@@ -6,7 +6,36 @@ import { AZSymbolKind } from '../symbollibraries/azSymbolKind';
 import { AZSymbolInformation } from '../symbollibraries/azSymbolInformation';
 
 export class FileBuilder {
-    public static async generateObjectFile(content: string, fileName: string, relativeFileDir: string): Promise<string | undefined> {
+    
+    public static showFile(filePath : string) {
+        vscode.workspace.openTextDocument(filePath).then(
+            document => {
+                vscode.window.showTextDocument(document, {
+                    preview : false
+                });
+            },
+            err => {
+                vscode.window.showErrorMessage(err);
+            }
+        );
+    }
+
+    public static showNewUntitledDocument(content: string) {
+        vscode.workspace.openTextDocument({
+            content : content,
+            language : "al"
+        }).then(
+            document => { 
+                vscode.window.showTextDocument(document, {
+                    preview : false
+                });
+            },
+            err => {
+                vscode.window.showErrorMessage(err);
+            });
+    }
+
+    public static async generateObjectFileInRelativeDir(content: string, fileName: string, relativeFileDir: string): Promise<string | undefined> {
         // Determine the project root directory.
         let workspaceFolderCount: number = vscode.workspace.workspaceFolders.length;
         if (workspaceFolderCount < 1) {
@@ -47,6 +76,19 @@ export class FileBuilder {
         if (!fileAlreadyExists) {
             fs.appendFileSync(newFilePath, content);
         }
+        return newFilePath;
+    }
+
+    public static generateObjectFileInDir(dirPath: string, fileName: string, content: string) : string {
+        let parsedPath = path.parse(fileName);        
+        let newFilePath : string = path.join(dirPath, fileName);        
+        let fileIndex = 0;
+        while (fs.existsSync(newFilePath)) {
+            fileIndex++;
+            fileName = parsedPath.name + ' ' + fileIndex.toString() + parsedPath.ext;
+            newFilePath = path.join(dirPath, fileName);
+        }
+        fs.appendFileSync(newFilePath, content);
         return newFilePath;
     }
 

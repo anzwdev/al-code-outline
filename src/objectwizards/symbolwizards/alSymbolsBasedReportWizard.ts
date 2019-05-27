@@ -1,11 +1,10 @@
-import * as vscode from 'vscode';
-import { ALObjectWriter } from './alObjectWriter';
-import { FileBuilder } from './fileBuilder';
-import { ObjectBuilder } from "./objectBuilder";
-import { AZSymbolInformation } from '../symbollibraries/azSymbolInformation';
-import { AZSymbolKind } from '../symbollibraries/azSymbolKind';
+import { FileBuilder } from '../fileBuilder';
+import { AZSymbolInformation } from '../../symbollibraries/azSymbolInformation';
+import { AZSymbolKind } from '../../symbollibraries/azSymbolKind';
+import { ALSymbolsBasedWizard } from './alSymbolsBasedWizard';
+import { ALSyntaxWriter } from '../../allanguage/alSyntaxWriter';
 
-export class ReportBuilder extends ObjectBuilder {
+export class ALSymbolsBasedReportWizard extends ALSymbolsBasedWizard {
 
     constructor() {
         super();
@@ -76,9 +75,9 @@ export class ReportBuilder extends ObjectBuilder {
 
     buildReportForTable(tableSymbol : AZSymbolInformation, objectId : number, objectName : string) : string {
         //generate file content
-        let writer : ALObjectWriter = new ALObjectWriter();
+        let writer : ALSyntaxWriter = new ALSyntaxWriter();
 
-        writer.writeStartObject("report", objectId, objectName);
+        writer.writeStartObject("report", objectId.toString(), objectName);
 
         //write dataset
         this.appendDataSet(writer, tableSymbol);
@@ -91,7 +90,7 @@ export class ReportBuilder extends ObjectBuilder {
         return writer.toString();
     }
 
-    private appendDataSet(writer : ALObjectWriter, tableSymbol : AZSymbolInformation) {
+    private appendDataSet(writer : ALSyntaxWriter, tableSymbol : AZSymbolInformation) {
         var dataSetName = writer.createName(tableSymbol.name);
         writer.writeStartNamedBlock("dataset");
 
@@ -110,7 +109,7 @@ export class ReportBuilder extends ObjectBuilder {
         writer.writeEndBlock();
     }
 
-    private appendReportRequestPage(writer : ALObjectWriter) {
+    private appendReportRequestPage(writer : ALSyntaxWriter) {
         writer.writeStartNamedBlock("requestpage");
 
         //layout

@@ -1,4 +1,5 @@
 import * as vscode from 'vscode';
+import { ALSyntaxHelper } from './alSyntaxHelper';
 
 export class ALSyntaxWriter {
     private content : string;
@@ -64,13 +65,12 @@ export class ALSyntaxWriter {
 
     public writeStartObject(type : string, id : string, name : string) {
         var objectIdText : string;
-        if (id == '')
+        if ((id == '') || (id == '0'))
             objectIdText = 'id';
         else
             objectIdText = id.toString();
         
-        name = name.replace("\"", "\"\"");
-        name = this.escapeObjectName(name);
+        name = ALSyntaxHelper.toNameText(name);
 
         this.writeLine(type + " " + objectIdText + " " + name);
         this.writeStartBlock();
@@ -78,14 +78,13 @@ export class ALSyntaxWriter {
 
     public writeStartExtensionObject(type : string, id : string, extname : string, targetName : string) {
         var objectIdText : string;
-        if (id == '')
+        if ((id == '') || (id == '0'))
             objectIdText = 'id';
         else
             objectIdText = id.toString();
         
-        extname = extname.replace("\"", "\"\"");
-        extname = this.escapeObjectName(extname);
-        targetName = this.escapeObjectName(targetName);
+        extname = ALSyntaxHelper.toNameText(extname);
+        targetName = ALSyntaxHelper.toNameText(targetName);
 
         this.writeLine(type + " " + objectIdText + " " + extname + " extends " + targetName);
         
@@ -152,18 +151,11 @@ export class ALSyntaxWriter {
     }
 
     public encodeString(text : string) : string {
-        return "'" + text.replace("'", "''") + "'";
+        return ALSyntaxHelper.toStringText(text); 
     }
 
     public encodeName(name : string) : string {
-        return "\"" + name.replace("\"", "\"\"") + "\"";
-    }
-
-    public escapeObjectName(name : string) : string {
-        if (/\W/.test(name)) {
-            name = "\"" + name + "\"";
-        }
-        return name;
+        return ALSyntaxHelper.toNameText(name);
     }
 
     public createName(source : string) : string {

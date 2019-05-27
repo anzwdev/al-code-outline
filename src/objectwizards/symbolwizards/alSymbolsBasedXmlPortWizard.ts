@@ -1,11 +1,11 @@
 import * as vscode from 'vscode';
-import { ALObjectWriter } from './alObjectWriter';
-import { FileBuilder } from './fileBuilder';
-import { ObjectBuilder } from "./objectBuilder";
-import { AZSymbolInformation } from '../symbollibraries/azSymbolInformation';
-import { AZSymbolKind } from '../symbollibraries/azSymbolKind';
+import { FileBuilder } from '../fileBuilder';
+import { AZSymbolInformation } from '../../symbollibraries/azSymbolInformation';
+import { AZSymbolKind } from '../../symbollibraries/azSymbolKind';
+import { ALSymbolsBasedWizard } from './alSymbolsBasedWizard';
+import { ALSyntaxWriter } from '../../allanguage/alSyntaxWriter';
 
-export class XmlPortBuilder extends ObjectBuilder {
+export class ALSymbolsBasedXmlPortWizard extends ALSymbolsBasedWizard {
 
     constructor() {
         super();
@@ -84,9 +84,9 @@ export class XmlPortBuilder extends ObjectBuilder {
 
     buildXmlPortForTable(tableSymbol : AZSymbolInformation, objectId : number, objectName : string, fieldsAsElements : boolean) : string {
         //generate file content
-        let writer : ALObjectWriter = new ALObjectWriter();
+        let writer : ALSyntaxWriter = new ALSyntaxWriter();
 
-        writer.writeStartObject("xmlport", objectId, objectName);
+        writer.writeStartObject("xmlport", objectId.toString(), objectName);
 
         //write dataset
         this.appendSchema(writer, tableSymbol, fieldsAsElements);
@@ -99,7 +99,7 @@ export class XmlPortBuilder extends ObjectBuilder {
         return writer.toString();
     }
 
-    private appendSchema(writer : ALObjectWriter, tableSymbol : AZSymbolInformation, fieldsAsElements : boolean) {       
+    private appendSchema(writer : ALSyntaxWriter, tableSymbol : AZSymbolInformation, fieldsAsElements : boolean) {       
         var tableElementName = writer.createName(tableSymbol.name);
         var fieldNodeName : string;
         if (fieldsAsElements)
@@ -126,7 +126,7 @@ export class XmlPortBuilder extends ObjectBuilder {
         writer.writeEndBlock();
     }
 
-    private appendReportRequestPage(writer : ALObjectWriter) {
+    private appendReportRequestPage(writer : ALSyntaxWriter) {
         writer.writeStartNamedBlock("requestpage");
 
         //layout
