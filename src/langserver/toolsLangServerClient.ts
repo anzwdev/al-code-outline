@@ -35,58 +35,88 @@ export class ToolsLangServerClient implements vscode.Disposable {
     }
 
     protected initialize() {
-        //find binaries path
-        let langServerPath : string = this._context.asAbsolutePath("bin/AZALDevToolsServer.exe");
-        //start child process
-        this._childProcess = cp.spawn(langServerPath, [this._alExtensionPath]);
-        this._connection = rpc.createMessageConnection(
-            new rpc.StreamMessageReader(this._childProcess.stdout),
-            new rpc.StreamMessageWriter(this._childProcess.stdin));
-        this._connection.listen();
+        try {
+            //find binaries path
+            let langServerPath : string = this._context.asAbsolutePath("bin/AZALDevToolsServer.exe");
+            //start child process
+            this._childProcess = cp.spawn(langServerPath, [this._alExtensionPath]);
+            if (this._childProcess) {
+                this._connection = rpc.createMessageConnection(
+                    new rpc.StreamMessageReader(this._childProcess.stdout),
+                    new rpc.StreamMessageWriter(this._childProcess.stdin));
+                this._connection.listen();
+            }
+        }
+        catch (e) {
+        }
     }
 
     public async getALDocumentSymbols(params : ToolsDocumentSymbolsRequest) : Promise<ToolsDocumentSymbolsResponse|undefined> {
-        if (!this._connection)
+        try {
+            if (!this._connection)
+                return undefined;
+                    
+            let reqType = new rpc.RequestType<ToolsDocumentSymbolsRequest, ToolsDocumentSymbolsResponse, void, void>('al/documentsymbols');
+            let val = await this._connection.sendRequest(reqType, params);
+            return val;
+        }
+        catch (e) {
             return undefined;
-                
-        let reqType = new rpc.RequestType<ToolsDocumentSymbolsRequest, ToolsDocumentSymbolsResponse, void, void>('al/documentsymbols');
-        let val = await this._connection.sendRequest(reqType, params);
-        return val;
+        }
     }
 
     public async getAppPackageSymbols(params : ToolsPackageSymbolsRequest) : Promise<ToolsPackageSymbolsResponse|undefined> {
-        if (!this._connection)
+        try {
+            if (!this._connection)
+                return undefined;
+                    
+            let reqType = new rpc.RequestType<ToolsPackageSymbolsRequest, ToolsPackageSymbolsResponse, void, void>('al/packagesymbols');
+            let val = await this._connection.sendRequest(reqType, params);
+            return val;
+        }
+        catch (e) {
             return undefined;
-                
-        let reqType = new rpc.RequestType<ToolsPackageSymbolsRequest, ToolsPackageSymbolsResponse, void, void>('al/packagesymbols');
-        let val = await this._connection.sendRequest(reqType, params);
-        return val;
+        }
     }
 
     public async getProjectSymbols(params : ToolsProjectSymbolsRequest) : Promise<ToolsProjectSymbolsResponse|undefined> {
-        if (!this._connection)
-            return undefined;
+        try {
+            if (!this._connection)
+                return undefined;
                 
-        let reqType = new rpc.RequestType<ToolsProjectSymbolsRequest, ToolsProjectSymbolsResponse, void, void>('al/projectsymbols');
-        let val = await this._connection.sendRequest(reqType, params);
-        return val;
+            let reqType = new rpc.RequestType<ToolsProjectSymbolsRequest, ToolsProjectSymbolsResponse, void, void>('al/projectsymbols');
+            let val = await this._connection.sendRequest(reqType, params);
+            return val;
+        }
+        catch (e) {
+            return undefined;
+        }
     }
 
     public async getLibrarySymbolsDetails(params : ToolsLibrarySymbolsDetailsRequest) : Promise<ToolsLibrarySymbolsDetailsResponse|undefined> {
-        if (!this._connection)
-            return undefined;
+        try {
+            if (!this._connection)
+                return undefined;
                 
-        let reqType = new rpc.RequestType<ToolsLibrarySymbolsDetailsRequest, ToolsLibrarySymbolsDetailsResponse, void, void>('al/librarysymbolsdetails');
-        let val = await this._connection.sendRequest(reqType, params);
-        return val;
+            let reqType = new rpc.RequestType<ToolsLibrarySymbolsDetailsRequest, ToolsLibrarySymbolsDetailsResponse, void, void>('al/librarysymbolsdetails');
+            let val = await this._connection.sendRequest(reqType, params);
+            return val;
+        }
+        catch (e) {
+            return undefined;
+        }
     }
 
     public closeSymbolsLibrary(params: ToolsCloseSymbolsLibraryRequest) {
-        if (!this._connection)
-            return undefined;
+        try {
+            if (!this._connection)
+                return undefined;
 
-        let reqType = new rpc.NotificationType<ToolsCloseSymbolsLibraryRequest, void>('al/closesymbolslibrary');;
-        this._connection.sendNotification(reqType, params);
+            let reqType = new rpc.NotificationType<ToolsCloseSymbolsLibraryRequest, void>('al/closesymbolslibrary');;
+            this._connection.sendNotification(reqType, params);
+        }
+        catch (e) {
+        }
     }
 
     public isEnabled() : boolean {

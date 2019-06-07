@@ -103,6 +103,8 @@ export class AZDocumentSymbolsLibrary extends AZSymbolsLibrary {
     //#region update field names from our language server with values returned by Microsoft AL Language Extension 
     
     protected mergeFieldSymbolNames(azSymbol : AZSymbolInformation, vsFieldSymbols : vscode.DocumentSymbol[]) {
+        if (!azSymbol)
+            return;
         if ((azSymbol.kind == AZSymbolKind.PageField) || 
             (azSymbol.kind == AZSymbolKind.QueryColumn) || 
             (azSymbol.kind == AZSymbolKind.QueryFilter)) {
