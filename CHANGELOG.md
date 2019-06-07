@@ -1,5 +1,8 @@
 # Change Log
 
+## 1.0.8
+ - Error handling added to DevTools language server client to prevent crashes on unsupported platforms (Mac, Linux)
+
 ## 1.0.7
  - New al objects wizards:
    - Page Wizard
