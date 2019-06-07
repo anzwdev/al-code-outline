@@ -1,5 +1,9 @@
 # Change Log
 
+## 1.0.9
+ - CardPart page type added to the page wizard
+ - Misspelled word in object wizard selection fixed
+
 ## 1.0.8
  - Error handling added to DevTools language server client to prevent crashes on unsupported platforms (Mac, Linux)
 
