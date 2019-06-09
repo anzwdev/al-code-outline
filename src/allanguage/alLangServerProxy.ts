@@ -270,6 +270,21 @@ export class ALLangServerProxy {
         
     }
 
+    async getWorkspaceSymbol(objectType : string, objectName : string) : Promise<vscode.Location | undefined> {       
+        let list = await vscode.commands.executeCommand<vscode.SymbolInformation[] | undefined>('vscode.executeWorkspaceSymbolProvider', objectName);
+        if ((!list) || (list.length == 0))
+            return undefined;
+        let fullName : string = objectType + ' ' + objectName;
+        fullName = fullName.toLowerCase();        
+        for (let i=0; i<list.length; i++) {
+            let item = list[i];
+            if (((item.kind == vscode.SymbolKind.Class) || (item.kind == vscode.SymbolKind.Object)) && (item.name.toLowerCase() == fullName) && (item.location)) {
+                return item.location;
+            }
+        }
+        return undefined;
+    }
+
     async getDefinitionLocation(objectType : string, objectName : string) : Promise<vscode.Location | undefined> {
         return await vscode.window.withProgress<vscode.Location | undefined>({
             location: vscode.ProgressLocation.Notification,

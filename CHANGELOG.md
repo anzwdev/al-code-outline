@@ -1,8 +1,15 @@
 # Change Log
 
+## 1.0.10
+ - Github issue #34 - Support for table extension, page extensions and enum extensions added to 'Go to definition' function in the symbol browsers.
+
+Thank you BrianThorChristensen for reporting issue #34
+
 ## 1.0.9
  - CardPart page type added to the page wizard
  - Misspelled word in object wizard selection fixed
+
+ Thank you @sbineshji for asking for CardParts support 
 
 ## 1.0.8
  - Error handling added to DevTools language server client to prevent crashes on unsupported platforms (Mac, Linux)
