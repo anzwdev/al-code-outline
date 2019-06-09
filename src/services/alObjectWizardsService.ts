@@ -23,7 +23,7 @@ export class ALObjectWizardsService {
         this._wizards.push(new ALPageWizard(context, 'Page', 'New AL Page Wizard', 'Allows to select page type, fast tabs, source table and fields.'));
         this._wizards.push(new ALXmlPortWizard(context, 'XmlPort', 'New AL XmlPort Wizard', 'Allows to select source table and fields'));
         this._wizards.push(new ALReportWizard(context, 'Report', 'New AL Report Wizard', 'Allows to select source table and fields'));
-        this._wizards.push(new ALQueryWizard(context, 'Query', 'New AL Query Wizard', 'Allows to select query type, sourcre table and fields'));
+        this._wizards.push(new ALQueryWizard(context, 'Query', 'New AL Query Wizard', 'Allows to select query type, source table and fields'));
         this._wizards.push(new ALEnumWizard(context, 'Enum', 'New AL Enum Wizard', 'Allows to select list of enum values and captions'));
         this._wizards.push(new ALEnumExtWizard(context, 'Enum Extension', 'New AL Enum Extension Wizard', 'Allows to add list of enum values and captions to existing enum'));
         

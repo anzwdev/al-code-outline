@@ -2,7 +2,7 @@
 	"name": "al-code-outline",
 	"displayName": "AZ AL Dev Tools/AL Code Outline",
 	"description": "AZ AL Development Tools: AL code outline, object browser, object creators",
-	"version": "1.0.8",
+	"version": "1.0.9",
 	"publisher": "andrzejzwierzchowski",
 	"engines": {
 		"vscode": "^1.30.0"

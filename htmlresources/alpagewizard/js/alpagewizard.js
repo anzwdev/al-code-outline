@@ -151,7 +151,7 @@ class PageWizard extends TableBasedObjectWizard {
     }
 
     hasFastTabs() {
-        return ((this._data.pageType == "Card") || (this._data.pageType == "Document") ||
+        return ((this._data.pageType == "Card") || (this._data.pageType == "Document") || (this._data.pageType == "CardPart") ||
             (this._data.pageType == "ConfirmationDialog") || (this._data.pageType == "NavigationPane"));
     }
 
