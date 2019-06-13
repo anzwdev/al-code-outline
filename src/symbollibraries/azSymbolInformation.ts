@@ -70,6 +70,8 @@ export class AZSymbolInformation {
             obj.source = source.source;
         if (source.extends)
             obj.extends = source.extends;
+        if (source.subtype)
+            obj.subtype = source.subtype;
 
         if (source.childSymbols)
             for (let i=0; i<source.childSymbols.length; i++)
@@ -195,7 +197,14 @@ export class AZSymbolInformation {
             case AZSymbolKind.SessionSettingsHandlerDeclaration: return 'testcontroller';
             case AZSymbolKind.StrMenuHandlerDeclaration: return 'testcontroller';
 
-            case AZSymbolKind.Field : return 'field';
+            case AZSymbolKind.Field : 
+                if (this.subtype == 'ObsoletePending')
+                    return 'fieldpending';
+                if (this.subtype == 'ObsoleteRemoved')
+                    return 'fieldobsolete';
+                if (this.subtype == "Disabled")
+                    return "fielddisabled";
+                return 'field';
             case AZSymbolKind.PrimaryKey : return 'primarykey';
             case AZSymbolKind.Key : return 'key';
             case AZSymbolKind.FieldGroup : return 'fieldgroup';

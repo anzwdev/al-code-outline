@@ -1,7 +1,8 @@
 # Change Log
 
 ## 1.0.10
- - Github issue #34 - Support for table extension, page extensions and enum extensions added to 'Go to definition' function in the symbol browsers.
+ - Github issue #34 - Support for table extension, page extensions and enum extensions added to 'Go to definition' function in the symbol browsers
+ - Different colors for obsolete and disabled fields icons in symbol browsers and al code outline panel
 
 Thank you BrianThorChristensen for reporting issue #34
 

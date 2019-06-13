@@ -13,6 +13,9 @@
 .vscode-dark .ico-eventpublisher, .vscode-high-contrast .ico-eventpublisher { background: url('../../../resources/images/dark/tree-eventpublisher.svg') }
 .vscode-dark .ico-eventsubscriber, .vscode-high-contrast .ico-eventsubscriber { background: url('../../../resources/images/dark/tree-eventsubscriber.svg') }
 .vscode-dark .ico-field, .vscode-high-contrast .ico-field { background: url('../../../resources/images/dark/tree-field.svg') }
+.vscode-dark .ico-fieldpending, .vscode-high-contrast .ico-fieldpending { background: url('../../../resources/images/dark/tree-fieldpending.svg') }
+.vscode-dark .ico-fieldobsolete, .vscode-high-contrast .ico-fieldobsolete { background: url('../../../resources/images/dark/tree-fieldobsolete.svg') }
+.vscode-dark .ico-fielddisabled, .vscode-high-contrast .ico-fielddisabled { background: url('../../../resources/images/dark/tree-fielddisabled.svg') }
 .vscode-dark .ico-fieldgroup, .vscode-high-contrast .ico-fieldgroup { background: url('../../../resources/images/dark/tree-fieldgroup.svg') }
 .vscode-dark .ico-function, .vscode-high-contrast .ico-function { background: url('../../../resources/images/dark/tree-function.svg') }
 .vscode-dark .ico-group, .vscode-high-contrast .ico-group { background: url('../../../resources/images/dark/tree-group.svg') }
@@ -67,6 +70,9 @@
 .vscode-light .ico-eventpublisher { background: url('../../../resources/images/light/tree-eventpublisher.svg') }
 .vscode-light .ico-eventsubscriber { background: url('../../../resources/images/light/tree-eventsubscriber.svg') }
 .vscode-light .ico-field { background: url('../../../resources/images/light/tree-field.svg') }
+.vscode-light .ico-fieldpending { background: url('../../../resources/images/light/tree-fieldpending.svg') }
+.vscode-light .ico-fieldobsolete { background: url('../../../resources/images/light/tree-fieldobsolete.svg') }
+.vscode-light .ico-fielddisabled { background: url('../../../resources/images/light/tree-fielddisabled.svg') }
 .vscode-light .ico-fieldgroup { background: url('../../../resources/images/light/tree-fieldgroup.svg') }
 .vscode-light .ico-function { background: url('../../../resources/images/light/tree-function.svg') }
 .vscode-light .ico-group { background: url('../../../resources/images/light/tree-group.svg') }
