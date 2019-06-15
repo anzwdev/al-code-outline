@@ -29,19 +29,22 @@ export class ALCodeActionsProvider implements vscode.CodeActionProvider {
             //add multiple fields to a page
             if ((symbol.kind == AZSymbolKind.PageGroup) ||                 
                 (symbol.kind == AZSymbolKind.PageRepeater) ||
-                (symbol.kind == AZSymbolKind.ControlAddChange)) {                
+                (symbol.kind == AZSymbolKind.ControlAddChange) ||
+                (symbol.kind == AZSymbolKind.PageField)) {                
                 let action : vscode.CodeAction = new vscode.CodeAction("Add multiple fields", vscode.CodeActionKind.QuickFix);
                 action.command = { command: this._addPageFieldsCommand.name, title: 'Add multiple fields...' };
                 actions.push(action);
             }
             //add multiple fields to a query
-            if (symbol.kind == AZSymbolKind.QueryDataItem) {
+            if ((symbol.kind == AZSymbolKind.QueryDataItem) ||
+                (symbol.kind == AZSymbolKind.QueryColumn)) {
                 let action = new vscode.CodeAction("Add multiple fields", vscode.CodeActionKind.QuickFix);
                 action.command = { command: this._addQueryFieldsCommand.name, title: 'Add multiple fields...' };
                 actions.push(action);
             }
             //add multiple fields to a report
-            if (symbol.kind == AZSymbolKind.ReportDataItem) {
+            if ((symbol.kind == AZSymbolKind.ReportDataItem) ||
+                (symbol.kind == AZSymbolKind.ReportColumn)) {
                 let action = new vscode.CodeAction("Add multiple fields", vscode.CodeActionKind.QuickFix);
                 action.command = { command: this._addReportFieldsCommand.name, title: 'Add multiple fields...' };
                 actions.push(action);
