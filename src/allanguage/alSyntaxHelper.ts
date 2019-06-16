@@ -83,5 +83,38 @@ export class ALSyntaxHelper {
         }
         return undefined;
     }
+
+    static kindToWorkspaceSymbolType(kind: AZSymbolKind) : string | undefined {
+        switch (kind) {
+            case AZSymbolKind.TableObject:
+                return "Record";
+            case AZSymbolKind.CodeunitObject:
+                return "Codeunit";
+            case AZSymbolKind.PageObject:
+                return "Page";
+            case AZSymbolKind.ReportObject:
+                return "Report";
+            case AZSymbolKind.QueryObject:
+                return "Query";
+            case AZSymbolKind.XmlPortObject:
+                return "XmlPort";
+            case AZSymbolKind.ControlAddInObject:
+                return "UserControl";
+            case AZSymbolKind.EnumType:
+                return "Enum";
+            case AZSymbolKind.TableExtensionObject:
+                return "TableExtension";
+            case AZSymbolKind.PageExtensionObject:
+                return "PageExtension";
+            case AZSymbolKind.PageCustomizationObject:
+                return "PageCustomization";
+            case AZSymbolKind.EnumExtensionType:
+                return "EnumExtension";
+            case AZSymbolKind.ProfileObject:
+                return "Profile";
+        }
+        return undefined;
+
+    }
     
 }

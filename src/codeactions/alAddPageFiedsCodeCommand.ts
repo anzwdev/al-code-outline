@@ -17,7 +17,13 @@ export class ALAddPageFieldsCodeCommand extends ALBaseAddFieldsCodeCommand {
             return;
         let parentKind: AZSymbolKind[] = [AZSymbolKind.PageObject, AZSymbolKind.PageExtensionObject];
         let pageSymbol = symbol.findParentByKindList(parentKind);
-        if ((!pageSymbol) || (!symbol.contentRange) || ((!pageSymbol.source) && (!pageSymbol.extends)))
+        let isFieldSymbol = (symbol.kind == AZSymbolKind.PageField);
+
+        if ((!pageSymbol) || 
+            ((!isFieldSymbol) && (!symbol.contentRange)) || 
+            ((isFieldSymbol) && (!symbol.range)) || 
+            ((!pageSymbol.source) && (!pageSymbol.extends)))
+            
             return;
 
         //collect existing page fields
@@ -47,7 +53,14 @@ export class ALAddPageFieldsCodeCommand extends ALBaseAddFieldsCodeCommand {
         if (!selectedFields)
             return;
 
-        let indent = symbol.contentRange.start.character + 3;
+        let indent = 0;
+        let fieldsContainer = symbol;
+        if (isFieldSymbol)
+            fieldsContainer = symbol.parent;
+        if ((fieldsContainer) && (fieldsContainer.contentRange))
+            indent = fieldsContainer.contentRange.start.character + 3;
+        else
+            indent = symbol.range.start.character + 3;
 
         //insert fields
         let writer: ALSyntaxWriter = new ALSyntaxWriter();

@@ -12,14 +12,22 @@ export class ALAddReportFieldsCodeCommand extends ALBaseAddFieldsCodeCommand {
     protected async runAsync(range: vscode.Range) {
         //get required details from document source code
         let symbol = this._toolsExtensionContext.activeDocumentSymbols.findSymbolInRange(range);
-        if ((!symbol) || (!symbol.source) || (!symbol.contentRange))
+        let isFieldSymbol = (symbol.kind == AZSymbolKind.ReportColumn);
+        let dataItemSymbol = symbol;
+        if (isFieldSymbol)
+            dataItemSymbol = symbol.findParentByKind(AZSymbolKind.ReportDataItem);
+        if ((!symbol) || 
+            (!dataItemSymbol) ||
+            (!dataItemSymbol.source) || 
+            (!dataItemSymbol.contentRange) || 
+            ((isFieldSymbol) && (!symbol.range)))            
             return;
 
         //get list of fields
-        let fieldNames = await this._toolsExtensionContext.alLangProxy.getFieldList(symbol.source);
+        let fieldNames = await this._toolsExtensionContext.alLangProxy.getFieldList(dataItemSymbol.source);
         
         //remove existing fields from the list
-        fieldNames = this.removeExistingFields(fieldNames, symbol.childSymbols, AZSymbolKind.ReportColumn, 'All available table fields have already been added to the report.');
+        fieldNames = this.removeExistingFields(fieldNames, dataItemSymbol.childSymbols, AZSymbolKind.ReportColumn, 'All available table fields have already been added to the report.');
         if (!fieldNames)
             return;
 
@@ -31,7 +39,7 @@ export class ALAddReportFieldsCodeCommand extends ALBaseAddFieldsCodeCommand {
         if (!selectedFields)
             return;
 
-        let indent = symbol.contentRange.start.character + 3;
+        let indent = dataItemSymbol.contentRange.start.character + 3;
 
         //insert fields
         let writer: ALSyntaxWriter = new ALSyntaxWriter();

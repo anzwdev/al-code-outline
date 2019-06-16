@@ -32,25 +32,35 @@ export class ALBaseAddFieldsCodeCommand extends ALCodeCommand {
     }
 
     protected async insertSymbolContentAsync(symbol: AZSymbolInformation, content: string) {
-        let line : number = symbol.contentRange.end.line;
+        let line : number = 0;
         let column : number = 0;
 
-        let nextSymbolColumn : number = symbol.contentRange.end.character;
+        if ((symbol.kind == AZSymbolKind.PageField) ||
+            (symbol.kind == AZSymbolKind.QueryColumn) ||
+            (symbol.kind == AZSymbolKind.ReportColumn)) {
 
-        if ((symbol.childSymbols) && (symbol.childSymbols.length > 0)) {            
-            for (let i=0; i<symbol.childSymbols.length; i++) {
-                if ((symbol.childSymbols[i].range) && (symbol.childSymbols[i].range.start.line < line)) {
-                    line = symbol.childSymbols[i].range.start.line;
-                    nextSymbolColumn = symbol.childSymbols[i].range.start.character;
+            line = symbol.range.end.line;
+            column = symbol.range.end.character;
+        } else {
+            line = symbol.contentRange.end.line;
+            let nextSymbolColumn : number = symbol.contentRange.end.character;
+
+            if ((symbol.childSymbols) && (symbol.childSymbols.length > 0)) {            
+                for (let i=0; i<symbol.childSymbols.length; i++) {
+                    if ((symbol.childSymbols[i].range) && (symbol.childSymbols[i].range.start.line < line)) {
+                        line = symbol.childSymbols[i].range.start.line;
+                        nextSymbolColumn = symbol.childSymbols[i].range.start.character;
+                    }
                 }
             }
+            
+            //is insert in the first content line?
+            if (line == symbol.contentRange.start.line) {
+                column = nextSymbolColumn;
+                content = '\n' + content; 
+            }; 
+
         }
-        
-        //is insert in the first content line?
-        if (line == symbol.contentRange.start.line) {
-            column = nextSymbolColumn;
-            content = '\n' + content; 
-        }; 
 
         await vscode.window.activeTextEditor.edit(editBuilder => {
             editBuilder.insert(new vscode.Position(line, column), content);

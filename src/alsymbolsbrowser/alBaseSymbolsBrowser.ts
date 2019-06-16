@@ -134,15 +134,19 @@ export class ALBaseSymbolsBrowser extends BaseWebViewEditor {
     protected async goToDefinition(path : number[] | undefined) {
         let alSymbolList : AZSymbolInformation[] | undefined = await this._library.getSymbolsListByPathAsync([path], AZSymbolKind.AnyALObject);
         if ((alSymbolList) && (alSymbolList.length > 0)) {
+            let targetLocation : vscode.Location | undefined = undefined;
             let alSymbol : AZSymbolInformation = alSymbolList[0];
             //get data type name
             let typeName : string | undefined = ALSyntaxHelper.kindToVariableType(alSymbol.kind);
             if (!typeName) {
-                vscode.window.showErrorMessage('This object type is not supported.');
-                return;
-            }
-
-            let targetLocation : vscode.Location | undefined = await this._devToolsContext.alLangProxy.getDefinitionLocation(typeName, alSymbol.name);
+                let typeName = ALSyntaxHelper.kindToWorkspaceSymbolType(alSymbol.kind);
+                if (!typeName) {
+                    vscode.window.showErrorMessage('This object type is not supported.');
+                    return;    
+                }               
+                targetLocation = await this._devToolsContext.alLangProxy.getWorkspaceSymbol(typeName, alSymbol.name);
+            } else
+                targetLocation = await this._devToolsContext.alLangProxy.getDefinitionLocation(typeName, alSymbol.name);
     
             if (targetLocation) {
                 try {
@@ -158,6 +162,8 @@ export class ALBaseSymbolsBrowser extends BaseWebViewEditor {
                 catch (e) {
                     vscode.window.showErrorMessage(e.message);
                 }
+            } else {
+                vscode.window.showErrorMessage('Object definition is not available.');
             }
         }
     }
