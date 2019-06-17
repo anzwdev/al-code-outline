@@ -9,13 +9,17 @@ class ReportWizard extends TableBasedObjectWizard {
 
     }
 
+    updateMainButtons() {
+        $("#prevBtn").prop("disabled", (this._step <= 1));
+        $("#nextBtn").prop("disabled", (this._step == 2));
+        //$("#finishBtn").prop("disabled", (this._step < 2));
+    }
+
     setStep(newStep) {
         $("#wizardstep" + this._step.toString()).hide();        
         this._step = newStep;
         $("#wizardstep" + this._step.toString()).show();
-        $("#prevBtn").prop("disabled", (this._step <= 1));
-        $("#nextBtn").prop("disabled", (this._step == 2));
-        $("#finishBtn").prop("disabled", (this._step < 2));
+        this.updateMainButtons();        
     }
 
     setData(data) {
@@ -24,6 +28,7 @@ class ReportWizard extends TableBasedObjectWizard {
         $("#objectid").val(this._data.objectId);
         $("#objectname").val(this._data.objectName);
         $("#srctable").val(this._data.selectedTable);
+        this.updateMainButtons();
         this.loadTables();
         this.loadFields();
     }

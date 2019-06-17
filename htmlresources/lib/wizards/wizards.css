@@ -140,6 +140,12 @@ header {
     width: 80px;
     padding:5px;
 }
+.button:disabled {
+    background-color: var(--vscode-tab-inactiveBackground);
+    color: var(--vscode-tab-inactiveForeground);
+}
+
+
 input, select {
     background: var(--vscode-input-background);
     border: 1px solid var(--vscode-panel-border);

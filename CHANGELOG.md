@@ -1,5 +1,10 @@
 # Change Log
 
+## 1.0.11
+ - Github issue #38 - Finish button on the object wizard not always works for some users - A few changes/fixes to improve wizards UI:
+    - Added missing css style for disabled buttons
+    - Finish button is always active (pressing Next and then Back was disabling it on the first page of all wizards)
+
 ## 1.0.10
  - Github issue #34 - Support for table extension, page extensions and enum extensions added to 'Go to definition' function in the symbol browsers
  - Github issue #37 - "Add multiple fields" code action can now also be invoked from fields to insert new elements below it. 
