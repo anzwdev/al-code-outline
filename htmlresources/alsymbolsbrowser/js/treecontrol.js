@@ -227,8 +227,9 @@ class TreeControl {
 
     //#region Filtering
 
-    filterData(idFilter, nameFilter) {
-        let hasFiler = false;
+    filterData(typeList, idFilter, nameFilter) {
+        //set type filter
+        this._typeFilter = typeList;        
         //compile id filter
         if (this._idFilterText != idFilter) {
             this._idFilterText = idFilter;
@@ -265,6 +266,8 @@ class TreeControl {
         }
         //apply filters
         this.resetFilter(this._data);
+        if ((this._typeFilter) && (this._typeFilter.length > 0))
+            this.applyTypeFilter(this._data);
         if (this._idFilter)
             this.applyIdFilter(this._data);
         if (this._nameFilter)
@@ -282,6 +285,19 @@ class TreeControl {
             if (data.childSymbols) {
                 for (let i=0; i<data.childSymbols.length;i++)
                     this.resetFilter(data.childSymbols[i]);
+            }
+        }
+    }
+
+    applyTypeFilter(data) {
+        if (data) {
+            if ((this.isObjectSymbol(data)) && (data.kind)) {
+                if (this._typeFilter.indexOf(data.kind) < 0)
+                    data.visible = false;
+            }
+            if (data.childSymbols) {
+                for (let i=0; i<data.childSymbols.length;i++)
+                    this.applyTypeFilter(data.childSymbols[i]);
             }
         }
     }

@@ -1,6 +1,3 @@
-.main {
-}
-
 body {
     position: absolute;
     left: 0;
@@ -10,22 +7,52 @@ body {
     display: flex;
     flex-direction: column;
 }
-.header {
+input, select {
+    background: var(--vscode-input-background);
+    border: 1px solid var(--vscode-panel-border);
+    color: var(--vscode-input-foreground);
+}
+input:focus, select:focus, div:focus {
+    outline-color: var(--vscode-focusBorder) !important;
+}
+#search .btn:focus {
+    outline-style: double;
+    outline-color: var(--vscode-focusBorder) !important;
+}
+#search {
     flex: 0 0 auto;
     display: flex;
-    flex-direction: row;
-    padding: 5px 10px;
-    justify-content: space-between;
-    align-items: center;
 }
-.headtitle {
-    flex: 1 1 auto;
-    font-size: 1.1em;
-}
-.headtoolbar {
+#search .btn {
     flex: 0 0 auto;
-    text-align: right;
+    margin: 5px;
 }
+#searchtype {
+    flex: 1 1 25%;
+}
+#searchid {
+    flex: 1 1 25%;
+}
+#searchname {
+    flex: 1 1 50%;
+}
+#search .searchinput, #search .ms-options-wrap {
+    margin: 5px 0px 5px 5px;
+}
+#search .btn {
+    background-color: var(--vscode-button-background);
+    color: var(--vscode-button-foreground);
+    border: 0px solid var(--vscode-panel-border);
+    font-size: var(--font-size);
+    font-weight: var(--font-weight);    
+    font-family: var(--font-family);
+    padding:5px;
+    white-space: nowrap;
+}
+#search .btn:hover, .icobtn:hover {
+    background-color: var(--vscode-button-hoverBackground);
+}
+
 
 .content {
     flex: 1 1 auto;
@@ -59,85 +86,23 @@ body {
     box-sizing: border-box;
     cursor: default;
 }
-.objects {
+.azgridviewcont {
     flex: 1 1 auto;
-    margin: 0;
-    padding: 0;
-    overflow: scroll;
-}
-.objects table {
-    border-collapse: collapse;
-    width:100%;
-}
-.objects th, .objects td {
-    text-align: left;
-    padding: 2px;
-    cursor: default;
+    margin: 0 10px 0 0;
 }
 
-.vscode-dark .objects table, .vscode-dark .objects th, .vscode-dark .objects td {
-    border: 1px solid #303030;
+
+
+.btnstd {
+    border: 1px solid var(--vscode-panel-border);
 }
-.vscode-dark .btnstd {
-    border: 1px solid #303030;
-    background: #202020;
-    color: #b0b0b0;
+.btnsel {
+    border: 1px solid var(--vscode-panel-border);
+    background-color: var(--vscode-list-inactiveSelectionBackground) !important;
+    color: var(--vscode-list-inactiveSelectionForeground) !important;
 }
-.vscode-dark .btnsel {
-    border: 1px solid #303030;
-    background: #404040;
-    color: #e0e0e0;
-}
-.vscode-dark .objects .objsel td {
-    background-color: #404040;
-    color: #e0e0e0;
+.btnsel:focus {
+    background-color: var(--vscode-list-activeSelectionBackground) !important;
+    color: var(--vscode-list-activeSelectionForeground) !important;
 }
 
-.vscode-light .objects table, .vscode-light .objects th, .vscode-light .objects td {
-    border: 1px solid #c0c0c0;
-}
-.vscode-light .btnstd {
-    border: 1px solid #c0c0c0;
-    background: #f7f7f7;
-    color: #202020;
-}
-.vscode-light .btnsel {
-    border: 1px solid #c0c0c0;
-    background: #d0d0d0;
-    color: #404040;
-}
-.vscode-light .objects .objsel td {
-    background-color: #e0e0e0;
-    color: #404040;
-}
-
-.vscode-high-contrast .objects table, .vscode-high-contrast .objects th, .vscode-high-contrast .objects td {
-    border: 1px solid #c0c0c0;
-}
-.vscode-high-contrast .btnstd {
-    border: 1px solid #c0c0c0;
-    background: #f7f7f7;
-    color: #202020;
-}
-.vscode-high-contrast .btnsel {
-    border: 1px solid #c0c0c0;
-    background: #d0d0d0;
-    color: #404040;
-}
-.vscode-high-contrast .objects .objsel td {
-    background-color: #e0e0e0;
-    color: #404040;
-}
-
-.tbarbtn {
-    background-color: var(--vscode-button-background);
-    color: var(--vscode-button-foreground);
-    border: 0px solid var(--vscode-panel-border);
-    font-size: var(--font-size);
-    font-weight: var(--font-weight);
-    font-family: var(--font-family);
-    padding:4px 10px;
-}
-.tbarbtn:hover {
-    background-color: var(--vscode-button-hoverBackground);
-}

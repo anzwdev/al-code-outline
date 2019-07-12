@@ -4,6 +4,7 @@
         <script src="##EXTENSIONPATH##/htmlresources/lib/jquery/jquery.min.js"></script>
         <script src="##EXTENSIONPATH##/htmlresources/lib/jquery-ui-position/jquery.ui.position.min.js"></script>
         <script src="##EXTENSIONPATH##/htmlresources/lib/jquery-context-menu/js/jquery.contextmenu.min.js"></script>
+        <script src="##EXTENSIONPATH##/htmlresources/lib/jquery-multiselect/jquery.multiselect.js"></script>
         <script src="##EXTENSIONPATH##/htmlresources/lib/split/split.min.js"></script>
         <script src="##EXTENSIONPATH##/htmlresources/lib/filtercompiler/filterCompiler.js"></script>
         <script src="##EXTENSIONPATH##/htmlresources/alsymbolsbrowser/js/alsymbolkind.js"></script>
@@ -11,13 +12,29 @@
         <script src="##EXTENSIONPATH##/htmlresources/alsymbolsbrowser/js/symbolsbrowser.js"></script>
         <script src="##EXTENSIONPATH##/htmlresources/alsymbolsbrowser/js/startup.js"></script>
         <link rel="stylesheet" type="text/css" href="##EXTENSIONPATH##/htmlresources/lib/jquery-context-menu/css/jquery.contextMenu.css">
+        <link rel="stylesheet" type="text/css" href="##EXTENSIONPATH##/htmlresources/lib/jquery-multiselect/jquery.multiselect.css">
         <link rel="stylesheet" type="text/css" href="##EXTENSIONPATH##/htmlresources/alsymbolsbrowser/css/symbolsbrowser.css">
         <link rel="stylesheet" type="text/css" href="##EXTENSIONPATH##/htmlresources/alsymbolsbrowser/css/icons.css">    
     </header>
     <body style="margin:0;padding:0">
         <div id="search">
-            <input type="text" id="searchid" name="searchid" tabindex="1" placeholder="Id filter. Eg: 22, 10..50, &gt;20&amp;&lt;30">
-            <input type="text" id="searchname" name="searchname" tabindex="2" placeholder="Name filter, Eg: *Item*, *Customer*">
+            <select id="searchtype" name="searchtype" class="searchinput" tabindex="1" multiple="multiple">
+                <option value="Table">Tables</option>
+                <option value="Page">Pages</option>
+                <option value="Report">Reports</option>
+                <option value="XmlPort">Xml Ports</option>
+                <option value="Query">Queries</option>
+                <option value="Codeunit">Codeunits</option>
+                <option value="ControlAddIn">Control Add-Ins</option>
+                <option value="PageExtension">Page Extensions</option>
+                <option value="TableExtension">Table Extensions</option>
+                <option value="Profile">Profiles</option>
+                <option value="PageCustomization">Page Customizations</option>
+                <option value="Enum">Enums</option>
+                <option value="DotNetPackage">DotNet Packages</option>
+            </select>            
+            <input type="text" id="searchid" name="searchid" tabindex="2" class="searchinput" placeholder="Id filter. Eg: 22, 10..50, &gt;20&amp;&lt;30">
+            <input type="text" id="searchname" name="searchname" tabindex="3" class="searchinput" placeholder="Name filter, Eg: *Item*, *Customer*">
             <button class="btn" id="searchbtn" tabindex="3">Search</button>
             <button class="btn" id="listbtn" tabindex="3">List View</button>
         </div>

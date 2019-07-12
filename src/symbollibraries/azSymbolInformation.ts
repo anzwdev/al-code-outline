@@ -323,4 +323,14 @@ export class AZSymbolInformation {
         return symbol;
     }
 
+    public getPath() : number[] {
+        let dataPath : number[] = [];
+        let symbol : AZSymbolInformation = this;
+        while (symbol) {
+            dataPath.push(symbol.idx);
+            symbol = symbol.parent;
+        }
+        return dataPath;
+    }
+
 }

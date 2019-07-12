@@ -1,0 +1,42 @@
+.azgridview {
+    width:100%;
+    border-collapse: collapse;
+}
+.azgridview, .azgridview th, .azgridview td {
+    border: 1px solid var(--vscode-panel-border);
+    user-select: none;
+    -webkit-user-select: none;
+}
+
+.azgridview th, .azgridview td {
+    text-align: left;
+    padding: 2px;
+    cursor: default;
+}
+
+.azgridview th {
+    padding: 2px 10px;
+}
+.azgridview td {
+    height: 20px;
+    
+}
+.azgridview .azgridviewrowsel td {
+    background-color: var(--vscode-list-inactiveSelectionBackground) !important;
+    color: var(--vscode-list-inactiveSelectionForeground) !important;
+}
+.azgridviewcont:focus .azgridview .azgridviewrowactive {
+    outline: 1px solid var(--vscode-inputValidation-warningBorder) !important;
+}
+
+
+.azgridviewcont:focus .azgridview .azgridviewrowsel td {
+    background-color: var(--vscode-list-activeSelectionBackground) !important;
+    color: var(--vscode-list-activeSelectionForeground) !important;
+}
+
+.azgridviewcont {
+    padding: 0;
+    overflow: auto;
+    border: 1px solidvar(--vscode-panel-border);
+}

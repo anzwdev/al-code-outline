@@ -8,16 +8,20 @@ import { AZSymbolsLibrary } from "../symbollibraries/azSymbolsLibrary";
 import { ALSymbolsBrowser } from './alSymbolsBrowser';
 import { AZSymbolInformation } from '../symbollibraries/azSymbolInformation';
 import { AZSymbolKind } from '../symbollibraries/azSymbolKind';
-import { ALObjectsBrowserData } from './alObjectsBrowserData';
+import { ALObjectBrowserItem } from './alObjectBrowserItem';
 
 /**
  * AL Objects Browser
  * allows to browse AL objects in a flat list like in the Object Designer in Dynamics Nav
  */
 export class ALObjectsBrowser extends ALBaseSymbolsBrowser {
+    protected _itemsList: ALObjectBrowserItem[];
+    protected _showLibraries: boolean;
     
     constructor(devToolsContext : DevToolsExtensionContext,  library : AZSymbolsLibrary) {
         super(devToolsContext, library);
+        this._itemsList = [];
+        this._showLibraries = false;
     }
 
     protected getHtmlContentPath() : string {
@@ -31,13 +35,36 @@ export class ALObjectsBrowser extends ALBaseSymbolsBrowser {
     protected async onDocumentLoaded() {
         //load library
         await this._library.loadAsync(false);
-        let objectData : ALObjectsBrowserData = new ALObjectsBrowserData(this._library);
+        //let objectData : ALObjectsBrowserData = new ALObjectsBrowserData(this._library);
+
+        this._itemsList = [];
+        this._showLibraries = false;
+        if (this._library.rootSymbol)
+            this.collectSymbols(this._library.rootSymbol, '');
 
         //send data to the web view
         this.sendMessage({
-            msgtype: 'objectsLoaded',
-            data: objectData
+            command: 'setData',
+            data: this._itemsList,
+            showLibraries: this._showLibraries
         });
+    }
+
+    protected collectSymbols(symbol: AZSymbolInformation, libraryName: string) {
+        if (symbol.isALObject()) {
+            this._itemsList.push(new ALObjectBrowserItem(symbol.kind, symbol.id, symbol.name, libraryName, symbol.getPath()))
+        } else if (symbol.childSymbols) {
+            if (symbol.kind == AZSymbolKind.Package) {
+                libraryName = symbol.name;
+                if ((!this._showLibraries) && (this._itemsList.length > 0))
+                    this._showLibraries = true;
+            }
+
+            for (let i=0; i<symbol.childSymbols.length; i++) {
+                symbol.childSymbols[i].parent = symbol;
+                this.collectSymbols(symbol.childSymbols[i], libraryName);
+            }
+        }
     }
 
     protected processWebViewMessage(message : any) : boolean {
@@ -48,13 +75,7 @@ export class ALObjectsBrowser extends ALBaseSymbolsBrowser {
             case 'showTreeView':
                 this.showTreeView();
                 break;
-            case 'execFilterCommand':
-                this.filterObjects(message.headColumn, message.currentIdFilter, message.currentNameFilter);
-                return true;
-            case 'errorInFilter':
-                vscode.window.showErrorMessage('Invalid filter: ' + message.message);
-                return true;
-            case 'updatePivotObj':
+            case 'currRowChanged':
                 this.updatePivotObjCommand(message.path);
                 return true;
         }
@@ -62,11 +83,14 @@ export class ALObjectsBrowser extends ALBaseSymbolsBrowser {
         return false;
     }
 
-    protected async updatePivotObjCommand(path: any) {
+    protected async updatePivotObjCommand(symbolPath: number[] | undefined) {
         let rootSymbol : AZSymbolInformation = AZSymbolInformation.create(AZSymbolKind.Document, 'Symbol');
-        let symbolList : AZSymbolInformation[] | undefined = await this._library.getSymbolsListByPathAsync([path], AZSymbolKind.AnyALObject);
-        if ((symbolList) && (symbolList.length > 0))        
-            rootSymbol.addChildItem(symbolList[0]);
+        if ((symbolPath) && (symbolPath.length > 0)) {
+            let pathList: number[][] = [symbolPath];
+            let symbolList : AZSymbolInformation[] | undefined = await this._library.getSymbolsListByPathAsync(pathList, AZSymbolKind.AnyALObject);
+            if ((symbolList) && (symbolList.length > 0))        
+                rootSymbol.addChildItem(symbolList[0]);
+        }
         this._devToolsContext.activeDocumentSymbols.setRootSymbol(rootSymbol);
     }
 
