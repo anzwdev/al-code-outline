@@ -15,26 +15,28 @@ input, select {
 input:focus, select:focus, div:focus {
     outline-color: var(--vscode-focusBorder) !important;
 }
-button:focus {
+.btn:focus, .tbarbtn:focus {
     outline-style: double;
     outline-color: var(--vscode-focusBorder) !important;
 }
-
 #search {
     flex: 0 0 auto;
     display: flex;
 }
-#search button {
+#search .btn {
     flex: 0 0 auto;
     margin: 5px;
 }
+#searchtype {
+    flex: 1 1 25%;
+}
 #searchid {
-    flex: 1 1 30%;
+    flex: 1 1 25%;
 }
 #searchname {
-    flex: 1 1 70%;
+    flex: 1 1 50%;
 }
-#search input {
+#search .searchinput, #search .ms-options-wrap {
     margin: 5px 0px 5px 5px;
 }
 #content {
@@ -187,6 +189,7 @@ button:focus {
     font-weight: var(--font-weight);
     font-family: var(--font-family);
     padding:2px;
+    margin:2px;
 }
 .tbarbtn:hover {
     background-color: var(--vscode-button-hoverBackground);

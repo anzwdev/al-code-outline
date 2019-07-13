@@ -194,9 +194,53 @@ class ObjectBrowser {
         return path;
     }
 
-    search() {
-        this._objTree.filterData($('#searchid').val(), $('#searchname').val());
+    search() {        
+        let typeList = [];
+        let typeElem = document.getElementById('searchtype');
+        let options = typeElem.options;
+        for (let i=0; i<options.length; i++) {
+            if (options[i].selected)
+                typeList.push(this.objectTypeToSymbolKind(options[i].value));
+        }
+
+
+        this._objTree.filterData(typeList, $('#searchid').val(), $('#searchname').val());
     }
+
+    objectTypeToSymbolKind(name) {
+        switch (name)
+        {
+            case "Table":
+                return ALSymbolKind.TableObject;
+            case "Page":
+                return ALSymbolKind.PageObject;
+            case "Report":
+                return ALSymbolKind.ReportObject;
+            case "XmlPort":
+                return ALSymbolKind.XmlPortObject;
+            case "Query":
+                return ALSymbolKind.QueryObject;
+            case "Codeunit":
+                return ALSymbolKind.CodeunitObject;
+            case "ControlAddIn":
+                return ALSymbolKind.ControlAddInObject;
+            case "PageExtension":
+                return ALSymbolKind.PageExtensionObject;
+            case "TableExtension":
+                return ALSymbolKind.TableExtensionObject;
+            case "Profile":
+                return ALSymbolKind.ProfileObject;
+            case "PageCustomization":
+                return ALSymbolKind.PageCustomizationObject;
+            case "Enum":
+                return ALSymbolKind.EnumType;
+            case "DotNetPackage":
+                return ALSymbolKind.DotNetPackage;
+            default:
+            	return ALSymbolKind.Undefined;
+        }
+    }
+
 
     onSearchKeyDown(e) {
         let handled = false;

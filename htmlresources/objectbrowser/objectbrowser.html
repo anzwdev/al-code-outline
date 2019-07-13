@@ -1,73 +1,87 @@
 <html>
     <header>
-        <script src="##EXTENSIONPATH##/htmlresources/lib/handlebars/handlebars.runtime-v4.0.11.js"></script>
         <script src="##EXTENSIONPATH##/htmlresources/lib/jquery/jquery.min.js"></script>
         <script src="##EXTENSIONPATH##/htmlresources/lib/jquery-ui-position/jquery.ui.position.min.js"></script>
         <script src="##EXTENSIONPATH##/htmlresources/lib/jquery-context-menu/js/jquery.contextmenu.min.js"></script>
-        <script src="##EXTENSIONPATH##/htmlresources/lib/jquery-rowselector/jquery.rowselector.js"></script>
+        <script src="##EXTENSIONPATH##/htmlresources/lib/jquery-multiselect/jquery.multiselect.js"></script>
         <script src="##EXTENSIONPATH##/htmlresources/lib/filtercompiler/filterCompiler.js"></script>
+        <script src="##EXTENSIONPATH##/htmlresources/lib/azgridview/azgridview.js"></script>
         <script src="##EXTENSIONPATH##/htmlresources/alsymbolsbrowser/js/alsymbolkind.js"></script>
-        <script src="##EXTENSIONPATH##/htmlresources/objectbrowser/js/objectlist.handlebars.js"></script>
         <script src="##EXTENSIONPATH##/htmlresources/objectbrowser/js/objectbrowser.js"></script>
         <link rel="stylesheet" type="text/css" href="##EXTENSIONPATH##/htmlresources/lib/jquery-context-menu/css/jquery.contextMenu.css">
+        <link rel="stylesheet" type="text/css" href="##EXTENSIONPATH##/htmlresources/lib/jquery-multiselect/jquery.multiselect.css">
+        <link rel="stylesheet" type="text/css" href="##EXTENSIONPATH##/htmlresources/lib/azgridview/azgridview.css">
         <link rel="stylesheet" type="text/css" href="##EXTENSIONPATH##/htmlresources/objectbrowser/css/objectbrowser.css">
     </header>
     <body style="margin:0;padding:0;">
-        <div class="header">
-            <div id="headtitle" class="headtitle">AL Objects Browser</div>
-            <div class="headtoolbar">
-                    <div class="tbarbtn" onclick="treeViewClick()">Switch to Tree View</div>
-            </div>
+        <div id="search">
+            <select id="searchtype" name="searchtype" class="searchinput" tabindex="1" multiple="multiple">
+                <option value="Table">Tables</option>
+                <option value="Page">Pages</option>
+                <option value="Report">Reports</option>
+                <option value="XmlPort">Xml Ports</option>
+                <option value="Query">Queries</option>
+                <option value="Codeunit">Codeunits</option>
+                <option value="ControlAddIn">Control Add-Ins</option>
+                <option value="PageExtension">Page Extensions</option>
+                <option value="TableExtension">Table Extensions</option>
+                <option value="Profile">Profiles</option>
+                <option value="PageCustomization">Page Customizations</option>
+                <option value="Enum">Enums</option>
+                <option value="DotNetPackage">DotNet Packages</option>
+            </select>
+            <input type="text" id="searchid" name="searchid" class="searchinput" tabindex="3" placeholder="Id filter. Eg: 22, 10..50, &gt;20&amp;&lt;30">
+            <input type="text" id="searchname" name="searchname" class="searchinput" tabindex="3" placeholder="Name filter, Eg: *Item*, *Customer*">
+            <button class="btn" id="searchbtn" tabindex="4">Search</button>
+            <button class="btn" id="treebtn" tabindex="5">Tree View</button>
         </div>
         <div class="content">
-        
             <div class="types">
                     <div class="btnArea">
-                        <div class="btn btnstd" data-mode="Table" onclick="modeBtnClick(this);">Tables</div>
+                        <div id="tableModeBtn" class="btn btnstd" tabindex="5" data-mode="Table">Tables</div>
                     </div>
                     <div class="btnArea">
-                        <div class="btn btnstd" data-mode="Page" onclick="modeBtnClick(this)">Pages</div>
+                        <div id="pageModeBtn" class="btn btnstd" tabindex="6" data-mode="Page">Pages</div>
                     </div>
                     <div class="btnArea">
-                        <div class="btn btnstd" data-mode="Report" onclick="modeBtnClick(this)">Reports</div>
+                        <div id="reportModeBtn" class="btn btnstd" tabindex="7" data-mode="Report">Reports</div>
                     </div>
                     <div class="btnArea">
-                        <div class="btn btnstd" data-mode="XmlPort" onclick="modeBtnClick(this)">Xml Ports</div>
+                        <div id="xmlportModeBtn" class="btn btnstd" tabindex="8" data-mode="XmlPort">Xml Ports</div>
                     </div>
                     <div class="btnArea">
-                        <div class="btn btnstd" data-mode="Query" onclick="modeBtnClick(this)">Queries</div>
+                        <div id="queryModeBtn" class="btn btnstd" tabindex="9" data-mode="Query">Queries</div>
                     </div>
                     <div class="btnArea">
-                        <div class="btn btnstd" data-mode="Codeunit" onclick="modeBtnClick(this)">Codeunits</div>
+                        <div id="codeunitModeBtn" class="btn btnstd" tabindex="10" data-mode="Codeunit">Codeunits</div>
                     </div>
                     <div class="btnArea">
-                        <div class="btn btnstd" data-mode="ControlAddIn" onclick="modeBtnClick(this)">Control Add-Ins</div>
+                        <div id="contoladdinModeBtn" class="btn btnstd" tabindex="11" data-mode="ControlAddIn">Control Add-Ins</div>
                     </div>
                     <div class="btnArea">
-                        <div class="btn btnstd" data-mode="PageExtension" onclick="modeBtnClick(this)">Page Extensions</div>
+                        <div id="pageextensionModeBtn" class="btn btnstd" tabindex="12" data-mode="PageExtension">Page Extensions</div>
                     </div>
                     <div class="btnArea">
-                        <div class="btn btnstd" data-mode="TableExtension" onclick="modeBtnClick(this)">Table Extensions</div>
+                        <div id="tableextensionModeBtn" class="btn btnstd" tabindex="13" data-mode="TableExtension">Table Extensions</div>
                     </div>
                     <div class="btnArea">
-                        <div class="btn btnstd" data-mode="Profile" onclick="modeBtnClick(this)">Profiles</div>
+                        <div id="profileModeBtn" class="btn btnstd" tabindex="14" data-mode="Profile">Profiles</div>
                     </div>
                     <div class="btnArea">
-                        <div class="btn btnstd" data-mode="PageCustomization" onclick="modeBtnClick(this)">Page Customizations</div>
+                        <div id="pagecustomizationModeBtn" class="btn btnstd" tabindex="15" data-mode="PageCustomization">Page Customizations</div>
                     </div>
                     <div class="btnArea">
-                        <div class="btn btnstd" data-mode="Enum" onclick="modeBtnClick(this)">Enums</div>
+                        <div id="enumModeBtn" class="btn btnstd" tabindex="16" data-mode="Enum">Enums</div>
                     </div>
                     <div class="btnArea">
-                        <div class="btn btnstd" data-mode="DotNetPackage" onclick="modeBtnClick(this)">DotNet Packages</div>
+                        <div id="dotnetpackageModeBtn" class="btn btnstd" tabindex="17" data-mode="DotNetPackage">DotNet Packages</div>
                     </div>
                     <div class="btnArea">
-                        <div class="btn btnstd" data-mode="All" onclick="modeBtnClick(this)">All</div>
+                        <div id="allModeBtn" class="btn btnstd" tabindex="18" data-mode="All">All</div>
                     </div>
                 </div>
         
-                <div id="objects" class="objects">
-                    <div class="loading">Loading objects, please wait...</div>
+                <div id="objects" tabindex="19">
                 </div>
             </div>
         </div>        

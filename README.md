@@ -26,11 +26,9 @@ Extensions add new "New AL File Wizard" item to EXPLORER context menu. It allows
 
 ### Symbols browser
 
-Symbols browser shows list of AL objects, allows to select one of them and then display details of that symbol. It is also possible to select multiple objects (by clicking on nodes with Ctrl key or using Ctrl+A) and then use context menu to run one of code generator on them. Browser can display symbols in 2 modes - list and tree view. In tree view screen is split into two parts showing objects tree on the left side and selected symbol on the right. In list view browser shows flat list of symbols and uses "AL Outline" panel to show details of selected object.
+Symbols browser shows list of AL objects, allows to select one of them and then display details of that symbol. It is also possible to select multiple objects (by clicking on nodes with Ctrl key or using Ctrl+A) and then use context menu to run one of code generators on them. Browser can display symbols in 2 modes - list and tree view. In tree view screen is split into two parts showing objects tree on the left side and selected symbol on the right. In list view browser shows flat list of symbols and uses "AL Outline" panel to show details of selected object.
 
-Both views allow to filter data, tree view shows filter fields at the top of the screen, list view uses context menu on the header fields to set or clear filters.
-
-Tree view also supports keyboard navigation using arrow keys.
+Both views support keyboard navigation with arrow keys and allow to filter data by using filter fields at the top of the screen.
 
 Symbols browser can display symbols from:
  - *.app symbols file by right clicking on it and using "Open in AL Browser" command from the context menu
