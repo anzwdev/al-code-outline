@@ -2,6 +2,7 @@
 
 ## 1.0.12
  - The same filters ui for both list and tree views in symbol/object browsers
+ - Better keyboard navigation and row selection in list view of symbols browser
 
 ## 1.0.11
  - Github issue #38 - Finish button on the object wizard not always works for some users - A few changes/fixes to improve wizards UI:
