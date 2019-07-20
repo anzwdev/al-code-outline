@@ -4,6 +4,9 @@ class ImageBrowser {
         let that = this;
 
         this._vscode = acquireVsCodeApi();
+        this._controlId = 'content';
+
+        this.initializeContextMenu();
 
         // Handle messages sent from the extension to the webview
         var me = this;
@@ -11,8 +14,36 @@ class ImageBrowser {
             me.onMessage(event.data);
         });
 
+        document.getElementById('searchname').addEventListener('keydown', event => {
+            me.onSearchKeyDown(event);
+        });
+
+        document.getElementById('searchbtn').addEventListener('click', event => {
+            me.search();
+        });
+
         this.sendMessage({
             command: 'documentLoaded'
+        });
+    }
+
+    initializeContextMenu() {
+        let browser = this;
+        $('#content').contextMenu({
+            selector: '.image', 
+            callback: function(key, options) {
+                let idx = $(this).data('idx');                
+                let name = browser._data[idx].name;
+                browser.sendMessage({
+                    command : key,
+                    name: name
+                });
+            },
+            items: {
+                "copyname": {name: "Copy"},
+                "copyaction": {name: "Copy as action"},
+                "copypromotedaction": {name: "Copy as promoted action"}
+            }
         });
     }
 
@@ -29,20 +60,72 @@ class ImageBrowser {
     }
 
     setData(data) {
-        //TO-DO: this._data[i].name should be html encoded before adding it to the html content text
-        let content = "";
         this._data = data;
+        this.renderData();
+    }
+
+    renderData() {
+        let element = document.getElementById(this._controlId);
+        while (element.firstChild) {
+            element.removeChild(element.firstChild);
+        }
+
         if (this._data) {
             for (let i=0; i<this._data.length; i++) {
-                content = content + 
-                    '<div class="image"><img class="img" src="' + 
-                    this._data[i].content + 
-                    '"><div class="name">' + 
-                    this._data[i].name + 
-                    '</div></div>';
+                if (this.validItem(this._data[i])) {
+                    let item = document.createElement('div');
+                    item.className = 'image';
+                    item.dataset['idx'] = i;
+
+                    let img = document.createElement('img');
+                    img.src = this._data[i].content;
+                    item.appendChild(img);
+
+                    let label = document.createElement('div');
+                    label.className = 'name';
+                    label.innerText = this._data[i].name;
+                    item.appendChild(label);
+
+                    element.appendChild(item);
+                }
             }
         }
-        $("#content").html(content);
+
+    }
+
+    compileFilters() {
+        let nameFilterText = document.getElementById('searchname').value;
+        if (nameFilterText)
+            this._nameFilter = compileFilter('text', nameFilterText);
+        else
+            this._nameFilter = undefined;
+    }
+
+    validItem(item) {
+        if ((this._nameFilter) && (!this._nameFilter({TEXT: item.name})))
+            return false;
+        return true;
+    }
+
+    search() {
+        this.compileFilters();
+        this.renderData();
+    }
+
+    onSearchKeyDown(e) {
+        let handled = false;
+
+        switch (e.which) {
+            case 13:
+                this.search();
+                handled = true;
+                break;
+        }
+
+        if (handled) {
+            e.preventDefault();
+            return false;
+        }
     }
 
 }

@@ -34,6 +34,61 @@ export class ALActionImageBrowser extends BaseWebViewEditor {
         });
     }
 
+    protected processWebViewMessage(message : any) : boolean {
+        if (super.processWebViewMessage(message))
+            return true;
+
+        switch (message.command) {
+            case 'copyname':
+                this.copyName(message.name);
+                break;
+            case 'copyaction':
+                this.copyAction(message.name);
+                return true;
+            case 'copypromotedaction':
+                this.copyPromotedAction(message.name);
+                return true;
+        }
+        return false;
+    }
+
+    protected async copyName(name: string) {
+        await vscode.env.clipboard.writeText(name);
+        //vscode.window.showInformationMessage('Image name has been copied to the clipboard');
+    }
+
+    protected async copyAction(name: string) {
+        await vscode.env.clipboard.writeText(
+            'action(' + name + 'Action)\n' +
+            '{\n' +
+            '    ApplicationArea = All;\n' +
+            '    Image = ' + name + ';\n' +
+            '\n' +
+            '    trigger OnAction()\n' +
+            '    begin\n' +
+            '\n' +
+            '    end;\n' +
+            '}\n');
+        //vscode.window.showInformationMessage('Action code has been copied to the clipboard');
+    }
+
+    protected async copyPromotedAction(name: string) {
+        await vscode.env.clipboard.writeText(
+            'action(' + name + 'Action)\n' +
+            '{\n' +
+            '    ApplicationArea = All;\n' +
+            '    Image = ' + name + ';\n' +
+            '    Promoted = true;\n' +
+            '    PromotedCategory = Process;\n' +
+            '\n' +
+            '    trigger OnAction()\n' +
+            '    begin\n' +
+            '\n' +
+            '    end;\n' +
+            '}\n');
+        //vscode.window.showInformationMessage('Promoted action code has been copied to the clipboard');
+    }
+
     async getImageList() : Promise<ALActionImageInfo[]> {
         let fileContent = 'page 0 MyPage9999\n{\nactions\n{\narea(Processing)\n{\naction(ActionName)\n{\nImage=;\n}\n}\n}\n}';
 
