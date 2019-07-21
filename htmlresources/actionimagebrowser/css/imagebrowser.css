@@ -80,3 +80,11 @@ input:focus, select:focus, div:focus {
     overflow: hidden;
     margin: 6px 0px 0px 0px;
 }
+.imagesel {
+    background-color: var(--vscode-list-inactiveSelectionBackground);
+    color: var(--vscode-list-inactiveSelectionForeground);
+}
+#content:focus .imagesel {
+    background-color: var(--vscode-list-activeSelectionBackground) !important;
+    color: var(--vscode-list-activeSelectionForeground) !important;
+}

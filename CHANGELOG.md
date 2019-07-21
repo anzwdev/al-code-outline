@@ -1,5 +1,16 @@
 # Change Log
 
+## 1.0.13
+ - Github issue #42 - Filtering in "Action Images" window
+ - Keyboard navigation and context menu added to the "Action Images" window. Context menu contains these 3 actions:
+   - Copy name - copies image name to the clipboard
+   - Copy as action - generates page action element and copies it to the clipboard
+   - Copy as promoted action - generates promoted page action element and copies it to the clipboard
+   
+   Enter key pressed when image list has focus, copies image name to the clipboard.
+
+ Thank you rvanbekkum for reporting issue #42
+
 ## 1.0.12
  - The same filters ui for both list and tree views in symbol/object browsers
  - Better keyboard navigation and row selection in list view of symbols browser

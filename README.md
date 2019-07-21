@@ -69,9 +69,12 @@ Extension adds VS Code editor code actions to some of al elements to help develo
 
 ### Action images browser
 
-Extension adds new "AZ AL Dev Tools: Show Action Images" command to the "Command Palette" to load all available action images from active Microsoft AL Language extension and show them on a single web view panel. 
+Extension adds new "AZ AL Dev Tools: Show Action Images" command to the "Command Palette" to load all available action images from active Microsoft AL Language extension and show them in a single web view panel. Action images browser supports filtering, keyboard navigation and adds context menu to each image on the list.  Context menu contains these 3 actions:
+   - Copy name - copies image name to the clipboard
+   - Copy as action - generates page action element and copies it to the clipboard
+   - Copy as promoted action - generates promoted page action element and copies it to the clipboard
 
-![Action images](resources/screen2-actionimages.png)
+![Action images](resources/screen2-actionimages.gif)
 
 ## Contributors
 
