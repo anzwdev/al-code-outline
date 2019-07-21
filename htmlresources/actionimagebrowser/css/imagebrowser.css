@@ -1,9 +1,63 @@
+body {
+    position: absolute;
+    left: 0;
+    right: 0;
+    top: 0;
+    bottom: 0;
+    display: flex;
+    flex-direction: column;
+    padding:0;
+    margin: 0 2px 0 0;
+}
+input, select {
+    background: var(--vscode-input-background);
+    border: 1px solid var(--vscode-panel-border);
+    color: var(--vscode-input-foreground);
+}
+input:focus, select:focus, div:focus {
+    outline-color: var(--vscode-focusBorder) !important;
+}
+.btn:focus {
+    outline-style: double;
+    outline-color: var(--vscode-focusBorder) !important;
+}
+#search {
+    flex: 0 0 auto;
+    display: flex;
+}
+#search .btn {
+    flex: 0 0 auto;
+    margin: 5px;
+}
+#searchname {
+    flex: 1 1 auto;
+}
+#search .searchinput, #search .ms-options-wrap {
+    margin: 5px 0px 5px 5px;
+}
+
+.btn {
+    background-color: var(--vscode-button-background);
+    color: var(--vscode-button-foreground);
+    border: 0px solid var(--vscode-panel-border);
+    font-size: var(--font-size);
+    font-weight: var(--font-weight);    
+    font-family: var(--font-family);
+    padding:5px;
+}
+.btn:hover {
+    background-color: var(--vscode-button-hoverBackground);
+}
 #content {
+    flex: 1 1 auto;
     display: flex;
     flex-direction: row;
     flex-wrap: wrap;
     justify-content: flex-start;
-    align-items: flex-start;    
+    align-items: flex-start; 
+    align-content: flex-start;
+    border: 1px solid var(--vscode-panel-border);   
+    overflow: auto;
 }
 .image {
     flex: 0 0 120px;    
@@ -25,4 +79,12 @@
     flex: 1 1 auto;
     overflow: hidden;
     margin: 6px 0px 0px 0px;
+}
+.imagesel {
+    background-color: var(--vscode-list-inactiveSelectionBackground);
+    color: var(--vscode-list-inactiveSelectionForeground);
+}
+#content:focus .imagesel {
+    background-color: var(--vscode-list-activeSelectionBackground) !important;
+    color: var(--vscode-list-activeSelectionForeground) !important;
 }

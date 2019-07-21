@@ -1,5 +1,5 @@
 var imageBrowser;
 
-$(function() {
+window.onload = function() {
     imageBrowser = new ImageBrowser();
-});
+};
