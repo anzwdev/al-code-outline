@@ -276,7 +276,7 @@ class ImageBrowser {
     }
 
     scrollToElement(element) {
-        let mainTop = 0; //this._container.offsetTop;
+        let mainTop = this._content.offsetTop;
         let viewTop = this._content.scrollTop;
         let viewBottom = viewTop + this._content.clientHeight;
         let elementTop = element.offsetTop - mainTop;
