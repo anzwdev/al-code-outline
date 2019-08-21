@@ -50,13 +50,24 @@ export class ALLangServerProxy {
             if ((!alExtension) || (!alExtension.isActive))
                 return false;
 
-            if ((alExtension.exports) && (alExtension.exports.languageServerClient)) {
-                if (alExtension.exports.languageServerClient.languageClient)
-                    this.langClient = alExtension.exports.languageServerClient.languageClient;
-                else
-                    this.langClient = alExtension.exports.languageServerClient;
+            if (alExtension.exports) {
+                
+                if (alExtension.exports.languageServerClient) {
+                    if (alExtension.exports.languageServerClient.languageClient)
+                        this.langClient = alExtension.exports.languageServerClient.languageClient;
+                    else
+                        this.langClient = alExtension.exports.languageServerClient;
+                 } else if (alExtension.exports.services) {
+                    let services = alExtension.exports.services;
+                    let langClientFound = false;
+                    for (let sidx = 0; ((sidx < services.length) && (!langClientFound)); sidx++) {
+                        if (services[sidx].languageServerClient) {                        
+                            this.langClient = services[sidx].languageServerClient;
+                            langClientFound = true;
+                        }
+                    }
+                }
             }
-
 
         }
         return true;

@@ -37,7 +37,9 @@ export class ALBaseAddFieldsCodeCommand extends ALCodeCommand {
 
         if ((symbol.kind == AZSymbolKind.PageField) ||
             (symbol.kind == AZSymbolKind.QueryColumn) ||
-            (symbol.kind == AZSymbolKind.ReportColumn)) {
+            (symbol.kind == AZSymbolKind.ReportColumn) ||
+            (symbol.kind == AZSymbolKind.XmlPortFieldElement) ||
+            (symbol.kind == AZSymbolKind.XmlPortFieldAttribute)) {
 
             line = symbol.range.end.line;
             column = symbol.range.end.character;

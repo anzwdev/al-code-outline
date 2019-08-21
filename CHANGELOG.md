@@ -1,5 +1,9 @@
 # Change Log
 
+## 1.0.14
+ - "Add multiple field elements" and "Add multiple field attributes" code actions added to xml ports
+ - Small changes to detecting language server for Microsoft AL Extension from Nav 2018 (work in progress)
+
 ## 1.0.13
  - Github issue #42 - Filtering in "Action Images" window
  - Keyboard navigation and context menu added to the "Action Images" window. Context menu contains these 3 actions:
