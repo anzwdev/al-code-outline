@@ -64,6 +64,7 @@ Extension adds VS Code editor code actions to some of al elements to help develo
  - "group", "repeater", "addfirst", "addlast", "addafter" and "addbefore" on page extensions
  - "dataitem" on reports
  - "dataitem" on queries 
+There are also "Add multiple field elements" and "Add multiple field attributes" actions available at "tableelement", "fieldelement" and "fieldattribute" elements on xml ports.
 
 ![Add multiple fields](resources/screen2-addfieldscodeaction.gif)
 
