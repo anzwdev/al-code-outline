@@ -47,7 +47,7 @@ export class AZDocumentSymbolsLibrary extends AZSymbolsLibrary {
         if ((!forceReload) && (!this._reloadRequired))
             return false;
 
-        this.clearSymbols();
+        let newRootSymbol : AZSymbolInformation | undefined = undefined;
 
         //get document symbols
         let editor : vscode.TextEditor | undefined = this.findTextEditor(this._docUri);
@@ -73,7 +73,7 @@ export class AZDocumentSymbolsLibrary extends AZSymbolsLibrary {
                 let request : ToolsDocumentSymbolsRequest = new ToolsDocumentSymbolsRequest(source, documentPath);
                 let response : ToolsDocumentSymbolsResponse | undefined = await this._context.toolsLangServerClient.getALDocumentSymbols(request);
                 if ((response) && (response.root)) {
-                    this.rootSymbol = AZSymbolInformation.fromAny(response.root);                    
+                    newRootSymbol = AZSymbolInformation.fromAny(response.root);                    
                     //merge symbols with symbols returned from Microsoft AL Language Extension
                     let symbols = await symbolsLoad;
                     if (symbols) {
@@ -82,20 +82,21 @@ export class AZDocumentSymbolsLibrary extends AZSymbolsLibrary {
                             this.mergeFieldSymbolNames(this.rootSymbol, fieldSymbols);
                     }
                 } else
-                    this.rootSymbol = AZSymbolInformation.create(AZSymbolKind.Document, this.displayName);
+                    newRootSymbol = AZSymbolInformation.create(AZSymbolKind.Document, this.displayName);
             } else {
                 //use standard visual studio code symbols functionality to load symbols
-                this.rootSymbol = AZSymbolInformation.create(AZSymbolKind.Document, this.displayName);                
+                newRootSymbol = AZSymbolInformation.create(AZSymbolKind.Document, this.displayName);                
                 let symbols = await symbolsLoad;
                     //vscode.commands.executeCommand<vscode.SymbolInformation[] | vscode.DocumentSymbol[]>('vscode.executeDocumentSymbolProvider', this._docUri);
                 if ((symbols) && (symbols.length > 0)) {
                     if (this.isDocumentSymbolsList(symbols))
-                        this.loadDocumentSymbols(this.rootSymbol, symbols as vscode.DocumentSymbol[]);
+                        this.loadDocumentSymbols(newRootSymbol, symbols as vscode.DocumentSymbol[]);
                     else
-                        this.loadSymbolsInformation(this.rootSymbol, symbols as vscode.SymbolInformation[]);
+                        this.loadSymbolsInformation(newRootSymbol, symbols as vscode.SymbolInformation[]);
                 }
             }
 
+            this.rootSymbol = newRootSymbol;
         }
         return true;
     }
@@ -240,6 +241,34 @@ export class AZDocumentSymbolsLibrary extends AZSymbolsLibrary {
     //#endregion
 
     //#region Symbols search
+
+    findNextSymbol(line: number) : AZSymbolInformation | undefined {
+        if ((this.rootSymbol) && (this.rootSymbol.childSymbols)) {
+            for (let i=0; i<this.rootSymbol.childSymbols.length; i++) {
+                let found = this.findNextSymbolInt(this.rootSymbol.childSymbols[i], line);
+                if (found)
+                    return found;
+            }
+        }
+        return undefined;
+    }
+
+    protected findNextSymbolInt(symbol: AZSymbolInformation, line: number) : AZSymbolInformation | undefined {
+        if ((symbol.range) && (symbol.range.start.line <= line) && (symbol.range.end.line >= line)) {
+
+            if ((symbol.selectionRange) && (symbol.selectionRange.start.line >= line))
+                return symbol;
+
+            if (symbol.childSymbols) {
+                for (let i=0; i<symbol.childSymbols.length; i++) {
+                    let found = this.findNextSymbolInt(symbol.childSymbols[i], line);
+                    if (found)
+                        return found;                    
+                }
+            }
+        }
+        return undefined;
+    }
 
     findSymbolInRange(range: vscode.Range) : AZSymbolInformation | undefined {
         if (!this.rootSymbol)

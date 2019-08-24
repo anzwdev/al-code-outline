@@ -1,5 +1,8 @@
 # Change Log
 
+## 1.0.15
+ - Xml documentation comments support added
+
 ## 1.0.14
  - "Add multiple field elements" and "Add multiple field attributes" code actions added to xml ports
  - Small changes to detecting language server for Microsoft AL Extension from Nav 2018 (work in progress)

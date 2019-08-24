@@ -10,6 +10,7 @@ import { ALSymbolsBrowser } from './alsymbolsbrowser/alSymbolsBrowser';
 import { ALObjectsBrowser } from './alsymbolsbrowser/alObjectsBrowser';
 import { ALOutlineService } from './services/alOutlineService';
 import { ALObjectWizardsService } from './services/alObjectWizardsService';
+import { ALCompletionService } from './services/alCompletionService';
 
 export class DevToolsExtensionContext implements vscode.Disposable {
     alLangProxy : ALLangServerProxy;    
@@ -19,7 +20,7 @@ export class DevToolsExtensionContext implements vscode.Disposable {
     objectRunner : ALObjectRunner;
     alOutlineService : ALOutlineService;
     alWizardsService : ALObjectWizardsService;
-
+    alCompletionService : ALCompletionService;
 
     constructor(context : vscode.ExtensionContext) {
         this.alLangProxy = new ALLangServerProxy()
@@ -35,7 +36,7 @@ export class DevToolsExtensionContext implements vscode.Disposable {
 
         this.alOutlineService = new ALOutlineService(this);
         this.alWizardsService = new ALObjectWizardsService(this);
-    
+        this.alCompletionService = new ALCompletionService(this);
     }
 
     getUseSymbolsBrowser() : boolean {
