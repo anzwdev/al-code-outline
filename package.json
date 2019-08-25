@@ -179,6 +179,12 @@
 						"default": false,
 						"description": "Enable preview of future, unstable features"
 					},
+					"alOutline.docCommentsType": {
+						"type": "string",
+						"default": "xml",
+						"enum": ["none","xml"],
+						"description": "Documentation comments type"
+					},
 					"alOutline.autoGenerateFiles": {
 						"type": "boolean",
 						"default": false,
