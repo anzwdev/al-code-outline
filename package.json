@@ -181,7 +181,7 @@
 					},
 					"alOutline.docCommentsType": {
 						"type": "string",
-						"default": "xml",
+						"default": "none",
 						"enum": ["none","xml"],
 						"description": "Documentation comments type"
 					},
