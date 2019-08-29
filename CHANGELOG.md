@@ -1,7 +1,7 @@
 # Change Log
 
 ## 1.0.15
- - Xml documentation comments support added
+ - Xml documentation comments support added (but turned off by default)
 
 ## 1.0.14
  - "Add multiple field elements" and "Add multiple field attributes" code actions added to xml ports
