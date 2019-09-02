@@ -2,7 +2,7 @@
 	"name": "al-code-outline",
 	"displayName": "AZ AL Dev Tools/AL Code Outline",
 	"description": "AZ AL Development Tools: AL code outline, object browser, object creators",
-	"version": "1.0.14",
+	"version": "1.0.15",
 	"publisher": "andrzejzwierzchowski",
 	"engines": {
 		"vscode": "^1.30.0"
@@ -178,6 +178,12 @@
 						"type": "boolean",
 						"default": false,
 						"description": "Enable preview of future, unstable features"
+					},
+					"alOutline.docCommentsType": {
+						"type": "string",
+						"default": "none",
+						"enum": ["none","xml"],
+						"description": "Documentation comments type"
 					},
 					"alOutline.autoGenerateFiles": {
 						"type": "boolean",

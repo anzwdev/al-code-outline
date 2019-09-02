@@ -9,6 +9,7 @@ import { ALNativeAppSymbolsLibrariesCache } from './symbollibraries/nativeimpl/a
 import { AZSymbolsLibrary } from './symbollibraries/azSymbolsLibrary';
 import { ALProjectSymbolsLibrary } from './symbollibraries/alProjectSymbolsLibrary';
 import { ALCodeActionsProvider } from './codeactions/alCodeActionsProvider';
+import { ALDocCommentsProvider } from './editorextensions/alDocCommentsProvider';
 
 // this method is called when your extension is activated
 // your extension is activated the very first time the command is executed

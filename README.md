@@ -11,6 +11,7 @@ This extension was originally named 'AL Code Outline' because it started as AL c
 - AL code generators
 - Code actions
 - Action images browser
+- Documentation comments support
 
 ### AL objects wizards
 
@@ -77,6 +78,13 @@ Extension adds new "AZ AL Dev Tools: Show Action Images" command to the "Command
 
 ![Action images](resources/screen2-actionimages.gif)
 
+### Documentation comments support
+
+When developer types "///" in a line above a symbol declaration (i.e. variable, procedure, field), extension can add "Xml Documentation Comments" to the list of available completion items. When it is selected, xml documentation snippet will be inserted into the code editor. If symbol below cursor is a procedure declaration, inserted snippet will contail all procedure parameters. This functionality can be turned on and off by changing "alOutline.docCommentsType" setting to "none" or "xml". By default it is turned off.
+
+![Xml Documentation Comments](resources/screen2-xmldoccomments.gif)
+
+
 ## Contributors
 
 - rvanbekkum: 
@@ -92,6 +100,7 @@ This extension has originally been inspired by "Code Outline" extension created 
 
 This extension contributes the following settings:
 
+* `alOutline.docCommentsType`: enable documention comments, available values: none, xml 
 * `alOutline.enableFeaturePreview`: enable preview of future, unstable features
 * `alOutline.autorefresh`: refresh code outline tree automatically
 * `alOutline.autoGenerateFiles`: automatically generate files for newly created objects
