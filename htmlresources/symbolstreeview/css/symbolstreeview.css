@@ -1,0 +1,15 @@
+body {
+    position: absolute;
+    left: 0;
+    right: 0;
+    top: 0;
+    bottom: 0;
+    display: flex;
+    flex-direction: column;
+    align-items: stretch;
+    justify-content: stretch;
+}
+.symbolscont {
+    flex: 1 1 auto;
+    border: 1px solid var(--vscode-panel-border);
+}

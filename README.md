@@ -80,7 +80,7 @@ Extension adds new "AZ AL Dev Tools: Show Action Images" command to the "Command
 
 ### Documentation comments support
 
-When developer types "///" in a line above a symbol declaration (i.e. variable, procedure, field), extension can add "Xml Documentation Comments" to the list of available completion items. When it is selected, xml documentation snippet will be inserted into the code editor. If symbol below cursor is a procedure declaration, inserted snippet will contail all procedure parameters. This functionality can be turned on and off by changing "alOutline.docCommentsType" setting to "none" or "xml". By default it is turned off.
+When developer types "///" in a line above a symbol declaration (i.e. variable, procedure, field), extension can add "Xml Documentation Comments" to the list of available completion items. When it is selected, xml documentation snippet will be inserted into the code editor. If symbol below cursor is a procedure declaration, inserted snippet will contail all procedure parameters. This functionality can be turned off and on by changing "alOutline.docCommentsType" setting to "none" or "xml". By default it is turned off.
 
 ![Xml Documentation Comments](resources/screen2-xmldoccomments.gif)
 

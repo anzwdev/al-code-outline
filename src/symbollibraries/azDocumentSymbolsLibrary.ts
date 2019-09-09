@@ -33,6 +33,10 @@ export class AZDocumentSymbolsLibrary extends AZSymbolsLibrary {
         this._reloadRequired = true;
     }
 
+    getDocUri() : vscode.Uri | undefined {
+        return this._docUri;
+    }
+
     protected findTextEditor(uri : vscode.Uri | undefined) : vscode.TextEditor | undefined {
         if ((uri) && (vscode.window.visibleTextEditors)) {
             for (let i=0; i<vscode.window.visibleTextEditors.length; i++) {

@@ -1,4 +1,4 @@
-class TreeControl {
+class SymbolsTreeControl {
 
     constructor(controlId, idsBtnId, collapsed) {
         //initialize variables
@@ -9,6 +9,7 @@ class TreeControl {
         this._selSymbol = undefined;
         this._idsBtnId = idsBtnId;
         this._showIds = true;
+        this.sortNodes = true;
         this.emptyContent = '';
         this.onNodeSelected = undefined;
         this.onShowIdsChanged = undefined;
@@ -26,8 +27,10 @@ class TreeControl {
         element.addEventListener('click', function(e) { that.onClick(e); }, true);
         element.addEventListener('keydown', function(e) { that.onKeyDown(e); });
 
-        let idsBtn = document.getElementById(this._idsBtnId);
-        idsBtn.addEventListener('click', function(e) { that.onIdsBtnClick(e); });
+        if (this._idsBtnId) {
+            let idsBtn = document.getElementById(this._idsBtnId);
+            idsBtn.addEventListener('click', function(e) { that.onIdsBtnClick(e); });
+        }
     }
 
     setShowIds(newShowIds) {        
@@ -47,7 +50,8 @@ class TreeControl {
         this._data = data;        
         if (this._data) {
             this._data.showIds = this._showIds;
-            this.sortData(this._data);
+            if (this.sortNodes)
+                this.sortData(this._data);
             this.resetFilter(this._data);
             this._data.parent = undefined;
             this.prepareData(this._data);

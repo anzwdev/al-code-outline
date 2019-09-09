@@ -5,6 +5,7 @@ import { ALSymbolsBasedPageWizard } from '../objectwizards/symbolwizards/alSymbo
 import { ALSymbolsBasedReportWizard } from '../objectwizards/symbolwizards/alSymbolsBasedReportWizard';
 import { ALSymbolsBasedXmlPortWizard } from '../objectwizards/symbolwizards/alSymbolsBasedXmlPortWizard';
 import { ALSymbolsBasedQueryWizard } from '../objectwizards/symbolwizards/alSymbolsBasedQueryWizard';
+import { SymbolsTreeView } from '../symbolstreeview/symbolsTreeView';
 
 export class ALOutlineService {
     context: DevToolsExtensionContext;
@@ -25,6 +26,14 @@ export class ALOutlineService {
 
     protected registerCommands() {
         let that = this;
+
+        //outline preview window
+        this.context.vscodeExtensionContext.subscriptions.push(
+            vscode.commands.registerCommand(
+                'azALDevTools.showDocumentSymbols',
+                () => that.showSymbolsTreeView()
+            )
+        );
 
         this.context.vscodeExtensionContext.subscriptions.push(
             vscode.commands.registerCommand(
@@ -98,6 +107,12 @@ export class ALOutlineService {
                     }
             }));
             
+    }
+
+    showSymbolsTreeView() {
+        let symbolsTreeView = new SymbolsTreeView(this.context,
+            this.context.activeDocumentSymbols.rootSymbol, undefined, this.context.activeDocumentSymbols.getDocUri());
+        symbolsTreeView.show();
     }
 
 }

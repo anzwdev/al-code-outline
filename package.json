@@ -30,7 +30,8 @@
 		"onCommand:azALDevTools.showAllProjectSymbols",
 		"onCommand:azALDevTools.showProjectSymbolsWithoutDep",
 		"onCommand:azALDevTools.refreshOutlineView",
-		"onCommand:azALDevTools.newALFile"
+		"onCommand:azALDevTools.newALFile",
+		"onCommand:azALDevTools.showDocumentSymbols"
 	],
 	"main": "./out/extension",
 	"icon": "resources/alcodeoutline.png",
@@ -55,6 +56,11 @@
 			{
 				"command": "azALDevTools.viewALApp",
 				"title": "Open in AL Object Browser"
+			},
+			{
+				"category": "AZ AL Dev Tools",
+				"command": "azALDevTools.showDocumentSymbols",
+				"title": "Show Document Symbols Tree"
 			},
 			{
 				"category": "AZ AL Dev Tools",
@@ -168,7 +174,13 @@
 					"command": "azALDevTools.newALFile",
 					"group": "navigation"
 				}
+			],
+			"editor/title": [
+				{
+					"command": "azALDevTools.showDocumentSymbols"
+				}
 			]
+
 		},
 		"configuration": [
 			{
