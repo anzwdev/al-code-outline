@@ -111,7 +111,7 @@ export class ALOutlineService {
 
     showSymbolsTreeView() {
         let symbolsTreeView = new SymbolsTreeView(this.context,
-            this.context.activeDocumentSymbols.rootSymbol, undefined, this.context.activeDocumentSymbols.getDocUri());
+            this.context.activeDocumentSymbols.rootSymbol, undefined, undefined,this.context.activeDocumentSymbols.getDocUri());
         symbolsTreeView.show();
     }
 

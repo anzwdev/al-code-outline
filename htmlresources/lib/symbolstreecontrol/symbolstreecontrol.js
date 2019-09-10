@@ -11,6 +11,7 @@ class SymbolsTreeControl {
         this._showIds = true;
         this.sortNodes = true;
         this.emptyContent = '';
+        this.resetCollapsedState = true;
         this.onNodeSelected = undefined;
         this.onShowIdsChanged = undefined;
 
@@ -60,7 +61,8 @@ class SymbolsTreeControl {
     }
 
     prepareData(data) {
-        data.collapsed = this._collapsed;
+        if (this.resetCollapsedState)
+            data.collapsed = this._collapsed;
         data.selected = false;
         if (data.childSymbols) {
             for (let i=0; i<data.childSymbols.length; i++) {
@@ -705,6 +707,37 @@ class SymbolsTreeControl {
         }
 
         return true;
+    }
+
+    //#endregion
+
+    //#region Merge data stat
+
+    applyTreeItemState(data) {
+        if ((data) && (this._data))
+            this.applyTreeItemStateInternal(data, this._data);
+    }
+
+    applyTreeItemStateInternal(data, stateSource) {
+        if (stateSource.collapsed)
+            data.collapsed = stateSource.collapsed;
+        if ((data.childSymbols) && (stateSource.childSymbols)) {
+            for (let i=0; i<data.childSymbols.length; i++) {
+                let childStateSource = this.findChildStateSource(data.childSymbols[i].fullName, stateSource);
+                if (childStateSource) {
+                    childStateSource.processed = true;
+                    this.applyTreeItemStateInternal(data.childSymbols[i], childStateSource);
+                }
+            }
+        }
+    }
+
+    findChildStateSource(fullName, stateSource) {
+        for (let i=0; i<stateSource.childSymbols.length; i++) {
+            if ((!stateSource.childSymbols[i].processed) && (stateSource.childSymbols[i].fullName == fullName))
+                return stateSource.childSymbols[i];
+        } 
+        return undefined;
     }
 
     //#endregion

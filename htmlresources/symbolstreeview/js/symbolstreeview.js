@@ -4,6 +4,7 @@ class SymbolsTreeView {
         this._vscode = acquireVsCodeApi();
         this._symTree = new SymbolsTreeControl('symbols', undefined, false);
         this._symTree.sortNodes = false;
+        this._symTree.resetCollapsedState = false;
 
         //prevent standard Ctrl+A inside tree elements
         $('body').on('keydown', '.symbolscont', function(evt)
@@ -36,13 +37,19 @@ class SymbolsTreeView {
     onMessage(message) {     
         switch (message.command) {
             case 'setData':
-                this._symTree.setData(message.data);
+                this.setData(message.data);
                 break;
         }
     }
 
     sendMessage(data) {
         this._vscode.postMessage(data);    
+    }
+
+    setData(data) {
+        if (data)
+            this._symTree.applyTreeItemState(data);
+        this._symTree.setData(data);
     }
 
 }

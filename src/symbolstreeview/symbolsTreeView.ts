@@ -12,11 +12,14 @@ export class SymbolsTreeView extends BaseWebViewEditor {
     protected _documentName: string;
     protected _documentUri: vscode.Uri | undefined;
 
-    constructor(devToolsContext : DevToolsExtensionContext, symbol: AZSymbolInformation, documentName: string | undefined, documentUri: vscode.Uri | undefined) {
+    constructor(devToolsContext : DevToolsExtensionContext, symbol: AZSymbolInformation, documentName: string | undefined,
+        rootSymbolName: string | undefined, documentUri: vscode.Uri | undefined) {
         if (!documentName) {
             if (documentUri)
                 documentName = path.parse(documentUri.path).base;
         }
+        if (!rootSymbolName)
+            rootSymbolName = documentName;
 
         super(devToolsContext.vscodeExtensionContext, documentName);
 
@@ -26,7 +29,8 @@ export class SymbolsTreeView extends BaseWebViewEditor {
         this._viewColumn = vscode.ViewColumn.Beside;
         this._loaded = false;
         this._rootSymbol = symbol.createCopy(true);
-        this._rootSymbol.fullName = this._documentName;
+        if (rootSymbolName)
+            this._rootSymbol.fullName = rootSymbolName;
 
         if (this._documentUri)
             this._symbolsChangedHandler = this._devToolsContext.activeDocumentSymbols.onSymbolsChanged(symbolsLib => this.onSymbolsChanged(symbolsLib));
