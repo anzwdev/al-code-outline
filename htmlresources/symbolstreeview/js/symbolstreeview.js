@@ -5,6 +5,7 @@ class SymbolsTreeView {
         this._symTree = new SymbolsTreeControl('symbols', undefined, false);
         this._symTree.sortNodes = false;
         this._symTree.resetCollapsedState = false;
+        this._symTree.enableSimpleFilter('filter', 'filterbtn');
 
         //prevent standard Ctrl+A inside tree elements
         $('body').on('keydown', '.symbolscont', function(evt)

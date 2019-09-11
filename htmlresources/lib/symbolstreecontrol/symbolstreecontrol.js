@@ -20,6 +20,9 @@ class SymbolsTreeControl {
         this._idFilter = undefined;
         this._nameFilterText = undefined;
         this._nameFilter = undefined;
+        this._fullNameFilterText = undefined;
+        this._fullNameFilter = undefined;
+
         this._visibleSymbolList = undefined;
 
         //initialize event listeners
@@ -33,6 +36,18 @@ class SymbolsTreeControl {
             idsBtn.addEventListener('click', function(e) { that.onIdsBtnClick(e); });
         }
     }
+
+    enableSimpleFilter(filterId, filterBtnId) {
+        this._filterId = filterId;
+        this._filterBtnId = filterBtnId;
+        let that = this;
+        let element = document.getElementById(this._filterBtnId);
+        if (element)
+            element.addEventListener('click', function(e) { that.onSimpleFilter(e); });
+        element = document.getElementById(this._filterId);
+        if (element)
+            element.addEventListener('keydown', function(e) { that.onSimpleFilterKeyDown(e); });
+        }
 
     setShowIds(newShowIds) {        
         this._showIds = newShowIds;
@@ -53,11 +68,12 @@ class SymbolsTreeControl {
             this._data.showIds = this._showIds;
             if (this.sortNodes)
                 this.sortData(this._data);
-            this.resetFilter(this._data);
+            //this.resetFilter(this._data);
             this._data.parent = undefined;
             this.prepareData(this._data);
         }
-        this.renderData();
+
+        this.refreshFilter();
     }
 
     prepareData(data) {
@@ -233,7 +249,32 @@ class SymbolsTreeControl {
 
     //#region Filtering
 
+    onSimpleFilter(e) {
+        let element = document.getElementById(this._filterId);
+        let filterValue = undefined;
+        if (element)
+            filterValue = element.value;
+        this.filterDataAdv(undefined, undefined, undefined, filterValue);
+    }
+
+    onSimpleFilterKeyDown(e) {
+        if (e.which == 13) {
+            this.onSimpleFilter(undefined);
+            e.preventDefault();
+            return false;
+        }
+        return true;
+    }
+
+    refreshFilter() {
+        this.filterDataAdv(this._typeFilter, this._idFilterText, this._nameFilterText, this._fullNameFilterText);
+    }
+
     filterData(typeList, idFilter, nameFilter) {
+        this.filterDataAdv(typeList, idFilter, nameFilter, undefined)
+    }
+
+    filterDataAdv(typeList, idFilter, nameFilter, fullNameFilter) {
         //set type filter
         this._typeFilter = typeList;        
         //compile id filter
@@ -270,6 +311,26 @@ class SymbolsTreeControl {
                 }    
             }
         }
+        //compile full name filter
+        if (this._fullNameFilterText != fullNameFilter) {
+            this._fullNameFilterText = fullNameFilter;
+            this._fullNameFilter = undefined;
+            if (this._fullNameFilterText) {
+                try {
+                    this._fullNameFilter = compileFilter('text', this._fullNameFilterText);
+                }
+                catch (e) {
+                    //vscodeContext.postMessage({
+                    //    command    : 'errorInFilter',
+                    //    message : filterNameExpr});                    
+                    //filterName = undefined;
+                    //filterNameExpr = undefined;
+                }    
+            }
+        }
+
+
+
         //apply filters
         this.resetFilter(this._data);
         if ((this._typeFilter) && (this._typeFilter.length > 0))
@@ -278,6 +339,8 @@ class SymbolsTreeControl {
             this.applyIdFilter(this._data);
         if (this._nameFilter)
             this.applyNameFilter(this._data);
+        if (this._fullNameFilter)
+            this.applyFullNameFilter(this._data);
 
         this.hideEmptyGroups(this._data);
         this._data.visible = true;
@@ -332,6 +395,24 @@ class SymbolsTreeControl {
                     this.applyNameFilter(data.childSymbols[i]);
             }
         }
+    }
+
+    applyFullNameFilter(data) {
+        let visible = false;
+        if (data) {
+            if (data.childSymbols) {
+                for (let i=0; i<data.childSymbols.length;i++) {
+                    if (this.applyFullNameFilter(data.childSymbols[i]))
+                        visible = true;
+                }
+            }
+        
+            if ((!visible) && (this._fullNameFilter({TEXT: data.fullName})))
+                visible = true;
+            
+            data.visible = visible;
+        }
+        return visible;
     }
 
     hideEmptyGroups(data) {

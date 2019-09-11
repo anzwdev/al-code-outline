@@ -11,5 +11,46 @@ body {
 }
 .symbolscont {
     flex: 1 1 auto;
-    border: 1px solid var(--vscode-panel-border);
 }
+
+.treefiltercont {
+    flex: 0 0 auto;
+    display: flex;
+    flex-direction: row;
+    align-items: stretch;
+    justify-content: stretch;
+    overflow: hidden;
+    padding: 2px 5px;
+
+}
+.treefiltercont input {
+    flex: 1 1 auto;
+    background: var(--vscode-input-background);
+    border: 1px solid var(--vscode-input-background);
+    color: var(--vscode-input-foreground);
+    padding: 3px;
+}
+
+.treefiltercont .treefilterbtn {
+    flex: 0 0 auto;
+    background-color: var(--vscode-button-background);
+    color: var(--vscode-button-foreground);
+    border: 0px solid var(--vscode-panel-border);
+    background-repeat: no-repeat;
+    background-position: center;
+    background-size: contain;
+}
+.treefiltercont .treefilterbtn:hover {
+    background-color: var(--vscode-button-hoverBackground);
+}
+.treefiltercont .treefilterbtn:focus {
+    outline-style: double;
+    outline-color: var(--vscode-focusBorder) !important;
+}
+
+input:focus, select:focus, div:focus {
+    outline-color: var(--vscode-focusBorder) !important;
+}
+
+
+

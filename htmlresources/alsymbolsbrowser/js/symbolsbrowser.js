@@ -7,6 +7,7 @@ class ObjectBrowser {
 
         this._objTree = new SymbolsTreeControl('objects', 'objidsbtn', true);
         this._symTree = new SymbolsTreeControl('symbols', 'symidsbtn', false);
+        this._symTree.enableSimpleFilter('selobjfilter', 'selobjfilterbtn');
 
         //prevent standard Ctrl+A inside tree elements
         $('body').on('keydown', '.symbolscont', function(evt)

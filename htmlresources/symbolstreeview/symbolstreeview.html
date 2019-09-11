@@ -5,6 +5,7 @@
         <script src="##EXTENSIONPATH##/htmlresources/lib/jquery-ui-position/jquery.ui.position.min.js"></script>
         <script src="##EXTENSIONPATH##/htmlresources/lib/jquery-context-menu/js/jquery.contextmenu.min.js"></script>
         <script src="##EXTENSIONPATH##/htmlresources/lib/filtercompiler/filterCompiler.js"></script>
+        <script src="##EXTENSIONPATH##/htmlresources/alsymbolsbrowser/js/alsymbolkind.js"></script>
         <script src="##EXTENSIONPATH##/htmlresources/lib/symbolstreecontrol/symbolstreecontrol.js"></script>
         <script src="##EXTENSIONPATH##/htmlresources/symbolstreeview/js/symbolstreeview.js"></script>
         <script src="##EXTENSIONPATH##/htmlresources/symbolstreeview/js/startup.js"></script>
@@ -15,6 +16,10 @@
         <link rel="stylesheet" type="text/css" href="##EXTENSIONPATH##/htmlresources/alsymbolsbrowser/css/icons.css">
     </header>
     <body style="margin:0;padding:0">
-        <div id="symbols" class="symbolscont">Loading symbols, please wait...</div>
+        <div class="treefiltercont">
+            <input tabindex="1" id="filter" type="text" placeholder="Filter, Eg: *Address*, Entry*">
+            <button tabindex="2" id="filterbtn" class="treefilterbtn">Filter</button>
+        </div>
+        <div id="symbols" tabindex="3" class="symbolscont">Loading symbols, please wait...</div>
     </body>
 </html>
