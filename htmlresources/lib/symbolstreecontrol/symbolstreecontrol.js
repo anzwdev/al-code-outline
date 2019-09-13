@@ -572,6 +572,29 @@ class SymbolsTreeControl {
         $(this._selNode).addClass('selected');
     }
 
+    selectNodeByPath(path) {
+        if ((path) && (path.length > 0) && (this._data)) {            
+            let node = this._data;
+            //expand parents and select node
+            for (let i=0; ((node) && (i<path.length)); i++) {
+                if (node.collapsed)
+                    this.toggleNode(node);
+
+                let idx = path.length - (i + 1);
+
+                if ((node.childSymbols) && (path[idx] < node.childSymbols.length) && (path[idx] >= 0))
+                    node = node.childSymbols[path[idx]];
+                else
+                    node = undefined;
+
+                if ((i == (path.length - 1)) && (node) && (node.htmlNode)) {
+                    this.selectNode(node.htmlNode, false, false, false);
+                    return;
+                }
+            }
+        }
+    }
+
     //#endregion
 
     //#region Path function

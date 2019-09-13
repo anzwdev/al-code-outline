@@ -39,7 +39,13 @@ class SymbolsTreeView {
         switch (message.command) {
             case 'setData':
                 this.setData(message.data);
+                if (message.selected)
+                    this._symTree.selectNodeByPath(message.selected);               
                 break;
+            case 'selectSymbol':
+                if (message.selected)
+                    this._symTree.selectNodeByPath(message.selected);               
+                break
         }
     }
 

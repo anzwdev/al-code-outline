@@ -9,9 +9,11 @@ export class SymbolsTreeView extends BaseWebViewEditor {
     protected _devToolsContext : DevToolsExtensionContext;
     private _symbolsChangedHandler : vscode.Disposable | undefined;
     protected _loaded: boolean;
-    protected _rootSymbol: AZSymbolInformation;
+    protected _rootSymbol: AZSymbolInformation | undefined;
     protected _documentName: string;
     protected _documentUri: vscode.Uri | undefined;
+    protected _selectedSymbolPath: number[] | undefined;
+    protected _sourceSymbol : AZSymbolInformation | undefined;
     selectedSymbolRange: vscode.Range | undefined;
 
     constructor(devToolsContext : DevToolsExtensionContext, documentName: string | undefined, documentUri: vscode.Uri | undefined) {        
@@ -25,6 +27,7 @@ export class SymbolsTreeView extends BaseWebViewEditor {
         this._viewColumn = vscode.ViewColumn.Beside;
         this._loaded = false;
         this._rootSymbol = undefined;
+        this._selectedSymbolPath = undefined;
 
         if (this._documentUri)
             this._symbolsChangedHandler = this._devToolsContext.activeDocumentSymbols.onSymbolsChanged(symbolsLib => this.onSymbolsChanged(symbolsLib));
@@ -51,19 +54,23 @@ export class SymbolsTreeView extends BaseWebViewEditor {
     protected async LoadSymbols() {
         let currDocUri = this._devToolsContext.activeDocumentSymbols.getDocUri();
         if ((currDocUri) && (currDocUri.toString() == this._documentUri.toString()) && (this._devToolsContext.activeDocumentSymbols.rootSymbol)) {
+            this._selectedSymbolPath = this._devToolsContext.activeDocumentSymbols.findSymbolPathInSelectionRange(this.selectedSymbolRange);
             this.setSymbols(this._devToolsContext.activeDocumentSymbols.rootSymbol, this._documentName);            
         } else {
-            let library : AZDocumentSymbolsLibrary = new AZDocumentSymbolsLibrary(this._devToolsContext, this._documentUri);
-            await library.loadAsync(false); 
+            let library = new AZDocumentSymbolsLibrary(this._devToolsContext, this._documentUri);
+            await library.loadAsync(false);            
+            this._selectedSymbolPath = library.findSymbolPathInSelectionRange(this.selectedSymbolRange);
             this.setSymbols(library.rootSymbol, this._documentName);
         }
     }
 
     setSymbols(rootSymbol: AZSymbolInformation | undefined, rootSymbolName: string | undefined) {
+        this._sourceSymbol = rootSymbol;
+
         if (rootSymbol)
             this._rootSymbol = rootSymbol.createCopy(true);
         else
-            this._rootSymbol = new AZSymbolInformation();
+            this._rootSymbol = new AZSymbolInformation();        
         this._rootSymbol.fullName = rootSymbolName;
         this.updateView();
     }
@@ -78,8 +85,26 @@ export class SymbolsTreeView extends BaseWebViewEditor {
             return;
         this.sendMessage({
             command: 'setData',
-            data: this._rootSymbol
+            data: this._rootSymbol,
+            selected: this._selectedSymbolPath
         });
+        if (this._rootSymbol)
+            this._selectedSymbolPath = undefined;
+    }
+
+    selectSymbolByRange(range: vscode.Range) {
+        if (this._sourceSymbol) {
+            let library = new AZDocumentSymbolsLibrary(this._devToolsContext, this._documentUri);
+            library.setRootSymbol(this._sourceSymbol);
+            let selectedPath : number[] = library.findSymbolPathInSelectionRange(range);
+
+            if (selectedPath) {
+                this.sendMessage({
+                    command: 'selectSymbol',
+                    selected: selectedPath
+                });
+            }
+        }
     }
 
     protected processWebViewMessage(message : any) : boolean {
@@ -92,6 +117,8 @@ export class SymbolsTreeView extends BaseWebViewEditor {
     protected onPanelClosed() {
         if (this._symbolsChangedHandler)
             this._symbolsChangedHandler.dispose();
+        if (this._documentUri)
+            this._devToolsContext.alSymbolsTreeService.removeUriSymbolsTreeView(this._documentUri);
     }
 
 }

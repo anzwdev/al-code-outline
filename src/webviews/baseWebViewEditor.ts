@@ -42,6 +42,11 @@ export class BaseWebViewEditor {
         this.createWebView();
     }
 
+    public reveal() {
+        if (this._panel)
+            this._panel.reveal();
+    }
+
     protected getViewType() : string {
         return "BaseWebViewEditor";
     }

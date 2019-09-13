@@ -8,6 +8,7 @@ This extension was originally named 'AL Code Outline' because it started as AL c
 - AL objects wizards
 - Symbols browser
 - AL symbols outline panel
+- Symbols tree view
 - AL code generators
 - Code actions
 - Action images browser
@@ -51,6 +52,15 @@ It also supports other document types, so it can be used instead of standard out
 ![AL outline panel](resources/screen2-outline.png)
 
 ![AL outline panel context menu](resources/screen2-outlinemenu.png)
+
+### Symbols tree view
+
+This view shows symbols tree looking similar to content of "AL symbols outline panel", but uses WebView to display it and can be opened on one of the editor tabs. If there is an editor in which user changes definition of the object displayed in the tree view, tree content will be updated, but switching active editor to other file does not change the tree. It can be used to display table symbols when user edits page object or page symbols when developers edits page extension. View can be opened from:
+- AL Symbols Browser by using object list context menu and selecting "Open symbol in new tab" option
+- "Show Document Symbols Tree" command from "Command Palette" when there is an acive text editor with AL file
+- Editor context menu by selecting "Show Definition in the Symbols Tree" menu item
+
+![Symbols tree view](resources/screen2-symbolstree1.gif)
 
 ### AL code generators
 
