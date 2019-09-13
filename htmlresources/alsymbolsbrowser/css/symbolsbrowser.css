@@ -72,7 +72,7 @@ input:focus, select:focus, div:focus {
     justify-content: stretch;
     flex: 0 0 auto;
     overflow: hidden;
-    background-color: var(--vscode-sideBarSectionHeader-background);
+    background-color: var(--vscode-editorWidget-background);
     color: var(--vscode-sideBarSectionHeader-foreground);
     padding: 2px 5px;
 }

@@ -54,21 +54,23 @@ export class AZDocumentSymbolsLibrary extends AZSymbolsLibrary {
         let newRootSymbol : AZSymbolInformation | undefined = undefined;
 
         //get document symbols
+        let document : vscode.TextDocument | undefined = undefined;
         let editor : vscode.TextEditor | undefined = this.findTextEditor(this._docUri);
-        if (editor) {
-            if ((editor.document) && (editor.document.uri))
-                this._docUri = editor.document.uri;
+        if (editor)
+            document = editor.document;
+        else if (this._docUri)
+            document = await vscode.workspace.openTextDocument(this._docUri);
+
+        if (document) {
+            if (document.uri)
+                this._docUri = document.uri;
             let symbolsLoad : Thenable<vscode.SymbolInformation[] | vscode.DocumentSymbol[] | undefined> =
                 vscode.commands.executeCommand<vscode.SymbolInformation[] | vscode.DocumentSymbol[]>('vscode.executeDocumentSymbolProvider', this._docUri);
 
-            if (editor.document.languageId == "al") {
+            if (document.languageId == "al") {
                 
                 //al language - use our special language server to parse source code
-                let source : string;
-                if (editor)
-                    source = editor.document.getText();
-                else
-                    source = "";
+                let source : string = document.getText();
         
                 let documentPath : string = "";
                 if ((this._docUri) && (this._docUri.fsPath))

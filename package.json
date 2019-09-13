@@ -64,6 +64,11 @@
 			},
 			{
 				"category": "AZ AL Dev Tools",
+				"command": "azALDevTools.goToDefinitionSymbolTree",
+				"title": "Show Definition in Symbols Tree"
+			},
+			{
+				"category": "AZ AL Dev Tools",
 				"command": "azALDevTools.viewActionImages",
 				"title": "Show Action Images"
 			},
@@ -178,6 +183,12 @@
 			"editor/title": [
 				{
 					"command": "azALDevTools.showDocumentSymbols"
+				}
+			],
+			"editor/context": [
+				{
+					"command": "azALDevTools.goToDefinitionSymbolTree",
+					"when": "resourceLangId == al"
 				}
 			]
 

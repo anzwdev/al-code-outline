@@ -138,8 +138,8 @@ export class ALBaseSymbolsBrowser extends BaseWebViewEditor {
     protected async showNewTab(path: number[] | undefined) {
         let alSymbolList : AZSymbolInformation[] | undefined = await this._library.getSymbolsListByPathAsync([path], AZSymbolKind.AnyALObject);
         if ((alSymbolList) && (alSymbolList.length > 0)) {
-            let symbolsTreeView = new SymbolsTreeView(this._devToolsContext,
-                alSymbolList[0], 'lib://' + alSymbolList[0].fullName, alSymbolList[0].fullName, undefined);
+            let symbolsTreeView = new SymbolsTreeView(this._devToolsContext, 'lib://' + alSymbolList[0].fullName, undefined);
+            symbolsTreeView.setSymbols(alSymbolList[0], alSymbolList[0].fullName);
             symbolsTreeView.show();
         }
     }

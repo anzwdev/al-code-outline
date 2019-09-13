@@ -5,6 +5,7 @@ import * as path from 'path';
 import * as vscodelangclient from 'vscode-languageclient';
 import { ALSyntaxHelper } from './alSyntaxHelper';
 import { Version } from '../tools/version';
+import { DocumentOnTypeFormattingRequest } from 'vscode-languageclient';
 
 export class ALLangServerProxy {
     private langClient : vscodelangclient.LanguageClient | undefined;
@@ -326,6 +327,10 @@ export class ALLangServerProxy {
                     text : sourceCode
                 }});
 
+                let srcPos = new vscode.Position(4, 5 + objectType.length);
+                let docPos : vscode.Location | undefined = await this.getDefinitionLocationFromDocument(docUri.toString(), srcPos);
+
+                /*
                 //run goToDefinition on virtual document
                 let tokenSource : vscode.CancellationTokenSource = new vscode.CancellationTokenSource();
                 let token : vscode.CancellationToken = tokenSource.token;
@@ -366,6 +371,7 @@ export class ALLangServerProxy {
                     }
 
                 }
+                */
 
                 //close document
                 this.langClient.sendNotification('textDocument/didClose', { textDocument: {
@@ -378,6 +384,49 @@ export class ALLangServerProxy {
                 return undefined;
             }
         });
+    }
+
+    async getDefinitionLocationFromDocument(docUri: string, pos: vscode.Position) : Promise<vscode.Location | undefined> {
+        let docPos : vscode.Location | undefined = undefined;
+        try {
+            this.checkLanguageClient();
+            if (!this.langClient)
+                return undefined;
+
+            let tokenSource : vscode.CancellationTokenSource = new vscode.CancellationTokenSource();
+            let token : vscode.CancellationToken = tokenSource.token;
+            let launchConfiguration = await this.getLaunchConfiguration();
+
+            if (launchConfiguration) {
+
+                let docPosTemp : any = await this.langClient.sendRequest<any>('al/gotodefinition', {
+                    launchConfiguration : launchConfiguration,
+                    textDocumentPositionParams : {
+                        textDocument : {
+                            uri : docUri.toString()
+                        },
+                        position : {
+                            line : pos.line,
+                            character : pos.character
+                        }
+                    },
+                    context : undefined
+                }, token);
+
+                if (docPosTemp) {
+                    docPos = new vscode.Location(
+                        vscode.Uri.parse(docPosTemp.uri),
+                        new vscode.Range(docPosTemp.range.start.line, docPosTemp.range.start.character,
+                            docPosTemp.range.end.line, docPosTemp.range.end.character));                    
+                }
+
+            }
+        }   
+        catch (e) {
+            return undefined;
+        }    
+
+        return docPos; 
     }
 
     async getLaunchConfiguration() : Promise<any|undefined> {

@@ -171,7 +171,7 @@ class SymbolsTreeControl {
     //#endregion
 
     isObjectSymbol(symbol) {
-        return ((symbol.kind == ALSymbolKind.TableObject) ||
+        return ((symbol) && ((symbol.kind == ALSymbolKind.TableObject) ||
             (symbol.kind == ALSymbolKind.CodeunitObject) ||
             (symbol.kind == ALSymbolKind.PageObject) ||
             (symbol.kind == ALSymbolKind.ReportObject) ||
@@ -184,7 +184,7 @@ class SymbolsTreeControl {
             (symbol.kind == ALSymbolKind.PageCustomizationObject) ||
             (symbol.kind == ALSymbolKind.EnumType) ||
             (symbol.kind == ALSymbolKind.EnumExtensionType) ||
-            (symbol.kind == ALSymbolKind.DotNetPackage));
+            (symbol.kind == ALSymbolKind.DotNetPackage)));
     }
 
     //#region Node scrolling
@@ -329,21 +329,21 @@ class SymbolsTreeControl {
             }
         }
 
-
-
         //apply filters
-        this.resetFilter(this._data);
-        if ((this._typeFilter) && (this._typeFilter.length > 0))
-            this.applyTypeFilter(this._data);
-        if (this._idFilter)
-            this.applyIdFilter(this._data);
-        if (this._nameFilter)
-            this.applyNameFilter(this._data);
-        if (this._fullNameFilter)
-            this.applyFullNameFilter(this._data);
+        if (this._data) {        
+            this.resetFilter(this._data);
+            if ((this._typeFilter) && (this._typeFilter.length > 0))
+                this.applyTypeFilter(this._data);
+            if (this._idFilter)
+                this.applyIdFilter(this._data);
+            if (this._nameFilter)
+                this.applyNameFilter(this._data);
+            if (this._fullNameFilter)
+                this.applyFullNameFilter(this._data);
 
-        this.hideEmptyGroups(this._data);
-        this._data.visible = true;
+            this.hideEmptyGroups(this._data);
+            this._data.visible = true;
+        }
 
         this.renderData();
     }
@@ -416,7 +416,7 @@ class SymbolsTreeControl {
     }
 
     hideEmptyGroups(data) {
-        if (!this.isObjectSymbol(data)) {
+        if ((data) && (!this.isObjectSymbol(data))) {
             let visibleChild = false;
             if (data.childSymbols) {
                 for (let i=0; i<data.childSymbols.length;i++) {
