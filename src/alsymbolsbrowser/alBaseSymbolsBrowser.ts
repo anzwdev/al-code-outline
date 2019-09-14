@@ -13,6 +13,7 @@ import { ALSymbolsBasedXmlPortWizard } from '../objectwizards/symbolwizards/alSy
 import { ALSymbolsBasedPageExtWizard } from '../objectwizards/symbolwizards/alSymbolsBasedPageExtWizard';
 import { ALSymbolsBasedTableExtWizard } from '../objectwizards/symbolwizards/alSymbolsBasedTableExtWizard';
 import { ALSyntaxHelper } from '../allanguage/alSyntaxHelper';
+import { SymbolsTreeView } from '../symbolstreeview/symbolsTreeView';
 
 /** Base class for AL Object and AL Symbol browsers */
 export class ALBaseSymbolsBrowser extends BaseWebViewEditor {
@@ -36,6 +37,9 @@ export class ALBaseSymbolsBrowser extends BaseWebViewEditor {
             case 'definition':
                 this.goToDefinition(message.path);
                 return true;
+            case 'shownewtab':
+                this.showNewTab(message.path);
+                break;
             case 'runinwebclient':
                 this.runInWebClient(message.path);
                 return true;
@@ -128,6 +132,15 @@ export class ALBaseSymbolsBrowser extends BaseWebViewEditor {
         if (symbolList) {
             let builder : ALSymbolsBasedTableExtWizard = new ALSymbolsBasedTableExtWizard();
             builder.showWizard(symbolList);
+        }
+    }
+
+    protected async showNewTab(path: number[] | undefined) {
+        let alSymbolList : AZSymbolInformation[] | undefined = await this._library.getSymbolsListByPathAsync([path], AZSymbolKind.AnyALObject);
+        if ((alSymbolList) && (alSymbolList.length > 0)) {
+            let symbolsTreeView = new SymbolsTreeView(this._devToolsContext, 'lib://' + alSymbolList[0].fullName, undefined);
+            symbolsTreeView.setSymbols(alSymbolList[0], alSymbolList[0].fullName);
+            symbolsTreeView.show();
         }
     }
 

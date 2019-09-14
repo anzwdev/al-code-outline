@@ -33,6 +33,10 @@ export class AZDocumentSymbolsLibrary extends AZSymbolsLibrary {
         this._reloadRequired = true;
     }
 
+    getDocUri() : vscode.Uri | undefined {
+        return this._docUri;
+    }
+
     protected findTextEditor(uri : vscode.Uri | undefined) : vscode.TextEditor | undefined {
         if ((uri) && (vscode.window.visibleTextEditors)) {
             for (let i=0; i<vscode.window.visibleTextEditors.length; i++) {
@@ -50,21 +54,23 @@ export class AZDocumentSymbolsLibrary extends AZSymbolsLibrary {
         let newRootSymbol : AZSymbolInformation | undefined = undefined;
 
         //get document symbols
+        let document : vscode.TextDocument | undefined = undefined;
         let editor : vscode.TextEditor | undefined = this.findTextEditor(this._docUri);
-        if (editor) {
-            if ((editor.document) && (editor.document.uri))
-                this._docUri = editor.document.uri;
+        if (editor)
+            document = editor.document;
+        else if (this._docUri)
+            document = await vscode.workspace.openTextDocument(this._docUri);
+
+        if (document) {
+            if (document.uri)
+                this._docUri = document.uri;
             let symbolsLoad : Thenable<vscode.SymbolInformation[] | vscode.DocumentSymbol[] | undefined> =
                 vscode.commands.executeCommand<vscode.SymbolInformation[] | vscode.DocumentSymbol[]>('vscode.executeDocumentSymbolProvider', this._docUri);
 
-            if (editor.document.languageId == "al") {
+            if (document.languageId == "al") {
                 
                 //al language - use our special language server to parse source code
-                let source : string;
-                if (editor)
-                    source = editor.document.getText();
-                else
-                    source = "";
+                let source : string = document.getText();
         
                 let documentPath : string = "";
                 if ((this._docUri) && (this._docUri.fsPath))
@@ -273,10 +279,20 @@ export class AZDocumentSymbolsLibrary extends AZSymbolsLibrary {
     findSymbolInRange(range: vscode.Range) : AZSymbolInformation | undefined {
         if (!this.rootSymbol)
             return undefined;
-        return this.findSymbolInRangeInt(this.rootSymbol, range);
+        return this.findSymbolInRangeInt(this.rootSymbol, range, undefined);
     }
 
-    protected findSymbolInRangeInt(symbol: AZSymbolInformation, range: vscode.Range) : AZSymbolInformation | undefined {
+    findSymbolPathInSelectionRange(range: vscode.Range) : number[] | undefined {
+        if ((range) && (this.rootSymbol)) {
+            let symbolsPath: number[] = [];
+            this.findSymbolInSelectionRangeInt(this.rootSymbol, range, symbolsPath);
+            if (symbolsPath.length > 0)
+                return symbolsPath;
+        }
+        return undefined;
+    }
+
+    protected findSymbolInRangeInt(symbol: AZSymbolInformation, range: vscode.Range, symbolsPath: number[] | undefined) : AZSymbolInformation | undefined {
         let found : AZSymbolInformation | undefined = undefined;
         
         if (symbol.range.intersectVsRange(range)) {
@@ -285,14 +301,40 @@ export class AZDocumentSymbolsLibrary extends AZSymbolsLibrary {
 
         if (symbol.childSymbols) {
             for (let i=0; i<symbol.childSymbols.length; i++) {
-                let foundChild = this.findSymbolInRangeInt(symbol.childSymbols[i], range);
-                if (foundChild)
+                let foundChild = this.findSymbolInRangeInt(symbol.childSymbols[i], range, symbolsPath);
+                if (foundChild) {
+                    symbolsPath.push(i);
                     return foundChild;
+                }
             }
         }
 
         return found;
     }
+
+
+    protected findSymbolInSelectionRangeInt(symbol: AZSymbolInformation, range: vscode.Range, symbolsPath: number[] | undefined) : AZSymbolInformation | undefined {
+        let found : AZSymbolInformation | undefined = undefined;
+        
+        if (symbol.selectionRange) {
+            if (symbol.selectionRange.intersectVsRange(range))
+                found = symbol;
+        } else if ((symbol.range) && (symbol.range.intersectVsRange(range)))
+            found = symbol;
+
+        if (symbol.childSymbols) {
+            for (let i=0; i<symbol.childSymbols.length; i++) {
+                let foundChild = this.findSymbolInSelectionRangeInt(symbol.childSymbols[i], range, symbolsPath);
+                if (foundChild) {
+                    symbolsPath.push(i);
+                    return foundChild;
+                }
+            }
+        }
+
+        return found;
+    }
+
 
     //#region
 

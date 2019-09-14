@@ -9,6 +9,7 @@ export class BaseWebViewEditor {
     protected _extensionPath : string;
     protected _documentLoaded : boolean;
     protected _title : string;
+    protected _viewColumn: vscode.ViewColumn;
 
     private _disposables: vscode.Disposable[] = [];
 
@@ -19,6 +20,7 @@ export class BaseWebViewEditor {
         this._extensionContext = context;
         this._extensionPath = this._extensionContext.extensionPath;
         this._panel = undefined;
+        this._viewColumn = vscode.ViewColumn.Active;
         //load html content
         this._htmlContent = this.loadHtmlContent();
     }
@@ -40,6 +42,11 @@ export class BaseWebViewEditor {
         this.createWebView();
     }
 
+    public reveal() {
+        if (this._panel)
+            this._panel.reveal();
+    }
+
     protected getViewType() : string {
         return "BaseWebViewEditor";
     }
@@ -57,7 +64,7 @@ export class BaseWebViewEditor {
     }
 
     protected createWebView() {
-        this._panel = vscode.window.createWebviewPanel(this.getViewType(), this._title, vscode.ViewColumn.Active, {
+        this._panel = vscode.window.createWebviewPanel(this.getViewType(), this._title, this._viewColumn, {
             // Enable javascript in the webview
             enableScripts: true,
 

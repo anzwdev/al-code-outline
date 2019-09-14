@@ -219,7 +219,8 @@ class ObjectBrowser {
                     me.execObjCommand(key, $(this)[0], $(this).data("objt"));
                 },
                 items: {
-                    "definition": {name: "Go to Definition"},
+                    "definition": {name: "Go to definition"},
+                    "shownewtab": {name: "Open symbol in new Tab"},
                     "sep1": "---------",
                     "runinwebclient": {
                         name: "Run in Web Client",

@@ -72,7 +72,7 @@ input:focus, select:focus, div:focus {
     justify-content: stretch;
     flex: 0 0 auto;
     overflow: hidden;
-    background-color: var(--vscode-sideBarSectionHeader-background);
+    background-color: var(--vscode-editorWidget-background);
     color: var(--vscode-sideBarSectionHeader-foreground);
     padding: 2px 5px;
 }
@@ -92,69 +92,6 @@ input:focus, select:focus, div:focus {
 }
 .symbolscont {
     border: 1px solid var(--vscode-panel-border);
-    overflow: auto;
-}
-.treeitem {
-    font-weight: normal;
-    cursor: default;
-}
-.treeitem .shead {
-    display: flex;    
-    align-items: center;
-    justify-content: flex-start;
-    padding: 2px 0px
-}
-
-.treeitem .sheadcol:before, .treeitem .sheadexp:before, .treeitem .sheadnoexp:before {
-    content: "";
-    flex: 0 0 16px;
-    width: 16px;
-    height: 16px;
-    background-repeat: no-repeat;
-    background-position: center;
-    background-size: contain;
-}
-.vscode-dark .treeitem .sheadcol:before, .vscode-high-contrast .treeitem .sheadcol:before {
-    background: url('../../../resources/images/dark/tree-expand.svg')
-}
-.vscode-dark .treeitem .sheadexp:before, .vscode-high-contrast .treeitem .sheadexp:before {
-    background: url('../../../resources/images/dark/tree-collapse.svg')
-}
-.vscode-light .treeitem .sheadcol:before {
-    background: url('../../../resources/images/light/tree-expand.svg')
-}
-.vscode-light .treeitem .sheadexp:before {
-    background: url('../../../resources/images/light/tree-collapse.svg')
-}
-
-
-.treeitem .shead:hover {
-    background-color: var(--vscode-list-hoverBackground);
-    color: var(--vscode-list-hoverForeground);
-}
-.symbolscont:focus .treeitem .selected, .symbolscont:focus .treeitem .selected:hover {
-    background-color: var(--vscode-list-activeSelectionBackground) !important;
-    color: var(--vscode-list-activeSelectionForeground) !important;
-}
-.treeitem .selected {
-    background-color: var(--vscode-list-inactiveSelectionBackground) !important;
-    color: var(--vscode-list-inactiveSelectionForeground) !important;
-}
-.treeitem .ico {
-    flex: 0 0 16px;
-    width: 16px;
-    height: 16px;
-    background-repeat: no-repeat;
-    background-position: center;
-    background-size: contain;
-}
-.treeitem .cap {
-    flex: 1 1 auto;
-    padding: 0px 2px 0px 6px;
-    white-space: nowrap;
-}
-.treelist {
-    padding: 0px 0px 0px 10px;
 }
 .btn {
     background-color: var(--vscode-button-background);
@@ -193,4 +130,40 @@ input:focus, select:focus, div:focus {
 }
 .tbarbtn:hover {
     background-color: var(--vscode-button-hoverBackground);
+}
+
+
+.treefiltercont {
+    flex: 0 0 auto;
+    display: flex;
+    flex-direction: row;
+    align-items: stretch;
+    justify-content: stretch;
+    overflow: hidden;
+    padding: 2px 5px;
+
+}
+.treefiltercont .treefiltertext {
+    flex: 1 1 auto;
+    background: var(--vscode-input-background);
+    border: 1px solid var(--vscode-input-background);
+    color: var(--vscode-input-foreground);
+    padding: 3px;
+}
+
+.treefiltercont .treefilterbtn {
+    flex: 0 0 auto;
+    background-color: var(--vscode-button-background);
+    color: var(--vscode-button-foreground);
+    border: 0px solid var(--vscode-panel-border);
+    background-repeat: no-repeat;
+    background-position: center;
+    background-size: contain;
+}
+.treefiltercont .treefilterbtn:hover {
+    background-color: var(--vscode-button-hoverBackground);
+}
+.treefiltercont .treefilterbtn:focus {
+    outline-style: double;
+    outline-color: var(--vscode-focusBorder) !important;
 }

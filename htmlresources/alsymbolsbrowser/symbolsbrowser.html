@@ -7,12 +7,13 @@
         <script src="##EXTENSIONPATH##/htmlresources/lib/jquery-multiselect/jquery.multiselect.js"></script>
         <script src="##EXTENSIONPATH##/htmlresources/lib/split/split.min.js"></script>
         <script src="##EXTENSIONPATH##/htmlresources/lib/filtercompiler/filterCompiler.js"></script>
+        <script src="##EXTENSIONPATH##/htmlresources/lib/symbolstreecontrol/symbolstreecontrol.js"></script>
         <script src="##EXTENSIONPATH##/htmlresources/alsymbolsbrowser/js/alsymbolkind.js"></script>
-        <script src="##EXTENSIONPATH##/htmlresources/alsymbolsbrowser/js/treecontrol.js"></script>
         <script src="##EXTENSIONPATH##/htmlresources/alsymbolsbrowser/js/symbolsbrowser.js"></script>
         <script src="##EXTENSIONPATH##/htmlresources/alsymbolsbrowser/js/startup.js"></script>
         <link rel="stylesheet" type="text/css" href="##EXTENSIONPATH##/htmlresources/lib/jquery-context-menu/css/jquery.contextMenu.css">
         <link rel="stylesheet" type="text/css" href="##EXTENSIONPATH##/htmlresources/lib/jquery-multiselect/jquery.multiselect.css">
+        <link rel="stylesheet" type="text/css" href="##EXTENSIONPATH##/htmlresources/lib/symbolstreecontrol/symbolstreecontrol.css">
         <link rel="stylesheet" type="text/css" href="##EXTENSIONPATH##/htmlresources/alsymbolsbrowser/css/symbolsbrowser.css">
         <link rel="stylesheet" type="text/css" href="##EXTENSIONPATH##/htmlresources/alsymbolsbrowser/css/icons.css">    
     </header>
@@ -54,6 +55,11 @@
                     <div class="contcoltb">
                         <button id="symidsbtn" class="tbarbtn" tabindex="5">Hide Ids</button>
                     </div>
+                </div>
+                <div class="treefiltercont">
+                    <input tabindex="1" id="selobjfilter" class="treefiltertext" type="text" placeholder="Filter, Eg: *Address*, Entry*">
+                    <button tabindex="2" id="selobjfilterbtn" class="treefilterbtn">Filter</button>
+        
                 </div>
                 <div id="symbols" class="symbolscont" tabindex="6"></div>
             </div>

@@ -5,8 +5,9 @@ class ObjectBrowser {
 
         this._vscode = acquireVsCodeApi();
 
-        this._objTree = new TreeControl('objects', 'objidsbtn', true);
-        this._symTree = new TreeControl('symbols', 'symidsbtn', false);
+        this._objTree = new SymbolsTreeControl('objects', 'objidsbtn', true);
+        this._symTree = new SymbolsTreeControl('symbols', 'symidsbtn', false);
+        this._symTree.enableSimpleFilter('selobjfilter', 'selobjfilterbtn');
 
         //prevent standard Ctrl+A inside tree elements
         $('body').on('keydown', '.symbolscont', function(evt)
@@ -23,7 +24,6 @@ class ObjectBrowser {
                 evt.preventDefault();
             }
         });
-
 
         this._objTree.emptyContent = 'There is nothing to show.';
         this._objTree.onNodeSelected = function(node) { 
@@ -100,7 +100,8 @@ class ObjectBrowser {
                 });
             },
             items: {
-                "definition": {name: "Go to Definition"},
+                "definition": {name: "Go to definition"},
+                "shownewtab": {name: "Open symbol in new tab"},
                 "sep1": "---------",
                 "runinwebclient": {
                     name: "Run in Web Client",

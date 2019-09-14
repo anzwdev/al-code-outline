@@ -1,5 +1,14 @@
 # Change Log
 
+## 1.0.16
+ - Github issue #46 - Filter option for Symbols Browser/Outline
+ - New Symbols Tree View showing document symbols in a WebView document. It can be opened from
+   - AL Symbols Browser from object symbol context menu by selecting "Open symbol in new tab" option
+   - "Show Document Symbols Tree" command from Command Palette when there is opened and acive text editor with AL file
+   - Editor context menu by selecting "Show Definition in the Symbols Tree" menu item
+
+ Thank you rvanbekkum for these 2 ideas
+
 ## 1.0.15
  - Xml documentation comments support added (but turned off by default)
 

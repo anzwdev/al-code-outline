@@ -1,4 +1,4 @@
-class TreeControl {
+class SymbolsTreeControl {
 
     constructor(controlId, idsBtnId, collapsed) {
         //initialize variables
@@ -9,7 +9,9 @@ class TreeControl {
         this._selSymbol = undefined;
         this._idsBtnId = idsBtnId;
         this._showIds = true;
+        this.sortNodes = true;
         this.emptyContent = '';
+        this.resetCollapsedState = true;
         this.onNodeSelected = undefined;
         this.onShowIdsChanged = undefined;
 
@@ -18,6 +20,9 @@ class TreeControl {
         this._idFilter = undefined;
         this._nameFilterText = undefined;
         this._nameFilter = undefined;
+        this._fullNameFilterText = undefined;
+        this._fullNameFilter = undefined;
+
         this._visibleSymbolList = undefined;
 
         //initialize event listeners
@@ -26,9 +31,23 @@ class TreeControl {
         element.addEventListener('click', function(e) { that.onClick(e); }, true);
         element.addEventListener('keydown', function(e) { that.onKeyDown(e); });
 
-        let idsBtn = document.getElementById(this._idsBtnId);
-        idsBtn.addEventListener('click', function(e) { that.onIdsBtnClick(e); });
+        if (this._idsBtnId) {
+            let idsBtn = document.getElementById(this._idsBtnId);
+            idsBtn.addEventListener('click', function(e) { that.onIdsBtnClick(e); });
+        }
     }
+
+    enableSimpleFilter(filterId, filterBtnId) {
+        this._filterId = filterId;
+        this._filterBtnId = filterBtnId;
+        let that = this;
+        let element = document.getElementById(this._filterBtnId);
+        if (element)
+            element.addEventListener('click', function(e) { that.onSimpleFilter(e); });
+        element = document.getElementById(this._filterId);
+        if (element)
+            element.addEventListener('keydown', function(e) { that.onSimpleFilterKeyDown(e); });
+        }
 
     setShowIds(newShowIds) {        
         this._showIds = newShowIds;
@@ -47,16 +66,19 @@ class TreeControl {
         this._data = data;        
         if (this._data) {
             this._data.showIds = this._showIds;
-            this.sortData(this._data);
-            this.resetFilter(this._data);
+            if (this.sortNodes)
+                this.sortData(this._data);
+            //this.resetFilter(this._data);
             this._data.parent = undefined;
             this.prepareData(this._data);
         }
-        this.renderData();
+
+        this.refreshFilter();
     }
 
     prepareData(data) {
-        data.collapsed = this._collapsed;
+        if (this.resetCollapsedState)
+            data.collapsed = this._collapsed;
         data.selected = false;
         if (data.childSymbols) {
             for (let i=0; i<data.childSymbols.length; i++) {
@@ -149,7 +171,7 @@ class TreeControl {
     //#endregion
 
     isObjectSymbol(symbol) {
-        return ((symbol.kind == ALSymbolKind.TableObject) ||
+        return ((symbol) && ((symbol.kind == ALSymbolKind.TableObject) ||
             (symbol.kind == ALSymbolKind.CodeunitObject) ||
             (symbol.kind == ALSymbolKind.PageObject) ||
             (symbol.kind == ALSymbolKind.ReportObject) ||
@@ -162,7 +184,7 @@ class TreeControl {
             (symbol.kind == ALSymbolKind.PageCustomizationObject) ||
             (symbol.kind == ALSymbolKind.EnumType) ||
             (symbol.kind == ALSymbolKind.EnumExtensionType) ||
-            (symbol.kind == ALSymbolKind.DotNetPackage));
+            (symbol.kind == ALSymbolKind.DotNetPackage)));
     }
 
     //#region Node scrolling
@@ -227,7 +249,32 @@ class TreeControl {
 
     //#region Filtering
 
+    onSimpleFilter(e) {
+        let element = document.getElementById(this._filterId);
+        let filterValue = undefined;
+        if (element)
+            filterValue = element.value;
+        this.filterDataAdv(undefined, undefined, undefined, filterValue);
+    }
+
+    onSimpleFilterKeyDown(e) {
+        if (e.which == 13) {
+            this.onSimpleFilter(undefined);
+            e.preventDefault();
+            return false;
+        }
+        return true;
+    }
+
+    refreshFilter() {
+        this.filterDataAdv(this._typeFilter, this._idFilterText, this._nameFilterText, this._fullNameFilterText);
+    }
+
     filterData(typeList, idFilter, nameFilter) {
+        this.filterDataAdv(typeList, idFilter, nameFilter, undefined)
+    }
+
+    filterDataAdv(typeList, idFilter, nameFilter, fullNameFilter) {
         //set type filter
         this._typeFilter = typeList;        
         //compile id filter
@@ -264,17 +311,39 @@ class TreeControl {
                 }    
             }
         }
-        //apply filters
-        this.resetFilter(this._data);
-        if ((this._typeFilter) && (this._typeFilter.length > 0))
-            this.applyTypeFilter(this._data);
-        if (this._idFilter)
-            this.applyIdFilter(this._data);
-        if (this._nameFilter)
-            this.applyNameFilter(this._data);
+        //compile full name filter
+        if (this._fullNameFilterText != fullNameFilter) {
+            this._fullNameFilterText = fullNameFilter;
+            this._fullNameFilter = undefined;
+            if (this._fullNameFilterText) {
+                try {
+                    this._fullNameFilter = compileFilter('text', this._fullNameFilterText);
+                }
+                catch (e) {
+                    //vscodeContext.postMessage({
+                    //    command    : 'errorInFilter',
+                    //    message : filterNameExpr});                    
+                    //filterName = undefined;
+                    //filterNameExpr = undefined;
+                }    
+            }
+        }
 
-        this.hideEmptyGroups(this._data);
-        this._data.visible = true;
+        //apply filters
+        if (this._data) {        
+            this.resetFilter(this._data);
+            if ((this._typeFilter) && (this._typeFilter.length > 0))
+                this.applyTypeFilter(this._data);
+            if (this._idFilter)
+                this.applyIdFilter(this._data);
+            if (this._nameFilter)
+                this.applyNameFilter(this._data);
+            if (this._fullNameFilter)
+                this.applyFullNameFilter(this._data);
+
+            this.hideEmptyGroups(this._data);
+            this._data.visible = true;
+        }
 
         this.renderData();
     }
@@ -328,8 +397,26 @@ class TreeControl {
         }
     }
 
+    applyFullNameFilter(data) {
+        let visible = false;
+        if (data) {
+            if (data.childSymbols) {
+                for (let i=0; i<data.childSymbols.length;i++) {
+                    if (this.applyFullNameFilter(data.childSymbols[i]))
+                        visible = true;
+                }
+            }
+        
+            if ((!visible) && (this._fullNameFilter({TEXT: data.fullName})))
+                visible = true;
+            
+            data.visible = visible;
+        }
+        return visible;
+    }
+
     hideEmptyGroups(data) {
-        if (!this.isObjectSymbol(data)) {
+        if ((data) && (!this.isObjectSymbol(data))) {
             let visibleChild = false;
             if (data.childSymbols) {
                 for (let i=0; i<data.childSymbols.length;i++) {
@@ -483,6 +570,29 @@ class TreeControl {
 
         //select new symbol
         $(this._selNode).addClass('selected');
+    }
+
+    selectNodeByPath(path) {
+        if ((path) && (path.length > 0) && (this._data)) {            
+            let node = this._data;
+            //expand parents and select node
+            for (let i=0; ((node) && (i<path.length)); i++) {
+                if (node.collapsed)
+                    this.toggleNode(node);
+
+                let idx = path.length - (i + 1);
+
+                if ((node.childSymbols) && (path[idx] < node.childSymbols.length) && (path[idx] >= 0))
+                    node = node.childSymbols[path[idx]];
+                else
+                    node = undefined;
+
+                if ((i == (path.length - 1)) && (node) && (node.htmlNode)) {
+                    this.selectNode(node.htmlNode, false, false, false);
+                    return;
+                }
+            }
+        }
     }
 
     //#endregion
@@ -701,6 +811,37 @@ class TreeControl {
         }
 
         return true;
+    }
+
+    //#endregion
+
+    //#region Merge data stat
+
+    applyTreeItemState(data) {
+        if ((data) && (this._data))
+            this.applyTreeItemStateInternal(data, this._data);
+    }
+
+    applyTreeItemStateInternal(data, stateSource) {
+        if (stateSource.collapsed)
+            data.collapsed = stateSource.collapsed;
+        if ((data.childSymbols) && (stateSource.childSymbols)) {
+            for (let i=0; i<data.childSymbols.length; i++) {
+                let childStateSource = this.findChildStateSource(data.childSymbols[i].fullName, stateSource);
+                if (childStateSource) {
+                    childStateSource.processed = true;
+                    this.applyTreeItemStateInternal(data.childSymbols[i], childStateSource);
+                }
+            }
+        }
+    }
+
+    findChildStateSource(fullName, stateSource) {
+        for (let i=0; i<stateSource.childSymbols.length; i++) {
+            if ((!stateSource.childSymbols[i].processed) && (stateSource.childSymbols[i].fullName == fullName))
+                return stateSource.childSymbols[i];
+        } 
+        return undefined;
     }
 
     //#endregion

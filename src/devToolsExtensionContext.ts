@@ -11,6 +11,7 @@ import { ALObjectsBrowser } from './alsymbolsbrowser/alObjectsBrowser';
 import { ALOutlineService } from './services/alOutlineService';
 import { ALObjectWizardsService } from './services/alObjectWizardsService';
 import { ALCompletionService } from './services/alCompletionService';
+import { ALSymbolsTreeService } from './services/alSymbolsTreeService';
 
 export class DevToolsExtensionContext implements vscode.Disposable {
     alLangProxy : ALLangServerProxy;    
@@ -19,6 +20,7 @@ export class DevToolsExtensionContext implements vscode.Disposable {
     activeDocumentSymbols : AZActiveDocumentSymbolsLibrary;
     objectRunner : ALObjectRunner;
     alOutlineService : ALOutlineService;
+    alSymbolsTreeService : ALSymbolsTreeService;
     alWizardsService : ALObjectWizardsService;
     alCompletionService : ALCompletionService;
 
@@ -35,6 +37,7 @@ export class DevToolsExtensionContext implements vscode.Disposable {
         this.objectRunner = new ALObjectRunner(this);
 
         this.alOutlineService = new ALOutlineService(this);
+        this.alSymbolsTreeService = new ALSymbolsTreeService(this);
         this.alWizardsService = new ALObjectWizardsService(this);
         this.alCompletionService = new ALCompletionService(this);
     }
