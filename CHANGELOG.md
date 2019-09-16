@@ -1,5 +1,8 @@
 # Change Log
 
+## 1.0.17
+ - Github issue #51 fixed - "Add multiple fields" code action broken after last update
+
 ## 1.0.16
  - Github issue #46 - Filter option for Symbols Browser/Outline
  - New Symbols Tree View showing document symbols in a WebView document. It can be opened from
