@@ -293,8 +293,7 @@ export class AZDocumentSymbolsLibrary extends AZSymbolsLibrary {
     }
 
     protected findSymbolInRangeInt(symbol: AZSymbolInformation, range: vscode.Range, symbolsPath: number[] | undefined) : AZSymbolInformation | undefined {
-        let found : AZSymbolInformation | undefined = undefined;
-        
+        let found : AZSymbolInformation | undefined = undefined;            
         if (symbol.range.intersectVsRange(range)) {
             found = symbol;
         }
@@ -303,7 +302,8 @@ export class AZDocumentSymbolsLibrary extends AZSymbolsLibrary {
             for (let i=0; i<symbol.childSymbols.length; i++) {
                 let foundChild = this.findSymbolInRangeInt(symbol.childSymbols[i], range, symbolsPath);
                 if (foundChild) {
-                    symbolsPath.push(i);
+                    if (symbolsPath)
+                        symbolsPath.push(i);
                     return foundChild;
                 }
             }
@@ -326,7 +326,8 @@ export class AZDocumentSymbolsLibrary extends AZSymbolsLibrary {
             for (let i=0; i<symbol.childSymbols.length; i++) {
                 let foundChild = this.findSymbolInSelectionRangeInt(symbol.childSymbols[i], range, symbolsPath);
                 if (foundChild) {
-                    symbolsPath.push(i);
+                    if (symbolsPath)
+                        symbolsPath.push(i);
                     return foundChild;
                 }
             }
