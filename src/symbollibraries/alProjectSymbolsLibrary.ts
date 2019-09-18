@@ -21,7 +21,11 @@ export class ALProjectSymbolsLibrary extends ALBaseServerSideLibrary {
 
     protected async loadInternalAsync(forceReload : boolean) : Promise<boolean> {
         try {
-            let request : ToolsProjectSymbolsRequest = new ToolsProjectSymbolsRequest(this._includeDependencies, this._projectPath, ".alpackages");
+            let alPackagesPath: string = vscode.workspace.getConfiguration('al', null).get<string>('packageCachePath');
+            if (!alPackagesPath)
+                alPackagesPath = ".alpackages";
+
+            let request : ToolsProjectSymbolsRequest = new ToolsProjectSymbolsRequest(this._includeDependencies, this._projectPath, alPackagesPath);
             let response : ToolsProjectSymbolsResponse | undefined = await this._context.toolsLangServerClient.getProjectSymbols(request);
             if ((response) && (response.root))
                 this.rootSymbol = AZSymbolInformation.fromAny(response.root);

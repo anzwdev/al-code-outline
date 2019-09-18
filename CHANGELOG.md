@@ -1,5 +1,10 @@
 # Change Log
 
+## 1.0.18
+ - Github issue #53 - Alternative symbols path
+
+  Thanl you YannRobertCargo for reporing it
+
 ## 1.0.17
  - Github issue #51 fixed - "Add multiple fields" code action broken after last update
 
