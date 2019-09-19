@@ -69,7 +69,8 @@ export class ALSymbolsTreeService {
             if ((locationList) && (locationList.length > 0)) {
                 let range = locationList[0].range;               
                 this.showDocumentSymbols(locationList[0].uri, range);
-            }
+            } else
+                this.showDocumentSymbols(editor.document.uri, undefined);
         }
     }
 
