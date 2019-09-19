@@ -1,5 +1,12 @@
 # Change Log
 
+## 1.0.18
+ - Github issue #53 - Alternative symbols path
+ - Github issue #50 - Project Symbols and Document Symbols Tree do not show field nos.
+ - If "Show Definition in the Symbols Tree" command cannot find definition for symbol at the current cursor position, symbols tree for the active document is opened
+
+  Thank you YannRobertCargo and rvanbekkum for reporing these issues
+
 ## 1.0.17
  - Github issue #51 fixed - "Add multiple fields" code action broken after last update
 
