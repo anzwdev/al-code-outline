@@ -54,7 +54,7 @@ export class ALSyntaxWriter {
     }
 
     public writeStartNameSourceBlock(blockName : string, propertyName : string, propertySource : string) {
-        this.writeLine(blockName + "(" + propertyName + ";" + propertySource + ")");
+        this.writeLine(blockName + "(" + propertyName + "; " + propertySource + ")");
         this.writeStartBlock();
     }
 
@@ -129,6 +129,18 @@ export class ALSyntaxWriter {
 
     public writeProperty(name : string, value : string) {
         this.writeLine(name + " = " + value + ";");
+    }
+
+    public writeTableField(fieldId: string, fieldName: string, fieldDataType: string, fieldLength: string) {
+        let dataType = fieldDataType.toLowerCase();
+        if ((fieldLength) && ((dataType == 'text') || (dataType == 'code')))
+            fieldDataType = fieldDataType + '[' + fieldLength + ']';
+
+        this.writeLine("field(" + fieldId + "; " + ALSyntaxHelper.toNameText(fieldName) + "; " + fieldDataType + ")");
+        this.writeStartBlock();
+        this.writeProperty('Caption', ALSyntaxHelper.toStringText(fieldName));
+        this.writeProperty("DataClassification", "ToBeClassified");
+        this.writeEndBlock();
     }
 
     public writePageField(fieldName : string) {
