@@ -18,7 +18,8 @@ export class ALTableSyntaxBuilder {
         writer.writeStartFields();
 
         for (let i=0; i<data.fields.length; i++) {
-            writer.writeTableField(data.fields[i].id, data.fields[i].name, data.fields[i].type, data.fields[i].length);
+            writer.writeTableField(data.fields[i].id, data.fields[i].name, data.fields[i].type, data.fields[i].length,
+                data.fields[i].dataClassification);
         }
 
         writer.writeEndFields();

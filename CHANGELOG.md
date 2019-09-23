@@ -1,5 +1,8 @@
 # Change Log
 
+## 1.0.19
+ - "Table wizard" added to the list of available "new al object" wizards
+
 ## 1.0.18
  - Github issue #53 - Alternative symbols path
  - Github issue #50 - Project Symbols and Document Symbols Tree do not show field nos.

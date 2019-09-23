@@ -11,7 +11,6 @@ class AZGridView {
         this._defaultCellStyle = '';
         this._selCellStyle = 'azgridviewselcell'; 
 
-
         this._leftElementId = leftElementId;
         this._rightElementId = rightElementId;
         this._loadingText = loadingText;
@@ -41,8 +40,9 @@ class AZGridView {
             //init editor autocomplete
             let me = this;
             let allowedChars = new RegExp(/^[a-zA-Z\s]+$/);
-            this.autocomplete = autocomplete({
+            this._autocomplete = autocomplete({
                 input: this._editor,
+                disableOpenOnKeyDown: true,
                 minLength: -1,
                 onSelect: function (item, inputfield) {
                     inputfield.value = item
@@ -677,7 +677,11 @@ class AZGridView {
                 while (cell.firstChild) {
                     cell.removeChild(cell.firstChild);
                 }
-                cell.appendChild(this._editor);                            
+
+                if ((this._autocomplete) && (this._autocomplete.containerDisplayed()))
+                    this._autocomplete.clear();
+
+                cell.appendChild(this._editor);
                 this._editor.select();
                 this._editor.focus();
                 this._inEditMode = true;
@@ -689,7 +693,7 @@ class AZGridView {
         if ((this._inEditMode) && (this.validCellSelected())) {            
             let row = this._table.rows[this._currRow];
             let cell = row.cells[this._currColumn];
-            let value = this._editor.value;
+            let value = this.validateAutocomplete(this._editor.value);
             let updateData = true;
 
             if (this._currRow == this._table.rows.length - 1) {
@@ -709,6 +713,27 @@ class AZGridView {
             
             this._inEditMode = false;
         }
+    }
+
+    validateAutocomplete(value) {
+        if ((value) && (this._columns[this._currColumn].autocomplete)) {            
+            let autocompl = this._columns[this._currColumn].autocomplete;
+            value = value.toLowerCase();
+
+            for (let i=0; i<autocompl.length; i++) {
+                if (autocompl[i].toLowerCase() == value)
+                    return autocompl[i];
+            }
+
+            for (let i=0; i<autocompl.length; i++) {
+                if (autocompl[i].toLowerCase().startsWith(value))
+                    return autocompl[i];
+            }
+
+            return this._originalValue;
+        }
+
+        return value;
     }
 
     createDataEntry() {

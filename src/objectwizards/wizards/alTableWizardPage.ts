@@ -52,7 +52,7 @@ export class ALTableWizardPage extends ProjectItemWizardPage {
 
         if ((data) && (data.length > 0)) {
             for (let i = 0; i<data.length; i++) {
-                fields.push(new ALTableWizardFieldData(data[i].id, data[i].name, data[i].dataType, data[i].length));
+                fields.push(new ALTableWizardFieldData(data[i].id, data[i].name, data[i].dataType, data[i].length, data[i].dataClassification));
             }
         }
 

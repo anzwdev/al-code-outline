@@ -10,7 +10,13 @@ class TableWizard {
             [{name: 'id', caption: 'Id', style: 'width: 80px;'},
             {name: 'name', caption: 'Name', style: 'width: 60%;'},
             //{name: 'caption', caption: 'Caption', style: 'width: 30%'},
-            {name: 'dataType', caption: 'Data Type', style: 'width: 150px', autocomplete: ['Integer', 'Text', 'Char', 'Blob', 'Decimal']},
+            {name: 'dataType', caption: 'Data Type', style: 'width: 150px', autocomplete: [                
+                'Blob', 'Boolean', 'Code', 'Date', 'DateFormula', 'DateTime', 'Decimal', 'Duration',
+                'Enum', 'Guid', 'Integer', 'Media', 'MediaSet', 'Option', 'RecordId', 'TableFilter',
+                'Text', 'Time']},
+            {name: 'dataClassification', caption: 'Data Classification', style: 'width: 250px', autocomplete: [
+                'AccountData', 'CustomerContent', 'EndUserIdentifiableInformation', 'EndUserPseudonymousIdentifiers',
+                'OrganizationIdentifiableInformation', 'SystemMetadata', 'ToBeClassified']},
             {name: 'length', caption: 'Length', style: 'width:100px'}],
             undefined, undefined, 'Loading data...', true);
 
