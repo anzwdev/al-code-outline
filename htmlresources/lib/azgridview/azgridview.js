@@ -256,6 +256,9 @@ class AZGridView {
     }
 
     refreshCellStyle(rowIndex, columnIndex, selected) {
+        if (!this._editable)
+            return;
+        
         if ((rowIndex >= this._minRowIndex) && (rowIndex < this._table.rows.length) &&
             (columnIndex >= 0) && (columnIndex < this._columns.length)) {
             let row = this._table.rows[rowIndex]; 
