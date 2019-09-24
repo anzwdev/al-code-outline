@@ -11,7 +11,9 @@
 .azgridview th, .azgridview td {
     text-align: left;
     padding: 2px;
+    margin: 0;
     cursor: default;
+    white-space: nowrap;
 }
 
 .azgridview th {
@@ -19,8 +21,21 @@
 }
 .azgridview td {
     height: 20px;
-    
 }
+.azgridvieweditor {
+    padding: 2px;
+    margin: 0px;
+    width: 100%;
+    height: 100%;
+    border: none;
+    outline: none;
+    background: inherit;
+    color: inherit;
+}
+.azgridvieweditor:focus {
+    outline: 0px none transparent !important;
+}
+
 .azgridview .azgridviewrowsel td {
     background-color: var(--vscode-list-inactiveSelectionBackground) !important;
     color: var(--vscode-list-inactiveSelectionForeground) !important;
@@ -30,6 +45,10 @@
 }
 
 
+.azgridviewselcell {
+    outline: 1px solid var(--vscode-focusBorder) !important;  
+}
+
 .azgridviewcont:focus .azgridview .azgridviewrowsel td {
     background-color: var(--vscode-list-activeSelectionBackground) !important;
     color: var(--vscode-list-activeSelectionForeground) !important;
@@ -38,5 +57,7 @@
 .azgridviewcont {
     padding: 0;
     overflow: auto;
-    border: 1px solidvar(--vscode-panel-border);
+    /*
+    border: 1px solid var(--vscode-panel-border);
+    */
 }

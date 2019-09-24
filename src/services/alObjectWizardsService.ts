@@ -10,6 +10,7 @@ import { ALQueryWizard } from '../objectwizards/wizards/alQueryWizard';
 import { ALEnumWizard } from '../objectwizards/wizards/alEnumWizard';
 import { ALEnumExtWizard } from '../objectwizards/wizards/alEnumExtWizard';
 import { ALObjectWizardSettings } from '../objectwizards/wizards/alObjectWizardSettings';
+import { ALTableWizard } from '../objectwizards/wizards/alTableWizard';
 
 export class ALObjectWizardsService {
     protected _context: DevToolsExtensionContext;
@@ -20,13 +21,14 @@ export class ALObjectWizardsService {
         this._context = context;
         //create list of wizards
         this._wizards = [];
+        this._wizards.push(new ALTableWizard(context, 'Table', 'New AL Table Wizard', 'Allows to select table name and enter list of fields'));
         this._wizards.push(new ALPageWizard(context, 'Page', 'New AL Page Wizard', 'Allows to select page type, fast tabs, source table and fields.'));
         this._wizards.push(new ALXmlPortWizard(context, 'XmlPort', 'New AL XmlPort Wizard', 'Allows to select source table and fields'));
         this._wizards.push(new ALReportWizard(context, 'Report', 'New AL Report Wizard', 'Allows to select source table and fields'));
         this._wizards.push(new ALQueryWizard(context, 'Query', 'New AL Query Wizard', 'Allows to select query type, source table and fields'));
         this._wizards.push(new ALEnumWizard(context, 'Enum', 'New AL Enum Wizard', 'Allows to select list of enum values and captions'));
-        this._wizards.push(new ALEnumExtWizard(context, 'Enum Extension', 'New AL Enum Extension Wizard', 'Allows to add list of enum values and captions to existing enum'));
-        
+        this._wizards.push(new ALEnumExtWizard(context, 'Enum Extension', 'New AL Enum Extension Wizard', 'Allows to add list of enum values and captions to existing enum'));        
+
         //register commands
         this._context.vscodeExtensionContext.subscriptions.push(
             vscode.commands.registerCommand(

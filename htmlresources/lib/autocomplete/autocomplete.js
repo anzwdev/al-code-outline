@@ -29,6 +29,7 @@
           throw new Error("input undefined");
       }
       var input = settings.input;
+      var disableOpenOnKeyDown = settings.disableOpenOnKeyDown;
       container.className = "autocomplete " + (settings.className || "");
       containerStyle.position = "fixed";
       /**
@@ -185,6 +186,11 @@
       function keyup(ev) {
           var keyCode = ev.which || ev.keyCode || 0;
           var ignore = [38 /* Up */, 13 /* Enter */, 27 /* Esc */, 39 /* Right */, 37 /* Left */, 16 /* Shift */, 17 /* Ctrl */, 18 /* Alt */, 20 /* CapsLock */, 91 /* WindowsKey */, 9 /* Tab */];
+
+          //disable drop down on key down
+          if (disableOpenOnKeyDown)
+            ignore.push(40);    //Down
+          
           for (var _i = 0, ignore_1 = ignore; _i < ignore_1.length; _i++) {
               var key = ignore_1[_i];
               if (keyCode === key) {
@@ -343,7 +349,9 @@
       window.addEventListener("resize", resizeEventHandler);
       doc.addEventListener("scroll", scrollEventHandler, true);
       return {
-          destroy: destroy
+          destroy: destroy,
+          containerDisplayed: containerDisplayed,
+          clear: clear
       };
   }
 
