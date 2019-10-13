@@ -20,7 +20,7 @@ export class ALQueryWizard extends ALObjectWizard {
 
     protected async runAsync(settings: ALObjectWizardSettings) {
         let alLangProxy : ALLangServerProxy = new ALLangServerProxy();
-        let objectId : string = await alLangProxy.getNextObjectId("Query");
+        let objectId : string = await alLangProxy.getNextObjectId(settings.getDestDirectoryUri(), "Query");
         
         let wizardData : ALQueryWizardData = new ALQueryWizardData();
         wizardData.objectId = objectId;

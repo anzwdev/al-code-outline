@@ -28,7 +28,7 @@ export class ALTableBasedWizardPage extends ProjectItemWizardPage {
     }
 
     protected async loadTables() {
-        this._tableWizardData.tableList = await this._toolsExtensionContext.alLangProxy.getTableList();
+        this._tableWizardData.tableList = await this._toolsExtensionContext.alLangProxy.getTableList(this._settings.getDestDirectoryUri());
         this.sendMessage({
             command : "setTables",
             data : this._tableWizardData.tableList
@@ -38,7 +38,7 @@ export class ALTableBasedWizardPage extends ProjectItemWizardPage {
     protected async loadFields() {
         try
         {
-            this._tableWizardData.fieldList = await this._toolsExtensionContext.alLangProxy.getFieldList(this._tableWizardData.selectedTable);
+            this._tableWizardData.fieldList = await this._toolsExtensionContext.alLangProxy.getFieldList(this._settings.getDestDirectoryUri(), this._tableWizardData.selectedTable);
             this.sendMessage({
                 command: "setFields",
                 data : this._tableWizardData.fieldList

@@ -24,7 +24,7 @@ export class ALAddReportFieldsCodeCommand extends ALBaseAddFieldsCodeCommand {
             return;
 
         //get list of fields
-        let fieldNames = await this._toolsExtensionContext.alLangProxy.getFieldList(dataItemSymbol.source);
+        let fieldNames = await this._toolsExtensionContext.alLangProxy.getFieldList(this.getDocumentUri(), dataItemSymbol.source);
         
         //remove existing fields from the list
         fieldNames = this.removeExistingFields(fieldNames, dataItemSymbol.childSymbols, AZSymbolKind.ReportColumn, 'All available table fields have already been added to the report.');

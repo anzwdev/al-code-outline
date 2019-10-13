@@ -20,7 +20,7 @@ export class ALTableWizard extends ALObjectWizard {
 
     protected async runAsync(settings: ALObjectWizardSettings) {
         let alLangProxy : ALLangServerProxy = new ALLangServerProxy();
-        let objectId : string = await alLangProxy.getNextObjectId("table");
+        let objectId : string = await alLangProxy.getNextObjectId(settings.getDestDirectoryUri(), "table");
 
         let wizardData : ALTableWizardData = new ALTableWizardData();
         wizardData.objectId = objectId;

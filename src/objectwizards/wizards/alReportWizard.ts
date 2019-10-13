@@ -20,7 +20,7 @@ export class ALReportWizard extends ALObjectWizard {
 
     protected async runAsync(settings: ALObjectWizardSettings) {
         let alLangProxy : ALLangServerProxy = new ALLangServerProxy();
-        let objectId : string = await alLangProxy.getNextObjectId("Report");
+        let objectId : string = await alLangProxy.getNextObjectId(settings.getDestDirectoryUri(), "Report");
 
         let wizardData : ALReportWizardData = new ALReportWizardData();
         wizardData.objectId = objectId;

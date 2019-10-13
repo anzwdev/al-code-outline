@@ -20,7 +20,7 @@ export class ALEnumExtWizard extends ALObjectWizard {
 
     protected async runAsync(settings: ALObjectWizardSettings) {
         let alLangProxy : ALLangServerProxy = new ALLangServerProxy();
-        let objectId : string = await alLangProxy.getNextObjectId("enumextension");
+        let objectId : string = await alLangProxy.getNextObjectId(settings.getDestDirectoryUri(), "enumextension");
 
         let wizardData : ALEnumExtWizardData = new ALEnumExtWizardData();
         wizardData.objectId = objectId;

@@ -34,9 +34,9 @@ export class ALAddPageFieldsCodeCommand extends ALBaseAddFieldsCodeCommand {
         let fieldNames: string[] | undefined;
         
         if (pageSymbol.kind == AZSymbolKind.PageObject)        
-            fieldNames = await this._toolsExtensionContext.alLangProxy.getFieldList(pageSymbol.source);
+            fieldNames = await this._toolsExtensionContext.alLangProxy.getFieldList(this.getDocumentUri(), pageSymbol.source);
         else if (pageSymbol.extends)
-            fieldNames = await this._toolsExtensionContext.alLangProxy.getAvailablePageFieldList(pageSymbol.extends);
+            fieldNames = await this._toolsExtensionContext.alLangProxy.getAvailablePageFieldList(this.getDocumentUri(), pageSymbol.extends);
         else
             return;
 

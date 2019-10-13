@@ -20,7 +20,7 @@ export class ALXmlPortWizard extends ALObjectWizard {
 
     protected async runAsync(settings: ALObjectWizardSettings) {
         let alLangProxy : ALLangServerProxy = new ALLangServerProxy();
-        let objectId : string = await alLangProxy.getNextObjectId("XmlPort");
+        let objectId : string = await alLangProxy.getNextObjectId(settings.getDestDirectoryUri(), "XmlPort");
 
         let wizardData : ALXmlPortWizardData = new ALXmlPortWizardData();
         wizardData.objectId = objectId;

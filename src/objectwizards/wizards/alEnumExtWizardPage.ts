@@ -29,7 +29,7 @@ export class ALEnumExtWizardPage extends ProjectItemWizardPage {
     }
 
     protected async loadBaseEnums() {
-        this._enumExtWizardData.baseEnumList = await this._toolsExtensionContext.alLangProxy.getEnumList();
+        this._enumExtWizardData.baseEnumList = await this._toolsExtensionContext.alLangProxy.getEnumList(this._settings.getDestDirectoryUri());
         this.sendMessage({
             command : "setEnums",
             data : this._enumExtWizardData.baseEnumList
