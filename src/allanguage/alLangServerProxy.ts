@@ -124,6 +124,19 @@ export class ALLangServerProxy {
         this.alEditorService.lastActiveWorkspacePath = undefined;
     }
 
+    getCurrentWorkspaceFolderPath() : string | undefined {
+        if ((!vscode.workspace.workspaceFolders) || (vscode.workspace.workspaceFolders.length == 0))
+            return undefined;
+        if (vscode.workspace.workspaceFolders.length > 1) {
+            this.checkLanguageClient();
+            if (this.alEditorService) {
+                if (this.alEditorService.lastActiveWorkspacePath)
+                    return this.alEditorService.lastActiveWorkspacePath;
+            }
+        }
+        return vscode.workspace.workspaceFolders[0].uri.fsPath;
+    }
+
     async getCompletionForSourceCode(resourceUri: vscode.Uri | undefined, progressMessage : string, sourceCode : string, posLine : number, posColumn : number, 
         lastSourceLine : number, lastSourceColumn : number) : Promise<vscode.CompletionList | undefined> {
         

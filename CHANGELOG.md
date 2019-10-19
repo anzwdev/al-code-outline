@@ -1,5 +1,8 @@
 # Change Log
 
+## 1.0.20
+ - Github issue #32 - Multi root workspace support added
+
 ## 1.0.19
  - "Table wizard" added to the list of available "new al object" wizards
 
