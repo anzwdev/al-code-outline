@@ -2,7 +2,7 @@ import * as vscode from 'vscode';
 
 export class ALObjectWizardSettings {
     destDirectoryPath: string | undefined;
-    destFileName: string | undefined;    
+    destFileName: string | undefined;
     private _destDirectoryUri: vscode.Uri | undefined;
 
     constructor() {

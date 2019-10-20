@@ -69,7 +69,6 @@ export class FileBuilder {
             }
         }
         
-        
         // Determine the file path for the new file to generate. Do not overwrite the file if it already exists.
         const newFilePath : string = path.join(newFileDirectory, fileName);
         const fileAlreadyExists = await this.fileExists(newFilePath);
@@ -80,7 +79,7 @@ export class FileBuilder {
     }
 
     public static generateObjectFileInDir(dirPath: string, fileName: string, content: string) : string {
-        let parsedPath = path.parse(fileName);        
+        let parsedPath = path.parse(fileName);
         let newFilePath : string = path.join(dirPath, fileName);        
         let fileIndex = 0;
         while (fs.existsSync(newFilePath)) {
@@ -88,8 +87,18 @@ export class FileBuilder {
             fileName = parsedPath.name + ' ' + fileIndex.toString() + parsedPath.ext;
             newFilePath = path.join(dirPath, fileName);
         }
+        this.mkdirFullPathRecursiveSync(dirPath);
         fs.appendFileSync(newFilePath, content);
         return newFilePath;
+    }
+
+    private static mkdirFullPathRecursiveSync(destPath: string) {
+        if (fs.existsSync(destPath))
+            return;
+        let parsedPath = path.parse(destPath);
+        if (parsedPath.dir)
+            this.mkdirFullPathRecursiveSync(parsedPath.dir);
+        fs.mkdirSync(destPath);
     }
 
     private static mkdirRecursiveSync(baseDir:string, relativeDir: string) {

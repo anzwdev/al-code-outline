@@ -46,10 +46,10 @@ export function activate(context: vscode.ExtensionContext) {
         vscode.commands.registerCommand(
             'azALDevTools.showAllProjectSymbols',
             () => {
-                if ((vscode.workspace.workspaceFolders) && (vscode.workspace.workspaceFolders.length > 0)) {
+                let workspacePath = toolsExtensionContext.alLangProxy.getCurrentWorkspaceFolderPath();
+                if (workspacePath) {
                     let lib : ALProjectSymbolsLibrary = new ALProjectSymbolsLibrary(toolsExtensionContext,
-                        true,
-                        vscode.workspace.workspaceFolders[0].uri.fsPath);
+                        true, workspacePath);
                     toolsExtensionContext.showSymbolsBrowser(lib);
                 }                
             }
@@ -60,10 +60,10 @@ export function activate(context: vscode.ExtensionContext) {
         vscode.commands.registerCommand(
             'azALDevTools.showProjectSymbolsWithoutDep',
             () => {
-                if ((vscode.workspace.workspaceFolders) && (vscode.workspace.workspaceFolders.length > 0)) {
+                let workspacePath = toolsExtensionContext.alLangProxy.getCurrentWorkspaceFolderPath();
+                if (workspacePath) {
                     let lib : ALProjectSymbolsLibrary = new ALProjectSymbolsLibrary(toolsExtensionContext,
-                        false,
-                        vscode.workspace.workspaceFolders[0].uri.fsPath);
+                        false, workspacePath);
                     toolsExtensionContext.showSymbolsBrowser(lib);
                 }                
             }

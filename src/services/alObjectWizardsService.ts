@@ -51,8 +51,6 @@ export class ALObjectWizardsService {
                 let parsedPath = path.parse(fullPath);
                 settings.destDirectoryPath = parsedPath.dir;
             }
-        } else {
-            settings.destDirectoryPath = this._context.alLangProxy.getCurrentWorkspaceFolderPath();
         }
 
         //select wizard
