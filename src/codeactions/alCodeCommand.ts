@@ -26,4 +26,8 @@ export class ALCodeCommand {
     protected async runAsync(range: vscode.Range) {
     }
 
+    protected getDocumentUri() : vscode.Uri {
+        return this._toolsExtensionContext.activeDocumentSymbols.getDocUri();
+    }
+
 }

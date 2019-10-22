@@ -1,5 +1,13 @@
 # Change Log
 
+## 1.0.20
+ - Github issue #32 - Multi root workspace support added. Modified areas:
+   - AL file wizards
+   - "Show project symbols" commands 
+ - Github issue #38 - Allow to run file wizards directly from the Command Palette
+
+  Thank you pri-kise for posting additional information about isse #38
+
 ## 1.0.19
  - "Table wizard" added to the list of available "new al object" wizards
 

@@ -3,6 +3,7 @@ import { ALBaseAddFieldsCodeCommand } from "./alBaseAddFieldsCodeCommand";
 import { DevToolsExtensionContext } from "../devToolsExtensionContext";
 import { AZSymbolKind } from '../symbollibraries/azSymbolKind';
 import { ALSyntaxWriter } from '../allanguage/alSyntaxWriter';
+import { settings } from 'cluster';
 
 export class ALAddXmlPortFieldsCodeCommand extends ALBaseAddFieldsCodeCommand {
     elementType: string;
@@ -27,7 +28,7 @@ export class ALAddXmlPortFieldsCodeCommand extends ALBaseAddFieldsCodeCommand {
             return;
 
         //get list of fields
-        let fieldNames = await this._toolsExtensionContext.alLangProxy.getFieldList(dataItemSymbol.source);
+        let fieldNames = await this._toolsExtensionContext.alLangProxy.getFieldList(this.getDocumentUri(), dataItemSymbol.source);
 
         //remove existing fields from the list
         fieldNames = this.removeExistingFields(fieldNames, dataItemSymbol.childSymbols, AZSymbolKind.QueryColumn, 'All available table fields have already been added to the query.');

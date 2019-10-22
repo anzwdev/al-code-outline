@@ -95,7 +95,7 @@ export class ALActionImageBrowser extends BaseWebViewEditor {
     async getImageList() : Promise<ALActionImageInfo[]> {
         let fileContent = 'page 0 MyPage9999\n{\nactions\n{\narea(Processing)\n{\naction(ActionName)\n{\nImage=;\n}\n}\n}\n}';
 
-        let list = await this._laguageProxy.getCompletionForSourceCode('Loading list of action images.', fileContent,
+        let list = await this._laguageProxy.getCompletionForSourceCode(undefined, 'Loading list of action images.', fileContent,
             8, 6, 12, 1);
 
         //process results

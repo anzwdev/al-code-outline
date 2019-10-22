@@ -11,10 +11,12 @@ export class ALLangServerProxy {
     private langClient : vscodelangclient.LanguageClient | undefined;
     public extensionPath : string | undefined;
     public version : Version;
+    public alEditorService: any;
 
     constructor() {
         this.version = new Version();
         this.langClient = undefined;
+        this.alEditorService = undefined;
         this.checkExtensionProperties();
     }
 
@@ -52,7 +54,7 @@ export class ALLangServerProxy {
                 return false;
 
             if (alExtension.exports) {
-                
+                //find language client
                 if (alExtension.exports.languageServerClient) {
                     if (alExtension.exports.languageServerClient.languageClient)
                         this.langClient = alExtension.exports.languageServerClient.languageClient;
@@ -68,13 +70,74 @@ export class ALLangServerProxy {
                         }
                     }
                 }
+
+                //find editor service
+                if (alExtension.exports.services) {
+                    let alServices = alExtension.exports.services;
+                    for (let sidx = 0; (sidx < alServices.length) && (!this.alEditorService); sidx++) {
+                        if (alServices[sidx].setActiveWorkspace)
+                            this.alEditorService = alServices[sidx];
+                    }
+                }
+
             }
 
         }
         return true;
     }
 
-    async getCompletionForSourceCode(progressMessage : string, sourceCode : string, posLine : number, posColumn : number, 
+    protected getWorkspaceSettings(resourceUri: vscode.Uri, workspacePath: string): any {
+        if (!resourceUri)
+            resourceUri = vscode.Uri.file(workspacePath);            
+        let alConfig = vscode.workspace.getConfiguration('al', resourceUri);
+        return {
+            workspacePath: workspacePath,
+            alResourceConfigurationSettings: {
+                assemblyProbingPaths: alConfig.get("assemblyProbingPaths"),
+                codeAnalyzers: alConfig.get("codeAnalyzers"),
+                enableCodeAnalysis: alConfig.get("enableCodeAnalysis"),
+                backgroundCodeAnalysis: alConfig.get("backgroundCodeAnalysis"),
+                packageCachePath: alConfig.get("packageCachePath"),
+                ruleSetPath: alConfig.get("ruleSetPath"),
+                enableCodeActions: alConfig.get("enableCodeActions"),
+                incrementalBuild: alConfig.get("incrementalBuild"),
+            },
+            setActiveWorkspace: true,
+            dependencyParentWorkspacePath: undefined
+        };
+    }
+
+    async switchWorkspace(resourceUri: vscode.Uri, workspacePath: string) {
+        if ((!this.langClient) ||
+            (!this.alEditorService) || 
+            (this.alEditorService.lastActiveWorkspacePath === workspacePath) ||
+            (!vscode.workspace.workspaceFolders) || 
+            (vscode.workspace.workspaceFolders.length <= 1))
+            return;
+
+        //switch workspace
+        let result = await this.langClient.sendRequest('al/setActiveWorkspace', {
+            currentWorkspaceFolderPath: workspacePath,
+            settings: this.getWorkspaceSettings(resourceUri, workspacePath)
+        })
+
+        this.alEditorService.lastActiveWorkspacePath = undefined;
+    }
+
+    getCurrentWorkspaceFolderPath() : string | undefined {
+        if ((!vscode.workspace.workspaceFolders) || (vscode.workspace.workspaceFolders.length == 0))
+            return undefined;
+        if (vscode.workspace.workspaceFolders.length > 1) {
+            this.checkLanguageClient();
+            if (this.alEditorService) {
+                if (this.alEditorService.lastActiveWorkspacePath)
+                    return this.alEditorService.lastActiveWorkspacePath;
+            }
+        }
+        return vscode.workspace.workspaceFolders[0].uri.fsPath;
+    }
+
+    async getCompletionForSourceCode(resourceUri: vscode.Uri | undefined, progressMessage : string, sourceCode : string, posLine : number, posColumn : number, 
         lastSourceLine : number, lastSourceColumn : number) : Promise<vscode.CompletionList | undefined> {
         
             return await vscode.window.withProgress<vscode.CompletionList | undefined>({
@@ -85,13 +148,27 @@ export class ALLangServerProxy {
                     if ((!vscode.workspace.workspaceFolders) || (vscode.workspace.workspaceFolders.length == 0))
                         return undefined;
 
-                    try {
+                    //find workspace folder for resource
+                    let rootFsPath: string;
+                    if (!resourceUri) {
+                        //resource not defined, find workspace folder for active document
+                        let editor = vscode.window.activeTextEditor;
+                        if ((editor) && (editor.document))
+                            resourceUri = editor.document.uri;
+                    }
+                    if (!resourceUri) {                      
+                        rootFsPath = vscode.workspace.workspaceFolders[0].uri.fsPath;
+                    } else
+                        rootFsPath = vscode.workspace.getWorkspaceFolder(resourceUri).uri.fsPath;
 
+                    try {
                         this.checkLanguageClient();
                         if (!this.langClient)
                             return undefined;
 
-                        let docPath : string = path.join(vscode.workspace.workspaceFolders[0].uri.fsPath, '.vscode\\temp-al-proxy.al');
+                        await this.switchWorkspace(resourceUri, rootFsPath);
+
+                        let docPath : string = path.join(rootFsPath, '.vscode\\temp-al-proxy.al');
                         let docUri : vscode.Uri = vscode.Uri.file(docPath);
     
                         //let fs = require('fs');
@@ -179,9 +256,9 @@ export class ALLangServerProxy {
             });
     }
 
-    async getNextObjectId(objectType : string) : Promise<string> {
+    async getNextObjectId(resourceUri: vscode.Uri | undefined, objectType : string) : Promise<string> {
         let fileContent = objectType + " 0 _symbolcache\n{\n}";
-        let list = await this.getCompletionForSourceCode("Finding next free object id.", fileContent,
+        let list = await this.getCompletionForSourceCode(resourceUri, "Finding next free object id.", fileContent,
             0, objectType.length + 1, 2, 1); 
 
         //process results        
@@ -196,9 +273,9 @@ export class ALLangServerProxy {
         return "";
     }
 
-    async getTableList() : Promise<string[]> {
+    async getTableList(resourceUri: vscode.Uri | undefined) : Promise<string[]> {
         let fileContent = "codeunit 0 _symbolcache\n{\nprocedure t()\nvar\nf:record ;\nbegin\nend;\n}";
-        let list = await this.getCompletionForSourceCode("Loading list of tables.", fileContent,
+        let list = await this.getCompletionForSourceCode(resourceUri, "Loading list of tables.", fileContent,
             4, 9, 7, 1);
 
         //process results
@@ -217,11 +294,11 @@ export class ALLangServerProxy {
         
     }
 
-    async getAvailablePageFieldList(pageName : string) : Promise<string[]> {
+    async getAvailablePageFieldList(resourceUri: vscode.Uri | undefined, pageName : string) : Promise<string[]> {
         pageName = ALSyntaxHelper.toNameText(pageName);
 
         let fileContent = "pageextension 0 _symbolcache extends " + pageName + "\n{\nlayout\n{\naddfirst(undefined)\n{\nfield()\n}\n}\n}";
-        let list = await this.getCompletionForSourceCode("Loading list of table fields.", fileContent,
+        let list = await this.getCompletionForSourceCode(resourceUri, "Loading list of table fields.", fileContent,
             6, 6, 9, 1);
 
         //process results
@@ -239,11 +316,11 @@ export class ALLangServerProxy {
         return out;
     }
 
-    async getFieldList(tableName : string) : Promise<string[]> {
+    async getFieldList(resourceUri: vscode.Uri | undefined, tableName : string) : Promise<string[]> {
         tableName = ALSyntaxHelper.toNameText(tableName);
         
         let fileContent = "codeunit 0 _symbolcache\n{\nprocedure t()\nvar\nf:record " + tableName + ";\nbegin\nf.;\nend;\n}";
-        let list = await this.getCompletionForSourceCode("Loading list of table fields.", fileContent,
+        let list = await this.getCompletionForSourceCode(resourceUri, "Loading list of table fields.", fileContent,
             6, 2, 8, 1);
 
         //process results
@@ -261,9 +338,9 @@ export class ALLangServerProxy {
         return out;
     }
 
-    async getEnumList() : Promise<string[]> {
+    async getEnumList(resourceUri: vscode.Uri | undefined) : Promise<string[]> {
         let fileContent = "codeunit 0 _symbolcache\n{\nprocedure t()\nvar\nf:enum ;\nbegin\nend;\n}";
-        let list = await this.getCompletionForSourceCode("Loading list of enums.", fileContent,
+        let list = await this.getCompletionForSourceCode(resourceUri, "Loading list of enums.", fileContent,
             4, 7, 7, 1);
 
         //process results

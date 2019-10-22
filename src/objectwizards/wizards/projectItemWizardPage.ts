@@ -1,5 +1,6 @@
 'use strict';
 
+import * as vscode from 'vscode';
 import * as path from 'path';
 import { BaseWebViewEditor } from '../../webviews/baseWebViewEditor';
 import { DevToolsExtensionContext } from '../../devToolsExtensionContext';
@@ -66,16 +67,50 @@ export class ProjectItemWizardPage extends BaseWebViewEditor {
 
     protected async createObjectFile(objectType : string, objectId : string, objectName : string, content: string) {
         let fileName : string = await this.getObjectFileName(objectType, objectId, objectName);
-        let fullPath : string = FileBuilder.generateObjectFileInDir(this._settings.destDirectoryPath, fileName, content);
+        let destPath = this.getDestFilePath(this._settings.destDirectoryPath, objectType);
+        let fullPath : string = FileBuilder.generateObjectFileInDir(destPath, fileName, content);
         if (fullPath)
             FileBuilder.showFile(fullPath);
     }
 
     protected async createObjectExtensionFile(objectType : string, objectId : string, objectName : string, extendedObjectName : string, content : string) {
         let fileName : string = await this.getExtObjectFileName(objectType, objectId, objectName, extendedObjectName);
-        let fullPath : string = FileBuilder.generateObjectFileInDir(this._settings.destDirectoryPath, fileName, content);
+        let destPath = this.getDestFilePath(this._settings.destDirectoryPath, objectType);
+        let fullPath : string = FileBuilder.generateObjectFileInDir(destPath, fileName, content);
         if (fullPath)
             FileBuilder.showFile(fullPath);
+    }
+
+    protected getDestFilePath(targetPath: string | undefined, objectType: string) : string | undefined {
+        //target path has been specified - do not use crs reorganize settings
+        if (targetPath)
+            return targetPath;
+        
+        let workspacePathSelected: boolean = false;
+        
+        //no path - select current workspace folder
+        if (!targetPath) {
+            targetPath = this._toolsExtensionContext.alLangProxy.getCurrentWorkspaceFolderPath();
+            if (!targetPath)
+                return undefined;
+            workspacePathSelected = true;
+        }
+          
+        //get crs settings        
+        let settings = vscode.workspace.getConfiguration('CRS', vscode.Uri.file(targetPath));
+        let saveFileAction = settings.get<string>('OnSaveAlFileAction');        
+        if ((!saveFileAction) || (saveFileAction.toLowerCase() != 'reorganize'))
+            return targetPath;
+
+        //reorganize is active - find destination path
+        if (!workspacePathSelected)
+            targetPath = this._toolsExtensionContext.alLangProxy.getCurrentWorkspaceFolderPath();
+        let alPath : string = settings.get<string>('AlSubFolderName');
+        if (alPath)
+            targetPath = path.join(targetPath, alPath);
+        targetPath = path.join(targetPath, objectType.toLowerCase());
+
+        return targetPath;
     }
 
 }

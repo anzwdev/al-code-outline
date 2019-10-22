@@ -18,7 +18,7 @@ export class ALPageWizard extends ALObjectWizard {
     }
 
     protected async runAsync(settings: ALObjectWizardSettings) {
-        let objectId : string = await this._toolsExtensionContext.alLangProxy.getNextObjectId("Page");
+        let objectId : string = await this._toolsExtensionContext.alLangProxy.getNextObjectId(settings.getDestDirectoryUri(), "Page");
 
         let wizardData : ALPageWizardData = new ALPageWizardData();
         wizardData.objectId = objectId;
