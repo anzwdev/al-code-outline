@@ -254,6 +254,8 @@ class SymbolsTreeControl {
         let filterValue = undefined;
         if (element)
             filterValue = element.value;
+        if (filterValue)
+            filterValue = filterValue.replace(/"/g, "");
         this.filterDataAdv(undefined, undefined, undefined, filterValue);
     }
 
@@ -407,7 +409,7 @@ class SymbolsTreeControl {
                 }
             }
         
-            if ((!visible) && (this._fullNameFilter({TEXT: data.fullName})))
+            if ((!visible) && (this._fullNameFilter({TEXT: data.fullName.replace(/"/g, "")})))
                 visible = true;
             
             data.visible = visible;
