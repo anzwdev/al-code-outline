@@ -1,5 +1,10 @@
 # Change Log
 
+## 1.0.21
+ - Github issue #56 fixed - quick search in symbols tree ignores double quotes now
+
+ Thank you pri-kise for reporting issue #56
+
 ## 1.0.20
  - Github issue #32 - Multi root workspace support added. Modified areas:
    - AL file wizards
