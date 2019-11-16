@@ -4,11 +4,15 @@ import { BaseWebViewEditor } from "../webviews/baseWebViewEditor";
 import { DevToolsExtensionContext } from "../devToolsExtensionContext";
 import { AZSymbolInformation } from '../symbollibraries/azSymbolInformation';
 import { AZDocumentSymbolsLibrary } from '../symbollibraries/azDocumentSymbolsLibrary';
+import { AZSymbolsLibrary } from '../symbollibraries/azSymbolsLibrary';
+import { AZSymbolKind } from '../symbollibraries/azSymbolKind';
+import { TextEditorHelper } from '../tools/textEditorHelper';
 
 export class SymbolsTreeView extends BaseWebViewEditor {
     protected _devToolsContext : DevToolsExtensionContext;
     private _symbolsChangedHandler : vscode.Disposable | undefined;
     protected _loaded: boolean;
+    protected _library: AZSymbolsLibrary | undefined;
     protected _rootSymbol: AZSymbolInformation | undefined;
     protected _documentName: string;
     protected _documentUri: vscode.Uri | undefined;
@@ -28,6 +32,7 @@ export class SymbolsTreeView extends BaseWebViewEditor {
         this._loaded = false;
         this._rootSymbol = undefined;
         this._selectedSymbolPath = undefined;
+        this._library = undefined;
 
         if (this._documentUri)
             this._symbolsChangedHandler = this._devToolsContext.activeDocumentSymbols.onSymbolsChanged(symbolsLib => this.onSymbolsChanged(symbolsLib));
@@ -54,7 +59,7 @@ export class SymbolsTreeView extends BaseWebViewEditor {
     protected async LoadSymbols() {
         let currDocUri = this._devToolsContext.activeDocumentSymbols.getDocUri();
         if ((currDocUri) && (currDocUri.toString() == this._documentUri.toString()) && (this._devToolsContext.activeDocumentSymbols.rootSymbol)) {
-            this._selectedSymbolPath = this._devToolsContext.activeDocumentSymbols.findSymbolPathInSelectionRange(this.selectedSymbolRange);
+            this._selectedSymbolPath = this._devToolsContext.activeDocumentSymbols.findSymbolPathInSelectionRange(this.selectedSymbolRange);            
             this.setSymbols(this._devToolsContext.activeDocumentSymbols.rootSymbol, this._documentName);            
         } else {
             let library = new AZDocumentSymbolsLibrary(this._devToolsContext, this._documentUri);
@@ -72,6 +77,11 @@ export class SymbolsTreeView extends BaseWebViewEditor {
         else
             this._rootSymbol = new AZSymbolInformation();        
         this._rootSymbol.fullName = rootSymbolName;
+        
+        this._library = new AZSymbolsLibrary();
+        if (this._sourceSymbol)
+            this._library.setRootSymbol(this._sourceSymbol);
+        
         this.updateView();
     }
 
@@ -111,6 +121,14 @@ export class SymbolsTreeView extends BaseWebViewEditor {
         if (super.processWebViewMessage(message))
             return true;        
 
+        if (message) {
+            switch (message.command) {
+                case 'definition':
+                    this.goToDefinition(message.path);
+                    return true;
+            }
+        }
+
         return false;
     }
 
@@ -120,5 +138,41 @@ export class SymbolsTreeView extends BaseWebViewEditor {
         if (this._documentUri)
             this._devToolsContext.alSymbolsTreeService.removeUriSymbolsTreeView(this._documentUri);
     }
+
+    protected async findEditor(docUri: vscode.Uri) : Promise<vscode.TextEditor> {
+        let docUriString : string = docUri.toString();
+        let editors = vscode.window.visibleTextEditors;
+        let editorViewColumn: vscode.ViewColumn | undefined;
+        for (let i=0; i<editors.length; i++) {
+            
+            if (editors[i].document) {
+                let f1 : string = editors[i].document.uri.toString();
+                if (f1 == docUriString) {
+                    //return editors[i];
+                    editorViewColumn = editors[i].viewColumn;
+                }
+            }
+        }
+        
+        let targetDoc = await vscode.workspace.openTextDocument(this._documentUri);
+        let targetEditor = await vscode.window.showTextDocument(targetDoc, {
+            preview : true,
+            viewColumn : editorViewColumn  
+        });
+
+        return targetEditor;
+    }
+    
+    protected async goToDefinition(nodePath) {
+        if (this._library) {
+            let symbolList = await this._library.getSymbolsListByPathAsync([nodePath], AZSymbolKind.Undefined);
+            if ((symbolList) && (symbolList.length > 0) && (symbolList[0].selectionRange)) {
+                TextEditorHelper.openEditor(this._documentUri, true, true, new vscode.Position(symbolList[0].selectionRange.start.line, 
+                    symbolList[0].selectionRange.start.character));
+            }
+        }
+    }
+
+    
 
 }

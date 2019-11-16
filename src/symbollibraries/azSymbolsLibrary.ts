@@ -66,7 +66,7 @@ export class AZSymbolsLibrary {
         let symbolList : AZSymbolInformation[] = [];
         for (let i=0; i<pathList.length; i++) {
             let symbol = this.getSymbolByPath(pathList[i]);
-            if ((symbol) && ((symbol.kind == kind) || ((kind == AZSymbolKind.AnyALObject) && (symbol.isALObject()))))
+            if ((symbol) && ((kind == AZSymbolKind.Undefined) || (symbol.kind == kind) || ((kind == AZSymbolKind.AnyALObject) && (symbol.isALObject()))))
                 symbolList.push(symbol);
         }
         return symbolList;

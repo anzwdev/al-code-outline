@@ -15,7 +15,7 @@ export class ALBaseServerSideLibrary extends AZSymbolsLibrary {
         this._libraryId = 0;
     }
 
-    public async getSymbolsListByPathAsync(pathList: number[][], kind : AZSymbolKind) : Promise<AZSymbolInformation[]> {
+    public async getSymbolsListByPathAsync(pathList: number[][], kind : AZSymbolKind) : Promise<AZSymbolInformation[]> {       
         let data = await this._context.toolsLangServerClient.getLibrarySymbolsDetails(
             new ToolsLibrarySymbolsDetailsRequest(this._libraryId, kind, pathList)
         );

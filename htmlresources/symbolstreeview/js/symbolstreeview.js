@@ -24,6 +24,8 @@ class SymbolsTreeView {
             }
         });
 
+        this.initializeContextMenu();
+
         // Handle messages sent from the extension to the webview
         var me = this;
         window.addEventListener('message', event => {
@@ -58,5 +60,26 @@ class SymbolsTreeView {
             this._symTree.applyTreeItemState(data);
         this._symTree.setData(data);
     }
+
+    initializeContextMenu() {
+        let me = this;
+
+        $('#symbols').contextMenu({
+            selector: '.shead', 
+            callback: function(key, options) {
+                me.sendMessage({
+                    command : key,
+                    path : me._symTree.getNodePath(this),
+                    selpaths : me._symTree.getSelectedPaths(this),
+                    uid : $(this).data('uid'),
+                    kind : $(this).data('kind')
+                });
+            },
+            items: {
+                "definition": {name: "Go to definition"},
+            }
+        });
+    }
+
 
 }

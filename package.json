@@ -66,7 +66,7 @@
 			{
 				"category": "AZ AL Dev Tools",
 				"command": "azALDevTools.goToDefinitionSymbolTree",
-				"title": "Show Definition in the Symbols Tree"				
+				"title": "Show Definition in the Symbols Tree"
 			},
 			{
 				"category": "AZ AL Dev Tools",
@@ -194,7 +194,6 @@
 					"group": "navigation"
 				}
 			]
-
 		},
 		"configuration": [
 			{
@@ -208,7 +207,10 @@
 					"alOutline.docCommentsType": {
 						"type": "string",
 						"default": "none",
-						"enum": ["none","xml"],
+						"enum": [
+							"none",
+							"xml"
+						],
 						"description": "Documentation comments type"
 					},
 					"alOutline.autoGenerateFiles": {
