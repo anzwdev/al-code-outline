@@ -138,31 +138,7 @@ export class SymbolsTreeView extends BaseWebViewEditor {
         if (this._documentUri)
             this._devToolsContext.alSymbolsTreeService.removeUriSymbolsTreeView(this._documentUri);
     }
-
-    protected async findEditor(docUri: vscode.Uri) : Promise<vscode.TextEditor> {
-        let docUriString : string = docUri.toString();
-        let editors = vscode.window.visibleTextEditors;
-        let editorViewColumn: vscode.ViewColumn | undefined;
-        for (let i=0; i<editors.length; i++) {
-            
-            if (editors[i].document) {
-                let f1 : string = editors[i].document.uri.toString();
-                if (f1 == docUriString) {
-                    //return editors[i];
-                    editorViewColumn = editors[i].viewColumn;
-                }
-            }
-        }
-        
-        let targetDoc = await vscode.workspace.openTextDocument(this._documentUri);
-        let targetEditor = await vscode.window.showTextDocument(targetDoc, {
-            preview : true,
-            viewColumn : editorViewColumn  
-        });
-
-        return targetEditor;
-    }
-    
+   
     protected async goToDefinition(nodePath) {
         if (this._library) {
             let symbolList = await this._library.getSymbolsListByPathAsync([nodePath], AZSymbolKind.Undefined);

@@ -14,6 +14,7 @@ import { ALSymbolsBasedPageExtWizard } from '../objectwizards/symbolwizards/alSy
 import { ALSymbolsBasedTableExtWizard } from '../objectwizards/symbolwizards/alSymbolsBasedTableExtWizard';
 import { ALSyntaxHelper } from '../allanguage/alSyntaxHelper';
 import { SymbolsTreeView } from '../symbolstreeview/symbolsTreeView';
+import { TextEditorHelper } from '../tools/textEditorHelper';
 
 /** Base class for AL Object and AL Symbol browsers */
 export class ALBaseSymbolsBrowser extends BaseWebViewEditor {
@@ -162,19 +163,7 @@ export class ALBaseSymbolsBrowser extends BaseWebViewEditor {
                 targetLocation = await this._devToolsContext.alLangProxy.getDefinitionLocation(typeName, alSymbol.name);
     
             if (targetLocation) {
-                try {
-                    //open document
-                    let targetDoc = await vscode.workspace.openTextDocument(targetLocation.uri);
-                    let targetEditor = await vscode.window.showTextDocument(targetDoc, {
-                        preview : true
-                    });
-
-                    //go to location
-                    targetEditor.selection = new vscode.Selection(targetLocation.range.start, targetLocation.range.start);
-                }
-                catch (e) {
-                    vscode.window.showErrorMessage(e.message);
-                }
+                TextEditorHelper.openEditor(targetLocation.uri, true, true, targetLocation.range.start);
             } else {
                 vscode.window.showErrorMessage('Object definition is not available.');
             }

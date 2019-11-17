@@ -1,11 +1,16 @@
 class SymbolsTreeView {
 
     constructor() {
+        var me = this;
+
         this._vscode = acquireVsCodeApi();
         this._symTree = new SymbolsTreeControl('symbols', undefined, false);
         this._symTree.sortNodes = false;
         this._symTree.resetCollapsedState = false;
         this._symTree.enableSimpleFilter('filter', 'filterbtn');
+        this._symTree.nodeDefaultAction = function(node) {
+            me.onNodeDefaultAction(node);
+        }
 
         //prevent standard Ctrl+A inside tree elements
         $('body').on('keydown', '.symbolscont', function(evt)
@@ -27,7 +32,6 @@ class SymbolsTreeView {
         this.initializeContextMenu();
 
         // Handle messages sent from the extension to the webview
-        var me = this;
         window.addEventListener('message', event => {
             me.onMessage(event.data);
         });
@@ -81,5 +85,15 @@ class SymbolsTreeView {
         });
     }
 
+    onNodeDefaultAction(node) {
+        if (node)
+            this.sendMessage({
+                command : 'definition',
+                path : this._symTree.getNodePath(node),
+                selpaths : this._symTree.getSelectedPaths(node),
+                uid : $(node).data('uid'),
+                kind : $(node).data('kind')
+            });
+    }
 
 }

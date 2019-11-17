@@ -12,8 +12,9 @@ class SymbolsTreeControl {
         this.sortNodes = true;
         this.emptyContent = '';
         this.resetCollapsedState = true;
-        this.onNodeSelected = undefined;
-        this.onShowIdsChanged = undefined;
+        this.nodeSelected = undefined;
+        this.showIdsChanged = undefined;
+        this.nodeDefaultAction = undefined;
 
         this._multiselect = false;
         this._idFilterText = undefined;
@@ -56,8 +57,8 @@ class SymbolsTreeControl {
         else
             $('#' + this._idsBtnId).html("Show Ids");
         this.setData(this._data);
-        if (this.onShowIdsChanged)
-            this.onShowIdsChanged(this._showIds);
+        if (this.showIdsChanged)
+            this.showIdsChanged(this._showIds);
     }
 
     setData(data) {
@@ -551,8 +552,8 @@ class SymbolsTreeControl {
         if (node)
             this.scrollToNode(node);
 
-        if (this.onNodeSelected)
-            this.onNodeSelected(this._selNode);
+        if (this.nodeSelected)
+            this.nodeSelected(this._selNode);
     }
 
     selectSingleNode(node) {
@@ -804,6 +805,12 @@ class SymbolsTreeControl {
             case 35:    //end
                 this.selectNode(this.lastNode(), e.ctrlKey, e.shiftKey, true);
                 handled = true;
+                break;
+            case 13:    //enter
+                if ((this._selNode) && (this.nodeDefaultAction)) {
+                    this.nodeDefaultAction(this._selNode);
+                    handled = true;
+                }
                 break;
         }
 
