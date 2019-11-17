@@ -1,5 +1,12 @@
 # Change Log
 
+## 1.0.22
+ - Github issue #60 - Enable Object Navigation via Symbols Tree
+ - Github issue #61 - Open documents on multiple tabs from "Go to definition" in "AL Object Browser". To enable this functionality please change "alOutline.openDefinitionInNewTab" setting to true
+ - obsolete "enableFeaturePreview" setting removed
+
+Thank you pri-kise and kevindstanley1988 for reporting these issues and suggestions
+
 ## 1.0.21
  - Github issue #56 fixed - quick search in symbols tree ignores double quotes now
 

@@ -148,6 +148,7 @@ export class ALBaseSymbolsBrowser extends BaseWebViewEditor {
     protected async goToDefinition(path : number[] | undefined) {
         let alSymbolList : AZSymbolInformation[] | undefined = await this._library.getSymbolsListByPathAsync([path], AZSymbolKind.AnyALObject);
         if ((alSymbolList) && (alSymbolList.length > 0)) {
+            let preview = !vscode.workspace.getConfiguration('alOutline').get('openDefinitionInNewTab');
             let targetLocation : vscode.Location | undefined = undefined;
             let alSymbol : AZSymbolInformation = alSymbolList[0];
             //get data type name
@@ -163,7 +164,7 @@ export class ALBaseSymbolsBrowser extends BaseWebViewEditor {
                 targetLocation = await this._devToolsContext.alLangProxy.getDefinitionLocation(typeName, alSymbol.name);
     
             if (targetLocation) {
-                TextEditorHelper.openEditor(targetLocation.uri, true, true, targetLocation.range.start);
+                TextEditorHelper.openEditor(targetLocation.uri, true, preview, targetLocation.range.start);
             } else {
                 vscode.window.showErrorMessage('Object definition is not available.');
             }

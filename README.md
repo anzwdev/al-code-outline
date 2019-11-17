@@ -112,7 +112,6 @@ This extension has originally been inspired by "Code Outline" extension created 
 This extension contributes the following settings:
 
 * `alOutline.docCommentsType`: enable documention comments, available values: none, xml 
-* `alOutline.enableFeaturePreview`: enable preview of future, unstable features
 * `alOutline.autorefresh`: refresh code outline tree automatically
 * `alOutline.autoGenerateFiles`: automatically generate files for newly created objects
 * `alOutline.autoGenerateFileDirectory`: the default directory to create files in, relative to the root directory (e.g., \"Source\<ObjectType\>\")
@@ -124,6 +123,7 @@ This extension contributes the following settings:
 * `alOutline.promptForFilePath`: when generating a new file, ask the user to specify a path relative to the root of the project-folder
 * `alOutline.stripNonAlphanumericCharactersFromObjectNames`: always strip non-alphanumeric characters from generated object names
 * `alOutline.webClientPort`: web client port number, use 0 for default http/https ports
+* `alOutline.openDefinitionInNewTabt`: set to true to always open documents in a new tab from "Go to definition" command in "AL Object Browser"
 
 ## Known Issues
 
