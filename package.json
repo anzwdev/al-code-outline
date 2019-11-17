@@ -201,7 +201,7 @@
 				"properties": {
 					"alOutline.docCommentsType": {
 						"type": "string",
-						"default": "none",
+						"default": "xml",
 						"enum": [
 							"none",
 							"xml"

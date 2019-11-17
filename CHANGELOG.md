@@ -3,9 +3,11 @@
 ## 1.0.22
  - Github issue #60 - Enable Object Navigation via Symbols Tree
  - Github issue #61 - Open documents on multiple tabs from "Go to definition" in "AL Object Browser". To enable this functionality please change "alOutline.openDefinitionInNewTab" setting to true
+ - Github issue #62 - Event publishers support added to the xml documentation
+ - XML documentation is enabled by default now, to turn it off change "alOutline.docCommentsType" setting to "none"
  - obsolete "enableFeaturePreview" setting removed
 
-Thank you pri-kise and kevindstanley1988 for reporting these issues and suggestions
+Thank you pri-kise, kevindstanley1988 and stefanoPrimo for reporting your issues and suggestions
 
 ## 1.0.21
  - Github issue #56 fixed - quick search in symbols tree ignores double quotes now
