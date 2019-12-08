@@ -32,7 +32,8 @@
 		"onCommand:azALDevTools.refreshOutlineView",
 		"onCommand:azALDevTools.newALFile",
 		"onCommand:azALDevTools.showDocumentSymbols",
-		"onCommand:azALDevTools.goToDefinitionSymbolTree"
+		"onCommand:azALDevTools.goToDefinitionSymbolTree",
+		"onCommand:azALDevTools.showSyntaxTree"
 	],
 	"main": "./out/extension",
 	"icon": "resources/alcodeoutline.png",
@@ -62,6 +63,11 @@
 				"category": "AZ AL Dev Tools",
 				"command": "azALDevTools.showDocumentSymbols",
 				"title": "Show Document Symbols Tree"
+			},
+			{
+				"category": "AZ AL Dev Tools",
+				"command": "azALDevTools.showSyntaxTree",
+				"title": "Open Document Syntax Visualizer"
 			},
 			{
 				"category": "AZ AL Dev Tools",

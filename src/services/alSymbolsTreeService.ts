@@ -1,6 +1,7 @@
 import * as vscode from 'vscode';
 import { DevToolsExtensionContext } from '../devToolsExtensionContext';
 import { SymbolsTreeView } from '../symbolstreeview/symbolsTreeView';
+import { SyntaxTreeView } from '../syntaxtreeview/syntaxTreeView';
 
 export class ALSymbolsTreeService {
     protected _context: DevToolsExtensionContext;
@@ -33,6 +34,21 @@ export class ALSymbolsTreeService {
             )
         )
 
+        this._context.vscodeExtensionContext.subscriptions.push(
+            vscode.commands.registerCommand(
+                'azALDevTools.showSyntaxTree',
+                () => that.showSyntaxTreeAnalyzer()
+            )
+        );
+
+    }
+
+    showSyntaxTreeAnalyzer() {
+        let editor = vscode.window.activeTextEditor;
+        if ((editor) && (editor.document) && (editor.document.uri)) {
+            let syntaxTree: SyntaxTreeView = new SyntaxTreeView(this._context, editor.document.uri);
+            syntaxTree.show();         
+        }   
     }
 
     showEditorSymbolsTreeView() {

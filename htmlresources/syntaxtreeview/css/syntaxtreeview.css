@@ -1,0 +1,48 @@
+body {
+    position: absolute;
+    left: 0;
+    right: 0;
+    top: 0;
+    bottom: 0;
+    display: flex;
+    flex-direction: column;
+    align-items: stretch;
+    justify-content: stretch;
+}
+input:focus, select:focus, div:focus {
+    outline-color: var(--vscode-focusBorder) !important;
+}
+#symbols {
+    flex: 1 1 auto;
+    border: 1px solid var(--vscode-panel-border);
+}
+#proppanel {
+    flex: 0 0 150px;
+    display: flex;
+    flex-direction: column;
+    align-items: stretch;
+    justify-content: stretch;
+}
+#prop {
+    flex: 1 1 100px;    
+}
+
+.headpanel {
+    flex: 0 0 auto;    
+    margin: 0;
+    padding: 4px;
+    border-top: 1px solid var(--vscode-panel-border);
+}
+.headpanel .hptitle {
+    font-weight: bold;
+    padding: 2px;
+}
+.headpanel .hptext {
+    padding: 2px 10px; 
+}
+
+.gutter {
+    background-color: var(--vscode-panel-border);
+    cursor: ns-resize;
+    margin: 0;
+}

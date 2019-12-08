@@ -123,7 +123,7 @@ This extension contributes the following settings:
 * `alOutline.promptForFilePath`: when generating a new file, ask the user to specify a path relative to the root of the project-folder
 * `alOutline.stripNonAlphanumericCharactersFromObjectNames`: always strip non-alphanumeric characters from generated object names
 * `alOutline.webClientPort`: web client port number, use 0 for default http/https ports
-* `alOutline.openDefinitionInNewTabt`: set to true to always open documents in a new tab from "Go to definition" command in "AL Object Browser"
+* `alOutline.openDefinitionInNewTab`: set to true to always open documents in a new tab from "Go to definition" command in "AL Object Browser"
 
 ## Known Issues
 

@@ -16,6 +16,7 @@ class AZGridView {
         this._loadingText = loadingText;
         this._editable = editable;
         this._inEditMode = false;
+        this._headerCreated - false;
 
         this._currRow = -1;
         this._currColumn = -1;
@@ -79,7 +80,7 @@ class AZGridView {
         }        
     }
 
-    setData(data) {
+    setData(data) {        
         if (this._loadingDiv) {
             this._container.removeChild(this._loadingDiv);
             this._loadingDiv = undefined;
@@ -181,6 +182,10 @@ class AZGridView {
     }
 
     renderTableHeader() {
+        if (this._headerCreated)
+            return;
+        this._headerCreated = true;
+
         let row = document.createElement('tr');
         for (let i=0; i<this._columns.length; i++) {
             if (!this._columns[i].hidden) {
