@@ -1,7 +1,5 @@
 class SyntaxTreeView {
     constructor() {
-        var me = this;
-
         this._vscode = acquireVsCodeApi();
 
         //this._propView = new PropertyViewer('prop');
@@ -17,10 +15,10 @@ class SyntaxTreeView {
         this._symTree.syntaxTreeMode = true;
         this._symTree.showIcons = false;
 
-        this._symTree.nodeSelected = function(node) { 
-            me.onNodeSelected(node); 
-        };
-
+        this._symTree.nodeSelected = (node => {
+            this.onNodeSelected(node);
+        });
+        
         //prevent standard Ctrl+A inside tree elements
         $('body').on('keydown', '.symbolscont', function(evt)
         {
@@ -40,10 +38,21 @@ class SyntaxTreeView {
 
         // Handle messages sent from the extension to the webview
         window.addEventListener('message', event => {
-            me.onMessage(event.data);
+            this.onMessage(event.data);
         });
 
-//initialize splitter
+        document.getElementById('refreshbtn').addEventListener('click', event => {
+            this.sendMessage({
+                command: 'refresh'
+            });   
+        });
+        document.getElementById('syncbtn').addEventListener('click', event => {
+            this.sendMessage({
+                command: 'sync'
+            });   
+        });
+
+        //initialize splitter
         Split(['#symbols', '#proppanel'], {
             minSize: 0,
             gutter: function (index, direction) {

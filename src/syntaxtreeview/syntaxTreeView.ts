@@ -7,6 +7,7 @@ import { ToolsGetSyntaxTreeRequest } from '../langserver/toolsGetSyntaxTreeReque
 import { TextEditorHelper } from '../tools/textEditorHelper';
 import { ToolsGetSyntaxTreeSymbolsRequest } from '../langserver/toolsGetSyntaxTreeSymbolRequest';
 import { ToolsCloseSyntaxTreeRequest } from '../langserver/toolsCloseSyntaxTreeRequest';
+import { AZDocumentSymbolsLibrary } from '../symbollibraries/azDocumentSymbolsLibrary';
 
 export class SyntaxTreeView extends BaseWebViewEditor {
     protected _devToolsContext : DevToolsExtensionContext;
@@ -101,7 +102,8 @@ export class SyntaxTreeView extends BaseWebViewEditor {
             return;
         this.sendMessage({
             command: 'setData',
-            data: this._rootSymbol
+            data: this._rootSymbol,
+            selected: this.getPathAtCursor()
         });
     }
 
@@ -114,10 +116,36 @@ export class SyntaxTreeView extends BaseWebViewEditor {
                 case 'symbolselected':
                     this.onSymbolSelected(message.path);
                     return true;
+                case 'refresh':
+                    this.loadSymbols();
+                    return true;
+                case 'sync':
+                    this.syncPos();
+                    return true;
             }
         }
 
         return false;
+    }
+
+    protected getPathAtCursor() : number[] | undefined {
+        let editor = TextEditorHelper.findDocumentEditor(this._documentUri);
+        if ((editor) && (this._rootSymbol)) {
+            let library = new AZDocumentSymbolsLibrary(this._devToolsContext, this._documentUri);
+            library.setRootSymbol(this._rootSymbol);
+            return library.findSymbolPathInRange(editor.selection);
+        }
+        return undefined;
+    }
+
+    protected syncPos() {
+        let selectedPath : number[] | undefined = this.getPathAtCursor();
+        if (selectedPath) {
+            this.sendMessage({
+                command: 'selectSymbol',
+                selected: selectedPath
+            });
+        }
     }
 
     protected onPanelClosed() {

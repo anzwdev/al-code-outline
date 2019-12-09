@@ -9,8 +9,11 @@ body {
     align-items: stretch;
     justify-content: stretch;
 }
-input:focus, select:focus, div:focus {
+input:focus, select:focus, div:focus, button:focus {
     outline-color: var(--vscode-focusBorder) !important;
+}
+button:hover {
+    cursor: pointer;
 }
 #symbols {
     flex: 1 1 auto;
@@ -39,10 +42,42 @@ input:focus, select:focus, div:focus {
 }
 .headpanel .hptext {
     padding: 2px 10px; 
+    overflow: hidden;
+}
+.headpanel .hptbar {
+    display: flex;
+    flex-direction: row;
+    align-items: stretch;
+    justify-content: stretch;
+}
+.headpanel .hptbar .hpbtn {
+    flex: 0 0 18px;
+    height: 18px;
+    background-position: center center;
+    background-size: 16px;
+    background-repeat: no-repeat;
+    background-color: transparent;
+    border: 0px none;
+}
+.headpanel .hptbar .hptitle {
+    flex: 1 1 auto;
 }
 
 .gutter {
     background-color: var(--vscode-panel-border);
     cursor: ns-resize;
     margin: 0;
+}
+
+.vscode-dark .btnico-refresh, .vscode-high-contrast .btnico-refresh {
+    background-image: url(../../../resources/images/dark/refresh.svg);
+}
+.vscode-dark .btnico-sync, .vscode-high-contrast .btnico-sync {
+    background-image: url(../../../resources/images/dark/sync.svg);
+}
+.vscode-light .btnico-refresh {
+    background-image: url(../../../resources/images/light/refresh.svg);
+}
+.vscode-light .btnico-sync {
+    background-image: url(../../../resources/images/light/sync.svg);
 }

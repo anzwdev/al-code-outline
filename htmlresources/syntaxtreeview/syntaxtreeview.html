@@ -19,7 +19,13 @@
         <link rel="stylesheet" type="text/css" href="##EXTENSIONPATH##/htmlresources/alsymbolsbrowser/css/icons.css">
     </header>
     <body style="margin:0;padding:0">
-        <div class="headpanel"><div class="hptitle">Syntax Tree</div></div>
+        <div class="headpanel">
+            <div class="hptbar">
+                <div class="hptitle">Syntax Tree</div>
+                <button id="syncbtn" class="hpbtn btnico-sync"></button>
+                <button id="refreshbtn" class="hpbtn btnico-refresh"></button>
+            </div>
+        </div>
         <div id="symbols" tabindex="1" class="symbolscont">Loading syntax tree, please wait...</div>
         <div id="proppanel">
             <div class="headpanel">

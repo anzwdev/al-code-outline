@@ -13,6 +13,7 @@ This extension was originally named 'AL Code Outline' because it started as AL c
 - Code actions
 - Action images browser
 - Documentation comments support
+- Document syntax visualizer
 
 ### AL objects wizards
 
@@ -95,6 +96,11 @@ When developer types "///" in a line above a symbol declaration (i.e. variable, 
 
 ![Xml Documentation Comments](resources/screen2-xmldoccomments.gif)
 
+### Document syntax visualizer
+
+Document syntax visualizer shows syntax tree created by the AL compiler for the current document. It can be opened by running "AZ AL Dev Tools: Open Document Syntax Visualizer" command. The main purpose of this functionality is to help developers create their own al code analyzers. More information how to create analyzer can be found on my blog here: https://anzwdev.wordpress.com/2019/11/09/custom-al-code-analyzers/
+
+![Document Syntax Visualizer](resources/screen2-syntaxtree.png)
 
 ## Contributors
 

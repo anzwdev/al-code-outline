@@ -282,6 +282,16 @@ export class AZDocumentSymbolsLibrary extends AZSymbolsLibrary {
         return this.findSymbolInRangeInt(this.rootSymbol, range, undefined);
     }
 
+    findSymbolPathInRange(range: vscode.Range) : number[] | undefined {
+        if ((range) && (this.rootSymbol)) {
+            let symbolsPath: number[] = [];
+            this.findSymbolInRangeInt(this.rootSymbol, range, symbolsPath);
+            if (symbolsPath.length > 0)
+                return symbolsPath;
+        }
+        return undefined;
+    }
+
     findSymbolPathInSelectionRange(range: vscode.Range) : number[] | undefined {
         if ((range) && (this.rootSymbol)) {
             let symbolsPath: number[] = [];
