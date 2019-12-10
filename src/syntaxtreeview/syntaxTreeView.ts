@@ -1,32 +1,29 @@
 import * as vscode from 'vscode';
 import * as path from 'path';
-import { BaseWebViewEditor } from '../webviews/baseWebViewEditor';
 import { DevToolsExtensionContext } from '../devToolsExtensionContext';
 import { AZSymbolInformation } from '../symbollibraries/azSymbolInformation';
 import { ToolsGetSyntaxTreeRequest } from '../langserver/toolsGetSyntaxTreeRequest';
 import { TextEditorHelper } from '../tools/textEditorHelper';
 import { ToolsGetSyntaxTreeSymbolsRequest } from '../langserver/toolsGetSyntaxTreeSymbolRequest';
 import { ToolsCloseSyntaxTreeRequest } from '../langserver/toolsCloseSyntaxTreeRequest';
-import { AZDocumentSymbolsLibrary } from '../symbollibraries/azDocumentSymbolsLibrary';
+import { BaseSymbolsWebView } from '../webviews/baseSymbolsWebView';
 
-export class SyntaxTreeView extends BaseWebViewEditor {
-    protected _devToolsContext : DevToolsExtensionContext;
-    protected _loaded: boolean;
-    protected _rootSymbol: AZSymbolInformation | undefined;
-    protected _documentUri: vscode.Uri | undefined;
+export class SyntaxTreeView extends BaseSymbolsWebView {
     protected _firstLoad: boolean;
 
     constructor(devToolsContext : DevToolsExtensionContext, documentUri: vscode.Uri | undefined) {        
-        let documentName = path.parse(documentUri.path).base;
-        super(devToolsContext.vscodeExtensionContext, documentName);
-        
-        this._documentUri = documentUri;
-        this._devToolsContext = devToolsContext;
-        this._loaded = false;
-        this._rootSymbol = undefined;
-        this._viewColumn = vscode.ViewColumn.Beside;
+        super(devToolsContext, undefined, documentUri);
         this._firstLoad = true;
-        
+
+        this._disposables.push(vscode.workspace.onDidChangeTextDocument(e => {
+            if ((e.document) && (this._documentUri) && 
+                (e.document.uri.fsPath == this._documentUri.fsPath))
+            this.loadSymbols();
+        }));
+
+        vscode.window.onDidChangeActiveTextEditor(editor => {
+            this.loadSymbols();
+        });
     }
 
     protected getHtmlContentPath() : string {
@@ -37,35 +34,29 @@ export class SyntaxTreeView extends BaseWebViewEditor {
         return 'azALDevTools.SyntaxTreeView';
     }
 
-    protected async onDocumentLoaded() {
-        this._loaded = true;
-        if (this._documentUri)
-            await this.loadSymbols();
-        else
-            await this.updateView();
-    }
-
     protected async loadSymbols() {
         let editor = TextEditorHelper.findDocumentEditor(this._documentUri);
         let source: string = '';
+
         if (editor)
             source = editor.document.getText();
         
-        //let fsPath = this._documentUri.fsPath;
         let request: ToolsGetSyntaxTreeRequest = new ToolsGetSyntaxTreeRequest(source, this._documentUri.fsPath, this._firstLoad);
         this._firstLoad = false;
         let response = await this._devToolsContext.toolsLangServerClient.getSyntaxTree(request);
-        if (response)
-            this.setSymbols(response.root);
-        else
-            this.setSymbols(undefined);
+        if ((response) && (response.root)) {
+            let rootSymbol = AZSymbolInformation.fromAny(response.root);
+            rootSymbol.updateTree(true, false);            
+            this.setSymbols(rootSymbol, undefined);
+        } else
+            this.setSymbols(undefined, undefined);
     }
 
     protected async onSymbolSelected(symbolPath: number[]) {
         let request: ToolsGetSyntaxTreeSymbolsRequest = new ToolsGetSyntaxTreeSymbolsRequest(this._documentUri.fsPath, symbolPath);
         let response = await this._devToolsContext.toolsLangServerClient.getSyntaxTreeSymbol(request);
         if (response) {
-            this.setSelectedSymbol(response.symbol);
+            this.setSymbolInfo(response.symbol);
             if (response.symbol) {
                 let editor = TextEditorHelper.findDocumentEditor(this._documentUri);
                 if (editor) {
@@ -78,74 +69,14 @@ export class SyntaxTreeView extends BaseWebViewEditor {
             }
 
         } else
-            this.setSelectedSymbol(undefined);
+            this.setSymbolInfo(undefined);
     }
 
-    setSymbols(rootSymbol: any) {
-        if (rootSymbol) {
-            this._rootSymbol = AZSymbolInformation.fromAny(rootSymbol);
-            this._rootSymbol.updateTree(true, false);
-        } else
-            this._rootSymbol = new AZSymbolInformation();
-        this.updateView();
-    }
-
-    setSelectedSymbol(symbol: any) {
+    setSymbolInfo(symbol: any) {
         this.sendMessage({
             command: 'setSymbolInfo',
             data: symbol
         });
-    }
-
-    protected updateView() {
-        if (!this._loaded)
-            return;
-        this.sendMessage({
-            command: 'setData',
-            data: this._rootSymbol,
-            selected: this.getPathAtCursor()
-        });
-    }
-
-    protected processWebViewMessage(message : any) : boolean {
-        if (super.processWebViewMessage(message))
-            return true;        
-
-        if (message) {
-            switch (message.command) {
-                case 'symbolselected':
-                    this.onSymbolSelected(message.path);
-                    return true;
-                case 'refresh':
-                    this.loadSymbols();
-                    return true;
-                case 'sync':
-                    this.syncPos();
-                    return true;
-            }
-        }
-
-        return false;
-    }
-
-    protected getPathAtCursor() : number[] | undefined {
-        let editor = TextEditorHelper.findDocumentEditor(this._documentUri);
-        if ((editor) && (this._rootSymbol)) {
-            let library = new AZDocumentSymbolsLibrary(this._devToolsContext, this._documentUri);
-            library.setRootSymbol(this._rootSymbol);
-            return library.findSymbolPathInRange(editor.selection);
-        }
-        return undefined;
-    }
-
-    protected syncPos() {
-        let selectedPath : number[] | undefined = this.getPathAtCursor();
-        if (selectedPath) {
-            this.sendMessage({
-                command: 'selectSymbol',
-                selected: selectedPath
-            });
-        }
     }
 
     protected onPanelClosed() {

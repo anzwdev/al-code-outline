@@ -67,7 +67,7 @@ export class ALSymbolsTreeService {
         } else {
             symbolsTreeView.reveal();
             if (range)
-                symbolsTreeView.selectSymbolByRange(range);
+                symbolsTreeView.selectSymbolInRange(range);
         }
     }
 

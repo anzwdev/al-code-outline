@@ -40,12 +40,7 @@ class SyntaxTreeView {
         window.addEventListener('message', event => {
             this.onMessage(event.data);
         });
-
-        document.getElementById('refreshbtn').addEventListener('click', event => {
-            this.sendMessage({
-                command: 'refresh'
-            });   
-        });
+        
         document.getElementById('syncbtn').addEventListener('click', event => {
             this.sendMessage({
                 command: 'sync'

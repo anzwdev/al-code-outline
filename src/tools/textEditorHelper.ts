@@ -2,7 +2,7 @@ import * as vscode from 'vscode';
 
 export class TextEditorHelper {
 
-    static findDocumentEditor(docUri: vscode.Uri) : vscode.TextEditor | undefined {
+    static findDocumentEditor(docUri: vscode.Uri) : vscode.TextEditor | undefined {       
         let docUriString : string = docUri.toString();
         let editors = vscode.window.visibleTextEditors;
         for (let i=0; i<editors.length; i++) {
