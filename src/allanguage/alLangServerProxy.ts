@@ -6,6 +6,7 @@ import * as vscodelangclient from 'vscode-languageclient';
 import { ALSyntaxHelper } from './alSyntaxHelper';
 import { Version } from '../tools/version';
 import { DocumentOnTypeFormattingRequest } from 'vscode-languageclient';
+import { TextEditorHelper } from '../tools/textEditorHelper';
 
 export class ALLangServerProxy {
     private langClient : vscodelangclient.LanguageClient | undefined;
@@ -156,10 +157,21 @@ export class ALLangServerProxy {
                         if ((editor) && (editor.document))
                             resourceUri = editor.document.uri;
                     }
-                    if (!resourceUri) {                      
+                    
+                    if (!resourceUri) {
                         rootFsPath = vscode.workspace.workspaceFolders[0].uri.fsPath;
-                    } else
-                        rootFsPath = vscode.workspace.getWorkspaceFolder(resourceUri).uri.fsPath;
+                    } else {
+                        let rootFolder = vscode.workspace.getWorkspaceFolder(resourceUri);
+                        if ((rootFolder) && (rootFolder.uri))
+                            rootFsPath = rootFolder.uri.fsPath;
+                        else {
+                            let rootUri = TextEditorHelper.getActiveWorkspaceFolderUri();
+                            if (rootUri)
+                                rootFsPath = rootUri.fsPath;
+                            else
+                                rootFsPath = resourceUri.fsPath;
+                        }
+                    }
 
                     try {
                         this.checkLanguageClient();

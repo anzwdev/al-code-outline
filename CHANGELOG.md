@@ -2,6 +2,7 @@
 
 ## 1.0.23
  - Syntax tree visualizer added. It shows current document syntax tree that can help developers to create their own al code analyzers. 
+ - Support for Area and UserControl elements added to "Add multiple fields" code action on pages
 
 ## 1.0.22
  - Github issue #60 - Enable Object Navigation via Symbols Tree

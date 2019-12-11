@@ -17,7 +17,7 @@ export class ALAddPageFieldsCodeCommand extends ALBaseAddFieldsCodeCommand {
             return;
         let parentKind: AZSymbolKind[] = [AZSymbolKind.PageObject, AZSymbolKind.PageExtensionObject];
         let pageSymbol = symbol.findParentByKindList(parentKind);
-        let isFieldSymbol = (symbol.kind == AZSymbolKind.PageField);
+        let isFieldSymbol = ((symbol.kind == AZSymbolKind.PageField) || (symbol.kind == AZSymbolKind.PageUserControl));
 
         if ((!pageSymbol) || 
             ((!isFieldSymbol) && (!symbol.contentRange)) || 
