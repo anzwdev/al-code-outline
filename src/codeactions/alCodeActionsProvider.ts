@@ -34,8 +34,10 @@ export class ALCodeActionsProvider implements vscode.CodeActionProvider {
             //add multiple fields to a page
             if ((symbol.kind == AZSymbolKind.PageGroup) ||                 
                 (symbol.kind == AZSymbolKind.PageRepeater) ||
+                (symbol.kind == AZSymbolKind.PageArea) ||
                 (symbol.kind == AZSymbolKind.ControlAddChange) ||
-                (symbol.kind == AZSymbolKind.PageField)) {                
+                (symbol.kind == AZSymbolKind.PageField) ||
+                (symbol.kind == AZSymbolKind.PageUserControl)) {                
                 let action : vscode.CodeAction = new vscode.CodeAction("Add multiple fields", vscode.CodeActionKind.QuickFix);
                 action.command = { command: this._addPageFieldsCommand.name, title: 'Add multiple fields...' };
                 actions.push(action);

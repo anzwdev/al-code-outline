@@ -49,8 +49,4 @@ export class AZActiveDocumentSymbolsLibrary extends AZDocumentSymbolsLibrary {
             this.loadAsync(false);
     }
 
-    protected findTextEditor(uri : vscode.Uri) : vscode.TextEditor | undefined {
-        return vscode.window.activeTextEditor;
-    }
-
 }

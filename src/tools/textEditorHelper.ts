@@ -3,13 +3,22 @@ import * as vscode from 'vscode';
 export class TextEditorHelper {
 
     static findDocumentEditor(docUri: vscode.Uri) : vscode.TextEditor | undefined {       
-        let docUriString : string = docUri.toString();
-        let editors = vscode.window.visibleTextEditors;
-        for (let i=0; i<editors.length; i++) {
-            if (editors[i].document) {
-                let editorUri : string = editors[i].document.uri.toString();
-                if (editorUri == docUriString) {
-                    return editors[i];
+        if (docUri) {
+            let docUriString : string = docUri.toString();
+
+            if ((vscode.window.activeTextEditor) && 
+                (vscode.window.activeTextEditor.document) && 
+                (vscode.window.activeTextEditor.document.uri) &&
+                (vscode.window.activeTextEditor.document.uri.toString() == docUriString))
+                return vscode.window.activeTextEditor;
+
+            let editors = vscode.window.visibleTextEditors;
+            for (let i=0; i<editors.length; i++) {
+                if ((editors[i].document) && (editors[i].document.uri)) {
+                    let editorUri : string = editors[i].document.uri.toString();
+                    if (editorUri == docUriString) {
+                        return editors[i];
+                    }
                 }
             }
         }
@@ -42,6 +51,27 @@ export class TextEditorHelper {
             vscode.window.showErrorMessage(e.message);
         }
         return undefined;
+    }
+
+    static getActiveWorkspaceFolderUri(): vscode.Uri | undefined {
+        let folder: vscode.WorkspaceFolder | undefined = undefined;
+        
+        if ((vscode.window.activeTextEditor) && (vscode.window.activeTextEditor.document) && (vscode.window.activeTextEditor.document.uri)) {
+            folder = vscode.workspace.getWorkspaceFolder(vscode.window.activeTextEditor.document.uri);
+            if ((folder) && (folder.uri))
+                return folder.uri;
+        }
+
+        let editors = vscode.window.visibleTextEditors;
+        for (let i=0; i<editors.length; i++) {
+            if ((editors[i].document) && (editors[i].document.uri)) {
+                folder = vscode.workspace.getWorkspaceFolder(editors[i].document.uri);
+                if ((folder) && (folder.uri))
+                    return folder.uri;
+            }
+        }
+
+        return vscode.workspace.workspaceFolders[0].uri;
     }
 
 }
