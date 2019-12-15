@@ -16,12 +16,15 @@ class AZGridView {
         this._loadingText = loadingText;
         this._editable = editable;
         this._inEditMode = false;
-        this._headerCreated - false;
+        this._headerCreated = false;
 
         this._currRow = -1;
         this._currColumn = -1;
         this._currDataIdx = -1;
         this._minRowIndex = 1;
+
+        this.clipboardEnabled = false;
+        this.onClipboardCopy = undefined;
 
         this.renderTable();
         this.initEditor();
@@ -410,6 +413,12 @@ class AZGridView {
                     ((this._editor.selectionStart == 0) && (this._editor.selectionEnd == this._editor.value.length))))                
                 {
                     this.selectAll();
+                    handled = true;
+                }
+                break;
+            case 67:  //C
+                if ((this.clipboardEnabled) && (e.ctrlKey) && (!e.shiftKey) && (!e.altKey) && (this.onClipboardCopy)) {
+                    this.onClipboardCopy();
                     handled = true;
                 }
                 break;

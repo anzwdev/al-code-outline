@@ -40,7 +40,22 @@ export class CARulesViewer extends BaseWebViewEditor {
                 label:'${UICop}',
                 value:'${UICop}'
             }];
+            
+        //detect other code analyzers
+        let alConfig = vscode.workspace.getConfiguration('al', undefined);
+        let codeAnalyzersSetting = alConfig.get<string[]|undefined>("codeAnalyzers");
+        if (codeAnalyzersSetting) {
+            for (let i=0; i<codeAnalyzersSetting.length; i++) {
+                if (!codeAnalyzersSetting[i].startsWith('${')) {
+                    analyzers.push({
+                        label: path.parse(codeAnalyzersSetting[i]).name,
+                        value: codeAnalyzersSetting[i]
+                    });
+                }
+            }
+        }
 
+        //send list of analyzers to the webview
         this.sendMessage({
             command: 'setAnalyzers',
             data: analyzers
@@ -88,18 +103,19 @@ export class CARulesViewer extends BaseWebViewEditor {
     }
 
     protected newRuleSet(rulesIndexes: number[]) {
-        let ruleSet = {
-            name: 'Name',
-            description: 'Description',
-            rules: this.getRules(rulesIndexes)
-        };
+        let ruleSetText = '{' + 
+            '\n    "name": "Name",' +
+            '\n    "description": "Description",' +
+            '\n    "rules": [' +
+            this.getRulesAsString(rulesIndexes, '        ') +
+            '\n    ],' +
+            '\n}'; 
 
-        TextEditorHelper.showNewDocument(JSON.stringify(ruleSet, undefined, 4), 'json');
+        TextEditorHelper.showNewDocument(ruleSetText, 'json');
     }
 
     protected copyRules(rulesIndexes: number[]) {
-        let rules = this.getRules(rulesIndexes);
-        let rulesText = JSON.stringify(rules, undefined, 4);
+        let rulesText = this.getRulesAsString(rulesIndexes, '');
         vscode.env.clipboard.writeText(rulesText);
     }
 
@@ -112,19 +128,30 @@ export class CARulesViewer extends BaseWebViewEditor {
         vscode.env.clipboard.writeText(rulesText);
     }
 
-    protected getRules(rulesIndexes: number[]) : any[] {
-        let rules = [];
+    protected getRulesAsString(rulesIndexes: number[], indentText: string) : string {
+        let rules = '';
         for (let i=0; i<rulesIndexes.length; i++) {
             let ruleDef = this._rules[rulesIndexes[i]];
-
-            rules.push({
+            if (i > 0)
+                rules += ',';
+            rules += ('\n// Rule: ' + ruleDef.title);
+            rules += ('\n//       Default action: ' + ruleDef.defaultSeverity)
+            rules += ('\n' + JSON.stringify({
                 id: ruleDef.id,
                 action: ruleDef.defaultSeverity,
-                justification: 'Justification for changing rule: ' + ruleDef.title
-            });
+                justification: 'Justification'
+            }, undefined, 4));
+
         }
+
+        if (indentText.length > 0)
+        rules = rules.replace(/\n/g, '\n' + indentText);
 
         return rules;
     }
 
+    protected onPanelClosed() {
+        super.onPanelClosed();
+        this._devToolsContext.codeAnalyzersService.onCodeAnalyzersViewerClosed();   
+    }
 }

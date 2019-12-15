@@ -7,6 +7,11 @@ class CARulesViewer {
             {name:'title', caption:'Title' },
             {name:'defaultSeverity', caption:'Severity', style: 'width:100px' }
         ]);
+        this._rulesTab.clipboardEnabled = true;
+        this._rulesTab.onClipboardCopy = (() => {
+            this.execRuleCommand('copytable', undefined);
+        });
+
         this._analyzersSel = document.getElementById('analyzers');
 
         // Handle messages sent from the extension to the webview
