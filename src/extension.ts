@@ -82,17 +82,6 @@ export function activate(context: vscode.ExtensionContext) {
         )
     );        
 
-    //code analyzers
-    context.subscriptions.push(
-        vscode.commands.registerCommand(
-            'azALDevTools.showCodeAnalyzers',
-            () => {
-                let caRulesViewer: CARulesViewer = new CARulesViewer(toolsExtensionContext);
-                caRulesViewer.show();
-            }
-        )
-    );
-
     //code actions
     let alCodeActionsProvider : ALCodeActionsProvider = new ALCodeActionsProvider(toolsExtensionContext);
     context.subscriptions.push(

@@ -289,13 +289,17 @@ class AZGridView {
                 row.className = this._currRowStyle;
             else
                 row.className = this._selStyle;
+
+            row.dataSelected = (row.className != '');
         }
         if (clearSel) {
             for (let i=0; i<startIndex; i++) {
                 this._table.rows[i].className = '';
+                this._table.rows[i].dataSelected = false;
             }
             for (let i=endIndex+1; i<this._table.rows.length; i++) {
                 this._table.rows[i].className = '';
+                this._table.rows[i].dataSelected = false;
             }
         }
 
@@ -573,7 +577,8 @@ class AZGridView {
     getSelected() {
         let sel = [];
         for (let i=this._minRowIndex; i<this._table.rows.length; i++) {
-            if ((this._table.rows[i].className == this._selStyle) || (this._table.rows[i].className == this._currRowStyle))
+            //if ((this._table.rows[i].className == this._selStyle) || (this._table.rows[i].className == this._currRowStyle))
+            if (this._table.rows[i].dataSelected)
                 sel.push(this._table.rows[i].tabData);
         }
         return sel;

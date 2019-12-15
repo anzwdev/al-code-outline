@@ -3,7 +3,7 @@ class CARulesViewer {
     constructor() {
         this._vscode = acquireVsCodeApi();
         this._rulesTab = new AZGridView('rules', [
-            {name:'id', caption:'Id', data:'ruleid', style: 'width:100px;'},
+            {name:'id', caption:'Id', style: 'width:100px;'},
             {name:'title', caption:'Title' },
             {name:'defaultSeverity', caption:'Severity', style: 'width:100px' }
         ]);
@@ -63,6 +63,9 @@ class CARulesViewer {
     setRules(rules) {
         if (!rules)
             rules = [];
+        for (let i=0; i<rules.length; i++) {
+            rules[i].idx = i;
+        }
         this._rulesTab.setData(rules);
     }
 
@@ -82,12 +85,13 @@ class CARulesViewer {
             },
             items: {
                 "newruleset": {name: "New Ruleset File"},
-                "copyrules": {name: "Copy as Rules"}
+                "copyrules": {name: "Copy as Rules"},
+                "copytable": {name: "Copy as Table"}
             }
         });
     }    
 
-    execRuleCommand(cmdname, selectedrow, ruleid) {
+    execRuleCommand(cmdname, selectedrow) {
         //merge path with selectedpaths
         let selFound = false;        
         let mainItem = undefined;
@@ -102,19 +106,19 @@ class CARulesViewer {
                 mainItem = items[0];
 
             for (let i=0; i<items.length; i++) {
-                if (items[i].id == mainItem.id)
+                if (items[i].idx == mainItem.idx)
                     selFound = true;
-                selRules.push(items[i].id);
+                selRules.push(items[i].idx);
             }            
         }    
 
         if (mainItem) {
             if (!selFound)
-                selRules.push(mainItem.id);
+                selRules.push(mainItem.idx);
 
             this.sendMessage({
                 command : cmdname,
-                mainrule : mainItem.id,
+                mainrule : mainItem.idx,
                 selrules: selRules});        
         }
     }

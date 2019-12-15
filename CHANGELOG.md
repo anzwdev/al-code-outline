@@ -1,5 +1,11 @@
 # Change Log
 
+## 1.0.24
+ - Code analyzers rules viewer added after Dmitry Katson request
+ - Html/js table control bugfixes
+
+ Thank you Dmitry for your request
+
 ## 1.0.23
  - Syntax tree visualizer added. It shows current document syntax tree that can help developers to create their own al code analyzers. 
  - Support for Area and UserControl elements added to "Add multiple fields" code action on pages

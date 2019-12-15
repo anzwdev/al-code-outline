@@ -1,11 +1,13 @@
+import * as vscode from 'vscode';
 import * as path from 'path';
 import { BaseWebViewEditor } from "../webviews/baseWebViewEditor";
 import { DevToolsExtensionContext } from "../devToolsExtensionContext";
 import { ToolsGetCodeAnalyzersRulesRequest } from '../langserver/toolsGetCodeAnalyzersRulesRequest';
-import { window } from 'vscode';
+import { TextEditorHelper } from '../tools/textEditorHelper';
 
 export class CARulesViewer extends BaseWebViewEditor {
     protected _devToolsContext: DevToolsExtensionContext;
+    protected _rules: any;
 
     constructor(devToolsContext : DevToolsExtensionContext) {
         super(devToolsContext.vscodeExtensionContext, "Code Analyzers");
@@ -50,11 +52,13 @@ export class CARulesViewer extends BaseWebViewEditor {
         let request: ToolsGetCodeAnalyzersRulesRequest = new ToolsGetCodeAnalyzersRulesRequest(name);
         let response = await this._devToolsContext.toolsLangServerClient.getCodeAnalyzersRules(request);
         if (response) {
+            this._rules = response.rules;
             this.sendMessage({
                 command: 'setRules',
                 data: response.rules
             });
-        }
+        } else
+            this._rules = undefined;
 
     }
 
@@ -74,18 +78,53 @@ export class CARulesViewer extends BaseWebViewEditor {
                 case 'copyrules':
                     this.copyRules(message.selrules);
                     return true;
+                case 'copytable':
+                    this.copyTable(message.selrules);
+                    return true;
             }
         }
 
         return false;
     }
 
-    protected newRuleSet(rules: string[]) {
-        window.showInformationMessage('New rule set ' + rules.length.toString());
+    protected newRuleSet(rulesIndexes: number[]) {
+        let ruleSet = {
+            name: 'Name',
+            description: 'Description',
+            rules: this.getRules(rulesIndexes)
+        };
+
+        TextEditorHelper.showNewDocument(JSON.stringify(ruleSet, undefined, 4), 'json');
     }
 
-    protected copyRules(rules: string[]) {
+    protected copyRules(rulesIndexes: number[]) {
+        let rules = this.getRules(rulesIndexes);
+        let rulesText = JSON.stringify(rules, undefined, 4);
+        vscode.env.clipboard.writeText(rulesText);
+    }
 
+    protected copyTable(rulesIndexes: number[]) {
+        let rulesText = 'Id\tTitle\tDefault Severity';
+        for (let i=0; i<rulesIndexes.length; i++) {
+            let rule = this._rules[rulesIndexes[i]];
+            rulesText += ('\n' + rule.id + '\t' + rule.title + '\t' + rule.defaultSeverity);
+        }
+        vscode.env.clipboard.writeText(rulesText);
+    }
+
+    protected getRules(rulesIndexes: number[]) : any[] {
+        let rules = [];
+        for (let i=0; i<rulesIndexes.length; i++) {
+            let ruleDef = this._rules[rulesIndexes[i]];
+
+            rules.push({
+                id: ruleDef.id,
+                action: ruleDef.defaultSeverity,
+                justification: 'Justification for changing rule: ' + ruleDef.title
+            });
+        }
+
+        return rules;
     }
 
 }
