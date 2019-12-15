@@ -13,6 +13,7 @@ This extension was originally named 'AL Code Outline' because it started as AL c
 - Code actions
 - Action images browser
 - Documentation comments support
+- Code analyzers rules viewer
 - Document syntax visualizer
 
 ### AL objects wizards
@@ -95,6 +96,12 @@ Extension adds new "AZ AL Dev Tools: Show Action Images" command to the "Command
 When developer types "///" in a line above a symbol declaration (i.e. variable, procedure, field), extension can add "Xml Documentation Comments" to the list of available completion items. When it is selected, xml documentation snippet will be inserted into the code editor. If symbol below cursor is a procedure declaration, inserted snippet will contail all procedure parameters. This functionality can be turned off and on by changing "alOutline.docCommentsType" setting to "none" or "xml".
 
 ![Xml Documentation Comments](resources/screen2-xmldoccomments.gif)
+
+### Code analyzers rules viewer
+
+Code analyzers rules viewer can be opened by running "AZ AL Dev Tools: Show Code Analyzers Rules" command. It allows to select one of available code analyzers from a dropdown list and then displays all rules implemented by that analyzer in a table view. It is then possible to select some or all of the rules and create new ruleset file or copy them as ruleset rules or a table to the clipboard using context menu.
+
+![Xml Documentation Comments](resources/screen2-codeanalyzers.png)
 
 ### Document syntax visualizer
 

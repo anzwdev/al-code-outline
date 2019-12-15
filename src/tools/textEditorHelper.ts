@@ -53,6 +53,21 @@ export class TextEditorHelper {
         return undefined;
     }
 
+    static async showNewDocument(content: string, language: string) {
+        try {
+            let document = await vscode.workspace.openTextDocument({
+                content : content,
+                language : language
+            });
+            vscode.window.showTextDocument(document, {
+                    preview : false
+                });
+        }
+        catch (e) {
+            vscode.window.showErrorMessage(e.message);
+        }
+    }
+
     static getActiveWorkspaceFolderUri(): vscode.Uri | undefined {
         let folder: vscode.WorkspaceFolder | undefined = undefined;
         

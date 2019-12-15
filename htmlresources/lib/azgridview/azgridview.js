@@ -16,12 +16,15 @@ class AZGridView {
         this._loadingText = loadingText;
         this._editable = editable;
         this._inEditMode = false;
-        this._headerCreated - false;
+        this._headerCreated = false;
 
         this._currRow = -1;
         this._currColumn = -1;
         this._currDataIdx = -1;
         this._minRowIndex = 1;
+
+        this.clipboardEnabled = false;
+        this.onClipboardCopy = undefined;
 
         this.renderTable();
         this.initEditor();
@@ -289,13 +292,17 @@ class AZGridView {
                 row.className = this._currRowStyle;
             else
                 row.className = this._selStyle;
+
+            row.dataSelected = (row.className != '');
         }
         if (clearSel) {
             for (let i=0; i<startIndex; i++) {
                 this._table.rows[i].className = '';
+                this._table.rows[i].dataSelected = false;
             }
             for (let i=endIndex+1; i<this._table.rows.length; i++) {
                 this._table.rows[i].className = '';
+                this._table.rows[i].dataSelected = false;
             }
         }
 
@@ -406,6 +413,12 @@ class AZGridView {
                     ((this._editor.selectionStart == 0) && (this._editor.selectionEnd == this._editor.value.length))))                
                 {
                     this.selectAll();
+                    handled = true;
+                }
+                break;
+            case 67:  //C
+                if ((this.clipboardEnabled) && (e.ctrlKey) && (!e.shiftKey) && (!e.altKey) && (this.onClipboardCopy)) {
+                    this.onClipboardCopy();
                     handled = true;
                 }
                 break;
@@ -573,7 +586,8 @@ class AZGridView {
     getSelected() {
         let sel = [];
         for (let i=this._minRowIndex; i<this._table.rows.length; i++) {
-            if ((this._table.rows[i].className == this._selStyle) || (this._table.rows[i].className == this._currRowStyle))
+            //if ((this._table.rows[i].className == this._selStyle) || (this._table.rows[i].className == this._currRowStyle))
+            if (this._table.rows[i].dataSelected)
                 sel.push(this._table.rows[i].tabData);
         }
         return sel;

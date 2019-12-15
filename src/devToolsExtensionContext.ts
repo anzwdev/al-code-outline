@@ -12,6 +12,7 @@ import { ALOutlineService } from './services/alOutlineService';
 import { ALObjectWizardsService } from './services/alObjectWizardsService';
 import { ALCompletionService } from './services/alCompletionService';
 import { ALSymbolsTreeService } from './services/alSymbolsTreeService';
+import { CodeAnalyzersService } from './services/codeAnalyzersService';
 
 export class DevToolsExtensionContext implements vscode.Disposable {
     alLangProxy : ALLangServerProxy;    
@@ -23,6 +24,7 @@ export class DevToolsExtensionContext implements vscode.Disposable {
     alSymbolsTreeService : ALSymbolsTreeService;
     alWizardsService : ALObjectWizardsService;
     alCompletionService : ALCompletionService;
+    codeAnalyzersService: CodeAnalyzersService;
 
     constructor(context : vscode.ExtensionContext) {
         this.alLangProxy = new ALLangServerProxy()
@@ -40,6 +42,7 @@ export class DevToolsExtensionContext implements vscode.Disposable {
         this.alSymbolsTreeService = new ALSymbolsTreeService(this);
         this.alWizardsService = new ALObjectWizardsService(this);
         this.alCompletionService = new ALCompletionService(this);
+        this.codeAnalyzersService = new CodeAnalyzersService(this);
     }
 
     getUseSymbolsBrowser() : boolean {

@@ -3,15 +3,15 @@
 import * as vscode from 'vscode';
 import * as path from 'path';
 import { BaseWebViewEditor } from '../webviews/baseWebViewEditor';
-import { ALLangServerProxy } from '../allanguage/alLangServerProxy';
 import { ALActionImageInfo } from './alActionImageInfo';
+import { DevToolsExtensionContext } from '../devToolsExtensionContext';
 
 export class ALActionImageBrowser extends BaseWebViewEditor {
-    protected _laguageProxy : ALLangServerProxy;
+    protected _devToolsContext: DevToolsExtensionContext;
 
-    constructor(context : vscode.ExtensionContext) {
-        super(context, "Action Images");
-        this._laguageProxy = new ALLangServerProxy();
+    constructor(devToolsContext: DevToolsExtensionContext) {
+        super(devToolsContext.vscodeExtensionContext , "Action Images");
+        this._devToolsContext = devToolsContext;
     }
 
     protected getHtmlContentPath() : string {
@@ -95,7 +95,7 @@ export class ALActionImageBrowser extends BaseWebViewEditor {
     async getImageList() : Promise<ALActionImageInfo[]> {
         let fileContent = 'page 0 MyPage9999\n{\nactions\n{\narea(Processing)\n{\naction(ActionName)\n{\nImage=;\n}\n}\n}\n}';
 
-        let list = await this._laguageProxy.getCompletionForSourceCode(undefined, 'Loading list of action images.', fileContent,
+        let list = await this._devToolsContext.alLangProxy.getCompletionForSourceCode(undefined, 'Loading list of action images.', fileContent,
             8, 6, 12, 1);
 
         //process results
