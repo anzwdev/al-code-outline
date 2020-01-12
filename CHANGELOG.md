@@ -1,5 +1,8 @@
 # Change Log
 
+## 1.0.25
+ - Symbols service added to the extension API
+
 ## 1.0.24
  - Code analyzers rules viewer added after Dmitry Katson request
  - Html/js table control bugfixes
