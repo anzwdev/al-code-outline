@@ -1,11 +1,16 @@
 class SymbolsTreeView {
 
     constructor() {
+        var me = this;
+
         this._vscode = acquireVsCodeApi();
         this._symTree = new SymbolsTreeControl('symbols', undefined, false);
         this._symTree.sortNodes = false;
         this._symTree.resetCollapsedState = false;
         this._symTree.enableSimpleFilter('filter', 'filterbtn');
+        this._symTree.nodeDefaultAction = function(node) {
+            me.onNodeDefaultAction(node);
+        }
 
         //prevent standard Ctrl+A inside tree elements
         $('body').on('keydown', '.symbolscont', function(evt)
@@ -24,8 +29,9 @@ class SymbolsTreeView {
             }
         });
 
+        this.initializeContextMenu();
+
         // Handle messages sent from the extension to the webview
-        var me = this;
         window.addEventListener('message', event => {
             me.onMessage(event.data);
         });
@@ -57,6 +63,37 @@ class SymbolsTreeView {
         if (data)
             this._symTree.applyTreeItemState(data);
         this._symTree.setData(data);
+    }
+
+    initializeContextMenu() {
+        let me = this;
+
+        $('#symbols').contextMenu({
+            selector: '.shead', 
+            callback: function(key, options) {
+                me.sendMessage({
+                    command : key,
+                    path : me._symTree.getNodePath(this),
+                    selpaths : me._symTree.getSelectedPaths(this),
+                    uid : $(this).data('uid'),
+                    kind : $(this).data('kind')
+                });
+            },
+            items: {
+                "definition": {name: "Go to definition"},
+            }
+        });
+    }
+
+    onNodeDefaultAction(node) {
+        if (node)
+            this.sendMessage({
+                command : 'definition',
+                path : this._symTree.getNodePath(node),
+                selpaths : this._symTree.getSelectedPaths(node),
+                uid : $(node).data('uid'),
+                kind : $(node).data('kind')
+            });
     }
 
 }

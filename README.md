@@ -13,6 +13,8 @@ This extension was originally named 'AL Code Outline' because it started as AL c
 - Code actions
 - Action images browser
 - Documentation comments support
+- Code analyzers rules viewer
+- Document syntax visualizer
 
 ### AL objects wizards
 
@@ -91,10 +93,21 @@ Extension adds new "AZ AL Dev Tools: Show Action Images" command to the "Command
 
 ### Documentation comments support
 
-When developer types "///" in a line above a symbol declaration (i.e. variable, procedure, field), extension can add "Xml Documentation Comments" to the list of available completion items. When it is selected, xml documentation snippet will be inserted into the code editor. If symbol below cursor is a procedure declaration, inserted snippet will contail all procedure parameters. This functionality can be turned off and on by changing "alOutline.docCommentsType" setting to "none" or "xml". By default it is turned off.
+When developer types "///" in a line above a symbol declaration (i.e. variable, procedure, field), extension can add "Xml Documentation Comments" to the list of available completion items. When it is selected, xml documentation snippet will be inserted into the code editor. If symbol below cursor is a procedure declaration, inserted snippet will contail all procedure parameters. This functionality can be turned off and on by changing "alOutline.docCommentsType" setting to "none" or "xml".
 
 ![Xml Documentation Comments](resources/screen2-xmldoccomments.gif)
 
+### Code analyzers rules viewer
+
+Code analyzers rules viewer can be opened by running "AZ AL Dev Tools: Show Code Analyzers Rules" command. It allows to select one of available code analyzers from a dropdown list and then displays all rules implemented by that analyzer in a table view. It is then possible to select some or all of the rules and create new ruleset file or copy them as ruleset rules or a table to the clipboard using context menu.
+
+![Xml Documentation Comments](resources/screen2-codeanalyzers.png)
+
+### Document syntax visualizer
+
+Document syntax visualizer shows syntax tree created by the AL compiler for the current document. It can be opened by running "AZ AL Dev Tools: Open Document Syntax Visualizer" command. The main purpose of this functionality is to help developers create their own al code analyzers. More information how to create analyzer can be found on my blog here: https://anzwdev.wordpress.com/2019/11/09/custom-al-code-analyzers/
+
+![Document Syntax Visualizer](resources/screen2-syntaxtree.png)
 
 ## Contributors
 
@@ -112,7 +125,6 @@ This extension has originally been inspired by "Code Outline" extension created 
 This extension contributes the following settings:
 
 * `alOutline.docCommentsType`: enable documention comments, available values: none, xml 
-* `alOutline.enableFeaturePreview`: enable preview of future, unstable features
 * `alOutline.autorefresh`: refresh code outline tree automatically
 * `alOutline.autoGenerateFiles`: automatically generate files for newly created objects
 * `alOutline.autoGenerateFileDirectory`: the default directory to create files in, relative to the root directory (e.g., \"Source\<ObjectType\>\")
@@ -124,6 +136,7 @@ This extension contributes the following settings:
 * `alOutline.promptForFilePath`: when generating a new file, ask the user to specify a path relative to the root of the project-folder
 * `alOutline.stripNonAlphanumericCharactersFromObjectNames`: always strip non-alphanumeric characters from generated object names
 * `alOutline.webClientPort`: web client port number, use 0 for default http/https ports
+* `alOutline.openDefinitionInNewTab`: set to true to always open documents in a new tab from "Go to definition" command in "AL Object Browser"
 
 ## Known Issues
 

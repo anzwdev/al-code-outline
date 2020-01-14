@@ -25,7 +25,9 @@ export class ALDocCommentsProvider implements vscode.CompletionItemProvider {
                     let snippetParamIdx = 1;
 
                     if ((symbol.kind == AZSymbolKind.MethodDeclaration) ||
-                        (symbol.kind == AZSymbolKind.LocalMethodDeclaration)) {
+                        (symbol.kind == AZSymbolKind.LocalMethodDeclaration) ||
+                        (symbol.kind == AZSymbolKind.IntegrationEventDeclaration) ||
+                        (symbol.kind == AZSymbolKind.BusinessEventDeclaration)) {
                         //function parameters
                         let parameters: AZSymbolInformation[] = [];
                         symbol.collectChildSymbols(AZSymbolKind.Parameter, parameters);

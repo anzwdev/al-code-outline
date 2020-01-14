@@ -1,38 +1,22 @@
 import * as vscode from 'vscode';
 import * as path from 'path';
-import { BaseWebViewEditor } from "../webviews/baseWebViewEditor";
 import { DevToolsExtensionContext } from "../devToolsExtensionContext";
 import { AZSymbolInformation } from '../symbollibraries/azSymbolInformation';
 import { AZDocumentSymbolsLibrary } from '../symbollibraries/azDocumentSymbolsLibrary';
+import { AZSymbolsLibrary } from '../symbollibraries/azSymbolsLibrary';
+import { AZSymbolKind } from '../symbollibraries/azSymbolKind';
+import { TextEditorHelper } from '../tools/textEditorHelper';
+import { BaseSymbolsWebView } from '../webviews/baseSymbolsWebView';
 
-export class SymbolsTreeView extends BaseWebViewEditor {
-    protected _devToolsContext : DevToolsExtensionContext;
-    private _symbolsChangedHandler : vscode.Disposable | undefined;
-    protected _loaded: boolean;
-    protected _rootSymbol: AZSymbolInformation | undefined;
-    protected _documentName: string;
-    protected _documentUri: vscode.Uri | undefined;
-    protected _selectedSymbolPath: number[] | undefined;
-    protected _sourceSymbol : AZSymbolInformation | undefined;
+export class SymbolsTreeView extends BaseSymbolsWebView {
     selectedSymbolRange: vscode.Range | undefined;
 
     constructor(devToolsContext : DevToolsExtensionContext, documentName: string | undefined, documentUri: vscode.Uri | undefined) {        
-        if ((!documentName) && (documentUri))
-            documentName = path.parse(documentUri.path).base;
-        super(devToolsContext.vscodeExtensionContext, documentName);
-
-        this._documentName = documentName;
-        this._documentUri = documentUri;
-        this._devToolsContext = devToolsContext;
-        this._viewColumn = vscode.ViewColumn.Beside;
-        this._loaded = false;
-        this._rootSymbol = undefined;
-        this._selectedSymbolPath = undefined;
+        super(devToolsContext, documentName, documentUri);
+        this._copySymbols = true;
 
         if (this._documentUri)
-            this._symbolsChangedHandler = this._devToolsContext.activeDocumentSymbols.onSymbolsChanged(symbolsLib => this.onSymbolsChanged(symbolsLib));
-        else
-            this._symbolsChangedHandler = undefined;
+            this._disposables.push(this._devToolsContext.activeDocumentSymbols.onSymbolsChanged(symbolsLib => this.onSymbolsChanged(symbolsLib)));
     }
 
     protected getHtmlContentPath() : string {
@@ -43,82 +27,30 @@ export class SymbolsTreeView extends BaseWebViewEditor {
         return 'azALDevTools.SymbolsTreeView';
     }
 
-    protected async onDocumentLoaded() {
-        this._loaded = true;
-        if (this._documentUri)
-            await this.LoadSymbols();
-        else
-            await this.updateView();
-    }
-
-    protected async LoadSymbols() {
+    protected async loadSymbols() {
         let currDocUri = this._devToolsContext.activeDocumentSymbols.getDocUri();
         if ((currDocUri) && (currDocUri.toString() == this._documentUri.toString()) && (this._devToolsContext.activeDocumentSymbols.rootSymbol)) {
-            this._selectedSymbolPath = this._devToolsContext.activeDocumentSymbols.findSymbolPathInSelectionRange(this.selectedSymbolRange);
-            this.setSymbols(this._devToolsContext.activeDocumentSymbols.rootSymbol, this._documentName);            
+            this._selectedSymbolPath = this._devToolsContext.activeDocumentSymbols.findSymbolPathInSelectionRange(this.selectedSymbolRange);            
+            this.setSymbols(this._devToolsContext.activeDocumentSymbols.rootSymbol, this._title);
         } else {
             let library = new AZDocumentSymbolsLibrary(this._devToolsContext, this._documentUri);
             await library.loadAsync(false);            
             this._selectedSymbolPath = library.findSymbolPathInSelectionRange(this.selectedSymbolRange);
-            this.setSymbols(library.rootSymbol, this._documentName);
+            this.setSymbols(library.rootSymbol, this._title);
         }
-    }
-
-    setSymbols(rootSymbol: AZSymbolInformation | undefined, rootSymbolName: string | undefined) {
-        this._sourceSymbol = rootSymbol;
-
-        if (rootSymbol)
-            this._rootSymbol = rootSymbol.createCopy(true);
-        else
-            this._rootSymbol = new AZSymbolInformation();        
-        this._rootSymbol.fullName = rootSymbolName;
-        this.updateView();
     }
 
     onSymbolsChanged(lib: any) {
-        if (this._devToolsContext.activeDocumentSymbols.getDocUri().path == this._documentUri.path)
-            this.setSymbols(this._devToolsContext.activeDocumentSymbols.rootSymbol, this._documentName);
-    }
-
-    protected updateView() {
-        if (!this._loaded)
-            return;
-        this.sendMessage({
-            command: 'setData',
-            data: this._rootSymbol,
-            selected: this._selectedSymbolPath
-        });
-        if (this._rootSymbol)
+        if (this._devToolsContext.activeDocumentSymbols.getDocUri().path == this._documentUri.path) {
             this._selectedSymbolPath = undefined;
-    }
-
-    selectSymbolByRange(range: vscode.Range) {
-        if (this._sourceSymbol) {
-            let library = new AZDocumentSymbolsLibrary(this._devToolsContext, this._documentUri);
-            library.setRootSymbol(this._sourceSymbol);
-            let selectedPath : number[] = library.findSymbolPathInSelectionRange(range);
-
-            if (selectedPath) {
-                this.sendMessage({
-                    command: 'selectSymbol',
-                    selected: selectedPath
-                });
-            }
+            this.setSymbols(this._devToolsContext.activeDocumentSymbols.rootSymbol, this._title);
         }
     }
 
-    protected processWebViewMessage(message : any) : boolean {
-        if (super.processWebViewMessage(message))
-            return true;        
-
-        return false;
-    }
-
     protected onPanelClosed() {
-        if (this._symbolsChangedHandler)
-            this._symbolsChangedHandler.dispose();
         if (this._documentUri)
             this._devToolsContext.alSymbolsTreeService.removeUriSymbolsTreeView(this._documentUri);
     }
+    
 
 }

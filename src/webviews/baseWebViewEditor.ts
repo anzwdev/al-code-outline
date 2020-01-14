@@ -10,8 +10,7 @@ export class BaseWebViewEditor {
     protected _documentLoaded : boolean;
     protected _title : string;
     protected _viewColumn: vscode.ViewColumn;
-
-    private _disposables: vscode.Disposable[] = [];
+    protected _disposables: vscode.Disposable[] = [];
 
     constructor(context : vscode.ExtensionContext, title : string) {
         //initialize variables

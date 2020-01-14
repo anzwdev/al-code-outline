@@ -26,17 +26,17 @@ class ObjectBrowser {
         });
 
         this._objTree.emptyContent = 'There is nothing to show.';
-        this._objTree.onNodeSelected = function(node) { 
+        this._objTree.nodeSelected = function(node) { 
             that.onNodeSelected(node); 
         };
-        this._objTree.onShowIdsChanged = function(newVal) {
+        this._objTree.showIdsChanged = function(newVal) {
             this.sendMessage({
                 command: 'objTreeShowIdsChanged',
                 value: newVal 
             });
         };
 
-        this._symTree.onShowIdsChanged = function(newVal) {
+        this._symTree.showIdsChanged = function(newVal) {
             this.sendMessage({
                 command: 'symTreeShowIdsChanged',
                 value: newVal 

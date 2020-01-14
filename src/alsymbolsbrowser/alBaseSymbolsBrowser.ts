@@ -14,6 +14,7 @@ import { ALSymbolsBasedPageExtWizard } from '../objectwizards/symbolwizards/alSy
 import { ALSymbolsBasedTableExtWizard } from '../objectwizards/symbolwizards/alSymbolsBasedTableExtWizard';
 import { ALSyntaxHelper } from '../allanguage/alSyntaxHelper';
 import { SymbolsTreeView } from '../symbolstreeview/symbolsTreeView';
+import { TextEditorHelper } from '../tools/textEditorHelper';
 
 /** Base class for AL Object and AL Symbol browsers */
 export class ALBaseSymbolsBrowser extends BaseWebViewEditor {
@@ -147,6 +148,7 @@ export class ALBaseSymbolsBrowser extends BaseWebViewEditor {
     protected async goToDefinition(path : number[] | undefined) {
         let alSymbolList : AZSymbolInformation[] | undefined = await this._library.getSymbolsListByPathAsync([path], AZSymbolKind.AnyALObject);
         if ((alSymbolList) && (alSymbolList.length > 0)) {
+            let preview = !vscode.workspace.getConfiguration('alOutline').get('openDefinitionInNewTab');
             let targetLocation : vscode.Location | undefined = undefined;
             let alSymbol : AZSymbolInformation = alSymbolList[0];
             //get data type name
@@ -162,19 +164,7 @@ export class ALBaseSymbolsBrowser extends BaseWebViewEditor {
                 targetLocation = await this._devToolsContext.alLangProxy.getDefinitionLocation(typeName, alSymbol.name);
     
             if (targetLocation) {
-                try {
-                    //open document
-                    let targetDoc = await vscode.workspace.openTextDocument(targetLocation.uri);
-                    let targetEditor = await vscode.window.showTextDocument(targetDoc, {
-                        preview : true
-                    });
-
-                    //go to location
-                    targetEditor.selection = new vscode.Selection(targetLocation.range.start, targetLocation.range.start);
-                }
-                catch (e) {
-                    vscode.window.showErrorMessage(e.message);
-                }
+                TextEditorHelper.openEditor(targetLocation.uri, true, preview, targetLocation.range.start);
             } else {
                 vscode.window.showErrorMessage('Object definition is not available.');
             }

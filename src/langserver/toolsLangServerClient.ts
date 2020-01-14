@@ -12,6 +12,13 @@ import { ToolsProjectSymbolsResponse } from './toolsProjectSymbolsResponse';
 import { ToolsLibrarySymbolsDetailsRequest } from './toolsLibrarySymbolsDetailsRequest';
 import { ToolsLibrarySymbolsDetailsResponse } from './toolsLibrarySymbolsDetailsResponse';
 import { ToolsCloseSymbolsLibraryRequest } from './toolsCloseSymbolsLibraryRequest';
+import { ToolsGetSyntaxTreeRequest } from './toolsGetSyntaxTreeRequest';
+import { ToolsGetSyntaxTreeResponse } from './toolsGetSyntaxTreeResponse';
+import { ToolsGetSyntaxTreeSymbolResponse } from './toolsGetSyntaxTreeSymbolResponse';
+import { ToolsGetSyntaxTreeSymbolsRequest } from './toolsGetSyntaxTreeSymbolRequest';
+import { ToolsCloseSyntaxTreeRequest } from './toolsCloseSyntaxTreeRequest';
+import { ToolsGetCodeAnalyzersRulesRequest } from './toolsGetCodeAnalyzersRulesRequest';
+import { ToolsGetCodeAnalyzersRulesResponse } from './toolsGetCodeAnalyzersRulesResponse';
 
 export class ToolsLangServerClient implements vscode.Disposable {
     _context : vscode.ExtensionContext;
@@ -118,6 +125,61 @@ export class ToolsLangServerClient implements vscode.Disposable {
         catch (e) {
         }
     }
+
+    public async getSyntaxTree(params: ToolsGetSyntaxTreeRequest) : Promise<ToolsGetSyntaxTreeResponse|undefined> {
+        try {
+            if (!this._connection)
+                return undefined;
+                
+            let reqType = new rpc.RequestType<ToolsGetSyntaxTreeRequest, ToolsGetSyntaxTreeResponse, void, void>('al/getsyntaxtree');
+            let val = await this._connection.sendRequest(reqType, params);
+            return val;
+        }
+        catch(e) {
+            return undefined;
+        }
+    }
+
+    public async getSyntaxTreeSymbol(params: ToolsGetSyntaxTreeSymbolsRequest) : Promise<ToolsGetSyntaxTreeSymbolResponse|undefined> {
+        try {
+            if (!this._connection)
+                return undefined;
+                
+            let reqType = new rpc.RequestType<ToolsGetSyntaxTreeSymbolsRequest, ToolsGetSyntaxTreeSymbolResponse, void, void>('al/getsyntaxtreesymbol');
+            let val = await this._connection.sendRequest(reqType, params);
+            return val;
+        }
+        catch(e) {
+            return undefined;
+        }
+    }
+
+    public closeSyntaxTree(params: ToolsCloseSyntaxTreeRequest) {
+        try {
+            if (!this._connection)
+                return undefined;
+
+            let reqType = new rpc.NotificationType<ToolsCloseSyntaxTreeRequest, void>('al/closesyntaxtree');;
+            this._connection.sendNotification(reqType, params);
+        }
+        catch (e) {
+        }
+    }
+
+    public async getCodeAnalyzersRules(params: ToolsGetCodeAnalyzersRulesRequest) : Promise<ToolsGetCodeAnalyzersRulesResponse|undefined> {
+        try {
+            if (!this._connection)
+                return undefined;
+                
+            let reqType = new rpc.RequestType<ToolsGetCodeAnalyzersRulesRequest, ToolsGetCodeAnalyzersRulesResponse, void, void>('al/getcodeanalyzersrules');
+            let val = await this._connection.sendRequest(reqType, params);
+            return val;
+        }
+        catch(e) {
+            return undefined;
+        }
+    }
+
 
     public isEnabled() : boolean {
         if (this._connection)

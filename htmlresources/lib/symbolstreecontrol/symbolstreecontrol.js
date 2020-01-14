@@ -9,11 +9,14 @@ class SymbolsTreeControl {
         this._selSymbol = undefined;
         this._idsBtnId = idsBtnId;
         this._showIds = true;
+        this.showIcons = true;
         this.sortNodes = true;
         this.emptyContent = '';
         this.resetCollapsedState = true;
-        this.onNodeSelected = undefined;
-        this.onShowIdsChanged = undefined;
+        this.nodeSelected = undefined;
+        this.showIdsChanged = undefined;
+        this.nodeDefaultAction = undefined;
+        this.syntaxTreeMode = false;
 
         this._multiselect = false;
         this._idFilterText = undefined;
@@ -56,8 +59,8 @@ class SymbolsTreeControl {
         else
             $('#' + this._idsBtnId).html("Show Ids");
         this.setData(this._data);
-        if (this.onShowIdsChanged)
-            this.onShowIdsChanged(this._showIds);
+        if (this.showIdsChanged)
+            this.showIdsChanged(this._showIds);
     }
 
     setData(data) {
@@ -118,9 +121,11 @@ class SymbolsTreeControl {
                 data.visualidx = this._visibleSymbolList.length;
                 this._visibleSymbolList.push(data);
 
-                let icon = document.createElement('div');
-                icon.className = "ico ico-" + data.icon;
-                shead.appendChild(icon);
+                if (this.showIcons) {
+                    let icon = document.createElement('div');
+                    icon.className = "ico ico-" + data.icon;
+                    shead.appendChild(icon);
+                }
 
                 let cap = document.createElement('div');
                 cap.className = "cap";
@@ -208,7 +213,7 @@ class SymbolsTreeControl {
     //#region Sorting
 
     sortData(data) {       
-        if (data && data.childSymbols) {
+        if (data && data.childSymbols && (!this.syntaxTreeMode)) {
             //only table objects can have sortable child elements
             if ((this.isObjectSymbol(data)) && (data.kind != ALSymbolKind.Table))
                 return;
@@ -334,16 +339,19 @@ class SymbolsTreeControl {
         //apply filters
         if (this._data) {        
             this.resetFilter(this._data);
-            if ((this._typeFilter) && (this._typeFilter.length > 0))
-                this.applyTypeFilter(this._data);
-            if (this._idFilter)
-                this.applyIdFilter(this._data);
-            if (this._nameFilter)
-                this.applyNameFilter(this._data);
-            if (this._fullNameFilter)
-                this.applyFullNameFilter(this._data);
 
-            this.hideEmptyGroups(this._data);
+            if (!this.syntaxTreeMode) {
+                if ((this._typeFilter) && (this._typeFilter.length > 0))
+                    this.applyTypeFilter(this._data);
+                if (this._idFilter)
+                    this.applyIdFilter(this._data);
+                if (this._nameFilter)
+                    this.applyNameFilter(this._data);
+                if (this._fullNameFilter)
+                    this.applyFullNameFilter(this._data);
+
+                this.hideEmptyGroups(this._data);
+            }
             this._data.visible = true;
         }
 
@@ -361,7 +369,7 @@ class SymbolsTreeControl {
     }
 
     applyTypeFilter(data) {
-        if (data) {
+        if ((data) && (!this.syntaxTreeMode)) {
             if ((this.isObjectSymbol(data)) && (data.kind)) {
                 if (this._typeFilter.indexOf(data.kind) < 0)
                     data.visible = false;
@@ -374,7 +382,7 @@ class SymbolsTreeControl {
     }
 
     applyIdFilter(data) {
-        if (data) {
+        if ((data) && (!this.syntaxTreeMode)) {
             if ((this.isObjectSymbol(data)) && (data.id)) {
                 if (!this._idFilter({INT: data.id}))
                     data.visible = false;
@@ -387,7 +395,7 @@ class SymbolsTreeControl {
     }
 
     applyNameFilter(data) {
-        if (data) {
+        if ((data) && (!this.syntaxTreeMode)) {
             if (this.isObjectSymbol(data)) {
                 if (!this._nameFilter({TEXT: data.name}))
                     data.visible = false;
@@ -551,8 +559,8 @@ class SymbolsTreeControl {
         if (node)
             this.scrollToNode(node);
 
-        if (this.onNodeSelected)
-            this.onNodeSelected(this._selNode);
+        if (this.nodeSelected)
+            this.nodeSelected(this._selNode);
     }
 
     selectSingleNode(node) {
@@ -804,6 +812,12 @@ class SymbolsTreeControl {
             case 35:    //end
                 this.selectNode(this.lastNode(), e.ctrlKey, e.shiftKey, true);
                 handled = true;
+                break;
+            case 13:    //enter
+                if ((this._selNode) && (this.nodeDefaultAction)) {
+                    this.nodeDefaultAction(this._selNode);
+                    handled = true;
+                }
                 break;
         }
 

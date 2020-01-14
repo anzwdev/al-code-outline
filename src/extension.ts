@@ -9,7 +9,6 @@ import { ALNativeAppSymbolsLibrariesCache } from './symbollibraries/nativeimpl/a
 import { AZSymbolsLibrary } from './symbollibraries/azSymbolsLibrary';
 import { ALProjectSymbolsLibrary } from './symbollibraries/alProjectSymbolsLibrary';
 import { ALCodeActionsProvider } from './codeactions/alCodeActionsProvider';
-import { ALDocCommentsProvider } from './editorextensions/alDocCommentsProvider';
 
 // this method is called when your extension is activated
 // your extension is activated the very first time the command is executed
@@ -75,7 +74,7 @@ export function activate(context: vscode.ExtensionContext) {
         vscode.commands.registerCommand(
            'azALDevTools.viewActionImages',
             () => {
-                let actionImageBrowser : ALActionImageBrowser = new ALActionImageBrowser(context);
+                let actionImageBrowser : ALActionImageBrowser = new ALActionImageBrowser(toolsExtensionContext);
                 actionImageBrowser.show();
             }
         )

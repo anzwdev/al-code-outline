@@ -36,6 +36,7 @@ export class ALBaseAddFieldsCodeCommand extends ALCodeCommand {
         let column : number = 0;
 
         if ((symbol.kind == AZSymbolKind.PageField) ||
+            (symbol.kind == AZSymbolKind.PageUserControl) ||
             (symbol.kind == AZSymbolKind.QueryColumn) ||
             (symbol.kind == AZSymbolKind.ReportColumn) ||
             (symbol.kind == AZSymbolKind.XmlPortFieldElement) ||

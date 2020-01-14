@@ -2,7 +2,7 @@
 	"name": "al-code-outline",
 	"displayName": "AZ AL Dev Tools/AL Code Outline",
 	"description": "AZ AL Development Tools: AL code outline, object browser, object creators",
-	"version": "1.0.21",
+	"version": "1.0.25",
 	"publisher": "andrzejzwierzchowski",
 	"engines": {
 		"vscode": "^1.30.0"
@@ -32,7 +32,9 @@
 		"onCommand:azALDevTools.refreshOutlineView",
 		"onCommand:azALDevTools.newALFile",
 		"onCommand:azALDevTools.showDocumentSymbols",
-		"onCommand:azALDevTools.goToDefinitionSymbolTree"
+		"onCommand:azALDevTools.goToDefinitionSymbolTree",
+		"onCommand:azALDevTools.showSyntaxTree",
+		"onCommand:azALDevTools.showCodeAnalyzers"
 	],
 	"main": "./out/extension",
 	"icon": "resources/alcodeoutline.png",
@@ -65,8 +67,18 @@
 			},
 			{
 				"category": "AZ AL Dev Tools",
+				"command": "azALDevTools.showSyntaxTree",
+				"title": "Open Document Syntax Visualizer"
+			},
+			{
+				"category": "AZ AL Dev Tools",
+				"command": "azALDevTools.showCodeAnalyzers",
+				"title": "Show Code Analyzers Rules"
+			},
+			{
+				"category": "AZ AL Dev Tools",
 				"command": "azALDevTools.goToDefinitionSymbolTree",
-				"title": "Show Definition in the Symbols Tree"				
+				"title": "Show Definition in the Symbols Tree"
 			},
 			{
 				"category": "AZ AL Dev Tools",
@@ -194,21 +206,18 @@
 					"group": "navigation"
 				}
 			]
-
 		},
 		"configuration": [
 			{
 				"title": "AZ AL Dev Tools/AL Code Outline",
 				"properties": {
-					"alOutline.enableFeaturePreview": {
-						"type": "boolean",
-						"default": false,
-						"description": "Enable preview of future, unstable features"
-					},
 					"alOutline.docCommentsType": {
 						"type": "string",
-						"default": "none",
-						"enum": ["none","xml"],
+						"default": "xml",
+						"enum": [
+							"none",
+							"xml"
+						],
 						"description": "Documentation comments type"
 					},
 					"alOutline.autoGenerateFiles": {
@@ -260,6 +269,11 @@
 						"type": "number",
 						"default": "0",
 						"description": "Web Client port. Enter 0 to use default http/https port number."
+					},
+					"alOutline.openDefinitionInNewTab": {
+						"type": "boolean",
+						"default": false,
+						"description": "Always open objects definitions in a new tab."
 					}
 				}
 			}

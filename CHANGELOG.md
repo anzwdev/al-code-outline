@@ -1,5 +1,27 @@
 # Change Log
 
+## 1.0.25
+ - Symbols service added to the extension API
+
+## 1.0.24
+ - Code analyzers rules viewer added after Dmitry Katson request
+ - Html/js table control bugfixes
+
+ Thank you Dmitry for your request
+
+## 1.0.23
+ - Syntax tree visualizer added. It shows current document syntax tree that can help developers to create their own al code analyzers. 
+ - Support for Area and UserControl elements added to "Add multiple fields" code action on pages
+
+## 1.0.22
+ - Github issue #60 - Enable Object Navigation via Symbols Tree
+ - Github issue #61 - Open documents on multiple tabs from "Go to definition" in "AL Object Browser". To enable this functionality please change "alOutline.openDefinitionInNewTab" setting to true
+ - Github issue #62 - Event publishers support added to the xml documentation
+ - XML documentation is enabled by default now, to turn it off change "alOutline.docCommentsType" setting to "none"
+ - obsolete "enableFeaturePreview" setting removed
+
+Thank you pri-kise, kevindstanley1988 and stefanoPrimo for reporting your issues and suggestions
+
 ## 1.0.21
  - Github issue #56 fixed - quick search in symbols tree ignores double quotes now
 
