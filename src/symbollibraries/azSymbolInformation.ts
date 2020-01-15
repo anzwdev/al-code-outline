@@ -254,6 +254,7 @@ export class AZSymbolInformation {
             //groups
             case AZSymbolKind.PageLayout:
             case AZSymbolKind.VarSection:
+            case AZSymbolKind.GlobalVarSection:
             case AZSymbolKind.ParameterList:
             case AZSymbolKind.KeyList:
             case AZSymbolKind.FieldList:

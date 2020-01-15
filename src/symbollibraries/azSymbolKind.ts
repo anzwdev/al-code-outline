@@ -122,6 +122,8 @@ export enum AZSymbolKind {
     PageCustomizationObject = 421,
     DotNetPackage = 422,
 
+    GlobalVarSection = 428,
+    
     LocalMethodDeclaration = 50001,
     PrimaryKey = 50002,
     Module = 50003,

@@ -118,6 +118,8 @@ var ALSymbolKind = {
     ProfileObject : 420,
     PageCustomizationObject : 421,
     DotNetPackage : 422,
+    
+    GlobalVarSection : 428,
 
     LocalMethodDeclaration : 50001,
     PrimaryKey : 50002,
