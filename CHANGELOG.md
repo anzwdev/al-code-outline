@@ -1,5 +1,8 @@
 # Change Log
 
+## 1.0.26
+ - Github issue #74 - Missing global variables in the symbols tree
+
 ## 1.0.25
  - Symbols service added to the extension API
 
