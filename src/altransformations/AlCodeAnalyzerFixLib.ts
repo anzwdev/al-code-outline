@@ -44,6 +44,20 @@ export class ALCodeAnalyzerFix {
     }
 
     InsertApplicationArea(val: string) {
+        if (!vscode.window.activeTextEditor)
+            return;
+        var text = vscode.window.activeTextEditor.document.getText();
+        if (!text)
+            return;
+        
+        
+        
+
+    }
+
+
+    /*
+    InsertApplicationArea(val: string) {
         var re = /^([\w\-]+)/g;
         var text = vscode.window.activeTextEditor.document.getText();
         var ObjType = text.match(re);
@@ -88,4 +102,5 @@ export class ALCodeAnalyzerFix {
             vscode.workspace.applyEdit(edit);
         }
     }
+    */
 }

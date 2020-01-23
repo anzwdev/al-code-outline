@@ -8,8 +8,6 @@ import { ALActionImageBrowser } from './actionimagebrowser/alActionImageBrowser'
 import { ALNativeAppSymbolsLibrariesCache } from './symbollibraries/nativeimpl/alNativeAppSymbolsLibrariesCache';
 import { AZSymbolsLibrary } from './symbollibraries/azSymbolsLibrary';
 import { ALProjectSymbolsLibrary } from './symbollibraries/alProjectSymbolsLibrary';
-import { ALCodeActionsProvider } from './codeactions/alCodeActionsProvider';
-import { ALCodeAnalyzerFix } from './canalysisfix/AlCodeAnalyzerFix';
 
 // this method is called when your extension is activated
 // your extension is activated the very first time the command is executed
@@ -80,16 +78,6 @@ export function activate(context: vscode.ExtensionContext) {
             }
         )
     );
-
-    //code actions
-    let alCodeActionsProvider: ALCodeActionsProvider = new ALCodeActionsProvider(toolsExtensionContext);
-    context.subscriptions.push(
-        vscode.languages.registerCodeActionsProvider('al', alCodeActionsProvider));
-
-    // CodeAnalysis Fixes 
-
-    let ALCodeAnalyzerFixer: ALCodeAnalyzerFix = new ALCodeAnalyzerFix(context);
-    ALCodeAnalyzerFixer.loadActions();
 
     return toolsExtensionContext;
 }

@@ -2,7 +2,7 @@
 	"name": "al-code-outline",
 	"displayName": "AZ AL Dev Tools/AL Code Outline",
 	"description": "AZ AL Development Tools: AL code outline, object browser, object creators",
-	"version": "1.0.26",
+	"version": "1.0.27",
 	"publisher": "andrzejzwierzchowski",
 	"engines": {
 		"vscode": "^1.30.0"
@@ -34,7 +34,8 @@
 		"onCommand:azALDevTools.showDocumentSymbols",
 		"onCommand:azALDevTools.goToDefinitionSymbolTree",
 		"onCommand:azALDevTools.showSyntaxTree",
-		"onCommand:azALDevTools.showCodeAnalyzers"
+		"onCommand:azALDevTools.showCodeAnalyzers",
+		"onCommand:azALDevTools.AddApplicationAreas"	
 	],
 	"main": "./out/extension",
 	"icon": "resources/alcodeoutline.png",
@@ -144,6 +145,11 @@
 				"category": "AZ AL Dev Tools",
 				"command": "azALDevTools.SpreadApplicationArea",
 				"title": "Spread Application Area to Fields"
+			},
+			{
+				"category": "AZ AL Dev Tools",
+				"command": "azALDevTools.AddApplicationAreas",
+				"title": "Add Application Areas"
 			}
 		],
 		"menus": {
