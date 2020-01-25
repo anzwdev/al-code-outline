@@ -13,19 +13,19 @@ export class ALCodeCopFixAA0139 extends ALCodeFix {
         fix.edit = new vscode.WorkspaceEdit();
         fix.diagnostics = [diagnostic];
         let currRange = diagnostic.range;
-        let startPosition = new vscode.Position(currRange.start.line, 0);
-        let stopPosition = new vscode.Position(currRange.end.line, currRange.end.character)
-        let text = document.getText(new vscode.Range(startPosition, stopPosition));
-        if (text.match(/(:=)/)) {
-            let split = text.split(":=");
-            let right = split[0].trim();
-            let stmt = "CopyStr(" + document.getText(currRange) + ",1,MaxStrLen(" + right + "))";
-            fix.edit.replace(document.uri, currRange, stmt);
-
-            fix.isPreferred = true;
-            return fix;
-        } else
-            return undefined;
+        let leftSideRange = new vscode.Range(currRange.start.line, 0, currRange.start.line, currRange.start.character);
+        let leftSideText = document.getText(leftSideRange).trim();
+        if (leftSideText.endsWith(':=')) {
+            leftSideText = leftSideText.substr(0, leftSideText.length - 2).trim();
+            if (leftSideText) {
+                let stmt = "CopyStr(" + document.getText(currRange) + ", 1, MaxStrLen(" + leftSideText + "))";
+                fix.edit.replace(document.uri, currRange, stmt);
+                fix.isPreferred = true;
+                return fix;
+            }
+        }
+        
+       return undefined;
     }
 
 }

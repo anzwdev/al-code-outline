@@ -24,15 +24,15 @@ export class ALCAFixesCodeActionsProvider implements vscode.CodeActionProvider {
 
     provideCodeActions(document: vscode.TextDocument, range: vscode.Range | vscode.Selection, context: vscode.CodeActionContext, token: vscode.CancellationToken): vscode.CodeAction[] {
         // for each diagnostic entry that has the matching `code`, create a code action command
-        let Actions: vscode.CodeAction[] = [];
+        let actions: vscode.CodeAction[] = [];
 
-        for (let i=0; i<this.codeFixes.length; i++) {
-            Actions = Actions.concat(context.diagnostics
-                .filter(diagnostic => diagnostic.code === this.codeFixes[i].diagnosticCode)
-                .map((d, i, arr) => this.codeFixes[i].createFix(document, d)));
+        for (let idx=0; idx<this.codeFixes.length; idx++) {
+            actions = actions.concat(context.diagnostics
+                .filter(diagnostic => diagnostic.code === this.codeFixes[idx].diagnosticCode)
+                .map((d, i, arr) => this.codeFixes[idx].createFix(document, d)));
         }
 
-        return Actions
+        return actions
     }
 
 

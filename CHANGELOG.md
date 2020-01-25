@@ -1,5 +1,14 @@
 # Change Log
 
+## 1.0.27
+ - New functionality added by Stefano Primo:
+   - code actions fixing CodeCop diagnostics 
+     - AA0005 (remove begin..end),
+     - AA0008 (add parentheses),
+     - AA0137 (remove variable),
+     - AA0139 (add CopyStr)
+   - command to add missing application areas
+
 ## 1.0.26
  - Github issue #74 - Missing global variables in the symbols tree
 

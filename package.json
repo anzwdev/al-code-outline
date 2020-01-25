@@ -35,7 +35,8 @@
 		"onCommand:azALDevTools.goToDefinitionSymbolTree",
 		"onCommand:azALDevTools.showSyntaxTree",
 		"onCommand:azALDevTools.showCodeAnalyzers",
-		"onCommand:azALDevTools.AddApplicationAreas"
+		"onCommand:azALDevTools.AddEditorApplicationAreas",
+		"onCommand:azALDevTools.AddProjectApplicationAreas"
 	],
 	"main": "./out/extension",
 	"icon": "resources/alcodeoutline.png",
@@ -143,13 +144,13 @@
 			},
 			{
 				"category": "AZ AL Dev Tools",
-				"command": "azALDevTools.SpreadApplicationArea",
-				"title": "Spread Application Area to Fields"
+				"command": "azALDevTools.AddEditorApplicationAreas",
+				"title": "Add Application Areas to the Active Editor"
 			},
 			{
 				"category": "AZ AL Dev Tools",
-				"command": "azALDevTools.AddApplicationAreas",
-				"title": "Add Application Areas"
+				"command": "azALDevTools.AddProjectApplicationAreas",
+				"title": "Add Application Areas to the Active Project"
 			}
 		],
 		"menus": {
