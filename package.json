@@ -5,7 +5,7 @@
 	"version": "1.0.27",
 	"publisher": "andrzejzwierzchowski",
 	"engines": {
-		"vscode": "^1.30.0"
+		"vscode": "^1.40.0"
 	},
 	"author": {
 		"name": "Andrzej Zwierzchowski",
@@ -35,7 +35,7 @@
 		"onCommand:azALDevTools.goToDefinitionSymbolTree",
 		"onCommand:azALDevTools.showSyntaxTree",
 		"onCommand:azALDevTools.showCodeAnalyzers",
-		"onCommand:azALDevTools.AddApplicationAreas"	
+		"onCommand:azALDevTools.AddApplicationAreas"
 	],
 	"main": "./out/extension",
 	"icon": "resources/alcodeoutline.png",

@@ -40,21 +40,28 @@ export class ALCodeTransformationService {
         if (!text)
             return;
         
-        let request: ToolsAddAppAreasRequest = new ToolsAddAppAreasRequest(text, '');
+        let request: ToolsAddAppAreasRequest = new ToolsAddAppAreasRequest(text, '', val);
         let response = await this._context.toolsLangServerClient.addAppAreas(request);
-        if ((response) && (response.source) && (response.source != text)) {
-            text = response.source;
-            const edit = new vscode.WorkspaceEdit();
-            var firstLine = vscode.window.activeTextEditor.document.lineAt(0);
-            var lastLine = vscode.window.activeTextEditor.document.lineAt(vscode.window.activeTextEditor.document.lineCount - 1);
-            var textRange = new vscode.Range(0,
-                firstLine.range.start.character,
-                vscode.window.activeTextEditor.document.lineCount - 1,
-                lastLine.range.end.character);
-            edit.replace(vscode.window.activeTextEditor.document.uri, textRange, text);
-            vscode.workspace.applyEdit(edit);
+        if (response) {
+            if ((response.error) && (response.errorMessage))
+                vscode.window.showErrorMessage(response.errorMessage);
+            else if ((response.source) && (response.source != text) && (response.noOfAppAreas > 0)) {
+                text = response.source;
+                const edit = new vscode.WorkspaceEdit();
+                var firstLine = vscode.window.activeTextEditor.document.lineAt(0);
+                var lastLine = vscode.window.activeTextEditor.document.lineAt(vscode.window.activeTextEditor.document.lineCount - 1);
+                var textRange = new vscode.Range(0,
+                    firstLine.range.start.character,
+                    vscode.window.activeTextEditor.document.lineCount - 1,
+                    lastLine.range.end.character);
+                edit.replace(vscode.window.activeTextEditor.document.uri, textRange, text);
+                vscode.workspace.applyEdit(edit);
+                vscode.window.showInformationMessage(
+                    response.noOfAppAreas.toString() + 
+                    ' application area(s) added.');
+            } else
+                vscode.window.showInformationMessage('There are no missing application areas.');
         }
-
     }
 
 
