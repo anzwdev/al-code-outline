@@ -82,6 +82,11 @@ There are also "Add multiple field elements" and "Add multiple field attributes"
 
 ![Add multiple fields](resources/screen2-addfieldscodeaction.gif)
 
+There are also some additional code actions available for warnings and errors reported by CodeCop code analyzer:
+ - add parentheses for diagnostics AA0008,
+ - remove variable for diagnostics AA0137,
+ - add CopyStr for diagnostics AA0139
+
 ### Action images browser
 
 Extension adds new "AZ AL Dev Tools: Show Action Images" command to the "Command Palette" to load all available action images from active Microsoft AL Language extension and show them in a single web view panel. Action images browser supports filtering, keyboard navigation and adds context menu to each image on the list.  Context menu contains these 3 actions:

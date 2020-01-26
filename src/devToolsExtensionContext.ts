@@ -14,6 +14,8 @@ import { ALCompletionService } from './services/alCompletionService';
 import { ALSymbolsTreeService } from './services/alSymbolsTreeService';
 import { CodeAnalyzersService } from './services/codeAnalyzersService';
 import { ALSymbolsService } from './services/alSymbolsService';
+import { ALCodeTransformationService } from './services/alCodeTransformationService';
+import { ALCodeActionsService } from './services/ALCodeActionsService';
 
 export class DevToolsExtensionContext implements vscode.Disposable {
     alLangProxy : ALLangServerProxy;    
@@ -27,6 +29,8 @@ export class DevToolsExtensionContext implements vscode.Disposable {
     alCompletionService : ALCompletionService;
     codeAnalyzersService: CodeAnalyzersService;
     symbolsService: ALSymbolsService;
+    alCodeTransformationService: ALCodeTransformationService;
+    alCodeActionsService: ALCodeActionsService;
 
     constructor(context : vscode.ExtensionContext) {
         this.alLangProxy = new ALLangServerProxy()
@@ -46,6 +50,8 @@ export class DevToolsExtensionContext implements vscode.Disposable {
         this.alCompletionService = new ALCompletionService(this);
         this.codeAnalyzersService = new CodeAnalyzersService(this);
         this.symbolsService = new ALSymbolsService(this);
+        this.alCodeTransformationService = new ALCodeTransformationService(this);
+        this.alCodeActionsService = new ALCodeActionsService(this);
     }
 
     getUseSymbolsBrowser() : boolean {

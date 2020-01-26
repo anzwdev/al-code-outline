@@ -19,6 +19,8 @@ import { ToolsGetSyntaxTreeSymbolsRequest } from './toolsGetSyntaxTreeSymbolRequ
 import { ToolsCloseSyntaxTreeRequest } from './toolsCloseSyntaxTreeRequest';
 import { ToolsGetCodeAnalyzersRulesRequest } from './toolsGetCodeAnalyzersRulesRequest';
 import { ToolsGetCodeAnalyzersRulesResponse } from './toolsGetCodeAnalyzersRulesResponse';
+import { ToolsAddAppAreasRequest } from './toolsAddAppAreasRequest';
+import { ToolsAddAppAreasResponse } from './toolsAddAppAreasResponse';
 
 export class ToolsLangServerClient implements vscode.Disposable {
     _context : vscode.ExtensionContext;
@@ -180,6 +182,19 @@ export class ToolsLangServerClient implements vscode.Disposable {
         }
     }
 
+    public async addAppAreas(params: ToolsAddAppAreasRequest) : Promise<ToolsAddAppAreasResponse> {
+        try {
+            if (!this._connection)
+                return undefined;
+            
+            let reqType = new rpc.RequestType<ToolsAddAppAreasRequest, ToolsAddAppAreasResponse, void, void>('al/addappareas');
+            let val = await this._connection.sendRequest(reqType, params);
+            return val;
+        }
+        catch(e) {
+            return undefined;
+        }
+    }
 
     public isEnabled() : boolean {
         if (this._connection)

@@ -2,10 +2,10 @@
 	"name": "al-code-outline",
 	"displayName": "AZ AL Dev Tools/AL Code Outline",
 	"description": "AZ AL Development Tools: AL code outline, object browser, object creators",
-	"version": "1.0.26",
+	"version": "1.0.27",
 	"publisher": "andrzejzwierzchowski",
 	"engines": {
-		"vscode": "^1.30.0"
+		"vscode": "^1.40.0"
 	},
 	"author": {
 		"name": "Andrzej Zwierzchowski",
@@ -34,7 +34,9 @@
 		"onCommand:azALDevTools.showDocumentSymbols",
 		"onCommand:azALDevTools.goToDefinitionSymbolTree",
 		"onCommand:azALDevTools.showSyntaxTree",
-		"onCommand:azALDevTools.showCodeAnalyzers"
+		"onCommand:azALDevTools.showCodeAnalyzers",
+		"onCommand:azALDevTools.AddEditorApplicationAreas",
+		"onCommand:azALDevTools.AddProjectApplicationAreas"
 	],
 	"main": "./out/extension",
 	"icon": "resources/alcodeoutline.png",
@@ -139,6 +141,16 @@
 				"category": "AZ AL Dev Tools",
 				"command": "azALDevTools.newALFile",
 				"title": "New AL File Wizard"
+			},
+			{
+				"category": "AZ AL Dev Tools",
+				"command": "azALDevTools.AddEditorApplicationAreas",
+				"title": "Add Application Areas to the Active Editor"
+			},
+			{
+				"category": "AZ AL Dev Tools",
+				"command": "azALDevTools.AddProjectApplicationAreas",
+				"title": "Add Application Areas to the Active Project"
 			}
 		],
 		"menus": {

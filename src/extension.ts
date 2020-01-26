@@ -8,24 +8,23 @@ import { ALActionImageBrowser } from './actionimagebrowser/alActionImageBrowser'
 import { ALNativeAppSymbolsLibrariesCache } from './symbollibraries/nativeimpl/alNativeAppSymbolsLibrariesCache';
 import { AZSymbolsLibrary } from './symbollibraries/azSymbolsLibrary';
 import { ALProjectSymbolsLibrary } from './symbollibraries/alProjectSymbolsLibrary';
-import { ALCodeActionsProvider } from './codeactions/alCodeActionsProvider';
 
 // this method is called when your extension is activated
 // your extension is activated the very first time the command is executed
 export function activate(context: vscode.ExtensionContext) {
-    const toolsExtensionContext : DevToolsExtensionContext = new DevToolsExtensionContext(context);
+    const toolsExtensionContext: DevToolsExtensionContext = new DevToolsExtensionContext(context);
     let nativeAppCache: ALNativeAppSymbolsLibrariesCache | undefined = undefined;
 
     toolsExtensionContext.activeDocumentSymbols.loadAsync(false);
-	context.subscriptions.push(toolsExtensionContext);
+    context.subscriptions.push(toolsExtensionContext);
 
     //al app viewer
     context.subscriptions.push(
         vscode.commands.registerCommand(
-            'azALDevTools.viewALApp', 
+            'azALDevTools.viewALApp',
             (fileUri) => {
-                let uri : vscode.Uri = fileUri;
-                let lib : AZSymbolsLibrary;
+                let uri: vscode.Uri = fileUri;
+                let lib: AZSymbolsLibrary;
 
                 if (toolsExtensionContext.toolsLangServerClient.isEnabled())
                     lib = new ALAppSymbolsLibrary(toolsExtensionContext, uri.fsPath);
@@ -39,7 +38,7 @@ export function activate(context: vscode.ExtensionContext) {
                 }
 
                 toolsExtensionContext.showSymbolsBrowser(lib);
-    }));
+            }));
 
     context.subscriptions.push(
         vscode.commands.registerCommand(
@@ -47,10 +46,10 @@ export function activate(context: vscode.ExtensionContext) {
             () => {
                 let workspacePath = toolsExtensionContext.alLangProxy.getCurrentWorkspaceFolderPath();
                 if (workspacePath) {
-                    let lib : ALProjectSymbolsLibrary = new ALProjectSymbolsLibrary(toolsExtensionContext,
+                    let lib: ALProjectSymbolsLibrary = new ALProjectSymbolsLibrary(toolsExtensionContext,
                         true, workspacePath);
                     toolsExtensionContext.showSymbolsBrowser(lib);
-                }                
+                }
             }
         )
     );
@@ -61,10 +60,10 @@ export function activate(context: vscode.ExtensionContext) {
             () => {
                 let workspacePath = toolsExtensionContext.alLangProxy.getCurrentWorkspaceFolderPath();
                 if (workspacePath) {
-                    let lib : ALProjectSymbolsLibrary = new ALProjectSymbolsLibrary(toolsExtensionContext,
+                    let lib: ALProjectSymbolsLibrary = new ALProjectSymbolsLibrary(toolsExtensionContext,
                         false, workspacePath);
                     toolsExtensionContext.showSymbolsBrowser(lib);
-                }                
+                }
             }
         )
     );
@@ -72,18 +71,13 @@ export function activate(context: vscode.ExtensionContext) {
     //al action images viewer
     context.subscriptions.push(
         vscode.commands.registerCommand(
-           'azALDevTools.viewActionImages',
+            'azALDevTools.viewActionImages',
             () => {
-                let actionImageBrowser : ALActionImageBrowser = new ALActionImageBrowser(toolsExtensionContext);
+                let actionImageBrowser: ALActionImageBrowser = new ALActionImageBrowser(toolsExtensionContext);
                 actionImageBrowser.show();
             }
         )
-    );        
-
-    //code actions
-    let alCodeActionsProvider : ALCodeActionsProvider = new ALCodeActionsProvider(toolsExtensionContext);
-    context.subscriptions.push(
-        vscode.languages.registerCodeActionsProvider('al', alCodeActionsProvider));
+    );
 
     return toolsExtensionContext;
 }
