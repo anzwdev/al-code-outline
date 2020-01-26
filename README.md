@@ -83,7 +83,6 @@ There are also "Add multiple field elements" and "Add multiple field attributes"
 ![Add multiple fields](resources/screen2-addfieldscodeaction.gif)
 
 There are also some additional code actions available for warnings and errors reported by CodeCop code analyzer:
- - remove begin..end for diagnostics A0005,
  - add parentheses for diagnostics AA0008,
  - remove variable for diagnostics AA0137,
  - add CopyStr for diagnostics AA0139
