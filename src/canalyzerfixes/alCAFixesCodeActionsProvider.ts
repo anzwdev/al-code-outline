@@ -15,7 +15,8 @@ export class ALCAFixesCodeActionsProvider implements vscode.CodeActionProvider {
 
     constructor() {
         this.codeFixes = [
-            new ALCodeCopFixAA0005(),
+            //AA0005 fix disabled, needs some fixes before going live
+            //new ALCodeCopFixAA0005(),
             new ALCodeCopFixAA0008(),
             new ALCodeCopFixAA0137(),
             new ALCodeCopFixAA0139()
