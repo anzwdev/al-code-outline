@@ -47,10 +47,10 @@ input:focus, select:focus, div:focus {
     justify-content: stretch;
 }
 #objects {
-    flex: 1 1 auto;
+    flex: 1 1 100px;
 }
 #symbols {
-    flex: 1 1 250px;
+    flex: 1 1 100px;
 }
 .gutter {
     float: left;

@@ -1,5 +1,11 @@
 # Change Log
 
+## 1.0.28
+ - "Expand/Collapse child nodes" command in Symbols Tree View and AL Object Browser by rvanbekkum 
+ - Github issue #75 - Symbols tree view scrollbars missing in AL Object Browser
+
+ Thank you rvanbekkum for your pull request
+
 ## 1.0.27
  - New functionality added by Stefano Primo:
    - code actions fixing CodeCop diagnostics 
