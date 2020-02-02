@@ -444,20 +444,52 @@ class SymbolsTreeControl {
 
     //#region Expand/Collapse
 
+    isNodeCollapsed(node) {
+        let element = $(node)[0];
+        let symbol = element.alsymbolnode;
+        if (!symbol || !symbol.collapsed) {
+            return false;
+        }
+        return true;
+    }
+
+    toggleChildNodes(node) {
+        // Retrieve all child-nodes that can be expanded/collapsed
+        let nodeList = $(node).next('.treelist').children('.treeitem').children('.shead').not('.sheadnoexp');
+        if (nodeList.length === 0) {
+            return;
+        }
+        
+        // Check whether we need to expand or collapse based on the first child
+        let firstChildNode = nodeList[0];
+        let isFirstChildCollapsed = this.isNodeCollapsed(firstChildNode);
+
+        for (let i = 0; i < nodeList.length; i++) {
+            this.expandOrCollapseNode(nodeList[i], !isFirstChildCollapsed);
+        }
+    }
+
     toggleNode(node) {
+        let isCollapsed = this.isNodeCollapsed(node);
+        this.expandOrCollapseNode(node, !isCollapsed);
+    }
+
+    expandOrCollapseNode(node, collapse) {
         let element = $(node)[0];
         let symbol = element.alsymbolnode;
         if (symbol) {
             if ((symbol.childSymbols) && (symbol.childSymbols.length > 0)) {
-                symbol.collapsed = !symbol.collapsed;
+                symbol.collapsed = collapse;
                 if (symbol.collapsed)
                     $(node).next('.treelist').hide();
                 else
                     $(node).next('.treelist').show();
                 node.className = this.getSymbolCssClass(symbol);
             }
-        } else
+        } 
+        else {
             $(node).next('.treelist').toggle();
+        }
     }
 
     //#endregion
