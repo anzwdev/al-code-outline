@@ -71,16 +71,22 @@ class SymbolsTreeView {
         $('#symbols').contextMenu({
             selector: '.shead', 
             callback: function(key, options) {
-                me.sendMessage({
-                    command : key,
-                    path : me._symTree.getNodePath(this),
-                    selpaths : me._symTree.getSelectedPaths(this),
-                    uid : $(this).data('uid'),
-                    kind : $(this).data('kind')
-                });
+                if (key === "expandcollapse") {
+                    me._symTree.toggleChildNodes(this);
+                }
+                else {
+                    me.sendMessage({
+                        command : key,
+                        path : me._symTree.getNodePath(this),
+                        selpaths : me._symTree.getSelectedPaths(this),
+                        uid : $(this).data('uid'),
+                        kind : $(this).data('kind')
+                    });
+                }
             },
             items: {
                 "definition": {name: "Go to definition"},
+                "expandcollapse": {name: "Expand/collapse nodes"},
             }
         });
     }
