@@ -86,7 +86,7 @@ class SymbolsTreeView {
             },
             items: {
                 "definition": {name: "Go to definition"},
-                "expandcollapse": {name: "Expand/collapse nodes"},
+                "expandcollapse": {name: "Expand/collapse child nodes"},
             }
         });
     }
