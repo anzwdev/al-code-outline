@@ -334,4 +334,40 @@ export class AZSymbolInformation {
         return dataPath;
     }
 
+    getObjectTypeName() : string {
+        switch (this.kind)
+        {
+            case AZSymbolKind.TableObject:
+                return "Table";
+            case AZSymbolKind.PageObject:
+                return "Page";
+            case AZSymbolKind.ReportObject:
+                return "Report";
+            case AZSymbolKind.XmlPortObject:
+                return "XmlPort";
+            case AZSymbolKind.QueryObject:
+                return "Query";
+            case AZSymbolKind.CodeunitObject:
+                return "Codeunit";
+            case AZSymbolKind.ControlAddInObject:
+                return "ControlAddIn";
+            case AZSymbolKind.PageExtensionObject:
+                return "PageExtension";
+            case AZSymbolKind.TableExtensionObject:
+                return "TableExtension";
+            case AZSymbolKind.ProfileObject:
+                return "Profile";
+            case AZSymbolKind.PageCustomizationObject:
+                return "PageCustomization";
+            case AZSymbolKind.EnumType:
+                return "Enum";
+            case AZSymbolKind.DotNetPackage:
+                return "DotNetPackage";
+            case AZSymbolKind.EnumExtensionType:
+                return "EnumExtension";
+            default:
+                return "Undefined";
+        }
+    }
+
 }

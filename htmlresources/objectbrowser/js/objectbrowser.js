@@ -267,6 +267,10 @@ class ObjectBrowser {
                         disabled: function(key, opt) {
                          return ($(this).data("objt") != "Page");
                         }},
+                    "sep4": "---------",
+                    "copysel": {
+                        name: "Copy Selected"
+                    }
                 }
             });
         });
