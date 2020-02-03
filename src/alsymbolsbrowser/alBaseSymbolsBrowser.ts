@@ -92,7 +92,7 @@ export class ALBaseSymbolsBrowser extends BaseWebViewEditor {
     }
 
     protected async copySelected(path : number[] | undefined, selPaths: number[][] | undefined) {
-        let symbolList = await this.getObjectsFromPath(selPaths, AZSymbolKind.Undefined);
+        let symbolList = await this.getObjectsFromPath(selPaths, AZSymbolKind.AnyALObject);
         if (symbolList) {
             let objectsText = 'Type\tId\tName';
             for (let i=0; i<symbolList.length; i++) {
