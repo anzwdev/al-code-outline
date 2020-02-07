@@ -87,17 +87,23 @@ class ObjectBrowser {
 
     initializeContextMenu() {
         let browser = this;
-
+        
+        //object list context menu
         $('#objects').contextMenu({
             selector: '.shead', 
             callback: function(key, options) {
-                browser.sendMessage({
-                    command : key,
-                    path : browser._objTree.getNodePath(this),
-                    selpaths : browser._objTree.getSelectedPaths(this),
-                    uid : $(this).data('uid'),
-                    kind : $(this).data('kind')
-                });
+                if (key === "expandcollapse") {
+                    browser._objTree.toggleChildNodes(this);
+                }
+                else {
+                    browser.sendMessage({
+                        command : key,
+                        path : browser._objTree.getNodePath(this),
+                        selpaths : browser._objTree.getSelectedPaths(this),
+                        uid : $(this).data('uid'),
+                        kind : $(this).data('kind')
+                    });
+                }
             },
             items: {
                 "definition": {name: "Go to definition"},
@@ -147,8 +153,25 @@ class ObjectBrowser {
                     disabled: function(key, opt) {
                         return (Number($(this).data("kind")) != ALSymbolKind.PageObject);
                     }},
+                "sep4": "---------",
+                "expandcollapse": {name: "Expand/collapse child nodes"},
+                }
+        });
+
+        //object symbols context menu
+        $('#symbols').contextMenu({
+            selector: '.shead', 
+            callback: function(key, options) {
+                if (key === "expandcollapse") {
+                    browser._symTree.toggleChildNodes(this);
+                }
+            },
+            items: {
+                "expandcollapse": {name: "Expand/collapse child nodes"},
             }
         });
+
+
     }
 
     onMessage(message) {     

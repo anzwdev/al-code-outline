@@ -1,5 +1,12 @@
 # Change Log
 
+## 1.0.28
+ - "Expand/Collapse child nodes" command in Symbols Tree View and AL Object Browser by rvanbekkum 
+ - Github issue #75 - Symbols tree view scrollbars missing in AL Object Browser
+ - Github issue #77 - Copy from Object Explorer 
+
+ Thank you rvanbekkum for your pull request and issue reports and GreatScott000 for request #77
+ 
 ## 1.0.27
  - New functionality added by Stefano Primo:
    - code actions fixing CodeCop diagnostics 
@@ -7,6 +14,8 @@
      - AA0137 (remove variable),
      - AA0139 (add CopyStr)
    - command to add missing application areas
+
+   Thank you Stefano Primo for your pull request
 
 ## 1.0.26
  - Github issue #74 - Missing global variables in the symbols tree

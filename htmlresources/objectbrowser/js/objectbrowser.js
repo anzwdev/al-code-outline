@@ -9,6 +9,11 @@ class ObjectBrowser {
             {name:'name', caption:'Name', style: 'width:auto;'},
             {name:'library', caption:'Library', style: 'width:auto;'}
         ], 'tableModeBtn', '', 'Loading objects, please wait...');
+        
+        this._objList.onClipboardCopy = (() => {
+            me.copySelected();
+        });
+
 
         this.updateModeButtonStyle(true);
         
@@ -21,11 +26,19 @@ class ObjectBrowser {
         //prevent standard Ctrl+A inside tree elements
         $('body').on('keydown', '#objects', function(evt)
         {
-            if ((!evt.ctrlKey) || (evt.keyCode !== 65))
-                return;
-            evt.preventDefault();
-            me._objList.selectAll();
-            return false;
+            if (evt.ctrlKey) {
+                switch (evt.keyCode) {
+                    case 65:
+                        evt.preventDefault();
+                        me._objList.selectAll();
+                        return false;
+                    case 67:
+                        evt.preventDefault();
+                        me.copySelected();
+                        return false;
+                }
+            }
+            return;
         });
 
         this.initModeBtnEventHandlers('tableModeBtn', 'Table', '', 'pageModeBtn');
@@ -77,6 +90,10 @@ class ObjectBrowser {
         this.sendMessage({
             command: 'documentLoaded'
         });
+    }
+
+    copySelected() {
+        this.execObjCommand("copysel", undefined, ALSymbolKind.Undefined);
     }
 
     initModeBtnEventHandlers(buttonId, mode, prevId, nextId) {
@@ -216,7 +233,10 @@ class ObjectBrowser {
             $('#objects').contextMenu({
                 selector: 'tr', 
                 callback: function(key, options) {
-                    me.execObjCommand(key, $(this)[0], $(this).data("objt"));
+                    let kind = $(this).data("objt");
+                    if (key == "copysel")
+                        kind = ALSymbolKind.Undefined;
+                    me.execObjCommand(key, $(this)[0], kind);
                 },
                 items: {
                     "definition": {name: "Go to definition"},
@@ -267,6 +287,10 @@ class ObjectBrowser {
                         disabled: function(key, opt) {
                          return ($(this).data("objt") != "Page");
                         }},
+                    "sep4": "---------",
+                    "copysel": {
+                        name: "Copy Selected"
+                    }
                 }
             });
         });
@@ -358,7 +382,7 @@ class ObjectBrowser {
                 mainItem = items[0];
 
             for (let i=0; i<items.length; i++) {
-                if (items[i].type == objtype) {
+                if ((items[i].type == objtype) || (objtype == ALSymbolKind.Undefined)) {
                     if (items[i].dataidx == mainItem.dataidx)
                         selFound = true;
                     selPaths.push(items[i].path);

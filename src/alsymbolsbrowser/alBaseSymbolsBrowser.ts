@@ -65,6 +65,9 @@ export class ALBaseSymbolsBrowser extends BaseWebViewEditor {
             case 'extendpage':
                 this.createPageExt(message.path, message.selpaths);
                 return true;
+            case 'copysel':
+                this.copySelected(message.path, message.selpaths);
+                return true;
         }
 
         return false;
@@ -86,6 +89,21 @@ export class ALBaseSymbolsBrowser extends BaseWebViewEditor {
         }
 
         return objList;
+    }
+
+    protected async copySelected(path : number[] | undefined, selPaths: number[][] | undefined) {
+        let symbolList = await this.getObjectsFromPath(selPaths, AZSymbolKind.AnyALObject);
+        if (symbolList) {
+            let objectsText = 'Type\tId\tName';
+            for (let i=0; i<symbolList.length; i++) {
+                symbolList[i]
+                objectsText += ('\n' + 
+                    symbolList[i].getObjectTypeName() + '\t' + 
+                    symbolList[i].id.toString() + '\t' + 
+                    symbolList[i].name);
+            }
+            vscode.env.clipboard.writeText(objectsText);
+        }
     }
 
     protected async createPage(path : number[] | undefined, selPaths: number[][] | undefined, pageType : string) {
