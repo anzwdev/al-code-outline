@@ -1,49 +1,15 @@
-body {
-    position: absolute;
-    left: 0;
-    right: 0;
-    top: 0;
-    bottom: 0;
-    display: flex;
-    flex-direction: column;
-    align-items: stretch;
-    justify-content: stretch;
-    padding: 0 !important;
+#searchanalyzers {
+    flex: 1 1 25%;
 }
-input:focus, select:focus, div:focus, button:focus {
-    outline-color: var(--vscode-focusBorder) !important;
+#searchseverity {
+    flex: 1 1 15%;
 }
-input, select {
-    background: var(--vscode-input-background);
-    border: 1px solid var(--vscode-panel-border);
-    color: var(--vscode-input-foreground);
+#searchid {
+    flex: 1 1 15%;
 }
-input:focus, select:focus, div:focus {
-    outline-color: var(--vscode-focusBorder) !important;
+#searchtitle {
+    flex: 1 1 45%;
 }
-
-#search .searchinput, #search .ms-options-wrap {
-    margin: 5px 0px 5px 5px;
-}
-
-#search {
-    flex: 0 0 30px;
-    display: flex;
-    flex-direction: row;
-    align-items: center;
-    justify-content: stretch;
-    padding: 0 5px;
-}
-#search .searchinput, #search .ms-options-wrap {
-    flex: 1 1 auto;
-    display: flex;
-    flex-direction: row;
-    margin: 5px 0px 5px 5px;
-}
-#search .searchcaption {
-    flex: 0 0 auto;
-} 
-
 #rules {
     flex: 1 1 auto;
     border: 1px solid var(--vscode-panel-border);

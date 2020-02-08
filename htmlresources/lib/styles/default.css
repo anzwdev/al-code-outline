@@ -1,0 +1,48 @@
+body {
+    position: absolute;
+    left: 0;
+    right: 0;
+    top: 0;
+    bottom: 0;
+    display: flex;
+    flex-direction: column;
+    align-items: stretch;
+    justify-content: stretch;
+    padding: 0 !important;
+}
+input, select {
+    background: var(--vscode-input-background);
+    border: 1px solid var(--vscode-panel-border);
+    color: var(--vscode-input-foreground);
+}
+input:focus, select:focus, div:focus {
+    outline-color: var(--vscode-focusBorder) !important;
+}
+.search .btn:focus {
+    outline-style: double;
+    outline-color: var(--vscode-focusBorder) !important;
+}
+.search {
+    flex: 0 0 auto;
+    display: flex;
+}
+.search .btn {
+    flex: 0 0 auto;
+    margin: 5px;
+}
+.search .searchinput, .search .ms-options-wrap {
+    margin: 5px 0px 5px 5px;
+}
+.search .btn {
+    background-color: var(--vscode-button-background);
+    color: var(--vscode-button-foreground);
+    border: 0px solid var(--vscode-panel-border);
+    font-size: var(--font-size);
+    font-weight: var(--font-weight);    
+    font-family: var(--font-family);
+    padding:5px;
+    white-space: nowrap;
+}
+.search .btn:hover, .icobtn:hover {
+    background-color: var(--vscode-button-hoverBackground);
+}
