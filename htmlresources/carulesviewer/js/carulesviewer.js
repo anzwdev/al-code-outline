@@ -12,15 +12,38 @@ class CARulesViewer {
             this.execRuleCommand('copytable', undefined);
         });
 
-        this._analyzersSel = document.getElementById('analyzers');
+        this._analyzersSel = document.getElementById('searchanalyzers');
+        this._severitySel = document.getElementById('searchseverity');
 
+        $('#searchseverity').multiselect({
+            selectAll: true,
+            maxPlaceholderOpts: 1,
+            texts: {
+                placeholder: 'Severity filter',
+                selectedOptions: ' selected'
+            }
+        });
+    
         // Handle messages sent from the extension to the webview
         window.addEventListener('message', event => {
             this.onMessage(event.data);
         });
 
-        document.getElementById('analyzers').addEventListener('change', event => {
+        this._analyzersSel.addEventListener('change', event => {
             this.onAnalyzerChanged();
+        });
+        document.getElementById('searchbtn').addEventListener('click', event => {
+            this.search();
+        });
+
+        document.getElementById('searchseverity').addEventListener('keydown', event => {
+            this.onSearchKeyDown(event);
+        });
+        document.getElementById('searchid').addEventListener('keydown', event => {
+            this.onSearchKeyDown(event);
+        });
+        document.getElementById('searchtitle').addEventListener('keydown', event => {
+            this.onSearchKeyDown(event);
         });
 
         this.initContextMenu();
@@ -68,9 +91,16 @@ class CARulesViewer {
     setRules(rules) {
         if (!rules)
             rules = [];
+        //keep item source index
         for (let i=0; i<rules.length; i++) {
             rules[i].idx = i;
         }
+        //sort items
+        rules.sort((a,b) => {
+            if (a.id < b.id) return -1;
+            if (a.id > b.id) return 1;
+            return 0;
+        });
         this._rulesTab.setData(rules);
     }
 
@@ -128,6 +158,37 @@ class CARulesViewer {
         }
     }
 
+    onSearchKeyDown(e) {
+        let handled = false;
+
+        switch (e.which) {
+            case 13:
+                this.search();
+                handled = true;
+                break;
+        }
+
+        if (handled) {
+            e.preventDefault();
+            return false;
+        }
+    }
+
+    search() {
+        let sevList = [];
+        let sevElem = document.getElementById('searchseverity');
+        let options = sevElem.options;
+        for (let i=0; i<options.length; i++) {
+            if (options[i].selected)
+                sevList.push(options[i].value);
+        }
+
+        this._rulesTab._columns[2].userFilterArray = sevList;
+        this._rulesTab._columns[0].userFilter = document.getElementById('searchid').value;
+        this._rulesTab._columns[1].userFilter = document.getElementById('searchtitle').value;
+        this._rulesTab.compileFilters();
+        this._rulesTab.renderData();
+    }
 
 
 }
