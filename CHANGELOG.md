@@ -1,5 +1,11 @@
 # Change Log
 
+## 1.0.29
+ - Github issue #70 - "Show Code Analyzer Rules" - Sorting
+ - Github issue #71 - "Show Code Analyzer Rules" - Filtering
+
+ Thank you rvanbekkum for reporting these issues
+
 ## 1.0.28
  - "Expand/Collapse child nodes" command in Symbols Tree View and AL Object Browser by rvanbekkum 
  - Github issue #75 - Symbols tree view scrollbars missing in AL Object Browser

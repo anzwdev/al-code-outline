@@ -91,9 +91,16 @@ class CARulesViewer {
     setRules(rules) {
         if (!rules)
             rules = [];
+        //keep item source index
         for (let i=0; i<rules.length; i++) {
             rules[i].idx = i;
         }
+        //sort items
+        rules.sort((a,b) => {
+            if (a.id < b.id) return -1;
+            if (a.id > b.id) return 1;
+            return 0;
+        });
         this._rulesTab.setData(rules);
     }
 
