@@ -79,6 +79,7 @@ Extension adds VS Code editor code actions to some of al elements to help develo
  - "dataitem" on reports
  - "dataitem" on queries 
 There are also "Add multiple field elements" and "Add multiple field attributes" actions available at "tableelement", "fieldelement" and "fieldattribute" elements on xml ports.
+Fields can be added is selection or alphabetic order, it can be controlled using "alOutline.fieldsSelectionOrder" setting. Default value is "selection order".
 
 ![Add multiple fields](resources/screen2-addfieldscodeaction.gif)
 

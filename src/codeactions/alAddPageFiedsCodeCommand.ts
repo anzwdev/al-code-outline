@@ -4,6 +4,7 @@ import { ALSyntaxWriter } from '../allanguage/alSyntaxWriter';
 import { AZSymbolKind } from '../symbollibraries/azSymbolKind';
 import { AZSymbolInformation } from '../symbollibraries/azSymbolInformation';
 import { ALBaseAddFieldsCodeCommand } from './alBaseAddFieldsCodeCommand';
+import { FieldsSelector } from './fieldsSelector';
 
 export class ALAddPageFieldsCodeCommand extends ALBaseAddFieldsCodeCommand {
     constructor(context : DevToolsExtensionContext) {
@@ -46,10 +47,8 @@ export class ALAddPageFieldsCodeCommand extends ALBaseAddFieldsCodeCommand {
             return;
 
         //ask for fields
-        let selectedFields = await vscode.window.showQuickPick(fieldNames, {
-            canPickMany: true,
-            placeHolder: 'Select table fields'
-        });
+        let fieldsSelector = new FieldsSelector();
+        let selectedFields = await fieldsSelector.selectFields('Select table fields', fieldNames);
         if (!selectedFields)
             return;
 
