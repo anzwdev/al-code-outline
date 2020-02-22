@@ -1,5 +1,10 @@
 # Change Log
 
+## 1.0.30
+ - Github issue #82 - Add multiple fields in the order in which they have been selected
+
+ Thank you Erik Hougaard for the idea
+
 ## 1.0.29
  - Github issue #70 - "Show Code Analyzer Rules" - Sorting
  - Github issue #71 - "Show Code Analyzer Rules" - Filtering

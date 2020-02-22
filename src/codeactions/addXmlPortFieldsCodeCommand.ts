@@ -4,6 +4,7 @@ import { DevToolsExtensionContext } from "../devToolsExtensionContext";
 import { AZSymbolKind } from '../symbollibraries/azSymbolKind';
 import { ALSyntaxWriter } from '../allanguage/alSyntaxWriter';
 import { settings } from 'cluster';
+import { FieldsSelector } from './fieldsSelector';
 
 export class ALAddXmlPortFieldsCodeCommand extends ALBaseAddFieldsCodeCommand {
     elementType: string;
@@ -36,10 +37,8 @@ export class ALAddXmlPortFieldsCodeCommand extends ALBaseAddFieldsCodeCommand {
             return;
 
         //ask for fields
-        let selectedFields = await vscode.window.showQuickPick(fieldNames, {
-            canPickMany: true,
-            placeHolder: 'Select table fields'
-        });
+        let fieldsSelector = new FieldsSelector();
+        let selectedFields = await fieldsSelector.selectFields('Select table fields', fieldNames);
         if (!selectedFields)
             return;
 

@@ -2,7 +2,7 @@
 	"name": "al-code-outline",
 	"displayName": "AZ AL Dev Tools/AL Code Outline",
 	"description": "AZ AL Development Tools: AL code outline, object browser, object creators",
-	"version": "1.0.29",
+	"version": "1.0.30",
 	"publisher": "andrzejzwierzchowski",
 	"engines": {
 		"vscode": "^1.40.0"
@@ -286,6 +286,11 @@
 						"type": "boolean",
 						"default": false,
 						"description": "Always open objects definitions in a new tab."
+					},
+					"alOutline.fieldsSelectionOrder": {
+						"type": "string",
+						"default": "selection order",
+						"enum": ["alphabetic", "selection order"]
 					}
 				}
 			}
