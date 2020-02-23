@@ -291,6 +291,11 @@
 						"type": "string",
 						"default": "selection order",
 						"enum": ["alphabetic", "selection order"]
+					},
+					"alOutline.fixCodeCopMissingParenthesesOnSave": {
+						"type": "boolean",
+						"default": false,
+						"description": "Fix Code Cop 'Missiong Parentheses' warning on save when 'editor.codeActionsOnSave' setting contains 'source.fixAll' value"
 					}
 				}
 			}
