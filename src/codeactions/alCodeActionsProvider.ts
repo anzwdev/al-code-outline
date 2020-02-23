@@ -73,7 +73,7 @@ export class ALCodeActionsProvider implements vscode.CodeActionProvider {
                 actions.push(action);
             }
             // Sort procedures
-            if (ALSortProceduresCodeCommand.getMethodSymbolKinds().indexOf(symbol.kind) > -1) 
+            if (ALSortProceduresCodeCommand.getMethodSymbolKinds().indexOf(symbol.kind) > -1 && symbol.selectionRange.start.line == range.start.line) 
             {
                 let action = new vscode.CodeAction("Sort procedures", vscode.CodeActionKind.QuickFix);
                 action.command = { command: this._sortProceduresCommand.name, title: 'Sort procedures' };
