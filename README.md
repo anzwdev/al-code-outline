@@ -73,13 +73,15 @@ When new objects are created, generators use "CRS AL Language Extension" templat
 
 ### Code actions
 
-Extension adds VS Code editor code actions to some of al elements to help developers modify or insert code quickly. At this moment "Add multiple fields" code action is available when cursor is at these elements in the editor:
- - "group" and "repeater" on pages
- - "group", "repeater", "addfirst", "addlast", "addafter" and "addbefore" on page extensions
- - "dataitem" on reports
- - "dataitem" on queries 
-There are also "Add multiple field elements" and "Add multiple field attributes" actions available at "tableelement", "fieldelement" and "fieldattribute" elements on xml ports.
-Fields can be added is selection or alphabetic order, it can be controlled using "alOutline.fieldsSelectionOrder" setting. Default value is "selection order".
+Extension adds VS Code editor code actions to some of al elements to help developers modify or insert code quickly. At this moment there are 2 types of actions available
+ - "Sort procedures" when cursor is at the first line of a procedure. This action will sort procedures of the same type (i.e. local) in a natural order
+ - "Add multiple fields" when cursor is at these elements in the editor:
+  - "group" and "repeater" on pages
+  - "group", "repeater", "addfirst", "addlast", "addafter" and "addbefore" on page extensions
+  - "dataitem" on reports
+  - "dataitem" on queries 
+  There are also "Add multiple field elements" and "Add multiple field attributes" actions available at "tableelement", "fieldelement" and "fieldattribute" elements on xml ports.
+  Fields can be added is selection or alphabetic order, it can be controlled using "alOutline.fieldsSelectionOrder" setting. Default value is "selection order".
 
 ![Add multiple fields](resources/screen2-addfieldscodeaction.gif)
 

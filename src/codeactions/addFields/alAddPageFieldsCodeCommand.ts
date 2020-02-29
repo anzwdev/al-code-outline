@@ -1,8 +1,8 @@
 import * as vscode from 'vscode';
-import { DevToolsExtensionContext } from '../devToolsExtensionContext';
-import { ALSyntaxWriter } from '../allanguage/alSyntaxWriter';
-import { AZSymbolKind } from '../symbollibraries/azSymbolKind';
-import { AZSymbolInformation } from '../symbollibraries/azSymbolInformation';
+import { DevToolsExtensionContext } from '../../devToolsExtensionContext';
+import { ALSyntaxWriter } from '../../allanguage/alSyntaxWriter';
+import { AZSymbolKind } from '../../symbollibraries/azSymbolKind';
+import { AZSymbolInformation } from '../../symbollibraries/azSymbolInformation';
 import { ALBaseAddFieldsCodeCommand } from './alBaseAddFieldsCodeCommand';
 import { FieldsSelector } from './fieldsSelector';
 

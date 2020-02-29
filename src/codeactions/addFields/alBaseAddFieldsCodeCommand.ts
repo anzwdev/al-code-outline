@@ -1,8 +1,8 @@
 import * as vscode from 'vscode';
-import { DevToolsExtensionContext } from "../devToolsExtensionContext";
-import { ALCodeCommand } from './alCodeCommand';
-import { AZSymbolInformation } from '../symbollibraries/azSymbolInformation';
-import { AZSymbolKind } from '../symbollibraries/azSymbolKind';
+import { DevToolsExtensionContext } from "../../devToolsExtensionContext";
+import { ALCodeCommand } from '../alCodeCommand';
+import { AZSymbolInformation } from '../../symbollibraries/azSymbolInformation';
+import { AZSymbolKind } from '../../symbollibraries/azSymbolKind';
 
 export class ALBaseAddFieldsCodeCommand extends ALCodeCommand {
     constructor(context : DevToolsExtensionContext, commandName: string) {

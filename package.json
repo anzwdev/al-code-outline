@@ -2,7 +2,7 @@
 	"name": "al-code-outline",
 	"displayName": "AZ AL Dev Tools/AL Code Outline",
 	"description": "AZ AL Development Tools: AL code outline, object browser, object creators",
-	"version": "1.0.30",
+	"version": "1.0.31",
 	"publisher": "andrzejzwierzchowski",
 	"engines": {
 		"vscode": "^1.40.0"
@@ -291,6 +291,11 @@
 						"type": "string",
 						"default": "selection order",
 						"enum": ["alphabetic", "selection order"]
+					},
+					"alOutline.fixCodeCopMissingParenthesesOnSave": {
+						"type": "boolean",
+						"default": false,
+						"description": "Fix Code Cop 'Missiong Parentheses' warning on save when 'editor.codeActionsOnSave' setting contains 'source.fixAll' value"
 					}
 				}
 			}
