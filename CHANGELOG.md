@@ -1,5 +1,10 @@
 # Change Log
 
+## 1.0.31
+ - "Sort procedures" command and code action by rvanbekkum
+
+ Thank you rvanbekkum for your pull request
+
 ## 1.0.30
  - Github issue #82 - Add multiple fields in the order in which they have been selected
 
