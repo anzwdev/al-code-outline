@@ -290,7 +290,10 @@
 					"alOutline.fieldsSelectionOrder": {
 						"type": "string",
 						"default": "selection order",
-						"enum": ["alphabetic", "selection order"]
+						"enum": [
+							"alphabetic",
+							"selection order"
+						]
 					},
 					"alOutline.fixCodeCopMissingParenthesesOnSave": {
 						"type": "boolean",
