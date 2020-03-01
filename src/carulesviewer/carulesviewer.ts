@@ -4,14 +4,19 @@ import { BaseWebViewEditor } from "../webviews/baseWebViewEditor";
 import { DevToolsExtensionContext } from "../devToolsExtensionContext";
 import { ToolsGetCodeAnalyzersRulesRequest } from '../langserver/toolsGetCodeAnalyzersRulesRequest';
 import { TextEditorHelper } from '../tools/textEditorHelper';
+import { CodeAnalyzerInfo } from './codeAnalyzerInfo';
+import { CARuleInfo } from '../langserver/caRuleInfo';
 
 export class CARulesViewer extends BaseWebViewEditor {
     protected _devToolsContext: DevToolsExtensionContext;
-    protected _rules: any;
+    protected _rules: CARuleInfo[] | undefined;
+    protected _analyzers: CodeAnalyzerInfo[];
 
     constructor(devToolsContext : DevToolsExtensionContext) {
         super(devToolsContext.vscodeExtensionContext, "Code Analyzers");
         this._devToolsContext = devToolsContext;
+        this._analyzers = [];
+        this.loadCodeAnalyzers();
     }
 
     protected getHtmlContentPath() : string {
@@ -22,59 +27,65 @@ export class CARulesViewer extends BaseWebViewEditor {
         return 'azALDevTools.CARulesViewer';
     }
 
-    protected async onDocumentLoaded() {
-        let analyzers = [
-            {
-                label: '${AppSourceCop}',
-                value: '${AppSourceCop}'
-            }, 
-            {
-                label:'${CodeCop}',
-                value:'${CodeCop}'
-            }, 
-            {
-                label:'${PerTenantExtensionCop}',
-                value:'${PerTenantExtensionCop}'
-            }, 
-            {
-                label:'${UICop}',
-                value:'${UICop}'
-            }];
-            
-        //detect other code analyzers
+    protected getAnalyzerInfo(value: string): CodeAnalyzerInfo | undefined {
+        value = value.toLowerCase();
+        for (let i=0; i<this._analyzers.length; i++) {
+            if (this._analyzers[i].value.toLowerCase() == value)
+                return this._analyzers[i];
+        }
+        return undefined;
+    }
+
+    protected loadCodeAnalyzers() {
+        this._analyzers.push(new CodeAnalyzerInfo('${AppSourceCop}', '${AppSourceCop}', false));
+        this._analyzers.push(new CodeAnalyzerInfo('${CodeCop}', '${CodeCop}', false));
+        this._analyzers.push(new CodeAnalyzerInfo('${PerTenantExtensionCop}', '${PerTenantExtensionCop}', false));
+        this._analyzers.push(new CodeAnalyzerInfo('${UICop}', '${UICop}', false));
+
         let alConfig = vscode.workspace.getConfiguration('al', undefined);
         let codeAnalyzersSetting = alConfig.get<string[]|undefined>("codeAnalyzers");
         if (codeAnalyzersSetting) {
             for (let i=0; i<codeAnalyzersSetting.length; i++) {
-                if (!codeAnalyzersSetting[i].startsWith('${')) {
-                    analyzers.push({
-                        label: path.parse(codeAnalyzersSetting[i]).name,
-                        value: codeAnalyzersSetting[i]
-                    });
+                if (codeAnalyzersSetting[i].startsWith('${')) {
+                    let analyzerInfo = this.getAnalyzerInfo(codeAnalyzersSetting[i].trim());
+                    if (analyzerInfo)
+                        analyzerInfo.selected = true;
+                } else {
+                    this._analyzers.push(new CodeAnalyzerInfo(path.parse(codeAnalyzersSetting[i]).name,
+                        codeAnalyzersSetting[i], true));
+                }
+            }
+        }
+    }
+
+    protected async loadRules() {
+        this._rules = [];
+        for (let i=0; i<this._analyzers.length; i++) {
+            let request: ToolsGetCodeAnalyzersRulesRequest = 
+                new ToolsGetCodeAnalyzersRulesRequest(this._analyzers[i].value);
+            let response = 
+                await this._devToolsContext.toolsLangServerClient.getCodeAnalyzersRules(request);
+            if ((response) && (response.rules)) {
+                for (let ruleIdx = 0; ruleIdx < response.rules.length; ruleIdx++) {
+                    response.rules[i].analyzer = this._analyzers[i].label;
+                    this._rules.push(response.rules[i]);
                 }
             }
         }
 
+        this.sendMessage({
+            command: 'setRules',
+            data: this._rules});
+    }
+
+    protected async onDocumentLoaded() {            
         //send list of analyzers to the webview
         this.sendMessage({
             command: 'setAnalyzers',
-            data: analyzers
+            data: this._analyzers
         });
-
-    }
-
-    protected async onAnalyzerSelected(name: string) {
-        let request: ToolsGetCodeAnalyzersRulesRequest = new ToolsGetCodeAnalyzersRulesRequest(name);
-        let response = await this._devToolsContext.toolsLangServerClient.getCodeAnalyzersRules(request);
-        if (response) {
-            this._rules = response.rules;
-            this.sendMessage({
-                command: 'setRules',
-                data: response.rules
-            });
-        } else
-            this._rules = undefined;
-
+        //send analyzers rules to the web view
+        await this.loadRules();
     }
 
     protected processWebViewMessage(message : any) : boolean {
@@ -83,10 +94,6 @@ export class CARulesViewer extends BaseWebViewEditor {
 
         if (message) {
             switch (message.command) {
-                case 'analyzerselected':
-                    if (message.name)
-                        this.onAnalyzerSelected(message.name);
-                    return true;
                 case 'newruleset':
                     this.newRuleSet(message.selrules);
                     return true;
@@ -120,10 +127,13 @@ export class CARulesViewer extends BaseWebViewEditor {
     }
 
     protected copyTable(rulesIndexes: number[]) {
-        let rulesText = 'Id\tTitle\tDefault Severity';
+        let rulesText = 'Id\tTitle\tDefault Severity\tAnalyzer';
         for (let i=0; i<rulesIndexes.length; i++) {
             let rule = this._rules[rulesIndexes[i]];
-            rulesText += ('\n' + rule.id + '\t' + rule.title + '\t' + rule.defaultSeverity);
+            rulesText += ('\n' + rule.id + '\t' + 
+                rule.title + '\t' + 
+                rule.defaultSeverity + '\t' +
+                rule.analyzer);
         }
         vscode.env.clipboard.writeText(rulesText);
     }

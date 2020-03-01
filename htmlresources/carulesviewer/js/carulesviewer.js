@@ -5,7 +5,8 @@ class CARulesViewer {
         this._rulesTab = new AZGridView('rules', [
             {name:'id', caption:'Id', style: 'width:100px;'},
             {name:'title', caption:'Title' },
-            {name:'defaultSeverity', caption:'Severity', style: 'width:100px' }
+            {name:'defaultSeverity', caption:'Severity', style: 'width:100px' },
+            {name:'analyzer', caption:'Analyzer', style: 'width:100px' }
         ]);
         this._rulesTab.clipboardEnabled = true;
         this._rulesTab.onClipboardCopy = (() => {
@@ -22,20 +23,20 @@ class CARulesViewer {
                 placeholder: 'Severity filter',
                 selectedOptions: ' selected'
             }
-        });
-    
+        });      
+
         // Handle messages sent from the extension to the webview
         window.addEventListener('message', event => {
             this.onMessage(event.data);
         });
 
-        this._analyzersSel.addEventListener('change', event => {
-            this.onAnalyzerChanged();
-        });
         document.getElementById('searchbtn').addEventListener('click', event => {
-            this.search();
+            this.search(true);
         });
 
+        document.getElementById('searchanalyzers').addEventListener('keydown', event => {
+            this.onSearchKeyDown(event);
+        });
         document.getElementById('searchseverity').addEventListener('keydown', event => {
             this.onSearchKeyDown(event);
         });
@@ -78,14 +79,21 @@ class CARulesViewer {
                 let option = document.createElement('option');
                 option.label = data[i].label;
                 option.value = data[i].value;
+                option.innerText = data[i].label;
+                option.selected = data[i].selected
                 this._analyzersSel.appendChild(option);
             }
-
-            if (data.length > 0) {
-                this._analyzersSel.value = data[0].value;
-                this.onAnalyzerChanged();
-            }
         }
+
+        $('#searchanalyzers').multiselect({
+            selectAll: true,
+            maxPlaceholderOpts: 1,
+            texts: {
+                placeholder: 'Analyzer filter',
+                selectedOptions: ' selected'
+            }
+        });
+
     }
 
     setRules(rules) {
@@ -101,14 +109,9 @@ class CARulesViewer {
             if (a.id > b.id) return 1;
             return 0;
         });
+        //filter items
+        this.search(false);
         this._rulesTab.setData(rules);
-    }
-
-    onAnalyzerChanged() {
-        this.sendMessage({
-            command: 'analyzerselected',
-            name: this._analyzersSel.value
-        });
     }
 
     initContextMenu() {  
@@ -163,7 +166,7 @@ class CARulesViewer {
 
         switch (e.which) {
             case 13:
-                this.search();
+                this.search(true);
                 handled = true;
                 break;
         }
@@ -174,21 +177,28 @@ class CARulesViewer {
         }
     }
 
-    search() {
-        let sevList = [];
-        let sevElem = document.getElementById('searchseverity');
-        let options = sevElem.options;
-        for (let i=0; i<options.length; i++) {
-            if (options[i].selected)
-                sevList.push(options[i].value);
-        }
+    search(render) {
+        let sevList = this.getSelOptionsList('searchseverity');
+        let analyzersList = this.getSelOptionsList('searchanalyzers');
 
-        this._rulesTab._columns[2].userFilterArray = sevList;
         this._rulesTab._columns[0].userFilter = document.getElementById('searchid').value;
         this._rulesTab._columns[1].userFilter = document.getElementById('searchtitle').value;
+        this._rulesTab._columns[2].userFilterArray = sevList;
+        this._rulesTab._columns[3].userFilterArray = analyzersList;
         this._rulesTab.compileFilters();
-        this._rulesTab.renderData();
+        if (render)
+            this._rulesTab.renderData();
     }
 
+    getSelOptionsList(id) {
+        let selList = [];
+        let selElem = document.getElementById(id);
+        let options = selElem.options;
+        for (let i=0; i<options.length; i++) {
+            if (options[i].selected)
+                selList.push(options[i].value);
+        }
+        return selList;
+    }
 
 }
