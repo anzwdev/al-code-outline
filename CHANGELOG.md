@@ -1,5 +1,10 @@
 # Change Log
 
+## 1.0.32
+ - Github enhancement #89 - Display code analyzer rules from more than one analyzer
+
+ Thank you rvanbekkum for the idea
+
 ## 1.0.31
  - "Sort procedures" command and code action by rvanbekkum
 
