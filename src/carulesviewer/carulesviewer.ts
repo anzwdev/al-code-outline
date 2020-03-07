@@ -60,15 +60,15 @@ export class CARulesViewer extends BaseWebViewEditor {
 
     protected async loadRules() {
         this._rules = [];
-        for (let i=0; i<this._analyzers.length; i++) {
+        for (let analyzerIdx=0; analyzerIdx<this._analyzers.length; analyzerIdx++) {
             let request: ToolsGetCodeAnalyzersRulesRequest = 
-                new ToolsGetCodeAnalyzersRulesRequest(this._analyzers[i].value);
+                new ToolsGetCodeAnalyzersRulesRequest(this._analyzers[analyzerIdx].value);
             let response = 
                 await this._devToolsContext.toolsLangServerClient.getCodeAnalyzersRules(request);
             if ((response) && (response.rules)) {
                 for (let ruleIdx = 0; ruleIdx < response.rules.length; ruleIdx++) {
-                    response.rules[i].analyzer = this._analyzers[i].label;
-                    this._rules.push(response.rules[i]);
+                    response.rules[ruleIdx].analyzer = this._analyzers[analyzerIdx].label;
+                    this._rules.push(response.rules[ruleIdx]);
                 }
             }
         }
