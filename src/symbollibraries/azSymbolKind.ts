@@ -143,6 +143,7 @@ export enum AZSymbolKind {
     DotNetPackageList = 50016,
     EnumTypeList = 50017,
     EnumExtensionTypeList = 50018,
+    InterfaceObjectList = 50059,
 
     Namespace = 50019,
     Package = 50020,
@@ -186,6 +187,13 @@ export enum AZSymbolKind {
     Document = 50053,
     SymbolGroup = 50054,
 
-    AnyALObject = 50055         //any symbol, used in requests to specify kind of objects
+    AnyALObject = 50055,         //any symbol, used in requests to specify kind of objects
+
+    //Syntax tree
+    SyntaxTreeNode = 50056,
+    SyntaxTreeToken = 50057,
+    SyntaxTreeTrivia = 50058
+
+    //Next available id 50060
 
 }

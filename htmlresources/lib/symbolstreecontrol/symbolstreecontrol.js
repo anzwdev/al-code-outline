@@ -189,7 +189,8 @@ class SymbolsTreeControl {
             (symbol.kind == ALSymbolKind.PageCustomizationObject) ||
             (symbol.kind == ALSymbolKind.EnumType) ||
             (symbol.kind == ALSymbolKind.EnumExtensionType) ||
-            (symbol.kind == ALSymbolKind.DotNetPackage)));
+            (symbol.kind == ALSymbolKind.DotNetPackage) ||
+            (symbol.kind == ALSymbolKind.Interface)));
     }
 
     //#region Node scrolling

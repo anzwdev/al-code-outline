@@ -143,6 +143,7 @@ export class FileBuilder {
             case AZSymbolKind.EnumType: return 'enum';
             case AZSymbolKind.DotNetPackage: return 'dotnetpackage';
             case AZSymbolKind.EnumExtensionType: return 'enumextension';
+            case AZSymbolKind.Interface: return 'interface';
        }
         return '';
     }
@@ -163,6 +164,7 @@ export class FileBuilder {
             case AZSymbolKind.EnumType: return 'Enum';
             case AZSymbolKind.DotNetPackage: return 'DotNetPackage';
             case AZSymbolKind.EnumExtensionType: return 'EnumExtension';
+            case AZSymbolKind.Interface: return 'Interface';
        }
         return '';
     }

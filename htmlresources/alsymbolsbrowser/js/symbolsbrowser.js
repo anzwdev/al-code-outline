@@ -260,6 +260,8 @@ class ObjectBrowser {
                 return ALSymbolKind.EnumType;
             case "DotNetPackage":
                 return ALSymbolKind.DotNetPackage;
+            case "Interface":
+                return ALSymbolKind.Interface;
             default:
             	return ALSymbolKind.Undefined;
         }

@@ -173,6 +173,7 @@ class ObjectBrowser {
         typeSort[ALSymbolKind.PageCustomizationObject] = 11;
         typeSort[ALSymbolKind.EnumType] = 12;
         typeSort[ALSymbolKind.DotNetPackage] = 13;
+        typeSort[ALSymbolKind.Interface] = 14;
 
         if ((this._data) && (this._data.length > 1)) {
             this._data.sort(function(a,b) {
@@ -222,6 +223,8 @@ class ObjectBrowser {
                 return "Enum";
             case ALSymbolKind.DotNetPackage:
                 return "DotNetPackage";
+            case ALSymbolKind.Interface:
+                return "Interface";
             default:
                 return "Undefined";
         }
