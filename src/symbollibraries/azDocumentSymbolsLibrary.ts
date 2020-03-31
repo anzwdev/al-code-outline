@@ -55,7 +55,7 @@ export class AZDocumentSymbolsLibrary extends AZSymbolsLibrary {
         if (document) {
             if (document.uri)
                 this._docUri = document.uri;
-            let symbolsLoad : Thenable<vscode.SymbolInformation[] | vscode.DocumentSymbol[] | undefined> =
+            let symbolsLoad : Thenable<vscode.SymbolInformation[] | vscode.DocumentSymbol[] | undefined> = 
                 vscode.commands.executeCommand<vscode.SymbolInformation[] | vscode.DocumentSymbol[]>('vscode.executeDocumentSymbolProvider', this._docUri);
 
             if (document.languageId == "al") {
@@ -72,7 +72,14 @@ export class AZDocumentSymbolsLibrary extends AZSymbolsLibrary {
                 if ((response) && (response.root)) {
                     newRootSymbol = AZSymbolInformation.fromAny(response.root);                    
                     //merge symbols with symbols returned from Microsoft AL Language Extension
-                    let symbols = await symbolsLoad;
+                    let symbols = undefined;
+                    try {
+                        symbols = await symbolsLoad;
+                    }
+                    catch (e) {
+                        symbols = undefined;
+                    }
+
                     if (symbols) {
                         let fieldSymbols = this.collectVsCodeFieldSymbols(symbols);
                         if ((fieldSymbols) && (fieldSymbols.length > 0))
@@ -83,8 +90,14 @@ export class AZDocumentSymbolsLibrary extends AZSymbolsLibrary {
             } else {
                 //use standard visual studio code symbols functionality to load symbols
                 newRootSymbol = AZSymbolInformation.create(AZSymbolKind.Document, this.displayName);                
-                let symbols = await symbolsLoad;
-                    //vscode.commands.executeCommand<vscode.SymbolInformation[] | vscode.DocumentSymbol[]>('vscode.executeDocumentSymbolProvider', this._docUri);
+                let symbols = undefined;
+                try {
+                    symbols = await symbolsLoad;
+                }
+                catch (e) {
+                    symbols = undefined;
+                }
+                //vscode.commands.executeCommand<vscode.SymbolInformation[] | vscode.DocumentSymbol[]>('vscode.executeDocumentSymbolProvider', this._docUri);
                 if ((symbols) && (symbols.length > 0)) {
                     if (this.isDocumentSymbolsList(symbols))
                         this.loadDocumentSymbols(newRootSymbol, symbols as vscode.DocumentSymbol[]);

@@ -306,6 +306,28 @@ export class ALLangServerProxy {
         
     }
 
+    async getInterfaceList(resourceUri: vscode.Uri | undefined) : Promise<string[]> {
+        let fileContent = "codeunit 0 _symbolcache implements  \n{\n}";
+        let list = await this.getCompletionForSourceCode(resourceUri, "Loading list of interfaces.", fileContent,
+            0, 36, 2, 1);
+
+        //process results
+        let out : string[] = [];
+        
+        if (list && list.items) {
+            for (let i=0; i<list.items.length; i++) {
+                let item = list.items[i];
+                if (item.kind === vscode.CompletionItemKind.Reference) {
+                    out.push(ALSyntaxHelper.fromNameText(item.label));
+                }
+            }
+        }
+
+        return out;
+        
+    }
+
+
     async getAvailablePageFieldList(resourceUri: vscode.Uri | undefined, pageName : string) : Promise<string[]> {
         pageName = ALSyntaxHelper.toNameText(pageName);
 
