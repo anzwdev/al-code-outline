@@ -1,5 +1,8 @@
 # Change Log
 
+## 1.0.34
+ - Github issue #98 - AL Object Browser crashes with older app files
+
 ## 1.0.33
  - Interfaces support added to the symbols windows
  - Codeunit wizard with interface support
