@@ -29,7 +29,7 @@ export class ALAddPageFieldsCodeCommand extends ALBaseAddFieldsCodeCommand {
 
         //collect existing page fields
         let existingFields : AZSymbolInformation[] = [];
-        pageSymbol.collectChildSymbols(AZSymbolKind.PageField, existingFields);
+        pageSymbol.collectChildSymbols(AZSymbolKind.PageField, true, existingFields);
 
         //load list of table fields
         let fieldNames: string[] | undefined;

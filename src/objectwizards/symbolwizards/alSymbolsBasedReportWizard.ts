@@ -97,7 +97,7 @@ export class ALSymbolsBasedReportWizard extends ALSymbolsBasedWizard {
         writer.writeStartNameSourceBlock("dataitem", dataSetName, writer.encodeName(tableSymbol.name));
 
         let fieldList : AZSymbolInformation[] = [];
-        tableSymbol.collectChildSymbols(AZSymbolKind.Field, fieldList);
+        tableSymbol.collectChildSymbols(AZSymbolKind.Field, true, fieldList);
         fieldList.forEach(
             item => {
                 writer.writeNameSourceBlock("column", writer.createName(item.name), writer.encodeName(item.name));

@@ -274,12 +274,13 @@ export class AZSymbolInformation {
         return 'undefined';
     }
 
-    public collectChildSymbols(symbolKind: AZSymbolKind, outList : AZSymbolInformation[]) {
+    public collectChildSymbols(symbolKind: AZSymbolKind, includeAllLevels: boolean, outList : AZSymbolInformation[]) {
         if (this.childSymbols) {
             for (let i=0; i<this.childSymbols.length; i++) {
                 if (this.childSymbols[i].kind == symbolKind)
                     outList.push(this.childSymbols[i]);
-                this.childSymbols[i].collectChildSymbols(symbolKind, outList);
+                if (includeAllLevels)
+                    this.childSymbols[i].collectChildSymbols(symbolKind, includeAllLevels, outList);
             }
         }
     }

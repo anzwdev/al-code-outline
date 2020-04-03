@@ -6,6 +6,7 @@ import { ALAddQueryFieldsCodeCommand } from './addFields/alAddQueryFieldsCodeCom
 import { ALAddReportFieldsCodeCommand } from './addFields/alAddReportFieldsCodeCommand';
 import { ALAddXmlPortFieldsCodeCommand } from './addFields/alAddXmlPortFieldsCodeCommand';
 import { ALSortProceduresCodeCommand } from './sortSymbols/alSortProceduresCodeCommand';
+import { ALSortReportColumnsCommand } from './sortSymbols/alSortReportColumnsCommand';
 
 export class ALCodeActionsProvider implements vscode.CodeActionProvider {
     protected _toolsExtensionContext : DevToolsExtensionContext;
@@ -15,6 +16,7 @@ export class ALCodeActionsProvider implements vscode.CodeActionProvider {
     protected _addXmlPortElementsCommand: ALAddXmlPortFieldsCodeCommand;
     protected _addXmlPortAttributesCommand: ALAddXmlPortFieldsCodeCommand;
     protected _sortProceduresCommand : ALSortProceduresCodeCommand;
+    protected _sortReportColumnsCommand : ALSortReportColumnsCommand;
 
     constructor(context : DevToolsExtensionContext) {
         this._toolsExtensionContext = context;
@@ -24,6 +26,7 @@ export class ALCodeActionsProvider implements vscode.CodeActionProvider {
         this._addXmlPortElementsCommand = new ALAddXmlPortFieldsCodeCommand(this._toolsExtensionContext, 'fieldelement');
         this._addXmlPortAttributesCommand = new ALAddXmlPortFieldsCodeCommand(this._toolsExtensionContext, 'fieldattribute');
         this._sortProceduresCommand = new ALSortProceduresCodeCommand(this._toolsExtensionContext);
+        this._sortReportColumnsCommand = new ALSortReportColumnsCommand(this._toolsExtensionContext);
     }
 
     provideCodeActions(document: vscode.TextDocument, range: vscode.Range | vscode.Selection, context: vscode.CodeActionContext, token: vscode.CancellationToken): vscode.ProviderResult<(vscode.Command | vscode.CodeAction)[]> {
@@ -57,6 +60,10 @@ export class ALCodeActionsProvider implements vscode.CodeActionProvider {
                 (symbol.kind == AZSymbolKind.ReportColumn)) {
                 let action = new vscode.CodeAction("Add multiple fields", vscode.CodeActionKind.QuickFix);
                 action.command = { command: this._addReportFieldsCommand.name, title: 'Add multiple fields...' };
+                actions.push(action);
+
+                action = new vscode.CodeAction("Sort data item columns", vscode.CodeActionKind.QuickFix);
+                action.command = { command: this._sortReportColumnsCommand.name, title: 'Sort data item columns...' };
                 actions.push(action);
             }
             //add multiple fields to an xmlport
