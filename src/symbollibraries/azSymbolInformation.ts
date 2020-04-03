@@ -92,6 +92,8 @@ export class AZSymbolInformation {
         (this.kind == AZSymbolKind.EnumType) ||
         (this.kind == AZSymbolKind.EnumExtensionType) ||
         (this.kind == AZSymbolKind.DotNetPackage) ||
+        (this.kind == AZSymbolKind.ProfileObject) ||
+        (this.kind == AZSymbolKind.PageCustomizationObject) ||
         (this.kind == AZSymbolKind.Interface));
     }
 
