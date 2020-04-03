@@ -1,5 +1,6 @@
 import * as vscode from 'vscode';
 import { DevToolsExtensionContext } from "../devToolsExtensionContext";
+import { AZSymbolInformation } from '../symbollibraries/azSymbolInformation';
 
 export class ALCodeCommand {    
     protected _toolsExtensionContext : DevToolsExtensionContext;        
@@ -13,6 +14,9 @@ export class ALCodeCommand {
                 commandName,
                 () => this.run()
             ));        
+    }
+
+    collectCodeActions(symbol: AZSymbolInformation, range: vscode.Range | vscode.Selection, actions: vscode.CodeAction[]) {
     }
 
     protected run() {

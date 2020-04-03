@@ -20,6 +20,14 @@ export class ALSortProceduresCodeCommand extends ALBaseSortCodeCommand {
         ];
     }
 
+    collectCodeActions(symbol: AZSymbolInformation, range: vscode.Range | vscode.Selection, actions: vscode.CodeAction[]) {
+        if (ALSortProceduresCodeCommand.getMethodSymbolKinds().indexOf(symbol.kind) > -1 && symbol.selectionRange.start.line == range.start.line) {
+            let action = new vscode.CodeAction("Sort procedures", vscode.CodeActionKind.QuickFix);
+            action.command = { command: this.name, title: 'Sort procedures' };
+            actions.push(action);
+        }
+    }
+
     protected async runAsync(range: vscode.Range) {
         // Get required details from document source code
         let symbol = this._toolsExtensionContext.activeDocumentSymbols.findSymbolInRange(range);
@@ -40,10 +48,9 @@ export class ALSortProceduresCodeCommand extends ALBaseSortCodeCommand {
             return;
         }
         
-
         // Collect method declarations (of matching symbol-kind)
         let methodDecls: AZSymbolInformation[] = [];
-        objectSymbol.collectChildSymbols(symbol.kind, methodDecls);
+        objectSymbol.collectChildSymbols(symbol.kind, true, methodDecls);
         if (methodDecls.length == 0) {
             return;
         }

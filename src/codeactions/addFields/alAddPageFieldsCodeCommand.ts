@@ -11,6 +11,19 @@ export class ALAddPageFieldsCodeCommand extends ALBaseAddFieldsCodeCommand {
         super(context, 'AZDevTools.ALAddPageFieldsCodeCommand');
     }
 
+    collectCodeActions(symbol: AZSymbolInformation, range: vscode.Range | vscode.Selection, actions: vscode.CodeAction[]) {
+        if ((symbol.kind == AZSymbolKind.PageGroup) ||                 
+            (symbol.kind == AZSymbolKind.PageRepeater) ||
+            (symbol.kind == AZSymbolKind.PageArea) ||
+            (symbol.kind == AZSymbolKind.ControlAddChange) ||
+            (symbol.kind == AZSymbolKind.PageField) ||
+            (symbol.kind == AZSymbolKind.PageUserControl)) {                
+            let action : vscode.CodeAction = new vscode.CodeAction("Add multiple fields", vscode.CodeActionKind.QuickFix);
+            action.command = { command: this.name, title: 'Add multiple fields...' };
+            actions.push(action);
+        }
+    }
+
     protected async runAsync(range: vscode.Range) {
         //get required details from document source code
         let symbol = this._toolsExtensionContext.activeDocumentSymbols.findSymbolInRange(range);

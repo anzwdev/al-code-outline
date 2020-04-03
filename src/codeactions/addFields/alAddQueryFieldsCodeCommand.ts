@@ -4,10 +4,20 @@ import { ALSyntaxWriter } from '../../allanguage/alSyntaxWriter';
 import { AZSymbolKind } from '../../symbollibraries/azSymbolKind';
 import { ALBaseAddFieldsCodeCommand } from './alBaseAddFieldsCodeCommand';
 import { FieldsSelector } from './fieldsSelector';
+import { AZSymbolInformation } from '../../symbollibraries/azSymbolInformation';
 
 export class ALAddQueryFieldsCodeCommand extends ALBaseAddFieldsCodeCommand {
     constructor(context : DevToolsExtensionContext) {
         super(context, 'AZDevTools.ALAddQueryFieldsCodeCommand');
+    }
+
+    collectCodeActions(symbol: AZSymbolInformation, range: vscode.Range | vscode.Selection, actions: vscode.CodeAction[]) {        
+        if ((symbol.kind == AZSymbolKind.QueryDataItem) ||
+            (symbol.kind == AZSymbolKind.QueryColumn)) {
+            let action = new vscode.CodeAction("Add multiple fields", vscode.CodeActionKind.QuickFix);
+            action.command = { command: this.name, title: 'Add multiple fields...' };
+            actions.push(action);
+        }
     }
 
     protected async runAsync(range: vscode.Range) {

@@ -5,4 +5,5 @@ export class ALBaseSortCodeCommand extends ALCodeCommand {
     constructor(context : DevToolsExtensionContext, commandName: string) {
         super(context, commandName);
     }
+
 }

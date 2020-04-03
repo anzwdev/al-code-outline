@@ -10,6 +10,16 @@ export class ALSortReportColumnsCommand extends ALBaseSortCodeCommand {
         super(context, 'AZDevTools.ALSortReportColumnsCommand');
     }
 
+    collectCodeActions(symbol: AZSymbolInformation, range: vscode.Range | vscode.Selection, actions: vscode.CodeAction[]) {
+        if ((symbol.kind == AZSymbolKind.ReportDataItem) ||
+            (symbol.kind == AZSymbolKind.ReportColumn) ||
+            ((symbol.kind == AZSymbolKind.ReportObject) && (symbol.selectionRange.start.line == range.start.line))) {
+            let action = new vscode.CodeAction("Sort data item columns", vscode.CodeActionKind.QuickFix);
+            action.command = { command: this.name, title: 'Sort data item columns...' };
+            actions.push(action);
+        }
+    }
+
     protected async runAsync(range: vscode.Range) {
         // Get required details from document source code
         let symbol = this._toolsExtensionContext.activeDocumentSymbols.findSymbolInRange(range);
@@ -17,19 +27,39 @@ export class ALSortReportColumnsCommand extends ALBaseSortCodeCommand {
             return;
         }
         
-        let dataItemSymbol: AZSymbolInformation | undefined;
-        if (symbol.kind == AZSymbolKind.ReportDataItem)
-            dataItemSymbol = symbol;
-        else {
-            dataItemSymbol = symbol.findParentByKind(AZSymbolKind.ReportDataItem);
-            if (!dataItemSymbol)
-                return;
+        switch (symbol.kind) {
+            case AZSymbolKind.ReportDataItem:
+                await this.sortDataItemAsync(symbol);
+                break;
+            case AZSymbolKind.ReportColumn:
+                let dataItemSymbol = symbol.findParentByKind(AZSymbolKind.ReportDataItem);
+                if (dataItemSymbol)
+                    await this.sortDataItemAsync(symbol);
+                break;
+            case AZSymbolKind.ReportObject:
+                let dataItemSymbolsList: AZSymbolInformation[] = [];
+                symbol.collectChildSymbols(AZSymbolKind.ReportDataItem, true, dataItemSymbolsList);
+                if (dataItemSymbolsList.length > 0)
+                    await this.sortDataItemsListAsync(dataItemSymbolsList);
+                break;
         }
+    }
 
-        await this.sortDataItemAsync(dataItemSymbol);
+    protected async sortDataItemsListAsync(dataItemSymbolsList: AZSymbolInformation[]) {
+        await vscode.window.activeTextEditor.edit(editBuilder => {
+            for (let i=0; i<dataItemSymbolsList.length; i++) {
+                this.sortDataItem(dataItemSymbolsList[i], editBuilder);
+            }
+        });
     }
 
     protected async sortDataItemAsync(dataItemSymbol: AZSymbolInformation) {
+        await vscode.window.activeTextEditor.edit(editBuilder => {
+            this.sortDataItem(dataItemSymbol, editBuilder);
+        });
+    }
+
+    protected sortDataItem(dataItemSymbol: AZSymbolInformation, editBuilder: vscode.TextEditorEdit) {
         // Collect columns
         let columnsList: AZSymbolInformation[] = [];
         dataItemSymbol.collectChildSymbols(AZSymbolKind.ReportColumn, false, columnsList);
@@ -53,15 +83,13 @@ export class ALSortReportColumnsCommand extends ALBaseSortCodeCommand {
         }
         
         // Delete the old unsorted columns and insert the new sorted source
-        await vscode.window.activeTextEditor.edit(editBuilder => {
-            for (const column of columnsList) {
-                const deleteRange = new vscode.Range(column.range.start.line, column.range.start.character, 
-                    column.range.end.line, column.range.end.character);
-                editBuilder.delete(deleteRange);
-            }
-            
-            editBuilder.insert(insertPos, newSource);
-        });
+        for (const column of columnsList) {
+            const deleteRange = new vscode.Range(column.range.start.line, column.range.start.character, 
+                column.range.end.line, column.range.end.character);
+            editBuilder.delete(deleteRange);
+        }
+        
+        editBuilder.insert(insertPos, newSource);
     }
 
 

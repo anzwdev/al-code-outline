@@ -5,13 +5,26 @@ import { AZSymbolKind } from '../../symbollibraries/azSymbolKind';
 import { ALSyntaxWriter } from '../../allanguage/alSyntaxWriter';
 import { settings } from 'cluster';
 import { FieldsSelector } from './fieldsSelector';
+import { AZSymbolInformation } from '../../symbollibraries/azSymbolInformation';
 
 export class ALAddXmlPortFieldsCodeCommand extends ALBaseAddFieldsCodeCommand {
     elementType: string;
+    commandTitle: string;
     
-    constructor(context : DevToolsExtensionContext, newElementType: string) {
+    constructor(context : DevToolsExtensionContext, newElementType: string, newCommandTitle: string) {
         super(context, 'AZDevTools.ALAddXmlPort' + newElementType + 'CodeCommand');
         this.elementType = newElementType;
+        this.commandTitle = newCommandTitle;
+    }
+
+    collectCodeActions(symbol: AZSymbolInformation, range: vscode.Range | vscode.Selection, actions: vscode.CodeAction[]) {
+        if ((symbol.kind == AZSymbolKind.XmlPortTableElement) ||
+            (symbol.kind == AZSymbolKind.XmlPortFieldElement) ||
+            (symbol.kind == AZSymbolKind.XmlPortFieldAttribute)) {
+            let action = new vscode.CodeAction(this.commandTitle, vscode.CodeActionKind.QuickFix);
+            action.command = { command: this.name, title: this.commandTitle + '...' };
+            actions.push(action);
+        }
     }
 
     protected async runAsync(range: vscode.Range) {

@@ -4,11 +4,23 @@ import { ALSyntaxWriter } from '../../allanguage/alSyntaxWriter';
 import { AZSymbolKind } from '../../symbollibraries/azSymbolKind';
 import { ALBaseAddFieldsCodeCommand } from './alBaseAddFieldsCodeCommand';
 import { FieldsSelector } from './fieldsSelector';
+import { AZSymbolInformation } from '../../symbollibraries/azSymbolInformation';
 
 export class ALAddReportFieldsCodeCommand extends ALBaseAddFieldsCodeCommand {
     constructor(context : DevToolsExtensionContext) {
         super(context, 'AZDevTools.ALAddReportFieldsCodeCommand');
     }
+
+    collectCodeActions(symbol: AZSymbolInformation, range: vscode.Range | vscode.Selection, actions: vscode.CodeAction[]) {
+        if ((symbol.kind == AZSymbolKind.ReportDataItem) ||
+            (symbol.kind == AZSymbolKind.ReportColumn)) {
+            let action = new vscode.CodeAction("Add multiple fields", vscode.CodeActionKind.QuickFix);
+            action.command = { command: this.name, title: 'Add multiple fields...' };
+            actions.push(action);
+        }
+    }
+
+    
 
     protected async runAsync(range: vscode.Range) {
         //get required details from document source code
