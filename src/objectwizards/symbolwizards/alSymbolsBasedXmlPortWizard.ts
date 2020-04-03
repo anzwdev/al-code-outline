@@ -113,7 +113,7 @@ export class ALSymbolsBasedXmlPortWizard extends ALSymbolsBasedWizard {
         writer.writeStartNameSourceBlock("tableelement", tableElementName, writer.encodeName(tableSymbol.name));
 
         let fieldList : AZSymbolInformation[] = [];
-        tableSymbol.collectChildSymbols(AZSymbolKind.Field, fieldList);
+        tableSymbol.collectChildSymbols(AZSymbolKind.Field, true, fieldList);
         fieldList.forEach(
             item => {
                 writer.writeNameSourceBlock(fieldNodeName, writer.createName(item.name), tableElementName + "." + writer.encodeName(item.name));

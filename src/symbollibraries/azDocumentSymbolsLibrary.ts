@@ -67,7 +67,7 @@ export class AZDocumentSymbolsLibrary extends AZSymbolsLibrary {
                 if ((this._docUri) && (this._docUri.fsPath))
                     documentPath = this._docUri.fsPath;
 
-                let request : ToolsDocumentSymbolsRequest = new ToolsDocumentSymbolsRequest(source, documentPath);
+                let request : ToolsDocumentSymbolsRequest = new ToolsDocumentSymbolsRequest(source, documentPath, false);
                 let response : ToolsDocumentSymbolsResponse | undefined = await this._context.toolsLangServerClient.getALDocumentSymbols(request);
                 if ((response) && (response.root)) {
                     newRootSymbol = AZSymbolInformation.fromAny(response.root);                    

@@ -125,7 +125,7 @@ export class ALSymbolsBasedPageWizard extends ALSymbolsBasedWizard {
         writer.writeStartGroup(fieldGroupType, "General");
         
         let fieldList : AZSymbolInformation[] = [];
-        tableSymbol.collectChildSymbols(AZSymbolKind.Field, fieldList);
+        tableSymbol.collectChildSymbols(AZSymbolKind.Field, true, fieldList);
         fieldList.forEach(
             item => {
                 writer.writePageField(item.name);

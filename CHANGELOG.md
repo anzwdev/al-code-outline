@@ -1,5 +1,12 @@
 # Change Log
 
+## 1.0.35
+ - Github issue #97 - "Show all Project Symbols" doesn't list Page Customization and Profiles
+ - Github enhancement #93 - New code action - sort object properties
+ - Github enhancement #95 - New code action - sort report columns
+
+ Thank you DavidFeldhoff, rvanbekkum and pri-kise for reporting your issues/enhancements 
+
 ## 1.0.34
  - Github issue #98 - AL Object Browser crashes with older app files
 
