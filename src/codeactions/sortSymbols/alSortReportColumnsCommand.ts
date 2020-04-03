@@ -48,49 +48,15 @@ export class ALSortReportColumnsCommand extends ALBaseSortCodeCommand {
     protected async sortDataItemsListAsync(dataItemSymbolsList: AZSymbolInformation[]) {
         await vscode.window.activeTextEditor.edit(editBuilder => {
             for (let i=0; i<dataItemSymbolsList.length; i++) {
-                this.sortDataItem(dataItemSymbolsList[i], editBuilder);
+                this.sortChildItems(dataItemSymbolsList[i], AZSymbolKind.ReportColumn, editBuilder);
             }
         });
     }
 
     protected async sortDataItemAsync(dataItemSymbol: AZSymbolInformation) {
         await vscode.window.activeTextEditor.edit(editBuilder => {
-            this.sortDataItem(dataItemSymbol, editBuilder);
+            this.sortChildItems(dataItemSymbol, AZSymbolKind.ReportColumn, editBuilder);
         });
     }
-
-    protected sortDataItem(dataItemSymbol: AZSymbolInformation, editBuilder: vscode.TextEditorEdit) {
-        // Collect columns
-        let columnsList: AZSymbolInformation[] = [];
-        dataItemSymbol.collectChildSymbols(AZSymbolKind.ReportColumn, false, columnsList);
-        if (columnsList.length == 0) {
-            return;
-        }
-
-        let insertPos: vscode.Position = new vscode.Position(columnsList[0].range.start.line, columnsList[0].range.start.character);
-
-        // Sort columns
-        columnsList.sort((columnA, columnB) => {
-            return columnA.name.localeCompare(columnB.name, undefined, { numeric: true, sensitivity: 'base' });
-        });
-
-        // Produce the new sorted source
-        let newSource: string = "";
-        for (const column of columnsList) {
-            const declRange = new vscode.Range(column.range.start.line, column.range.start.character, 
-                column.range.end.line, column.range.end.character);
-            newSource += vscode.window.activeTextEditor.document.getText(declRange);
-        }
-        
-        // Delete the old unsorted columns and insert the new sorted source
-        for (const column of columnsList) {
-            const deleteRange = new vscode.Range(column.range.start.line, column.range.start.character, 
-                column.range.end.line, column.range.end.character);
-            editBuilder.delete(deleteRange);
-        }
-        
-        editBuilder.insert(insertPos, newSource);
-    }
-
 
 }

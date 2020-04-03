@@ -285,6 +285,18 @@ export class AZSymbolInformation {
         }
     }
 
+    public collectChildSymbolsByName(findName: string, includeAllLevels: boolean, outList : AZSymbolInformation[]) {
+        if (this.childSymbols) {
+            for (let i=0; i<this.childSymbols.length; i++) {
+                if (this.childSymbols[i].name == findName)
+                    outList.push(this.childSymbols[i]);
+                if (includeAllLevels)
+                    this.childSymbols[i].collectChildSymbolsByName(findName, includeAllLevels, outList);
+            }
+        }
+    }
+
+
     public findFirstSymbolByKind(symbolKind: AZSymbolKind) : AZSymbolInformation | undefined {
         if (this.kind == symbolKind)
             return this;

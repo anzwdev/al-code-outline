@@ -8,6 +8,7 @@ import { ALAddXmlPortFieldsCodeCommand } from './addFields/alAddXmlPortFieldsCod
 import { ALSortProceduresCodeCommand } from './sortSymbols/alSortProceduresCodeCommand';
 import { ALSortReportColumnsCommand } from './sortSymbols/alSortReportColumnsCommand';
 import { ALCodeCommand } from './alCodeCommand';
+import { ALSortPropertiesCommand } from './sortSymbols/alSortPropertiesCommand';
 
 export class ALCodeActionsProvider implements vscode.CodeActionProvider {
     protected _toolsExtensionContext : DevToolsExtensionContext;
@@ -22,7 +23,8 @@ export class ALCodeActionsProvider implements vscode.CodeActionProvider {
             new ALAddXmlPortFieldsCodeCommand(this._toolsExtensionContext, 'fieldelement', 'Add multiple field elements'),
             new ALAddXmlPortFieldsCodeCommand(this._toolsExtensionContext, 'fieldattribute', 'Add multiple field attributes'),
             new ALSortProceduresCodeCommand(this._toolsExtensionContext),
-            new ALSortReportColumnsCommand(this._toolsExtensionContext)];
+            new ALSortReportColumnsCommand(this._toolsExtensionContext),
+            new ALSortPropertiesCommand(this._toolsExtensionContext)];
     }
 
     provideCodeActions(document: vscode.TextDocument, range: vscode.Range | vscode.Selection, context: vscode.CodeActionContext, token: vscode.CancellationToken): vscode.ProviderResult<(vscode.Command | vscode.CodeAction)[]> {
