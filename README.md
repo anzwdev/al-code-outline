@@ -21,6 +21,7 @@ This extension was originally named 'AL Code Outline' because it started as AL c
 Extensions add new "New AL File Wizard" item to EXPLORER context menu. It allows to run one of these wizards to create new AL object file:
    - Table Wizard
    - Page Wizard
+   - Codeunit Wizard
    - XmlPort Wizard
    - Report Wizard
    - Query Wizard

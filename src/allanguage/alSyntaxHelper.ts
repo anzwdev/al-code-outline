@@ -80,6 +80,8 @@ export class ALSyntaxHelper {
                 return "usercontrol";
             case AZSymbolKind.EnumType:
                 return "enum";
+            case AZSymbolKind.Interface:
+                return "interface";
         }
         return undefined;
     }
@@ -112,6 +114,8 @@ export class ALSyntaxHelper {
                 return "EnumExtension";
             case AZSymbolKind.ProfileObject:
                 return "Profile";
+            case AZSymbolKind.Interface:
+                return "Interface";
         }
         return undefined;
 

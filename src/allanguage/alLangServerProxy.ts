@@ -306,6 +306,51 @@ export class ALLangServerProxy {
         
     }
 
+    async getInterfaceList(resourceUri: vscode.Uri | undefined) : Promise<string[]> {
+        let fileContent = "codeunit 0 _symbolcache implements  \n{\n}";
+        let list = await this.getCompletionForSourceCode(resourceUri, "Loading list of interfaces.", fileContent,
+            0, 36, 2, 1);
+
+        //process results
+        let out : string[] = [];
+        
+        if (list && list.items) {
+            for (let i=0; i<list.items.length; i++) {
+                let item = list.items[i];
+                if (item.kind === vscode.CompletionItemKind.Reference) {
+                    out.push(ALSyntaxHelper.fromNameText(item.label));
+                }
+            }
+        }
+
+        return out;        
+    }
+
+    async getInterfaceMethods(resourceUri: vscode.Uri | undefined, interfaceName: string) : Promise<string[] | undefined> {
+        if ((!interfaceName) || (interfaceName == ""))
+            return undefined;
+        
+        interfaceName = ALSyntaxHelper.toNameText(interfaceName);
+        
+        let fileContent = "codeunit 0 _symbolcache\n{\nprocedure t()\nvar\nf:interface " + interfaceName + ";\nbegin\nf.;\nend;\n}";
+        let list = await this.getCompletionForSourceCode(resourceUri, "Loading list of interface methods.", fileContent,
+            6, 2, 8, 1);
+
+        //process results
+        let out : string[] = [];
+        
+        if (list && list.items) {
+            for (let i=0; i<list.items.length; i++) {
+                let item = list.items[i];
+                if (item.kind == vscode.CompletionItemKind.Method) {
+                    out.push(ALSyntaxHelper.fromNameText(item.detail));
+                }
+            }
+        }
+
+        return out;
+    }
+
     async getAvailablePageFieldList(resourceUri: vscode.Uri | undefined, pageName : string) : Promise<string[]> {
         pageName = ALSyntaxHelper.toNameText(pageName);
 
@@ -546,6 +591,32 @@ export class ALLangServerProxy {
         }
 
         return undefined;
+    }
+
+    getRuntimeVersion(resourceUri: vscode.Uri | undefined): Version {
+        let version = new Version();
+        let folder = vscode.workspace.workspaceFolders[0];        
+        if (resourceUri) 
+            folder = vscode.workspace.getWorkspaceFolder(resourceUri);
+        
+        //load app.json
+        let appFilePath = path.join(folder.uri.fsPath, "app.json");
+        try {
+            let fs = require('fs');
+            let content = fs.readFileSync(appFilePath, 'utf8');
+            let appData = JSON.parse(content);
+            if (appData.runtime)
+                version.parse(appData.runtime);
+        }
+        catch (e) {
+        }
+        return version;
+    }
+
+    supportsInterfaces(resourceUri: vscode.Uri | undefined) {
+        let runtimeVersion = this.getRuntimeVersion(resourceUri);
+        let interfacesVersion = Version.create("5.0");
+        return runtimeVersion.isGreaterOrEqual(interfacesVersion);
     }
 
 }

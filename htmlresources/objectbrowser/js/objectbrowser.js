@@ -53,8 +53,9 @@ class ObjectBrowser {
         this.initModeBtnEventHandlers('profileModeBtn', 'Profile', 'tableextensionModeBtn', 'pagecustomizationModeBtn');
         this.initModeBtnEventHandlers('pagecustomizationModeBtn', 'PageCustomization', 'profileModeBtn', 'enumModeBtn');
         this.initModeBtnEventHandlers('enumModeBtn', 'Enum', 'pagecustomizationModeBtn', 'dotnetpackageModeBtn');
-        this.initModeBtnEventHandlers('dotnetpackageModeBtn', 'DotNetPackage', 'enumModeBtn', 'allModeBtn');
-        this.initModeBtnEventHandlers('allModeBtn', 'All', 'dotnetpackageModeBtn', '');        
+        this.initModeBtnEventHandlers('dotnetpackageModeBtn', 'DotNetPackage', 'enumModeBtn', 'interfaceModeBtn');
+        this.initModeBtnEventHandlers('interfaceModeBtn', 'Interface', 'dotnetpackageModeBtn', 'allModeBtn');
+        this.initModeBtnEventHandlers('allModeBtn', 'All', 'interfaceModeBtn', '');        
 
         document.getElementById('searchtype').addEventListener('keydown', event => {
             me.onSearchKeyDown(event);
@@ -173,6 +174,7 @@ class ObjectBrowser {
         typeSort[ALSymbolKind.PageCustomizationObject] = 11;
         typeSort[ALSymbolKind.EnumType] = 12;
         typeSort[ALSymbolKind.DotNetPackage] = 13;
+        typeSort[ALSymbolKind.Interface] = 14;
 
         if ((this._data) && (this._data.length > 1)) {
             this._data.sort(function(a,b) {
@@ -222,6 +224,8 @@ class ObjectBrowser {
                 return "Enum";
             case ALSymbolKind.DotNetPackage:
                 return "DotNetPackage";
+            case ALSymbolKind.Interface:
+                return "Interface";
             default:
                 return "Undefined";
         }

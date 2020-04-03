@@ -109,7 +109,7 @@ export class ALNativeAppSymbolsLibrary extends AZSymbolsLibrary {
         this._allSymbols.addChildItem(this.loadObjectSymbolList('Page Customizations', 'PageCustomization', AZSymbolKind.PageCustomizationObjectList, AZSymbolKind.PageCustomizationObject, symbolReferences.PageCustomizations));
         this._allSymbols.addChildItem(this.loadObjectSymbolList('DotNet Packages', 'DotNetPackage', AZSymbolKind.DotNetPackageList, AZSymbolKind.DotNetPackage, symbolReferences.DotNetPackages));
         this._allSymbols.addChildItem(this.loadObjectSymbolList('Enums', 'Enum', AZSymbolKind.EnumTypeList, AZSymbolKind.EnumType, symbolReferences.EnumTypes));
-
+        this._allSymbols.addChildItem(this.loadObjectSymbolList('Interfaces', 'Interface', AZSymbolKind.InterfaceObjectList, AZSymbolKind.Interface, symbolReferences.Interfaces));
     }
 
     public updateObjectList() {

@@ -4,6 +4,12 @@ export class Version {
     major : number;
     minor : number;
 
+    static create(versionText: string): Version {
+        let version = new Version();
+        version.parse(versionText);
+        return version;
+    }
+
     constructor() {
         this.version = '';
         this.parts = [];
@@ -27,6 +33,41 @@ export class Version {
     protected getPart(index : number) : number {
         if ((index < this.parts.length) && (this.parts[index]))
             return this.parts[index];
+        return 0;
+    }
+
+    isLower(version: Version): boolean {
+        return (this.compare(version) < 0);
+    }
+
+    isGreater(version: Version): boolean {
+        return (this.compare(version) > 0);
+    }
+
+    isEqual(version: Version): boolean {
+        return (this.compare(version) == 0);
+    }
+
+    isGreaterOrEqual(version: Version): boolean {
+        return (this.compare(version) >= 0);
+    }
+
+    isLowerOrEqual(version: Version): boolean {
+        return (this.compare(version) <= 0);
+    }
+
+    compare(version: Version) {
+        let length = Math.min(this.parts.length, version.parts.length);
+        for (let i=0; i<length; i++) {
+            if (this.parts[i] < version.parts[i])
+                return -1;
+            if (this.parts[i] > version.parts[i])
+                return 1;
+        }
+        if (this.parts.length < version.parts.length)
+            return -1;
+        if (this.parts.length > version.parts.length)
+            return 1;
         return 0;
     }
 

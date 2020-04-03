@@ -76,7 +76,7 @@ class TableBasedObjectWizard {
 				}
 				return itemElement;
 			},
-			emptyMsg: "No fields found",
+			emptyMsg: "No tables found",
 			customize: function(input, inputRect, container, maxHeight) {
 				if (maxHeight < 100) {
 					container.style.top = "";

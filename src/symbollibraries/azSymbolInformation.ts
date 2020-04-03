@@ -91,7 +91,8 @@ export class AZSymbolInformation {
         (this.kind == AZSymbolKind.ControlAddInObject) ||
         (this.kind == AZSymbolKind.EnumType) ||
         (this.kind == AZSymbolKind.EnumExtensionType) ||
-        (this.kind == AZSymbolKind.DotNetPackage));
+        (this.kind == AZSymbolKind.DotNetPackage) ||
+        (this.kind == AZSymbolKind.Interface));
     }
 
     public createSharedCopy() : AZSymbolInformation {
@@ -172,6 +173,7 @@ export class AZSymbolInformation {
             case AZSymbolKind.PageCustomizationObject : return 'pagecustomization';
             case AZSymbolKind.EnumType : return 'enum';
             case AZSymbolKind.DotNetPackage : return 'dotnetlib';
+            case AZSymbolKind.Interface: return 'interface';
             case AZSymbolKind.Property : return 'property';
             case AZSymbolKind.VariableDeclaration : return 'variable';
             case AZSymbolKind.Constant : return 'constant';
@@ -365,6 +367,8 @@ export class AZSymbolInformation {
                 return "DotNetPackage";
             case AZSymbolKind.EnumExtensionType:
                 return "EnumExtension";
+            case AZSymbolKind.Interface:
+                return "Interface";
             default:
                 return "Undefined";
         }
