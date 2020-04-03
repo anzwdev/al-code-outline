@@ -53,8 +53,9 @@ class ObjectBrowser {
         this.initModeBtnEventHandlers('profileModeBtn', 'Profile', 'tableextensionModeBtn', 'pagecustomizationModeBtn');
         this.initModeBtnEventHandlers('pagecustomizationModeBtn', 'PageCustomization', 'profileModeBtn', 'enumModeBtn');
         this.initModeBtnEventHandlers('enumModeBtn', 'Enum', 'pagecustomizationModeBtn', 'dotnetpackageModeBtn');
-        this.initModeBtnEventHandlers('dotnetpackageModeBtn', 'DotNetPackage', 'enumModeBtn', 'allModeBtn');
-        this.initModeBtnEventHandlers('allModeBtn', 'All', 'dotnetpackageModeBtn', '');        
+        this.initModeBtnEventHandlers('dotnetpackageModeBtn', 'DotNetPackage', 'enumModeBtn', 'interfaceModeBtn');
+        this.initModeBtnEventHandlers('interfaceModeBtn', 'Interface', 'dotnetpackageModeBtn', 'allModeBtn');
+        this.initModeBtnEventHandlers('allModeBtn', 'All', 'interfaceModeBtn', '');        
 
         document.getElementById('searchtype').addEventListener('keydown', event => {
             me.onSearchKeyDown(event);

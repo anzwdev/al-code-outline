@@ -44,18 +44,24 @@ export class ALCodeunitWizardPage extends ALTableBasedWizardPage {
         
         //build new object
         let builder : ALCodeunitSyntaxBuilder = new ALCodeunitSyntaxBuilder();
-        let source = builder.buildFromCodeunitWizardData(this._codeunitWizardData);
+        let methodHeaders: string[] | undefined = await this._toolsExtensionContext.alLangProxy.getInterfaceMethods(this._settings.getDestDirectoryUri(),
+            this._codeunitWizardData.interfaceName);
+        let source = builder.buildFromCodeunitWizardData(this._codeunitWizardData, methodHeaders);
         this.createObjectFile('Codeunit', this._codeunitWizardData.objectId, this._codeunitWizardData.objectName, source);
 
         return true;
     }
 
     protected async loadInterfaces() {
-        this._codeunitWizardData.interfaceList = await this._toolsExtensionContext.alLangProxy.getInterfaceList(this._settings.getDestDirectoryUri());
-        this.sendMessage({
-            command : "setInterfaces",
-            data : this._codeunitWizardData.interfaceList
-        });
+        let resourceUri = this._settings.getDestDirectoryUri();
+        if (this._toolsExtensionContext.alLangProxy.supportsInterfaces(resourceUri)) {
+            this._codeunitWizardData.interfaceList = await this._toolsExtensionContext.alLangProxy.getInterfaceList(resourceUri);
+            if ((this._codeunitWizardData.interfaceList) && (this._codeunitWizardData.interfaceList.length > 0))
+                this.sendMessage({
+                    command : "setInterfaces",
+                    data : this._codeunitWizardData.interfaceList
+                });
+        }
     }
 
 }

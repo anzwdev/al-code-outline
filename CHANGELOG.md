@@ -2,6 +2,7 @@
 
 ## 1.0.33
  - Interfaces support added to the symbols windows
+ - Codeunit wizard with interface support
 
 ## 1.0.32
  - Github enhancement #89 - Display code analyzer rules from more than one analyzer

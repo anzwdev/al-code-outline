@@ -76,6 +76,24 @@ export class ALSyntaxWriter {
         this.writeStartBlock();
     }
 
+    public writeStartCodeunit(id : string, name : string, interfaceName: string | undefined) {
+        var objectIdText : string;
+        if ((id == '') || (id == '0'))
+            objectIdText = 'id';
+        else
+            objectIdText = id.toString();
+        
+        name = ALSyntaxHelper.toNameText(name);
+
+        let interfaceText = "";
+        if ((interfaceName) && (interfaceName.length > 0))
+            interfaceText = " implements " + ALSyntaxHelper.toNameText(interfaceName);
+
+        this.writeLine("codeunit " + objectIdText + " " + name + interfaceText);
+        this.writeStartBlock();
+    }
+
+
     public writeStartExtensionObject(type : string, id : string, extname : string, targetName : string) {
         var objectIdText : string;
         if ((id == '') || (id == '0'))

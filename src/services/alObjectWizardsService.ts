@@ -25,7 +25,7 @@ export class ALObjectWizardsService {
         this._wizards.push(new ALTableWizard(context, 'Table', 'New AL Table Wizard', 'Allows to select table name and enter list of fields'));
         this._wizards.push(new ALPageWizard(context, 'Page', 'New AL Page Wizard', 'Allows to select page type, fast tabs, source table and fields.'));
         
-        this._wizards.push(new ALCodeunitWizard(context, 'Codeunit', 'New AL Codeunit Wizard', 'Allows to select table name interface'));
+        this._wizards.push(new ALCodeunitWizard(context, 'Codeunit', 'New AL Codeunit Wizard', 'Allows to create simple codeunits and interface implementations'));
 
         this._wizards.push(new ALXmlPortWizard(context, 'XmlPort', 'New AL XmlPort Wizard', 'Allows to select source table and fields'));
         this._wizards.push(new ALReportWizard(context, 'Report', 'New AL Report Wizard', 'Allows to select source table and fields'));

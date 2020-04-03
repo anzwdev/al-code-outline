@@ -45,7 +45,7 @@ class CodeunitWizard extends TableBasedObjectWizard{
     setInterfaces(data) {
         if (!this._data)
             this._data = {};
-        this._data.interfaceList = data;
+        this._data.interfaceList = data;        
         this.loadInterfaces();
     }
 
@@ -57,6 +57,8 @@ class CodeunitWizard extends TableBasedObjectWizard{
     initInterfaceAutoComplete() {
         let me = this;
         let allowedChars = new RegExp(/^[a-zA-Z\s]+$/)
+
+        document.getElementById('interfacePart').style.display = 'flex';
 
         autocomplete({
 			input: document.getElementById('interfaceName'),
