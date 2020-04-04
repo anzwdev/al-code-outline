@@ -306,6 +306,26 @@ export class ALLangServerProxy {
         
     }
 
+    async getCodeunitList(resourceUri: vscode.Uri | undefined) : Promise<string[]> {
+        let fileContent = "codeunit 0 _symbolcache\n{\nprocedure t()\nvar\nf:codeunit ;\nbegin\nend;\n}";
+        let list = await this.getCompletionForSourceCode(resourceUri, "Loading list of codeunits.", fileContent,
+            4, 11, 7, 1);
+
+        //process results
+        let out : string[] = [];
+        
+        if (list && list.items) {
+            for (let i=0; i<list.items.length; i++) {
+                let item = list.items[i];
+                if (item.kind == vscode.CompletionItemKind.Class) {
+                    out.push(ALSyntaxHelper.fromNameText(item.label));
+                }
+            }
+        }
+
+        return out;
+    }
+
     async getInterfaceList(resourceUri: vscode.Uri | undefined) : Promise<string[]> {
         let fileContent = "codeunit 0 _symbolcache implements  \n{\n}";
         let list = await this.getCompletionForSourceCode(resourceUri, "Loading list of interfaces.", fileContent,
@@ -326,13 +346,13 @@ export class ALLangServerProxy {
         return out;        
     }
 
-    async getInterfaceMethods(resourceUri: vscode.Uri | undefined, interfaceName: string) : Promise<string[] | undefined> {
-        if ((!interfaceName) || (interfaceName == ""))
+    async getObjectMethods(resourceUri: vscode.Uri | undefined, objectType: string, objectName: string) : Promise<string[] | undefined> {
+        if ((!objectName) || (objectName == ""))
             return undefined;
         
-        interfaceName = ALSyntaxHelper.toNameText(interfaceName);
+        objectName = ALSyntaxHelper.toNameText(objectName);
         
-        let fileContent = "codeunit 0 _symbolcache\n{\nprocedure t()\nvar\nf:interface " + interfaceName + ";\nbegin\nf.;\nend;\n}";
+        let fileContent = "codeunit 0 _symbolcache\n{\nprocedure t()\nvar\nf: " + objectType + " " + objectName + ";\nbegin\nf.;\nend;\n}";
         let list = await this.getCompletionForSourceCode(resourceUri, "Loading list of interface methods.", fileContent,
             6, 2, 8, 1);
 

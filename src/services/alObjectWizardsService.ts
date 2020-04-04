@@ -12,6 +12,7 @@ import { ALEnumExtWizard } from '../objectwizards/wizards/alEnumExtWizard';
 import { ALObjectWizardSettings } from '../objectwizards/wizards/alObjectWizardSettings';
 import { ALTableWizard } from '../objectwizards/wizards/alTableWizard';
 import { ALCodeunitWizard } from '../objectwizards/wizards/alCodeunitWizard';
+import { ALInterfaceWizard } from '../objectwizards/wizards/alInterfaceWizard';
 
 export class ALObjectWizardsService {
     protected _context: DevToolsExtensionContext;
@@ -26,6 +27,8 @@ export class ALObjectWizardsService {
         this._wizards.push(new ALPageWizard(context, 'Page', 'New AL Page Wizard', 'Allows to select page type, fast tabs, source table and fields.'));
         
         this._wizards.push(new ALCodeunitWizard(context, 'Codeunit', 'New AL Codeunit Wizard', 'Allows to create simple codeunits and interface implementations'));
+
+        this._wizards.push(new ALInterfaceWizard(context, 'Interface', 'New AL Interface Wizard', 'Allows to create a new interface and copy public procedures from a codeunit'));
 
         this._wizards.push(new ALXmlPortWizard(context, 'XmlPort', 'New AL XmlPort Wizard', 'Allows to select source table and fields'));
         this._wizards.push(new ALReportWizard(context, 'Report', 'New AL Report Wizard', 'Allows to select source table and fields'));

@@ -1,11 +1,16 @@
+import * as vscode from 'vscode';
 import { ALCodeunitWizardData } from "../wizards/alCodeunitWizardData";
 import { ALSyntaxWriter } from "../../allanguage/alSyntaxWriter";
+import { DevToolsExtensionContext } from "../../devToolsExtensionContext";
 
 export class ALCodeunitSyntaxBuilder {
-    constructor() {
+    protected _toolsExtensionContext : DevToolsExtensionContext;
+
+    constructor(toolsExtensionContext : DevToolsExtensionContext) {
+        this._toolsExtensionContext = toolsExtensionContext;
     }
 
-    buildFromCodeunitWizardData(data : ALCodeunitWizardData, methodHeaders: string[] | undefined) : string {
+    async buildFromCodeunitWizardDataAsync(destUri: vscode.Uri, data : ALCodeunitWizardData) : Promise<string> {
         //generate file content
         let writer : ALSyntaxWriter = new ALSyntaxWriter();
 
@@ -24,13 +29,18 @@ export class ALCodeunitSyntaxBuilder {
 
         writer.writeLine("");
 
-        if (methodHeaders) {
-            for (let i=0; i<methodHeaders.length; i++) {
-                writer.writeLine(methodHeaders[i].replace(/,/g, ";"));
-                writer.writeLine("begin");
-                writer.writeLine("end;");
-                writer.writeLine("");
-            }        
+        if ((data.interfaceName) && (data.interfaceName != '')) {
+            let methodHeaders: string[] | undefined = await this._toolsExtensionContext.alLangProxy.getObjectMethods(destUri,
+                'Interface', data.interfaceName);
+
+            if ((methodHeaders) && (methodHeaders.length > 0)) {
+                for (let i=0; i<methodHeaders.length; i++) {
+                    writer.writeLine(methodHeaders[i].replace(/,/g, ";"));
+                    writer.writeLine("begin");
+                    writer.writeLine("end;");
+                    writer.writeLine("");
+                }        
+            }
         }
 
         //finish object

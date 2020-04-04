@@ -34,7 +34,6 @@ export class ALCodeunitWizardPage extends ALTableBasedWizardPage {
         return false;
     }
 
-
     protected async finishWizard(data : any) : Promise<boolean> {
         //build parameters
         this._codeunitWizardData.objectId = data.objectId;
@@ -43,10 +42,9 @@ export class ALCodeunitWizardPage extends ALTableBasedWizardPage {
         this._codeunitWizardData.interfaceName = data.interfaceName;
         
         //build new object
-        let builder : ALCodeunitSyntaxBuilder = new ALCodeunitSyntaxBuilder();
-        let methodHeaders: string[] | undefined = await this._toolsExtensionContext.alLangProxy.getInterfaceMethods(this._settings.getDestDirectoryUri(),
-            this._codeunitWizardData.interfaceName);
-        let source = builder.buildFromCodeunitWizardData(this._codeunitWizardData, methodHeaders);
+        let builder : ALCodeunitSyntaxBuilder = new ALCodeunitSyntaxBuilder(this._toolsExtensionContext);
+        let source = await builder.buildFromCodeunitWizardDataAsync(this._settings.getDestDirectoryUri(),
+            this._codeunitWizardData);
         this.createObjectFile('Codeunit', this._codeunitWizardData.objectId, this._codeunitWizardData.objectName, source);
 
         return true;

@@ -9,7 +9,6 @@ export class ALBaseSortCodeCommand extends ALCodeCommand {
         super(context, commandName);
     }
 
-
     protected sortChildItems(symbol: AZSymbolInformation, childSymbolKind: AZSymbolKind, editBuilder: vscode.TextEditorEdit) {
         // Collect columns
         let childSymbolsList: AZSymbolInformation[] = [];

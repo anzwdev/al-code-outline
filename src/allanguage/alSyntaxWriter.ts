@@ -76,6 +76,12 @@ export class ALSyntaxWriter {
         this.writeStartBlock();
     }
 
+    public writeStartInterface(name: string) {
+        name = ALSyntaxHelper.toNameText(name);
+        this.writeLine("interface " + name);
+        this.writeStartBlock();
+    }
+
     public writeStartCodeunit(id : string, name : string, interfaceName: string | undefined) {
         var objectIdText : string;
         if ((id == '') || (id == '0'))
