@@ -1,5 +1,9 @@
 # Change Log
 
+## 1.0.36
+ - "Create Interface" code action availabe from codeunit object
+ - Interface wizard
+
 ## 1.0.35
  - Github issue #97 - "Show all Project Symbols" doesn't list Page Customization and Profiles
  - Github enhancement #93 - New code action - sort object properties

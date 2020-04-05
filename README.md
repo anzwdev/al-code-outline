@@ -22,6 +22,7 @@ Extensions add new "New AL File Wizard" item to EXPLORER context menu. It allows
    - Table Wizard
    - Page Wizard
    - Codeunit Wizard
+   - Interface Wizard
    - XmlPort Wizard
    - Report Wizard
    - Query Wizard
@@ -74,16 +75,18 @@ When new objects are created, generators use "CRS AL Language Extension" templat
 
 ### Code actions
 
-Extension adds VS Code editor code actions to some of al elements to help developers modify or insert code quickly. At this moment there are 2 types of actions available
+Extension adds VS Code editor code actions to some of al elements to help developers modify or insert code quickly. At this these types of actions available:
  - Sorting actions that can sort 
   - "Sort procedures" available when cursor is at the first line of a procedure. This action will sort procedures of the same type (i.e. local) in a natural order
   - "Sort data item columns" available when cursor is at report data item, column or first line of the object declaration. This action will sort all columns inside data item in a natural order. If it is invoked from the first line of the object, it will sort columns inside all data items.
   - "Sort properties" available from the first line of any object declaration. It will sort properties of every element declared inside the object.
+ - Code generation actions
+  - "Create interface" action available on the first line of codeunit declaration, it creates a new interface with all public functions from the codeunit
  - "Add multiple fields" when cursor is at these elements in the editor:
   - "group" and "repeater" on pages
   - "group", "repeater", "addfirst", "addlast", "addafter" and "addbefore" on page extensions
   - "dataitem" on reports
-  - "dataitem" on queries 
+  - "dataitem" on queries
   There are also "Add multiple field elements" and "Add multiple field attributes" actions available at "tableelement", "fieldelement" and "fieldattribute" elements on xml ports.
   Fields can be added is selection or alphabetic order, it can be controlled using "alOutline.fieldsSelectionOrder" setting. Default value is "selection order".
 

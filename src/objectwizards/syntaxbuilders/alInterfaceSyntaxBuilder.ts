@@ -24,11 +24,13 @@ export class ALInterfaceSyntaxBuilder {
 
             if ((methodHeaders) && (methodHeaders.length > 0)) {
                 for (let i=0; i<methodHeaders.length; i++) {
-                    let method = methodHeaders[i].replace(/,/g, ";");
-                    if (!method.endsWith(";"))
-                        method = method + ';';
-                    writer.writeLine(method);
-                }        
+                    if (!methodHeaders[i].startsWith("procedure Run(")) { //skip codeunit.Run function
+                        let method = methodHeaders[i].replace(/,/g, ";");
+                        if (!method.endsWith(";"))
+                            method = method + ';';
+                        writer.writeLine(method);
+                    }
+                }
                 writer.writeLine("");
             }
         }
