@@ -11,9 +11,10 @@ export class ALAddQueryFieldsCodeCommand extends ALBaseAddFieldsCodeCommand {
         super(context, 'AZDevTools.ALAddQueryFieldsCodeCommand');
     }
 
-    collectCodeActions(symbol: AZSymbolInformation, range: vscode.Range | vscode.Selection, actions: vscode.CodeAction[]) {        
-        if ((symbol.kind == AZSymbolKind.QueryDataItem) ||
-            (symbol.kind == AZSymbolKind.QueryColumn)) {
+    collectCodeActions(symbol: AZSymbolInformation, range: vscode.Range | vscode.Selection, context: vscode.CodeActionContext, actions: vscode.CodeAction[]) {        
+        if ((symbol) && 
+            ((symbol.kind == AZSymbolKind.QueryDataItem) ||
+             (symbol.kind == AZSymbolKind.QueryColumn))) {
             let action = new vscode.CodeAction("Add multiple fields", vscode.CodeActionKind.QuickFix);
             action.command = { command: this.name, title: 'Add multiple fields...' };
             actions.push(action);

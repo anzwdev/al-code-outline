@@ -16,7 +16,7 @@ export class ALCodeCommand {
             ));        
     }
 
-    collectCodeActions(symbol: AZSymbolInformation, range: vscode.Range | vscode.Selection, actions: vscode.CodeAction[]) {
+    collectCodeActions(symbol: AZSymbolInformation, range: vscode.Range | vscode.Selection, context: vscode.CodeActionContext, actions: vscode.CodeAction[]) {
     }
 
     protected run() {
@@ -32,6 +32,11 @@ export class ALCodeCommand {
 
     protected getDocumentUri() : vscode.Uri {
         return this._toolsExtensionContext.activeDocumentSymbols.getDocUri();
+    }
+
+    protected canRunOnSave(actionCode: string, resource?: vscode.Uri) {
+        let actionsList = vscode.workspace.getConfiguration('alOutline', resource).get<string[]>('codeActionsOnSave');
+        return (actionsList.indexOf(actionCode) >= 0);
     }
 
 }

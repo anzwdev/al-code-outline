@@ -17,10 +17,11 @@ export class ALAddXmlPortFieldsCodeCommand extends ALBaseAddFieldsCodeCommand {
         this.commandTitle = newCommandTitle;
     }
 
-    collectCodeActions(symbol: AZSymbolInformation, range: vscode.Range | vscode.Selection, actions: vscode.CodeAction[]) {
-        if ((symbol.kind == AZSymbolKind.XmlPortTableElement) ||
-            (symbol.kind == AZSymbolKind.XmlPortFieldElement) ||
-            (symbol.kind == AZSymbolKind.XmlPortFieldAttribute)) {
+    collectCodeActions(symbol: AZSymbolInformation, range: vscode.Range | vscode.Selection, context: vscode.CodeActionContext, actions: vscode.CodeAction[]) {
+        if ((symbol) &&         
+            ((symbol.kind == AZSymbolKind.XmlPortTableElement) ||
+             (symbol.kind == AZSymbolKind.XmlPortFieldElement) ||
+             (symbol.kind == AZSymbolKind.XmlPortFieldAttribute))) {
             let action = new vscode.CodeAction(this.commandTitle, vscode.CodeActionKind.QuickFix);
             action.command = { command: this.name, title: this.commandTitle + '...' };
             actions.push(action);

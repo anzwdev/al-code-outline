@@ -20,8 +20,8 @@ export class ALSortProceduresCodeCommand extends ALBaseSortCodeCommand {
         ];
     }
 
-    collectCodeActions(symbol: AZSymbolInformation, range: vscode.Range | vscode.Selection, actions: vscode.CodeAction[]) {
-        if (ALSortProceduresCodeCommand.getMethodSymbolKinds().indexOf(symbol.kind) > -1 && symbol.selectionRange.start.line == range.start.line) {
+    collectCodeActions(symbol: AZSymbolInformation, range: vscode.Range | vscode.Selection, context: vscode.CodeActionContext, actions: vscode.CodeAction[]) {
+        if ((symbol) && (ALSortProceduresCodeCommand.getMethodSymbolKinds().indexOf(symbol.kind) > -1 && symbol.selectionRange.start.line == range.start.line)) {
             let action = new vscode.CodeAction("Sort procedures", vscode.CodeActionKind.QuickFix);
             action.command = { command: this.name, title: 'Sort procedures' };
             actions.push(action);

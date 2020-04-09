@@ -12,8 +12,8 @@ export class ALSortPropertiesCommand extends ALBaseSortCodeCommand {
         super(context, 'AZDevTools.ALSortPropertiesCommand');
     }
 
-    collectCodeActions(symbol: AZSymbolInformation, range: vscode.Range | vscode.Selection, actions: vscode.CodeAction[]) {
-        if ((symbol.isALObject()) && (symbol.kind != AZSymbolKind.Interface) && (symbol.selectionRange.start.line == range.start.line)) {
+    collectCodeActions(symbol: AZSymbolInformation, range: vscode.Range | vscode.Selection, context: vscode.CodeActionContext, actions: vscode.CodeAction[]) {
+        if ((symbol) && (symbol.isALObject()) && (symbol.kind != AZSymbolKind.Interface) && (symbol.selectionRange.start.line == range.start.line)) {
             let action = new vscode.CodeAction("Sort properties", vscode.CodeActionKind.QuickFix);
             action.command = { command: this.name, title: 'Sort properties...' };
             actions.push(action);

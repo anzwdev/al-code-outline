@@ -10,10 +10,11 @@ export class ALSortReportColumnsCommand extends ALBaseSortCodeCommand {
         super(context, 'AZDevTools.ALSortReportColumnsCommand');
     }
 
-    collectCodeActions(symbol: AZSymbolInformation, range: vscode.Range | vscode.Selection, actions: vscode.CodeAction[]) {
-        if ((symbol.kind == AZSymbolKind.ReportDataItem) ||
-            (symbol.kind == AZSymbolKind.ReportColumn) ||
-            ((symbol.kind == AZSymbolKind.ReportObject) && (symbol.selectionRange.start.line == range.start.line))) {
+    collectCodeActions(symbol: AZSymbolInformation, range: vscode.Range | vscode.Selection, context: vscode.CodeActionContext, actions: vscode.CodeAction[]) {
+        if ((symbol) &&
+            ((symbol.kind == AZSymbolKind.ReportDataItem) ||
+             (symbol.kind == AZSymbolKind.ReportColumn) ||
+             ((symbol.kind == AZSymbolKind.ReportObject) && (symbol.selectionRange.start.line == range.start.line)))) {
             let action = new vscode.CodeAction("Sort data item columns", vscode.CodeActionKind.QuickFix);
             action.command = { command: this.name, title: 'Sort data item columns...' };
             actions.push(action);

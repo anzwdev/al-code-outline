@@ -36,11 +36,8 @@ export class ALCodeActionsProvider implements vscode.CodeActionProvider {
         let symbol = this._toolsExtensionContext.activeDocumentSymbols.findSymbolInRange(range);
         let actions: vscode.CodeAction[] = [];
 
-        if (symbol) {
-            for (let i=0; i<this._codeCommands.length; i++) {
-                this._codeCommands[i].collectCodeActions(symbol, range, actions);
-
-            }
+        for (let i=0; i<this._codeCommands.length; i++) {
+            this._codeCommands[i].collectCodeActions(symbol, range, context, actions);
         }
 
         return actions;
