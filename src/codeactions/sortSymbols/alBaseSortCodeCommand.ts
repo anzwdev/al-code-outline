@@ -1,15 +1,15 @@
 import * as vscode from 'vscode';
 import { DevToolsExtensionContext } from "../../devToolsExtensionContext";
-import { ALCodeCommand } from '../alCodeCommand';
 import { AZSymbolInformation } from "../../symbollibraries/azSymbolInformation";
 import { AZSymbolKind } from "../../symbollibraries/azSymbolKind";
+import { ALCodeAction } from '../alCodeAction';
 
-export class ALBaseSortCodeCommand extends ALCodeCommand {
-    constructor(context : DevToolsExtensionContext, commandName: string) {
-        super(context, commandName);
+export class ALBaseSortCodeCommand extends ALCodeAction {
+    constructor(context : DevToolsExtensionContext) {
+        super(context);
     }
 
-    protected sortChildItems(symbol: AZSymbolInformation, childSymbolKind: AZSymbolKind, editBuilder: vscode.TextEditorEdit) {
+    protected sortChildItems(docUri: vscode.Uri, symbol: AZSymbolInformation, childSymbolKind: AZSymbolKind, editBuilder: vscode.WorkspaceEdit) {
         // Collect columns
         let childSymbolsList: AZSymbolInformation[] = [];
         symbol.collectChildSymbols(childSymbolKind, false, childSymbolsList);
@@ -36,11 +36,10 @@ export class ALBaseSortCodeCommand extends ALCodeCommand {
         for (const childSymbol of childSymbolsList) {
             const deleteRange = new vscode.Range(childSymbol.range.start.line, childSymbol.range.start.character, 
                 childSymbol.range.end.line, childSymbol.range.end.character);
-            editBuilder.delete(deleteRange);
+            editBuilder.delete(docUri, deleteRange);
         }
         
-        editBuilder.insert(insertPos, newSource);
+        editBuilder.insert(docUri, insertPos, newSource);
     }
-
 
 }

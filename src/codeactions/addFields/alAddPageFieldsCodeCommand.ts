@@ -5,13 +5,14 @@ import { AZSymbolKind } from '../../symbollibraries/azSymbolKind';
 import { AZSymbolInformation } from '../../symbollibraries/azSymbolInformation';
 import { ALBaseAddFieldsCodeCommand } from './alBaseAddFieldsCodeCommand';
 import { FieldsSelector } from './fieldsSelector';
+import { AZDocumentSymbolsLibrary } from '../../symbollibraries/azDocumentSymbolsLibrary';
 
 export class ALAddPageFieldsCodeCommand extends ALBaseAddFieldsCodeCommand {
     constructor(context : DevToolsExtensionContext) {
         super(context, 'AZDevTools.ALAddPageFieldsCodeCommand');
     }
 
-    collectCodeActions(symbol: AZSymbolInformation, range: vscode.Range | vscode.Selection, context: vscode.CodeActionContext, actions: vscode.CodeAction[]) {
+    collectCodeActions(docSymbols: AZDocumentSymbolsLibrary, symbol: AZSymbolInformation, document: vscode.TextDocument, range: vscode.Range | vscode.Selection, context: vscode.CodeActionContext, actions: vscode.CodeAction[]) {
         if ((symbol) && 
             ((symbol.kind == AZSymbolKind.PageGroup) ||                 
              (symbol.kind == AZSymbolKind.PageRepeater) ||
@@ -20,12 +21,16 @@ export class ALAddPageFieldsCodeCommand extends ALBaseAddFieldsCodeCommand {
              (symbol.kind == AZSymbolKind.PageField) ||
              (symbol.kind == AZSymbolKind.PageUserControl))) {                
             let action : vscode.CodeAction = new vscode.CodeAction("Add multiple fields", vscode.CodeActionKind.QuickFix);
-            action.command = { command: this.name, title: 'Add multiple fields...' };
+            action.command = { 
+                command: this.name, 
+                title: 'Add multiple fields...',
+                arguments: [docSymbols, document, range]
+            };
             actions.push(action);
         }
     }
 
-    protected async runAsync(range: vscode.Range) {
+    protected async runAsync(docSymbols: AZDocumentSymbolsLibrary, document: vscode.TextDocument, range: vscode.Range) {
         //get required details from document source code
         let symbol = this._toolsExtensionContext.activeDocumentSymbols.findSymbolInRange(range);
         if (!symbol)

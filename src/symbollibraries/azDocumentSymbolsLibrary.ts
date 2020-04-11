@@ -15,13 +15,15 @@ export class AZDocumentSymbolsLibrary extends AZSymbolsLibrary {
     protected _docUri : vscode.Uri | undefined;
     protected _reloadRequired : boolean;
     protected _context : DevToolsExtensionContext;
+    private _document: vscode.TextDocument | undefined;
 
-    constructor(context : DevToolsExtensionContext, docUri : vscode.Uri | undefined) {
+    constructor(context : DevToolsExtensionContext, docUri : vscode.Uri | undefined, document?: vscode.TextDocument) {
         super();
         this._twoWayTree = true;
         
         this._context = context;
         this._docUri = docUri;
+        this._document = document;
         this._reloadRequired = true;
         if (this._docUri) {
             this.name = this._docUri.fsPath;
@@ -38,6 +40,18 @@ export class AZDocumentSymbolsLibrary extends AZSymbolsLibrary {
         return this._docUri;
     }
 
+    protected async GetDocumentAsync(): Promise<vscode.TextDocument | undefined> {
+        if (this._document)
+            return this._document;
+        
+        let editor : vscode.TextEditor | undefined = TextEditorHelper.findDocumentEditor(this._docUri);
+        if (editor)
+            return editor.document;
+        if (this._docUri)
+            return await vscode.workspace.openTextDocument(this._docUri);
+        return undefined;
+    }
+
     protected async loadInternalAsync(forceReload : boolean) : Promise<boolean> {
         if ((!forceReload) && (!this._reloadRequired))
             return false;
@@ -45,12 +59,7 @@ export class AZDocumentSymbolsLibrary extends AZSymbolsLibrary {
         let newRootSymbol : AZSymbolInformation | undefined = undefined;
 
         //get document symbols
-        let document : vscode.TextDocument | undefined = undefined;
-        let editor : vscode.TextEditor | undefined = TextEditorHelper.findDocumentEditor(this._docUri);
-        if (editor)
-            document = editor.document;
-        else if (this._docUri)
-            document = await vscode.workspace.openTextDocument(this._docUri);
+        let document = await this.GetDocumentAsync();
 
         if (document) {
             if (document.uri)
@@ -67,7 +76,7 @@ export class AZDocumentSymbolsLibrary extends AZSymbolsLibrary {
                 if ((this._docUri) && (this._docUri.fsPath))
                     documentPath = this._docUri.fsPath;
 
-                let request : ToolsDocumentSymbolsRequest = new ToolsDocumentSymbolsRequest(source, documentPath, false);
+                let request : ToolsDocumentSymbolsRequest = new ToolsDocumentSymbolsRequest(source, documentPath, true);
                 let response : ToolsDocumentSymbolsResponse | undefined = await this._context.toolsLangServerClient.getALDocumentSymbols(request);
                 if ((response) && (response.root)) {
                     newRootSymbol = AZSymbolInformation.fromAny(response.root);                    

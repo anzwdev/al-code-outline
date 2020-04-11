@@ -5,25 +5,28 @@ import { AZSymbolKind } from '../../symbollibraries/azSymbolKind';
 import { ALBaseAddFieldsCodeCommand } from './alBaseAddFieldsCodeCommand';
 import { FieldsSelector } from './fieldsSelector';
 import { AZSymbolInformation } from '../../symbollibraries/azSymbolInformation';
+import { AZDocumentSymbolsLibrary } from '../../symbollibraries/azDocumentSymbolsLibrary';
 
 export class ALAddReportFieldsCodeCommand extends ALBaseAddFieldsCodeCommand {
     constructor(context : DevToolsExtensionContext) {
         super(context, 'AZDevTools.ALAddReportFieldsCodeCommand');
     }
 
-    collectCodeActions(symbol: AZSymbolInformation, range: vscode.Range | vscode.Selection, context: vscode.CodeActionContext, actions: vscode.CodeAction[]) {
+    collectCodeActions(docSymbols: AZDocumentSymbolsLibrary, symbol: AZSymbolInformation, document: vscode.TextDocument, range: vscode.Range | vscode.Selection, context: vscode.CodeActionContext, actions: vscode.CodeAction[]) {
         if ((symbol) && 
             ((symbol.kind == AZSymbolKind.ReportDataItem) ||
              (symbol.kind == AZSymbolKind.ReportColumn))) {
             let action = new vscode.CodeAction("Add multiple fields", vscode.CodeActionKind.QuickFix);
-            action.command = { command: this.name, title: 'Add multiple fields...' };
+            action.command = { 
+                command: this.name, 
+                title: 'Add multiple fields...',
+                arguments: [docSymbols, document, range]
+            };
             actions.push(action);
         }
     }
 
-    
-
-    protected async runAsync(range: vscode.Range) {
+    protected async runAsync(docSymbols: AZDocumentSymbolsLibrary, document: vscode.TextDocument, range: vscode.Range) {
         //get required details from document source code
         let symbol = this._toolsExtensionContext.activeDocumentSymbols.findSymbolInRange(range);
         let isFieldSymbol = (symbol.kind == AZSymbolKind.ReportColumn);
