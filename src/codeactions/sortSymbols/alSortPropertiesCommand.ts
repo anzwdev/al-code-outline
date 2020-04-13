@@ -8,33 +8,44 @@ import { AZDocumentSymbolsLibrary } from '../../symbollibraries/azDocumentSymbol
 export class ALSortPropertiesCommand extends ALBaseSortCodeCommand {
 
     constructor(context : DevToolsExtensionContext) {
-        super(context);
+        super(context, "SortProperties");
     }
 
     collectCodeActions(docSymbols: AZDocumentSymbolsLibrary, symbol: AZSymbolInformation, document: vscode.TextDocument, range: vscode.Range | vscode.Selection, context: vscode.CodeActionContext, actions: vscode.CodeAction[]) {
-        if ((symbol) && (symbol.isALObject()) && (symbol.kind != AZSymbolKind.Interface) && (symbol.selectionRange.start.line == range.start.line)) {
-            let edit = this.prepareEdit(symbol, document);
-            if (edit) {
-                let action = new vscode.CodeAction("Sort properties", vscode.CodeActionKind.QuickFix);
-                action.edit = edit;
-                actions.push(action);
+        let edit: vscode.WorkspaceEdit | undefined = undefined;
+        let actionKind = vscode.CodeActionKind.QuickFix;
+
+        if (this.canRunOnSave(document.uri)) {
+            if ((context.only) && (context.only.contains(vscode.CodeActionKind.SourceFixAll))) {
+                actionKind = vscode.CodeActionKind.SourceFixAll;
+                let objList: AZSymbolInformation[] = [];        
+                docSymbols.findALObjectsInsideRange(range, objList);
+                for (let i=0; i<objList.length; i++)
+                    edit = this.prepareEdit(objList[i], document, edit);
             }
+        } else {
+            //collect list of objects in selection range
+            if ((symbol) && (symbol.isALObject()) && (symbol.kind != AZSymbolKind.Interface) && (symbol.selectionRange.start.line == range.start.line))
+                edit = this.prepareEdit(symbol, document, undefined);
+        }
+
+        if (edit) {
+            let action = new vscode.CodeAction("Sort properties", actionKind);
+            action.edit = edit;
+            actions.push(action);
         }
     }
 
-    protected prepareEdit(symbol: AZSymbolInformation, document: vscode.TextDocument): vscode.WorkspaceEdit | undefined {
-        //load syntax tree
-        //let document = vscode.window.activeTextEditor.document;
-        let source = document.getText();
-
+    protected prepareEdit(symbol: AZSymbolInformation, document: vscode.TextDocument, edit: vscode.WorkspaceEdit | undefined): vscode.WorkspaceEdit | undefined {
         //collect PropertyList symbols
         let propertyListSymbolsList: AZSymbolInformation[] = [];
         symbol.collectChildSymbols(AZSymbolKind.PropertyList, true, propertyListSymbolsList);
  
         if (propertyListSymbolsList.length == 0)
-            return undefined;
+            return edit;
 
-        let edit = new vscode.WorkspaceEdit();
+        if (!edit)
+            edit = new vscode.WorkspaceEdit();
         if (propertyListSymbolsList.length > 0) {
             for (let i=0; i<propertyListSymbolsList.length; i++) {
                 this.sortChildItems(document.uri, propertyListSymbolsList[i], AZSymbolKind.Property, edit);

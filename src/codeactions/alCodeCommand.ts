@@ -7,8 +7,8 @@ import { ALCodeAction } from './alCodeAction';
 export class ALCodeCommand extends ALCodeAction {    
     public name: string;
     
-    constructor(context : DevToolsExtensionContext, commandName: string) {
-        super(context);
+    constructor(context : DevToolsExtensionContext, shortName: string, commandName: string) {
+        super(context, shortName);
         this.name = commandName;
         this._toolsExtensionContext.vscodeExtensionContext.subscriptions.push(
             vscode.commands.registerCommand(

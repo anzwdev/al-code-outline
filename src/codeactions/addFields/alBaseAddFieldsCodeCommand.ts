@@ -5,8 +5,8 @@ import { AZSymbolInformation } from '../../symbollibraries/azSymbolInformation';
 import { AZSymbolKind } from '../../symbollibraries/azSymbolKind';
 
 export class ALBaseAddFieldsCodeCommand extends ALCodeCommand {
-    constructor(context : DevToolsExtensionContext, commandName: string) {
-        super(context, commandName);
+    constructor(context : DevToolsExtensionContext, shortName: string, commandName: string) {
+        super(context, shortName, commandName);
     }
     
     protected removeExistingFields(fieldNames: string[] | undefined, existingFields: AZSymbolInformation[] | undefined, existingFieldKind: AZSymbolKind, noFieldsMessage : string) : string[] | undefined {

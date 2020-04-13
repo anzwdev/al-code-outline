@@ -9,7 +9,7 @@ import { AZDocumentSymbolsLibrary } from '../../symbollibraries/azDocumentSymbol
 
 export class ALAddPageFieldsCodeCommand extends ALBaseAddFieldsCodeCommand {
     constructor(context : DevToolsExtensionContext) {
-        super(context, 'AZDevTools.ALAddPageFieldsCodeCommand');
+        super(context, 'AddPageFields', 'AZDevTools.ALAddPageFieldsCodeCommand');
     }
 
     collectCodeActions(docSymbols: AZDocumentSymbolsLibrary, symbol: AZSymbolInformation, document: vscode.TextDocument, range: vscode.Range | vscode.Selection, context: vscode.CodeActionContext, actions: vscode.CodeAction[]) {

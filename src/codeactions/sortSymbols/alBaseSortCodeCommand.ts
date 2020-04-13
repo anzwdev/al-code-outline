@@ -5,8 +5,8 @@ import { AZSymbolKind } from "../../symbollibraries/azSymbolKind";
 import { ALCodeAction } from '../alCodeAction';
 
 export class ALBaseSortCodeCommand extends ALCodeAction {
-    constructor(context : DevToolsExtensionContext) {
-        super(context);
+    constructor(context : DevToolsExtensionContext, shortName: string) {
+        super(context, shortName);
     }
 
     protected sortChildItems(docUri: vscode.Uri, symbol: AZSymbolInformation, childSymbolKind: AZSymbolKind, editBuilder: vscode.WorkspaceEdit) {

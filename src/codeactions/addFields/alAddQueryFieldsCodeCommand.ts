@@ -9,7 +9,7 @@ import { AZDocumentSymbolsLibrary } from '../../symbollibraries/azDocumentSymbol
 
 export class ALAddQueryFieldsCodeCommand extends ALBaseAddFieldsCodeCommand {
     constructor(context : DevToolsExtensionContext) {
-        super(context, 'AZDevTools.ALAddQueryFieldsCodeCommand');
+        super(context, 'AddQueryFields', 'AZDevTools.ALAddQueryFieldsCodeCommand');
     }
 
     collectCodeActions(docSymbols: AZDocumentSymbolsLibrary, symbol: AZSymbolInformation, document: vscode.TextDocument, range: vscode.Range | vscode.Selection, context: vscode.CodeActionContext, actions: vscode.CodeAction[]) {        

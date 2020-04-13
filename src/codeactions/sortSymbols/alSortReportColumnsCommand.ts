@@ -8,28 +8,40 @@ import { AZDocumentSymbolsLibrary } from '../../symbollibraries/azDocumentSymbol
 export class ALSortReportColumnsCommand extends ALBaseSortCodeCommand {
 
     constructor(context : DevToolsExtensionContext) {
-        super(context);
+        super(context, "SortReportColumns");
     }
 
     collectCodeActions(docSymbols: AZDocumentSymbolsLibrary, symbol: AZSymbolInformation, document: vscode.TextDocument, range: vscode.Range | vscode.Selection, context: vscode.CodeActionContext, actions: vscode.CodeAction[]) {
-        //check if action has been run on autosave
-        if (context.only === vscode.CodeActionKind.SourceFixAll) {
-
-        }
+        let edit: vscode.WorkspaceEdit | undefined = undefined;
+        let actionKind = vscode.CodeActionKind.QuickFix;        
         
-        //prepare code fix
-        if ((symbol) &&
-            ((symbol.kind == AZSymbolKind.ReportDataItem) ||
-             (symbol.kind == AZSymbolKind.ReportColumn) ||
-             ((symbol.kind == AZSymbolKind.ReportObject) && (symbol.selectionRange.start.line == range.start.line)))) {
-            let action = new vscode.CodeAction("Sort data item columns", vscode.CodeActionKind.QuickFix);
-            action.edit = this.prepareEdit(symbol, document);
+        if (this.canRunOnSave(document.uri)) {
+            if ((context.only) && (context.only.contains(vscode.CodeActionKind.SourceFixAll))) {
+                actionKind = vscode.CodeActionKind.SourceFixAll;
+                let objList: AZSymbolInformation[] = [];        
+                docSymbols.findSymbolsInsideRange(range, AZSymbolKind.ReportObject, objList);
+                for (let i=0; i<objList.length; i++)
+                    edit = this.prepareEdit(objList[i], document, edit);
+            }
+        } else {
+            //prepare code fix
+            if ((symbol) &&
+                ((symbol.kind == AZSymbolKind.ReportDataItem) ||
+                (symbol.kind == AZSymbolKind.ReportColumn) ||
+                ((symbol.kind == AZSymbolKind.ReportObject) && (symbol.selectionRange.start.line == range.start.line))))
+                edit = this.prepareEdit(symbol, document, edit);
+        }
+
+        if (edit) {
+            let action = new vscode.CodeAction("Sort data item columns", actionKind);
+            action.edit = edit; 
             actions.push(action);
         }
     }
 
-    protected prepareEdit(symbol: AZSymbolInformation, document: vscode.TextDocument): vscode.WorkspaceEdit {
-        let edit = new vscode.WorkspaceEdit();
+    protected prepareEdit(symbol: AZSymbolInformation, document: vscode.TextDocument, edit: vscode.WorkspaceEdit | undefined): vscode.WorkspaceEdit {
+        if (!edit)
+            edit = new vscode.WorkspaceEdit();
         switch (symbol.kind) {
             case AZSymbolKind.ReportDataItem:
                 this.sortChildItems(document.uri, symbol, AZSymbolKind.ReportColumn, edit);

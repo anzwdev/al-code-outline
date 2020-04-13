@@ -9,7 +9,7 @@ import { AZDocumentSymbolsLibrary } from '../../symbollibraries/azDocumentSymbol
 
 export class ALAddReportFieldsCodeCommand extends ALBaseAddFieldsCodeCommand {
     constructor(context : DevToolsExtensionContext) {
-        super(context, 'AZDevTools.ALAddReportFieldsCodeCommand');
+        super(context, 'AddReportFields', 'AZDevTools.ALAddReportFieldsCodeCommand');
     }
 
     collectCodeActions(docSymbols: AZDocumentSymbolsLibrary, symbol: AZSymbolInformation, document: vscode.TextDocument, range: vscode.Range | vscode.Selection, context: vscode.CodeActionContext, actions: vscode.CodeAction[]) {

@@ -6,56 +6,66 @@ import { ALBaseSortCodeCommand } from './alBaseSortCodeCommand';
 import { AZDocumentSymbolsLibrary } from '../../symbollibraries/azDocumentSymbolsLibrary';
 
 export class ALSortProceduresCodeCommand extends ALBaseSortCodeCommand {
+    protected _methodSymbolKinds: AZSymbolKind[] = [
+        AZSymbolKind.MethodDeclaration, 
+        AZSymbolKind.LocalMethodDeclaration, 
+        AZSymbolKind.EventSubscriberDeclaration,
+        AZSymbolKind.EventDeclaration,
+        AZSymbolKind.BusinessEventDeclaration,
+        AZSymbolKind.IntegrationEventDeclaration
+    ];
+    
     constructor(context : DevToolsExtensionContext) {
-        super(context);
-    }
-
-    public static getMethodSymbolKinds(): AZSymbolKind[] {
-        return [
-                AZSymbolKind.MethodDeclaration, 
-                AZSymbolKind.LocalMethodDeclaration, 
-                AZSymbolKind.EventSubscriberDeclaration,
-                AZSymbolKind.EventDeclaration,
-                AZSymbolKind.BusinessEventDeclaration,
-                AZSymbolKind.IntegrationEventDeclaration
-        ];
+        super(context, "SortProcedures");
     }
 
     collectCodeActions(docSymbols: AZDocumentSymbolsLibrary, symbol: AZSymbolInformation, document: vscode.TextDocument, range: vscode.Range | vscode.Selection, context: vscode.CodeActionContext, actions: vscode.CodeAction[]) {
-        if ((symbol) && (ALSortProceduresCodeCommand.getMethodSymbolKinds().indexOf(symbol.kind) > -1 && symbol.selectionRange.start.line == range.start.line)) {
-            let edit = this.prepareEdit(symbol, document);
-            if (edit) {
-                let action = new vscode.CodeAction("Sort procedures", vscode.CodeActionKind.QuickFix);
-                action.edit = edit;
-                actions.push(action);
+        let edit: vscode.WorkspaceEdit | undefined = undefined;
+        let actionKind = vscode.CodeActionKind.QuickFix;
+
+        if (this.canRunOnSave(document.uri)) {
+            if ((context.only) && (context.only.contains(vscode.CodeActionKind.SourceFixAll))) {
+                actionKind = vscode.CodeActionKind.SourceFixAll;
+                let objList: AZSymbolInformation[] = [];        
+                docSymbols.findALObjectsInsideRange(range, objList);
+                for (let i=0; i<objList.length; i++)
+                    edit = this.prepareEdit(objList[i], document, edit);
             }
+        } else {
+            if ((symbol) && 
+                ((this.isMethodSymbol(symbol)) || (symbol.isALObject())) && 
+                (symbol.selectionRange.start.line == range.start.line))
+                edit = this.prepareEdit(symbol, document, edit);
+        }
+
+        if (edit) {
+            let action = new vscode.CodeAction("Sort procedures", actionKind);
+            action.edit = edit;
+            actions.push(action);
         }
     }
 
-    protected prepareEdit(symbol: AZSymbolInformation, document: vscode.TextDocument): vscode.WorkspaceEdit | undefined {
-        const methodSymbolKinds: AZSymbolKind[] = ALSortProceduresCodeCommand.getMethodSymbolKinds();
+    protected prepareEdit(symbol: AZSymbolInformation, document: vscode.TextDocument, edit: vscode.WorkspaceEdit | undefined): vscode.WorkspaceEdit | undefined {        
+        let objectSymbol = symbol.findParentObject();
+        let isMethodSymbol = this.isMethodSymbol(symbol);
 
-        let parentKind: AZSymbolKind[] = [AZSymbolKind.CodeunitObject, AZSymbolKind.PageObject, AZSymbolKind.ReportObject, AZSymbolKind.QueryObject, AZSymbolKind.XmlPortObject, AZSymbolKind.TableExtensionObject, AZSymbolKind.PageExtensionObject];
-        let objectSymbol = symbol.findParentByKindList(parentKind);
-        let isMethodSymbol = methodSymbolKinds.indexOf(symbol.kind) > -1;
-
-        if ((!objectSymbol) || 
-            ((!isMethodSymbol) && (!symbol.contentRange)) || 
-            ((isMethodSymbol) && (!symbol.range))
-        )
-        {
-            return undefined;
-        }
-        
-        // Collect method declarations (of matching symbol-kind)
+        // Collect method declarations of matching symbol-kind or all methods if we run code action for whole object
         let methodDecls: AZSymbolInformation[] = [];
-        objectSymbol.collectChildSymbols(symbol.kind, true, methodDecls);
+        if (this.isMethodSymbol(symbol))        
+            objectSymbol.collectChildSymbols(symbol.kind, true, methodDecls);
+        else {
+            for (let i=0; i<this._methodSymbolKinds.length; i++)
+                objectSymbol.collectChildSymbols(this._methodSymbolKinds[i], true, methodDecls);
+        }       
+        
         if (methodDecls.length == 0) {
-            return undefined;
+            return edit;
         }
 
         // Sort the method declarations
         methodDecls.sort((methodDeclA, methodDeclB) => {
+            if (methodDeclA.kind != methodDeclB.kind)
+                return (this._methodSymbolKinds.indexOf(methodDeclA.kind) - this._methodSymbolKinds.indexOf(methodDeclB.kind));
             return methodDeclA.name.localeCompare(methodDeclB.name, undefined, { numeric: true, sensitivity: 'base' });
         });
 
@@ -67,7 +77,8 @@ export class ALSortProceduresCodeCommand extends ALBaseSortCodeCommand {
         }
         
         // Delete the old unsorted method declarations and insert the new sorted source
-        let edit = new vscode.WorkspaceEdit();
+        if (!edit)
+            edit = new vscode.WorkspaceEdit();
         let insertPos: vscode.Position = new vscode.Position(methodDecls[0].range.start.line, methodDecls[0].range.start.character);
             
         for (const methodDecl of methodDecls) {
@@ -79,4 +90,9 @@ export class ALSortProceduresCodeCommand extends ALBaseSortCodeCommand {
 
         return edit;
     }
+
+    protected isMethodSymbol(symbol: AZSymbolInformation): boolean {
+        return (this._methodSymbolKinds.indexOf(symbol.kind) >= 0);
+    }
+
 }

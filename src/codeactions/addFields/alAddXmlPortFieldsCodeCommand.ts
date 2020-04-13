@@ -13,7 +13,7 @@ export class ALAddXmlPortFieldsCodeCommand extends ALBaseAddFieldsCodeCommand {
     commandTitle: string;
     
     constructor(context : DevToolsExtensionContext, newElementType: string, newCommandTitle: string) {
-        super(context, 'AZDevTools.ALAddXmlPort' + newElementType + 'CodeCommand');
+        super(context, 'AddXmlPort' + newElementType, 'AZDevTools.ALAddXmlPort' + newElementType + 'CodeCommand');
         this.elementType = newElementType;
         this.commandTitle = newCommandTitle;
     }

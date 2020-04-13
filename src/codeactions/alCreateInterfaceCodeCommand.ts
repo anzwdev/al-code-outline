@@ -8,7 +8,7 @@ import { AZDocumentSymbolsLibrary } from '../symbollibraries/azDocumentSymbolsLi
 
 export class ALCreateInterfaceCodeCommand extends ALCodeCommand {
     constructor(context : DevToolsExtensionContext) {
-        super(context, 'AZDevTools.ALCreateInterfaceCodeCommand');
+        super(context, 'CreateInterface', 'AZDevTools.ALCreateInterfaceCodeCommand');
     }
 
     collectCodeActions(docSymbols: AZDocumentSymbolsLibrary, symbol: AZSymbolInformation, document: vscode.TextDocument, range: vscode.Range | vscode.Selection, context: vscode.CodeActionContext, actions: vscode.CodeAction[]) {

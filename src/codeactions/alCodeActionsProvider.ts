@@ -55,7 +55,7 @@ export class ALCodeActionsProvider implements vscode.CodeActionProvider {
             (vscode.window.activeTextEditor.document.uri.fsPath == document.uri.fsPath)) 
             return this._toolsExtensionContext.activeDocumentSymbols;
         
-            //parse document
+        //parse document
         let source = document.getText();
 
         //get document symbols

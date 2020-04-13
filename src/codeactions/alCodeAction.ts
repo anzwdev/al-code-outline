@@ -5,9 +5,11 @@ import { AZSymbolInformation } from "../symbollibraries/azSymbolInformation";
 
 export class ALCodeAction {
     protected _toolsExtensionContext : DevToolsExtensionContext;
+    protected _shortName: string;
     
-    constructor(context : DevToolsExtensionContext) {
+    constructor(context : DevToolsExtensionContext, shortName: string) {
         this._toolsExtensionContext = context;
+        this._shortName = shortName;
     }    
 
     collectCodeActions(docSymbols: AZDocumentSymbolsLibrary, symbol: AZSymbolInformation, document: vscode.TextDocument, range: vscode.Range | vscode.Selection, context: vscode.CodeActionContext, actions: vscode.CodeAction[]) {
@@ -17,9 +19,12 @@ export class ALCodeAction {
         return this._toolsExtensionContext.activeDocumentSymbols.getDocUri();
     }
 
-    protected canRunOnSave(actionCode: string, resource?: vscode.Uri) {
+    protected canRunOnSave(resource?: vscode.Uri) {
+        if (!this._shortName)
+            return false;    
+            
         let actionsList = vscode.workspace.getConfiguration('alOutline', resource).get<string[]>('codeActionsOnSave');
-        return (actionsList.indexOf(actionCode) >= 0);
+        return (actionsList.indexOf(this._shortName) >= 0);
     }
 
 }
