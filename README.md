@@ -92,6 +92,17 @@ Extension adds VS Code editor code actions to some of al elements to help develo
 
 ![Add multiple fields](resources/screen2-addfieldscodeaction.gif)
 
+Sort procedures, properties and report columns actions can be also run automatically on document save. To turn this functionality on "source.fixAll" property of "editor.codeActionsOnSave" must be set to true and "alOutline.codeActionsOnSave" setting should contain list of sorting actions that you want to run. That's how settings should look like to run all these sort actions on save:
+
+```javascript
+"editor.codeActionsOnSave": {
+  "source.fixAll": true
+},
+"alOutline.codeActionsOnSave": [
+  "SortProcedures", "SortProperties", "SortReportColumns"
+]
+```
+
 There are also some additional code actions available for warnings and errors reported by CodeCop code analyzer:
  - add parentheses for diagnostics AA0008,
  - remove variable for diagnostics AA0137,

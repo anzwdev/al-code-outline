@@ -1,5 +1,11 @@
 # Change Log
 
+## 1.0.37
+ - Code actions functionality refactoring
+ - Sort procedures, properties and report columns actions can now be run on document save
+
+ Thank you rvanbekkum for the idea of running actions on document save
+
 ## 1.0.36
  - "Create Interface" code action availabe from codeunit object
  - Interface wizard
