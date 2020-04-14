@@ -1,5 +1,10 @@
 # Change Log
 
+## 1.0.38
+ - Github issue #102 - Symbols parser does not recognize multiple variables declared in the same line
+
+ Thank you DavidFeldhoff for reporting the issue #102
+
 ## 1.0.37
  - Code actions functionality refactoring
  - Sort procedures, properties and report columns actions can now be run on document save
