@@ -128,6 +128,16 @@ export class AZSymbolsLibrary {
         return this.findSymbolInRangeInt(this.rootSymbol, range, undefined);
     }
 
+    findSymbolsInsideRange(range: vscode.Range, kind: AZSymbolKind, list: AZSymbolInformation[]) {
+        if (this.rootSymbol)
+            this.findSymbolsInsideRangeInt(this.rootSymbol, range, kind, list);    
+    }
+
+    findALObjectsInsideRange(range: vscode.Range, list: AZSymbolInformation[]) {
+        if (this.rootSymbol)
+            this.findALObjectsInsideRangeInt(this.rootSymbol, range, list);    
+    }
+
     findSymbolPathInRange(range: vscode.Range) : number[] | undefined {
         if ((range) && (this.rootSymbol)) {
             let symbolsPath: number[] = [];
@@ -146,6 +156,26 @@ export class AZSymbolsLibrary {
                 return symbolsPath;
         }
         return undefined;
+    }
+
+    protected findSymbolsInsideRangeInt(symbol: AZSymbolInformation, range: vscode.Range, kind: AZSymbolKind, list: AZSymbolInformation[]) {
+        if ((symbol.kind == kind) && (symbol.range) && (symbol.range.insideVsRange(range)))
+            list.push(symbol);
+
+        if (symbol.childSymbols)
+            for (let i=0; i<symbol.childSymbols.length; i++)
+                this.findSymbolsInsideRangeInt(symbol.childSymbols[i], range, kind, list);
+    }
+
+    protected findALObjectsInsideRangeInt(symbol: AZSymbolInformation, range: vscode.Range, list: AZSymbolInformation[]) {
+        if (symbol.isALObject()) {
+            if ((symbol.range) && (symbol.range.insideVsRange(range)))
+                list.push(symbol);
+        } else {
+            if (symbol.childSymbols)
+                for (let i=0; i<symbol.childSymbols.length; i++)
+                    this.findALObjectsInsideRangeInt(symbol.childSymbols[i], range, list);
+        }       
     }
 
     protected findSymbolInRangeInt(symbol: AZSymbolInformation, range: vscode.Range, symbolsPath: number[] | undefined) : AZSymbolInformation | undefined {

@@ -5,7 +5,6 @@ import * as path from 'path';
 import * as vscodelangclient from 'vscode-languageclient';
 import { ALSyntaxHelper } from './alSyntaxHelper';
 import { Version } from '../tools/version';
-import { DocumentOnTypeFormattingRequest } from 'vscode-languageclient';
 import { TextEditorHelper } from '../tools/textEditorHelper';
 
 export class ALLangServerProxy {
@@ -291,19 +290,16 @@ export class ALLangServerProxy {
             4, 9, 7, 1);
 
         //process results
-        let out : string[] = [];
-        
-        if (list && list.items) {
-            for (let i=0; i<list.items.length; i++) {
-                let item = list.items[i];
-                if (item.kind == vscode.CompletionItemKind.Class) {
-                    out.push(ALSyntaxHelper.fromNameText(item.label));
-                }
-            }
-        }
+        return this.getSymbolLabels(list, vscode.CompletionItemKind.Class);        
+    }
 
-        return out;
-        
+    async getCodeunitList(resourceUri: vscode.Uri | undefined) : Promise<string[]> {
+        let fileContent = "codeunit 0 _symbolcache\n{\nprocedure t()\nvar\nf:codeunit ;\nbegin\nend;\n}";
+        let list = await this.getCompletionForSourceCode(resourceUri, "Loading list of codeunits.", fileContent,
+            4, 11, 7, 1);
+
+        //process results
+        return this.getSymbolLabels(list, vscode.CompletionItemKind.Class);
     }
 
     async getInterfaceList(resourceUri: vscode.Uri | undefined) : Promise<string[]> {
@@ -312,27 +308,16 @@ export class ALLangServerProxy {
             0, 36, 2, 1);
 
         //process results
-        let out : string[] = [];
-        
-        if (list && list.items) {
-            for (let i=0; i<list.items.length; i++) {
-                let item = list.items[i];
-                if (item.kind === vscode.CompletionItemKind.Reference) {
-                    out.push(ALSyntaxHelper.fromNameText(item.label));
-                }
-            }
-        }
-
-        return out;        
+        return this.getSymbolLabels(list, vscode.CompletionItemKind.Reference);
     }
 
-    async getInterfaceMethods(resourceUri: vscode.Uri | undefined, interfaceName: string) : Promise<string[] | undefined> {
-        if ((!interfaceName) || (interfaceName == ""))
+    async getObjectMethods(resourceUri: vscode.Uri | undefined, objectType: string, objectName: string) : Promise<string[] | undefined> {
+        if ((!objectName) || (objectName == ""))
             return undefined;
         
-        interfaceName = ALSyntaxHelper.toNameText(interfaceName);
+        objectName = ALSyntaxHelper.toNameText(objectName);
         
-        let fileContent = "codeunit 0 _symbolcache\n{\nprocedure t()\nvar\nf:interface " + interfaceName + ";\nbegin\nf.;\nend;\n}";
+        let fileContent = "codeunit 0 _symbolcache\n{\nprocedure t()\nvar\nf: " + objectType + " " + objectName + ";\nbegin\nf.;\nend;\n}";
         let list = await this.getCompletionForSourceCode(resourceUri, "Loading list of interface methods.", fileContent,
             6, 2, 8, 1);
 
@@ -359,18 +344,7 @@ export class ALLangServerProxy {
             6, 6, 9, 1);
 
         //process results
-        let out : string[] = [];
-        
-        if (list && list.items) {
-            for (let i=0; i<list.items.length; i++) {
-                let item = list.items[i];
-                if (item.kind == vscode.CompletionItemKind.Field) {
-                    out.push(ALSyntaxHelper.fromNameText(item.label));
-                }
-            }
-        }
-
-        return out;
+        return this.getSymbolLabels(list, vscode.CompletionItemKind.Field);
     }
 
     async getFieldList(resourceUri: vscode.Uri | undefined, tableName : string) : Promise<string[]> {
@@ -381,18 +355,7 @@ export class ALLangServerProxy {
             6, 2, 8, 1);
 
         //process results
-        let out : string[] = [];
-        
-        if (list && list.items) {
-            for (let i=0; i<list.items.length; i++) {
-                let item = list.items[i];
-                if (item.kind == vscode.CompletionItemKind.Field) {
-                    out.push(ALSyntaxHelper.fromNameText(item.label));
-                }
-            }
-        }
-
-        return out;
+        return this.getSymbolLabels(list, vscode.CompletionItemKind.Field);
     }
 
     async getEnumList(resourceUri: vscode.Uri | undefined) : Promise<string[]> {
@@ -401,20 +364,24 @@ export class ALLangServerProxy {
             4, 7, 7, 1);
 
         //process results
+        return this.getSymbolLabels(list, vscode.CompletionItemKind.Reference);       
+    }
+
+    protected getSymbolLabels(list: vscode.CompletionList, kind: vscode.CompletionItemKind): string[] {
         let out : string[] = [];
         
         if (list && list.items) {
             for (let i=0; i<list.items.length; i++) {
                 let item = list.items[i];
-                if (item.kind == vscode.CompletionItemKind.Reference) {
+                if (item.kind === kind) {
                     out.push(ALSyntaxHelper.fromNameText(item.label));
                 }
             }
         }
-
         return out;
-        
     }
+
+
 
     async getWorkspaceSymbol(objectType : string, objectName : string) : Promise<vscode.Location | undefined> {       
         let list = await vscode.commands.executeCommand<vscode.SymbolInformation[] | undefined>('vscode.executeWorkspaceSymbolProvider', objectName);

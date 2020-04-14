@@ -1,6 +1,7 @@
 
 import * as vscode from 'vscode';
 import { TextPosition } from "./textPosition";
+import { VersionedTextDocumentIdentifier } from 'vscode-languageclient';
 
 export class TextRange {
     start : TextPosition | undefined;
@@ -34,6 +35,11 @@ export class TextRange {
     public equalsVsRange(range : vscode.Range) : boolean {
         return ((this.start.character == range.start.character) && (this.start.line == range.start.line) &&
             (this.end.character == range.end.character) && (this.end.line == range.end.line));
+    }
+
+    public insideVsRange(range : vscode.Range) : boolean {
+        return ((this.start.compareVsPosition(range.start) <= 0) &&
+            (this.end.compareVsPosition(range.end) >= 0));
     }
 
 }

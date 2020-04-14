@@ -334,9 +334,16 @@ export class AZSymbolInformation {
         return symbol;
     }
 
-    public findParentByKindList(parentKind: AZSymbolKind[]) {
+    public findParentByKindList(parentKind: AZSymbolKind[]): AZSymbolInformation | undefined {
         let symbol = this.parent;
         while ((symbol) && (parentKind.indexOf(symbol.kind) < 0))
+            symbol = symbol.parent;
+        return symbol;
+    }
+
+    public findParentObject(): AZSymbolInformation | undefined {
+        let symbol: AZSymbolInformation | undefined = this;
+        while ((symbol) && (!symbol.isALObject()))
             symbol = symbol.parent;
         return symbol;
     }

@@ -1,37 +1,23 @@
 import * as vscode from 'vscode';
 import { DevToolsExtensionContext } from "../devToolsExtensionContext";
 import { AZSymbolInformation } from '../symbollibraries/azSymbolInformation';
+import { AZDocumentSymbolsLibrary } from '../symbollibraries/azDocumentSymbolsLibrary';
+import { ALCodeAction } from './alCodeAction';
 
-export class ALCodeCommand {    
-    protected _toolsExtensionContext : DevToolsExtensionContext;        
+export class ALCodeCommand extends ALCodeAction {    
     public name: string;
     
-    constructor(context : DevToolsExtensionContext, commandName: string) {
-        this._toolsExtensionContext = context;
+    constructor(context : DevToolsExtensionContext, shortName: string, commandName: string) {
+        super(context, shortName);
         this.name = commandName;
         this._toolsExtensionContext.vscodeExtensionContext.subscriptions.push(
             vscode.commands.registerCommand(
                 commandName,
-                () => this.run()
+                (docSymbols, document, range) => this.runAsync(docSymbols, document, range)
             ));        
     }
 
-    collectCodeActions(symbol: AZSymbolInformation, range: vscode.Range | vscode.Selection, actions: vscode.CodeAction[]) {
-    }
-
-    protected run() {
-        if (!vscode.window.activeTextEditor)
-            return;
-        let position = vscode.window.activeTextEditor.selection.active;
-        let range = new vscode.Range(position, position);
-        this.runAsync(range);        
-    }
-
-    protected async runAsync(range: vscode.Range) {
-    }
-
-    protected getDocumentUri() : vscode.Uri {
-        return this._toolsExtensionContext.activeDocumentSymbols.getDocUri();
+    protected async runAsync(docSymbols: AZDocumentSymbolsLibrary, document: vscode.TextDocument, range: vscode.Range) {
     }
 
 }

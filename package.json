@@ -2,7 +2,7 @@
 	"name": "al-code-outline",
 	"displayName": "AZ AL Dev Tools/AL Code Outline",
 	"description": "AZ AL Development Tools: AL code outline, object browser, object creators",
-	"version": "1.0.35",
+	"version": "1.0.37",
 	"publisher": "andrzejzwierzchowski",
 	"engines": {
 		"vscode": "^1.40.0"
@@ -299,6 +299,25 @@
 						"type": "boolean",
 						"default": false,
 						"description": "Fix Code Cop 'Missiong Parentheses' warning on save when 'editor.codeActionsOnSave' setting contains 'source.fixAll' value"
+					},
+					"alOutline.codeActionsOnSave": {
+						"type": "array",
+						"items": {
+							"type": "string",
+							"enum": [
+								"SortReportColumns",
+								"SortProperties",
+								"SortProcedures"
+							],
+							"enumDescriptions": [
+								"Sort report DataItem columns",
+								"Sort properties",
+								"Sort procedures"
+							]},
+						"default": [],
+						"uniqueItems": true,
+						"description": "Specifies which code-actions should be applied when a file is saved. Valid values are SortReportColumns, SortProcedures, SortProperties",
+						"scope": "resource"
 					}
 				}
 			}
