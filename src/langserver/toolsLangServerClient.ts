@@ -21,6 +21,8 @@ import { ToolsGetCodeAnalyzersRulesRequest } from './toolsGetCodeAnalyzersRulesR
 import { ToolsGetCodeAnalyzersRulesResponse } from './toolsGetCodeAnalyzersRulesResponse';
 import { ToolsAddAppAreasRequest } from './toolsAddAppAreasRequest';
 import { ToolsAddAppAreasResponse } from './toolsAddAppAreasResponse';
+import { ToolsGetFullSyntaxTreeRequest } from './toolsGetFullSyntaxTreeRequest';
+import { ToolsGetFullSyntaxTreeResponse } from './toolsGetFullSyntaxTreeResponse';
 
 export class ToolsLangServerClient implements vscode.Disposable {
     _context : vscode.ExtensionContext;
@@ -168,6 +170,20 @@ export class ToolsLangServerClient implements vscode.Disposable {
         }
     }
 
+    public async getFullSyntaxTree(params: ToolsGetFullSyntaxTreeRequest) : Promise<ToolsGetFullSyntaxTreeResponse|undefined> {
+        try {
+            if (!this._connection)
+                return undefined;
+                
+            let reqType = new rpc.RequestType<ToolsGetFullSyntaxTreeRequest, ToolsGetFullSyntaxTreeResponse, void, void>('al/getfullsyntaxtree');
+            let val = await this._connection.sendRequest(reqType, params);
+            return val;
+        }
+        catch(e) {
+            return undefined;
+        }
+    }
+    
     public async getCodeAnalyzersRules(params: ToolsGetCodeAnalyzersRulesRequest) : Promise<ToolsGetCodeAnalyzersRulesResponse|undefined> {
         try {
             if (!this._connection)
