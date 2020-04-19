@@ -39,8 +39,8 @@ export class SyntaxTreeView extends BaseSymbolsWebView {
         let source: string = '';
 
         if (editor)
-            source = editor.document.getText();
-        
+            source = editor.document.getText();       
+
         let request: ToolsGetSyntaxTreeRequest = new ToolsGetSyntaxTreeRequest(source, this._documentUri.fsPath, this._firstLoad);
         this._firstLoad = false;
         let response = await this._devToolsContext.toolsLangServerClient.getSyntaxTree(request);

@@ -1,5 +1,8 @@
 # Change Log
 
+## 1.0.39
+ - New api function to parse source code and return full syntax tree
+
 ## 1.0.38
  - Github issue #102 - Symbols parser does not recognize multiple variables declared in the same line
 
