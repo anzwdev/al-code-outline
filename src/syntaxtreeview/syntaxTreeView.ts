@@ -7,7 +7,6 @@ import { TextEditorHelper } from '../tools/textEditorHelper';
 import { ToolsGetSyntaxTreeSymbolsRequest } from '../langserver/toolsGetSyntaxTreeSymbolRequest';
 import { ToolsCloseSyntaxTreeRequest } from '../langserver/toolsCloseSyntaxTreeRequest';
 import { BaseSymbolsWebView } from '../webviews/baseSymbolsWebView';
-import { ToolsGetFullSyntaxTreeRequest } from '../langserver/toolsGetFullSyntaxTreeRequest';
 
 export class SyntaxTreeView extends BaseSymbolsWebView {
     protected _firstLoad: boolean;
@@ -41,13 +40,6 @@ export class SyntaxTreeView extends BaseSymbolsWebView {
 
         if (editor)
             source = editor.document.getText();       
-
-        //test
-        let a: ToolsGetFullSyntaxTreeRequest = new ToolsGetFullSyntaxTreeRequest(source, this._documentUri.fsPath);
-        let b = await this._devToolsContext.toolsLangServerClient.getFullSyntaxTree(a);
-        let x = b.root;
-        let t = JSON.stringify(x);
-
 
         let request: ToolsGetSyntaxTreeRequest = new ToolsGetSyntaxTreeRequest(source, this._documentUri.fsPath, this._firstLoad);
         this._firstLoad = false;
