@@ -23,6 +23,7 @@ import { ToolsAddAppAreasRequest } from './toolsAddAppAreasRequest';
 import { ToolsAddAppAreasResponse } from './toolsAddAppAreasResponse';
 import { ToolsGetFullSyntaxTreeRequest } from './toolsGetFullSyntaxTreeRequest';
 import { ToolsGetFullSyntaxTreeResponse } from './toolsGetFullSyntaxTreeResponse';
+import { ALFullSyntaxTreeHelper } from '../symbollibraries/alFullSyntaxTreeHelper';
 
 export class ToolsLangServerClient implements vscode.Disposable {
     _context : vscode.ExtensionContext;
@@ -170,13 +171,16 @@ export class ToolsLangServerClient implements vscode.Disposable {
         }
     }
 
-    public async getFullSyntaxTree(params: ToolsGetFullSyntaxTreeRequest) : Promise<ToolsGetFullSyntaxTreeResponse|undefined> {
+    public async getFullSyntaxTree(params: ToolsGetFullSyntaxTreeRequest, restoreParent: boolean) : Promise<ToolsGetFullSyntaxTreeResponse|undefined> {
         try {
             if (!this._connection)
                 return undefined;
                 
             let reqType = new rpc.RequestType<ToolsGetFullSyntaxTreeRequest, ToolsGetFullSyntaxTreeResponse, void, void>('al/getfullsyntaxtree');
             let val = await this._connection.sendRequest(reqType, params);
+            if ((restoreParent) && (val) && (val.root))
+                ALFullSyntaxTreeHelper.restoreNodeParent(val.root, undefined);
+
             return val;
         }
         catch(e) {

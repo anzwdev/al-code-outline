@@ -6,6 +6,7 @@ export class ALFullSyntaxTreeNode {
     span: TextRange | undefined;
     fullSpan: TextRange | undefined;
     childNodes: ALFullSyntaxTreeNode[] | undefined;
+    parentNode: ALFullSyntaxTreeNode | undefined;
 
     attributes: ALFullSyntaxTreeNode[] | undefined;
     openBraceToken: ALFullSyntaxTreeNode | undefined;

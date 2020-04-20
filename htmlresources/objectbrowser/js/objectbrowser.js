@@ -14,6 +14,14 @@ class ObjectBrowser {
             me.copySelected();
         });
 
+        this._objList.setOnDblClickHandler(() => {
+            let sel = this._objList.getSelected();
+            if ((sel) && (sel.length > 0))
+                this.sendMessage({
+                    command : 'definition',
+                    path : sel[0].path,
+                    selpaths: [sel[0].path]}); 
+        });
 
         this.updateModeButtonStyle(true);
         

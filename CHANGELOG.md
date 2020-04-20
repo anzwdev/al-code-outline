@@ -1,5 +1,9 @@
 # Change Log
 
+## 1.0.40
+ - Added "Parent" property to the full syntax tree nodes
+ - Double click on an entry in the list view of AL Object Browser opens object definition
+
 ## 1.0.39
  - New api function to parse source code and return full syntax tree
 
