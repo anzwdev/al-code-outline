@@ -36,6 +36,12 @@ class AZGridView {
         this._table.addEventListener('pointerup', function(e) { that.onMouseUp(e); });
     }
 
+    setOnDblClickHandler(action) {
+        let that = this;
+        this._onDblClick = action;
+        this._table.addEventListener('dblclick', function(e) { that.onDoubleClick(e); }, true);
+    }
+
     initEditor() {
         if (this._editable) {
             this._editor = document.createElement('input');
@@ -348,6 +354,11 @@ class AZGridView {
             this.setCurrCell(this._currRow, this._currColumn + 1, clearSel, invSel, setSel, true);
         else
             this.setCurrCell(this._currRow + 1, 0, clearSel, invSel, setSel, true);
+    }
+
+    onDoubleClick(e) {
+        if ((this._onDblClick) && (e.button == 0))
+            this._onDblClick();
     }
 
     onMouseDown(e) {
