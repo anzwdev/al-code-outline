@@ -178,6 +178,7 @@ export class AZSymbolInformation {
             case AZSymbolKind.Interface: return 'interface';
             case AZSymbolKind.Property : return 'property';
             case AZSymbolKind.VariableDeclaration : return 'variable';
+            case AZSymbolKind.VariableDeclarationName : return 'variable';
             case AZSymbolKind.Constant : return 'constant';
             case AZSymbolKind.Parameter : return 'parameter';
             case AZSymbolKind.MethodDeclaration : return 'method';
@@ -281,6 +282,17 @@ export class AZSymbolInformation {
                     outList.push(this.childSymbols[i]);
                 if (includeAllLevels)
                     this.childSymbols[i].collectChildSymbols(symbolKind, includeAllLevels, outList);
+            }
+        }
+    }
+
+    public collectChildSymbolsByKindList(symbolKindList: AZSymbolKind[], includeAllLevels: boolean, outList : AZSymbolInformation[]) {
+        if (this.childSymbols) {
+            for (let i=0; i<this.childSymbols.length; i++) {
+                if (symbolKindList.indexOf(this.childSymbols[i].kind) >= 0)
+                    outList.push(this.childSymbols[i]);
+                if (includeAllLevels)
+                    this.childSymbols[i].collectChildSymbolsByKindList(symbolKindList, includeAllLevels, outList);
             }
         }
     }

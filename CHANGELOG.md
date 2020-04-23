@@ -1,5 +1,8 @@
 # Change Log
 
+## 1.0.41
+ - New "Sort variables" code action
+
 ## 1.0.40
  - Added "Parent" property to the full syntax tree nodes
  - Double click on an entry in the list view of AL Object Browser opens object definition
