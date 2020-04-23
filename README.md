@@ -80,6 +80,7 @@ Extension adds VS Code editor code actions to some of al elements to help develo
   - "Sort procedures" available when cursor is at the first line of a procedure. This action will sort procedures of the same type (i.e. local) in a natural order
   - "Sort data item columns" available when cursor is at report data item, column or first line of the object declaration. This action will sort all columns inside data item in a natural order. If it is invoked from the first line of the object, it will sort columns inside all data items.
   - "Sort properties" available from the first line of any object declaration. It will sort properties of every element declared inside the object.
+  - "Sort variables" available from the first line of any object declaration or from "var" keyword of local or global variables section
  - Code generation actions
   - "Create interface" action available on the first line of codeunit declaration, it creates a new interface with all public functions from the codeunit
  - "Add multiple fields" when cursor is at these elements in the editor:
@@ -92,14 +93,14 @@ Extension adds VS Code editor code actions to some of al elements to help develo
 
 ![Add multiple fields](resources/screen2-addfieldscodeaction.gif)
 
-Sort procedures, properties and report columns actions can be also run automatically on document save. To turn this functionality on "source.fixAll" property of "editor.codeActionsOnSave" must be set to true and "alOutline.codeActionsOnSave" setting should contain list of sorting actions that you want to run. That's how settings should look like to run all these sort actions on save:
+Sort procedures, variables, properties and report columns actions can be also run automatically on document save. To turn this functionality on "source.fixAll" property of "editor.codeActionsOnSave" must be set to true and "alOutline.codeActionsOnSave" setting should contain list of sorting actions that you want to run. That's how settings should look like to run all these sort actions on save:
 
 ```javascript
 "editor.codeActionsOnSave": {
   "source.fixAll": true
 },
 "alOutline.codeActionsOnSave": [
-  "SortProcedures", "SortProperties", "SortReportColumns"
+  "SortProcedures", "SortProperties", "SortReportColumns", "SortVariables"
 ]
 ```
 

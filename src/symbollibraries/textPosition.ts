@@ -25,4 +25,9 @@ export class TextPosition {
             return (this.line - position.line);
     }
 
+    set(newLine: number, newCharacter: number) {
+        this.line = newLine;
+        this.character = newCharacter;
+    }
+
 }

@@ -10,6 +10,7 @@ import { ALSortPropertiesCommand } from './sortSymbols/alSortPropertiesCommand';
 import { ALCreateInterfaceCodeCommand } from './alCreateInterfaceCodeCommand';
 import { AZDocumentSymbolsLibrary } from '../symbollibraries/azDocumentSymbolsLibrary';
 import { ALCodeAction } from './alCodeAction';
+import { ALSortVariablesCommand } from './sortSymbols/alSortVariablesCommand';
 
 export class ALCodeActionsProvider implements vscode.CodeActionProvider {
     protected _toolsExtensionContext : DevToolsExtensionContext;
@@ -26,6 +27,7 @@ export class ALCodeActionsProvider implements vscode.CodeActionProvider {
             new ALSortProceduresCodeCommand(this._toolsExtensionContext),
             new ALSortReportColumnsCommand(this._toolsExtensionContext),
             new ALSortPropertiesCommand(this._toolsExtensionContext),
+            new ALSortVariablesCommand(this._toolsExtensionContext),
             new ALCreateInterfaceCodeCommand(this._toolsExtensionContext)];
     }
 

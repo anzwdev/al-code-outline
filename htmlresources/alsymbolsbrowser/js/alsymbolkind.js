@@ -18,7 +18,7 @@ var ALSymbolKind = {
     MethodDeclaration : 238,
     EventDeclaration : 239,
     Parameter : 240,
-    VariableDeclaration : 241,
+    VariableDeclaration : 241,    
     //ReturnValue : 242,
     //SimpleTypeReference : 243,
     //RecordTypeReference : 244,
@@ -120,6 +120,7 @@ var ALSymbolKind = {
     DotNetPackage : 422,
     
     GlobalVarSection : 428,
+    VariableDeclarationName : 429,
 
     LocalMethodDeclaration : 50001,
     PrimaryKey : 50002,

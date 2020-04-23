@@ -123,6 +123,8 @@ export enum AZSymbolKind {
     DotNetPackage = 422,
 
     GlobalVarSection = 428,
+
+    VariableDeclarationName = 429,
     
     LocalMethodDeclaration = 50001,
     PrimaryKey = 50002,

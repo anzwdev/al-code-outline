@@ -21,7 +21,7 @@ export class ALBaseSortCodeCommand extends ALCodeAction {
 
         // Sort columns
         childSymbolsList.sort((symbolA, symbolB) => {
-            return symbolA.name.localeCompare(symbolB.name, undefined, { numeric: true, sensitivity: 'base' });
+            return this.compareSymbols(symbolA, symbolB);
         });
 
         // Produce the new sorted source
@@ -40,6 +40,10 @@ export class ALBaseSortCodeCommand extends ALCodeAction {
         }
         
         editBuilder.insert(docUri, insertPos, newSource);
+    }
+
+    protected compareSymbols(symbolA: AZSymbolInformation, symbolB: AZSymbolInformation): number {
+        return symbolA.name.localeCompare(symbolB.name, undefined, { numeric: true, sensitivity: 'base' });
     }
 
 }
