@@ -1,5 +1,8 @@
 # Change Log
 
+## 1.0.42
+ - Github issue #109 - "NavigatePane" type changed to the "NavigatePage" in the page wizard
+
 ## 1.0.41
  - New "Sort variables" code action
 

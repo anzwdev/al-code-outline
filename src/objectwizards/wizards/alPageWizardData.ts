@@ -39,7 +39,7 @@ export class ALPageWizardData extends ALTableBasedWizardData {
 
     isFastTabsPageType() : boolean {
         return ((this.pageType == "Card") || (this.pageType == "Document") || (this.pageType == "CardPart") ||
-            (this.pageType == "ConfirmationDialog") || (this.pageType == "NavigationPane"));
+            (this.pageType == "ConfirmationDialog") || (this.pageType == "NavigatePage"));
     }
 
 }
