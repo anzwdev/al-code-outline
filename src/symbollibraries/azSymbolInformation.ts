@@ -8,6 +8,7 @@ export class AZSymbolInformation {
     idx: number;
     name : string;
     subtype : string | undefined;
+    elementsubtype : string | undefined;
     fullName : string;
     kind : AZSymbolKind;
     icon : string;
@@ -25,6 +26,7 @@ export class AZSymbolInformation {
         this.name = '';
         this.fullName = '';
         this.subtype = undefined;
+        this.elementsubtype = undefined;
         this.icon = '';
         this.kind = AZSymbolKind.Undefined;
         this.childSymbols = undefined;
@@ -72,6 +74,8 @@ export class AZSymbolInformation {
             obj.extends = source.extends;
         if (source.subtype)
             obj.subtype = source.subtype;
+        if (source.elementsubtype)
+            obj.elementsubtype = source.elementsubtype;
 
         if (source.childSymbols)
             for (let i=0; i<source.childSymbols.length; i++)
@@ -362,7 +366,7 @@ export class AZSymbolInformation {
 
     public getPath() : number[] {
         let dataPath : number[] = [];
-        let symbol : AZSymbolInformation = this;
+        let symbol : AZSymbolInformation | undefined = this;
         while (symbol) {
             dataPath.push(symbol.idx);
             symbol = symbol.parent;

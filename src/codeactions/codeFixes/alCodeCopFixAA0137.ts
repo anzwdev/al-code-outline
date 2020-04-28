@@ -1,14 +1,14 @@
 import * as vscode from 'vscode';
-import { ALCodeFix } from "./alCodeFix";
+import { ALCodeFix } from "../alCodeFix";
+import { DevToolsExtensionContext } from '../../devToolsExtensionContext';
 
 export class ALCodeCopFixAA0137 extends ALCodeFix {
 
-    constructor() {
-        super();
-        this.diagnosticCode = "AA0137";
+    constructor(context : DevToolsExtensionContext) {
+        super(context, "AA0137");
     }
 
-    createFix(document: vscode.TextDocument, diagnostic: vscode.Diagnostic): vscode.CodeAction {
+    createFix(document: vscode.TextDocument, diagnostic: vscode.Diagnostic): vscode.CodeAction | undefined {
         const fix = new vscode.CodeAction(`Remove Variable`, vscode.CodeActionKind.QuickFix);
         fix.edit = new vscode.WorkspaceEdit();
         fix.diagnostics = [diagnostic];

@@ -3,6 +3,7 @@ export class ToolsProjectSymbolsResponse {
     libraryId: number;
 
     constructor() {
+        this.libraryId = 0;
     }
 
 }

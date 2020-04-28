@@ -4,58 +4,58 @@ import * as vscode from 'vscode';
 import { CRSALLangExtHelper } from '../crsAlLangExtHelper';
 import { AZSymbolKind } from '../symbollibraries/azSymbolKind';
 import { AZSymbolInformation } from '../symbollibraries/azSymbolInformation';
+import { StringHelper } from '../tools/stringHelper';
 
 export class FileBuilder {
     
-    public static showFile(filePath : string) {
-        vscode.workspace.openTextDocument(filePath).then(
-            document => {
-                vscode.window.showTextDocument(document, {
-                    preview : false
-                });
-            },
-            err => {
-                vscode.window.showErrorMessage(err);
-            }
-        );
-    }
-
-    public static showNewUntitledDocument(content: string) {
-        vscode.workspace.openTextDocument({
-            content : content,
-            language : "al"
-        }).then(
-            document => { 
-                vscode.window.showTextDocument(document, {
-                    preview : false
-                });
-            },
-            err => {
-                vscode.window.showErrorMessage(err);
+    public static async showFile(filePath : string) {
+        try {
+            let document = await vscode.workspace.openTextDocument(filePath);
+            vscode.window.showTextDocument(document, {
+                preview : false
             });
+        }
+        catch (err) {
+            vscode.window.showErrorMessage(err);
+        }
     }
 
-    public static async generateObjectFileInRelativeDir(content: string, fileName: string, relativeFileDir: string): Promise<string | undefined> {
-        // Determine the project root directory.
-        let workspaceFolderCount: number = vscode.workspace.workspaceFolders.length;
-        if (workspaceFolderCount < 1) {
-            return undefined;
+    public static async showNewUntitledDocument(content: string) {
+        try {
+            let document = await vscode.workspace.openTextDocument({
+                content : content,
+                language : "al"
+            });
+            vscode.window.showTextDocument(document, {
+                preview : false
+            });
         }
+        catch (err) {
+            vscode.window.showErrorMessage(err);
+        }
+    }
 
-        let workspaceFolder: vscode.WorkspaceFolder = null;
-        if (workspaceFolderCount == 1) {
+    public static async generateObjectFileInRelativeDir(content: string, fileName: string, relativeFileDir: string | undefined): Promise<string | undefined> {
+        // Determine the project root directory.
+        if ((!vscode.workspace.workspaceFolders) || (vscode.workspace.workspaceFolders.length == 0))
+            return undefined;
+
+        let workspaceFolder: vscode.WorkspaceFolder | undefined;
+        if (vscode.workspace.workspaceFolders.length == 1)
             workspaceFolder = vscode.workspace.workspaceFolders[0];
-        }
         else {
             workspaceFolder = await vscode.window.showWorkspaceFolderPick();
         }
-        if (!workspaceFolder || workspaceFolder.uri.scheme !== 'file') {
+        if (!workspaceFolder || workspaceFolder.uri.scheme !== 'file')
             return undefined;
-        }
 
         // Determine the directory to place the files in; create the directory if it does not exist yet.
         const baseFileDir : string = workspaceFolder.uri.fsPath;
-        const newFileDirectory : string = path.join(baseFileDir, relativeFileDir);
+        let newFileDirectory : string;
+        if (relativeFileDir)
+            newFileDirectory = path.join(baseFileDir, relativeFileDir);
+        else
+            newFileDirectory = baseFileDir;
 
         if (relativeFileDir) {
             try {
@@ -168,11 +168,12 @@ export class FileBuilder {
        }
         return '';
     }
-    public static getAutoGenerateFiles() : boolean {
+
+    public static getAutoGenerateFiles() : boolean | undefined {
         return vscode.workspace.getConfiguration('alOutline').get('autoGenerateFiles');
     }
 
-    public static getPromptForObjectName() : boolean {
+    public static getPromptForObjectName() : boolean | undefined {
         return vscode.workspace.getConfiguration('alOutline').get('promptForObjectName');
     }
 
@@ -258,7 +259,7 @@ export class FileBuilder {
         let typeName = this.getObjectTypeFromSymbolInfo(objectType);
         let typeNameCC = this.SymbolKindToCamelCaseName(objectType);
         let shortTypeName : string = '';                
-        let output: string = vscode.workspace.getConfiguration('alOutline').get('autoGenerateFileDirectory');
+        let output = StringHelper.emptyIfNotDef(vscode.workspace.getConfiguration('alOutline').get('autoGenerateFileDirectory'));
         
         let crsLangExt = await CRSALLangExtHelper.GetCrsAlLangExt();
         if (crsLangExt)

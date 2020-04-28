@@ -12,19 +12,21 @@ export class ALCodeAction {
         this._shortName = shortName;
     }    
 
-    collectCodeActions(docSymbols: AZDocumentSymbolsLibrary, symbol: AZSymbolInformation, document: vscode.TextDocument, range: vscode.Range | vscode.Selection, context: vscode.CodeActionContext, actions: vscode.CodeAction[]) {
+    collectCodeActions(docSymbols: AZDocumentSymbolsLibrary, symbol: AZSymbolInformation | undefined, document: vscode.TextDocument, range: vscode.Range | vscode.Selection, context: vscode.CodeActionContext, actions: vscode.CodeAction[]) {
     }
 
-    protected getDocumentUri() : vscode.Uri {
+    protected getDocumentUri() : vscode.Uri | undefined {
         return this._toolsExtensionContext.activeDocumentSymbols.getDocUri();
     }
 
-    protected canRunOnSave(resource?: vscode.Uri) {
+    protected canRunOnSave(resource?: vscode.Uri): boolean {
         if (!this._shortName)
             return false;    
             
         let actionsList = vscode.workspace.getConfiguration('alOutline', resource).get<string[]>('codeActionsOnSave');
-        return (actionsList.indexOf(this._shortName) >= 0);
+        if (actionsList)
+            return (actionsList.indexOf(this._shortName) >= 0);
+        return false;
     }
 
 }

@@ -2,10 +2,10 @@
 	"name": "al-code-outline",
 	"displayName": "AZ AL Dev Tools/AL Code Outline",
 	"description": "AZ AL Development Tools: AL code outline, object browser, object creators",
-	"version": "1.0.42",
+	"version": "1.0.43",
 	"publisher": "andrzejzwierzchowski",
 	"engines": {
-		"vscode": "^1.40.0"
+		"vscode": "^1.44.0"
 	},
 	"author": {
 		"name": "Andrzej Zwierzchowski",
@@ -38,7 +38,7 @@
 		"onCommand:azALDevTools.AddEditorApplicationAreas",
 		"onCommand:azALDevTools.AddProjectApplicationAreas"
 	],
-	"main": "./out/extension",
+	"main": "./out/extension.js",
 	"icon": "resources/alcodeoutline.png",
 	"contributes": {
 		"languages": [
@@ -315,7 +315,8 @@
 								"Sort properties",
 								"Sort procedures",
 								"Sort variables"
-							]},
+							]
+						},
 						"default": [],
 						"uniqueItems": true,
 						"description": "Specifies which code-actions should be applied when a file is saved. Valid values are SortReportColumns, SortProcedures, SortProperties",
@@ -331,19 +332,25 @@
 	"scripts": {
 		"vscode:prepublish": "npm run compile",
 		"compile": "tsc -p ./",
+		"lint": "eslint src --ext ts",
 		"watch": "tsc -watch -p ./",
-		"postinstall": "node ./node_modules/vscode/bin/install",
-		"test": "npm run compile && node ./node_modules/vscode/bin/test"
+		"pretest": "npm run compile && npm run lint",
+		"test": "node ./out/test/runTest.js"
 	},
 	"devDependencies": {
-		"@types/mocha": "^2.2.42",
-		"@types/node": "^8.10.25",
-		"typescript": "^2.6.1",
-		"vscode": "^1.1.34"
+		"@types/vscode": "^1.44.0",
+		"@types/glob": "^7.1.1",
+		"@types/mocha": "^7.0.2",
+		"@types/node": "^13.11.0",
+		"eslint": "^6.8.0",
+		"@typescript-eslint/parser": "^2.26.0",
+		"@typescript-eslint/eslint-plugin": "^2.26.0",
+		"glob": "^7.1.6",
+		"mocha": "^7.1.1",
+		"typescript": "^3.8.3",
+		"vscode-test": "^1.3.0"
 	},
 	"dependencies": {
-		"adm-zip": "^0.4.11",
-		"opn": "^5.4.0",
-		"vscode-languageclient": "^5.2.1"
+		"vscode-languageclient": "^6.1.3"
 	}
 }

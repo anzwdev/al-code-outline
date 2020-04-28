@@ -87,10 +87,12 @@ export class BaseSymbolsWebView extends DocToolsWebView {
     }
 
     protected async goToDefinition(nodePath: number[] | undefined) {
-        let symbolList = await this._sourceSymbolsLibrary.getSymbolsListByPathAsync([nodePath], AZSymbolKind.Undefined);
-        if ((symbolList) && (symbolList.length > 0) && (symbolList[0].selectionRange)) {
-            TextEditorHelper.openEditor(this._documentUri, true, true, new vscode.Position(symbolList[0].selectionRange.start.line, 
-                symbolList[0].selectionRange.start.character));
+        if ((nodePath) && (this._documentUri)) {
+            let symbolList = await this._sourceSymbolsLibrary.getSymbolsListByPathAsync([nodePath], AZSymbolKind.Undefined);
+            if ((symbolList) && (symbolList.length > 0) && (symbolList[0].selectionRange)) {
+                TextEditorHelper.openEditor(this._documentUri, true, true, new vscode.Position(symbolList[0].selectionRange.start.line, 
+                    symbolList[0].selectionRange.start.character));
+            }
         }
     }
 
@@ -105,9 +107,11 @@ export class BaseSymbolsWebView extends DocToolsWebView {
     }
 
     selectSymbolAtCursor() {
-        let editor = TextEditorHelper.findDocumentEditor(this._documentUri);
-        if (editor)
-            this.selectSymbolInRange(editor.selection);
+        if (this._documentUri) {
+            let editor = TextEditorHelper.findDocumentEditor(this._documentUri);
+            if (editor)
+                this.selectSymbolInRange(editor.selection);
+        }
     }
 
 }

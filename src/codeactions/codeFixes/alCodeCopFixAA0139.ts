@@ -1,14 +1,14 @@
 import * as vscode from 'vscode';
-import { ALCodeFix } from "./alCodeFix";
+import { ALCodeFix } from "../alCodeFix";
+import { DevToolsExtensionContext } from '../../devToolsExtensionContext';
 
 export class ALCodeCopFixAA0139 extends ALCodeFix {
 
-    constructor() {
-        super();
-        this.diagnosticCode = "AA0139";
+    constructor(context : DevToolsExtensionContext) {
+        super(context, "AA0139");
     }
 
-    createFix(document: vscode.TextDocument, diagnostic: vscode.Diagnostic): vscode.CodeAction {
+    createFix(document: vscode.TextDocument, diagnostic: vscode.Diagnostic): vscode.CodeAction | undefined {
         const fix = new vscode.CodeAction(`Add CopyStr`, vscode.CodeActionKind.QuickFix);
         fix.edit = new vscode.WorkspaceEdit();
         fix.diagnostics = [diagnostic];

@@ -31,7 +31,7 @@ export class ALSymbolsBasedPageExtWizard extends ALSymbolsBasedWizard {
             return;
         }
 
-        let relativeFileDir: string = await this.getRelativeFileDir(extObjType);
+        let relativeFileDir: string | undefined = await this.getRelativeFileDir(extObjType);
 
         for (let i = 0; i < pageSymbols.length; i++) {
             let pageSymbol = pageSymbols[i];
@@ -53,7 +53,7 @@ export class ALSymbolsBasedPageExtWizard extends ALSymbolsBasedWizard {
             return;
         }
 
-        let extObjectName: string = await FileBuilder.getPatternGeneratedExtensionObjectName(extObjType, extObjectId, pageSymbol);
+        let extObjectName: string | undefined = await FileBuilder.getPatternGeneratedExtensionObjectName(extObjType, extObjectId, pageSymbol);
         if (!extObjectName)
             extObjectName = pageSymbol.name + ' Extension';
         extObjectName = await this.getObjectName("Please enter a name for the page extension.", extObjectName);
@@ -61,11 +61,11 @@ export class ALSymbolsBasedPageExtWizard extends ALSymbolsBasedWizard {
             return;
         }
 
-        let relativeFileDir: string = await this.getRelativeFileDir(extObjType);
+        let relativeFileDir = await this.getRelativeFileDir(extObjType);
         await this.createAndShowNewPageExtension(pageSymbol, extObjType, extObjectId, extObjectName, relativeFileDir);
     }
 
-    private async createAndShowNewPageExtension(pageSymbol: AZSymbolInformation, extObjType: AZSymbolKind, extObjectId: number, extObjectName: string, relativeFileDir: string) {
+    private async createAndShowNewPageExtension(pageSymbol: AZSymbolInformation, extObjType: AZSymbolKind, extObjectId: number, extObjectName: string, relativeFileDir: string| undefined) {
         let fileName : string = await FileBuilder.getPatternGeneratedExtensionObjectFileName(extObjType, extObjectId, extObjectName, pageSymbol);
         this.showNewDocument(this.buildPageExtForPage(pageSymbol, extObjectId, extObjectName), fileName, relativeFileDir);
     }

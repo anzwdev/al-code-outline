@@ -2,6 +2,7 @@ import * as vscode from 'vscode';
 import { DevToolsExtensionContext } from "../devToolsExtensionContext";
 import { ToolsAddAppAreasRequest } from '../langserver/toolsAddAppAreasRequest';
 import { TextEditorHelper } from '../tools/textEditorHelper';
+import { NumberHelper } from '../tools/numberHelper';
 
 export class AppAreasModifier {
     private _context:DevToolsExtensionContext;
@@ -10,7 +11,7 @@ export class AppAreasModifier {
         this._context = context;
     }
 
-    async AddMissinAppAreaToWorkspace(name: string) {
+    async AddMissinAppAreaToWorkspace(name: string | undefined) {
         let confirmation = await vscode.window.showInformationMessage(
             'Do you want to add missing application areas to all files in the current project folder?', 
             'Yes', 'No');
@@ -24,6 +25,8 @@ export class AppAreasModifier {
 
         let workspaceUri = TextEditorHelper.getActiveWorkspaceFolderUri();
         vscode.workspace.saveAll();
+        if (!workspaceUri)
+            return;
         
         let request: ToolsAddAppAreasRequest = new ToolsAddAppAreasRequest('', workspaceUri.fsPath, name);
         let response = await this._context.toolsLangServerClient.addAppAreas(request);
@@ -32,14 +35,14 @@ export class AppAreasModifier {
                 vscode.window.showErrorMessage(response.errorMessage);
             else
                 vscode.window.showInformationMessage(
-                    response.noOfAppAreas.toString() +                    
+                    NumberHelper.zeroIfNotDef(response.noOfAppAreas).toString() +                    
                     ' application area(s) added to ' +
-                    response.noOfFiles.toString() +
+                    NumberHelper.zeroIfNotDef(response.noOfFiles).toString() +
                     ' file(s).');
         }
     }
 
-    async AddMissingAppAreaToActiveEditor(name: string) {
+    async AddMissingAppAreaToActiveEditor(name: string | undefined) {
         if (!name)
             name = await this.getApplicationAreaName();
         if (!name)
@@ -56,7 +59,7 @@ export class AppAreasModifier {
         if (response) {
             if ((response.error) && (response.errorMessage))
                 vscode.window.showErrorMessage(response.errorMessage);
-            else if ((response.source) && (response.source != text) && (response.noOfAppAreas > 0)) {
+            else if ((response.source) && (response.source != text) && (response.noOfAppAreas) && (response.noOfAppAreas > 0)) {
                 text = response.source;
                 const edit = new vscode.WorkspaceEdit();
                 var firstLine = vscode.window.activeTextEditor.document.lineAt(0);
@@ -75,7 +78,7 @@ export class AppAreasModifier {
         }
     }
 
-    async getApplicationAreaName(): Promise<string> {
+    async getApplicationAreaName(): Promise<string | undefined> {
         let appAreasList = ['Basic', 'FixedAsset', 'All', 'Custom'];
         
         //ask for Application Area Type

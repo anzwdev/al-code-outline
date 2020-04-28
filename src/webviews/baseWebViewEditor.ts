@@ -12,10 +12,13 @@ export class BaseWebViewEditor {
     protected _viewColumn: vscode.ViewColumn;
     protected _disposables: vscode.Disposable[] = [];
 
-    constructor(context : vscode.ExtensionContext, title : string) {
+    constructor(context : vscode.ExtensionContext, title : string | undefined) {
         //initialize variables
         this._documentLoaded = false;
-        this._title = title;
+        if (title)
+            this._title = title;
+        else
+            this._title = "";
         this._extensionContext = context;
         this._extensionPath = this._extensionContext.extensionPath;
         this._panel = undefined;

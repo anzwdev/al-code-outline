@@ -14,7 +14,7 @@ export class ALSortVariablesCommand extends ALBaseSortCodeCommand {
         super(context, "SortVariables");
     }
 
-    collectCodeActions(docSymbols: AZDocumentSymbolsLibrary, symbol: AZSymbolInformation, document: vscode.TextDocument, range: vscode.Range | vscode.Selection, context: vscode.CodeActionContext, actions: vscode.CodeAction[]) {
+    collectCodeActions(docSymbols: AZDocumentSymbolsLibrary, symbol: AZSymbolInformation | undefined, document: vscode.TextDocument, range: vscode.Range | vscode.Selection, context: vscode.CodeActionContext, actions: vscode.CodeAction[]) {
         let edit: vscode.WorkspaceEdit | undefined = undefined;
         let actionKind = vscode.CodeActionKind.QuickFix;
 
@@ -28,7 +28,10 @@ export class ALSortVariablesCommand extends ALBaseSortCodeCommand {
             }
         } else {
             //collect list of objects in selection range
-            if ((symbol) && ((symbol.isALObject()) || (symbol.kind == AZSymbolKind.VarSection) || (symbol.kind == AZSymbolKind.GlobalVarSection)) && (symbol.selectionRange.start.line == range.start.line))
+            if ((symbol) && 
+                ((symbol.isALObject()) || (symbol.kind == AZSymbolKind.VarSection) || (symbol.kind == AZSymbolKind.GlobalVarSection)) && 
+                (symbol.selectionRange) &&
+                (symbol.selectionRange.start.line == range.start.line))               
                 edit = this.prepareEdit(symbol, document, undefined);
         }
 
@@ -55,67 +58,77 @@ export class ALSortVariablesCommand extends ALBaseSortCodeCommand {
             edit = new vscode.WorkspaceEdit();
         if (symbolsList.length > 0) {
             for (let i=0; i<symbolsList.length; i++) {
-                this.sortVariables(document.uri, symbolsList[i], edit);
+                this.sortVariables(document, symbolsList[i], edit);
             }
         }
         return edit;
     }
 
-    protected sortVariables(docUri: vscode.Uri, symbol: AZSymbolInformation, editBuilder: vscode.WorkspaceEdit) {
-        // Collect columns
+    protected sortVariables(document: vscode.TextDocument, symbol: AZSymbolInformation, editBuilder: vscode.WorkspaceEdit) {
+        // Collect nodes
         let childSymbolsList: AZSymbolInformation[] = [];
         symbol.collectChildSymbolsByKindList([AZSymbolKind.VariableDeclaration, 
             AZSymbolKind.VariableDeclarationName], false, childSymbolsList);
         if (childSymbolsList.length == 0)
             return;
 
-        // Sort columns
+        // Sort nodes
         childSymbolsList.sort((symbolA, symbolB) => {
             return this.compareSymbols(symbolA, symbolB);
         });
 
         // Produce the new sorted source
         let newSource: string = "";
-        //let totalRange: TextRange | undefined = undefined;
 
         for (let i=0; i<childSymbolsList.length; i++) {
             let childSymbol = childSymbolsList[i];
+            if (childSymbol.range) {
+                //get symbol range
+                let declRange = new vscode.Range(childSymbol.range.start.line, childSymbol.range.start.character, 
+                    childSymbol.range.end.line, childSymbol.range.end.character);
             
-            //get symbol range
-            let declRange = new vscode.Range(childSymbol.range.start.line, childSymbol.range.start.character, 
-                childSymbol.range.end.line, childSymbol.range.end.character);
-            
-            //build new source code
-            newSource += vscode.window.activeTextEditor.document.getText(declRange);
-            if (childSymbol.kind == AZSymbolKind.VariableDeclarationName) {
-                if ((i < (childSymbolsList.length - 1)) &&
-                    (childSymbolsList[i+1].kind == childSymbol.kind) &&
-                    (childSymbolsList[i+1].subtype == childSymbol.subtype)) {
-                    newSource += ', ';
-                    if (childSymbolsList[i+1].range.start.line < childSymbolsList[i+1].range.end.line)
-                        newSource += '\n';
-                } else
-                    newSource += ': ' + childSymbol.subtype + ';\n';
+                //build new source code
+                newSource += document.getText(declRange);
+                if (childSymbol.kind == AZSymbolKind.VariableDeclarationName) {
+                    if ((i < (childSymbolsList.length - 1)) &&
+                        (childSymbolsList[i+1].kind == childSymbol.kind) &&
+                        (childSymbolsList[i+1].subtype == childSymbol.subtype)) {
+                        newSource += ', ';
+                        if (childSymbolsList[i+1].range!.start.line < childSymbolsList[i+1].range!.end.line)
+                            newSource += '\n';
+                    } else
+                        newSource += ': ' + childSymbol.subtype + ';\n';
+                }
             }
         }
         
         // Delete the old unsorted columns and insert the new sorted source
-        const deleteRange = new vscode.Range(symbol.contentRange.start.line, symbol.contentRange.start.character, 
-            symbol.contentRange.end.line, symbol.contentRange.end.character);
-        editBuilder.delete(docUri, deleteRange);
-        
-        editBuilder.insert(docUri, deleteRange.start, newSource);
+        if (symbol.contentRange) {
+            const deleteRange = new vscode.Range(symbol.contentRange.start.line, symbol.contentRange.start.character, 
+                symbol.contentRange.end.line, symbol.contentRange.end.character);
+            editBuilder.delete(document.uri, deleteRange);
+            
+            editBuilder.insert(document.uri, deleteRange.start, newSource);
+        }
     }
 
     protected compareSymbols(symbolA: AZSymbolInformation, symbolB: AZSymbolInformation): number {
-        let subtypeA = this.preProcessTypeName(symbolA.subtype);
-        let subtypeB = this.preProcessTypeName(symbolB.subtype);
+        let subtypeA = this.preProcessTypeName(symbolA.elementsubtype);
+        let subtypeB = this.preProcessTypeName(symbolB.elementsubtype);
         
         let result: number = this.getTypePriority(subtypeA) - this.getTypePriority(subtypeB);        
         if (result != 0)
             return result;
         
-            if ((subtypeA) && (subtypeB)) {
+        if ((subtypeA) && (subtypeB)) {
+            result = subtypeA.localeCompare(subtypeB, undefined, { numeric: true, sensitivity: 'base' });
+            if (result != 0)
+                return result;
+        }
+
+        subtypeA = this.preProcessTypeName(symbolA.subtype);
+        subtypeB = this.preProcessTypeName(symbolB.subtype);
+        if ((subtypeA) && (subtypeB)) {
             result = subtypeA.localeCompare(subtypeB, undefined, { numeric: true, sensitivity: 'base' });
             if (result != 0)
                 return result;
@@ -124,7 +137,7 @@ export class ALSortVariablesCommand extends ALBaseSortCodeCommand {
         return symbolA.name.localeCompare(symbolB.name, undefined, { numeric: true, sensitivity: 'base' });
     }
 
-    protected getTypePriority(typeName: string) {
+    protected getTypePriority(typeName: string | undefined) {
         if (typeName) {
             typeName = typeName.toLowerCase();
             for (let i=0; i<this._typeByPriority.length; i++)

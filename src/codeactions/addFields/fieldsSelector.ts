@@ -80,7 +80,10 @@ export class FieldsSelector {
         if ((vscode.window.activeTextEditor) && (vscode.window.activeTextEditor.document))
             resource = vscode.window.activeTextEditor.document.uri;
         let selectionMode = vscode.workspace.getConfiguration('alOutline', resource).get<string>('fieldsSelectionOrder');
-        return ((selectionMode) && (selectionMode.toLowerCase() == 'selection order'));
+        //convert undefined to boolean
+        if ((selectionMode) && (selectionMode.toLowerCase() == 'selection order'))
+            return true;
+        return false;
     }
 
 }

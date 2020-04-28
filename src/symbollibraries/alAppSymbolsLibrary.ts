@@ -8,6 +8,7 @@ import { DevToolsExtensionContext } from '../devToolsExtensionContext';
 import { AZSymbolInformation } from './azSymbolInformation';
 import { AZSymbolKind } from './azSymbolKind';
 import { ALBaseServerSideLibrary } from './alBaseServerSideLibrary';
+import { NumberHelper } from '../tools/numberHelper';
 
 export class ALAppSymbolsLibrary extends ALBaseServerSideLibrary {
     filePath : string;
@@ -27,7 +28,7 @@ export class ALAppSymbolsLibrary extends ALBaseServerSideLibrary {
             else
                 this.rootSymbol = AZSymbolInformation.create(AZSymbolKind.Document, this.displayName);
             if (response)
-                this._libraryId = response.libraryId;
+                this._libraryId = NumberHelper.zeroIfNotDef(response.libraryId);
         }
         catch (e) {
             let msg : string = 'Loading symbols from file "' + this.filePath + '" failed.';

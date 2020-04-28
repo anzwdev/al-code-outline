@@ -68,17 +68,21 @@ export class ProjectItemWizardPage extends BaseWebViewEditor {
     protected async createObjectFile(objectType : string, objectId : string, objectName : string, content: string) {
         let fileName : string = await this.getObjectFileName(objectType, objectId, objectName);
         let destPath = this.getDestFilePath(this._settings.destDirectoryPath, objectType);
-        let fullPath : string = FileBuilder.generateObjectFileInDir(destPath, fileName, content);
-        if (fullPath)
-            FileBuilder.showFile(fullPath);
+        if (destPath) {
+            let fullPath : string = FileBuilder.generateObjectFileInDir(destPath, fileName, content);
+            if (fullPath)
+                FileBuilder.showFile(fullPath);
+        }
     }
 
     protected async createObjectExtensionFile(objectType : string, objectId : string, objectName : string, extendedObjectName : string, content : string) {
         let fileName : string = await this.getExtObjectFileName(objectType, objectId, objectName, extendedObjectName);
         let destPath = this.getDestFilePath(this._settings.destDirectoryPath, objectType);
-        let fullPath : string = FileBuilder.generateObjectFileInDir(destPath, fileName, content);
-        if (fullPath)
-            FileBuilder.showFile(fullPath);
+        if (destPath) {
+            let fullPath : string = FileBuilder.generateObjectFileInDir(destPath, fileName, content);
+            if (fullPath)
+                FileBuilder.showFile(fullPath);
+        }
     }
 
     protected getDestFilePath(targetPath: string | undefined, objectType: string) : string | undefined {
@@ -105,7 +109,10 @@ export class ProjectItemWizardPage extends BaseWebViewEditor {
         //reorganize is active - find destination path
         if (!workspacePathSelected)
             targetPath = this._toolsExtensionContext.alLangProxy.getCurrentWorkspaceFolderPath();
-        let alPath : string = settings.get<string>('AlSubFolderName');
+        if (!targetPath)
+            return undefined;
+
+        let alPath = settings.get<string>('AlSubFolderName');
         if (alPath)
             targetPath = path.join(targetPath, alPath);
         targetPath = path.join(targetPath, objectType.toLowerCase());

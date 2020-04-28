@@ -122,15 +122,17 @@ export class AZDocumentSymbolsLibrary extends AZSymbolsLibrary {
 
     //#region update field names from our language server with values returned by Microsoft AL Language Extension 
     
-    protected mergeFieldSymbolNames(azSymbol : AZSymbolInformation, vsFieldSymbols : vscode.DocumentSymbol[]) {
+    protected mergeFieldSymbolNames(azSymbol : AZSymbolInformation | undefined, vsFieldSymbols : vscode.DocumentSymbol[]) {
         if (!azSymbol)
             return;
         if ((azSymbol.kind == AZSymbolKind.PageField) || 
             (azSymbol.kind == AZSymbolKind.QueryColumn) || 
             (azSymbol.kind == AZSymbolKind.QueryFilter)) {
-            let vsSymbol = this.findVsCodeSymbolByRange(vsFieldSymbols, azSymbol.range);
-            if (vsSymbol)
-                azSymbol.fullName = vsSymbol.name;
+            if (azSymbol.range) {
+                let vsSymbol = this.findVsCodeSymbolByRange(vsFieldSymbols, azSymbol.range);
+                if (vsSymbol)
+                    azSymbol.fullName = vsSymbol.name;
+            }
         } else if (azSymbol.childSymbols) {
             for (let i=0; i<azSymbol.childSymbols.length; i++) {
                 this.mergeFieldSymbolNames(azSymbol.childSymbols[i], vsFieldSymbols);

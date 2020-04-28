@@ -82,7 +82,7 @@ export class ALBaseSymbolsBrowser extends BaseWebViewEditor {
             return undefined;
 
         if (objList.length > 100) {
-            let action: string = await vscode.window.showWarningMessage(`You are about to run this command for ${selPaths.length} objects. Do you want to continue?`, {modal: true}, 'Yes', 'No');
+            let action = await vscode.window.showWarningMessage(`You are about to run this command for ${selPaths.length} objects. Do you want to continue?`, {modal: true}, 'Yes', 'No');
             if (action !== 'Yes') {
                 return undefined;
             }
@@ -155,6 +155,8 @@ export class ALBaseSymbolsBrowser extends BaseWebViewEditor {
     }
 
     protected async showNewTab(path: number[] | undefined) {
+        if (!path)
+            return;
         let alSymbolList : AZSymbolInformation[] | undefined = await this._library.getSymbolsListByPathAsync([path], AZSymbolKind.AnyALObject);
         if ((alSymbolList) && (alSymbolList.length > 0)) {
             let symbolsTreeView = new SymbolsTreeView(this._devToolsContext, 'lib://' + alSymbolList[0].fullName, undefined);
@@ -164,6 +166,8 @@ export class ALBaseSymbolsBrowser extends BaseWebViewEditor {
     }
 
     protected async goToDefinition(path : number[] | undefined) {
+        if (!path)
+            return;
         let alSymbolList : AZSymbolInformation[] | undefined = await this._library.getSymbolsListByPathAsync([path], AZSymbolKind.AnyALObject);
         if ((alSymbolList) && (alSymbolList.length > 0)) {
             let preview = !vscode.workspace.getConfiguration('alOutline').get('openDefinitionInNewTab');
@@ -190,6 +194,8 @@ export class ALBaseSymbolsBrowser extends BaseWebViewEditor {
     }
 
     protected async runInWebClient(path : number[] | undefined) {
+        if (!path)
+            return;
         let alSymbolList : AZSymbolInformation[] | undefined = await this._library.getSymbolsListByPathAsync([path], AZSymbolKind.AnyALObject);
         if ((alSymbolList) && (alSymbolList.length > 0)) {
             this._devToolsContext.objectRunner.runSymbolAsync(alSymbolList[0]);

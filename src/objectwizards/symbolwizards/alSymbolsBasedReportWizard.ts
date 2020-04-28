@@ -31,7 +31,7 @@ export class ALSymbolsBasedReportWizard extends ALSymbolsBasedWizard {
             return;
         }
 
-        let relativeFileDir: string = await this.getRelativeFileDir(objType);
+        let relativeFileDir = await this.getRelativeFileDir(objType);
 
         for (let i = 0; i < tableSymbols.length; i++) {
             let tableSymbol = tableSymbols[i];
@@ -53,18 +53,15 @@ export class ALSymbolsBasedReportWizard extends ALSymbolsBasedWizard {
             return;
         }
 
-        let objectName : string = this.getDefaultReportName(tableSymbol);
-        objectName = await this.getObjectName("Please enter a name for the report object.", objectName);
-        
-        if (!objectName) {
+        let objectName = await this.getObjectName("Please enter a name for the report object.", this.getDefaultReportName(tableSymbol));
+        if (!objectName)
             return;
-        }
 
-        let relativeFileDir: string = await this.getRelativeFileDir(objType);
+        let relativeFileDir = await this.getRelativeFileDir(objType);
         await this.createAndShowNewReport(tableSymbol, objType, objectId, objectName, relativeFileDir);
     }
 
-    private async createAndShowNewReport(tableSymbol: AZSymbolInformation, objType: AZSymbolKind, objectId: number, objectName: string, relativeFileDir: string) {
+    private async createAndShowNewReport(tableSymbol: AZSymbolInformation, objType: AZSymbolKind, objectId: number, objectName: string, relativeFileDir: string | undefined) {
         let fileName : string = await FileBuilder.getPatternGeneratedFullObjectFileName(objType, objectId, objectName);
         this.showNewDocument(this.buildReportForTable(tableSymbol, objectId, objectName), fileName, relativeFileDir);
     }

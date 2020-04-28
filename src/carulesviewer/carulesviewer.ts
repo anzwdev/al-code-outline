@@ -128,35 +128,37 @@ export class CARulesViewer extends BaseWebViewEditor {
 
     protected copyTable(rulesIndexes: number[]) {
         let rulesText = 'Id\tTitle\tDefault Severity\tAnalyzer';
-        for (let i=0; i<rulesIndexes.length; i++) {
-            let rule = this._rules[rulesIndexes[i]];
-            rulesText += ('\n' + rule.id + '\t' + 
-                rule.title + '\t' + 
-                rule.defaultSeverity + '\t' +
-                rule.analyzer);
+        if (this._rules) {
+            for (let i=0; i<rulesIndexes.length; i++) {
+                let rule = this._rules[rulesIndexes[i]];
+                rulesText += ('\n' + rule.id + '\t' + 
+                    rule.title + '\t' + 
+                    rule.defaultSeverity + '\t' +
+                    rule.analyzer);
+            }
         }
         vscode.env.clipboard.writeText(rulesText);
     }
 
     protected getRulesAsString(rulesIndexes: number[], indentText: string) : string {
         let rules = '';
-        for (let i=0; i<rulesIndexes.length; i++) {
-            let ruleDef = this._rules[rulesIndexes[i]];
-            if (i > 0)
-                rules += ',';
-            rules += ('\n// Rule: ' + ruleDef.title);
-            rules += ('\n//       Default action: ' + ruleDef.defaultSeverity)
-            rules += ('\n' + JSON.stringify({
-                id: ruleDef.id,
-                action: ruleDef.defaultSeverity,
-                justification: 'Justification'
-            }, undefined, 4));
+        if (this._rules) {
+            for (let i=0; i<rulesIndexes.length; i++) {
+                let ruleDef = this._rules[rulesIndexes[i]];
+                if (i > 0)
+                    rules += ',';
+                rules += ('\n// Rule: ' + ruleDef.title);
+                rules += ('\n//       Default action: ' + ruleDef.defaultSeverity)
+                rules += ('\n' + JSON.stringify({
+                    id: ruleDef.id,
+                    action: ruleDef.defaultSeverity,
+                    justification: 'Justification'
+                }, undefined, 4));
+            }
 
+            if (indentText.length > 0)
+            rules = rules.replace(/\n/g, '\n' + indentText);
         }
-
-        if (indentText.length > 0)
-        rules = rules.replace(/\n/g, '\n' + indentText);
-
         return rules;
     }
 

@@ -12,7 +12,7 @@ export class ALAddPageFieldsCodeCommand extends ALBaseAddFieldsCodeCommand {
         super(context, 'AddPageFields', 'AZDevTools.ALAddPageFieldsCodeCommand');
     }
 
-    collectCodeActions(docSymbols: AZDocumentSymbolsLibrary, symbol: AZSymbolInformation, document: vscode.TextDocument, range: vscode.Range | vscode.Selection, context: vscode.CodeActionContext, actions: vscode.CodeAction[]) {
+    collectCodeActions(docSymbols: AZDocumentSymbolsLibrary, symbol: AZSymbolInformation | undefined, document: vscode.TextDocument, range: vscode.Range | vscode.Selection, context: vscode.CodeActionContext, actions: vscode.CodeAction[]) {
         if ((symbol) && 
             ((symbol.kind == AZSymbolKind.PageGroup) ||                 
              (symbol.kind == AZSymbolKind.PageRepeater) ||
@@ -53,7 +53,7 @@ export class ALAddPageFieldsCodeCommand extends ALBaseAddFieldsCodeCommand {
         //load list of table fields
         let fieldNames: string[] | undefined;
         
-        if (pageSymbol.kind == AZSymbolKind.PageObject)        
+        if ((pageSymbol.kind == AZSymbolKind.PageObject) && (pageSymbol.source))
             fieldNames = await this._toolsExtensionContext.alLangProxy.getFieldList(this.getDocumentUri(), pageSymbol.source);
         else if (pageSymbol.extends)
             fieldNames = await this._toolsExtensionContext.alLangProxy.getAvailablePageFieldList(this.getDocumentUri(), pageSymbol.extends);
@@ -72,12 +72,12 @@ export class ALAddPageFieldsCodeCommand extends ALBaseAddFieldsCodeCommand {
             return;
 
         let indent = 0;
-        let fieldsContainer = symbol;
+        let fieldsContainer: AZSymbolInformation | undefined = symbol;
         if (isFieldSymbol)
             fieldsContainer = symbol.parent;
         if ((fieldsContainer) && (fieldsContainer.contentRange))
             indent = fieldsContainer.contentRange.start.character + 3;
-        else
+        else if (symbol.range)
             indent = symbol.range.start.character + 3;
 
         //insert fields

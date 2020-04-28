@@ -35,7 +35,7 @@ export class ALSymbolsBasedXmlPortWizard extends ALSymbolsBasedWizard {
         if (fieldsAsElements === undefined) {
             return;
         }
-        let relativeFileDir: string = await this.getRelativeFileDir(objType);
+        let relativeFileDir = await this.getRelativeFileDir(objType);
 
         for (let i = 0; i < tableSymbols.length; i++) {
             let tableSymbol = tableSymbols[i];
@@ -57,23 +57,20 @@ export class ALSymbolsBasedXmlPortWizard extends ALSymbolsBasedWizard {
             return;
         }
 
-        let objectName : string = this.getDefaultXmlPortName(tableSymbol);
-        objectName = await this.getObjectName("Please enter a name for the xmlport object.", objectName);
-        
-        if (!objectName) {
+        let objectName = await this.getObjectName("Please enter a name for the xmlport object.", this.getDefaultXmlPortName(tableSymbol));
+        if (!objectName)
             return;
-        }
 
         let fieldsAsElements: boolean | undefined = await this.promptForFieldsAsElements();
         if (!fieldsAsElements) {
             return;
         }
         
-        let relativeFileDir: string = await this.getRelativeFileDir(objType);
+        let relativeFileDir = await this.getRelativeFileDir(objType);
         await this.createAndShowNewXmlPort(tableSymbol, objType, objectId, objectName, fieldsAsElements, relativeFileDir);
     }
 
-    private async createAndShowNewXmlPort(tableSymbol: AZSymbolInformation, objType: AZSymbolKind, objectId: number, objectName: string, fieldsAsElements: boolean, relativeFileDir: string) {
+    private async createAndShowNewXmlPort(tableSymbol: AZSymbolInformation, objType: AZSymbolKind, objectId: number, objectName: string, fieldsAsElements: boolean, relativeFileDir: string | undefined) {
         let fileName : string = await FileBuilder.getPatternGeneratedFullObjectFileName(objType, objectId, objectName);
         this.showNewDocument(this.buildXmlPortForTable(tableSymbol, objectId, objectName, fieldsAsElements), fileName, relativeFileDir);
     }

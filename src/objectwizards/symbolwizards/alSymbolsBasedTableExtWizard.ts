@@ -31,7 +31,7 @@ export class ALSymbolsBasedTableExtWizard extends ALSymbolsBasedWizard {
             return;
         }
 
-        let relativeFileDir: string = await this.getRelativeFileDir(extObjType);
+        let relativeFileDir = await this.getRelativeFileDir(extObjType);
 
         for (let i = 0; i < tableSymbols.length; i++) {
             let tableSymbol = tableSymbols[i];
@@ -53,7 +53,7 @@ export class ALSymbolsBasedTableExtWizard extends ALSymbolsBasedWizard {
             return;
         }
 
-        let extObjectName: string = await FileBuilder.getPatternGeneratedExtensionObjectName(extObjType, extObjectId, tableSymbol);
+        let extObjectName: string | undefined = await FileBuilder.getPatternGeneratedExtensionObjectName(extObjType, extObjectId, tableSymbol);
         if (!extObjectName)
             extObjectName = tableSymbol.name + ' Extension';
         extObjectName = await this.getObjectName("Please enter a name for the table extension.", extObjectName);
@@ -61,11 +61,11 @@ export class ALSymbolsBasedTableExtWizard extends ALSymbolsBasedWizard {
             return;
         }
         
-        let relativeFileDir: string = await this.getRelativeFileDir(extObjType);
+        let relativeFileDir = await this.getRelativeFileDir(extObjType);
         await this.createAndShowNewTableExtension(tableSymbol, extObjType, extObjectId, extObjectName, relativeFileDir);
     }
 
-    private async createAndShowNewTableExtension(tableSymbol: AZSymbolInformation, extObjType: AZSymbolKind, extObjectId: number, extObjectName: string, relativeFileDir: string) {
+    private async createAndShowNewTableExtension(tableSymbol: AZSymbolInformation, extObjType: AZSymbolKind, extObjectId: number, extObjectName: string, relativeFileDir: string | undefined) {
         let fileName : string = await FileBuilder.getPatternGeneratedExtensionObjectFileName(extObjType, extObjectId, extObjectName, tableSymbol);
         this.showNewDocument(this.buildTableExtForTable(tableSymbol, extObjectId, extObjectName), fileName, relativeFileDir);
     }

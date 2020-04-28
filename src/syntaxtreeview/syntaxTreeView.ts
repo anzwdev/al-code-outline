@@ -35,6 +35,8 @@ export class SyntaxTreeView extends BaseSymbolsWebView {
     }
 
     protected async loadSymbols() {
+        if (!this._documentUri)
+            return;
         let editor = TextEditorHelper.findDocumentEditor(this._documentUri);
         let source: string = '';
 
@@ -53,6 +55,9 @@ export class SyntaxTreeView extends BaseSymbolsWebView {
     }
 
     protected async onSymbolSelected(symbolPath: number[]) {
+        if (!this._documentUri)
+            return;
+
         let request: ToolsGetSyntaxTreeSymbolsRequest = new ToolsGetSyntaxTreeSymbolsRequest(this._documentUri.fsPath, symbolPath);
         let response = await this._devToolsContext.toolsLangServerClient.getSyntaxTreeSymbol(request);
         if (response) {
@@ -81,7 +86,9 @@ export class SyntaxTreeView extends BaseSymbolsWebView {
 
     protected onPanelClosed() {
         super.onPanelClosed();
-        let request: ToolsCloseSyntaxTreeRequest = new ToolsCloseSyntaxTreeRequest(this._documentUri.fsPath);
-        this._devToolsContext.toolsLangServerClient.closeSyntaxTree(request);   
+        if (this._documentUri) {
+            let request: ToolsCloseSyntaxTreeRequest = new ToolsCloseSyntaxTreeRequest(this._documentUri.fsPath);
+            this._devToolsContext.toolsLangServerClient.closeSyntaxTree(request);   
+        }
     }
 }

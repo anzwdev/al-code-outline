@@ -96,7 +96,8 @@ export class ALObjectsBrowser extends ALBaseSymbolsBrowser {
 
     protected showTreeView() {
         this._devToolsContext.setUseSymbolsBrowser(true);
-        this._panel.dispose();
+        if (this._panel)
+            this._panel.dispose();
         let objectBrowser : ALSymbolsBrowser = new ALSymbolsBrowser(this._devToolsContext, this._library);
         objectBrowser.show();
     }

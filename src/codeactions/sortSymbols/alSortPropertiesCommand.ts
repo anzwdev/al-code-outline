@@ -11,7 +11,7 @@ export class ALSortPropertiesCommand extends ALBaseSortCodeCommand {
         super(context, "SortProperties");
     }
 
-    collectCodeActions(docSymbols: AZDocumentSymbolsLibrary, symbol: AZSymbolInformation, document: vscode.TextDocument, range: vscode.Range | vscode.Selection, context: vscode.CodeActionContext, actions: vscode.CodeAction[]) {
+    collectCodeActions(docSymbols: AZDocumentSymbolsLibrary, symbol: AZSymbolInformation | undefined, document: vscode.TextDocument, range: vscode.Range | vscode.Selection, context: vscode.CodeActionContext, actions: vscode.CodeAction[]) {
         let edit: vscode.WorkspaceEdit | undefined = undefined;
         let actionKind = vscode.CodeActionKind.QuickFix;
 
@@ -25,7 +25,9 @@ export class ALSortPropertiesCommand extends ALBaseSortCodeCommand {
             }
         } else {
             //collect list of objects in selection range
-            if ((symbol) && (symbol.isALObject()) && (symbol.kind != AZSymbolKind.Interface) && (symbol.selectionRange.start.line == range.start.line))
+            if ((symbol) && (symbol.isALObject()) && (symbol.kind != AZSymbolKind.Interface) && 
+                (symbol.selectionRange) &&
+                (symbol.selectionRange.start.line == range.start.line))                
                 edit = this.prepareEdit(symbol, document, undefined);
         }
 

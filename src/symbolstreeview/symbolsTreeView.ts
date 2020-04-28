@@ -28,6 +28,9 @@ export class SymbolsTreeView extends BaseSymbolsWebView {
     }
 
     protected async loadSymbols() {
+        if ((!this._documentUri) || (!this.selectedSymbolRange))
+            return;
+
         let currDocUri = this._devToolsContext.activeDocumentSymbols.getDocUri();
         if ((currDocUri) && (currDocUri.toString() == this._documentUri.toString()) && (this._devToolsContext.activeDocumentSymbols.rootSymbol)) {
             this._selectedSymbolPath = this._devToolsContext.activeDocumentSymbols.findSymbolPathInSelectionRange(this.selectedSymbolRange);            
@@ -41,9 +44,12 @@ export class SymbolsTreeView extends BaseSymbolsWebView {
     }
 
     onSymbolsChanged(lib: any) {
-        if (this._devToolsContext.activeDocumentSymbols.getDocUri().path == this._documentUri.path) {
-            this._selectedSymbolPath = undefined;
-            this.setSymbols(this._devToolsContext.activeDocumentSymbols.rootSymbol, this._title);
+        if (this._documentUri) {
+            let docUri = this._devToolsContext.activeDocumentSymbols.getDocUri();
+            if ((docUri) && (docUri.path == this._documentUri.path)) {
+                this._selectedSymbolPath = undefined;
+                this.setSymbols(this._devToolsContext.activeDocumentSymbols.rootSymbol, this._title);
+            }
         }
     }
 

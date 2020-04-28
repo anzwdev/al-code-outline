@@ -12,7 +12,7 @@ export class ALAddReportFieldsCodeCommand extends ALBaseAddFieldsCodeCommand {
         super(context, 'AddReportFields', 'AZDevTools.ALAddReportFieldsCodeCommand');
     }
 
-    collectCodeActions(docSymbols: AZDocumentSymbolsLibrary, symbol: AZSymbolInformation, document: vscode.TextDocument, range: vscode.Range | vscode.Selection, context: vscode.CodeActionContext, actions: vscode.CodeAction[]) {
+    collectCodeActions(docSymbols: AZDocumentSymbolsLibrary, symbol: AZSymbolInformation | undefined, document: vscode.TextDocument, range: vscode.Range | vscode.Selection, context: vscode.CodeActionContext, actions: vscode.CodeAction[]) {
         if ((symbol) && 
             ((symbol.kind == AZSymbolKind.ReportDataItem) ||
              (symbol.kind == AZSymbolKind.ReportColumn))) {
@@ -41,7 +41,7 @@ export class ALAddReportFieldsCodeCommand extends ALBaseAddFieldsCodeCommand {
             return;
 
         //get list of fields
-        let fieldNames = await this._toolsExtensionContext.alLangProxy.getFieldList(this.getDocumentUri(), dataItemSymbol.source);
+        let fieldNames: string[] | undefined = await this._toolsExtensionContext.alLangProxy.getFieldList(this.getDocumentUri(), dataItemSymbol.source);
         
         //remove existing fields from the list
         fieldNames = this.removeExistingFields(fieldNames, dataItemSymbol.childSymbols, AZSymbolKind.ReportColumn, 'All available table fields have already been added to the report.');

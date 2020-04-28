@@ -1,7 +1,7 @@
 export class ToolsAddAppAreasResponse {
-    source: string;
-    noOfAppAreas: number;
-    noOfFiles: number;
-    error: boolean;
-    errorMessage: string;
+    source: string | undefined;
+    noOfAppAreas: number | undefined;
+    noOfFiles: number | undefined;
+    error: boolean | undefined;
+    errorMessage: string | undefined;
 }

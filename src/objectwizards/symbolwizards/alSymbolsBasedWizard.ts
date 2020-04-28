@@ -17,22 +17,20 @@ export class ALSymbolsBasedWizard {
         }
     }
 
-    private async showNewGeneratedFile(content : string, fileName : string, relativeFileDir: string) {
-        let autoShowDocument: boolean = vscode.workspace.getConfiguration('alOutline').get('autoShowFiles');
+    private async showNewGeneratedFile(content : string, fileName : string, relativeFileDir: string | undefined) {
+        let autoShowDocument = vscode.workspace.getConfiguration('alOutline').get<boolean>('autoShowFiles');
         let filePath = await FileBuilder.generateObjectFileInRelativeDir(content, fileName, relativeFileDir);
         if ((filePath) && (autoShowDocument))
             FileBuilder.showFile(filePath);
     }
 
     protected async getObjectId(promptText: string, defaultObjectId: number) : Promise<number> {
-        let objectIdString : string = defaultObjectId.toString();
-        if (this.shouldPromptForObjectId()) {
+        let objectIdString : string | undefined = defaultObjectId.toString();
+        if (this.shouldPromptForObjectId())
             objectIdString = await this.promptForObjectId(promptText, objectIdString);
-        }
 
-        if (!objectIdString) {
+        if (!objectIdString)
             return -1;
-        }
         
         let objectId : number = Number(objectIdString);
         if (isNaN(objectId)) {
@@ -43,24 +41,21 @@ export class ALSymbolsBasedWizard {
     }
 
     protected async getObjectName(promptText: string, defaultObjectName : string) : Promise<string | undefined> {
-        let objectName : string = defaultObjectName;
-        if (this.shouldPromptForObjectName()) {
+        let objectName : string | undefined = defaultObjectName;
+        if (this.shouldPromptForObjectName())
             objectName = await this.promptForObjectName(promptText, objectName);
-        }
 
-        if (!objectName) {
+        if (!objectName)
             return objectName;
-        }
 
-        if (this.shouldStripCharacters()) {
+        if (this.shouldStripCharacters())
             objectName = FileBuilder.stripNonAlphaNumericCharacters(objectName);
-        }
 
         return objectName;
     }
 
     protected async getRelativeFileDir(objectType : AZSymbolKind) : Promise<string | undefined> {
-        let relativeFileDir : string = await FileBuilder.getPatternGeneratedRelativeFilePath(objectType);
+        let relativeFileDir : string | undefined = await FileBuilder.getPatternGeneratedRelativeFilePath(objectType);
         if (this.shouldPromptForFileDir() && this.shouldAutoGenerateFiles()) {
             relativeFileDir = await this.promptForFileDir('Please specify a directory, relative to the root, to create the new file(s) in.', relativeFileDir);
         }
@@ -104,24 +99,31 @@ export class ALSymbolsBasedWizard {
 
     //#region Setting Helper Functions
 
+    private getBoolSetting(name: string): boolean {
+        //convert undefined to false
+        if (vscode.workspace.getConfiguration('alOutline').get<boolean>(name))
+            return true;
+        return false;
+    }
+
     private shouldPromptForObjectId() : boolean {
-        return vscode.workspace.getConfiguration('alOutline').get('promptForObjectId');
+        return this.getBoolSetting('promptForObjectId');
     }
 
     private shouldPromptForObjectName() : boolean {
-        return vscode.workspace.getConfiguration('alOutline').get('promptForObjectName');
+        return this.getBoolSetting('promptForObjectName');
     }
 
     private shouldPromptForFileDir() : boolean {
-        return vscode.workspace.getConfiguration('alOutline').get('promptForFilePath');
+        return this.getBoolSetting('promptForFilePath');
     }
 
     private shouldStripCharacters() : boolean {
-        return vscode.workspace.getConfiguration('alOutline').get('stripNonAlphanumericCharactersFromObjectNames');
+        return this.getBoolSetting('stripNonAlphanumericCharactersFromObjectNames');
     }
 
     protected shouldAutoGenerateFiles() : boolean {
-        return vscode.workspace.getConfiguration('alOutline').get('autoGenerateFiles');
+        return this.getBoolSetting('autoGenerateFiles');
     }
 
     //#endregion
