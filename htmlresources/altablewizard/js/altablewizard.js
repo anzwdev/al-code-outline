@@ -48,8 +48,8 @@ class TableWizard {
        
         if (this._data) {
             //initialize inputs
-            $("#objectid").val(this._data.objectId);
-            $("#objectname").val(this._data.objectName);
+            document.getElementById("objectid").value = this._data.objectId;
+            document.getElementById("objectname").value = this._data.objectName;
             //initialize fields list
             if (this._data.fields)
                 this._fieldsgrid.setData(this._data.fields);
@@ -82,8 +82,8 @@ class TableWizard {
     }
 
     collectStepData(finishSelected) {
-        this._data.objectId = $("#objectid").val();
-        this._data.objectName = $("#objectname").val();        
+        this._data.objectId = document.getElementById("objectid").value;
+        this._data.objectName = document.getElementById("objectname").value;
         this._data.fields = this._fieldsgrid.getData();
     }
 
@@ -102,6 +102,6 @@ class TableWizard {
 
 var wizard;
 
-$(function() {
+window.onload = function() {
     wizard = new TableWizard();
-});
+};

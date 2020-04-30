@@ -55,9 +55,9 @@ class SymbolsTreeControl {
     setShowIds(newShowIds) {        
         this._showIds = newShowIds;
         if (this._showIds)
-            $('#' + this._idsBtnId).html("Hide Ids");
+            document.getElementById(this._idsBtnId).innerText = "Hide Ids";
         else
-            $('#' + this._idsBtnId).html("Show Ids");
+        document.getElementById(this._idsBtnId).innerText = "Show Ids";
         this.setData(this._data);
         if (this.showIdsChanged)
             this.showIdsChanged(this._showIds);

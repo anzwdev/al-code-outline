@@ -14,25 +14,24 @@ class ImageBrowser {
         this.initializeContextMenu();
 
         // Handle messages sent from the extension to the webview
-        var me = this;
         window.addEventListener('message', event => {
-            me.onMessage(event.data);
+            this.onMessage(event.data);
         });
 
         document.getElementById('searchname').addEventListener('keydown', event => {
-            me.onSearchKeyDown(event);
+            this.onSearchKeyDown(event);
         });
 
         document.getElementById('searchbtn').addEventListener('click', event => {
-            me.search();
+            this.search();
         });
 
         this._content.addEventListener('pointerdown', event => { 
-            me.onMouseDown(event); 
+            this.onMouseDown(event); 
         }, true);
 
         this._content.addEventListener('keydown', event => {
-            me.onKeyDown(event); 
+            this.onKeyDown(event); 
         });
 
         this.sendMessage({

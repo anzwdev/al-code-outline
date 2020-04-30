@@ -6,9 +6,8 @@ class InterfaceWizard {
         this._vscode = acquireVsCodeApi();
        
         // Handle messages sent from the extension to the webview
-        var me = this;
         window.addEventListener('message', event => {
-            me.onMessage(event.data);
+            this.onMessage(event.data);
         });
 
         this.sendMessage({
@@ -34,8 +33,8 @@ class InterfaceWizard {
     setData(data) {
         this._data = data;
         //initialize fields
-        $("#objectname").val(this._data.objectName);
-        $("#srccodeunit").val(this._data.baseCodeunitName);
+        document.getElementById("objectname").value = this._data.objectName;
+        document.getElementById("srccodeunit").value = this._data.baseCodeunitName;
     }
 
     setCodeunits(data) {
@@ -61,14 +60,14 @@ class InterfaceWizard {
 				inputfield.value = item
 			},
 			fetch: function (text, callback) {
-				var match = text.toLowerCase();
+				let match = text.toLowerCase();
 				callback(me._data.codeunitList.filter(function(n) { return n.toLowerCase().indexOf(match) !== -1; }));
 			},
 			render: function(item, value) {
-				var itemElement = document.createElement("div");
+				let itemElement = document.createElement("div");
 				if (allowedChars.test(value)) {
-					var regex = new RegExp(value, 'gi');
-					var inner = item.replace(regex, function(match) { return "<strong>" + match + "</strong>" });
+					let regex = new RegExp(value, 'gi');
+					let inner = item.replace(regex, function(match) { return "<strong>" + match + "</strong>" });
 					itemElement.innerHTML = inner;
 				} else {
 					itemElement.textContent = item;
@@ -108,8 +107,8 @@ class InterfaceWizard {
     }
 
     collectStepData(finishSelected) {
-        this._data.objectName = $("#objectname").val();
-        this._data.baseCodeunitName = $("#srccodeunit").val();
+        this._data.objectName = document.getElementById("objectname").value;
+        this._data.baseCodeunitName = document.getElementById("srccodeunit").value;
     }
 
     canFinish() {
@@ -127,6 +126,6 @@ class InterfaceWizard {
 
 var wizard;
 
-$(function() {
+window.onload = function() {
     wizard = new InterfaceWizard();
-});
+};

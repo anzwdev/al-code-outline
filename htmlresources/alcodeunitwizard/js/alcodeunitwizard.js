@@ -6,8 +6,8 @@ class CodeunitWizard extends TableBasedObjectWizard{
     }
 
     updateMainButtons() {
-        $("#prevBtn").prop("disabled", true);
-        $("#nextBtn").prop("disabled", true);
+        document.getElementById("prevBtn").disabled = true;
+        document.getElementById("nextBtn").disabled = true;
     }
 
     updateControls() {
@@ -34,10 +34,10 @@ class CodeunitWizard extends TableBasedObjectWizard{
     setData(data) {
         this._data = data;
         //initialize fields
-        $("#objectid").val(this._data.objectId);
-        $("#objectname").val(this._data.objectName);
-        $("#srctable").val(this._data.selectedTable);
-        $("#interfaceName").val(this._data.interfaceName);
+        document.getElementById("objectid").value = this._data.objectId;
+        document.getElementById("objectname").value = this._data.objectName;
+        document.getElementById("srctable").value = this._data.selectedTable;
+        document.getElementById("interfaceName").value = this._data.interfaceName;
         this.updateControls();
         this.loadTables();
     }
@@ -67,14 +67,14 @@ class CodeunitWizard extends TableBasedObjectWizard{
 				inputfield.value = item
 			},
 			fetch: function (text, callback) {
-				var match = text.toLowerCase();
+				let match = text.toLowerCase();
 				callback(me._data.interfaceList.filter(function(n) { return n.toLowerCase().indexOf(match) !== -1; }));
 			},
 			render: function(item, value) {
-				var itemElement = document.createElement("div");
+				let itemElement = document.createElement("div");
 				if (allowedChars.test(value)) {
-					var regex = new RegExp(value, 'gi');
-					var inner = item.replace(regex, function(match) { return "<strong>" + match + "</strong>" });
+					let regex = new RegExp(value, 'gi');
+					let inner = item.replace(regex, function(match) { return "<strong>" + match + "</strong>" });
 					itemElement.innerHTML = inner;
 				} else {
 					itemElement.textContent = item;
@@ -116,10 +116,10 @@ class CodeunitWizard extends TableBasedObjectWizard{
     }
 
     collectStepData(finishSelected) {
-        this._data.objectId = $("#objectid").val();
-        this._data.objectName = $("#objectname").val();
-        this._data.selectedTable = $("#srctable").val();
-        this._data.interfaceName = $("#interfaceName").val();
+        this._data.objectId = document.getElementById("objectid").value;
+        this._data.objectName = document.getElementById("objectname").value;
+        this._data.selectedTable = document.getElementById("srctable").value;
+        this._data.interfaceName = document.getElementById("interfaceName").value;
     }
 
     canFinish() {
@@ -137,6 +137,6 @@ class CodeunitWizard extends TableBasedObjectWizard{
 
 var wizard;
 
-$(function() {
+window.onload = function() {
     wizard = new CodeunitWizard();
-});
+};
