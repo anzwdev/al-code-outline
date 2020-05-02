@@ -56,7 +56,9 @@ export class DevToolsExtensionContext implements vscode.Disposable {
 
     getUseSymbolsBrowser() : boolean {
         let useSymbolsBrowser = this.vscodeExtensionContext.globalState.get<boolean>("azALDevTools.useSymbolsBrowser");
-        return useSymbolsBrowser;
+        if (useSymbolsBrowser)
+            return useSymbolsBrowser;
+        return false;
     }
 
     setUseSymbolsBrowser(newValue : boolean) {

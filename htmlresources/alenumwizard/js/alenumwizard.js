@@ -6,9 +6,8 @@ class EnumWizard {
         this._vscode = acquireVsCodeApi();
        
         // Handle messages sent from the extension to the webview
-        var me = this;
         window.addEventListener('message', event => {
-            me.onMessage(event.data);
+            this.onMessage(event.data);
         });
 
         this.sendMessage({
@@ -32,11 +31,11 @@ class EnumWizard {
     setData(data) {
         this._data = data;
         //initialize fields
-        $("#objectid").val(this._data.objectId);
-        $("#objectname").val(this._data.objectName);
-        $("#valuelist").val(this._data.valueList);
-        $("#captionlist").val(this._data.captionList);
-        $("#extensible").prop('checked', this._data.extensible);
+        document.getElementById("objectid").value = this._data.objectId;
+        document.getElementById("objectname").value = this._data.objectName;
+        document.getElementById("valuelist").value = this._data.valueList;
+        document.getElementById("captionlist").value = this._data.captionList;
+        document.getElementById("extensible").checked = this._data.extensible;
     }
    
     onFinish() {
@@ -64,11 +63,11 @@ class EnumWizard {
     }
 
     collectStepData(finishSelected) {
-        this._data.objectId = $("#objectid").val();
-        this._data.objectName = $("#objectname").val();
-        this._data.valueList = $("#valuelist").val();
-        this._data.captionList = $("#captionlist").val();
-        this._data.extensible = $("#extensible").prop("checked");
+        this._data.objectId = document.getElementById("objectid").value;
+        this._data.objectName = document.getElementById("objectname").value;
+        this._data.valueList = document.getElementById("valuelist").value;
+        this._data.captionList = document.getElementById("captionlist").value;
+        this._data.extensible = document.getElementById("extensible").checked;
     }
 
     canFinish() {
@@ -86,6 +85,6 @@ class EnumWizard {
 
 var wizard;
 
-$(function() {
+window.onload = function() {
     wizard = new EnumWizard();
-});
+};

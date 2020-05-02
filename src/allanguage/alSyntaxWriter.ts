@@ -1,5 +1,6 @@
 import * as vscode from 'vscode';
 import { ALSyntaxHelper } from './alSyntaxHelper';
+import { StringHelper } from '../tools/stringHelper';
 
 export class ALSyntaxWriter {
     private content : string;
@@ -11,7 +12,7 @@ export class ALSyntaxWriter {
         this.content = "";
         this.indentText = "";
         this.indentPart = "    ";
-        this.applicationArea = vscode.workspace.getConfiguration('alOutline').get('defaultAppArea');
+        this.applicationArea = StringHelper.emptyIfNotDef(vscode.workspace.getConfiguration('alOutline').get<string>('defaultAppArea'));
     }
 
     public toString() : string {

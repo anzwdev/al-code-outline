@@ -1,17 +1,19 @@
 
 import * as vscode from 'vscode';
 import { TextPosition } from "./textPosition";
-import { VersionedTextDocumentIdentifier } from 'vscode-languageclient';
+import { VersionedTextDocumentIdentifier, DocumentRangeFormattingRequest } from 'vscode-languageclient';
 
 export class TextRange {
-    start : TextPosition | undefined;
-    end : TextPosition | undefined;
+    start : TextPosition;
+    end : TextPosition;
     isEmpty : boolean;
     isSingleLine : boolean;
 
     constructor() {
         this.isEmpty = true;
         this.isSingleLine = true;
+        this.start = new TextPosition();
+        this.end = new TextPosition();
     }
 
     static fromAny(source : any) : TextRange {

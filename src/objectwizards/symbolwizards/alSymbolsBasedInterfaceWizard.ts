@@ -29,7 +29,7 @@ export class ALSymbolsBasedInterfaceWizard extends ALSymbolsBasedWizard {
 
         const objType : AZSymbolKind = AZSymbolKind.Interface;
 
-        let relativeFileDir: string = await this.getRelativeFileDir(objType);
+        let relativeFileDir = await this.getRelativeFileDir(objType);
 
         for (let i = 0; i < sourceSymbols.length; i++) {
             let sourceSymbol = sourceSymbols[i];
@@ -45,18 +45,15 @@ export class ALSymbolsBasedInterfaceWizard extends ALSymbolsBasedWizard {
             
         const objType : AZSymbolKind = AZSymbolKind.Interface;
 
-        let objectName : string = this.getDefaultInterfaceName(sourceSymbol);
-        objectName = await this.getObjectName("Please enter a name for the new object.", objectName);
-        
-        if (!objectName) {
+        let objectName = await this.getObjectName("Please enter a name for the new object.", this.getDefaultInterfaceName(sourceSymbol));        
+        if (!objectName)
             return;
-        }
 
-        let relativeFileDir: string = await this.getRelativeFileDir(objType);
+        let relativeFileDir = await this.getRelativeFileDir(objType);
         await this.createAndShowNewInterface(sourceSymbol, objectName, relativeFileDir);
     }
 
-    private async createAndShowNewInterface(sourceSymbol: AZSymbolInformation, objectName: string, relativeFileDir: string) {
+    private async createAndShowNewInterface(sourceSymbol: AZSymbolInformation, objectName: string, relativeFileDir: string | undefined) {
         let fileName : string = await FileBuilder.getPatternGeneratedFullObjectFileName(AZSymbolKind.Interface, 0, objectName);
         let sourceCode = await this.buildInterfaceAsync(sourceSymbol, objectName);        
         this.showNewDocument(sourceCode, fileName, relativeFileDir);

@@ -5,35 +5,35 @@ class QueryWizard extends TableBasedObjectWizard {
 
         //initialize steps visibility
         this._step = 1;
-        $("#wizardstep2").hide();
+        htmlHelper.hideById("wizardstep2");
 
     }
 
     updateMainButtons() {
-        $("#prevBtn").prop("disabled", (this._step <= 1));
-        $("#nextBtn").prop("disabled", (this._step == 2));
-        //$("#finishBtn").prop("disabled", (this._step < 2));
+        document.getElementById("prevBtn").disabled = (this._step <= 1);
+        document.getElementById("nextBtn").disabled = (this._step == 2);
+        //document.getElementById("finishBtn").disabled = (this._step < 2);
     }
 
     setStep(newStep) {
-        $("#wizardstep" + this._step.toString()).hide();        
+        htmlHelper.hideById("wizardstep" + this._step.toString());        
         this._step = newStep;
-        $("#wizardstep" + this._step.toString()).show();
+        htmlHelper.showById("wizardstep" + this._step.toString());
         this.updateMainButtons();
     }
 
     setData(data) {
         super.setData(data);
         //initialize fields
-        $("#objectid").val(this._data.objectId);
-        $("#objectname").val(this._data.objectName);
-        $("#srctable").val(this._data.selectedTable);
-        $("#querytype").val(this._data.queryType);
-        $("#apipublisher").val(this._data.apiPublisher);
-        $("#apigroup").val(this._data.apiGroup);
-        $("#apiversion").val(this._data.apiVersion);
-        $("#entityname").val(this._data.entityName);
-        $("#entitysetname").val(this._data.entitySetName);   
+        document.getElementById("objectid").value = this._data.objectId;
+        document.getElementById("objectname").value = this._data.objectName;
+        document.getElementById("srctable").value = this._data.selectedTable;
+        document.getElementById("querytype").value = this._data.queryType;
+        document.getElementById("apipublisher").value = this._data.apiPublisher;
+        document.getElementById("apigroup").value = this._data.apiGroup;
+        document.getElementById("apiversion").value = this._data.apiVersion;
+        document.getElementById("entityname").value = this._data.entityName;
+        document.getElementById("entitysetname").value = this._data.entitySetName;   
         
         this.updateControls();
         this.loadTables();
@@ -72,24 +72,24 @@ class QueryWizard extends TableBasedObjectWizard {
 
     collectStep1Data(finishSelected) {
         var prevTableName = this._data.selectedTable;        
-        this._data.objectId = $("#objectid").val();
-        this._data.objectName = $("#objectname").val();
-        this._data.selectedTable = $("#srctable").val();
-        this._data.queryType = $("#querytype").val();
-        this._data.apiPublisher = $("#apipublisher").val();
-        this._data.apiGroup = $("#apigroup").val();
-        this._data.apiVersion = $("#apiversion").val();
-        this._data.entityName = $("#entityname").val();
-        this._data.entitySetName = $("#entitysetname").val();    
+        this._data.objectId = document.getElementById("objectid").value;
+        this._data.objectName = document.getElementById("objectname").value;
+        this._data.selectedTable = document.getElementById("srctable").value;
+        this._data.queryType = document.getElementById("querytype").value;
+        this._data.apiPublisher = document.getElementById("apipublisher").value;
+        this._data.apiGroup = document.getElementById("apigroup").value;
+        this._data.apiVersion = document.getElementById("apiversion").value;
+        this._data.entityName = document.getElementById("entityname").value;
+        this._data.entitySetName = document.getElementById("entitysetname").value;    
 
         if (prevTableName != this._data.selectedTable) {
-            $("#srcfields").html("");
-            $("#destfields").html("");     
+            htmlHelper.clearChildrenById("srcfields");
+            htmlHelper.clearChildrenById("destfields");
 
             if (!finishSelected)
                 this.sendMessage({
                     command: 'selectTable',
-                    tableName: $('#srctable').val()
+                    tableName: document.getElementById('srctable').value
                 });    
         }
     }
@@ -99,23 +99,23 @@ class QueryWizard extends TableBasedObjectWizard {
     }
 
     onQueryTypeChanged() {
-        this._data.queryType = $("#querytype").val();
+        this._data.queryType = document.getElementById("querytype").value;
         this.updateControls();
     }
 
     updateControls() {
         if (this._data.queryType == "API") {
-            $("#apipublisherline").show();
-            $("#apigroupline").show();
-            $("#apiversionline").show();
-            $("#entitynameline").show();
-            $("#entitysetnameline").show();        
+            htmlHelper.showById("apipublisherline");
+            htmlHelper.showById("apigroupline");
+            htmlHelper.showById("apiversionline");
+            htmlHelper.showById("entitynameline");
+            htmlHelper.showById("entitysetnameline");        
         } else {
-            $("#apipublisherline").hide();
-            $("#apigroupline").hide();
-            $("#apiversionline").hide();
-            $("#entitynameline").hide();
-            $("#entitysetnameline").hide();        
+            htmlHelper.hideById("apipublisherline");
+            htmlHelper.hideById("apigroupline");
+            htmlHelper.hideById("apiversionline");
+            htmlHelper.hideById("entitynameline");
+            htmlHelper.hideById("entitysetnameline");
         }
         this.updateMainButtons();
     }
@@ -124,6 +124,6 @@ class QueryWizard extends TableBasedObjectWizard {
 
 var wizard;
 
-$(function() {
+window.onload = function() {
     wizard = new QueryWizard();
-});
+};

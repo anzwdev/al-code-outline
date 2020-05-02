@@ -10,7 +10,7 @@ export class ALCodeunitSyntaxBuilder {
         this._toolsExtensionContext = toolsExtensionContext;
     }
 
-    async buildFromCodeunitWizardDataAsync(destUri: vscode.Uri, data : ALCodeunitWizardData) : Promise<string> {
+    async buildFromCodeunitWizardDataAsync(destUri: vscode.Uri | undefined, data : ALCodeunitWizardData) : Promise<string> {
         //generate file content
         let writer : ALSyntaxWriter = new ALSyntaxWriter();
 

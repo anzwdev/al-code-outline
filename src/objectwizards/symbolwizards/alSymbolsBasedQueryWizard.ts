@@ -30,7 +30,7 @@ export class ALSymbolsBasedQueryWizard extends ALSymbolsBasedWizard {
             return;
         }
 
-        let relativeFileDir: string = await this.getRelativeFileDir(objType);
+        let relativeFileDir = await this.getRelativeFileDir(objType);
 
         for (let i = 0; i < tableSymbols.length; i++) {
             let tableSymbol = tableSymbols[i];
@@ -52,18 +52,18 @@ export class ALSymbolsBasedQueryWizard extends ALSymbolsBasedWizard {
             return;
         }
 
-        let objectName : string = this.getDefaultQueryName(tableSymbol);
+        let objectName : string | undefined = this.getDefaultQueryName(tableSymbol);
         objectName = await this.getObjectName("Please enter a name for the query object.", objectName);
         
         if (!objectName) {
             return;
         }
 
-        let relativeFileDir: string = await this.getRelativeFileDir(objType);
+        let relativeFileDir = await this.getRelativeFileDir(objType);
         await this.createAndShowNewQuery(tableSymbol, objType, objectId, objectName, relativeFileDir);
     }
 
-    private async createAndShowNewQuery(tableSymbol: AZSymbolInformation, objType: AZSymbolKind, objectId: number, objectName: string, relativeFileDir: string) {
+    private async createAndShowNewQuery(tableSymbol: AZSymbolInformation, objType: AZSymbolKind, objectId: number, objectName: string, relativeFileDir: string | undefined) {
         let fileName : string = await FileBuilder.getPatternGeneratedFullObjectFileName(objType, objectId, objectName);
         this.showNewDocument(this.buildQueryForTable(tableSymbol, objectId, objectName), fileName, relativeFileDir);
     }

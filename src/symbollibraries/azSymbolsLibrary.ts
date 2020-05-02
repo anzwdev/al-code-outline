@@ -33,7 +33,7 @@ export class AZSymbolsLibrary {
         return loaded;
     }
 
-    public setRootSymbol(symbol : AZSymbolInformation) {
+    public setRootSymbol(symbol : AZSymbolInformation | undefined) {
         this.rootSymbol = symbol;
         if (this._onSymbolsChanged)
             this._onSymbolsChanged.fire(this);
@@ -73,12 +73,14 @@ export class AZSymbolsLibrary {
     }
 
     protected getSymbolByPath(path : number[] | undefined) : AZSymbolInformation | undefined {
-        return this.getSymbolByPathWithRoot(this.rootSymbol, path);
+        if (this.rootSymbol)
+            return this.getSymbolByPathWithRoot(this.rootSymbol, path);
+        return undefined;
     }
 
     protected getSymbolByPathWithRoot(root: AZSymbolInformation, path : number[] | undefined) : AZSymbolInformation | undefined {
-        if ((root) && (path) && (path.length > 0)) {
-            let symbol : AZSymbolInformation = this.rootSymbol;
+        if ((this.rootSymbol) && (root) && (path) && (path.length > 0)) {
+            let symbol = this.rootSymbol;
             for (let i=path.length-1; i>=0; i--) {
                 if ((!symbol.childSymbols) || (path[i] >= symbol.childSymbols.length))
                     return undefined;
@@ -180,9 +182,8 @@ export class AZSymbolsLibrary {
 
     protected findSymbolInRangeInt(symbol: AZSymbolInformation, range: vscode.Range, symbolsPath: number[] | undefined) : AZSymbolInformation | undefined {
         let found : AZSymbolInformation | undefined = undefined;            
-        if (symbol.range.intersectVsRange(range)) {
+        if ((symbol.range) && (symbol.range.intersectVsRange(range)))
             found = symbol;
-        }
 
         if (symbol.childSymbols) {
             for (let i=0; i<symbol.childSymbols.length; i++) {

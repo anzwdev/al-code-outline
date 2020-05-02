@@ -12,7 +12,7 @@ export class ALAddQueryFieldsCodeCommand extends ALBaseAddFieldsCodeCommand {
         super(context, 'AddQueryFields', 'AZDevTools.ALAddQueryFieldsCodeCommand');
     }
 
-    collectCodeActions(docSymbols: AZDocumentSymbolsLibrary, symbol: AZSymbolInformation, document: vscode.TextDocument, range: vscode.Range | vscode.Selection, context: vscode.CodeActionContext, actions: vscode.CodeAction[]) {        
+    collectCodeActions(docSymbols: AZDocumentSymbolsLibrary, symbol: AZSymbolInformation | undefined, document: vscode.TextDocument, range: vscode.Range | vscode.Selection, context: vscode.CodeActionContext, actions: vscode.CodeAction[]) {        
         if ((symbol) && 
             ((symbol.kind == AZSymbolKind.QueryDataItem) ||
              (symbol.kind == AZSymbolKind.QueryColumn))) {
@@ -29,8 +29,10 @@ export class ALAddQueryFieldsCodeCommand extends ALBaseAddFieldsCodeCommand {
     protected async runAsync(docSymbols: AZDocumentSymbolsLibrary, document: vscode.TextDocument, range: vscode.Range) {
         //get required details from document source code
         let symbol = this._toolsExtensionContext.activeDocumentSymbols.findSymbolInRange(range);
+        if (!symbol)
+            return;        
         let isFieldSymbol = (symbol.kind == AZSymbolKind.QueryColumn);
-        let dataItemSymbol = symbol;
+        let dataItemSymbol: AZSymbolInformation | undefined = symbol;
         if (isFieldSymbol)
             dataItemSymbol = symbol.findParentByKind(AZSymbolKind.QueryDataItem);
         if ((!symbol) || 
@@ -41,7 +43,7 @@ export class ALAddQueryFieldsCodeCommand extends ALBaseAddFieldsCodeCommand {
             return;
 
         //get list of fields
-        let fieldNames = await this._toolsExtensionContext.alLangProxy.getFieldList(this.getDocumentUri(), dataItemSymbol.source);
+        let fieldNames: string[] | undefined = await this._toolsExtensionContext.alLangProxy.getFieldList(this.getDocumentUri(), dataItemSymbol.source);
 
         //remove existing fields from the list
         fieldNames = this.removeExistingFields(fieldNames, dataItemSymbol.childSymbols, AZSymbolKind.QueryColumn, 'All available table fields have already been added to the query.');

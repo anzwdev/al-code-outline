@@ -15,7 +15,7 @@ export class ALBaseAddFieldsCodeCommand extends ALCodeCommand {
         if (existingFields) {        
             for (let i=0; i<existingFields.length; i++) {
                 if ((existingFields[i].kind == existingFieldKind) && (existingFields[i].source)) {
-                    let idx = fieldNames.indexOf(existingFields[i].source)
+                    let idx = fieldNames.indexOf(existingFields[i].source!)
                     if (idx >= 0) {
                         if (idx < (fieldNames.length - 1))
                             fieldNames[idx] = fieldNames[fieldNames.length - 1];
@@ -32,6 +32,9 @@ export class ALBaseAddFieldsCodeCommand extends ALCodeCommand {
     }
 
     protected async insertSymbolContentAsync(symbol: AZSymbolInformation, content: string) {
+        if (!vscode.window.activeTextEditor)
+            return;
+        
         let line : number = 0;
         let column : number = 0;
 
@@ -42,17 +45,19 @@ export class ALBaseAddFieldsCodeCommand extends ALCodeCommand {
             (symbol.kind == AZSymbolKind.XmlPortFieldElement) ||
             (symbol.kind == AZSymbolKind.XmlPortFieldAttribute)) {
 
-            line = symbol.range.end.line;
-            column = symbol.range.end.character;
-        } else {
+            if (symbol.range) {
+                line = symbol.range.end.line;
+                column = symbol.range.end.character;
+            }
+        } else if (symbol.contentRange) {
             line = symbol.contentRange.end.line;
             let nextSymbolColumn : number = symbol.contentRange.end.character;
 
             if ((symbol.childSymbols) && (symbol.childSymbols.length > 0)) {            
                 for (let i=0; i<symbol.childSymbols.length; i++) {
-                    if ((symbol.childSymbols[i].range) && (symbol.childSymbols[i].range.start.line < line)) {
-                        line = symbol.childSymbols[i].range.start.line;
-                        nextSymbolColumn = symbol.childSymbols[i].range.start.character;
+                    if ((symbol.childSymbols[i].range) && (symbol.childSymbols[i].range!.start.line < line)) {
+                        line = symbol.childSymbols[i].range!.start.line;
+                        nextSymbolColumn = symbol.childSymbols[i].range!.start.character;
                     }
                 }
             }

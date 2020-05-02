@@ -1,16 +1,16 @@
 import * as vscode from 'vscode';
-import { ALCodeFix } from "./alCodeFix";
+import { ALCodeFix } from "../alCodeFix";
+import { DevToolsExtensionContext } from '../../devToolsExtensionContext';
 
 export class ALCodeCopFixAA0008 extends ALCodeFix {
 
-    constructor() {
-        super();
-        this.diagnosticCode = "AA0008";
+    constructor(context : DevToolsExtensionContext) {
+        super(context, "AA0008");
     }
 
-    createFix(document: vscode.TextDocument, diagnostic: vscode.Diagnostic): vscode.CodeAction {
+    createFix(document: vscode.TextDocument, diagnostic: vscode.Diagnostic): vscode.CodeAction | undefined {
         let settings =  vscode.workspace.getConfiguration('alOutline', document.uri);
-        let fixOnSave: boolean = settings.get<boolean>('fixCodeCopMissingParenthesesOnSave');
+        let fixOnSave = settings.get<boolean>('fixCodeCopMissingParenthesesOnSave');
         
         const fix = new vscode.CodeAction(`Add parentheses`, 
             (fixOnSave)?vscode.CodeActionKind.SourceFixAll:vscode.CodeActionKind.QuickFix);

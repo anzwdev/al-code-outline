@@ -5,7 +5,6 @@ import * as vscode from 'vscode';
 import { DevToolsExtensionContext } from './devToolsExtensionContext';
 import { ALAppSymbolsLibrary } from './symbollibraries/alAppSymbolsLibrary';
 import { ALActionImageBrowser } from './actionimagebrowser/alActionImageBrowser';
-import { ALNativeAppSymbolsLibrariesCache } from './symbollibraries/nativeimpl/alNativeAppSymbolsLibrariesCache';
 import { AZSymbolsLibrary } from './symbollibraries/azSymbolsLibrary';
 import { ALProjectSymbolsLibrary } from './symbollibraries/alProjectSymbolsLibrary';
 
@@ -13,8 +12,6 @@ import { ALProjectSymbolsLibrary } from './symbollibraries/alProjectSymbolsLibra
 // your extension is activated the very first time the command is executed
 export function activate(context: vscode.ExtensionContext) {
     const toolsExtensionContext: DevToolsExtensionContext = new DevToolsExtensionContext(context);
-    let nativeAppCache: ALNativeAppSymbolsLibrariesCache | undefined = undefined;
-
     toolsExtensionContext.activeDocumentSymbols.loadAsync(false);
     context.subscriptions.push(toolsExtensionContext);
 
@@ -26,18 +23,10 @@ export function activate(context: vscode.ExtensionContext) {
                 let uri: vscode.Uri = fileUri;
                 let lib: AZSymbolsLibrary;
 
-                if (toolsExtensionContext.toolsLangServerClient.isEnabled())
+                if (toolsExtensionContext.toolsLangServerClient.isEnabled()) {
                     lib = new ALAppSymbolsLibrary(toolsExtensionContext, uri.fsPath);
-                else {
-                    //if language server is not available on this platform or with currently active
-                    //version of Microsoft AL Extension, then we have to use simplified native implementation
-                    //of app package reader
-                    if (!nativeAppCache)
-                        nativeAppCache = new ALNativeAppSymbolsLibrariesCache(toolsExtensionContext);
-                    lib = nativeAppCache.getOrCreate(uri.fsPath);
+                    toolsExtensionContext.showSymbolsBrowser(lib);
                 }
-
-                toolsExtensionContext.showSymbolsBrowser(lib);
             }));
 
     context.subscriptions.push(

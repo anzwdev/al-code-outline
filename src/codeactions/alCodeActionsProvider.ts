@@ -7,10 +7,14 @@ import { ALAddXmlPortFieldsCodeCommand } from './addFields/alAddXmlPortFieldsCod
 import { ALSortProceduresCodeCommand } from './sortSymbols/alSortProceduresCodeCommand';
 import { ALSortReportColumnsCommand } from './sortSymbols/alSortReportColumnsCommand';
 import { ALSortPropertiesCommand } from './sortSymbols/alSortPropertiesCommand';
-import { ALCreateInterfaceCodeCommand } from './alCreateInterfaceCodeCommand';
+import { ALCreateInterfaceCodeCommand } from './createObjects/alCreateInterfaceCodeCommand';
 import { AZDocumentSymbolsLibrary } from '../symbollibraries/azDocumentSymbolsLibrary';
 import { ALCodeAction } from './alCodeAction';
 import { ALSortVariablesCommand } from './sortSymbols/alSortVariablesCommand';
+import { ALCodeCopFixAA0005 } from './codeFixes/alCodeCopFixAA0005';
+import { ALCodeCopFixAA0008 } from './codeFixes/alCodeCopFixAA0008';
+import { ALCodeCopFixAA0137 } from './codeFixes/alCodeCopFixAA0137';
+import { ALCodeCopFixAA0139 } from './codeFixes/alCodeCopFixAA0139';
 
 export class ALCodeActionsProvider implements vscode.CodeActionProvider {
     protected _toolsExtensionContext : DevToolsExtensionContext;
@@ -19,6 +23,7 @@ export class ALCodeActionsProvider implements vscode.CodeActionProvider {
     constructor(context : DevToolsExtensionContext) {
         this._toolsExtensionContext = context;
         this._codeCommands = [
+            //code actions
             new ALAddPageFieldsCodeCommand(this._toolsExtensionContext),
             new ALAddQueryFieldsCodeCommand(this._toolsExtensionContext),
             new ALAddReportFieldsCodeCommand(this._toolsExtensionContext),
@@ -28,7 +33,13 @@ export class ALCodeActionsProvider implements vscode.CodeActionProvider {
             new ALSortReportColumnsCommand(this._toolsExtensionContext),
             new ALSortPropertiesCommand(this._toolsExtensionContext),
             new ALSortVariablesCommand(this._toolsExtensionContext),
-            new ALCreateInterfaceCodeCommand(this._toolsExtensionContext)];
+            new ALCreateInterfaceCodeCommand(this._toolsExtensionContext),
+            //diagnostics fixes
+            //AA0005 fix disabled, needs some fixes before going live
+            //new ALCodeCopFixAA0005(this._toolsExtensionContext),
+            new ALCodeCopFixAA0008(this._toolsExtensionContext),
+            new ALCodeCopFixAA0137(this._toolsExtensionContext),
+            new ALCodeCopFixAA0139(this._toolsExtensionContext)];
     }
 
     provideCodeActions(document: vscode.TextDocument, range: vscode.Range | vscode.Selection, context: vscode.CodeActionContext, token: vscode.CancellationToken): vscode.ProviderResult<(vscode.Command | vscode.CodeAction)[]> {

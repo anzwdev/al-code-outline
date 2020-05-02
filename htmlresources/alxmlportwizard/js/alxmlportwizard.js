@@ -5,29 +5,29 @@ class XmlPortWizard extends TableBasedObjectWizard {
 
         //initialize steps visibility
         this._step = 1;
-        $("#wizardstep2").hide();       
+        htmlHelper.hideById("wizardstep2");       
     }
 
     updateMainButtons() {
-        $("#prevBtn").prop("disabled", (this._step <= 1));
-        $("#nextBtn").prop("disabled", (this._step == 2));
-        //$("#finishBtn").prop("disabled", (this._step < 2));
+        document.getElementById("prevBtn").disabled = (this._step <= 1);
+        document.getElementById("nextBtn").disabled = (this._step == 2);
+        //document.getElementById("finishBtn").disabled = (this._step < 2);
     }
 
     setStep(newStep) {
-        $("#wizardstep" + this._step.toString()).hide();        
+        htmlHelper.hideById("wizardstep" + this._step.toString());        
         this._step = newStep;
-        $("#wizardstep" + this._step.toString()).show();
+        htmlHelper.showById("wizardstep" + this._step.toString());
         this.updateMainButtons();
     }
 
     setData(data) {
         super.setData(data);
         //initialize fields
-        $("#objectid").val(this._data.objectId);
-        $("#objectname").val(this._data.objectName);
-        $("#srctable").val(this._data.selectedTable);
-        $("#fieldsas").val(this._data.fieldNodeType);
+        document.getElementById("objectid").value = this._data.objectId;
+        document.getElementById("objectname").value = this._data.objectName;
+        document.getElementById("srctable").value = this._data.selectedTable;
+        document.getElementById("fieldsas").value = this._data.fieldNodeType;
         this.updateMainButtons();
         this.loadTables();
         this.loadFields();
@@ -60,16 +60,16 @@ class XmlPortWizard extends TableBasedObjectWizard {
 
     collectStep1Data() {
         var prevTableName = this._data.selectedTable;        
-        this._data.objectId = $("#objectid").val();
-        this._data.objectName = $("#objectname").val();
-        this._data.selectedTable = $("#srctable").val();
-        this._data.fieldNodeType = $("#fieldsas").val();
+        this._data.objectId = document.getElementById("objectid").value;
+        this._data.objectName = document.getElementById("objectname").value;
+        this._data.selectedTable = document.getElementById("srctable").value;
+        this._data.fieldNodeType = document.getElementById("fieldsas").value;
         if (prevTableName != this._data.selectedTable) {
-            $("#srcfields").html("");
-            $("#destfields").html("");            
+            htmlHelper.clearChildrenById("srcfields");
+            htmlHelper.clearChildrenById("destfields");            
             this.sendMessage({
                 command: 'selectTable',
-                tableName: $('#srctable').val()
+                tableName: document.getElementById('srctable').value
             });    
         }
     }
@@ -82,6 +82,6 @@ class XmlPortWizard extends TableBasedObjectWizard {
 
 var wizard;
 
-$(function() {
+window.onload = function() {
     wizard = new XmlPortWizard();
-});
+};

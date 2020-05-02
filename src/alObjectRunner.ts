@@ -79,15 +79,15 @@ export class ALObjectRunner {
             return;
 
         let opn = require('opn');
-        let webClientPort = vscode.workspace.getConfiguration('alOutline').get('webClientPort');
+        let webClientPort = vscode.workspace.getConfiguration('alOutline').get<number>('webClientPort');
 
         //collect settings
         let serverName = launchConfiguration.server;
         let serverInstance = launchConfiguration.serverInstance;
         let tenant = launchConfiguration.tenant;
         //ask for web client port
-        var newPortNoText : string = await vscode.window.showInputBox({
-            value : webClientPort.toString(),
+        let newPortNoText = await vscode.window.showInputBox({
+            value : webClientPort?.toString(),
             prompt : 'Please enter Web Client port number, use 0 for default http/https port.'});
         if (!newPortNoText)
             return;
@@ -97,7 +97,7 @@ export class ALObjectRunner {
             webClientPort = newPortNo;
 
         //build url
-        if (webClientPort != 0)
+        if ((webClientPort) && (webClientPort != 0))
             serverName = serverName + ':' + webClientPort.toString();
         var webClientUrl = serverName + '/' + serverInstance + '/WebClient?';
         if ((tenant) && (tenant != ''))

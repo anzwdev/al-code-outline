@@ -2,7 +2,7 @@ import * as vscode from 'vscode';
 
 export class TextEditorHelper {
 
-    static findDocumentEditor(docUri: vscode.Uri) : vscode.TextEditor | undefined {       
+    static findDocumentEditor(docUri: vscode.Uri | undefined) : vscode.TextEditor | undefined {       
         if (docUri) {
             let docUriString : string = docUri.toString();
 
@@ -86,7 +86,10 @@ export class TextEditorHelper {
             }
         }
 
-        return vscode.workspace.workspaceFolders[0].uri;
+        if ((vscode.workspace.workspaceFolders) && (vscode.workspace.workspaceFolders.length > 0))
+            return vscode.workspace.workspaceFolders[0].uri;
+
+        return undefined;
     }
 
 }

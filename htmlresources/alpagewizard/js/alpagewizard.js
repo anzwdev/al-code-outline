@@ -6,38 +6,38 @@ class PageWizard extends TableBasedObjectWizard {
         //initialize steps visibility
         this._step = 1;
         this._activeFastTab = 0;
-        $("#wizardstep2").hide();        
+        htmlHelper.hideById("wizardstep2");        
     }
 
     updateMainButtons() {
-        $("#prevBtn").prop("disabled", (this._step <= 1));
-        $("#nextBtn").prop("disabled", (this._step == 2));
-        //$("#finishBtn").prop("disabled", (this._step < 2));
+        document.getElementById("prevBtn").disabled = (this._step <= 1);
+        document.getElementById("nextBtn").disabled = (this._step == 2);
+        //document.getElementById("finishBtn").disabled = (this._step < 2);
     }
 
     setStep(newStep) {
-        $("#wizardstep" + this._step.toString()).hide();        
+        htmlHelper.hideById("wizardstep" + this._step.toString());        
         this._step = newStep;
-        $("#wizardstep" + this._step.toString()).show();
+        htmlHelper.showById("wizardstep" + this._step.toString());
         this.updateMainButtons();
     }
 
     setData(data) {
         super.setData(data);
         //initialize fields
-        $("#objectid").val(this._data.objectId);
-        $("#objectname").val(this._data.objectName);
-        $("#srctable").val(this._data.selectedTable);
-        $("#pagetype").val(this._data.pageType);
-        $("#fasttabs").val(this._data.fastTabs);
-        $("#apparea").val(this._data.appArea);
-        $("#usagecat").val(this._data.usageCategory);
+        document.getElementById("objectid").value = this._data.objectId;
+        document.getElementById("objectname").value = this._data.objectName;
+        document.getElementById("srctable").value = this._data.selectedTable;
+        document.getElementById("pagetype").value = this._data.pageType;
+        document.getElementById("fasttabs").value = this._data.fastTabs;
+        document.getElementById("apparea").value = this._data.appArea;
+        document.getElementById("usagecat").value = this._data.usageCategory;
 
-        $("#apipublisher").val(this._data.apiPublisher);
-        $("#apigroup").val(this._data.apiGroup);
-        $("#apiversion").val(this._data.apiVersion);
-        $("#entityname").val(this._data.entityName);
-        $("#entitysetname").val(this._data.entitySetName);    
+        document.getElementById("apipublisher").value = this._data.apiPublisher;
+        document.getElementById("apigroup").value = this._data.apiGroup;
+        document.getElementById("apiversion").value = this._data.apiVersion;
+        document.getElementById("entityname").value = this._data.entityName;
+        document.getElementById("entitysetname").value = this._data.entitySetName;    
 
         this.updateControls();
         this.loadTables();
@@ -84,22 +84,22 @@ class PageWizard extends TableBasedObjectWizard {
         var prevTableName = this._data.selectedTable;   
         var prevFastTab = this._data.fastTabs;
         
-        this._data.objectId = $("#objectid").val();
-        this._data.objectName = $("#objectname").val();
-        this._data.selectedTable = $("#srctable").val();
-        this._data.pageType = $("#pagetype").val();
-        this._data.fastTabs = $("#fasttabs").val();
-        this._data.appArea = $("#apparea").val();
-        this._data.usageCategory = $("#usagecat").val();
-        this._data.apiPublisher = $("#apipublisher").val();
-        this._data.apiGroup = $("#apigroup").val();
-        this._data.apiVersion = $("#apiversion").val();
-        this._data.entityName = $("#entityname").val();
-        this._data.entitySetName = $("#entitysetname").val();    
+        this._data.objectId = document.getElementById("objectid").value;
+        this._data.objectName = document.getElementById("objectname").value;
+        this._data.selectedTable = document.getElementById("srctable").value;
+        this._data.pageType = document.getElementById("pagetype").value;
+        this._data.fastTabs = document.getElementById("fasttabs").value;
+        this._data.appArea = document.getElementById("apparea").value;
+        this._data.usageCategory = document.getElementById("usagecat").value;
+        this._data.apiPublisher = document.getElementById("apipublisher").value;
+        this._data.apiGroup = document.getElementById("apigroup").value;
+        this._data.apiVersion = document.getElementById("apiversion").value;
+        this._data.entityName = document.getElementById("entityname").value;
+        this._data.entitySetName = document.getElementById("entitysetname").value;    
 
         if (prevTableName != this._data.selectedTable) {
-            $("#srcfields").html("");
-            $("#destfields").html("");
+            htmlHelper.clearChildrenById("srcfields");
+            htmlHelper.clearChildrenById("destfields");
 
             if (!finishSelected)
                 this.sendMessage({
@@ -121,7 +121,7 @@ class PageWizard extends TableBasedObjectWizard {
 
     onPageTypeChanged() {
         var prevHasTabs = this.hasFastTabs();        
-        this._data.pageType = $("#pagetype").val();
+        this._data.pageType = document.getElementById("pagetype").value;
         this.updateControls();
         if (prevHasTabs != this.hasFastTabs)
             this.rebuildFastTabs();
@@ -129,27 +129,27 @@ class PageWizard extends TableBasedObjectWizard {
 
     updateControls() {
         if (this.hasFastTabs())
-            $("#fasttabsline").show();
+            htmlHelper.showById("fasttabsline");
         else
-            $("#fasttabsline").hide();            
+            htmlHelper.hideById("fasttabsline");            
         
         if (this._data.pageType == "List")
-            $("#usagecatline").show();
+            htmlHelper.showById("usagecatline");
         else
-            $("#usagecatline").hide();
+            htmlHelper.hideById("usagecatline");
 
         if (this._data.pageType == "API") {
-            $("#apipublisherline").show();
-            $("#apigroupline").show();
-            $("#apiversionline").show();
-            $("#entitynameline").show();
-            $("#entitysetnameline").show();        
+            htmlHelper.showById("apipublisherline");
+            htmlHelper.showById("apigroupline");
+            htmlHelper.showById("apiversionline");
+            htmlHelper.showById("entitynameline");
+            htmlHelper.showById("entitysetnameline");        
         } else {
-            $("#apipublisherline").hide();
-            $("#apigroupline").hide();
-            $("#apiversionline").hide();
-            $("#entitynameline").hide();
-            $("#entitysetnameline").hide();        
+            htmlHelper.hideById("apipublisherline");
+            htmlHelper.hideById("apigroupline");
+            htmlHelper.hideById("apiversionline");
+            htmlHelper.hideById("entitynameline");
+            htmlHelper.hideById("entitysetnameline");
         }
         this.updateMainButtons();
     }
@@ -192,7 +192,7 @@ class PageWizard extends TableBasedObjectWizard {
     }
 
     onActiveFastTabChanged() {
-        this.selectFastTab($("#activefasttab").val());
+        this.selectFastTab(document.getElementById("activefasttab").value);
     }
 
     rebuildFastTabs() {
@@ -212,13 +212,13 @@ class PageWizard extends TableBasedObjectWizard {
 
             //build fast tabs selector
             this._activeFastTab = 0;
-            wizardHelper.setElementOptions("#activefasttab", fastTabsNames, true);            
-            $("#activefasttab").val(this._activeFastTab);
-            $("#activefasttabline").show();
+            htmlHelper.setElementOptions(document.getElementById("activefasttab"), fastTabsNames, true);            
+            document.getElementById("activefasttab").value = this._activeFastTab;
+            htmlHelper.showById("activefasttabline");
         } else {
             this._data.fastTabsData = [];
             this._activeFastTab = 0;
-            $("#activefasttabline").hide();
+            htmlHelper.hideById("activefasttabline");
         }
         //reload fields
         this.loadFields();
@@ -228,6 +228,6 @@ class PageWizard extends TableBasedObjectWizard {
 
 var wizard;
 
-$(function() {
+window.onload = function() {
     wizard = new PageWizard();
-});
+};

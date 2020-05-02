@@ -19,7 +19,7 @@ export class ALSortProceduresCodeCommand extends ALBaseSortCodeCommand {
         super(context, "SortProcedures");
     }
 
-    collectCodeActions(docSymbols: AZDocumentSymbolsLibrary, symbol: AZSymbolInformation, document: vscode.TextDocument, range: vscode.Range | vscode.Selection, context: vscode.CodeActionContext, actions: vscode.CodeAction[]) {
+    collectCodeActions(docSymbols: AZDocumentSymbolsLibrary, symbol: AZSymbolInformation | undefined, document: vscode.TextDocument, range: vscode.Range | vscode.Selection, context: vscode.CodeActionContext, actions: vscode.CodeAction[]) {
         let edit: vscode.WorkspaceEdit | undefined = undefined;
         let actionKind = vscode.CodeActionKind.QuickFix;
 
@@ -34,6 +34,7 @@ export class ALSortProceduresCodeCommand extends ALBaseSortCodeCommand {
         } else {
             if ((symbol) && 
                 ((this.isMethodSymbol(symbol)) || (symbol.isALObject())) && 
+                (symbol.selectionRange) && 
                 (symbol.selectionRange.start.line == range.start.line))
                 edit = this.prepareEdit(symbol, document, edit);
         }
@@ -48,6 +49,9 @@ export class ALSortProceduresCodeCommand extends ALBaseSortCodeCommand {
     protected prepareEdit(symbol: AZSymbolInformation, document: vscode.TextDocument, edit: vscode.WorkspaceEdit | undefined): vscode.WorkspaceEdit | undefined {        
         let objectSymbol = symbol.findParentObject();
         let isMethodSymbol = this.isMethodSymbol(symbol);
+
+        if (!objectSymbol)
+            return edit;
 
         // Collect method declarations of matching symbol-kind or all methods if we run code action for whole object
         let methodDecls: AZSymbolInformation[] = [];
@@ -72,18 +76,22 @@ export class ALSortProceduresCodeCommand extends ALBaseSortCodeCommand {
         // Produce the new sorted source
         let newSource: string = "";
         for (const methodDecl of methodDecls) {
-            const declRange = new vscode.Range(methodDecl.range.start.line, methodDecl.range.start.character, methodDecl.range.end.line, methodDecl.range.end.character);
-            newSource += vscode.window.activeTextEditor.document.getText(declRange);
+            if (methodDecl.range) {
+                const declRange = new vscode.Range(methodDecl.range.start.line, methodDecl.range.start.character, methodDecl.range.end.line, methodDecl.range.end.character);
+                newSource += document.getText(declRange);
+            }
         }
-        
+
         // Delete the old unsorted method declarations and insert the new sorted source
         if (!edit)
             edit = new vscode.WorkspaceEdit();
-        let insertPos: vscode.Position = new vscode.Position(methodDecls[0].range.start.line, methodDecls[0].range.start.character);
+        let insertPos: vscode.Position = new vscode.Position(methodDecls[0].range!.start.line, methodDecls[0].range!.start.character);
             
         for (const methodDecl of methodDecls) {
-            const deleteRange = new vscode.Range(methodDecl.range.start.line, methodDecl.range.start.character, methodDecl.range.end.line, methodDecl.range.end.character);
-            edit.delete(document.uri, deleteRange);
+            if (methodDecl.range) {
+                const deleteRange = new vscode.Range(methodDecl.range.start.line, methodDecl.range.start.character, methodDecl.range.end.line, methodDecl.range.end.character);
+                edit.delete(document.uri, deleteRange);
+            }
         }
             
         edit.insert(document.uri, insertPos, newSource);

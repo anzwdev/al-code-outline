@@ -53,10 +53,14 @@ export class ToolsLangServerClient implements vscode.Disposable {
             //start child process
             this._childProcess = cp.spawn(langServerPath, [this._alExtensionPath]);
             if (this._childProcess) {
-                this._connection = rpc.createMessageConnection(
-                    new rpc.StreamMessageReader(this._childProcess.stdout),
-                    new rpc.StreamMessageWriter(this._childProcess.stdin));
-                this._connection.listen();
+                let stdOutStream = this._childProcess.stdout;
+                let stdInStream = this._childProcess.stdin;
+                if ((stdOutStream != null) && (stdInStream != null)) {
+                    this._connection = rpc.createMessageConnection(
+                        new rpc.StreamMessageReader(stdOutStream),
+                        new rpc.StreamMessageWriter(stdInStream));
+                    this._connection.listen();
+                }
             }
         }
         catch (e) {
@@ -202,7 +206,7 @@ export class ToolsLangServerClient implements vscode.Disposable {
         }
     }
 
-    public async addAppAreas(params: ToolsAddAppAreasRequest) : Promise<ToolsAddAppAreasResponse> {
+    public async addAppAreas(params: ToolsAddAppAreasRequest) : Promise<ToolsAddAppAreasResponse | undefined> {
         try {
             if (!this._connection)
                 return undefined;

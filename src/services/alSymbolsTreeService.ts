@@ -5,7 +5,7 @@ import { SyntaxTreeView } from '../syntaxtreeview/syntaxTreeView';
 
 export class ALSymbolsTreeService {
     protected _context: DevToolsExtensionContext;
-    protected _uriSymbolTreeViews : { [id: string] : SymbolsTreeView };
+    protected _uriSymbolTreeViews : { [id: string] : SymbolsTreeView | undefined };
 
     constructor(newContext: DevToolsExtensionContext) {
         //initialize
@@ -78,8 +78,8 @@ export class ALSymbolsTreeService {
                 location: vscode.ProgressLocation.Notification,
                 title: 'Loading object definition'
             }, async (progress) => {
-                return await vscode.commands.executeCommand<vscode.Location[] | undefined>('vscode.executeDefinitionProvider', editor.document.uri,
-                    editor.selection.start);
+                return await vscode.commands.executeCommand<vscode.Location[] | undefined>('vscode.executeDefinitionProvider', editor!.document.uri,
+                    editor!.selection.start);
             });
 
             if ((locationList) && (locationList.length > 0)) {

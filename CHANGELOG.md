@@ -1,5 +1,10 @@
 # Change Log
 
+## 1.0.43
+ - "Sort variables" code action fixes
+ - Core refactoring
+ - Extension recreated using the latest vs code extension template (1.44)
+
 ## 1.0.42
  - Github issue #109 - "NavigatePane" type changed to the "NavigatePage" in the page wizard
 

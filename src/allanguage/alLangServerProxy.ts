@@ -176,8 +176,9 @@ export class ALLangServerProxy {
                         this.checkLanguageClient();
                         if (!this.langClient)
                             return undefined;
-
-                        await this.switchWorkspace(resourceUri, rootFsPath);
+                        
+                        if (resourceUri)
+                            await this.switchWorkspace(resourceUri, rootFsPath);
 
                         let docPath : string = path.join(rootFsPath, '.vscode\\temp-al-proxy.al');
                         let docUri : vscode.Uri = vscode.Uri.file(docPath);
@@ -290,7 +291,9 @@ export class ALLangServerProxy {
             4, 9, 7, 1);
 
         //process results
-        return this.getSymbolLabels(list, vscode.CompletionItemKind.Class);        
+        if (list)
+            return this.getSymbolLabels(list, vscode.CompletionItemKind.Class);
+        return [];
     }
 
     async getCodeunitList(resourceUri: vscode.Uri | undefined) : Promise<string[]> {
@@ -299,7 +302,9 @@ export class ALLangServerProxy {
             4, 11, 7, 1);
 
         //process results
-        return this.getSymbolLabels(list, vscode.CompletionItemKind.Class);
+        if (list)
+            return this.getSymbolLabels(list, vscode.CompletionItemKind.Class);
+        return [];
     }
 
     async getInterfaceList(resourceUri: vscode.Uri | undefined) : Promise<string[]> {
@@ -308,7 +313,9 @@ export class ALLangServerProxy {
             0, 36, 2, 1);
 
         //process results
-        return this.getSymbolLabels(list, vscode.CompletionItemKind.Reference);
+        if (list)
+            return this.getSymbolLabels(list, vscode.CompletionItemKind.Reference);
+        return [];
     }
 
     async getObjectMethods(resourceUri: vscode.Uri | undefined, objectType: string, objectName: string) : Promise<string[] | undefined> {
@@ -327,7 +334,7 @@ export class ALLangServerProxy {
         if (list && list.items) {
             for (let i=0; i<list.items.length; i++) {
                 let item = list.items[i];
-                if (item.kind == vscode.CompletionItemKind.Method) {
+                if ((item.detail) && (item.kind == vscode.CompletionItemKind.Method)) {
                     out.push(ALSyntaxHelper.fromNameText(item.detail));
                 }
             }
@@ -344,7 +351,9 @@ export class ALLangServerProxy {
             6, 6, 9, 1);
 
         //process results
-        return this.getSymbolLabels(list, vscode.CompletionItemKind.Field);
+        if (list)
+            return this.getSymbolLabels(list, vscode.CompletionItemKind.Field);
+        return [];
     }
 
     async getFieldList(resourceUri: vscode.Uri | undefined, tableName : string) : Promise<string[]> {
@@ -355,7 +364,9 @@ export class ALLangServerProxy {
             6, 2, 8, 1);
 
         //process results
-        return this.getSymbolLabels(list, vscode.CompletionItemKind.Field);
+        if (list)
+            return this.getSymbolLabels(list, vscode.CompletionItemKind.Field);
+        return [];
     }
 
     async getEnumList(resourceUri: vscode.Uri | undefined) : Promise<string[]> {
@@ -364,7 +375,9 @@ export class ALLangServerProxy {
             4, 7, 7, 1);
 
         //process results
-        return this.getSymbolLabels(list, vscode.CompletionItemKind.Reference);       
+        if (list)
+            return this.getSymbolLabels(list, vscode.CompletionItemKind.Reference);       
+        return [];
     }
 
     protected getSymbolLabels(list: vscode.CompletionList, kind: vscode.CompletionItemKind): string[] {
@@ -531,6 +544,8 @@ export class ALLangServerProxy {
     }
 
     async getLaunchConfiguration() : Promise<any|undefined> {
+        if ((!vscode.workspace.workspaceFolders) || (vscode.workspace.workspaceFolders.length == 0))
+            return undefined;
         let launchFilePath = path.join(vscode.workspace.workspaceFolders[0].uri.fsPath, '.vscode/launch.json');
         let config = vscode.workspace.getConfiguration("launch", vscode.Uri.file(launchFilePath));
         let allConfigList : any[] | undefined = config.get("configurations");
@@ -562,20 +577,24 @@ export class ALLangServerProxy {
 
     getRuntimeVersion(resourceUri: vscode.Uri | undefined): Version {
         let version = new Version();
-        let folder = vscode.workspace.workspaceFolders[0];        
+        let folder: vscode.WorkspaceFolder | undefined;
         if (resourceUri) 
             folder = vscode.workspace.getWorkspaceFolder(resourceUri);
-        
-        //load app.json
-        let appFilePath = path.join(folder.uri.fsPath, "app.json");
-        try {
-            let fs = require('fs');
-            let content = fs.readFileSync(appFilePath, 'utf8');
-            let appData = JSON.parse(content);
-            if (appData.runtime)
-                version.parse(appData.runtime);
-        }
-        catch (e) {
+        else if (vscode.workspace.workspaceFolders)
+            folder = vscode.workspace.workspaceFolders[0];        
+
+        if (folder) {
+            //load app.json
+            let appFilePath = path.join(folder.uri.fsPath, "app.json");
+            try {
+                let fs = require('fs');
+                let content = fs.readFileSync(appFilePath, 'utf8');
+                let appData = JSON.parse(content);
+                if (appData.runtime)
+                    version.parse(appData.runtime);
+            }
+            catch (e) {
+            }
         }
         return version;
     }

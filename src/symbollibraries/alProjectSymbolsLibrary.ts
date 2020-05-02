@@ -21,7 +21,7 @@ export class ALProjectSymbolsLibrary extends ALBaseServerSideLibrary {
 
     protected async loadInternalAsync(forceReload : boolean) : Promise<boolean> {
         try {
-            let alPackagesPath: string = vscode.workspace.getConfiguration('al', null).get<string>('packageCachePath');
+            let alPackagesPath = vscode.workspace.getConfiguration('al', null).get<string>('packageCachePath');
             if (!alPackagesPath)
                 alPackagesPath = ".alpackages";
 

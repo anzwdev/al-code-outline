@@ -62,6 +62,8 @@ export class ALSymbolsBrowser extends ALBaseSymbolsBrowser {
     }
 
     protected async onObjectSelected(path : number[] | undefined) {       
+        if (!path)
+            return;
         let symbolList : AZSymbolInformation[] | undefined = await this._library.getSymbolsListByPathAsync([path], AZSymbolKind.AnyALObject);
         if ((symbolList) && (symbolList.length > 0))
             this._selectedObject = symbolList[0];
@@ -76,7 +78,8 @@ export class ALSymbolsBrowser extends ALBaseSymbolsBrowser {
 
     protected showListView() {
         this._devToolsContext.setUseSymbolsBrowser(false);
-        this._panel.dispose();
+        if (this._panel)
+            this._panel.dispose();
         let objectsBrowser : ALObjectsBrowser = new ALObjectsBrowser(this._devToolsContext, this._library);
         objectsBrowser.show();
     }

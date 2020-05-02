@@ -1,6 +1,6 @@
 import { CARuleInfo } from "./caRuleInfo";
 
 export class ToolsGetCodeAnalyzersRulesResponse {
-    name: string;
-    rules: CARuleInfo[];
+    name: string | undefined;
+    rules: CARuleInfo[] | undefined;
 }

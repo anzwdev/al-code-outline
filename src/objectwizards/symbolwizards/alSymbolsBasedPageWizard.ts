@@ -31,7 +31,7 @@ export class ALSymbolsBasedPageWizard extends ALSymbolsBasedWizard {
             return;
         }
 
-        let relativeFileDir: string = await this.getRelativeFileDir(objType);
+        let relativeFileDir: string | undefined = await this.getRelativeFileDir(objType);
 
         for (let i = 0; i < tableSymbols.length; i++) {
             let tableSymbol = tableSymbols[i];
@@ -53,18 +53,18 @@ export class ALSymbolsBasedPageWizard extends ALSymbolsBasedWizard {
             return;
         }
 
-        let objectName : string = this.getDefaultPageName(tableSymbol, pageType);
+        let objectName : string | undefined = this.getDefaultPageName(tableSymbol, pageType);
         objectName = await this.getObjectName(`Please enter a name for the ${pageType} page.`, objectName);
         
         if (!objectName) {
             return;
         }
 
-        let relativeFileDir: string = await this.getRelativeFileDir(objType);
+        let relativeFileDir = await this.getRelativeFileDir(objType);
         await this.createAndShowNewPage(tableSymbol, objType, objectId, objectName, pageType, relativeFileDir);
     }
 
-    private async createAndShowNewPage(tableSymbol: AZSymbolInformation, objType: AZSymbolKind, objectId: number, objectName: string, pageType: string, relativeFileDir: string) {
+    private async createAndShowNewPage(tableSymbol: AZSymbolInformation, objType: AZSymbolKind, objectId: number, objectName: string, pageType: string, relativeFileDir: string | undefined) {
         let fileName : string = await FileBuilder.getPatternGeneratedFullObjectFileName(objType, objectId, objectName);
         let pageContents: string;
         if (pageType === 'List') {
@@ -106,8 +106,8 @@ export class ALSymbolsBasedPageWizard extends ALSymbolsBasedWizard {
 
         //usage category and application area for list pages
         if (pageType === "List") {
-            let appArea : string = vscode.workspace.getConfiguration('alOutline').get('defaultAppArea');
-            let usageCategory : string = vscode.workspace.getConfiguration('alOutline').get('defaultListUsageCategory');
+            let appArea : string | undefined = vscode.workspace.getConfiguration('alOutline').get<string>('defaultAppArea');
+            let usageCategory : string | undefined = vscode.workspace.getConfiguration('alOutline').get<string>('defaultListUsageCategory');
             
             if ((usageCategory) && (usageCategory !== "")) {
                 //application area requires useage category to be set

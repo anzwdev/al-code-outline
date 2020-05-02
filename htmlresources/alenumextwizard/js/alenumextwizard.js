@@ -6,9 +6,8 @@ class EnumExtWizard {
         this._vscode = acquireVsCodeApi();
        
         // Handle messages sent from the extension to the webview
-        var me = this;
         window.addEventListener('message', event => {
-            me.onMessage(event.data);
+            this.onMessage(event.data);
         });
 
         this.sendMessage({
@@ -35,12 +34,12 @@ class EnumExtWizard {
     setData(data) {
         this._data = data;
         //initialize fields
-        $("#objectid").val(this._data.objectId);
-        $("#objectname").val(this._data.objectName);
-        $("#baseenum").val(this._data.baseEnum);
-        $("#firstvalueid").val(this._data.firstValueId);
-        $("#valuelist").val(this._data.valueList);
-        $("#captionlist").val(this._data.captionList);
+        document.getElementById("objectid").value = this._data.objectId;
+        document.getElementById("objectname").value = this._data.objectName;
+        document.getElementById("baseenum").value = this._data.baseEnum;
+        document.getElementById("firstvalueid").value = this._data.firstValueId;
+        document.getElementById("valuelist").value = this._data.valueList;
+        document.getElementById("captionlist").value = this._data.captionList;
         this.loadEnums();
     }
    
@@ -61,27 +60,27 @@ class EnumExtWizard {
         let allowedChars = new RegExp(/^[a-zA-Z\s]+$/)
 
         autocomplete({
-			input: document.getElementById('srctable'),
+			input: document.getElementById('baseenum'),
 			minLength: 1,
 			onSelect: function (item, inputfield) {
 				inputfield.value = item
 			},
 			fetch: function (text, callback) {
-				var match = text.toLowerCase();
+				let match = text.toLowerCase();
 				callback(me._data.baseEnumList.filter(function(n) { return n.toLowerCase().indexOf(match) !== -1; }));
 			},
 			render: function(item, value) {
-				var itemElement = document.createElement("div");
+				let itemElement = document.createElement("div");
 				if (allowedChars.test(value)) {
-					var regex = new RegExp(value, 'gi');
-					var inner = item.replace(regex, function(match) { return "<strong>" + match + "</strong>" });
+					let regex = new RegExp(value, 'gi');
+					let inner = item.replace(regex, function(match) { return "<strong>" + match + "</strong>" });
 					itemElement.innerHTML = inner;
 				} else {
 					itemElement.textContent = item;
 				}
 				return itemElement;
 			},
-			emptyMsg: "No fields found",
+			emptyMsg: "No enums found",
 			customize: function(input, inputRect, container, maxHeight) {
 				if (maxHeight < 100) {
 					container.style.top = "";
@@ -119,12 +118,12 @@ class EnumExtWizard {
     }
 
     collectStepData(finishSelected) {
-        this._data.objectId = $("#objectid").val();
-        this._data.objectName = $("#objectname").val();
-        this._data.baseEnum = $("#baseenum").val();
-        this._data.firstValueId = $("#firstvalueid").val();
-        this._data.valueList = $("#valuelist").val();
-        this._data.captionList = $("#captionlist").val();
+        this._data.objectId = document.getElementById("objectid").value;
+        this._data.objectName = document.getElementById("objectname").value;
+        this._data.baseEnum = document.getElementById("baseenum").value;
+        this._data.firstValueId = document.getElementById("firstvalueid").value;
+        this._data.valueList = document.getElementById("valuelist").value;
+        this._data.captionList = document.getElementById("captionlist").value;
     }
 
     canFinish() {
@@ -142,6 +141,6 @@ class EnumExtWizard {
 
 var wizard;
 
-$(function() {
+window.onload = function() {
     wizard = new EnumExtWizard();
-});
+};
