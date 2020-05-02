@@ -28,7 +28,7 @@ export class ALSortReportColumnsCommand extends ALBaseSortCodeCommand {
             if ((symbol) &&
                 ((symbol.kind == AZSymbolKind.ReportDataItem) ||
                 (symbol.kind == AZSymbolKind.ReportColumn) ||
-                ((symbol.kind == AZSymbolKind.ReportObject) && (symbol.selectionRange.start.line == range.start.line))))
+                ((symbol.kind == AZSymbolKind.ReportObject) && (symbol.selectionRange) && (symbol.selectionRange.start.line == range.start.line))))
                 edit = this.prepareEdit(symbol, document, edit);
         }
 

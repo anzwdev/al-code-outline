@@ -29,12 +29,13 @@ export class ALAddReportFieldsCodeCommand extends ALBaseAddFieldsCodeCommand {
     protected async runAsync(docSymbols: AZDocumentSymbolsLibrary, document: vscode.TextDocument, range: vscode.Range) {
         //get required details from document source code
         let symbol = this._toolsExtensionContext.activeDocumentSymbols.findSymbolInRange(range);
+        if (!symbol)
+            return;       
         let isFieldSymbol = (symbol.kind == AZSymbolKind.ReportColumn);
-        let dataItemSymbol = symbol;
+        let dataItemSymbol: AZSymbolInformation | undefined = symbol;
         if (isFieldSymbol)
             dataItemSymbol = symbol.findParentByKind(AZSymbolKind.ReportDataItem);
-        if ((!symbol) || 
-            (!dataItemSymbol) ||
+        if ((!dataItemSymbol) ||
             (!dataItemSymbol.source) || 
             (!dataItemSymbol.contentRange) || 
             ((isFieldSymbol) && (!symbol.range)))            
