@@ -54,10 +54,12 @@ class SymbolsTreeControl {
 
     setShowIds(newShowIds) {        
         this._showIds = newShowIds;
-        if (this._showIds)
-            document.getElementById(this._idsBtnId).innerText = "Hide Ids";
-        else
-        document.getElementById(this._idsBtnId).innerText = "Show Ids";
+        if (this._idsBtnId) {
+            if (this._showIds)
+                document.getElementById(this._idsBtnId).innerText = "Hide Ids";
+            else
+                document.getElementById(this._idsBtnId).innerText = "Show Ids";
+        }
         this.setData(this._data);
         if (this.showIdsChanged)
             this.showIdsChanged(this._showIds);
