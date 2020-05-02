@@ -1,5 +1,8 @@
 # Change Log
 
+## 1.0.44
+ - SyntaxTree visualizer crash fix
+
 ## 1.0.43
  - "Sort variables" code action fixes
  - Core refactoring
