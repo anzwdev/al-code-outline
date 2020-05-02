@@ -60,7 +60,7 @@ class EnumExtWizard {
         let allowedChars = new RegExp(/^[a-zA-Z\s]+$/)
 
         autocomplete({
-			input: document.getElementById('srctable'),
+			input: document.getElementById('baseenum'),
 			minLength: 1,
 			onSelect: function (item, inputfield) {
 				inputfield.value = item
@@ -80,7 +80,7 @@ class EnumExtWizard {
 				}
 				return itemElement;
 			},
-			emptyMsg: "No fields found",
+			emptyMsg: "No enums found",
 			customize: function(input, inputRect, container, maxHeight) {
 				if (maxHeight < 100) {
 					container.style.top = "";

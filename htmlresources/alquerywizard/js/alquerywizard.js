@@ -5,7 +5,7 @@ class QueryWizard extends TableBasedObjectWizard {
 
         //initialize steps visibility
         this._step = 1;
-        $("#wizardstep2").hide();
+        htmlHelper.hideById("wizardstep2");
 
     }
 

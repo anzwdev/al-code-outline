@@ -2,15 +2,6 @@ var htmlHelper = {
     setElementOptions : function (element, values, indexAsValue) {
         htmlHelper.clearChildren(element);
 
-        if (data) {
-            for (let i=0; i<data.length; i++) {
-                option.label = data[i].label;
-                option.value = data[i].value;
-                option.innerText = data[i].label;
-                option.selected = data[i].selected
-                this._analyzersSel.appendChild(option);
-            }
-        }
         if (values) {
             for (var i=0; i<values.length;i++) {
                 let option = document.createElement('option');

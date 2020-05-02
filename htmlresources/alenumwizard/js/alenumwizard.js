@@ -66,7 +66,7 @@ class EnumWizard {
         this._data.objectId = document.getElementById("objectid").value;
         this._data.objectName = document.getElementById("objectname").value;
         this._data.valueList = document.getElementById("valuelist").value;
-        this._data.captionList = document.getElementById("captionlist").valye;
+        this._data.captionList = document.getElementById("captionlist").value;
         this._data.extensible = document.getElementById("extensible").checked;
     }
 
