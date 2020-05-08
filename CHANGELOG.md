@@ -1,6 +1,9 @@
 # Change Log
 
 ## 1.0.44
+ - AL Compiler libraries loader updated to support the latest version of the compiler
+
+## 1.0.44
  - SyntaxTree visualizer crash fix
 
 ## 1.0.43
