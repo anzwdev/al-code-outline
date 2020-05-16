@@ -1,6 +1,11 @@
 # Change Log
 
-## 1.0.44
+## 1.0.46
+ - Github issue #117 - "New Table Wizard: missing length"
+
+ Thank you NKarolak for reporting the issue #117
+
+## 1.0.45
  - AL Compiler libraries loader updated to support the latest version of the compiler
 
 ## 1.0.44

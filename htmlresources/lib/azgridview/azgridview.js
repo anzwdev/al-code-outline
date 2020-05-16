@@ -100,6 +100,7 @@ class AZGridView {
     }
 
     getData() {
+        this.endEdit();
         return this._data;
     }
 
