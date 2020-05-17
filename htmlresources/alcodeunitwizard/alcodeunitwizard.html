@@ -1,6 +1,7 @@
 <!DOCTYPE html>
 <html>
-    <header>
+    <head>
+        <meta http-equiv="Content-Security-Policy" content="default-src 'none'; img-src ##CSPSOURCE## https: data:; script-src ##CSPSOURCE## 'unsafe-eval'; style-src ##CSPSOURCE##; font-src ##CSPSOURCE##;" />
         <script src="##EXTENSIONPATH##/htmlresources/lib/autocomplete/autocomplete.js"></script>
         <script src="##EXTENSIONPATH##/htmlresources/lib/filteredlist/filteredlist.js"></script>
         <script src="##EXTENSIONPATH##/htmlresources/lib/wizards/tablebasedobjectwizard.js"></script>
@@ -8,7 +9,7 @@
         <link rel="stylesheet" type="text/css" href="##EXTENSIONPATH##/htmlresources/lib/autocomplete/autocomplete.css">
         <link rel="stylesheet" type="text/css" href="##EXTENSIONPATH##/htmlresources/lib/wizards/wizards.css">
         <link rel="stylesheet" type="text/css" href="##EXTENSIONPATH##/htmlresources/alcodeunitwizard/css/alcodeunitwizard.css">
-    </header>
+    </head>
     <body>
         <div id="main" class="main">
             <div id="header" class="header">
@@ -52,10 +53,10 @@
             </div>
 
             <div id="footer" class="footer">
-                <button id="prevBtn" class="button" onclick="wizard.onPrev()">Previous</button>
-                <button id="nextBtn" class="button" onclick="wizard.onNext()">Next</button>
-                <button id="finishBtn" class="button" onclick="wizard.onFinish()">Finish</button>
-                <button id="cancelBtn" class="button" onclick="wizard.onCancel()">Cancel</button>
+                <button id="prevBtn" class="button">Previous</button>
+                <button id="nextBtn" class="button">Next</button>
+                <button id="finishBtn" class="button">Finish</button>
+                <button id="cancelBtn" class="button">Cancel</button>
             </div>
         </div>
 

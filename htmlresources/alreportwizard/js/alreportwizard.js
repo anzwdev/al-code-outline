@@ -3,6 +3,8 @@ class ReportWizard extends TableBasedObjectWizard {
     constructor() {
         super(2);
 
+        this.registerFieldsSelectionEvents();
+
         //initialize steps visibility
         this._step = 1;
         htmlHelper.hideById("wizardstep2");

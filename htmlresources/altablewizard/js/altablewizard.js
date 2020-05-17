@@ -21,10 +21,17 @@ class TableWizard {
             undefined, undefined, 'Loading data...', true);
 
         // Handle messages sent from the extension to the webview
-        var me = this;
         window.addEventListener('message', event => {
-            me.onMessage(event.data);
+            this.onMessage(event.data);
         });
+
+        document.getElementById('finishBtn').addEventListener('click', event => {
+            this.onFinish();
+        });
+
+        document.getElementById('cancelBtn').addEventListener('click', event => {
+            this.onCancel();
+        });      
 
         this.sendMessage({
             command: 'documentLoaded'

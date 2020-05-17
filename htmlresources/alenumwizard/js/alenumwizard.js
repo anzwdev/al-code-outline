@@ -10,6 +10,14 @@ class EnumWizard {
             this.onMessage(event.data);
         });
 
+        document.getElementById('finishBtn').addEventListener('click', event => {
+            this.onFinish();
+        });
+
+        document.getElementById('cancelBtn').addEventListener('click', event => {
+            this.onCancel();
+        });      
+
         this.sendMessage({
             command: 'documentLoaded'
         });

@@ -1,6 +1,7 @@
 <!DOCTYPE html>
 <html>
-    <header>
+    <head>
+        <meta http-equiv="Content-Security-Policy" content="default-src 'none'; img-src ##CSPSOURCE## https: data:; script-src ##CSPSOURCE## 'unsafe-eval'; style-src ##CSPSOURCE##; font-src ##CSPSOURCE##;" />
         <script src="##EXTENSIONPATH##/htmlresources/lib/jquery/jquery.min.js"></script>
         <script src="##EXTENSIONPATH##/htmlresources/lib/jquery-ui-position/jquery.ui.position.min.js"></script>
         <script src="##EXTENSIONPATH##/htmlresources/lib/jquery-context-menu/js/jquery.contextmenu.min.js"></script>
@@ -9,7 +10,7 @@
         <script src="##EXTENSIONPATH##/htmlresources/actionimagebrowser/js/startup.js"></script>
         <link rel="stylesheet" type="text/css" href="##EXTENSIONPATH##/htmlresources/lib/jquery-context-menu/css/jquery.contextMenu.css">
         <link rel="stylesheet" type="text/css" href="##EXTENSIONPATH##/htmlresources/actionimagebrowser/css/imagebrowser.css">
-    </header>
+    </head>
     <body>
         <div id="search">
             <input id="searchname" type="text" class="searchinput" tabindex="1" placeholder="Name filter, e.g., *Item*, *Setup*">

@@ -1,6 +1,7 @@
 <!DOCTYPE html>
 <html>
-    <header>
+    <head>
+        <meta http-equiv="Content-Security-Policy" content="default-src 'none'; img-src ##CSPSOURCE## https: data:; script-src ##CSPSOURCE## 'unsafe-eval'; style-src ##CSPSOURCE##; font-src ##CSPSOURCE##;" />
         <script src="##EXTENSIONPATH##/htmlresources/lib/helpers/htmlhelper.js"></script>
         <script src="##EXTENSIONPATH##/htmlresources/lib/autocomplete/autocomplete.js"></script>
         <script src="##EXTENSIONPATH##/htmlresources/lib/filteredlist/filteredlist.js"></script>
@@ -9,7 +10,7 @@
         <link rel="stylesheet" type="text/css" href="##EXTENSIONPATH##/htmlresources/lib/autocomplete/autocomplete.css">
         <link rel="stylesheet" type="text/css" href="##EXTENSIONPATH##/htmlresources/lib/wizards/wizards.css">
         <link rel="stylesheet" type="text/css" href="##EXTENSIONPATH##/htmlresources/alquerywizard/css/alquerywizard.css">
-    </header>
+    </head>
     <body>
         <div id="main" class="main">
             <div id="header" class="header">
@@ -46,7 +47,7 @@
                 <div class="formline">
                     <div class="formcaption">Query Type:</div>
                     <div class="formfield">
-                        <select id="querytype" class="fixedopt" onchange="wizard.onQueryTypeChanged()">
+                        <select id="querytype" class="fixedopt">
                             <option value="Normal">Normal</option>
                             <option value="API">API</option>
                         </select>
@@ -97,20 +98,20 @@
                     <div class="multiselsrc">
                         <div class="mselcaption">Available Fields:</div>
                         <input class="mselfilter" id="srcfieldsfilter" type="text" placeholder="Enter fields filter...">
-                        <select class="msellist" id="srcfields" multiple="multiple" ondblclick="wizard.onMoveFieldsRight()"></select>
+                        <select class="msellist" id="srcfields" multiple="multiple"></select>
                     </div>
 
                     <div class="multiselbtns">
-                        <div><button class="mselbtn" onclick="wizard.onMoveFieldsRight()">&gt;</button></div>
-                        <div><button class="mselbtn" onclick="wizard.onMoveAllRight()">&gt;&gt;</button></div>
-                        <div><button class="mselbtn" onclick="wizard.onMoveAllLeft()">&lt;&lt;</button></div>
-                        <div><button class="mselbtn" onclick="wizard.onMoveFieldsLeft()">&lt;</button></div>
+                        <div><button class="mselbtn" id="mselright">&gt;</button></div>
+                        <div><button class="mselbtn" id="mselallright">&gt;&gt;</button></div>
+                        <div><button class="mselbtn" id="mselallleft">&lt;&lt;</button></div>
+                        <div><button class="mselbtn" id="mselleft">&lt;</button></div>
                     </div>
 
                     <div class="multiseldest">
                         <div class="mselcaption">Selected Fields:</div>
                         <input class="mselfilter" id="destfieldsfilter" type="text" placeholder="Enter fields filter...">
-                        <select class="msellist" id="destfields" multiple="multiple" ondblclick="wizard.onMoveFieldsLeft()">
+                        <select class="msellist" id="destfields" multiple="multiple">
                         </select>
                     </div>
 
@@ -119,10 +120,10 @@
             </div>
 
             <div id="footer" class="footer">
-                <button id="prevBtn" class="button" onclick="wizard.onPrev()">Previous</button>
-                <button id="nextBtn" class="button" onclick="wizard.onNext()">Next</button>
-                <button id="finishBtn" class="button" onclick="wizard.onFinish()">Finish</button>
-                <button id="cancelBtn" class="button" onclick="wizard.onCancel()">Cancel</button>
+                <button id="prevBtn" class="button">Previous</button>
+                <button id="nextBtn" class="button">Next</button>
+                <button id="finishBtn" class="button">Finish</button>
+                <button id="cancelBtn" class="button">Cancel</button>
             </div>
         </div>
 

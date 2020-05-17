@@ -100,6 +100,7 @@ class AZGridView {
     }
 
     getData() {
+        this.endEdit();
         return this._data;
     }
 
@@ -691,7 +692,8 @@ class AZGridView {
                         else    
                             this._columns[i].compiledFilter = compileFilter('text', this._columns[i].userFilter);
                     }
-                    catch (e) {                        
+                    catch (e) {
+                        console.warn(e);                           
                     }
                 } else {
                     this._columns[i].compiledFilter = undefined;

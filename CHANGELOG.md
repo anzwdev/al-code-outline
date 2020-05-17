@@ -1,6 +1,12 @@
 # Change Log
 
-## 1.0.44
+## 1.0.46
+ - Github issue #117 - "New Table Wizard: missing length"
+ - Github issue #119 - Adopt VS Code's 'asWebviewUri' API
+
+ Thank you NKarolak for reporting the issue #117 and VS Code Team (Matt Bierner) for issue #119
+
+## 1.0.45
  - AL Compiler libraries loader updated to support the latest version of the compiler
 
 ## 1.0.44
@@ -13,6 +19,8 @@
 
 ## 1.0.42
  - Github issue #109 - "NavigatePane" type changed to the "NavigatePage" in the page wizard
+
+ Thank you rvanbekkum for reporting the issue
 
 ## 1.0.41
  - New "Sort variables" code action
