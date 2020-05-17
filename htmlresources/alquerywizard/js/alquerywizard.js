@@ -3,6 +3,12 @@ class QueryWizard extends TableBasedObjectWizard {
     constructor() {
         super(2);
 
+        this.registerFieldsSelectionEvents();
+
+        document.getElementById('querytype').addEventListener('change', event => {
+            this.onQueryTypeChanged();
+        });
+
         //initialize steps visibility
         this._step = 1;
         htmlHelper.hideById("wizardstep2");

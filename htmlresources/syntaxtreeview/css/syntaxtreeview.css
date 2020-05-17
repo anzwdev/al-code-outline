@@ -8,6 +8,8 @@ body {
     flex-direction: column;
     align-items: stretch;
     justify-content: stretch;
+    margin:0;
+    padding:0;
 }
 input:focus, select:focus, div:focus, button:focus {
     outline-color: var(--vscode-focusBorder) !important;

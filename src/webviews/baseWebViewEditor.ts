@@ -1,9 +1,7 @@
-'use strict';
-
 import * as vscode from 'vscode';
 
 export class BaseWebViewEditor {
-    protected _htmlContent : string;
+    protected _htmlContent : string | undefined;
     protected _extensionContext : vscode.ExtensionContext;
     protected _panel: vscode.WebviewPanel | undefined;
     protected _extensionPath : string;
@@ -24,7 +22,7 @@ export class BaseWebViewEditor {
         this._panel = undefined;
         this._viewColumn = vscode.ViewColumn.Active;
         //load html content
-        this._htmlContent = this.loadHtmlContent();
+        this._htmlContent = undefined;
     }
 
     public dispose() {
@@ -58,11 +56,29 @@ export class BaseWebViewEditor {
     }
 
     protected loadHtmlContent() : string {
-        let fullExtensionPath = vscode.Uri.file(this._extensionPath).with({ scheme: 'vscode-resource' });
+        //let fullExtensionPath = vscode.Uri.file(this._extensionPath).with({ scheme: 'vscode-resource' });
         let fs = require('fs');
         let filePath = this._extensionContext.asAbsolutePath(this.getHtmlContentPath());
-        let content = fs.readFileSync(filePath, 'utf8');
-        return content.replace(new RegExp('##EXTENSIONPATH##', 'g'), fullExtensionPath);
+        let content: string = fs.readFileSync(filePath, 'utf8');
+        
+        //process resources
+        let startString = '##EXTENSIONPATH##/';
+        let startStringLen = startString.length;
+        let pos = content.indexOf(startString);
+        while (pos > 0) {
+            let endPos = content.indexOf('"', pos + startStringLen);
+            if (endPos > 0) {
+                let resPathPart = content.substring(pos + startStringLen, endPos);
+                let resUri = this._panel!.webview.asWebviewUri(vscode.Uri.file(
+                    this._extensionContext.asAbsolutePath(resPathPart))).toString();
+                content = content.substr(0, pos) + resUri + content.substr(endPos);  
+                
+                pos = content.indexOf(startString, pos + resUri.length);
+            } else
+                pos = -1;
+        }
+
+        return content.replace(new RegExp('##CSPSOURCE##', 'g'), this._panel!.webview.cspSource);
     }
 
     protected createWebView() {
@@ -70,12 +86,12 @@ export class BaseWebViewEditor {
             // Enable javascript in the webview
             enableScripts: true,
 
-            retainContextWhenHidden: true//,
+            retainContextWhenHidden: true,
 
             // And restric the webview to only loading content from our extension's `media` directory.
-            //localResourceRoots: [
-            //    vscode.Uri.file(path.join(this._extensionPath, 'media'))
-            //]
+            localResourceRoots: [
+                vscode.Uri.file(this._extensionPath)
+            ]
         });
         
         this.reloadWebViewContent();
@@ -108,8 +124,11 @@ export class BaseWebViewEditor {
 
     protected reloadWebViewContent() {
         this._documentLoaded = false;
-        if (this._panel)
+        if (this._panel) {
+            if (!this._htmlContent)
+                this._htmlContent = this.loadHtmlContent();
             this._panel.webview.html = this._htmlContent;
+        }
     }
 
     protected sendMessage(message : any) {

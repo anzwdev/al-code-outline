@@ -26,17 +26,17 @@ class ObjectBrowser {
         });
 
         this._objTree.emptyContent = 'There is nothing to show.';
-        this._objTree.nodeSelected = function(node) { 
-            that.onNodeSelected(node); 
+        this._objTree.nodeSelected = node => { 
+            this.onNodeSelected(node); 
         };
-        this._objTree.showIdsChanged = function(newVal) {
+        this._objTree.showIdsChanged = newVal => {
             this.sendMessage({
                 command: 'objTreeShowIdsChanged',
                 value: newVal 
             });
         };
 
-        this._symTree.showIdsChanged = function(newVal) {
+        this._symTree.showIdsChanged = newVal => {
             this.sendMessage({
                 command: 'symTreeShowIdsChanged',
                 value: newVal 
@@ -57,25 +57,24 @@ class ObjectBrowser {
         })
 
         // Handle messages sent from the extension to the webview
-        var me = this;
         window.addEventListener('message', event => {
-            me.onMessage(event.data);
+            this.onMessage(event.data);
         });
 
         document.getElementById('searchid').addEventListener('keydown', event => {
-            me.onSearchKeyDown(event);
+            this.onSearchKeyDown(event);
         });
 
         document.getElementById('searchname').addEventListener('keydown', event => {
-            me.onSearchKeyDown(event);
+            this.onSearchKeyDown(event);
         });
 
         document.getElementById('searchbtn').addEventListener('click', event => {
-            me.search();
+            this.search();
         });
 
         document.getElementById('listbtn').addEventListener('click', event => {
-            me.sendMessage({
+            this.sendMessage({
                 command: 'showlist'
             });
         });

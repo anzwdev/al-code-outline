@@ -9,14 +9,51 @@ class TableBasedObjectWizard {
         this._vscode = acquireVsCodeApi();
        
         // Handle messages sent from the extension to the webview
-        var me = this;
         window.addEventListener('message', event => {
-            me.onMessage(event.data);
+            this.onMessage(event.data);
         });
+
+        document.getElementById('prevBtn').addEventListener('click', event => {
+            this.onPrev();
+        });
+
+        document.getElementById('nextBtn').addEventListener('click', event => {
+            this.onNext();
+        });
+
+        document.getElementById('finishBtn').addEventListener('click', event => {
+            this.onFinish();
+        });
+
+        document.getElementById('cancelBtn').addEventListener('click', event => {
+            this.onCancel();
+        });      
+
 
         this.sendMessage({
             command: 'documentLoaded'
         });   
+    }
+
+    registerFieldsSelectionEvents() {
+        document.getElementById('mselright').addEventListener('click', event => {
+            this.onMoveFieldsRight();
+        });
+        document.getElementById('mselallright').addEventListener('click', event => {
+            this.onMoveAllRight();
+        });      
+        document.getElementById('mselallleft').addEventListener('click', event => {
+            this.onMoveAllLeft();
+        });
+        document.getElementById('mselleft').addEventListener('click', event => {
+            this.onMoveFieldsLeft();
+        });      
+        document.getElementById('srcfields').addEventListener('dblclick', event => {
+            this.onMoveFieldsRight();
+        });
+        document.getElementById('destfields').addEventListener('dblclick', event => {
+            this.onMoveFieldsLeft();
+        });
     }
 
     onMessage(message) {     
@@ -123,6 +160,9 @@ class TableBasedObjectWizard {
 
     setSelectedFields(list) {
         this._destFields.setData(list);
+    }
+
+    onFinish() {
     }
 
     onCancel() {

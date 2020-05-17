@@ -6,7 +6,17 @@ class PageWizard extends TableBasedObjectWizard {
         //initialize steps visibility
         this._step = 1;
         this._activeFastTab = 0;
-        htmlHelper.hideById("wizardstep2");        
+        htmlHelper.hideById("wizardstep2");
+
+        this.registerFieldsSelectionEvents();
+
+        document.getElementById('pagetype').addEventListener('change', event => {
+            this.onPageTypeChanged();
+        });
+        document.getElementById('activefasttab').addEventListener('change', event => {
+            this.onActiveFastTabChanged();
+        });
+
     }
 
     updateMainButtons() {
@@ -120,10 +130,10 @@ class PageWizard extends TableBasedObjectWizard {
 
 
     onPageTypeChanged() {
-        var prevHasTabs = this.hasFastTabs();        
+        let prevHasTabs = this.hasFastTabs();        
         this._data.pageType = document.getElementById("pagetype").value;
         this.updateControls();
-        if (prevHasTabs != this.hasFastTabs)
+        if (prevHasTabs != this.hasFastTabs())
             this.rebuildFastTabs();
     }
 
@@ -156,7 +166,7 @@ class PageWizard extends TableBasedObjectWizard {
 
     hasFastTabs() {
         return ((this._data.pageType == "Card") || (this._data.pageType == "Document") || (this._data.pageType == "CardPart") ||
-            (this._data.pageType == "ConfirmationDialog") || (this._data.pageType == "NavigationPane"));
+            (this._data.pageType == "ConfirmationDialog") || (this._data.pageType == "NavigatePage"));
     }
 
     hasFields () {

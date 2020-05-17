@@ -1,5 +1,6 @@
 <html>
-    <header>
+    <head>
+        <meta http-equiv="Content-Security-Policy" content="default-src 'none'; img-src ##CSPSOURCE## https: data:; script-src ##CSPSOURCE## 'unsafe-eval'; style-src ##CSPSOURCE##; font-src ##CSPSOURCE##;" />
         <script src="##EXTENSIONPATH##/htmlresources/lib/jquery/jquery.min.js"></script>
         <script src="##EXTENSIONPATH##/htmlresources/lib/jquery-ui-position/jquery.ui.position.min.js"></script>
         <script src="##EXTENSIONPATH##/htmlresources/lib/jquery-context-menu/js/jquery.contextmenu.min.js"></script>
@@ -13,23 +14,20 @@
         <link rel="stylesheet" type="text/css" href="##EXTENSIONPATH##/htmlresources/lib/styles/default.css">
         <link rel="stylesheet" type="text/css" href="##EXTENSIONPATH##/htmlresources/lib/azgridview/azgridview.css">
         <link rel="stylesheet" type="text/css" href="##EXTENSIONPATH##/htmlresources/carulesviewer/css/carulesviewer.css">
-    </header>
-
-    <div id="search" class="search">
-<!--
-        <div class="searchcaption">Code Analyzer:</div>
--->        
-        <select id="searchanalyzers" class="searchinput" tabindex="1" multiple="multiple"></select>
-        <select id="searchseverity" class="searchinput" tabindex="2" multiple="multiple">
-            <option value="Hidden">Hidden</option>
-            <option value="Info">Info</option>
-            <option value="Warning">Warning</option>
-            <option value="Error">Error</option>
-        </select>
-        <input type="text" id="searchid" class="searchinput" tabindex="3" placeholder="Id filter, e.g. AS002*">
-        <input type="text" id="searchtitle" class="searchinput" tabindex="4" placeholder="Title filter, e.g. Page*">
-        <button class="btn" id="searchbtn" tabindex="4">Search</button>
-    </div>
-    <div id="rules" tabindex="2"></div>
-
+    </head>
+    <body>
+        <div id="search" class="search">
+            <select id="searchanalyzers" class="searchinput" tabindex="1" multiple="multiple"></select>
+            <select id="searchseverity" class="searchinput" tabindex="2" multiple="multiple">
+                <option value="Hidden">Hidden</option>
+                <option value="Info">Info</option>
+                <option value="Warning">Warning</option>
+                <option value="Error">Error</option>
+            </select>
+            <input type="text" id="searchid" class="searchinput" tabindex="3" placeholder="Id filter, e.g. AS002*">
+            <input type="text" id="searchtitle" class="searchinput" tabindex="4" placeholder="Title filter, e.g. Page*">
+            <button class="btn" id="searchbtn" tabindex="4">Search</button>
+        </div>
+        <div id="rules" tabindex="2"></div>
+    </body>
 </html>
