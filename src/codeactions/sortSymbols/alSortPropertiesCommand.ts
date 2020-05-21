@@ -12,17 +12,15 @@ export class ALSortPropertiesCommand extends ALBaseSortCodeCommand {
     }
 
     collectCodeActions(docSymbols: AZDocumentSymbolsLibrary, symbol: AZSymbolInformation | undefined, document: vscode.TextDocument, range: vscode.Range | vscode.Selection, context: vscode.CodeActionContext, actions: vscode.CodeAction[]) {
-        let edit: vscode.WorkspaceEdit | undefined = undefined;
-        let actionKind = vscode.CodeActionKind.QuickFix;
+        let edit: vscode.WorkspaceEdit | undefined =  undefined;
+        let fixOnSave = this.canRunOnSave(document.uri); 
+        let actionKind = this.getCodeActionKind(fixOnSave);
 
-        if (this.canRunOnSave(document.uri)) {
-            if ((context.only) && (context.only.contains(vscode.CodeActionKind.SourceFixAll))) {
-                actionKind = vscode.CodeActionKind.SourceFixAll;
-                let objList: AZSymbolInformation[] = [];        
-                docSymbols.findALObjectsInsideRange(range, objList);
-                for (let i=0; i<objList.length; i++)
-                    edit = this.prepareEdit(objList[i], document, edit);
-            }
+        if (fixOnSave) {
+            let objList: AZSymbolInformation[] = [];        
+            docSymbols.findALObjectsInsideRange(range, objList);
+            for (let i=0; i<objList.length; i++)
+                edit = this.prepareEdit(objList[i], document, edit);
         } else {
             //collect list of objects in selection range
             if ((symbol) && (symbol.isALObject()) && (symbol.kind != AZSymbolKind.Interface) && 

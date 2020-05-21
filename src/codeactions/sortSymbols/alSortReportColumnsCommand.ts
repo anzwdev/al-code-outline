@@ -13,16 +13,14 @@ export class ALSortReportColumnsCommand extends ALBaseSortCodeCommand {
 
     collectCodeActions(docSymbols: AZDocumentSymbolsLibrary, symbol: AZSymbolInformation | undefined, document: vscode.TextDocument, range: vscode.Range | vscode.Selection, context: vscode.CodeActionContext, actions: vscode.CodeAction[]) {
         let edit: vscode.WorkspaceEdit | undefined = undefined;
-        let actionKind = vscode.CodeActionKind.QuickFix;        
-        
-        if (this.canRunOnSave(document.uri)) {
-            if ((context.only) && (context.only.contains(vscode.CodeActionKind.SourceFixAll))) {
-                actionKind = vscode.CodeActionKind.SourceFixAll;
-                let objList: AZSymbolInformation[] = [];        
-                docSymbols.findSymbolsInsideRange(range, AZSymbolKind.ReportObject, objList);
-                for (let i=0; i<objList.length; i++)
-                    edit = this.prepareEdit(objList[i], document, edit);
-            }
+        let fixOnSave = this.canRunOnSave(document.uri); 
+        let actionKind = this.getCodeActionKind(fixOnSave);
+
+        if (fixOnSave) {
+            let objList: AZSymbolInformation[] = [];        
+            docSymbols.findSymbolsInsideRange(range, AZSymbolKind.ReportObject, objList);
+            for (let i=0; i<objList.length; i++)
+                edit = this.prepareEdit(objList[i], document, edit);
         } else {
             //prepare code fix
             if ((symbol) &&

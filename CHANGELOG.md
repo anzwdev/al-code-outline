@@ -1,5 +1,10 @@
 # Change Log
 
+## 1.0.47
+ - Github issue #122 - codeActionsOnSave ignored 
+
+ Thank you NKarolak for reporting the issue #122
+
 ## 1.0.46
  - Github issue #117 - "New Table Wizard: missing length"
  - Github issue #119 - Adopt VS Code's 'asWebviewUri' API
