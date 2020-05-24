@@ -31,7 +31,7 @@ export class ALCodeAction {
 
     protected getCodeActionKind(fixOnSave: boolean): vscode.CodeActionKind {
         if (fixOnSave)
-            return vscode.CodeActionKind.SourceFixAll.append('al');
+            return vscode.CodeActionKind.SourceFixAll; //.append('al');
         return vscode.CodeActionKind.QuickFix;
     }
 
