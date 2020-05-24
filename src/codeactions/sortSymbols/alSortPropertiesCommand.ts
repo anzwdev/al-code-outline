@@ -17,10 +17,12 @@ export class ALSortPropertiesCommand extends ALBaseSortCodeCommand {
         let actionKind = this.getCodeActionKind(fixOnSave);
 
         if (fixOnSave) {
-            let objList: AZSymbolInformation[] = [];        
-            docSymbols.findALObjectsInsideRange(range, objList);
-            for (let i=0; i<objList.length; i++)
-                edit = this.prepareEdit(objList[i], document, edit);
+            let objList: AZSymbolInformation[] = [];
+            if (docSymbols.rootSymbol) {
+                docSymbols.rootSymbol.collectObjectSymbols(objList);
+                for (let i=0; i<objList.length; i++)
+                    edit = this.prepareEdit(objList[i], document, edit);
+            }
         } else {
             //collect list of objects in selection range
             if ((symbol) && (symbol.isALObject()) && (symbol.kind != AZSymbolKind.Interface) && 
