@@ -63,9 +63,9 @@ export class ALCodeActionsProvider implements vscode.CodeActionProvider {
     }
 
     protected async getDocumentSymbolsAsync(document: vscode.TextDocument): Promise<AZDocumentSymbolsLibrary> {
-        if ((vscode.window.activeTextEditor) && 
-            (vscode.window.activeTextEditor.document) &&
-            (vscode.window.activeTextEditor.document.uri.fsPath == document.uri.fsPath)) 
+        let docUri = this._toolsExtensionContext.activeDocumentSymbols.getDocUri();
+        
+        if ((docUri) && (docUri.fsPath == document.uri.fsPath))
             return this._toolsExtensionContext.activeDocumentSymbols;
         
         //parse document

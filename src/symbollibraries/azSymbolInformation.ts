@@ -279,6 +279,14 @@ export class AZSymbolInformation {
         return 'undefined';
     }
 
+    public collectObjectSymbols(outList : AZSymbolInformation[]) {
+        if (this.isALObject())
+            outList.push(this);
+        else if (this.childSymbols)
+            for (let i=0; i<this.childSymbols.length; i++)
+                this.childSymbols[i].collectObjectSymbols(outList);
+    }
+    
     public collectChildSymbols(symbolKind: AZSymbolKind, includeAllLevels: boolean, outList : AZSymbolInformation[]) {
         if (this.childSymbols) {
             for (let i=0; i<this.childSymbols.length; i++) {
