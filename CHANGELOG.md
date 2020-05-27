@@ -1,9 +1,15 @@
 # Change Log
 
+## 1.0.48
+ - Github issue #128 - "Add multiple fields" inserts fields above parent element properties
+
+ Thank you NKarolak for reporting the issue #128
+
 ## 1.0.47
  - Github issue #122 - codeActionsOnSave ignored 
+ - "Sort Procedures" code action fixes by David Feldhoff
 
- Thank you NKarolak for reporting the issue #122
+ Thank you NKarolak for reporting the issue #122 and David Feldhoff for fixing "Sort Procedures" code action
 
 ## 1.0.46
  - Github issue #117 - "New Table Wizard: missing length"
