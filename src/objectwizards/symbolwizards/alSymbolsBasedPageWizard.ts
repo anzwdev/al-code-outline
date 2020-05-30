@@ -96,13 +96,13 @@ export class ALSymbolsBasedPageWizard extends ALSymbolsBasedWizard {
     private buildPageForTable(tableSymbol : AZSymbolInformation, objectId : number, objectName : string, pageType : string, fieldGroupType : string) : string {
        
         //generate file content
-        let writer : ALSyntaxWriter = new ALSyntaxWriter();
+        let writer : ALSyntaxWriter = new ALSyntaxWriter(undefined);
 
         writer.writeStartObject("page", objectId.toString(), objectName);
         writer.writeLine("");
-        writer.writeProperty("PageType", pageType);
-        writer.writeProperty("SourceTable", writer.encodeName(tableSymbol.name));
-        writer.writeProperty("Caption", writer.encodeString(objectName));
+        writer.addProperty("PageType", pageType);
+        writer.addProperty("SourceTable", writer.encodeName(tableSymbol.name));
+        writer.addProperty("Caption", writer.encodeString(objectName));
 
         //usage category and application area for list pages
         if (pageType === "List") {
@@ -112,10 +112,11 @@ export class ALSymbolsBasedPageWizard extends ALSymbolsBasedWizard {
             if ((usageCategory) && (usageCategory !== "")) {
                 //application area requires useage category to be set
                 if ((appArea) && (appArea !== ""))
-                    writer.writeProperty("ApplicationArea", appArea);
-                writer.writeProperty("UsageCategory", usageCategory);
+                    writer.addProperty("ApplicationArea", appArea);
+                writer.addProperty("UsageCategory", usageCategory);
             }
         }
+        writer.writeProperties();
 
         writer.writeLine("");
         

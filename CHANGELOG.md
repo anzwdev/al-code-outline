@@ -6,8 +6,10 @@
    - Code fix is no longer created if "alOutline.fixCodeCopMissingParenthesesOnSave" setting is set to false as Microsoft AL Extension can now create the same fix
    - If "alOutline.fixCodeCopMissingParenthesesOnSave" is set to true, code fix will still be created and run on document save as Microsoft version of the fix cannot do it.
    - Fix is created for document save action only, so there is just one fix for whole file instead of separate fixes for each missing parenthesis.  
+ - Github issue #121 - New AL File Wizard: sort properties
+ - Page wizard was ignoring entered "Application Area" for fields
 
- Thank you NKarolak for reporting the issue #128 and fvet for issue #129
+ Thank you NKarolak for reporting the issue #128 and #121 and fvet for issue #129
 
 ## 1.0.47
  - Github issue #122 - codeActionsOnSave ignored 

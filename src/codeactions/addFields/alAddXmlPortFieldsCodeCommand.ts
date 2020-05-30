@@ -65,7 +65,7 @@ export class ALAddXmlPortFieldsCodeCommand extends ALBaseAddFieldsCodeCommand {
         let indent = dataItemSymbol.contentRange.start.character + 3;
     
         //insert fields
-        let writer: ALSyntaxWriter = new ALSyntaxWriter();
+        let writer: ALSyntaxWriter = new ALSyntaxWriter(document.uri);
         writer.setIndent(indent);
         for (let i=0; i<selectedFields.length; i++) {
             writer.writeNameSourceBlock(this.elementType, writer.createName(selectedFields[i]), dataItemSymbol.name + '.' + writer.encodeName(selectedFields[i]));

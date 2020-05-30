@@ -42,7 +42,7 @@ export class ALEnumWizardPage extends ProjectItemWizardPage {
     
         //build new object
         var builder : ALEnumSyntaxBuilder = new ALEnumSyntaxBuilder();
-        var source = builder.buildFromEnumWizardData(this._enumWizardData);
+        var source = builder.buildFromEnumWizardData(this._settings.getDestDirectoryUri(), this._enumWizardData);
         this.createObjectFile('Enum', this._enumWizardData.objectId, this._enumWizardData.objectName, source);
 
         return true;

@@ -60,7 +60,7 @@ export class ALEnumExtWizardPage extends ProjectItemWizardPage {
 
         //build new object
         let builder : ALEnumExtSyntaxBuilder = new ALEnumExtSyntaxBuilder();
-        let source = builder.buildFromEnumExtWizardData(this._enumExtWizardData);
+        let source = builder.buildFromEnumExtWizardData(this._settings.getDestDirectoryUri(), this._enumExtWizardData);
         this.createObjectExtensionFile('EnumExtension', this._enumExtWizardData.objectId, this._enumExtWizardData.objectName,
             this._enumExtWizardData.baseEnum, source);
 

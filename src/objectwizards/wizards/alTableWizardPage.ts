@@ -41,7 +41,7 @@ export class ALTableWizardPage extends ProjectItemWizardPage {
     
         //build new object
         var builder : ALTableSyntaxBuilder = new ALTableSyntaxBuilder();
-        var source = builder.buildFromTableWizardData(this._tableWizardData);
+        var source = builder.buildFromTableWizardData(this._settings.getDestDirectoryUri(), this._tableWizardData);
         this.createObjectFile('Table', this._tableWizardData.objectId, this._tableWizardData.objectName, source);
 
         return true;

@@ -37,7 +37,7 @@ export class ALReportWizardPage extends ALTableBasedWizardPage {
 
         //build new object
         var builder : ALReportSyntaxBuilder = new ALReportSyntaxBuilder();
-        var source = builder.buildFromReportWizardData(this._reportWizardData);
+        var source = builder.buildFromReportWizardData(this._settings.getDestDirectoryUri(), this._reportWizardData);
         this.createObjectFile('Report', this._reportWizardData.objectId, this._reportWizardData.objectName, source);
        
         return true;

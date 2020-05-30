@@ -74,7 +74,7 @@ export class ALSymbolsBasedQueryWizard extends ALSymbolsBasedWizard {
 
     buildQueryForTable(tableSymbol : AZSymbolInformation, objectId : number, objectName : string) : string {
         //generate file content
-        let writer : ALSyntaxWriter = new ALSyntaxWriter();
+        let writer : ALSyntaxWriter = new ALSyntaxWriter(undefined);
 
         writer.writeStartObject("query", objectId.toString(), objectName);
         writer.writeProperty("QueryType", "Normal");

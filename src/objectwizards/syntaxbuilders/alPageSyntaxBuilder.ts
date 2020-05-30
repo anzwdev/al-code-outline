@@ -1,43 +1,47 @@
-'use strict';
-
+import * as vscode from 'vscode';
 import { ALSyntaxWriter } from "../../allanguage/alSyntaxWriter";
 import { ALPageWizardData } from "../wizards/alPageWizardData";
 
 export class ALPageSyntaxBuilder {
     constructor() {      
-    }
+    }    
 
-    buildFromPageWizardData(data : ALPageWizardData) : string {
+    buildFromPageWizardData(destUri: vscode.Uri | undefined, data : ALPageWizardData) : string {
         //generate file content
-        let writer : ALSyntaxWriter = new ALSyntaxWriter();
+        let writer : ALSyntaxWriter = new ALSyntaxWriter(destUri);
+        if (data.applicationArea)
+            writer.applicationArea = data.applicationArea;
+
         let isApi : boolean = (data.pageType.toLowerCase() === "api");
 
         writer.writeStartObject("page", data.objectId, data.objectName);
         writer.writeLine("");
-        writer.writeProperty("PageType", data.pageType);
-        writer.writeProperty("SourceTable", writer.encodeName(data.selectedTable));
+        writer.addProperty("PageType", data.pageType);
+        writer.addProperty("SourceTable", writer.encodeName(data.selectedTable));
         
         if (isApi) {
-            writer.writeProperty("APIPublisher", writer.encodeString(data.apiPublisher));
-            writer.writeProperty("APIGroup", writer.encodeString(data.apiGroup));
-            writer.writeProperty("APIVersion", writer.encodeString(data.apiVersion));
-            writer.writeProperty("EntityName", writer.encodeString(data.entityName));
-            writer.writeProperty("EntitySetName", writer.encodeString(data.entitySetName));
-            writer.writeProperty("DelayedInsert", "true");
-            writer.writeProperty("Caption", writer.encodeString(writer.createApiName(data.objectName)));
+            writer.addProperty("APIPublisher", writer.encodeString(data.apiPublisher));
+            writer.addProperty("APIGroup", writer.encodeString(data.apiGroup));
+            writer.addProperty("APIVersion", writer.encodeString(data.apiVersion));
+            writer.addProperty("EntityName", writer.encodeString(data.entityName));
+            writer.addProperty("EntitySetName", writer.encodeString(data.entitySetName));
+            writer.addProperty("DelayedInsert", "true");
+            writer.addProperty("Caption", writer.encodeString(writer.createApiName(data.objectName)));
         } else {
-            writer.writeProperty("Caption", writer.encodeString(data.objectName));
+            writer.addProperty("Caption", writer.encodeString(data.objectName));
         }
 
         //usage category and application area for list pages
         if (data.pageType === "List") {            
             if ((data.usageCategory) && (data.usageCategory !== "")) {
                 //application area requires useage category to be set
-                if ((data.appArea) && (data.appArea !== ""))
-                    writer.writeProperty("ApplicationArea", data.appArea);
-                writer.writeProperty("UsageCategory", data.usageCategory);
+                if ((data.applicationArea) && (data.applicationArea !== ""))
+                    writer.addProperty("ApplicationArea", data.applicationArea);
+                writer.addProperty("UsageCategory", data.usageCategory);
             }
         }
+
+        writer.writeProperties();
 
         writer.writeLine("");
         

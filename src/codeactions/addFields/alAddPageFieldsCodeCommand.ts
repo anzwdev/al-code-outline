@@ -81,7 +81,7 @@ export class ALAddPageFieldsCodeCommand extends ALBaseAddFieldsCodeCommand {
             indent = symbol.range.start.character + 3;
 
         //insert fields
-        let writer: ALSyntaxWriter = new ALSyntaxWriter();
+        let writer: ALSyntaxWriter = new ALSyntaxWriter(document.uri);
         writer.setIndent(indent);
         for (let i=0; i<selectedFields.length; i++) {
             writer.writePageField(selectedFields[i]);

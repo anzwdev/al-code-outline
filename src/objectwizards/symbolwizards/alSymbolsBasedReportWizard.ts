@@ -72,7 +72,7 @@ export class ALSymbolsBasedReportWizard extends ALSymbolsBasedWizard {
 
     buildReportForTable(tableSymbol : AZSymbolInformation, objectId : number, objectName : string) : string {
         //generate file content
-        let writer : ALSyntaxWriter = new ALSyntaxWriter();
+        let writer : ALSyntaxWriter = new ALSyntaxWriter(undefined);
 
         writer.writeStartObject("report", objectId.toString(), objectName);
 

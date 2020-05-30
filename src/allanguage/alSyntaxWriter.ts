@@ -1,18 +1,23 @@
 import * as vscode from 'vscode';
 import { ALSyntaxHelper } from './alSyntaxHelper';
 import { StringHelper } from '../tools/stringHelper';
+import { NameValue } from '../tools/nameValue';
 
 export class ALSyntaxWriter {
     private content : string;
     private indentText : string;
     private indentPart : string;  
-    private applicationArea : string;   
+    public applicationArea : string;   
+    private propertiesCache : NameValue[];
 
-    constructor() {
+    constructor(destUri: vscode.Uri | undefined) {
+        let config = vscode.workspace.getConfiguration('alOutline', destUri);
+        
         this.content = "";
         this.indentText = "";
         this.indentPart = "    ";
-        this.applicationArea = StringHelper.emptyIfNotDef(vscode.workspace.getConfiguration('alOutline').get<string>('defaultAppArea'));
+        this.applicationArea = StringHelper.emptyIfNotDef(config.get<string>('defaultAppArea'));
+        this.propertiesCache = [];
     }
 
     public toString() : string {
@@ -156,6 +161,24 @@ export class ALSyntaxWriter {
         this.writeLine(name + " = " + value + ";");
     }
 
+    public addProperty(name : string, value : string) {
+        this.propertiesCache.push(new NameValue(name, value));
+    }
+
+    public writeProperties() {
+        if (this.propertiesCache.length > 0) {
+            
+            this.propertiesCache.sort((propA, propB) => {
+                return propA.name.localeCompare(propB.name, undefined, { numeric: true, sensitivity: 'base' });
+            });
+
+            for (let i=0; i<this.propertiesCache.length; i++)
+                this.writeProperty(this.propertiesCache[i].name, this.propertiesCache[i].value);
+            
+            this.propertiesCache = [];
+        }
+    }
+
     public writeTableField(fieldId: string, fieldName: string, fieldDataType: string, fieldLength: string, dataClassification: string) {
         let dataType = fieldDataType.toLowerCase();
         if ((fieldLength) && ((dataType == 'text') || (dataType == 'code')))
@@ -180,14 +203,20 @@ export class ALSyntaxWriter {
     public writeApiPageField(fieldName : string) {
         let name : string = this.createApiName(fieldName);
         this.writeStartNameSourceBlock("field", this.encodeName(name), this.encodeName(fieldName));
-        this.writeProperty("Caption", this.encodeString(name));
-        this.writeApplicationArea();
+        this.addProperty("Caption", this.encodeString(name));
+        this.addApplicationAreaProperty();
+        this.writeProperties();
         this.writeEndBlock();
     }
 
     public writeApplicationArea() {
         if ((this.applicationArea) && (this.applicationArea !== ""))
             this.writeProperty("ApplicationArea", this.applicationArea);
+    }
+
+    public addApplicationAreaProperty() {
+        if ((this.applicationArea) && (this.applicationArea !== ""))
+            this.addProperty("ApplicationArea", this.applicationArea);
     }
 
     public encodeString(text : string) : string {

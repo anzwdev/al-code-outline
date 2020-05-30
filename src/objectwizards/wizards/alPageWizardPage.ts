@@ -31,7 +31,7 @@ export class ALPageWizardPage extends ALTableBasedWizardPage {
         this._pageWizardData.selectedTable = data.selectedTable;
         this._pageWizardData.pageType = data.pageType;
         this._pageWizardData.fastTabs = data.fastTabs;
-        this._pageWizardData.appArea = data.appArea;
+        this._pageWizardData.applicationArea = data.applicationArea;
         this._pageWizardData.usageCategory = data.usageCategory;
         this._pageWizardData.caption = data.caption;
         this._pageWizardData.apiPublisher = data.apiPublisher;
@@ -63,7 +63,7 @@ export class ALPageWizardPage extends ALTableBasedWizardPage {
 
         //build new object
         let builder : ALPageSyntaxBuilder = new ALPageSyntaxBuilder();
-        let source = builder.buildFromPageWizardData(this._pageWizardData);
+        let source = builder.buildFromPageWizardData(this._settings.getDestDirectoryUri(), this._pageWizardData);
         this.createObjectFile('Page', this._pageWizardData.objectId, this._pageWizardData.objectName, source);
 
         return true;

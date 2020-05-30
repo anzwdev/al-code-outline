@@ -81,7 +81,7 @@ export class ALSymbolsBasedXmlPortWizard extends ALSymbolsBasedWizard {
 
     buildXmlPortForTable(tableSymbol : AZSymbolInformation, objectId : number, objectName : string, fieldsAsElements : boolean) : string {
         //generate file content
-        let writer : ALSyntaxWriter = new ALSyntaxWriter();
+        let writer : ALSyntaxWriter = new ALSyntaxWriter(undefined);
 
         writer.writeStartObject("xmlport", objectId.toString(), objectName);
 
