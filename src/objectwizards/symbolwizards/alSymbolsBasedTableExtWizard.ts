@@ -76,7 +76,7 @@ export class ALSymbolsBasedTableExtWizard extends ALSymbolsBasedWizard {
 
     private buildTableExtForTable(tableSymbol : AZSymbolInformation, objectId : number, extObjectName : string) : string {
         
-        let writer : ALSyntaxWriter = new ALSyntaxWriter();
+        let writer : ALSyntaxWriter = new ALSyntaxWriter(undefined);
 
         writer.writeStartExtensionObject("tableextension", objectId.toString(), extObjectName, tableSymbol.name);
         

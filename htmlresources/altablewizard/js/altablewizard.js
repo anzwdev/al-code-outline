@@ -8,13 +8,13 @@ class TableWizard {
         //initialize controls
         this._fieldsgrid = new AZGridView('fieldsgrid', 
             [{name: 'id', caption: 'Id', style: 'width: 80px;'},
-            {name: 'name', caption: 'Name', style: 'width: 60%;'},
+            {name: 'name', caption: 'Name', style: 'width: 50%;'},
             //{name: 'caption', caption: 'Caption', style: 'width: 30%'},
-            {name: 'dataType', caption: 'Data Type', style: 'width: 150px', autocomplete: [                
+            {name: 'dataType', caption: 'Data Type', style: 'width: 20%', autocomplete: [                
                 'Blob', 'Boolean', 'Code', 'Date', 'DateFormula', 'DateTime', 'Decimal', 'Duration',
                 'Enum', 'Guid', 'Integer', 'Media', 'MediaSet', 'Option', 'RecordId', 'TableFilter',
                 'Text', 'Time']},
-            {name: 'dataClassification', caption: 'Data Classification', style: 'width: 250px', autocomplete: [
+            {name: 'dataClassification', caption: 'Data Classification', style: 'width: 20%', autocomplete: [
                 'AccountData', 'CustomerContent', 'EndUserIdentifiableInformation', 'EndUserPseudonymousIdentifiers',
                 'OrganizationIdentifiableInformation', 'SystemMetadata', 'ToBeClassified']},
             {name: 'length', caption: 'Length', style: 'width:100px'}],
@@ -43,6 +43,9 @@ class TableWizard {
             case 'setData':
                 this.setData(message.data);
                 break;
+            case 'setTypes':
+                this.setTypes(message.data);
+                break;
         }
     }
 
@@ -66,6 +69,10 @@ class TableWizard {
 
     }
    
+    setTypes(types) {
+        this._fieldsgrid._columns[2].autocomplete = types;
+    }
+
     onFinish() {
         this.collectStepData(true);
 

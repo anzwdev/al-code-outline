@@ -1,5 +1,4 @@
-'use strict';
-
+import * as vscode from 'vscode';
 import { ALReportWizardData } from "../wizards/alReportWizardData";
 import { ALSyntaxWriter } from "../../allanguage/alSyntaxWriter";
 
@@ -8,9 +7,9 @@ export class ALReportSyntaxBuilder {
     constructor() {
     }
 
-    buildFromReportWizardData(data : ALReportWizardData) : string {
+    buildFromReportWizardData(destUri: vscode.Uri | undefined, data : ALReportWizardData) : string {
         //generate file content
-        let writer : ALSyntaxWriter = new ALSyntaxWriter();
+        let writer : ALSyntaxWriter = new ALSyntaxWriter(destUri);
 
         writer.writeStartObject("report", data.objectId, data.objectName);
 

@@ -54,7 +54,7 @@ export class ALSymbolsTreeService {
     showEditorSymbolsTreeView() {
         let editor = vscode.window.activeTextEditor;
         if ((editor) && (editor.document) && (editor.document.uri)) 
-            this.showDocumentSymbols(editor.document.uri, undefined);        
+            this.showDocumentSymbols(editor.document.uri, new vscode.Range(editor.selection.start, editor.selection.end));        
     }
 
     async showDocumentSymbols(docUri: vscode.Uri, range: vscode.Range | undefined) {

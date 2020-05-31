@@ -7,7 +7,6 @@ import { ALPageWizardFastTabData } from "./alPageWizardFastTabData";
 export class ALPageWizardData extends ALTableBasedWizardData {
     pageType : string;
     fastTabs : string;
-    appArea : string;
     usageCategory : string;
     caption : string;
     apiPublisher : string;
@@ -24,7 +23,7 @@ export class ALPageWizardData extends ALTableBasedWizardData {
         this.fastTabs = "General";
         //this.appArea = vscode.workspace.getConfiguration('azALDevTools').get('defaultAppArea');
         //this.usageCategory = vscode.workspace.getConfiguration('azALDevTools').get('defaultListUsageCategory');
-        this.appArea = "All";
+        this.applicationArea = "All";
         this.usageCategory = "";
         //api fields
         this.caption = "";

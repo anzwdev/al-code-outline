@@ -12,7 +12,7 @@ export class ALCodeunitSyntaxBuilder {
 
     async buildFromCodeunitWizardDataAsync(destUri: vscode.Uri | undefined, data : ALCodeunitWizardData) : Promise<string> {
         //generate file content
-        let writer : ALSyntaxWriter = new ALSyntaxWriter();
+        let writer : ALSyntaxWriter = new ALSyntaxWriter(destUri);
 
         writer.writeStartCodeunit(data.objectId, data.objectName, data.interfaceName);
 

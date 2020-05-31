@@ -8,6 +8,8 @@ body {
     flex-direction: column;
     align-items: stretch;
     justify-content: stretch;
+    margin:0;
+    padding:0;
 }
 .symbolscont {
     flex: 1 1 auto;

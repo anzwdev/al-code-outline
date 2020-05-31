@@ -1,9 +1,23 @@
 # Change Log
 
+## 1.0.48
+ - Github issue #128 - "Add multiple fields" inserts fields above parent element properties
+ - Github issue #129 - Issues with "Add Parenthesis" code fix on document save
+   - Code fix is no longer created if "alOutline.fixCodeCopMissingParenthesesOnSave" setting is set to false as Microsoft AL Extension can now create the same fix
+   - If "alOutline.fixCodeCopMissingParenthesesOnSave" is set to true, code fix will still be created and run on document save as Microsoft version of the fix cannot do it.
+   - Fix is created for document save action only, so there is just one fix for whole file instead of separate fixes for each missing parenthesis.  
+ - Github issue #121 - New AL File Wizard: sort properties
+ - Page wizard was ignoring entered "Application Area" for fields
+ - Github issue #123 - Problems with azALDevTools.showDocumentSymbols command for files other than al
+ - Github issue #126 - AL New Table Wizard - Choose Enum Type
+
+ Thank you NKarolak for reporting issues #128 and #121, fvet for the issue #129, HuFBH for the issue #123 and rvanbekkum for the issue #126
+
 ## 1.0.47
  - Github issue #122 - codeActionsOnSave ignored 
+ - "Sort Procedures" code action fixes by David Feldhoff
 
- Thank you NKarolak for reporting the issue #122
+ Thank you NKarolak for reporting the issue #122 and David Feldhoff for fixing "Sort Procedures" code action
 
 ## 1.0.46
  - Github issue #117 - "New Table Wizard: missing length"

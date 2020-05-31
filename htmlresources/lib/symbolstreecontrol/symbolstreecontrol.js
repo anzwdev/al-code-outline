@@ -27,6 +27,7 @@ class SymbolsTreeControl {
         this._fullNameFilter = undefined;
 
         this._visibleSymbolList = undefined;
+        this._alNodes = true;
 
         //initialize event listeners
         let element = document.getElementById(controlId);
@@ -66,10 +67,12 @@ class SymbolsTreeControl {
     }
 
     setData(data) {
+        this._alNodes = true;
         this._selNode = undefined;
         this._selSymbol = undefined;
-        this._data = data;        
+        this._data = data;
         if (this._data) {
+            this._alNodes = this.hasALNodes(data);
             this._data.showIds = this._showIds;
             if (this.sortNodes)
                 this.sortData(this._data);
@@ -79,6 +82,17 @@ class SymbolsTreeControl {
         }
 
         this.refreshFilter();
+    }
+
+    hasALNodes(node) {
+        if (this.isObjectSymbol(node))
+            return true;
+        if (node.childSymbols) {
+            for (let i=0; i < node.childSymbols.length; i++)
+                if (this.hasALNodes(node.childSymbols[i]))
+                    return true;
+        }
+        return false;
     }
 
     prepareData(data) {
@@ -355,6 +369,7 @@ class SymbolsTreeControl {
 
                 this.hideEmptyGroups(this._data);
             }
+            
             this._data.visible = true;
         }
 
@@ -372,7 +387,7 @@ class SymbolsTreeControl {
     }
 
     applyTypeFilter(data) {
-        if ((data) && (!this.syntaxTreeMode)) {
+        if ((data) && (!this.syntaxTreeMode) && (this._alNodes)) {
             if ((this.isObjectSymbol(data)) && (data.kind)) {
                 if (this._typeFilter.indexOf(data.kind) < 0)
                     data.visible = false;
@@ -385,7 +400,7 @@ class SymbolsTreeControl {
     }
 
     applyIdFilter(data) {
-        if ((data) && (!this.syntaxTreeMode)) {
+        if ((data) && (!this.syntaxTreeMode) && (this._alNodes)) {
             if ((this.isObjectSymbol(data)) && (data.id)) {
                 if (!this._idFilter({INT: data.id}))
                     data.visible = false;
@@ -398,7 +413,7 @@ class SymbolsTreeControl {
     }
 
     applyNameFilter(data) {
-        if ((data) && (!this.syntaxTreeMode)) {
+        if ((data) && (!this.syntaxTreeMode) && (this._alNodes)) {
             if (this.isObjectSymbol(data)) {
                 if (!this._nameFilter({TEXT: data.name}))
                     data.visible = false;
@@ -437,7 +452,8 @@ class SymbolsTreeControl {
                     if (data.childSymbols[i].visible)
                         visibleChild = true;
                 }                
-            }
+            } else if (!this._alNodes)
+                visibleChild = data.visible;
             data.visible = visibleChild;
         }
 

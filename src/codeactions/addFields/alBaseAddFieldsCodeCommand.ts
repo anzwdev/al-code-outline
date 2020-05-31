@@ -55,7 +55,7 @@ export class ALBaseAddFieldsCodeCommand extends ALCodeCommand {
 
             if ((symbol.childSymbols) && (symbol.childSymbols.length > 0)) {            
                 for (let i=0; i<symbol.childSymbols.length; i++) {
-                    if ((symbol.childSymbols[i].range) && (symbol.childSymbols[i].range!.start.line < line)) {
+                    if ((symbol.childSymbols[i].kind !== AZSymbolKind.PropertyList) && (symbol.childSymbols[i].range) && (symbol.childSymbols[i].range!.start.line < line)) {
                         line = symbol.childSymbols[i].range!.start.line;
                         nextSymbolColumn = symbol.childSymbols[i].range!.start.character;
                     }

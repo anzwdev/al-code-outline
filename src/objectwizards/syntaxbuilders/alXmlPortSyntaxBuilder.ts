@@ -1,16 +1,15 @@
-'use strict';
-
+import * as vscode from 'vscode';
 import { ALXmlPortWizardData } from "../wizards/alXmlPortWizardData";
 import { ALSyntaxWriter } from "../../allanguage/alSyntaxWriter";
 
 export class ALXmlPortSyntaxBuilder {
-    
+
     constructor() {
     }
 
-    buildFromXmlPortWizardData(data : ALXmlPortWizardData) : string {
+    buildFromXmlPortWizardData(destUri: vscode.Uri | undefined, data : ALXmlPortWizardData) : string {
         //generate file content
-        let writer : ALSyntaxWriter = new ALSyntaxWriter();
+        let writer : ALSyntaxWriter = new ALSyntaxWriter(destUri);
 
         writer.writeStartObject("xmlport", data.objectId, data.objectName);
 

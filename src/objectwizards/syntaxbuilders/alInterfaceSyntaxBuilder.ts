@@ -12,7 +12,7 @@ export class ALInterfaceSyntaxBuilder {
 
     async buildFromInterfaceWizardDataAsync(destUri: vscode.Uri | undefined, data : ALInterfaceWizardData) : Promise<string> {       
         //generate file content
-        let writer : ALSyntaxWriter = new ALSyntaxWriter();
+        let writer : ALSyntaxWriter = new ALSyntaxWriter(destUri);
 
         writer.writeStartInterface(data.objectName);
 

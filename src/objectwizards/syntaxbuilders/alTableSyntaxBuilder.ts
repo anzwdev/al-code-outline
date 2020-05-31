@@ -1,3 +1,4 @@
+import * as vscode from 'vscode';
 import { ALTableWizardData } from "../wizards/alTableWizardData";
 import { ALSyntaxWriter } from "../../allanguage/alSyntaxWriter";
 
@@ -5,9 +6,9 @@ export class ALTableSyntaxBuilder {
     constructor() {
     }
 
-    buildFromTableWizardData(data: ALTableWizardData) : string {
+    buildFromTableWizardData(destUri: vscode.Uri | undefined, data: ALTableWizardData) : string {
         //generate file content
-        let writer : ALSyntaxWriter = new ALSyntaxWriter();
+        let writer : ALSyntaxWriter = new ALSyntaxWriter(destUri);
 
         writer.writeStartObject("table", data.objectId, data.objectName);
         writer.writeProperty("Caption", writer.encodeString(data.objectName));

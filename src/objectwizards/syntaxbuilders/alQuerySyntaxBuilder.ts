@@ -1,28 +1,29 @@
-'use strict';
-
+import * as vscode from 'vscode';
 import { ALSyntaxWriter } from "../../allanguage/alSyntaxWriter";
 import { ALQueryWizardData } from "../wizards/alQueryWizardData";
 
 export class ALQuerySyntaxBuilder {
-    
+
     constructor() {
     }
 
-    buildFromQueryWizardData(data : ALQueryWizardData) : string {
+    buildFromQueryWizardData(destUri: vscode.Uri | undefined, data : ALQueryWizardData) : string {
         //generate file content
-        let writer : ALSyntaxWriter = new ALSyntaxWriter();
+        let writer : ALSyntaxWriter = new ALSyntaxWriter(destUri);
         let isApi : boolean = (data.queryType.toLowerCase() === "api");
 
         writer.writeStartObject("query", data.objectId, data.objectName);
-        writer.writeProperty("QueryType", data.queryType);
+        writer.addProperty("QueryType", data.queryType);
 
         if (isApi) {
-            writer.writeProperty("APIPublisher", writer.encodeString(data.apiPublisher));
-            writer.writeProperty("APIGroup", writer.encodeString(data.apiGroup));
-            writer.writeProperty("APIVersion", writer.encodeString(data.apiVersion));
-            writer.writeProperty("EntityName", writer.encodeString(data.entityName));
-            writer.writeProperty("EntitySetName", writer.encodeString(data.entitySetName));
+            writer.addProperty("APIPublisher", writer.encodeString(data.apiPublisher));
+            writer.addProperty("APIGroup", writer.encodeString(data.apiGroup));
+            writer.addProperty("APIVersion", writer.encodeString(data.apiVersion));
+            writer.addProperty("EntityName", writer.encodeString(data.entityName));
+            writer.addProperty("EntitySetName", writer.encodeString(data.entitySetName));
         }
+
+        writer.writeProperties();
 
         writer.writeLine("");
 

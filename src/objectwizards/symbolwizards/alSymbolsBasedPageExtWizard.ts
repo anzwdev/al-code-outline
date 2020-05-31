@@ -76,7 +76,7 @@ export class ALSymbolsBasedPageExtWizard extends ALSymbolsBasedWizard {
 
     private buildPageExtForPage(pageSymbol : AZSymbolInformation, objectId : number, extObjectName : string) : string {
         
-        let writer : ALSyntaxWriter = new ALSyntaxWriter();
+        let writer : ALSyntaxWriter = new ALSyntaxWriter(undefined);
 
         writer.writeStartExtensionObject("pageextension", objectId.toString(), extObjectName, pageSymbol.name);
         

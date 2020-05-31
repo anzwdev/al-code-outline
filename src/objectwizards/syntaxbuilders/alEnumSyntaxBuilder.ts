@@ -1,5 +1,4 @@
-'use strict';
-
+import * as vscode from 'vscode';
 import { ALSyntaxWriter } from "../../allanguage/alSyntaxWriter";
 import { ALEnumWizardData } from "../wizards/alEnumWizardData";
 
@@ -9,9 +8,9 @@ export class ALEnumSyntaxBuilder {
 
     }
 
-    buildFromEnumWizardData(data : ALEnumWizardData) : string {
+    buildFromEnumWizardData(destUri: vscode.Uri | undefined, data : ALEnumWizardData) : string {
         //generate file content
-        let writer : ALSyntaxWriter = new ALSyntaxWriter();
+        let writer : ALSyntaxWriter = new ALSyntaxWriter(destUri);
 
         writer.writeStartObject("enum", data.objectId, data.objectName);
         if (data.extensible)

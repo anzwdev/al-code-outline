@@ -40,7 +40,7 @@ class PageWizard extends TableBasedObjectWizard {
         document.getElementById("srctable").value = this._data.selectedTable;
         document.getElementById("pagetype").value = this._data.pageType;
         document.getElementById("fasttabs").value = this._data.fastTabs;
-        document.getElementById("apparea").value = this._data.appArea;
+        document.getElementById("apparea").value = this._data.applicationArea;
         document.getElementById("usagecat").value = this._data.usageCategory;
 
         document.getElementById("apipublisher").value = this._data.apiPublisher;
@@ -69,7 +69,7 @@ class PageWizard extends TableBasedObjectWizard {
                 selectedTable : this._data.selectedTable,
                 pageType : this._data.pageType,
                 fastTabs : this._data.fastTabs,
-                appArea : this._data.appArea,
+                applicationArea : this._data.applicationArea,
                 usageCategory : this._data.usageCategory,
                 fields: this._data.selectedFieldList,
                 fastTabsData: this._data.fastTabsData,
@@ -99,7 +99,7 @@ class PageWizard extends TableBasedObjectWizard {
         this._data.selectedTable = document.getElementById("srctable").value;
         this._data.pageType = document.getElementById("pagetype").value;
         this._data.fastTabs = document.getElementById("fasttabs").value;
-        this._data.appArea = document.getElementById("apparea").value;
+        this._data.applicationArea = document.getElementById("apparea").value;
         this._data.usageCategory = document.getElementById("usagecat").value;
         this._data.apiPublisher = document.getElementById("apipublisher").value;
         this._data.apiGroup = document.getElementById("apigroup").value;

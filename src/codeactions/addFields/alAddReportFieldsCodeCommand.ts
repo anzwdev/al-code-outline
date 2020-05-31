@@ -58,7 +58,7 @@ export class ALAddReportFieldsCodeCommand extends ALBaseAddFieldsCodeCommand {
         let indent = dataItemSymbol.contentRange.start.character + 3;
 
         //insert fields
-        let writer: ALSyntaxWriter = new ALSyntaxWriter();
+        let writer: ALSyntaxWriter = new ALSyntaxWriter(document.uri);
         writer.setIndent(indent);
         for (let i=0; i<selectedFields.length; i++) {
             writer.writeNameSourceBlock("column", writer.createName(selectedFields[i]), writer.encodeName(selectedFields[i]));
