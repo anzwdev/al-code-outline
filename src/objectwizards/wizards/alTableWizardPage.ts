@@ -23,6 +23,8 @@ export class ALTableWizardPage extends ProjectItemWizardPage {
             command : 'setData',
             data : this._tableWizardData
         });
+        //load enums
+        this.loadTypes();
     }
 
     protected getHtmlContentPath() : string {
@@ -58,6 +60,24 @@ export class ALTableWizardPage extends ProjectItemWizardPage {
 
 
         return fields;
+    }
+
+    protected async loadTypes() {
+        let enumsList = await this._toolsExtensionContext.alLangProxy.getEnumList(this._settings.getDestDirectoryUri());
+        //update types
+        if (enumsList.length > 0) {
+            let types: string[] = ['Blob', 'Boolean', 'Code', 'Date', 'DateFormula', 'DateTime', 'Decimal', 'Duration',
+                'Guid', 'Integer', 'Media', 'MediaSet', 'Option', 'RecordId', 'TableFilter',
+                'Text', 'Time'];
+
+            for (let i=0; i<enumsList.length; i++)
+                types.push('Enum ' + enumsList[i]);
+                
+            this.sendMessage({
+                command : 'setTypes',
+                data : types
+            });
+        }
     }
 
 }

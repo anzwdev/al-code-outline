@@ -184,6 +184,13 @@ export class ALSyntaxWriter {
         if ((fieldLength) && ((dataType == 'text') || (dataType == 'code')))
             fieldDataType = fieldDataType + '[' + fieldLength + ']';
 
+        if ((dataType.startsWith("enum ")) && (dataType.length > 5)) {
+            let enumType = fieldDataType.substr(5).trim();
+            if (!enumType.startsWith('"'))
+                enumType = ALSyntaxHelper.toNameText(enumType);
+            fieldDataType = "Enum " + enumType;
+        }
+
         this.writeLine("field(" + fieldId + "; " + ALSyntaxHelper.toNameText(fieldName) + "; " + fieldDataType + ")");
         this.writeStartBlock();
         this.writeProperty('Caption', ALSyntaxHelper.toStringText(fieldName));

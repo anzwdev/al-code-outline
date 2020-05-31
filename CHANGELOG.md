@@ -9,8 +9,9 @@
  - Github issue #121 - New AL File Wizard: sort properties
  - Page wizard was ignoring entered "Application Area" for fields
  - Github issue #123 - Problems with azALDevTools.showDocumentSymbols command for files other than al
+ - Github issue #126 - AL New Table Wizard - Choose Enum Type
 
- Thank you NKarolak for reporting the issue #128 and #121, fvet for issue #129 and HuFBH for issue #123
+ Thank you NKarolak for reporting issues #128 and #121, fvet for the issue #129, HuFBH for the issue #123 and rvanbekkum for the issue #126
 
 ## 1.0.47
  - Github issue #122 - codeActionsOnSave ignored 

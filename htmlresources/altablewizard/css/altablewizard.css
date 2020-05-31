@@ -2,3 +2,6 @@
     margin: 0 10px;
     flex: 1 1 100px;
 }
+.autocomplete {
+    white-space: nowrap;
+}
