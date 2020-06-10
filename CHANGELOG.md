@@ -1,5 +1,10 @@
 # Change Log
 
+## 1.0.49
+ - Github issues #118 and #131 - Symbols not visible when using Microsoft AL Extension from Nav 2018
+
+  Thank you skkulla and B0uMe for reporting your problems
+
 ## 1.0.48
  - Github issue #128 - "Add multiple fields" inserts fields above parent element properties
  - Github issue #129 - Issues with "Add Parenthesis" code fix on document save
