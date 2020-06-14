@@ -1,8 +1,8 @@
 import * as vscode from 'vscode';
 import { DevToolsExtensionContext } from "../devToolsExtensionContext";
-import { ToolsAddAppAreasRequest } from '../langserver/toolsAddAppAreasRequest';
 import { TextEditorHelper } from '../tools/textEditorHelper';
 import { NumberHelper } from '../tools/numberHelper';
+import { ToolsWorkspaceCommandRequest } from '../langserver/toolsWorkspaceCommandRequest';
 
 export class AppAreasModifier {
     private _context:DevToolsExtensionContext;
@@ -27,17 +27,20 @@ export class AppAreasModifier {
         vscode.workspace.saveAll();
         if (!workspaceUri)
             return;
-        
-        let request: ToolsAddAppAreasRequest = new ToolsAddAppAreasRequest('', workspaceUri.fsPath, name);
-        let response = await this._context.toolsLangServerClient.addAppAreas(request);
+
+        let request: ToolsWorkspaceCommandRequest = new ToolsWorkspaceCommandRequest('addAppAreas', '', workspaceUri.fsPath, {
+            appArea: name
+        });
+        let response = await this._context.toolsLangServerClient.workspaceCommand(request);
+
         if (response) {
             if ((response.error) && (response.errorMessage))
                 vscode.window.showErrorMessage(response.errorMessage);
             else
                 vscode.window.showInformationMessage(
-                    NumberHelper.zeroIfNotDef(response.noOfAppAreas).toString() +                    
+                    NumberHelper.zeroIfNotDef(response.parameters.noOfChanges).toString() +                    
                     ' application area(s) added to ' +
-                    NumberHelper.zeroIfNotDef(response.noOfFiles).toString() +
+                    NumberHelper.zeroIfNotDef(response.parameters.noOfChangedFiles).toString() +
                     ' file(s).');
         }
     }
@@ -54,12 +57,14 @@ export class AppAreasModifier {
         if (!text)
             return;
         
-        let request: ToolsAddAppAreasRequest = new ToolsAddAppAreasRequest(text, '', name);
-        let response = await this._context.toolsLangServerClient.addAppAreas(request);
+        let request: ToolsWorkspaceCommandRequest = new ToolsWorkspaceCommandRequest('addAppAreas', text, '', {
+            appArea: name
+        });
+        let response = await this._context.toolsLangServerClient.workspaceCommand(request);
         if (response) {
             if ((response.error) && (response.errorMessage))
                 vscode.window.showErrorMessage(response.errorMessage);
-            else if ((response.source) && (response.source != text) && (response.noOfAppAreas) && (response.noOfAppAreas > 0)) {
+            else if ((response.source) && (response.source != text) && (response.parameters.noOfChanges) && (response.parameters.noOfChanges > 0)) {
                 text = response.source;
                 const edit = new vscode.WorkspaceEdit();
                 var firstLine = vscode.window.activeTextEditor.document.lineAt(0);
@@ -71,7 +76,7 @@ export class AppAreasModifier {
                 edit.replace(vscode.window.activeTextEditor.document.uri, textRange, text);
                 vscode.workspace.applyEdit(edit);
                 vscode.window.showInformationMessage(
-                    response.noOfAppAreas.toString() + 
+                    response.parameters.noOfChanges.toString() + 
                     ' application area(s) added.');
             } else
                 vscode.window.showInformationMessage('There are no missing application areas.');
