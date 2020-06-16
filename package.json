@@ -151,6 +151,16 @@
 				"category": "AZ AL Dev Tools",
 				"command": "azALDevTools.AddProjectApplicationAreas",
 				"title": "Add Application Areas to the Active Project"
+			},
+			{
+				"category": "AZ AL Dev Tools",
+				"command": "azALDevTools.AddEditorToolTip",
+				"title": "Add ToolTips to the Active Editor"
+			},
+			{
+				"category": "AZ AL Dev Tools",
+				"command": "azALDevTools.AddProjectToolTip",
+				"title": "Add ToolTips to the Active Project"
 			}
 		],
 		"menus": {
