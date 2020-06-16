@@ -1,5 +1,8 @@
 # Change Log
 
+## 1.1.0
+ - New version of the language server with .net core and Mac support
+
 ## 1.0.49
  - Github issues #118 and #131 - Symbols not visible when using Microsoft AL Extension from Nav 2018
 

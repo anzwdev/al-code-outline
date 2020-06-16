@@ -1,6 +1,5 @@
 import * as vscode from 'vscode';
 import { DevToolsExtensionContext } from "../devToolsExtensionContext";
-import { ToolsAddAppAreasRequest } from '../langserver/toolsAddAppAreasRequest';
 import { AppAreasModifier } from '../alsyntaxmodifiers/appAreasModifier';
 
 export class ALCodeTransformationService {
