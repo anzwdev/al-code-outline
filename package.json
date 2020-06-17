@@ -36,7 +36,9 @@
 		"onCommand:azALDevTools.showSyntaxTree",
 		"onCommand:azALDevTools.showCodeAnalyzers",
 		"onCommand:azALDevTools.AddEditorApplicationAreas",
-		"onCommand:azALDevTools.AddProjectApplicationAreas"
+		"onCommand:azALDevTools.AddProjectApplicationAreas",
+		"onCommand:azALDevTools.AddEditorToolTip",
+		"onCommand:azALDevTools.AddProjectToolTip"
 	],
 	"main": "./out/extension.js",
 	"icon": "resources/alcodeoutline.png",

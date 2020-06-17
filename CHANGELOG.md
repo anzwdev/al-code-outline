@@ -2,6 +2,9 @@
 
 ## 1.1.0
  - New version of the language server with .net core and Mac support
+ - "Add ToolTips to the Active Editor" and "Add ToolTips to the Active Project" commands by StefanoPrimo
+
+  Thank you StefanoPrimo for your contribution
 
 ## 1.0.49
  - Github issues #118 and #131 - Symbols not visible when using Microsoft AL Extension from Nav 2018

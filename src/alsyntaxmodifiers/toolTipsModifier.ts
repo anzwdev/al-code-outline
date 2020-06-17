@@ -23,10 +23,9 @@ export class ToolTipModifier {
         vscode.workspace.saveAll();
         if (!workspaceUri)
             return;
-        let _toolTipField = await this.getFieldTooltip();
-        let _toolTipAction = await this.getActionTooltip();
         let request: ToolsWorkspaceCommandRequest = new ToolsWorkspaceCommandRequest('addToolTips', '', workspaceUri.fsPath, {
-            toolTipField: _toolTipField, toolTipAction: _toolTipAction
+            toolTipField: this.getFieldTooltip(workspaceUri), 
+            toolTipAction: this.getActionTooltip(workspaceUri)
         });
         let response = await this._context.toolsLangServerClient.workspaceCommand(request);
 
@@ -48,8 +47,12 @@ export class ToolTipModifier {
         var text = vscode.window.activeTextEditor.document.getText();
         if (!text)
             return;
+        let documentUri = vscode.window.activeTextEditor.document.uri;
 
-        let request: ToolsWorkspaceCommandRequest = new ToolsWorkspaceCommandRequest('addToolTips', text, '', {});
+        let request: ToolsWorkspaceCommandRequest = new ToolsWorkspaceCommandRequest('addToolTips', text, '', {
+            toolTipField: this.getFieldTooltip(documentUri), 
+            toolTipAction: this.getActionTooltip(documentUri)
+        });
         let response = await this._context.toolsLangServerClient.workspaceCommand(request);
         if (response) {
             if ((response.error) && (response.errorMessage))
@@ -73,17 +76,20 @@ export class ToolTipModifier {
         }
     }
 
-    async getActionTooltip(): Promise<string | undefined> {
-        let toolTip = StringHelper.emptyIfNotDef(vscode.workspace.getConfiguration('alOutline').get('pageActionToolTip'));
-        if (toolTip == "") {
-            toolTip = "Executes the action %1";
+    protected getActionTooltip(uri: vscode.Uri | undefined): string {
+        let toolTip = StringHelper.emptyIfNotDef(
+            vscode.workspace.getConfiguration('alOutline', uri).get('pageActionToolTip'));
+        if (toolTip == '') {
+            toolTip = 'Executes the action %1';
         }
         return toolTip;
     }
-    async getFieldTooltip(): Promise<string | undefined> {
-        let toolTip = StringHelper.emptyIfNotDef(vscode.workspace.getConfiguration('alOutline').get('pageFieldToolTip'));
-        if (toolTip == "") {
-            toolTip = "Specifies the value for the field %1";
+
+    protected getFieldTooltip(uri: vscode.Uri | undefined): string {
+        let toolTip = StringHelper.emptyIfNotDef(
+            vscode.workspace.getConfiguration('alOutline', uri).get('pageFieldToolTip'));
+        if (toolTip == '') {
+            toolTip = 'Specifies the value for the field %1';
         }
         return toolTip;
     }
