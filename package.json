@@ -151,6 +151,16 @@
 				"category": "AZ AL Dev Tools",
 				"command": "azALDevTools.AddProjectApplicationAreas",
 				"title": "Add Application Areas to the Active Project"
+			},
+			{
+				"category": "AZ AL Dev Tools",
+				"command": "azALDevTools.AddEditorToolTip",
+				"title": "Add ToolTips to the Active Editor"
+			},
+			{
+				"category": "AZ AL Dev Tools",
+				"command": "azALDevTools.AddProjectToolTip",
+				"title": "Add ToolTips to the Active Project"
 			}
 		],
 		"menus": {
@@ -321,6 +331,16 @@
 						"uniqueItems": true,
 						"description": "Specifies which code-actions should be applied when a file is saved. Valid values are SortReportColumns, SortProcedures, SortProperties",
 						"scope": "resource"
+					},
+					"alOutline.pageActionToolTip": {
+						"type": "string",
+						"default": "Executes the action %1",
+						"description": "The default tooltip to use for page Action. Use %1 as placeholder for use action's caption or name"
+					},
+					"alOutline.pageFieldToolTip": {
+						"type": "string",
+						"default": "Specifies the value for the field %1",
+						"description": "The default tooltip to use for page fields. Use %1 as placeholder for use field's caption or name"
 					}
 				}
 			}
