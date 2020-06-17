@@ -3,6 +3,7 @@ import { DevToolsExtensionContext } from "../devToolsExtensionContext";
 import { TextEditorHelper } from '../tools/textEditorHelper';
 import { NumberHelper } from '../tools/numberHelper';
 import { ToolsWorkspaceCommandRequest } from '../langserver/toolsWorkspaceCommandRequest';
+import { StringHelper } from '../tools/stringHelper';
 
 export class ToolTipModifier {
     private _context: DevToolsExtensionContext;
@@ -22,8 +23,11 @@ export class ToolTipModifier {
         vscode.workspace.saveAll();
         if (!workspaceUri)
             return;
-
-        let request: ToolsWorkspaceCommandRequest = new ToolsWorkspaceCommandRequest('addToolTips', '', workspaceUri.fsPath, {});
+        let _toolTipField = await this.getFieldTooltip();
+        let _toolTipAction = await this.getActionTooltip();
+        let request: ToolsWorkspaceCommandRequest = new ToolsWorkspaceCommandRequest('addToolTips', '', workspaceUri.fsPath, {
+            toolTipField: _toolTipField, toolTipAction: _toolTipAction
+        });
         let response = await this._context.toolsLangServerClient.workspaceCommand(request);
 
         if (response) {
@@ -69,5 +73,19 @@ export class ToolTipModifier {
         }
     }
 
+    async getActionTooltip(): Promise<string | undefined> {
+        let toolTip = StringHelper.emptyIfNotDef(vscode.workspace.getConfiguration('alOutline').get('pageActionToolTip'));
+        if (toolTip == "") {
+            toolTip = "Executes the action %1";
+        }
+        return toolTip;
+    }
+    async getFieldTooltip(): Promise<string | undefined> {
+        let toolTip = StringHelper.emptyIfNotDef(vscode.workspace.getConfiguration('alOutline').get('pageFieldToolTip'));
+        if (toolTip == "") {
+            toolTip = "Specifies the value for the field %1";
+        }
+        return toolTip;
+    }
 
 }
