@@ -2,7 +2,7 @@
 	"name": "al-code-outline",
 	"displayName": "AZ AL Dev Tools/AL Code Outline",
 	"description": "AZ AL Development Tools: AL code outline, object browser, object creators",
-	"version": "1.1.0",
+	"version": "2.0.0",
 	"publisher": "andrzejzwierzchowski",
 	"engines": {
 		"vscode": "^1.44.0"
@@ -310,7 +310,7 @@
 					"alOutline.fixCodeCopMissingParenthesesOnSave": {
 						"type": "boolean",
 						"default": false,
-						"description": "Fix Code Cop 'Missiong Parentheses' warning on save when 'editor.codeActionsOnSave' setting contains 'source.fixAll' value"
+						"description": "Fix Code Cop 'Missing Parentheses' warning on save when 'editor.codeActionsOnSave' setting contains 'source.fixAll' value"
 					},
 					"alOutline.codeActionsOnSave": {
 						"type": "array",
@@ -336,13 +336,13 @@
 					},
 					"alOutline.pageActionToolTip": {
 						"type": "string",
-						"default": "Executes the action %1",
-						"description": "The default tooltip to use for page Action. Use %1 as placeholder for use action's caption or name"
+						"default": "Executes the %1 action",
+						"description": "The default tooltip template for page actions. Use %1 as placeholder for action caption or name"
 					},
 					"alOutline.pageFieldToolTip": {
 						"type": "string",
-						"default": "Specifies the value for the field %1",
-						"description": "The default tooltip to use for page fields. Use %1 as placeholder for use field's caption or name"
+						"default": "Specifies the value of %1 field",
+						"description": "The default tooltip template for page fields. Use %1 as placeholder for field caption or name"
 					}
 				}
 			}

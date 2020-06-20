@@ -1,8 +1,8 @@
 import * as vscode from 'vscode';
 import * as path from 'path';
 import { DevToolsExtensionContext } from '../devToolsExtensionContext';
-import { AZSymbolKind } from '../symbolLibraries/azSymbolKind';
-import { AZSymbolsLibrary } from '../symbolLibraries/azSymbolsLibrary';
+import { AZSymbolKind } from '../symbollibraries/azSymbolKind';
+import { AZSymbolsLibrary } from '../symbollibraries/azSymbolsLibrary';
 import { AZSymbolInformation } from '../symbollibraries/azSymbolInformation';
 
 export class SymbolsTreeProvider implements vscode.TreeDataProvider<AZSymbolInformation> {

@@ -11,6 +11,7 @@ This extension was originally named 'AL Code Outline' because it started as AL c
 - Symbols tree view
 - AL code generators
 - Code actions
+- Code transformation commands
 - Action images browser
 - Documentation comments support
 - Code analyzers rules viewer
@@ -77,18 +78,18 @@ When new objects are created, generators use "CRS AL Language Extension" templat
 
 Extension adds VS Code editor code actions to some of al elements to help developers modify or insert code quickly. At this these types of actions available:
  - Sorting actions that can sort 
-  - "Sort procedures" available when cursor is at the first line of a procedure. This action will sort procedures of the same type (i.e. local) in a natural order
-  - "Sort data item columns" available when cursor is at report data item, column or first line of the object declaration. This action will sort all columns inside data item in a natural order. If it is invoked from the first line of the object, it will sort columns inside all data items.
-  - "Sort properties" available from the first line of any object declaration. It will sort properties of every element declared inside the object.
-  - "Sort variables" available from the first line of any object declaration or from "var" keyword of local or global variables section
+  - `Sort procedures` available when cursor is at the first line of a procedure. This action will sort procedures of the same type (i.e. local) in a natural order
+  - `Sort data item columns` available when cursor is at report data item, column or first line of the object declaration. This action will sort all columns inside data item in a natural order. If it is invoked from the first line of the object, it will sort columns inside all data items.
+  - `Sort properties` available from the first line of any object declaration. It will sort properties of every element declared inside the object.
+  - `Sort variables` available from the first line of any object declaration or from "var" keyword of local or global variables section
  - Code generation actions
-  - "Create interface" action available on the first line of codeunit declaration, it creates a new interface with all public functions from the codeunit
- - "Add multiple fields" when cursor is at these elements in the editor:
+  - `Create interface` action available on the first line of codeunit declaration, it creates a new interface with all public functions from the codeunit
+ - `Add multiple fields` when cursor is at these elements in the editor:
   - "group" and "repeater" on pages
   - "group", "repeater", "addfirst", "addlast", "addafter" and "addbefore" on page extensions
   - "dataitem" on reports
   - "dataitem" on queries
-  There are also "Add multiple field elements" and "Add multiple field attributes" actions available at "tableelement", "fieldelement" and "fieldattribute" elements on xml ports.
+  There are also `Add multiple field elements` and `Add multiple field attributes` actions available at "tableelement", "fieldelement" and "fieldattribute" elements on xml ports.
   Fields can be added is selection or alphabetic order, it can be controlled using "alOutline.fieldsSelectionOrder" setting. Default value is "selection order".
 
 ![Add multiple fields](resources/screen2-addfieldscodeaction.gif)
@@ -108,6 +109,16 @@ There are also some additional code actions available for warnings and errors re
  - add parentheses for diagnostics AA0008,
  - remove variable for diagnostics AA0137,
  - add CopyStr for diagnostics AA0139
+
+### Code transformation commands
+
+Extension adds a few commands that allow to automatically modify al code in the current editor or in all project files. Currently these commands are available:
+* `Add Application Areas to the Active Editor`: adds missing application areas to all page controls in the current editor
+* `Add Application Areas to the Active Project`: adds missing application areas to all page controls in the current project
+* `Add ToolTips to the Active Editor`: adds missing tooltips to all page fields and actions in the current editor
+* `Add ToolTips to the Active Project`: adds missing tooltips to all page fields and actions in the current project
+
+Default application area and templates for field and action tooltips can be specified using these VS Code settings: `alOutline.defaultAppArea`, `alOutline.pageActionToolTip` and `alOutline.pageFieldToolTip` 
 
 ### Action images browser
 
@@ -164,6 +175,10 @@ This extension contributes the following settings:
 * `alOutline.stripNonAlphanumericCharactersFromObjectNames`: always strip non-alphanumeric characters from generated object names
 * `alOutline.webClientPort`: web client port number, use 0 for default http/https ports
 * `alOutline.openDefinitionInNewTab`: set to true to always open documents in a new tab from "Go to definition" command in "AL Object Browser"
+* `fieldsSelectionOrder`: specifies how "Add multiple fields" functionality adds fields, available options are: "alphabetic" and "selection order"
+* `alOutline.codeActionsOnSave`: list of code actions that should be run on document save, available options are: SortReportColumns, SortProperties, SortProcedures, SortVariables
+* `alOutline.pageActionToolTip`: default tooltip template for page actions. Use %1 as placeholder for action caption or name
+* `alOutline.pageFieldToolTip`: The default tooltip template for page fields. Use %1 as placeholder for field caption or name
 
 ## Known Issues
 
