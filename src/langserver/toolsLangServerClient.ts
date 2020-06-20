@@ -19,11 +19,11 @@ import { ToolsGetSyntaxTreeSymbolsRequest } from './toolsGetSyntaxTreeSymbolRequ
 import { ToolsCloseSyntaxTreeRequest } from './toolsCloseSyntaxTreeRequest';
 import { ToolsGetCodeAnalyzersRulesRequest } from './toolsGetCodeAnalyzersRulesRequest';
 import { ToolsGetCodeAnalyzersRulesResponse } from './toolsGetCodeAnalyzersRulesResponse';
-import { ToolsAddAppAreasRequest } from './toolsAddAppAreasRequest';
-import { ToolsAddAppAreasResponse } from './toolsAddAppAreasResponse';
 import { ToolsGetFullSyntaxTreeRequest } from './toolsGetFullSyntaxTreeRequest';
 import { ToolsGetFullSyntaxTreeResponse } from './toolsGetFullSyntaxTreeResponse';
 import { ALFullSyntaxTreeHelper } from '../symbollibraries/alFullSyntaxTreeHelper';
+import { ToolsWorkspaceCommandRequest } from './toolsWorkspaceCommandRequest';
+import { ToolsWorkspaceCommandResponse } from './toolsWorkspaceCommandResponse';
 
 export class ToolsLangServerClient implements vscode.Disposable {
     _context : vscode.ExtensionContext;
@@ -48,8 +48,19 @@ export class ToolsLangServerClient implements vscode.Disposable {
 
     protected initialize() {
         try {
+            let os = require('os');
+            let platform = os.platform();
+            let langServerPath : string;
+
             //find binaries path
-            let langServerPath : string = this._context.asAbsolutePath("bin/AZALDevToolsServer.exe");
+            if (platform == "win32")
+                langServerPath = this._context.asAbsolutePath("bin/netframework/AZALDevToolsServer.NetFramework.exe");
+            else {
+                langServerPath = this._context.asAbsolutePath("bin/netcore/" + platform + "/AZALDevToolsServer.NetCore");
+                let fs = require('fs');
+                fs.chmodSync(langServerPath, 0o755);
+            }
+
             //start child process
             this._childProcess = cp.spawn(langServerPath, [this._alExtensionPath]);
             if (this._childProcess) {
@@ -206,12 +217,11 @@ export class ToolsLangServerClient implements vscode.Disposable {
         }
     }
 
-    public async addAppAreas(params: ToolsAddAppAreasRequest) : Promise<ToolsAddAppAreasResponse | undefined> {
+    public async workspaceCommand(params: ToolsWorkspaceCommandRequest) : Promise<ToolsWorkspaceCommandResponse | undefined> {
         try {
             if (!this._connection)
                 return undefined;
-            
-            let reqType = new rpc.RequestType<ToolsAddAppAreasRequest, ToolsAddAppAreasResponse, void, void>('al/addappareas');
+            let reqType = new rpc.RequestType<ToolsWorkspaceCommandRequest, ToolsWorkspaceCommandResponse, void, void>('al/workspacecommand');
             let val = await this._connection.sendRequest(reqType, params);
             return val;
         }
@@ -219,6 +229,7 @@ export class ToolsLangServerClient implements vscode.Disposable {
             return undefined;
         }
     }
+
 
     public isEnabled() : boolean {
         if (this._connection)

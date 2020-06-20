@@ -2,7 +2,7 @@
 	"name": "al-code-outline",
 	"displayName": "AZ AL Dev Tools/AL Code Outline",
 	"description": "AZ AL Development Tools: AL code outline, object browser, object creators",
-	"version": "1.0.49",
+	"version": "2.0.0",
 	"publisher": "andrzejzwierzchowski",
 	"engines": {
 		"vscode": "^1.44.0"
@@ -36,7 +36,9 @@
 		"onCommand:azALDevTools.showSyntaxTree",
 		"onCommand:azALDevTools.showCodeAnalyzers",
 		"onCommand:azALDevTools.AddEditorApplicationAreas",
-		"onCommand:azALDevTools.AddProjectApplicationAreas"
+		"onCommand:azALDevTools.AddProjectApplicationAreas",
+		"onCommand:azALDevTools.AddEditorToolTip",
+		"onCommand:azALDevTools.AddProjectToolTip"
 	],
 	"main": "./out/extension.js",
 	"icon": "resources/alcodeoutline.png",
@@ -151,6 +153,16 @@
 				"category": "AZ AL Dev Tools",
 				"command": "azALDevTools.AddProjectApplicationAreas",
 				"title": "Add Application Areas to the Active Project"
+			},
+			{
+				"category": "AZ AL Dev Tools",
+				"command": "azALDevTools.AddEditorToolTip",
+				"title": "Add ToolTips to the Active Editor"
+			},
+			{
+				"category": "AZ AL Dev Tools",
+				"command": "azALDevTools.AddProjectToolTip",
+				"title": "Add ToolTips to the Active Project"
 			}
 		],
 		"menus": {
@@ -298,7 +310,7 @@
 					"alOutline.fixCodeCopMissingParenthesesOnSave": {
 						"type": "boolean",
 						"default": false,
-						"description": "Fix Code Cop 'Missiong Parentheses' warning on save when 'editor.codeActionsOnSave' setting contains 'source.fixAll' value"
+						"description": "Fix Code Cop 'Missing Parentheses' warning on save when 'editor.codeActionsOnSave' setting contains 'source.fixAll' value"
 					},
 					"alOutline.codeActionsOnSave": {
 						"type": "array",
@@ -321,6 +333,16 @@
 						"uniqueItems": true,
 						"description": "Specifies which code-actions should be applied when a file is saved. Valid values are SortReportColumns, SortProcedures, SortProperties",
 						"scope": "resource"
+					},
+					"alOutline.pageActionToolTip": {
+						"type": "string",
+						"default": "Executes the %1 action",
+						"description": "The default tooltip template for page actions. Use %1 as placeholder for action caption or name"
+					},
+					"alOutline.pageFieldToolTip": {
+						"type": "string",
+						"default": "Specifies the value of %1 field",
+						"description": "The default tooltip template for page fields. Use %1 as placeholder for field caption or name"
 					}
 				}
 			}

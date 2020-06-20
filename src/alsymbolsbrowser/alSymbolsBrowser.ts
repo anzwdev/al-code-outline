@@ -1,7 +1,7 @@
 'use strict';
 
 import * as path from 'path';
-import { AZSymbolsLibrary } from '../symbolLibraries/azSymbolsLibrary';
+import { AZSymbolsLibrary } from '../symbollibraries/azSymbolsLibrary';
 import { AZSymbolInformation } from '../symbollibraries/azSymbolInformation';
 import { DevToolsExtensionContext } from '../devToolsExtensionContext';
 import { ALBaseSymbolsBrowser } from './alBaseSymbolsBrowser';

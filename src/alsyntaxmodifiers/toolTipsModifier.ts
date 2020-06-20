@@ -3,33 +3,29 @@ import { DevToolsExtensionContext } from "../devToolsExtensionContext";
 import { TextEditorHelper } from '../tools/textEditorHelper';
 import { NumberHelper } from '../tools/numberHelper';
 import { ToolsWorkspaceCommandRequest } from '../langserver/toolsWorkspaceCommandRequest';
+import { StringHelper } from '../tools/stringHelper';
 
-export class AppAreasModifier {
-    private _context:DevToolsExtensionContext;
+export class ToolTipModifier {
+    private _context: DevToolsExtensionContext;
 
     constructor(context: DevToolsExtensionContext) {
         this._context = context;
     }
 
-    async AddMissinAppAreaToWorkspace(name: string | undefined) {
+    async AddMissinToolTipToWorkspace(name: string | undefined) {
         let confirmation = await vscode.window.showInformationMessage(
-            'Do you want to add missing application areas to all files in the current project folder?', 
+            'Do you want to add missing tool tips to all files in the current project folder?',
             'Yes', 'No');
         if (confirmation !== 'Yes')
-            return;
-
-        if (!name)
-            name = await this.getApplicationAreaName();
-        if (!name)
             return;
 
         let workspaceUri = TextEditorHelper.getActiveWorkspaceFolderUri();
         vscode.workspace.saveAll();
         if (!workspaceUri)
             return;
-
-        let request: ToolsWorkspaceCommandRequest = new ToolsWorkspaceCommandRequest('addAppAreas', '', workspaceUri.fsPath, {
-            appArea: name
+        let request: ToolsWorkspaceCommandRequest = new ToolsWorkspaceCommandRequest('addToolTips', '', workspaceUri.fsPath, {
+            toolTipField: this.getFieldTooltip(workspaceUri), 
+            toolTipAction: this.getActionTooltip(workspaceUri)
         });
         let response = await this._context.toolsLangServerClient.workspaceCommand(request);
 
@@ -38,27 +34,24 @@ export class AppAreasModifier {
                 vscode.window.showErrorMessage(response.errorMessage);
             else
                 vscode.window.showInformationMessage(
-                    NumberHelper.zeroIfNotDef(response.parameters.noOfChanges).toString() +                    
-                    ' application area(s) added to ' +
+                    NumberHelper.zeroIfNotDef(response.parameters.noOfChanges).toString() +
+                    ' toolTip(s) added to ' +
                     NumberHelper.zeroIfNotDef(response.parameters.noOfChangedFiles).toString() +
                     ' file(s).');
         }
     }
 
-    async AddMissingAppAreaToActiveEditor(name: string | undefined) {
-        if (!name)
-            name = await this.getApplicationAreaName();
-        if (!name)
-            return;
-            
+    async AddMissingToolTipToActiveEditor(name: string | undefined) {
         if (!vscode.window.activeTextEditor)
             return;
         var text = vscode.window.activeTextEditor.document.getText();
         if (!text)
             return;
-        
-        let request: ToolsWorkspaceCommandRequest = new ToolsWorkspaceCommandRequest('addAppAreas', text, '', {
-            appArea: name
+        let documentUri = vscode.window.activeTextEditor.document.uri;
+
+        let request: ToolsWorkspaceCommandRequest = new ToolsWorkspaceCommandRequest('addToolTips', text, '', {
+            toolTipField: this.getFieldTooltip(documentUri), 
+            toolTipAction: this.getActionTooltip(documentUri)
         });
         let response = await this._context.toolsLangServerClient.workspaceCommand(request);
         if (response) {
@@ -76,26 +69,29 @@ export class AppAreasModifier {
                 edit.replace(vscode.window.activeTextEditor.document.uri, textRange, text);
                 vscode.workspace.applyEdit(edit);
                 vscode.window.showInformationMessage(
-                    response.parameters.noOfChanges.toString() + 
-                    ' application area(s) added.');
+                    response.parameters.noOfChanges.toString() +
+                    ' ToolTip(s) added.');
             } else
-                vscode.window.showInformationMessage('There are no missing application areas.');
+                vscode.window.showInformationMessage('There are no missing tool tips.');
         }
     }
 
-    async getApplicationAreaName(): Promise<string | undefined> {
-        let appAreasList = ['Basic', 'FixedAsset', 'All', 'Custom'];
-        
-        //ask for Application Area Type
-        let appAreaName = await vscode.window.showQuickPick(appAreasList, {
-            canPickMany: false,
-            placeHolder: 'Select Application Area'
-        });
-        if (appAreaName === 'Custom')
-            appAreaName = await vscode.window.showInputBox({
-                placeHolder: "Enter your custom Application Area"
-            });
-        return appAreaName;
+    protected getActionTooltip(uri: vscode.Uri | undefined): string {
+        let toolTip = StringHelper.emptyIfNotDef(
+            vscode.workspace.getConfiguration('alOutline', uri).get('pageActionToolTip'));
+        if (toolTip == '') {
+            toolTip = 'Executes the action %1';
+        }
+        return toolTip;
+    }
+
+    protected getFieldTooltip(uri: vscode.Uri | undefined): string {
+        let toolTip = StringHelper.emptyIfNotDef(
+            vscode.workspace.getConfiguration('alOutline', uri).get('pageFieldToolTip'));
+        if (toolTip == '') {
+            toolTip = 'Specifies the value for the field %1';
+        }
+        return toolTip;
     }
 
 }
