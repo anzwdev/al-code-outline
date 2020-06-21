@@ -1,5 +1,9 @@
 # Change Log
 
+## 2.0.1
+ - Default field tooltip demplate updated
+ - "Add ToolTips to the Active Editor" screenshot added to the documentation 
+
 ## 2.0.0
  - New version of the language server with .net core and Mac support
  - "Add ToolTips to the Active Editor" and "Add ToolTips to the Active Project" commands by StefanoPrimo
