@@ -94,6 +94,8 @@ class AZGridView {
             this._container.removeChild(this._loadingDiv);
             this._loadingDiv = undefined;
         }
+        if (!data)
+            data = [];
         this._data = data;
         this.renderTableHeader();
         this.renderData();
@@ -743,8 +745,11 @@ class AZGridView {
             }
             cell.innerText = value;
 
-            if ((value != this._originalValue) && (row.tabData) && (updateData))
+            if ((value != this._originalValue) && (row.tabData) && (updateData)) {
                 row.tabData[this._columns[cell.cellIndex].name] = value;
+                if (this.cellChanged)
+                    this.cellChanged(this._currRow, this._columns[cell.cellIndex].name, value);
+            }
             
             this._inEditMode = false;
         }

@@ -1,5 +1,8 @@
 # Change Log
 
+## 2.0.2
+ - Get full syntax tree api bugfix
+
 ## 2.0.1
  - Default field tooltip demplate updated
  - "Add ToolTips to the Active Editor" screenshot added to the documentation 
