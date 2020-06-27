@@ -2,7 +2,7 @@
 	"name": "al-code-outline",
 	"displayName": "AZ AL Dev Tools/AL Code Outline",
 	"description": "AZ AL Development Tools: AL code outline, object browser, object creators",
-	"version": "2.0.2",
+	"version": "2.0.3",
 	"publisher": "andrzejzwierzchowski",
 	"engines": {
 		"vscode": "^1.44.0"
@@ -39,7 +39,7 @@
 		"onCommand:azALDevTools.AddProjectApplicationAreas",
 		"onCommand:azALDevTools.AddEditorToolTip",
 		"onCommand:azALDevTools.AddProjectToolTip",
-		"onCustomEditor:azALDevTools.appJsonEditor"
+		"onCustomEditor:azALDevTools.jsonEditor"
 	],
 	"main": "./out/extension.js",
 	"icon": "resources/alcodeoutline.png",
@@ -234,12 +234,18 @@
 		},
 		"customEditors": [
 			{
-				"viewType": "azALDevTools.appJsonEditor",
-				"displayName": "Project Properties",
+				"viewType": "azALDevTools.jsonEditor",
+				"displayName": "Visual Editor",
 				"priority": "option",
 				"selector": [
 					{
 						"filenamePattern": "app.json"
+					},
+					{
+						"filenamePattern": "*.ruleset.json"
+					},
+					{						
+						"filenamePattern": "AppSourceCop.json"						
 					}
 				]
 			}

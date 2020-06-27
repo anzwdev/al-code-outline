@@ -1,6 +1,9 @@
 import * as vscode from 'vscode';
 import { DevToolsExtensionContext } from '../devToolsExtensionContext';
-import { AppJsonEditorProvider } from '../editors/appjsoneditor/appJsonEditorProvider';
+import { JsonEditorProvider } from '../editors/jsonEditorProvider';
+//import { AppJsonEditorProvider } from '../editors/appJsonEditorProvider';
+//import { RuleSetEditorProvider } from '../editors/ruleSetEditorProvider';
+//import { AppSourceCopEditorProvider } from '../editors/appSourceCopEditorProvider';
 
 export class EditorsService {
     protected _context: DevToolsExtensionContext;   
@@ -12,8 +15,25 @@ export class EditorsService {
 
     protected registerEditors() {
         this._context.vscodeExtensionContext.subscriptions.push(
+            vscode.window.registerCustomEditorProvider('azALDevTools.jsonEditor',
+                new JsonEditorProvider(this._context)));
+        
+        //This code is disabled because of a bug in visual studio code
+        //VS Code does not allow to have different default editors for files
+        //with the same extension
+        /*
+        this._context.vscodeExtensionContext.subscriptions.push(
             vscode.window.registerCustomEditorProvider('azALDevTools.appJsonEditor',
                 new AppJsonEditorProvider(this._context)));
+        
+        this._context.vscodeExtensionContext.subscriptions.push(
+            vscode.window.registerCustomEditorProvider('azALDevTools.ruleSetEditor',
+                new RuleSetEditorProvider(this._context)));
+
+        this._context.vscodeExtensionContext.subscriptions.push(
+            vscode.window.registerCustomEditorProvider('azALDevTools.appSourceCopEditor',
+                new AppSourceCopEditorProvider(this._context)));
+        */
     }
 
 }

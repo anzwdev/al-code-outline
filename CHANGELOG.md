@@ -1,5 +1,13 @@
 # Change Log
 
+## 2.0.3
+ - app.json editor
+ - RuleSet editor
+ - AppSourceCop.json editor
+ - Issue #133 - Documentation comment does not add <returns> for named return value
+
+ Thank you Arend-Jan Kauffmann for the idea of app.json editor and rvanbekkum for reporting the issue #133
+
 ## 2.0.2
  - Get full syntax tree api bugfix
 

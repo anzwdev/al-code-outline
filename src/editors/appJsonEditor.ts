@@ -1,6 +1,5 @@
-import { DevToolsExtensionContext } from "../../devToolsExtensionContext";
-import { JsonFormEditor } from "../jsonFormEditor";
-import { basename } from "path";
+import { DevToolsExtensionContext } from "../devToolsExtensionContext";
+import { JsonFormEditor } from "./jsonFormEditor";
 
 export class AppJsonEditor extends JsonFormEditor {
     

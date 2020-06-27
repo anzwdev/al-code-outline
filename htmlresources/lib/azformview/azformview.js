@@ -39,9 +39,7 @@ class AZFormView {
         field.tabIndex = this._tabView.noOfTabs() - 1;
         let lineElement = document.createElement("div");
         lineElement.className = "formline";
-
-        lineElement.dataset.tabIndex = field.tabIndex;
-        
+       
         let captionElement = document.createElement("div");
         captionElement.className = "formcaption";
         captionElement.innerText = field.caption;
@@ -82,7 +80,6 @@ class AZFormView {
                        
                 field.editor = document.createElement("div");
                 field.editor.className = "azgridviewcont";
-                field.editor.tabIndex = 100 + idx;
                 field.editor.id = "fld" + field.name;
 
                 if (field.inline)

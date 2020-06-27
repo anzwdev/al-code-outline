@@ -1,8 +1,8 @@
 import * as vscode from 'vscode';
-import { AppJsonEditor } from './appJsonEditor';
-import { DevToolsExtensionContext } from '../../devToolsExtensionContext';
+import { DevToolsExtensionContext } from '../devToolsExtensionContext';
+import { AppSourceCopEditor } from './appSourceCopEditor';
 
-export class AppJsonEditorProvider implements vscode.CustomTextEditorProvider {
+export class AppSourceCopEditorProvider implements vscode.CustomTextEditorProvider {
     protected _devToolsContext: DevToolsExtensionContext;
 
     constructor(devToolsContext: DevToolsExtensionContext) {
@@ -10,7 +10,7 @@ export class AppJsonEditorProvider implements vscode.CustomTextEditorProvider {
     }
 
     public async resolveCustomTextEditor(document: vscode.TextDocument, webviewPanel: vscode.WebviewPanel, token: vscode.CancellationToken): Promise<void> {
-        let editor: AppJsonEditor = new AppJsonEditor(this._devToolsContext);
+        let editor: AppSourceCopEditor = new AppSourceCopEditor(this._devToolsContext);
         editor.resolveCustomTextEditor(document, webviewPanel);
     }
 
