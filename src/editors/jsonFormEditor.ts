@@ -2,7 +2,6 @@ import { FormEditor } from "./formEditor";
 import { DevToolsExtensionContext } from "../devToolsExtensionContext";
 
 export class JsonFormEditor extends FormEditor {
-    
     constructor(devToolsContext : DevToolsExtensionContext, title : string | undefined) {
         super(devToolsContext, title);
     }
@@ -14,11 +13,12 @@ export class JsonFormEditor extends FormEditor {
     protected onDataChanged(data: any) {
         if (!data)
             data = {};
-
+        
         //sort fields
+        /*
         if (this._currentFields) {
             let sorted: any = {};
-
+            
             //add fields from the definition
             for (let i=0; i < this._currentFields.length; i++) {
                 let name: string = this._currentFields[i].name; 
@@ -32,11 +32,16 @@ export class JsonFormEditor extends FormEditor {
 
             data = sorted;
         }
+        */
 
         this.updateTextDocumentFromJson(data);        
     }
 
-    protected getDocumentData() {
+    protected onBeforeDataSave(data: any) {
+
+    }
+
+    protected getDocumentData(): any {
         return this.getTextDocumentAsJson(false);
     }
 

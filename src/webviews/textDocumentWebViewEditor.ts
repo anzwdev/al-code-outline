@@ -1,6 +1,9 @@
 import * as vscode from 'vscode';
 import { BaseWebViewEditor } from "./baseWebViewEditor";
 import { DevToolsExtensionContext } from '../devToolsExtensionContext';
+import { StringHelper } from '../tools/stringHelper';
+import { getVSCodeDownloadUrl } from 'vscode-test/out/util';
+import { EditorsService } from '../services/editorsService';
 
 export class TextDocumentWebViewEditor extends BaseWebViewEditor {
     public document: vscode.TextDocument | undefined;
@@ -35,12 +38,44 @@ export class TextDocumentWebViewEditor extends BaseWebViewEditor {
         if (this.document) {
             const edit = new vscode.WorkspaceEdit();
 
+            //compute min. edit
+            let docText = this.document.getText();
+            let docLen = docText.length;
+            let newLen = newText.length;
+            let startEQ = StringHelper.equalStartLength(docText, newText);
+            let endEQ = StringHelper.equalEndLength(docText, newText);           
+            if ((startEQ + endEQ) > docLen)
+                endEQ = docLen - startEQ;
+            if ((startEQ + endEQ) > newLen)
+                endEQ = newLen - startEQ;
+
+            if ((startEQ + endEQ) == docLen) {
+               if (docLen != newLen)
+                    edit.insert(
+                        this.document.uri,
+                        this.document.positionAt(startEQ), 
+                        newText.substr(startEQ, newLen - startEQ - endEQ)); 
+            } else if ((startEQ + endEQ) == newLen) {
+                edit.delete(
+                    this.document.uri,
+                    new vscode.Range(
+                        this.document.positionAt(startEQ),
+                        this.document.positionAt(docLen - endEQ)));
+            } else {
+                edit.replace(
+                    this.document.uri,
+                    new vscode.Range(
+                        this.document.positionAt(startEQ),
+                        this.document.positionAt(docLen - endEQ)),
+                    newText.substr(startEQ, newLen - startEQ - endEQ));
+            }
+
             // Just replace the entire document every time for this example extension.
             // A more complete extension should compute minimal edits instead.
-            edit.replace(
-                this.document.uri,
-                new vscode.Range(0, 0, this.document.lineCount, 0),
-                newText);
+//            edit.replace(
+//                this.document.uri,
+//                new vscode.Range(0, 0, this.document.lineCount, 0),
+//                newText);
             
             this._inUpdateMode = true;
             success = await vscode.workspace.applyEdit(edit);

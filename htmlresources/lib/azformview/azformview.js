@@ -5,6 +5,9 @@ class AZFormView {
         this._fields = fields;
         this._mainElement = document.getElementById(elementId);
         this._tabView = new AZTabView(elementId);
+        this._tabView.tabContentFocused = (idx => {
+            this.onTabContentFocused(idx);
+        });
 
         this.renderView();
     }
@@ -28,11 +31,11 @@ class AZFormView {
 
         if (field.type == "group") {
             this._tabView.addTab(field.caption);
+            field.tabIndex = this._tabView.noOfTabs() - 1;
             return;
         }
 
-        let gridElement = undefined;
-
+        field.tabIndex = this._tabView.noOfTabs() - 1;
         let lineElement = document.createElement("div");
         lineElement.className = "formline";
         
@@ -45,36 +48,55 @@ class AZFormView {
         fieldElement.className = "formfield";
             
         if (field.type == "string") {
-            fieldElement.appendChild(this.createEditorField(idx, field, "text"));
+            field.editor = this.createEditorField(idx, field, "text");
+            fieldElement.appendChild(field.editor);
         } else if (field.type == "boolean") {
-            fieldElement.appendChild(this.createEditorField(idx, field, "checkbox"));
+            field.editor = this.createEditorField(idx, field, "checkbox");
+            fieldElement.appendChild(field.editor);
         }
         lineElement.appendChild(fieldElement);
 
         this._tabView.appendContentChild(lineElement);
-
         
-        if (field.type == "array") {
+        if ((field.type == "array") || (field.type == "list")) {
+            let isList = (field.type == "list"); 
+            
+            if (isList) {
+                field.inline = true;
+                field.fields = [{
+                    autocomplete: field.autocomplete
+                }]
+            };
+
             if (field.fields) {
-                lineElement = document.createElement("div");
-                lineElement.className = "formline";        
-       
-                let gridElement = document.createElement("div");
-                gridElement.className = "azgridviewcont";
-                gridElement.id = "fld" + field.name;
-                lineElement.appendChild(gridElement);
-                
-                this._tabView.appendContentChild(lineElement);
-                
-                field.gridView = new AZGridView(gridElement.id, field.fields,
+                if (!field.inline) {
+                    lineElement = document.createElement("div");
+                    lineElement.className = "formline";        
+                }
+                       
+                field.editor = document.createElement("div");
+                field.editor.className = "azgridviewcont";
+                field.editor.tabIndex = 100 + idx;
+                field.editor.id = "fld" + field.name;
+
+                if (field.inline)
+                    fieldElement.appendChild(field.editor);
+                else {
+                    lineElement.appendChild(field.editor);                
+                    this._tabView.appendContentChild(lineElement);
+                }
+
+                field.gridView = new AZGridView(field.editor.id, field.fields,
                     undefined, undefined, "", true);
                 field.gridView.cellChanged = ((rowIndex, fieldName, value) => {
-                    if (this.fieldChanged)
-                        this.fieldChanged(idx);
+                    this.onFieldChanged(idx);
                 });
+                field.gridView.rowsDeleted = (() => {
+                    this.onFieldChanged(idx);
+                });
+                field.gridView.saveOnInput = true;
             }
         }
-        
     }
 
     createEditorField(idx, field, type) {
@@ -83,17 +105,23 @@ class AZFormView {
         if (type == "checkbox")
             editor.className = "checkbox";
         else
-            editor.className = "fulltext";
+            editor.className = "fulltext";        
         editor.id = "fld" + field.name;
+        editor.tabIndex = 100 + idx;
 
-        editor.addEventListener('change', event => {
-            this.onFieldChanged(idx);
-        });
-        //editor.addEventListener('input', event => {
-        //    this.onFieldChanged(idx);
-        //});
+        if (type == "text")
+            editor.addEventListener('input', event => {
+                this.onFieldChanged(idx);
+            });            
+        else
+            editor.addEventListener('change', event => {
+                this.onFieldChanged(idx);
+            });
+        editor.addEventListener('keydown', event => {
+            this.onKeyDown(event, idx); 
+        });            
 
-        if (field.enum) {
+        if (field.autocomplete) {
             let me = this;
             let allowedChars = new RegExp(/^[a-zA-Z\s]+$/);
             this._autocomplete = autocomplete({
@@ -105,7 +133,7 @@ class AZFormView {
                 },
                 fetch: function (text, callback) {
                     var match = text.toLowerCase();
-                    callback(field.enum.filter(function(n) { return n.toLowerCase().startsWith(match); }));
+                    callback(field.autocomplete.filter(function(n) { return n.toLowerCase().startsWith(match); }));
                 },
                 render: function(item, value) {
                     var itemElement = document.createElement("div");
@@ -171,15 +199,21 @@ class AZFormView {
 
     onFieldChanged(idx) {
         let field = this._fields[idx];
-        let editor = document.getElementById("fld" + field.name);
         let value;
-        if (field.type == "boolean")
-            value = editor.checked;
-        else {
-            value = editor.value;
-            if (field.type == "number") {
-                if (!isNaN(value))
-                    value = parseInt(value);
+
+        if (field.gridView) {
+            value = field.gridView._data;
+        } else {
+            let editor = document.getElementById("fld" + field.name);
+            if (field.type == "boolean")
+                value = editor.checked;
+            else {
+                value = editor.value;
+                if (field.type == "number") {
+                    let num = parseInt(value);
+                    if (!isNaN(value))
+                        value = num;
+                }
             }
         }
 
@@ -188,4 +222,61 @@ class AZFormView {
             this.fieldChanged(idx);
     }
 
+    onKeyDown(e, idx) {
+        let handled = false;
+        switch (e.which) {
+            case 38:    //up
+                if (e.ctrlKey)
+                    this.focusTabs();
+                else
+                    this.changeFieldFocus(idx, idx - 1);
+                handled = true;
+                break;
+            case 40:    //down
+                this.changeFieldFocus(idx, idx + 1);
+                handled = true;
+                break;
+        }
+        if (handled) {
+            e.preventDefault();
+            e.stopPropagation();
+            return false;
+        }
+
+        return true;
+    }
+
+    onTabContentFocused(idx) {
+        for (let i=0; i<this._fields.length; i++) {
+            if ((this._fields[i].tabIndex == idx) && (this._fields[i].type != "group")) {
+                this.focusField(i);               
+                return;
+            }            
+        }
+    }
+
+    changeFieldFocus(currIdx, newIdx) {
+        if ((newIdx >= 0) && 
+            (newIdx < this._fields.length) && 
+            (this._fields[currIdx].tabIndex == this._fields[newIdx].tabIndex)) {
+                this.focusField(newIdx);
+            return;
+        }
+
+        //go up on first tab control - select tabs
+        if (newIdx < currIdx) {
+            this.focusTabs();
+        }
+
+    }
+
+    focusField(idx) {
+        if (this._fields[idx].editor)
+            this._fields[idx].editor.focus();
+    }
+
+    focusTabs() {
+        this._tabView.focus();
+    }
+    
 }

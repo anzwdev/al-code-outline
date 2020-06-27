@@ -54,6 +54,9 @@ input, select {
     border: 1px solid var(--vscode-panel-border);
     color: var(--vscode-input-foreground);
 }
-input:focus, select:focus, div:focus {
+input:focus, select:focus {
     outline-color: var(--vscode-focusBorder) !important;
+}
+div:focus {
+    outline-color: var(--vscode-focusBorder);
 }
