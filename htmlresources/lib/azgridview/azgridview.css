@@ -23,7 +23,7 @@
     height: 20px;
 }
 .azgridvieweditor {
-    padding: 2px;
+    padding: 0px;
     margin: 0px;
     width: 100%;
     height: 100%;
@@ -33,9 +33,9 @@
     color: inherit;
 }
 .azgridvieweditor:focus {
-    outline: 0px none transparent !important;
+    outline: 1px solid var(--vscode-focusBorder) !important;  
+    outline-offset: 2px !important;
 }
-
 .azgridview .azgridviewrowsel td {
     background-color: var(--vscode-list-inactiveSelectionBackground) !important;
     color: var(--vscode-list-inactiveSelectionForeground) !important;
@@ -43,21 +43,11 @@
 .azgridviewcont:focus .azgridview .azgridviewrowactive {
     outline: 1px solid var(--vscode-inputValidation-warningBorder) !important;
 }
-
-
-.azgridviewselcell {
-    outline: 1px solid var(--vscode-focusBorder) !important;  
-}
-
 .azgridviewcont:focus .azgridview .azgridviewrowsel td {
     background-color: var(--vscode-list-activeSelectionBackground) !important;
     color: var(--vscode-list-activeSelectionForeground) !important;
 }
-
 .azgridviewcont {
-    padding: 0;
+    padding: 0px 2px;
     overflow: auto;
-    /*
-    border: 1px solid var(--vscode-panel-border);
-    */
 }

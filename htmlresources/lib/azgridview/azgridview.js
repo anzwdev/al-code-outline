@@ -103,7 +103,7 @@ class AZGridView {
         }        
     }
 
-    setData(data) {        
+    setData(data) {
         if (this._loadingDiv) {
             this._container.removeChild(this._loadingDiv);
             this._loadingDiv = undefined;
@@ -247,7 +247,7 @@ class AZGridView {
         if ((this._columns) && (columnIndex >= this._columns.length))
             columnIndex = this._columns.length - 1;
 
-        if ((setStart) || (!this._startRow))
+        if ((setStart) || (this._startRow === undefined))
             this._startRow = rowIndex;
 
         if ((this._currRow != rowIndex) || (invertSel)) {
@@ -504,11 +504,17 @@ class AZGridView {
                 }
                 break;
             case 38:    //up
-                this.setCurrCell(this._currRow - 1, this._currColumn, clearSel, invSel, setSel, true);
+                if ((this._currRow == this._minRowIndex) && (this.prevElementSelected))
+                    this.prevElementSelected();
+                else
+                    this.setCurrCell(this._currRow - 1, this._currColumn, clearSel, invSel, setSel, true);
                 handled = true;
                 break;
             case 40:    //down
-                this.setCurrCell(this._currRow + 1, this._currColumn,clearSel, invSel, setSel, true);
+                if ((this._currRow == (this._table.rows.length - 1)) && (this.nextElementSelected))
+                    this.nextElementSelected();
+                else
+                    this.setCurrCell(this._currRow + 1, this._currColumn,clearSel, invSel, setSel, true);
                 handled = true;
                 break;
             case 33:    //page up
@@ -582,7 +588,7 @@ class AZGridView {
                 }
                 break;
             case 46: //delete
-                if ((this._editable) && (e.ctrlKey)) {
+                if ((this._editable) && ((e.ctrlKey) || this.rowsSelected())) {
                     this.deleteRows();
                     handled = true;
                 }
@@ -771,12 +777,14 @@ class AZGridView {
         this._inEditMode = false;
     }
 
-    saveData(clearCell) {
+    saveData(clearCell) {       
         if ((this._inEditMode) && (this.validCellSelected())) {            
             let row = this._table.rows[this._currRow];
             let cell = row.cells[this._currColumn];
-            let column = this._columns[this._currColumn];
-            let value = this.validateAutocomplete(this._editor.value);
+            let column = this._columns[this._currColumn];            
+            let value = this._editor.value;
+            if (clearCell)
+                value = this.validateAutocomplete(value);
             let updateData = true;
 
             if (this._currRow == this._table.rows.length - 1) {
@@ -793,7 +801,7 @@ class AZGridView {
                 cell.innerText = value;
             }
 
-            if ((value != this._originalValue) && (row.tabData) && (updateData)) {
+            if ((value !== this._originalValue) && ((row.tabData) || (this._listMode)) && (updateData)) {
                 if (column.type) {
                     if (column.type == "number") {
                         let num = parseInt(value);
@@ -810,7 +818,7 @@ class AZGridView {
                 this._originalValue = value;
 
                 if (this.cellChanged)
-                    this.cellChanged(this._currRow, column.name, value);
+                    this.cellChanged(this._currRow - this._minRowIndex, column.name, value);
             }            
         }
 
@@ -838,6 +846,8 @@ class AZGridView {
     }
 
     createDataEntry() {
+        if (this._listMode)
+            return "";
         let item = {};
         for (let i=0; i<this._columns.length; i++) {
             item[this._columns[i].name] = '';
@@ -893,12 +903,31 @@ class AZGridView {
 
     }
 
+    rowsSelected() {
+        let selCount = 0;
+        for (let idx = 0; idx < this._table.rows.length; idx++) {
+            if ((this._table.rows[idx].className == this._selStyle) || (this._table.rows[idx].className == this._currRowStyle)) {
+                selCount++;
+                if (selCount > 1)
+                    return true;
+            }
+        }
+        return false;
+    }
+
     validCellSelected() {
         return (this._editable && 
             (this._currRow >= this._minRowIndex) && 
             (this._currRow < this._table.rows.length) &&
             (this._currColumn >= 0) &&
             (this._currColumn < this._columns.length));    
+    }
+
+    focus() {
+        if (this._editor)
+            this._editor.focus();
+        else
+            this._container.focus();
     }
 
 }

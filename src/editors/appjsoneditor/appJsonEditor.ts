@@ -6,6 +6,12 @@ export class AppJsonEditor extends JsonFormEditor {
     
     constructor(devToolsContext : DevToolsExtensionContext) {
         super(devToolsContext, "app.json");
+
+        this.fieldsOrder = ["id", "name", "description", "publisher", "brief", "version",
+            "privacyStatement", "propagateDependencies", "dependencies", "internalsVisibleTo",
+            "EULA", "help", "url", "logo", "screenshots", "platform", "application", "test",
+            "target", "idRanges", "idRange", "features", "showMyCode", "runtime",
+            "contextSensitiveHelpUrl", "helpBaseUrl", "supportedLocales", "applicationInsightsKey"];
     }
 
     protected getViewType() : string {
@@ -94,7 +100,7 @@ export class AppJsonEditor extends JsonFormEditor {
             {
                 "name": "description",
                 "caption": "Description",
-                "type": "string",
+                "type": "longstring",
                 "description": "Description of the app package"
             },
             {
@@ -106,7 +112,7 @@ export class AppJsonEditor extends JsonFormEditor {
             {
                 "name": "brief",
                 "caption": "Brief",
-                "type": "string",
+                "type": "longstring",
                 "description": "Brief description of the app package"
             },
             {
@@ -300,12 +306,6 @@ export class AppJsonEditor extends JsonFormEditor {
                         "style": "width: 50%"
                     }
                 ]
-            },
-            {
-                "name": "idRange",
-                "caption": "Id Range",
-                "$ref": "#/definitions/customIdRange",
-                "description": "An optional range for application object IDs. For all objects outside the range, a compilation error will be raised."
             },
             {
                 "name": "features",

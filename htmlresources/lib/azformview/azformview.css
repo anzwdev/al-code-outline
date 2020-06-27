@@ -48,13 +48,15 @@
 .formfield input {
     padding: 2px;
 }
-
-input, select {
+textarea {
+    font: var(--vscode-font-weight) var(--vscode-font-size) var(--vscode-font-family)
+}
+input, select, textarea {
     background: var(--vscode-input-background);
     border: 1px solid var(--vscode-panel-border);
     color: var(--vscode-input-foreground);
 }
-input:focus, select:focus {
+input:focus, select:focus, textarea:focus {
     outline-color: var(--vscode-focusBorder) !important;
 }
 div:focus {

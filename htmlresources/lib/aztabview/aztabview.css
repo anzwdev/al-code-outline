@@ -10,6 +10,7 @@
     outline: none 0px var(--vscode-focusBorder) !important;
 }
 .tabvtabs:focus .tabvtbactive {
+    padding: 9px 9px 3px 9px !important;
     border: 1px solid var(--vscode-focusBorder) !important;
 }
 .tabvcontent {
