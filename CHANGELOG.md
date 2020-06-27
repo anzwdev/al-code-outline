@@ -1,5 +1,18 @@
 # Change Log
 
+## 2.0.3
+ - app.json editor
+ - RuleSet editor
+ - AppSourceCop.json editor
+ - Issue #133 - Documentation comment does not add <returns> for named return value
+ - Issue #134 - "Show All Project Symbols" does not show "Base Application" and "System Application" objects if app uses the "application" property to declare these dependencies
+ - Issue #135 - Sort Properties crashes document under specific circumstances
+
+ Thank you Arend-Jan Kauffmann for the idea of app.json editor, rvanbekkum for reporting issues #133 and 134 and DavidFeldhoff for reporting issue #135
+
+## 2.0.2
+ - Get full syntax tree api bugfix
+
 ## 2.0.1
  - Default field tooltip demplate updated
  - "Add ToolTips to the Active Editor" screenshot added to the documentation 

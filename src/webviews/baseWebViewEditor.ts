@@ -81,19 +81,34 @@ export class BaseWebViewEditor {
         return content.replace(new RegExp('##CSPSOURCE##', 'g'), this._panel!.webview.cspSource);
     }
 
-    protected createWebView() {
-        this._panel = vscode.window.createWebviewPanel(this.getViewType(), this._title, this._viewColumn, {
+    protected getWebviewPanelOptions(): any {
+        return {
             // Enable javascript in the webview
             enableScripts: true,
-
             retainContextWhenHidden: true,
-
             // And restric the webview to only loading content from our extension's `media` directory.
             localResourceRoots: [
                 vscode.Uri.file(this._extensionPath)
             ]
-        });
-        
+        };
+    }
+
+    protected attachToWebView(panel: vscode.WebviewPanel) {
+        this._panel = panel;
+        this._panel.webview.options = this.getWebviewPanelOptions();
+        this.initializeWebView();
+    }
+
+    protected createWebView() {
+        this._panel = vscode.window.createWebviewPanel(this.getViewType(), this._title, this._viewColumn, 
+            this.getWebviewPanelOptions());
+        this.initializeWebView();
+    }    
+    
+    protected initializeWebView() {
+        if (!this._panel)
+            return;
+
         this.reloadWebViewContent();
 
         // Listen for when the panel is disposed
@@ -118,8 +133,7 @@ export class BaseWebViewEditor {
 
     }
 
-    protected onPanelClosed() {
-        
+    protected onPanelClosed() {       
     }
 
     protected reloadWebViewContent() {

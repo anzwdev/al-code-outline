@@ -16,6 +16,7 @@ export class AZSymbolInformation {
     range: TextRange | undefined;
     selectionRange : TextRange | undefined;
     contentRange: TextRange | undefined;
+    containsDiagnostics: boolean | undefined;
     source: string | undefined;
     extends: string | undefined;
     parent: AZSymbolInformation | undefined;
@@ -76,6 +77,8 @@ export class AZSymbolInformation {
             obj.subtype = source.subtype;
         if (source.elementsubtype)
             obj.elementsubtype = source.elementsubtype;
+        if (source.containsDiagnostics)
+            obj.containsDiagnostics = source.containsDiagnostics;
 
         if (source.childSymbols)
             for (let i=0; i<source.childSymbols.length; i++)

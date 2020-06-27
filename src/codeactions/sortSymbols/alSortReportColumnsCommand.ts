@@ -39,7 +39,10 @@ export class ALSortReportColumnsCommand extends ALBaseSortCodeCommand {
         }
     }
 
-    protected prepareEdit(symbol: AZSymbolInformation, document: vscode.TextDocument, edit: vscode.WorkspaceEdit | undefined): vscode.WorkspaceEdit {
+    protected prepareEdit(symbol: AZSymbolInformation, document: vscode.TextDocument, edit: vscode.WorkspaceEdit | undefined): vscode.WorkspaceEdit | undefined {
+        if (symbol.containsDiagnostics)
+            return edit;
+        
         if (!edit)
             edit = new vscode.WorkspaceEdit();
         switch (symbol.kind) {
@@ -48,7 +51,7 @@ export class ALSortReportColumnsCommand extends ALBaseSortCodeCommand {
                 break;
             case AZSymbolKind.ReportColumn:
                 let dataItemSymbol = symbol.findParentByKind(AZSymbolKind.ReportDataItem);
-                if (dataItemSymbol)
+                if ((dataItemSymbol) && (!dataItemSymbol.containsDiagnostics))
                     this.sortChildItems(document.uri, dataItemSymbol, AZSymbolKind.ReportColumn, edit);
                 break;
             case AZSymbolKind.ReportObject:

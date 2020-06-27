@@ -16,6 +16,7 @@ import { CodeAnalyzersService } from './services/codeAnalyzersService';
 import { ALSymbolsService } from './services/alSymbolsService';
 import { ALCodeTransformationService } from './services/alCodeTransformationService';
 import { ALCodeActionsService } from './services/ALCodeActionsService';
+import { EditorsService } from './services/editorsService';
 
 export class DevToolsExtensionContext implements vscode.Disposable {
     alLangProxy : ALLangServerProxy;    
@@ -31,6 +32,7 @@ export class DevToolsExtensionContext implements vscode.Disposable {
     symbolsService: ALSymbolsService;
     alCodeTransformationService: ALCodeTransformationService;
     alCodeActionsService: ALCodeActionsService;
+    editorsService: EditorsService;
 
     constructor(context : vscode.ExtensionContext) {
         this.alLangProxy = new ALLangServerProxy()
@@ -52,6 +54,7 @@ export class DevToolsExtensionContext implements vscode.Disposable {
         this.symbolsService = new ALSymbolsService(this);
         this.alCodeTransformationService = new ALCodeTransformationService(this);
         this.alCodeActionsService = new ALCodeActionsService(this);
+        this.editorsService = new EditorsService(this);
     }
 
     getUseSymbolsBrowser() : boolean {

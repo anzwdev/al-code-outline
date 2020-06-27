@@ -1,0 +1,64 @@
+.formlinecenter {
+    margin: 10px 10px;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: center;
+}
+.formcaptionct {
+    padding: 0 5px;
+}
+.formfieldct {
+    padding: 0 5px;
+}
+.formline {
+    margin: 10px 10px;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: stretch;
+}
+.formheader {
+    flex: 1 1 auto;   
+}
+.formcaption {
+    flex: 0 0 200px;
+    align-self: flex-start;
+}
+.formfield {
+    flex: 1 1 auto;
+    display: flex;
+    flex-direction: row;
+    align-items: stretch;
+    justify-content: stretch;
+}
+.azgridviewcont {
+    flex: 1 1 auto;    
+}
+
+.formfield .fulltext, .formfield .fullopt {
+    flex: 1 1 auto;
+}
+.formfield .fixedtext, .formfield .fixedopt {
+    flex: 0 1 200px;
+}
+.formfield .checkbox {
+    flex: none;
+}
+.formfield input {
+    padding: 2px;
+}
+textarea {
+    font: var(--vscode-font-weight) var(--vscode-font-size) var(--vscode-font-family)
+}
+input, select, textarea {
+    background: var(--vscode-input-background);
+    border: 1px solid var(--vscode-panel-border);
+    color: var(--vscode-input-foreground);
+}
+input:focus, select:focus, textarea:focus {
+    outline-color: var(--vscode-focusBorder) !important;
+}
+div:focus {
+    outline-color: var(--vscode-focusBorder);
+}

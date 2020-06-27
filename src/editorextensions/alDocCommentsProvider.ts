@@ -43,9 +43,17 @@ export class ALDocCommentsProvider implements vscode.CompletionItemProvider {
                         let valPos = symbol.fullName.lastIndexOf(")");
                         if (valPos >= 0) {
                             let retTypeText = symbol.fullName.substr(valPos);
-                            if (retTypeText.startsWith(') :')) {
+                            let typePos = retTypeText.indexOf(':');
+                            if (typePos >= 0) {
                                 snippetParamIdx++;
-                                documentationText = documentationText + '\n/// <returns>$' + snippetParamIdx.toString() + '</returns>';
+                                
+                                let retName = retTypeText.substr(1, typePos - 1).trim();
+                                if (retName.length > 0)
+                                    documentationText = documentationText + '\n/// <returns name="' +
+                                        XmlHelper.EncodeXmlAttributeValue(retName) + 
+                                        '>$' + snippetParamIdx.toString() + '</returns>';
+                                else
+                                    documentationText = documentationText + '\n/// <returns>$' + snippetParamIdx.toString() + '</returns>';
                             }
                         }
                     }

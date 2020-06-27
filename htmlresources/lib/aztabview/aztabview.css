@@ -1,0 +1,46 @@
+.tabview {
+    display: flex;
+    flex-direction: column;
+}
+.tabvtabs {
+    flex: 0 0 content;
+    flex-direction: row;
+}
+.tabvtabs:focus {
+    outline: none 0px var(--vscode-focusBorder) !important;
+}
+.tabvtabs:focus .tabvtbactive {
+    padding: 9px 9px 3px 9px !important;
+    border: 1px solid var(--vscode-focusBorder) !important;
+}
+.tabvcontent {
+    display: none;
+    flex: 1 1 auto;
+    overflow: auto;
+}
+.tabvcactive {
+    display: block !important;
+}
+.tabvtabbtn {
+    flex: 1 1 auto;
+    display: inline-block;
+    cursor: default;
+    margin:0px;
+    padding: 10px 10px 3px 10px;
+    border-top: 0px none #000000;
+    border-left: 0px none #000000;
+    border-right: 0px none #000000;
+    font: var(--vscode-font-weight) var(--vscode-font-size) var(--vscode-font-family);
+    border-bottom: 1px solid var(--vscode-tab-unfocusedInactiveForeground);
+    background: var(--vscode-editor-background);
+    color: var(--vscode-tab-unfocusedInactiveForeground);
+    outline-width: 0;
+}
+.tabvtabbtn:hover {
+    border-bottom: 1px solid var(--vscode-tab-inactiveForeground);
+    color: var(--vscode-tab-inactiveForeground);
+}
+.tabvtbactive {
+    border-bottom: 1px solid var(--vscode-tab-activeForeground) !important;
+    color: var(--vscode-tab-activeForeground) !important;
+}

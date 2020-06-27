@@ -16,4 +16,6 @@ export class ALFullSyntaxTreeNode {
     identifier: string | undefined;
     dataType: string | undefined;
     temporary: string | undefined;
+    containsDiagnostics: boolean | undefined;
+    
 }

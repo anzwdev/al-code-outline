@@ -43,6 +43,9 @@ export class ALSortVariablesCommand extends ALBaseSortCodeCommand {
     }
 
     protected prepareEdit(symbol: AZSymbolInformation, document: vscode.TextDocument, edit: vscode.WorkspaceEdit | undefined): vscode.WorkspaceEdit | undefined {
+        if (symbol.containsDiagnostics)
+            return edit;
+        
         //collect VariableSection symbols
         let symbolsList: AZSymbolInformation[] = [];
         if ((symbol.kind == AZSymbolKind.VarSection) || (symbol.kind == AZSymbolKind.GlobalVarSection))

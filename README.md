@@ -13,6 +13,7 @@ This extension was originally named 'AL Code Outline' because it started as AL c
 - Code actions
 - Code transformation commands
 - Action images browser
+- Custom editors
 - Documentation comments support
 - Code analyzers rules viewer
 - Document syntax visualizer
@@ -130,6 +131,12 @@ Extension adds new "AZ AL Dev Tools: Show Action Images" command to the "Command
    - Copy as promoted action - generates promoted page action element and copies it to the clipboard
 
 ![Action images](resources/screen2-actionimages.gif)
+
+### Custom editors
+
+Extension adds new custom editors for app.json, rulesets (*.ruleset.json) and AppSourceCop.json files. These editors are defined as "secondary" which means that developers have to right click on the file in the EXPLORER and choose "Open With..." option. It will display list of available editors for selected file. It is also possible to change default editor on this list.
+
+![Action images](resources/screen2-customeditor.gif)
 
 ### Documentation comments support
 
