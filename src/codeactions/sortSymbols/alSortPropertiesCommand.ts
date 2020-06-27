@@ -50,7 +50,8 @@ export class ALSortPropertiesCommand extends ALBaseSortCodeCommand {
             edit = new vscode.WorkspaceEdit();
         if (propertyListSymbolsList.length > 0) {
             for (let i=0; i<propertyListSymbolsList.length; i++) {
-                this.sortChildItems(document.uri, propertyListSymbolsList[i], AZSymbolKind.Property, edit);
+                if (!propertyListSymbolsList[i].containsDiagnostics)
+                    this.sortChildItems(document.uri, propertyListSymbolsList[i], AZSymbolKind.Property, edit);
             }
         }
         return edit;

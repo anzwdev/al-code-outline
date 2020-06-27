@@ -5,8 +5,10 @@
  - RuleSet editor
  - AppSourceCop.json editor
  - Issue #133 - Documentation comment does not add <returns> for named return value
+ - Issue #134 - "Show All Project Symbols" does not show "Base Application" and "System Application" objects if app uses the "application" property to declare these dependencies
+ - Issue #135 - Sort Properties crashes document under specific circumstances
 
- Thank you Arend-Jan Kauffmann for the idea of app.json editor and rvanbekkum for reporting the issue #133
+ Thank you Arend-Jan Kauffmann for the idea of app.json editor, rvanbekkum for reporting issues #133 and 134 and DavidFeldhoff for reporting issue #135
 
 ## 2.0.2
  - Get full syntax tree api bugfix

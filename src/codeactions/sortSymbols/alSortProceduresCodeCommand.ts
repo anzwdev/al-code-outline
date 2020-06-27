@@ -63,7 +63,7 @@ export class ALSortProceduresCodeCommand extends ALBaseSortCodeCommand {
         let objectSymbol = symbol.findParentObject();
         let isMethodSymbol = this.isMethodSymbol(symbol);
 
-        if (!objectSymbol)
+        if ((!objectSymbol) || (objectSymbol.containsDiagnostics))
             return edit;
 
         // Collect method declarations of matching symbol-kind or all methods if we run code action for whole object
