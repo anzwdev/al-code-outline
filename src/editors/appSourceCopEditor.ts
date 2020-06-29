@@ -25,7 +25,7 @@ export class AppSourceCopEditor extends JsonFormEditor {
             },
             {
                 "name": "publisher",
-                "captiom": "Publisher",
+                "caption": "Publisher",
                 "description": "The publisher of a previous version of this package with which you want to compare the current package for breaking changes. This property is being deprecated because the name of the publisher of the previous extension should be the same as the current extension's publisher.",
                 "type": "string"
             },

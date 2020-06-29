@@ -1,4 +1,5 @@
 import * as vscode from 'vscode';
+import * as path from 'path';
 import { DevToolsExtensionContext } from '../devToolsExtensionContext';
 import { JsonFormEditor } from './jsonFormEditor';
 import { AppJsonEditor } from './appJsonEditor';
@@ -18,14 +19,15 @@ export class JsonEditorProvider implements vscode.CustomTextEditorProvider {
     }
 
     public async resolveCustomTextEditor(document: vscode.TextDocument, webviewPanel: vscode.WebviewPanel, token: vscode.CancellationToken): Promise<void> {
-        let fileName = document.uri.fsPath.toLowerCase();
+        let filePath = path.parse(document.uri.fsPath);
+        let fileName = filePath.base.toLowerCase();
 
         let editor: JsonFormEditor | undefined = undefined;
-        if (fileName.endsWith("app.json"))
+        if (fileName == "app.json")
             editor = new AppJsonEditor(this._devToolsContext);
-        else if (fileName.endsWith(".ruleset.json"))
+        else if ((fileName.endsWith(".ruleset.json")) || (fileName == "ruleset.json"))
             editor = new RuleSetEditor(this._devToolsContext);
-        else if (fileName.endsWith("appsourcecop.json"))
+        else if (fileName == "appsourcecop.json")
             editor = new AppSourceCopEditor(this._devToolsContext);
 
         if (editor)

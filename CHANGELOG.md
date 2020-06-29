@@ -1,5 +1,11 @@
 # Change Log
 
+## 2.0.4
+ - Issue #143 - Use ruleset editor for file with filename "ruleset.json"
+ - Issue #144 - AppSourceCop.json Visual Editor: "unknown" property (for "publisher" property)
+
+ Thank you rvanbekkum for reporting issues #143 and #144
+
 ## 2.0.3
  - app.json editor
  - RuleSet editor
