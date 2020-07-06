@@ -51,7 +51,7 @@ export class ALDocCommentsProvider implements vscode.CompletionItemProvider {
                                 if (retName.length > 0)
                                     documentationText = documentationText + '\n/// <returns name="' +
                                         XmlHelper.EncodeXmlAttributeValue(retName) + 
-                                        '>$' + snippetParamIdx.toString() + '</returns>';
+                                        '">$' + snippetParamIdx.toString() + '</returns>';
                                 else
                                     documentationText = documentationText + '\n/// <returns>$' + snippetParamIdx.toString() + '</returns>';
                             }

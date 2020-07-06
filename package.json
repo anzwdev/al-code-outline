@@ -247,8 +247,8 @@
 					{
 						"filenamePattern": "ruleset.json"
 					},
-					{						
-						"filenamePattern": "AppSourceCop.json"						
+					{
+						"filenamePattern": "AppSourceCop.json"
 					}
 				]
 			}
@@ -359,12 +359,12 @@
 					"alOutline.pageActionToolTip": {
 						"type": "string",
 						"default": "Executes the %1 action",
-						"description": "The default tooltip template for page actions. Use %1 as placeholder for action caption or name"
+						"description": "The default tooltip template for page actions. Use %1 as placeholder for action caption or name."
 					},
 					"alOutline.pageFieldToolTip": {
 						"type": "string",
 						"default": "Specifies the value of the %1 field",
-						"description": "The default tooltip template for page fields. Use %1 as placeholder for field caption or name"
+						"description": "The default tooltip template for page fields. Use %1 as placeholder for field caption or name."
 					}
 				}
 			}
