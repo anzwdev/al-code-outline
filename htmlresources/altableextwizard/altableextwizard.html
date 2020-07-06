@@ -3,24 +3,27 @@
     <head>
         <meta http-equiv="Content-Security-Policy" content="default-src 'none'; img-src ##CSPSOURCE## https: data:; script-src ##CSPSOURCE## 'unsafe-eval'; style-src ##CSPSOURCE##; font-src ##CSPSOURCE##;" />
         <script src="##EXTENSIONPATH##/htmlresources/lib/autocomplete/autocomplete.js"></script>
+        <script src="##EXTENSIONPATH##/htmlresources/lib/helpers/htmlhelper.js"></script>
         <script src="##EXTENSIONPATH##/htmlresources/lib/azgridview/azgridview.js"></script>
         <script src="##EXTENSIONPATH##/htmlresources/lib/azgridview/tablefieldsgridview.js"></script>
-        <script src="##EXTENSIONPATH##/htmlresources/altablewizard/js/altablewizard.js"></script>
+        <script src="##EXTENSIONPATH##/htmlresources/lib/filteredlist/filteredlist.js"></script>
+        <script src="##EXTENSIONPATH##/htmlresources/lib/wizards/tablebasedobjectwizard.js"></script>
+        <script src="##EXTENSIONPATH##/htmlresources/altableextwizard/js/altableextwizard.js"></script>
         <link rel="stylesheet" type="text/css" href="##EXTENSIONPATH##/htmlresources/lib/autocomplete/autocomplete.css">
         <link rel="stylesheet" type="text/css" href="##EXTENSIONPATH##/htmlresources/lib/azgridview/azgridview.css">
         <link rel="stylesheet" type="text/css" href="##EXTENSIONPATH##/htmlresources/lib/wizards/wizards.css">
-        <link rel="stylesheet" type="text/css" href="##EXTENSIONPATH##/htmlresources/altablewizard/css/altablewizard.css">
+        <link rel="stylesheet" type="text/css" href="##EXTENSIONPATH##/htmlresources/altableextwizard/css/altableextwizard.css">
     </head>
     <body>
         <div id="main" class="main">
             <div id="header" class="header">
-                <div class="title">New Table Wizard</div>
+                <div class="title">New Table Extension Wizard</div>
             </div>
 
             <div id="wizardstep1" class="wizard">
 
                 <div class="formline">
-                    <div class="formheader">Please enter table properties.</div>
+                    <div class="formheader">Please enter table extension properties.</div>
                 </div>
                         
                 <div class="formline">
@@ -36,6 +39,13 @@
                         <input type="text" id="objectname" name="objectname" class="fulltext">
                     </div>
                 </div>
+
+                <div class="formline">
+                    <div class="formcaption">Extends:</div>
+                    <div class="formfield">
+                        <input type="text" id="srctable" name="srctable" class="fulltext" />
+                    </div>
+                </div>
     
                 <div id="fieldsgrid" class="formarea">                    
                 </div>
@@ -43,6 +53,8 @@
             </div>
 
             <div id="footer" class="footer">
+                <button id="prevBtn" class="button">Previous</button>
+                <button id="nextBtn" class="button">Next</button>
                 <button id="finishBtn" class="button">Finish</button>
                 <button id="cancelBtn" class="button">Cancel</button>
             </div>
