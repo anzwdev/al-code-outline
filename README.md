@@ -163,6 +163,16 @@ Document syntax visualizer shows syntax tree created by the AL compiler for the 
   * "New Page Extension" and "New Table Extension" options in AL Object Browser
   * Ability to save generated objects in files inside project folder
   * AL Object Browser filters
+  * Table extension wizard
+  * Bugfixes
+  * Sort procedures code action
+  * Expand/collapse nodes in the symbols tree view
+- StefanoPrimo
+  * Code fixes for diagnostics reported by CodeCop analyzer
+  * "Add missing tooltips" code action
+  * "Add missing application areas" code action
+- DavidFeldhoff
+  * "Sort procedures@ code action fix to improve sorting of test procedures
 
 ## Inspiration
 
