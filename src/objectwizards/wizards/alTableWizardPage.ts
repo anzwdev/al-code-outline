@@ -5,8 +5,8 @@ import { ProjectItemWizardPage } from './projectItemWizardPage';
 import { DevToolsExtensionContext } from '../../devToolsExtensionContext';
 import { ALTableWizardData } from './alTableWizardData';
 import { ALObjectWizardSettings } from './alObjectWizardSettings';
-import { ALTableWizardFieldData } from './alTableWizardFieldData';
 import { ALTableSyntaxBuilder } from '../syntaxbuilders/alTableSyntaxBuilder';
+import { WizardTableFieldHelper } from './wizardTableFieldHelper';
 
 export class ALTableWizardPage extends ProjectItemWizardPage {
     private _tableWizardData : ALTableWizardData;
@@ -39,7 +39,7 @@ export class ALTableWizardPage extends ProjectItemWizardPage {
         //build parameters
         this._tableWizardData.objectId = data.objectId;
         this._tableWizardData.objectName = data.objectName;
-        this._tableWizardData.fields = this.validateFields(data.fields);
+        this._tableWizardData.fields = WizardTableFieldHelper.validateFields(data.fields);
     
         //build new object
         var builder : ALTableSyntaxBuilder = new ALTableSyntaxBuilder();
@@ -49,35 +49,14 @@ export class ALTableWizardPage extends ProjectItemWizardPage {
         return true;
     }
 
-    protected validateFields(data : any) : ALTableWizardFieldData[] {
-        let fields : ALTableWizardFieldData[] = [];
-
-        if ((data) && (data.length > 0)) {
-            for (let i = 0; i<data.length; i++) {
-                fields.push(new ALTableWizardFieldData(data[i].id, data[i].name, data[i].dataType, data[i].length, data[i].dataClassification));
-            }
-        }
-
-
-        return fields;
-    }
-
     protected async loadTypes() {
-        let enumsList = await this._toolsExtensionContext.alLangProxy.getEnumList(this._settings.getDestDirectoryUri());
-        //update types
-        if (enumsList.length > 0) {
-            let types: string[] = ['Blob', 'Boolean', 'Code', 'Date', 'DateFormula', 'DateTime', 'Decimal', 'Duration',
-                'Guid', 'Integer', 'Media', 'MediaSet', 'Option', 'RecordId', 'TableFilter',
-                'Text', 'Time'];
-
-            for (let i=0; i<enumsList.length; i++)
-                types.push('Enum ' + enumsList[i]);
-                
+        let types: string[] = await WizardTableFieldHelper.getAllFieldTypes(this._toolsExtensionContext, this._settings.getDestDirectoryUri());
+        // update types
+        if (types.length > 0) {
             this.sendMessage({
                 command : 'setTypes',
                 data : types
             });
         }
     }
-
 }

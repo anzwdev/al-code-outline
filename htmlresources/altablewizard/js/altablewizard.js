@@ -6,19 +6,7 @@ class TableWizard {
         this._vscode = acquireVsCodeApi();
 
         //initialize controls
-        this._fieldsgrid = new AZGridView('fieldsgrid', 
-            [{name: 'id', caption: 'Id', style: 'width: 80px;'},
-            {name: 'name', caption: 'Name', style: 'width: 50%;'},
-            //{name: 'caption', caption: 'Caption', style: 'width: 30%'},
-            {name: 'dataType', caption: 'Data Type', style: 'width: 20%', autocomplete: [                
-                'Blob', 'Boolean', 'Code', 'Date', 'DateFormula', 'DateTime', 'Decimal', 'Duration',
-                'Enum', 'Guid', 'Integer', 'Media', 'MediaSet', 'Option', 'RecordId', 'TableFilter',
-                'Text', 'Time']},
-            {name: 'dataClassification', caption: 'Data Classification', style: 'width: 20%', autocomplete: [
-                'AccountData', 'CustomerContent', 'EndUserIdentifiableInformation', 'EndUserPseudonymousIdentifiers',
-                'OrganizationIdentifiableInformation', 'SystemMetadata', 'ToBeClassified']},
-            {name: 'length', caption: 'Length', style: 'width:100px'}],
-            undefined, undefined, 'Loading data...', true);
+        this._fieldsgrid = new TableFieldsGridView();
 
         // Handle messages sent from the extension to the webview
         window.addEventListener('message', event => {
