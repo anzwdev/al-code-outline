@@ -3,8 +3,10 @@
 ## 2.0.4
  - Issue #143 - Use ruleset editor for file with filename "ruleset.json"
  - Issue #144 - AppSourceCop.json Visual Editor: "unknown" property (for "publisher" property)
+ - Issue #148 - Add dot at the end of tooltip
+ - Issue #149 - Missing second quote in <returns name="ReturnVariableName"> in generated documentation comment
 
- Thank you rvanbekkum for reporting issues #143 and #144
+ Thank you rvanbekkum for reporting issues #143, #144 and #149 and your pull request with issue #149 fixes
 
 ## 2.0.3
  - app.json editor
