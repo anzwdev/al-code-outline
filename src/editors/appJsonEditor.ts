@@ -165,19 +165,27 @@ export class AppJsonEditor extends JsonFormEditor {
                 "caption": "Runtime",
                 "type": "string",
                 "autocomplete": [
-                    "5.0",
-                    "4.0",
-                    "3.0",
-                    "2.0",
-                    "1.0"
-                ],
-                "enumDescriptions": [
-                    "Business Central 2020 release wave 1",
-                    "Business Central 2019 release wave 2",
-                    "Business Central Spring '19 Release",
-                    "Business Central Fall '18 Release",
-                    "Business Central Spring '18 Release"
-                ]            
+                    {
+                        value: "5.0",
+                        description: "Business Central 2020 release wave 1"
+                    },
+                    {
+                        value: "4.0",
+                        description: "Business Central 2019 release wave 2"
+                    },
+                    {
+                        value: "3.0",
+                        description: "Business Central Spring '19 Release"
+                    },
+                    {
+                        value: "2.0",
+                        description: "Business Central Fall '18 Release"
+                    },
+                    {
+                        value: "1.0",
+                        description: "Business Central Spring '18 Release"
+                    }
+                ]
             },
             {
                 "caption": "Dependencies",
@@ -311,14 +319,18 @@ export class AppJsonEditor extends JsonFormEditor {
                 "caption": "Features",
                 "type": "list",
                 "autocomplete": [
-                    "TranslationFile",
-                    "GenerateCaptions",
-                    "ExcludeGeneratedTranslations"
-                ],
-                "enumDescriptions": [
-                    "Generate and utilize translation files in xliff format",
-                    "Generate translation entries for captions for all application objects",
-                    "Exclude the generated translation file from the app"
+                    {
+                        value: "TranslationFile",
+                        description: "Generate and utilize translation files in xliff format"
+                    },
+                    {
+                        value: "GenerateCaptions",
+                        description: "Generate translation entries for captions for all application objects"
+                    },
+                    {
+                        value: "ExcludeGeneratedTranslations",
+                        description: "Exclude the generated translation file from the app"
+                    }
                 ],
                 "description": "Optional/experimental compiler features can be enabled by specifying them."
             },

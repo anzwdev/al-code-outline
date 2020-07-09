@@ -49,13 +49,13 @@ class AZFormView {
         fieldElement.className = "formfield";
             
         if (field.type == "string") {
-            field.editor = this.createEditorField(idx, field, "text");
+            this.createEditorField(idx, field, "text");
             fieldElement.appendChild(field.editor);
         } else if (field.type == "longstring") {
-            field.editor = this.createEditorField(idx, field, "textarea");
+            this.createEditorField(idx, field, "textarea");
             fieldElement.appendChild(field.editor);
         } else if (field.type == "boolean") {
-            field.editor = this.createEditorField(idx, field, "checkbox");
+            this.createEditorField(idx, field, "checkbox");
             fieldElement.appendChild(field.editor);
         }
         lineElement.appendChild(fieldElement);
@@ -143,47 +143,93 @@ class AZFormView {
             this.onKeyDown(event, idx); 
         });            
 
-        if (field.autocomplete) {
-            let me = this;
-            let allowedChars = new RegExp(/^[a-zA-Z\s]+$/);
-            this._autocomplete = autocomplete({
-                input: editor,
-                disableOpenOnKeyDown: true,
-                minLength: -1,
-                onSelect: function (item, inputfield) {
-                    inputfield.value = item
-                },
-                fetch: function (text, callback) {
-                    var match = text.toLowerCase();
-                    callback(field.autocomplete.filter(function(n) { return n.toLowerCase().startsWith(match); }));
-                },
-                render: function(item, value) {
-                    var itemElement = document.createElement("div");
-                    if (allowedChars.test(value)) {
-                        var regex = new RegExp(value, 'gi');
-                        var inner = item.replace(regex, function(match) { return "<strong>" + match + "</strong>" });
-                        itemElement.innerHTML = inner;
-                    } else {
-                        itemElement.textContent = item;
-                    }
-                    return itemElement;
-                },
-                //emptyMsg: "No  found",
-                customize: function(input, inputRect, container, maxHeight) {
-                    if (maxHeight < 100) {
-                        container.style.top = "";
-                        container.style.bottom = (window.innerHeight - inputRect.bottom + input.offsetHeight) + "px";
-                        container.style.maxHeight = "140px";
-                    }
-                }
-            });
-        }
+        field.editor = editor;
+
+        if (field.autocomplete)
+            this.initEditorAutocomplete(field);
 
         return editor;
     }
 
+    initEditorAutocomplete(field) {
+        let me = this;
+        let allowedChars = new RegExp(/^[a-zA-Z\s]+$/);
+        field.autocompleteControl = autocomplete({
+            input: field.editor,
+            disableOpenOnKeyDown: true,
+            minLength: -1,
+            onSelect: function (item, inputfield) {
+                if (item.value)
+                    inputfield.value = item.value;
+                else
+                    inputfield.value = item;
+            },
+            fetch: function (text, callback) {
+                var match = text.toLowerCase();
+                callback(field.autocomplete.filter(function(n) { 
+                    if (n.value)
+                        return n.value.toLowerCase().startsWith(match);
+                    return n.toLowerCase().startsWith(match); 
+                }));
+            },
+            render: function(item, value) {
+                let itemElement = document.createElement("div");
+                let ival = item.value?item.value:item;
+                let icont = ival;
+                
+                if (allowedChars.test(value)) {
+                    var regex = new RegExp(value, 'gi');
+                    ival = ival.replace(regex, function(match) { 
+                        return "<strong>" + match + "</strong>" 
+                    });
+                };
+                if (item.description)
+                    ival = "<div>" + ival + "</div><div class=\"acpdesc\">" + item.description + "</div>";
+                itemElement.innerHTML = ival;
+                return itemElement;
+            },
+            //emptyMsg: "No  found",
+            customize: function(input, inputRect, container, maxHeight) {
+                if (maxHeight < 100) {
+                    container.style.top = "";
+                    container.style.bottom = (window.innerHeight - inputRect.bottom + input.offsetHeight) + "px";
+                    container.style.maxHeight = "140px";
+                }
+                if ((field.autocomplete.length > 0) && (field.autocomplete[0].description)) {
+                    container.style.minWidth = input.width;
+                    container.style.width = "";
+                    container.style.maxWidth = (window.innerWidth - inputRect.left - 20) + "px";
+                }
+        }
+        });
+    }
+
     updateTextAreaSize(idx) {
         this._fields[idx].editor.style.height = (this._fields[idx].editor.scrollHeight - 4) + "px";
+    }
+
+    getFieldIndex(name) {
+        if (this._fields) {
+            for (let i=0; i<this._fields.length; i++)
+                if (this._fields[i].name == name)
+                    return i;
+        }
+        return -1;
+    }
+
+    setAutocomplete(path, data) {
+        if (path.length > 0) {
+            let idx = this.getFieldIndex(path[0]);
+            if (idx >= 0) {
+                let field = this._fields[idx];
+                if ((field.type == "string") || (field.type == "longstring")) {
+                    field.autocomplete = data;
+                    this.initEditorAutocomplete(field);
+                } else if ((field.gridView) && (path.length > 1)) {
+                    field.gridView.setAutocomplete(path[1], data);
+                }
+            }
+        }
     }
 
     setData(data) {

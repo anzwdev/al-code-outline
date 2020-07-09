@@ -13,6 +13,11 @@
 
 .autocomplete > div {
     padding: 0 4px;
+    white-space: nowrap;
+}
+
+.autocomplete .acpdesc {
+    font-size: 0.9em;
 }
 
 .autocomplete .group {
@@ -25,4 +30,3 @@
     color: var(--vscode-list-activeSelectionForeground);
     cursor: pointer;
 }
-
