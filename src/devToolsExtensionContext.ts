@@ -7,7 +7,6 @@ import { AZActiveDocumentSymbolsLibrary } from './symbollibraries/azActiveDocume
 import { ALObjectRunner } from './alObjectRunner';
 import { AZSymbolsLibrary } from './symbollibraries/azSymbolsLibrary';
 import { ALSymbolsBrowser } from './alsymbolsbrowser/alSymbolsBrowser';
-import { ALObjectsBrowser } from './alsymbolsbrowser/alObjectsBrowser';
 import { ALOutlineService } from './services/alOutlineService';
 import { ALObjectWizardsService } from './services/alObjectWizardsService';
 import { ALCompletionService } from './services/alCompletionService';
@@ -69,14 +68,8 @@ export class DevToolsExtensionContext implements vscode.Disposable {
     }
 
     showSymbolsBrowser(library: AZSymbolsLibrary) {
-        if (this.getUseSymbolsBrowser()) {
-            let symbolsBrowser : ALSymbolsBrowser = new ALSymbolsBrowser(this, library);
-            symbolsBrowser.show();
-        } else {
-            let objectsBrowser : ALObjectsBrowser = new ALObjectsBrowser(this, library);
-            objectsBrowser.show();
-        }        
-
+        let symbolsBrowser : ALSymbolsBrowser = new ALSymbolsBrowser(this, library);
+        symbolsBrowser.show();
     }
 
     dispose() {

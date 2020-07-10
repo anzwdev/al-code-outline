@@ -1,6 +1,7 @@
 import * as vscode from 'vscode';
 import { DevToolsExtensionContext } from '../devToolsExtensionContext';
 import { JsonEditorProvider } from '../editors/jsonEditorProvider';
+import { AppPackageEditorProvider } from '../editors/appPackageEditorProvider';
 //import { AppJsonEditorProvider } from '../editors/appJsonEditorProvider';
 //import { RuleSetEditorProvider } from '../editors/ruleSetEditorProvider';
 //import { AppSourceCopEditorProvider } from '../editors/appSourceCopEditorProvider';
@@ -14,6 +15,10 @@ export class EditorsService {
     }
 
     protected registerEditors() {
+        this._context.vscodeExtensionContext.subscriptions.push(
+            vscode.window.registerCustomEditorProvider('azALDevTools.appPackageEditor',
+                new AppPackageEditorProvider(this._context)));
+        
         this._context.vscodeExtensionContext.subscriptions.push(
             vscode.window.registerCustomEditorProvider('azALDevTools.jsonEditor',
                 new JsonEditorProvider(this._context)));

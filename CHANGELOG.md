@@ -6,10 +6,11 @@
  - Issue #148 - Add dot at the end of tooltip
  - Issue #149 - Missing second quote in <returns name="ReturnVariableName"> in generated documentation comment
  - Issue #142 - Ruleset editor - add rules lookup
+ - Issue #145 - Option to make the AL Object Browser the default 'editor' for .app files
  - Autocomplete drop down can display value descriptions
  - Table extension wizard added by rvanbekkum
 
- Thank you rvanbekkum for reporting issues #143, #144 and #149 and your pull request with issue #149 fixes and table extension wizard
+ Thank you rvanbekkum for reporting issues #143, #144, #145 and #149 and your pull request with issue #149 fixes and table extension wizard
 
 ## 2.0.3
  - app.json editor

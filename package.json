@@ -39,7 +39,8 @@
 		"onCommand:azALDevTools.AddProjectApplicationAreas",
 		"onCommand:azALDevTools.AddEditorToolTip",
 		"onCommand:azALDevTools.AddProjectToolTip",
-		"onCustomEditor:azALDevTools.jsonEditor"
+		"onCustomEditor:azALDevTools.jsonEditor",
+		"onCustomEditor:azALDevTools.appPackageEditor"
 	],
 	"main": "./out/extension.js",
 	"icon": "resources/alcodeoutline.png",
@@ -249,6 +250,16 @@
 					},
 					{
 						"filenamePattern": "AppSourceCop.json"
+					}
+				]
+			},
+			{
+				"viewType": "azALDevTools.appPackageEditor",
+				"displayName": "AL App Viewer",
+				"priority": "default",
+				"selector": [
+					{
+						"filenamePattern": "*.app"
 					}
 				]
 			}
