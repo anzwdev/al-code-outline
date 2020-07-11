@@ -1,6 +1,7 @@
 # Change Log
 
 ## 2.0.4
+ - Issue #140 - Add Tooltips: caption instead of field name
  - Issue #142 - Ruleset editor - add rules lookup
  - Issue #143 - Use ruleset editor for file with filename "ruleset.json"
  - Issue #144 - AppSourceCop.json Visual Editor: "unknown" property (for "publisher" property)
@@ -12,6 +13,7 @@
  - Table extension wizard added by rvanbekkum
 
  Thank you 
+ - LucVanDyck for reporting issue #140
  - rvanbekkum for reporting issues #143, #144, #145 and #149 and your pull request with issue #149 fixes and table extension wizard
  - DavidFeldhoff for reporting issue #152
 
