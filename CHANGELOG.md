@@ -1,16 +1,19 @@
 # Change Log
 
 ## 2.0.4
+ - Issue #142 - Ruleset editor - add rules lookup
  - Issue #143 - Use ruleset editor for file with filename "ruleset.json"
  - Issue #144 - AppSourceCop.json Visual Editor: "unknown" property (for "publisher" property)
+ - Issue #145 - Option to make the AL Object Browser the default 'editor' for .app files
  - Issue #148 - Add dot at the end of tooltip
  - Issue #149 - Missing second quote in <returns name="ReturnVariableName"> in generated documentation comment
- - Issue #142 - Ruleset editor - add rules lookup
- - Issue #145 - Option to make the AL Object Browser the default 'editor' for .app files
+ - Issue #152 - SymbolsService does not load Symbols with AL Language version 3.x
  - Autocomplete drop down can display value descriptions
  - Table extension wizard added by rvanbekkum
 
- Thank you rvanbekkum for reporting issues #143, #144, #145 and #149 and your pull request with issue #149 fixes and table extension wizard
+ Thank you 
+ - rvanbekkum for reporting issues #143, #144, #145 and #149 and your pull request with issue #149 fixes and table extension wizard
+ - DavidFeldhoff for reporting issue #152
 
 ## 2.0.3
  - app.json editor
