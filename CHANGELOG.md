@@ -1,5 +1,11 @@
 # Change Log
 
+## 2.0.5
+
+ - Issue #155 - AL Page wizard: Adding a new tab clears previously selected fields
+
+ Thank you LucVanDyck for reporting issue #155
+
 ## 2.0.4
  - Issue #140 - Add Tooltips: caption instead of field name
  - Issue #142 - Ruleset editor - add rules lookup
