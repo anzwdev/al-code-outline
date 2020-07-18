@@ -3,8 +3,9 @@
 ## 2.0.5
 
  - Issue #155 - AL Page wizard: Adding a new tab clears previously selected fields
+ - Issue #156 - AL Object browser doesn't retain set filters
 
- Thank you LucVanDyck for reporting issue #155
+ Thank you LucVanDyck for reporting issues #155 and #156
 
 ## 2.0.4
  - Issue #140 - Add Tooltips: caption instead of field name
