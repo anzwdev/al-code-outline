@@ -43,6 +43,15 @@ class AZFormView {
         let captionElement = document.createElement("div");
         captionElement.className = "formcaption";
         captionElement.innerText = field.caption;
+
+        //tooltip
+        if ((field.description) && (field.description != "")) {
+            let tooltip = document.createElement("span");
+            tooltip.className = "tooltiptext";
+            tooltip.innerText = field.description;
+            captionElement.appendChild(tooltip);
+        }
+
         lineElement.appendChild(captionElement);
 
         let fieldElement = document.createElement("div");

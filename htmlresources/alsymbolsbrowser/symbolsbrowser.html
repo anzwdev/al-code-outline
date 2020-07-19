@@ -14,12 +14,13 @@
         <script src="##EXTENSIONPATH##/htmlresources/alsymbolsbrowser/js/startup.js"></script>
         <link rel="stylesheet" type="text/css" href="##EXTENSIONPATH##/htmlresources/lib/jquery-context-menu/css/jquery.contextMenu.css">
         <link rel="stylesheet" type="text/css" href="##EXTENSIONPATH##/htmlresources/lib/jquery-multiselect/jquery.multiselect.css">
+        <link rel="stylesheet" type="text/css" href="##EXTENSIONPATH##/htmlresources/lib/styles/default.css">
+        <link rel="stylesheet" type="text/css" href="##EXTENSIONPATH##/htmlresources/lib/styles/icons.css">
         <link rel="stylesheet" type="text/css" href="##EXTENSIONPATH##/htmlresources/lib/symbolstreecontrol/symbolstreecontrol.css">
         <link rel="stylesheet" type="text/css" href="##EXTENSIONPATH##/htmlresources/alsymbolsbrowser/css/symbolsbrowser.css">
-        <link rel="stylesheet" type="text/css" href="##EXTENSIONPATH##/htmlresources/alsymbolsbrowser/css/icons.css">    
     </head>
     <body>
-        <div id="search">
+        <div id="search" class="search">
             <select id="searchtype" name="searchtype" class="searchinput" tabindex="1" multiple="multiple">
                 <option value="Table">Tables</option>
                 <option value="Page">Pages</option>
@@ -41,7 +42,7 @@
             <button class="btn" id="searchbtn" tabindex="3">Search</button>
             <button class="btn" id="listbtn" tabindex="3">List View</button>
         </div>
-        <div id="content">
+        <div id="content" class="content">
             <div id="olpanel" class="contentcol">
                 <div class="contcolhdr">
                     <div class="contcolname">Objects</div>

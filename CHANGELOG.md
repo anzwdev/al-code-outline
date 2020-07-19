@@ -2,8 +2,10 @@
 
 ## 2.0.5
 
+ - Issue #154 - Add tooltips to custom json editors
  - Issue #155 - AL Page wizard: Adding a new tab clears previously selected fields
  - Issue #156 - AL Object browser doesn't retain set filters
+ - WebViews css refactoring, moving duplicated entries to the default.css file
 
  Thank you LucVanDyck for reporting issues #155 and #156
 
