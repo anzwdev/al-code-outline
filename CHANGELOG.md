@@ -6,11 +6,13 @@
  - Issue #154 - Add tooltips to custom json editors
  - Issue #155 - AL Page wizard: Adding a new tab clears previously selected fields
  - Issue #156 - AL Object browser doesn't retain set filters
+ - Issue #160 - Table Wizard: switch Length and Data Classification columns
  - WebViews css refactoring, moving duplicated entries to the default.css file
 
  Thank you
  - LucVanDyck for reporting issues #155 and #156
  - B0uMe for reporting issue #131
+ - NKarolak for reporting issue #160
 
 ## 2.0.4
  - Issue #140 - Add Tooltips: caption instead of field name

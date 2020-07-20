@@ -9,10 +9,10 @@ class TableFieldsGridView extends AZGridView {
                 'Blob', 'Boolean', 'Code', 'Date', 'DateFormula', 'DateTime', 'Decimal', 'Duration',
                 'Enum', 'Guid', 'Integer', 'Media', 'MediaSet', 'Option', 'RecordId', 'TableFilter',
                 'Text', 'Time']},
+            {name: 'length', caption: 'Length', style: 'width:100px'},
             {name: 'dataClassification', caption: 'Data Classification', style: 'width: 20%', autocomplete: [
                 'AccountData', 'CustomerContent', 'EndUserIdentifiableInformation', 'EndUserPseudonymousIdentifiers',
-                'OrganizationIdentifiableInformation', 'SystemMetadata', 'ToBeClassified']},
-            {name: 'length', caption: 'Length', style: 'width:100px'}],
+                'OrganizationIdentifiableInformation', 'SystemMetadata', 'ToBeClassified']}],
             undefined, undefined, 'Loading data...', true);
     }
 }
