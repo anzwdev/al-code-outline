@@ -41,7 +41,7 @@ export class DevToolsExtensionContext implements vscode.Disposable {
         if (this.alLangProxy.extensionPath)
             alExtensionPath = this.alLangProxy.extensionPath;
 
-        this.toolsLangServerClient = new ToolsLangServerClient(context, alExtensionPath);
+        this.toolsLangServerClient = new ToolsLangServerClient(context, alExtensionPath, this.alLangProxy.version);
         this.activeDocumentSymbols = new AZActiveDocumentSymbolsLibrary(this);
         this.objectRunner = new ALObjectRunner(this);
 
