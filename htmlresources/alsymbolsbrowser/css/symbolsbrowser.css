@@ -1,34 +1,3 @@
-body {
-    position: absolute;
-    left: 0;
-    right: 0;
-    top: 0;
-    bottom: 0;
-    display: flex;
-    flex-direction: column;
-    margin:0;
-    padding:0;
-}
-input, select {
-    background: var(--vscode-input-background);
-    border: 1px solid var(--vscode-panel-border);
-    color: var(--vscode-input-foreground);
-}
-input:focus, select:focus, div:focus {
-    outline-color: var(--vscode-focusBorder) !important;
-}
-.btn:focus, .tbarbtn:focus {
-    outline-style: double;
-    outline-color: var(--vscode-focusBorder) !important;
-}
-#search {
-    flex: 0 0 auto;
-    display: flex;
-}
-#search .btn {
-    flex: 0 0 auto;
-    margin: 5px;
-}
 #searchtype {
     flex: 1 1 25%;
 }
@@ -37,16 +6,6 @@ input:focus, select:focus, div:focus {
 }
 #searchname {
     flex: 1 1 50%;
-}
-#search .searchinput, #search .ms-options-wrap {
-    margin: 5px 0px 5px 5px;
-}
-#content {
-    flex: 1 1 auto;
-    display: flex;
-    flex-direction: row;
-    align-items: stretch;
-    justify-content: stretch;
 }
 #objects {
     flex: 1 1 100px;
@@ -94,78 +53,4 @@ input:focus, select:focus, div:focus {
 }
 .symbolscont {
     border: 1px solid var(--vscode-panel-border);
-}
-.btn {
-    background-color: var(--vscode-button-background);
-    color: var(--vscode-button-foreground);
-    border: 0px solid var(--vscode-panel-border);
-    font-size: var(--font-size);
-    font-weight: var(--font-weight);    
-    font-family: var(--font-family);
-    padding:5px;
-}
-.btn:hover, .icobtn:hover {
-    background-color: var(--vscode-button-hoverBackground);
-}
-.icobtn {
-    flex: 0 0 31px;
-    background-color: var(--vscode-button-background);
-    color: var(--vscode-button-foreground);
-    border: 0px solid var(--vscode-panel-border);
-    width: 31px;
-    background-repeat: no-repeat;
-    background-position: center;
-    background-size: contain;
-}
-
-
-
-.tbarbtn {
-    background-color: var(--vscode-button-background);
-    color: var(--vscode-button-foreground);
-    border: 0px solid var(--vscode-panel-border);
-    font-size: var(--font-size);
-    font-weight: var(--font-weight);
-    font-family: var(--font-family);
-    padding:2px;
-    margin:2px;
-}
-.tbarbtn:hover {
-    background-color: var(--vscode-button-hoverBackground);
-}
-
-
-.treefiltercont {
-    flex: 0 0 auto;
-    display: flex;
-    flex-direction: row;
-    align-items: stretch;
-    justify-content: stretch;
-    overflow: hidden;
-    padding: 2px 5px;
-
-}
-.treefiltercont .treefiltertext {
-    flex: 1 1 auto;
-    background: var(--vscode-input-background);
-    border: 1px solid var(--vscode-input-background);
-    color: var(--vscode-input-foreground);
-    padding: 3px;
-}
-
-.treefiltercont .treefilterbtn {
-    flex: 0 0 auto;
-    background-color: var(--vscode-button-background);
-    color: var(--vscode-button-foreground);
-    border: 0px solid var(--vscode-panel-border);
-    background-repeat: no-repeat;
-    background-position: center;
-    background-size: contain;
-}
-.treefiltercont .treefilterbtn:hover {
-    background-color: var(--vscode-button-hoverBackground);
-}
-.treefiltercont .treefilterbtn:focus {
-    outline-style: double;
-    outline-color: var(--vscode-focusBorder) !important;
 }

@@ -110,6 +110,12 @@ class PageWizard extends TableBasedObjectWizard {
         if (prevTableName != this._data.selectedTable) {
             htmlHelper.clearChildrenById("srcfields");
             htmlHelper.clearChildrenById("destfields");
+            
+            //clear selected fields
+            if (this._data.selectedFieldList)
+                this._data.selectedFieldList = [];
+            if (this._data.fastTabsData)
+                this._data.fastTabsData.forEach(item => {item.fields = []});
 
             if (!finishSelected)
                 this.sendMessage({
@@ -127,7 +133,6 @@ class PageWizard extends TableBasedObjectWizard {
     collectStep2Data(finishSelected) {
         this.saveSelectedFields();
     }
-
 
     onPageTypeChanged() {
         let prevHasTabs = this.hasFastTabs();        
@@ -205,7 +210,16 @@ class PageWizard extends TableBasedObjectWizard {
         this.selectFastTab(document.getElementById("activefasttab").value);
     }
 
-    rebuildFastTabs() {
+    findTabByName(name) {
+        if (this._data.fastTabsData)
+            return this._data.fastTabsData.find(item => {
+                return (item.name == name);
+            });
+        return undefined;
+    }
+
+    rebuildFastTabs() {       
+        let selFlds = [];
         if (this.hasFastTabs()) {
             //get list of fast tabs
             if ((!this._data.fastTabs) || (this._data.fastTabs.trim() == ""))
@@ -213,10 +227,16 @@ class PageWizard extends TableBasedObjectWizard {
             var fastTabsNames = this._data.fastTabs.split(",");
             var fastTabList = [];
             for (var i=0; i<fastTabsNames.length; i++) {
-                fastTabList.push({
-                    name : fastTabsNames[i],
-                    fields : []
-                })
+                let tab = this.findTabByName(fastTabsNames[i]);
+                if (tab) {
+                    if (tab.fields.length > 0)
+                        selFlds.push(...tab.fields);
+                } else
+                    tab = {
+                        name : fastTabsNames[i],
+                        fields : []
+                    };
+                fastTabList.push(tab);
             }
             this._data.fastTabsData = fastTabList;
 
@@ -226,12 +246,13 @@ class PageWizard extends TableBasedObjectWizard {
             document.getElementById("activefasttab").value = this._activeFastTab;
             htmlHelper.showById("activefasttabline");
         } else {
+            selFlds = this._data.selectedFieldList;
             this._data.fastTabsData = [];
             this._activeFastTab = 0;
             htmlHelper.hideById("activefasttabline");
         }
-        //reload fields
-        this.loadFields();
+        this.loadFieldsAdv(selFlds);
+        this.restoreSelectedFields();                        
     }
 
 }

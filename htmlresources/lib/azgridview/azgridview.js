@@ -67,7 +67,10 @@ class AZGridView {
                 disableOpenOnKeyDown: true,
                 minLength: -1,
                 onSelect: function (item, inputfield) {
-                    inputfield.value = item;
+                    if (item.value)
+                        inputfield.value = item.value;
+                    else
+                        inputfield.value = item;
                     if (me.saveOnInput)
                         me.onEditorChanged();
                 },
@@ -77,18 +80,27 @@ class AZGridView {
                         (me._currColumn < me._columns.length) &&
                         (me._columns[me._currColumn].autocomplete)) {
 
-                        callback(me._columns[me._currColumn].autocomplete.filter(function(n) { return n.toLowerCase().startsWith(match); }));
+                        callback(me._columns[me._currColumn].autocomplete.filter(function(n) { 
+                            if (n.value)
+                                return n.value.toLowerCase().startsWith(match);
+                            return n.toLowerCase().startsWith(match); 
+                        }));
                     }
                 },
                 render: function(item, value) {
-                    var itemElement = document.createElement("div");
+                    let itemElement = document.createElement("div");
+                    let ival = item.value?item.value:item;
+                    let icont = ival;
+                    
                     if (allowedChars.test(value)) {
                         var regex = new RegExp(value, 'gi');
-                        var inner = item.replace(regex, function(match) { return "<strong>" + match + "</strong>" });
-                        itemElement.innerHTML = inner;
-                    } else {
-                        itemElement.textContent = item;
-                    }
+                        ival = ival.replace(regex, function(match) { 
+                            return "<strong>" + match + "</strong>" 
+                        });
+                    };
+                    if (item.description)
+                        ival = "<div>" + ival + "</div><div class=\"acpdesc\">" + item.description + "</div>";
+                    itemElement.innerHTML = ival;
                     return itemElement;
                 },
                 //emptyMsg: "No  found",
@@ -97,6 +109,12 @@ class AZGridView {
                         container.style.top = "";
                         container.style.bottom = (window.innerHeight - inputRect.bottom + input.offsetHeight) + "px";
                         container.style.maxHeight = "140px";
+                    }
+
+                    if ((me._columns[me._currColumn].autocomplete.length > 0) && (me._columns[me._currColumn].autocomplete[0].description)) {
+                        container.style.minWidth = input.width;
+                        container.style.width = "";
+                        container.style.maxWidth = (window.innerWidth - inputRect.left - 20) + "px";
                     }
                 }
             });
@@ -113,6 +131,21 @@ class AZGridView {
         this._data = data;
         this.renderTableHeader();
         this.renderData();
+    }
+
+    setAutocomplete(name, data) {
+        let idx = this.getColumnIndex(name);
+        if (idx >= 0)
+            this._columns[idx].autocomplete = data;
+    }
+
+    getColumnIndex(name) {
+        if (this._columns) {
+            for (let i=0; i<this._columns.length; i++)
+                if (this._columns[i].name == name)
+                    return i;
+        }
+        return -1;
     }
 
     getData() {

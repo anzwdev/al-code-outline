@@ -45,11 +45,16 @@ export class ToolTipModifier {
         if (!vscode.window.activeTextEditor)
             return;
         var text = vscode.window.activeTextEditor.document.getText();
-        if (!text)
+        if ((!text) || (text.length == 0))
             return;
         let documentUri = vscode.window.activeTextEditor.document.uri;
 
-        let request: ToolsWorkspaceCommandRequest = new ToolsWorkspaceCommandRequest('addToolTips', text, '', {
+        let workspaceUri = TextEditorHelper.getActiveWorkspaceFolderUri();
+        let workspacePath = '';
+        if (workspaceUri)
+            workspacePath = workspaceUri.fsPath;
+
+        let request: ToolsWorkspaceCommandRequest = new ToolsWorkspaceCommandRequest('addToolTips', text, workspacePath, {
             toolTipField: this.getFieldTooltip(documentUri), 
             toolTipAction: this.getActionTooltip(documentUri)
         });

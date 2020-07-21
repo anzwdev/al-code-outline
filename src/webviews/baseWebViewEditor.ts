@@ -93,7 +93,7 @@ export class BaseWebViewEditor {
         };
     }
 
-    protected attachToWebView(panel: vscode.WebviewPanel) {
+    public attachToWebView(panel: vscode.WebviewPanel) {
         this._panel = panel;
         this._panel.webview.options = this.getWebviewPanelOptions();
         this.initializeWebView();
@@ -134,6 +134,11 @@ export class BaseWebViewEditor {
     }
 
     protected onPanelClosed() {       
+    }
+
+    protected resetViewView() {
+        this._htmlContent = undefined;
+        this.reloadWebViewContent();
     }
 
     protected reloadWebViewContent() {

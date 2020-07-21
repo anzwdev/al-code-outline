@@ -22,6 +22,10 @@ class FormEditor {
                     this._form.setFields(message.fields);
                 this._form.setData(message.data);
                 break;
+            case 'setAutocomplete':
+                if ((message.path) && (message.data))
+                    this._form.setAutocomplete(message.path, message.data);
+                break;
         }
     }
 

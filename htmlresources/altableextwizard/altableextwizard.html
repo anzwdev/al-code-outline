@@ -2,26 +2,30 @@
 <html>
     <head>
         <meta http-equiv="Content-Security-Policy" content="default-src 'none'; img-src ##CSPSOURCE## https: data:; script-src ##CSPSOURCE## 'unsafe-eval'; style-src ##CSPSOURCE##; font-src ##CSPSOURCE##;" />
-        <script src="##EXTENSIONPATH##/htmlresources/lib/helpers/htmlhelper.js"></script>
         <script src="##EXTENSIONPATH##/htmlresources/lib/autocomplete/autocomplete.js"></script>
+        <script src="##EXTENSIONPATH##/htmlresources/lib/helpers/htmlhelper.js"></script>
+        <script src="##EXTENSIONPATH##/htmlresources/lib/azgridview/azgridview.js"></script>
+        <script src="##EXTENSIONPATH##/htmlresources/lib/azgridview/tablefieldsgridview.js"></script>
         <script src="##EXTENSIONPATH##/htmlresources/lib/filteredlist/filteredlist.js"></script>
         <script src="##EXTENSIONPATH##/htmlresources/lib/wizards/tablebasedobjectwizard.js"></script>
-        <script src="##EXTENSIONPATH##/htmlresources/alreportwizard/js/alreportwizard.js"></script>
+        <script src="##EXTENSIONPATH##/htmlresources/altableextwizard/js/altableextwizard.js"></script>
         <link rel="stylesheet" type="text/css" href="##EXTENSIONPATH##/htmlresources/lib/autocomplete/autocomplete.css">
+        <link rel="stylesheet" type="text/css" href="##EXTENSIONPATH##/htmlresources/lib/azgridview/azgridview.css">
         <link rel="stylesheet" type="text/css" href="##EXTENSIONPATH##/htmlresources/lib/wizards/wizards.css">
+        <link rel="stylesheet" type="text/css" href="##EXTENSIONPATH##/htmlresources/altableextwizard/css/altableextwizard.css">
     </head>
     <body>
         <div id="main" class="main">
             <div id="header" class="header">
-                <div class="title">New Report Wizard</div>
+                <div class="title">New Table Extension Wizard</div>
             </div>
 
             <div id="wizardstep1" class="wizard">
 
                 <div class="formline">
-                    <div class="formheader">Please enter report properties.</div>
+                    <div class="formheader">Please enter table extension properties.</div>
                 </div>
-
+                        
                 <div class="formline">
                     <div class="formcaption">Object Id:</div>
                     <div class="formfield">
@@ -35,43 +39,15 @@
                         <input type="text" id="objectname" name="objectname" class="fulltext">
                     </div>
                 </div>
-    
+
                 <div class="formline">
-                    <div class="formcaption">Source Table Name:</div>
+                    <div class="formcaption">Extends:</div>
                     <div class="formfield">
                         <input type="text" id="srctable" name="srctable" class="fulltext" />
                     </div>
                 </div>
-
-            </div>
-
-            <div id="wizardstep2" class="wizard">
-
-                <div class="formline">
-                    <div class="formheader">Please select report fields.</div>
-                </div>
-                        
-                <div class="multiselect">
-                    <div class="multiselsrc">
-                        <div class="mselcaption">Available Fields:</div>
-                        <input class="mselfilter" id="srcfieldsfilter" type="text" placeholder="Enter fields filter...">
-                        <select class="msellist" id="srcfields" multiple="multiple"></select>
-                    </div>
-
-                    <div class="multiselbtns">
-                        <div><button class="mselbtn" id="mselright">&gt;</button></div>
-                        <div><button class="mselbtn" id="mselallright">&gt;&gt;</button></div>
-                        <div><button class="mselbtn" id="mselallleft">&lt;&lt;</button></div>
-                        <div><button class="mselbtn" id="mselleft">&lt;</button></div>
-                    </div>
-
-                    <div class="multiseldest">
-                        <div class="mselcaption">Selected Fields:</div>
-                        <input class="mselfilter" id="destfieldsfilter" type="text" placeholder="Enter fields filter...">
-                        <select class="msellist" id="destfields" multiple="multiple">
-                        </select>
-                    </div>
-
+    
+                <div id="fieldsgrid" class="formarea">                    
                 </div>
 
             </div>

@@ -20,7 +20,7 @@ export class SymbolsTreeProvider implements vscode.TreeDataProvider<AZSymbolInfo
     protected onSymbolsChanged(library : AZSymbolsLibrary) {
         this._treeRoot = library.rootSymbol;        
         if (this._onDidChangeTreeData)
-            this._onDidChangeTreeData.fire();
+            this._onDidChangeTreeData.fire(null);
     }
 
     public refresh() {

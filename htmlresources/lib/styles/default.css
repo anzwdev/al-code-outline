@@ -9,22 +9,32 @@ body {
     align-items: stretch;
     justify-content: stretch;
     padding: 0 !important;
+    margin: 0 2px 0 0;
+    overflow: hidden;
 }
-input, select {
+
+/* inputs */
+textarea {
+    font: var(--vscode-font-weight) var(--vscode-font-size) var(--vscode-font-family)
+}
+input, select, textarea {
     background: var(--vscode-input-background);
     border: 1px solid var(--vscode-panel-border);
     color: var(--vscode-input-foreground);
 }
-input:focus, select:focus, div:focus {
+input:focus, select:focus, div:focus, textarea:focus {
     outline-color: var(--vscode-focusBorder) !important;
+}
+
+/* Search */
+
+.search {
+    flex: 0 0 auto;
+    display: flex;
 }
 .search .btn:focus {
     outline-style: double;
     outline-color: var(--vscode-focusBorder) !important;
-}
-.search {
-    flex: 0 0 auto;
-    display: flex;
 }
 .search .btn {
     flex: 0 0 auto;
@@ -46,6 +56,7 @@ input:focus, select:focus, div:focus {
 .search .btn:hover, .icobtn:hover {
     background-color: var(--vscode-button-hoverBackground);
 }
+
 .btnstd {
     border: 1px solid var(--vscode-panel-border);
 }
@@ -58,12 +69,36 @@ input:focus, select:focus, div:focus {
     background-color: var(--vscode-list-activeSelectionBackground) !important;
     color: var(--vscode-list-activeSelectionForeground) !important;
 }
+
+.tbarbtn {
+    background-color: var(--vscode-button-background);
+    color: var(--vscode-button-foreground);
+    border: 0px solid var(--vscode-panel-border);
+    font-size: var(--font-size);
+    font-weight: var(--font-weight);
+    font-family: var(--font-family);
+    padding:2px;
+    margin:2px;
+}
+.tbarbtn:hover {
+    background-color: var(--vscode-button-hoverBackground);
+}
+.tbarbtn:focus {
+    outline-style: double;
+    outline-color: var(--vscode-focusBorder) !important;
+}
+
+/* Content */
+
 .content {
     flex: 1 1 auto;
     display: flex;
     flex-direction: row;
+    align-items: stretch;
+    justify-content: stretch;
     overflow:auto;
 }
+
 .loading {
     display: block;
     margin: 20px;

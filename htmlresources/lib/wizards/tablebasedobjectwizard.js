@@ -83,6 +83,16 @@ class TableBasedObjectWizard {
         this._destFields.clear();
     }
 
+    loadFieldsAdv(selFlds) {
+        let flds = this._data.fieldList;
+        if ((flds) && (flds.length > 0) && (selFlds) && (selFlds.length > 0))
+            flds = flds.filter(item => {
+                return (selFlds.indexOf(item) < 0);
+            });
+        this._srcFields.setData(flds);
+        this._destFields.clear();
+    }
+
     loadTables() {
         if (this._data)        
             this.initAutoComplete()

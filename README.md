@@ -22,6 +22,7 @@ This extension was originally named 'AL Code Outline' because it started as AL c
 
 Extensions add new "New AL File Wizard" item to EXPLORER context menu. It allows to run one of these wizards to create new AL object file:
    - Table Wizard
+   - Table Extension Wizard
    - Page Wizard
    - Codeunit Wizard
    - Interface Wizard
@@ -40,7 +41,7 @@ Symbols browser shows list of AL objects, allows to select one of them and then 
 Both views support keyboard navigation with arrow keys and allow to filter data by using filter fields at the top of the screen.
 
 Symbols browser can display symbols from:
- - *.app symbols file by right clicking on it and using "Open in AL Browser" command from the context menu
+ - *.app symbols files - extension registers default custom read only editor for these files so symbols browser can be opened by just clicking on the file in the EXPLORER panel. If it does not work, it means that other editor has been selected as default. In that case symbols browser can still be open by right clicking on the file, selecting "Open With..." from the context menu and choosing "AL App Viewer" editor.  
  - current project symbols with all dependencies defined in app.json by running "AZ AL Dev Tools: Show All Project Symbols" from the "Command Palette"
  - current project symbols without dependencies by running "AZ AL Dev Tools: Show Project Symbols without Dependencies" from the "Command Palette"
 
@@ -162,6 +163,16 @@ Document syntax visualizer shows syntax tree created by the AL compiler for the 
   * "New Page Extension" and "New Table Extension" options in AL Object Browser
   * Ability to save generated objects in files inside project folder
   * AL Object Browser filters
+  * Table extension wizard
+  * Bugfixes
+  * Sort procedures code action
+  * Expand/collapse nodes in the symbols tree view
+- StefanoPrimo
+  * Code fixes for diagnostics reported by CodeCop analyzer
+  * "Add missing tooltips" code action
+  * "Add missing application areas" code action
+- DavidFeldhoff
+  * "Sort procedures@ code action fix to improve sorting of test procedures
 
 ## Inspiration
 

@@ -24,18 +24,21 @@ import { ToolsGetFullSyntaxTreeResponse } from './toolsGetFullSyntaxTreeResponse
 import { ALFullSyntaxTreeHelper } from '../symbollibraries/alFullSyntaxTreeHelper';
 import { ToolsWorkspaceCommandRequest } from './toolsWorkspaceCommandRequest';
 import { ToolsWorkspaceCommandResponse } from './toolsWorkspaceCommandResponse';
+import { Version } from '../tools/version';
 
 export class ToolsLangServerClient implements vscode.Disposable {
     _context : vscode.ExtensionContext;
     _childProcess : cp.ChildProcess | undefined;
     _connection : rpc.MessageConnection | undefined;
-    _alExtensionPath : string;    
+    _alExtensionPath : string;
+    _alExtensionVersion : Version;    
 
-    constructor(context : vscode.ExtensionContext, alExtensionPath : string) {
+    constructor(context : vscode.ExtensionContext, alExtensionPath : string, alExtensionVersion: Version) {
         this._context = context;
         this._childProcess = undefined;
         this._connection = undefined;
         this._alExtensionPath = alExtensionPath;
+        this._alExtensionVersion = alExtensionVersion;
         this.initialize();
     }
 
@@ -53,7 +56,9 @@ export class ToolsLangServerClient implements vscode.Disposable {
             let langServerPath : string;
 
             //find binaries path
-            if (platform == "win32")
+            if (this._alExtensionVersion.major <= 1)
+                langServerPath = this._context.asAbsolutePath("bin/netframeworknav2018/AZALDevToolsServer.NetFrameworkNav2018.exe");
+            else if (platform == "win32")
                 langServerPath = this._context.asAbsolutePath("bin/netframework/AZALDevToolsServer.NetFramework.exe");
             else {
                 langServerPath = this._context.asAbsolutePath("bin/netcore/" + platform + "/AZALDevToolsServer.NetCore");

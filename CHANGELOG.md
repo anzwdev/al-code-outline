@@ -1,5 +1,36 @@
 # Change Log
 
+## 2.0.5
+
+ - Issue #131 - "AL Outline" panel is blank - legacy Nav2018 version of the language server added
+ - Issue #154 - Add tooltips to custom json editors
+ - Issue #155 - AL Page wizard: Adding a new tab clears previously selected fields
+ - Issue #156 - AL Object browser doesn't retain set filters
+ - Issue #160 - Table Wizard: switch Length and Data Classification columns
+ - WebViews css refactoring, moving duplicated entries to the default.css file
+
+ Thank you
+ - LucVanDyck for reporting issues #155 and #156
+ - B0uMe for reporting issue #131
+ - NKarolak for reporting issue #160
+
+## 2.0.4
+ - Issue #140 - Add Tooltips: caption instead of field name
+ - Issue #142 - Ruleset editor - add rules lookup
+ - Issue #143 - Use ruleset editor for file with filename "ruleset.json"
+ - Issue #144 - AppSourceCop.json Visual Editor: "unknown" property (for "publisher" property)
+ - Issue #145 - Option to make the AL Object Browser the default 'editor' for .app files
+ - Issue #148 - Add dot at the end of tooltip
+ - Issue #149 - Missing second quote in <returns name="ReturnVariableName"> in generated documentation comment
+ - Issue #152 - SymbolsService does not load Symbols with AL Language version 3.x
+ - Autocomplete drop down can display value descriptions
+ - Table extension wizard added by rvanbekkum
+
+ Thank you 
+ - LucVanDyck for reporting issue #140
+ - rvanbekkum for reporting issues #143, #144, #145 and #149 and your pull request with issue #149 fixes and table extension wizard
+ - DavidFeldhoff for reporting issue #152
+
 ## 2.0.3
  - app.json editor
  - RuleSet editor

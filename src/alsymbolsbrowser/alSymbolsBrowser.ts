@@ -1,29 +1,52 @@
-'use strict';
-
+import * as vscode from 'vscode';
 import * as path from 'path';
 import { AZSymbolsLibrary } from '../symbollibraries/azSymbolsLibrary';
 import { AZSymbolInformation } from '../symbollibraries/azSymbolInformation';
 import { DevToolsExtensionContext } from '../devToolsExtensionContext';
-import { ALBaseSymbolsBrowser } from './alBaseSymbolsBrowser';
-import { ALObjectsBrowser } from './alObjectsBrowser';
 import { AZSymbolKind } from '../symbollibraries/azSymbolKind';
+import { ALObjectBrowserItem } from './alObjectBrowserItem';
+import { BaseWebViewEditor } from '../webviews/baseWebViewEditor';
+import { ALSymbolsBasedPageWizard } from '../objectwizards/symbolwizards/alSymbolsBasedPageWizard';
+import { ALSymbolsBasedQueryWizard } from '../objectwizards/symbolwizards/alSymbolsBasedQueryWizard';
+import { ALSymbolsBasedReportWizard } from '../objectwizards/symbolwizards/alSymbolsBasedReportWizard';
+import { ALSymbolsBasedXmlPortWizard } from '../objectwizards/symbolwizards/alSymbolsBasedXmlPortWizard';
+import { ALSymbolsBasedPageExtWizard } from '../objectwizards/symbolwizards/alSymbolsBasedPageExtWizard';
+import { ALSymbolsBasedTableExtWizard } from '../objectwizards/symbolwizards/alSymbolsBasedTableExtWizard';
+import { ALSyntaxHelper } from '../allanguage/alSyntaxHelper';
+import { SymbolsTreeView } from '../symbolstreeview/symbolsTreeView';
+import { TextEditorHelper } from '../tools/textEditorHelper';
 
 /**
  * AL Symbols Browser
  * allows to browse symbols in a tree structure like in the Class Browser in Visual Studio
+ * and in a list view like in old Dynamics Nav object browser
  */
-export class ALSymbolsBrowser extends ALBaseSymbolsBrowser {
+export class ALSymbolsBrowser extends BaseWebViewEditor {
+    protected _library : AZSymbolsLibrary;
+    protected _devToolsContext : DevToolsExtensionContext;
     protected _selectedObject : AZSymbolInformation | undefined;
     protected _showObjectIds : boolean;
+    protected _treeViewMode : boolean;
+    protected _itemsList: ALObjectBrowserItem[];
+    protected _showLibraries: boolean;
 
     constructor(devToolsContext : DevToolsExtensionContext,  library : AZSymbolsLibrary) {
-        super(devToolsContext, library);
+        super(devToolsContext.vscodeExtensionContext, library.displayName);
+        this._devToolsContext = devToolsContext;
+        this._library = library;
+        this._treeViewMode = devToolsContext.getUseSymbolsBrowser();        
+        //tree view properties
         this._selectedObject = undefined;
         this._showObjectIds = false;
+        //list view properties
+        this._itemsList = [];
+        this._showLibraries = false;
     }
 
     protected getHtmlContentPath() : string {
-        return path.join('htmlresources', 'alsymbolsbrowser', 'symbolsbrowser.html');
+        if (this._treeViewMode)
+            return path.join('htmlresources', 'alsymbolsbrowser', 'symbolsbrowser.html');
+        return path.join('htmlresources', 'objectbrowser', 'objectbrowser.html');        
     }
 
     protected getViewType() : string {
@@ -34,32 +57,253 @@ export class ALSymbolsBrowser extends ALBaseSymbolsBrowser {
         //load library
         await this._library.loadAsync(false);
 
-        //send data to the web view
-        this.updateObjects();
+        if (this._treeViewMode) {
+            //send data to the tree web view
+            this.updateTreeObjects();
+        } else {
+            //send data to the list web view
+            this.updateListObjects();
+        }
     }
 
-    protected updateObjects() {        
+    protected updateTreeObjects() {        
         this.sendMessage({
             command : 'setData',
             data : this._library.rootSymbol
         });
     }
 
+    protected updateListObjects() {
+        this._itemsList = [];
+        this._showLibraries = false;
+        if (this._library.rootSymbol)
+            this.collectListSymbols(this._library.rootSymbol, '');
+
+        //send data to the web view
+        this.sendMessage({
+            command: 'setData',
+            data: this._itemsList,
+            showLibraries: this._showLibraries
+        });
+    }
+
+    protected collectListSymbols(symbol: AZSymbolInformation, libraryName: string) {
+        if (symbol.isALObject()) {
+            this._itemsList.push(new ALObjectBrowserItem(symbol.kind, symbol.id, symbol.name, libraryName, symbol.getPath()))
+        } else if (symbol.childSymbols) {
+            if (symbol.kind == AZSymbolKind.Package) {
+                libraryName = symbol.name;
+                if ((!this._showLibraries) && (this._itemsList.length > 0))
+                    this._showLibraries = true;
+            }
+
+            for (let i=0; i<symbol.childSymbols.length; i++) {
+                symbol.childSymbols[i].parent = symbol;
+                this.collectListSymbols(symbol.childSymbols[i], libraryName);
+            }
+        }
+    }
+
+
     protected processWebViewMessage(message : any) : boolean {
         if (super.processWebViewMessage(message))
             return true;
 
         switch (message.command) {
+            case 'definition':
+                this.goToDefinition(message.path);
+                return true;
+            case 'shownewtab':
+                this.showNewTab(message.path);
+                break;
+            case 'runinwebclient':
+                this.runInWebClient(message.path);
+                return true;
+            case 'newcardpage':
+                this.createPage(message.path, message.selpaths, "Card");
+                return true;
+            case 'newlistpage':
+                this.createPage(message.path, message.selpaths, "List");
+                return true;
+            case 'newreport':
+                this.createReport(message.path, message.selpaths);
+                return true;
+            case 'newxmlport':
+                this.createXmlPort(message.path, message.selpaths);
+                return true;
+            case 'newquery':
+                this.createQuery(message.path, message.selpaths);
+                return true;
+            case 'extendtable':
+                this.createTableExt(message.path, message.selpaths);
+                return true;
+            case 'extendpage':
+                this.createPageExt(message.path, message.selpaths);
+                return true;
+            case 'copysel':
+                this.copySelected(message.path, message.selpaths);
+                return true;
             case 'showlist':
-                this.showListView();
+                this.switchViewMode(false);
+                break;
+            case 'showTreeView':
+                this.switchViewMode(true);
                 break;
             case 'objselected':
                 this.onObjectSelected(message.path);
                 return true;
-        }
+            case 'currRowChanged':
+                this.updatePivotObjCommand(message.path);
+                return true;
+            }
 
         return false;
     }
+
+    protected async getObjectsFromPath(selPaths: number[][] | undefined, kind : AZSymbolKind) : Promise<AZSymbolInformation[] | undefined> {
+        if (!selPaths)
+            return undefined;
+
+        let objList = await this._library.getSymbolsListByPathAsync(selPaths, kind);
+        if (!objList)
+            return undefined;
+
+        if (objList.length > 100) {
+            let action = await vscode.window.showWarningMessage(`You are about to run this command for ${selPaths.length} objects. Do you want to continue?`, {modal: true}, 'Yes', 'No');
+            if (action !== 'Yes') {
+                return undefined;
+            }
+        }
+
+        return objList;
+    }
+
+    protected async copySelected(path : number[] | undefined, selPaths: number[][] | undefined) {
+        let symbolList = await this.getObjectsFromPath(selPaths, AZSymbolKind.AnyALObject);
+        if (symbolList) {
+            let objectsText = 'Type\tId\tName';
+            for (let i=0; i<symbolList.length; i++) {
+                symbolList[i]
+                objectsText += ('\n' + 
+                    symbolList[i].getObjectTypeName() + '\t' + 
+                    symbolList[i].id.toString() + '\t' + 
+                    symbolList[i].name);
+            }
+            vscode.env.clipboard.writeText(objectsText);
+        }
+    }
+
+    protected async createPage(path : number[] | undefined, selPaths: number[][] | undefined, pageType : string) {
+        let symbolList = await this.getObjectsFromPath(selPaths, AZSymbolKind.TableObject);
+        if (symbolList) {
+            let builder : ALSymbolsBasedPageWizard = new ALSymbolsBasedPageWizard();
+            await builder.showWizard(symbolList, pageType);
+        }
+    }
+
+    protected async createQuery(path : number[] | undefined, selPaths: number[][] | undefined) {
+        let symbolList = await this.getObjectsFromPath(selPaths, AZSymbolKind.TableObject);
+        if (symbolList) {
+            let builder : ALSymbolsBasedQueryWizard = new ALSymbolsBasedQueryWizard();
+            builder.showWizard(symbolList);
+        }
+    }
+
+    protected async createReport(path : number[] | undefined, selPaths: number[][] | undefined) {
+        let symbolList = await this.getObjectsFromPath(selPaths, AZSymbolKind.TableObject);
+        if (symbolList) {
+            let builder : ALSymbolsBasedReportWizard = new ALSymbolsBasedReportWizard();
+            builder.showWizard(symbolList);
+        }
+    }
+
+    protected async createXmlPort(path : number[] | undefined, selPaths: number[][] | undefined) {
+        let symbolList = await this.getObjectsFromPath(selPaths, AZSymbolKind.TableObject);
+        if (symbolList) {
+            let builder : ALSymbolsBasedXmlPortWizard = new ALSymbolsBasedXmlPortWizard();
+            builder.showWizard(symbolList);
+        }
+    }
+
+    protected async createPageExt(path : number[] | undefined, selPaths: number[][] | undefined) {
+        let symbolList = await this.getObjectsFromPath(selPaths, AZSymbolKind.PageObject);
+        if (symbolList) {
+            let builder : ALSymbolsBasedPageExtWizard = new ALSymbolsBasedPageExtWizard();
+            builder.showWizard(symbolList);
+        }
+    }
+
+    protected async createTableExt(path : number[] | undefined, selPaths: number[][] | undefined) {
+        let symbolList = await this.getObjectsFromPath(selPaths, AZSymbolKind.TableObject);
+        if (symbolList) {
+            let builder : ALSymbolsBasedTableExtWizard = new ALSymbolsBasedTableExtWizard();
+            builder.showWizard(symbolList);
+        }
+    }
+
+    protected async showNewTab(path: number[] | undefined) {
+        if (!path)
+            return;
+        let alSymbolList : AZSymbolInformation[] | undefined = await this._library.getSymbolsListByPathAsync([path], AZSymbolKind.AnyALObject);
+        if ((alSymbolList) && (alSymbolList.length > 0)) {
+            let symbolsTreeView = new SymbolsTreeView(this._devToolsContext, 'lib://' + alSymbolList[0].fullName, undefined);
+            symbolsTreeView.setSymbols(alSymbolList[0], alSymbolList[0].fullName);
+            symbolsTreeView.show();
+        }
+    }
+
+    protected async goToDefinition(path : number[] | undefined) {
+        if (!path)
+            return;
+        let alSymbolList : AZSymbolInformation[] | undefined = await this._library.getSymbolsListByPathAsync([path], AZSymbolKind.AnyALObject);
+        if ((alSymbolList) && (alSymbolList.length > 0)) {
+            let preview = !vscode.workspace.getConfiguration('alOutline').get('openDefinitionInNewTab');
+            let targetLocation : vscode.Location | undefined = undefined;
+            let alSymbol : AZSymbolInformation = alSymbolList[0];
+            //get data type name
+            let typeName : string | undefined = ALSyntaxHelper.kindToVariableType(alSymbol.kind);
+            if (!typeName) {
+                let typeName = ALSyntaxHelper.kindToWorkspaceSymbolType(alSymbol.kind);
+                if (!typeName) {
+                    vscode.window.showErrorMessage('This object type is not supported.');
+                    return;    
+                }               
+                targetLocation = await this._devToolsContext.alLangProxy.getWorkspaceSymbol(typeName, alSymbol.name);
+            } else
+                targetLocation = await this._devToolsContext.alLangProxy.getDefinitionLocation(typeName, alSymbol.name);
+    
+            if (targetLocation) {
+                TextEditorHelper.openEditor(targetLocation.uri, true, preview, targetLocation.range.start);
+            } else {
+                vscode.window.showErrorMessage('Object definition is not available.');
+            }
+        }
+    }
+
+    protected async runInWebClient(path : number[] | undefined) {
+        if (!path)
+            return;
+        let alSymbolList : AZSymbolInformation[] | undefined = await this._library.getSymbolsListByPathAsync([path], AZSymbolKind.AnyALObject);
+        if ((alSymbolList) && (alSymbolList.length > 0)) {
+            this._devToolsContext.objectRunner.runSymbolAsync(alSymbolList[0]);
+        }
+    }
+
+    protected onPanelClosed() {
+        this._library.unloadAsync();
+    }
+
+    protected async updatePivotObjCommand(symbolPath: number[] | undefined) {
+        let rootSymbol : AZSymbolInformation = AZSymbolInformation.create(AZSymbolKind.Document, 'Symbol');
+        if ((symbolPath) && (symbolPath.length > 0)) {
+            let pathList: number[][] = [symbolPath];
+            let symbolList : AZSymbolInformation[] | undefined = await this._library.getSymbolsListByPathAsync(pathList, AZSymbolKind.AnyALObject);
+            if ((symbolList) && (symbolList.length > 0))        
+                rootSymbol.addChildItem(symbolList[0]);
+        }
+        this._devToolsContext.activeDocumentSymbols.setRootSymbol(rootSymbol);
+    }
+
 
     protected async onObjectSelected(path : number[] | undefined) {       
         if (!path)
@@ -76,12 +320,10 @@ export class ALSymbolsBrowser extends ALBaseSymbolsBrowser {
             });
     }
 
-    protected showListView() {
-        this._devToolsContext.setUseSymbolsBrowser(false);
-        if (this._panel)
-            this._panel.dispose();
-        let objectsBrowser : ALObjectsBrowser = new ALObjectsBrowser(this._devToolsContext, this._library);
-        objectsBrowser.show();
+    protected switchViewMode(newTreeViewMode: boolean) {
+        this._treeViewMode = newTreeViewMode;
+        this._devToolsContext.setUseSymbolsBrowser(this._treeViewMode);
+        this.resetViewView();
     }
 
 } 

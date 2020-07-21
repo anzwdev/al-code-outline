@@ -1,6 +1,7 @@
 import * as vscode from 'vscode';
 import { DevToolsExtensionContext } from '../devToolsExtensionContext';
 import { JsonEditorProvider } from '../editors/jsonEditorProvider';
+import { AppPackageEditorProvider } from '../editors/appPackageEditorProvider';
 //import { AppJsonEditorProvider } from '../editors/appJsonEditorProvider';
 //import { RuleSetEditorProvider } from '../editors/ruleSetEditorProvider';
 //import { AppSourceCopEditorProvider } from '../editors/appSourceCopEditorProvider';
@@ -14,9 +15,19 @@ export class EditorsService {
     }
 
     protected registerEditors() {
+        let options = {
+            webviewOptions: {
+                retainContextWhenHidden: true
+            }
+        };
+
+        this._context.vscodeExtensionContext.subscriptions.push(
+            vscode.window.registerCustomEditorProvider('azALDevTools.appPackageEditor',
+                new AppPackageEditorProvider(this._context), options));
+        
         this._context.vscodeExtensionContext.subscriptions.push(
             vscode.window.registerCustomEditorProvider('azALDevTools.jsonEditor',
-                new JsonEditorProvider(this._context)));
+                new JsonEditorProvider(this._context), options));
         
         //This code is disabled because of a bug in visual studio code
         //VS Code does not allow to have different default editors for files
