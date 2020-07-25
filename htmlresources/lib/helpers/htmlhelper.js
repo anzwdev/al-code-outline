@@ -18,7 +18,7 @@ var htmlHelper = {
         }
     },
     hide : function(element) {
-        if ((element) && (element.style.display != 'none')) {
+        if ((element) && (element.style.display !== 'none')) {
             element.dataset.hideOldDisplay = element.style.display;
             element.style.display = 'none';
         }

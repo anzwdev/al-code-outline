@@ -104,3 +104,10 @@ input:focus, select:focus, div:focus, textarea:focus {
     margin: 20px;
     padding: 10px 30px;
 }
+
+.errorPanel {
+    display: block;
+    margin: 20px;
+    padding: 10px 30px;
+    border: 0px solid var(--vscode-panel-border);
+}

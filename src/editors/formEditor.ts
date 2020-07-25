@@ -1,4 +1,3 @@
-import * as vscode from "vscode";
 import * as path from 'path';
 import { TextDocumentWebViewEditor } from "../webviews/textDocumentWebViewEditor";
 import { DevToolsExtensionContext } from "../devToolsExtensionContext";
@@ -44,19 +43,39 @@ export class FormEditor extends TextDocumentWebViewEditor {
     }    
 
     protected updateData(withDef: boolean) {
-        let data = this.getDocumentData();
-        if (withDef) {
+        if (withDef)
             this._currentFields = this.getFieldsDefinition();
-            this.sendMessage({
-                command : 'setData',
-                fields : this._currentFields,
-                data : data
-            });
-        } else {
-            this.sendMessage({
-                command : 'setData',
-                data : data
-            });
+
+        try {
+            let data = this.getDocumentData();
+            if (withDef) {
+                this.sendMessage({
+                    command : 'setData',
+                    fields : this._currentFields,
+                    data : data
+                });
+            } else {
+                this.sendMessage({
+                    command : 'setData',
+                    data : data
+                });
+            }
+        }
+        catch(e) {
+            let errorMessage = "Cannot parse file content. Please open file in the text editor and fix all issues. Parser error: " +
+                e.message;            
+            //set current fields firs
+            if (withDef)
+                this.sendMessage({
+                    command: 'dataError',
+                    fields : this._currentFields,
+                    message: errorMessage
+                });
+            else
+                this.sendMessage({
+                    command: 'dataError',
+                    message: errorMessage
+                });
         }
     }
 

@@ -49,7 +49,7 @@ export class JsonFormEditor extends FormEditor {
     }
 
     protected getDocumentData(): any {
-        let data = this.getTextDocumentAsJson(false);
+        let data = this.getTextDocumentAsJson();
         //store names of unknown fields
 
         this.undefFields = undefined;
