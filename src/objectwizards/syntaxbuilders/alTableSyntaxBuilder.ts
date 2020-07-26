@@ -30,7 +30,21 @@ export class ALTableSyntaxBuilder {
         writer.writeStartBlock();
 
         if (data.fields.length > 0) {
-            writer.writeStartNameSourceBlock("key", "PK", writer.encodeName(data.fields[0].name));
+            //collect primary keys
+            let pkFields: string = "";
+            let hasPKFields: boolean = false;
+            data.fields.forEach((item, index) => {
+                if (item.pk) {
+                    if (hasPKFields)
+                        pkFields = pkFields + ",";
+                    pkFields = pkFields + writer.encodeName(item.name);
+                    hasPKFields = true;
+                }
+            });
+            if (!hasPKFields)
+                pkFields = writer.encodeName(data.fields[0].name);
+
+            writer.writeStartNameSourceBlock("key", "PK", pkFields);
             writer.writeProperty("Clustered", "true");
             writer.writeEndBlock();
         }

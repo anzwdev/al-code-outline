@@ -36,6 +36,10 @@
     outline: 1px solid var(--vscode-focusBorder) !important;  
     outline-offset: 2px !important;
 }
+.azgridview td:focus {
+    outline: 1px solid var(--vscode-focusBorder) !important;  
+    outline-offset: 0px !important;
+}
 .azgridview .azgridviewrowsel td {
     background-color: var(--vscode-list-inactiveSelectionBackground) !important;
     color: var(--vscode-list-inactiveSelectionForeground) !important;
@@ -51,3 +55,13 @@
     padding: 0px 2px;
     overflow: auto;
 }
+
+
+.ico-checkbox, .ico-checkbox-check {
+    height: 16px;
+}
+
+.vscode-dark .ico-checkbox, .vscode-high-contrast .ico-checkbox { background: center no-repeat url('../../../resources/images/dark/checkbox-uncheck.svg') }
+.vscode-dark .ico-checkbox-check, .vscode-high-contrast .ico-checkbox-check { background: center no-repeat url('../../../resources/images/dark/checkbox-check.svg') }
+.vscode-light .ico-checkbox { background: center no-repeat url('../../../resources/images/light/checkbox-uncheck.svg') }
+.vscode-light .ico-checkbox-check { background: center no-repeat url('../../../resources/images/light/checkbox-check.svg') }

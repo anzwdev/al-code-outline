@@ -6,7 +6,7 @@ class TableWizard {
         this._vscode = acquireVsCodeApi();
 
         //initialize controls
-        this._fieldsgrid = new TableFieldsGridView();
+        this._fieldsgrid = new TableFieldsGridView(true);
 
         // Handle messages sent from the extension to the webview
         window.addEventListener('message', event => {
@@ -58,7 +58,7 @@ class TableWizard {
     }
    
     setTypes(types) {
-        this._fieldsgrid._columns[2].autocomplete = types;
+        this._fieldsgrid.setAutocomplete('dataType', types);
     }
 
     onFinish() {

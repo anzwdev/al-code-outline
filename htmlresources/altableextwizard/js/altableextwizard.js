@@ -3,7 +3,7 @@ class TableExtWizard extends TableBasedObjectWizard {
     constructor() {
         super(1);
 
-        this._fieldsgrid = new TableFieldsGridView();
+        this._fieldsgrid = new TableFieldsGridView(false);
         htmlHelper.hideById("prevBtn");
         htmlHelper.hideById("nextBtn");
     }
@@ -43,7 +43,7 @@ class TableExtWizard extends TableBasedObjectWizard {
     }
 
     setTypes(types) {
-        this._fieldsgrid._columns[2].autocomplete = types;
+        this._fieldsgrid.setAutocomplete('dataType', types);
     }
 
     onFinish() {
