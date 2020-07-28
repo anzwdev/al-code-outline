@@ -44,10 +44,13 @@
     background-color: var(--vscode-list-inactiveSelectionBackground) !important;
     color: var(--vscode-list-inactiveSelectionForeground) !important;
 }
-.azgridviewcont:focus .azgridview .azgridviewrowactive {
+.azgridviewconteditable:focus {
+    outline: 0px non var(--vscode-focusBorder) !important;  
+}
+.azgridviewcontreadonly:focus .azgridview .azgridviewrowactive {
     outline: 1px solid var(--vscode-inputValidation-warningBorder) !important;
 }
-.azgridviewcont:focus .azgridview .azgridviewrowsel td {
+.azgridviewcontreadonly:focus .azgridview .azgridviewrowsel td {
     background-color: var(--vscode-list-activeSelectionBackground) !important;
     color: var(--vscode-list-activeSelectionForeground) !important;
 }
@@ -65,3 +68,19 @@
 .vscode-dark .ico-checkbox-check, .vscode-high-contrast .ico-checkbox-check { background: center no-repeat url('../../../resources/images/dark/checkbox-check.svg') }
 .vscode-light .ico-checkbox { background: center no-repeat url('../../../resources/images/light/checkbox-uncheck.svg') }
 .vscode-light .ico-checkbox-check { background: center no-repeat url('../../../resources/images/light/checkbox-check.svg') }
+
+.azgridview th .tooltiptext {
+    visibility: hidden;
+    max-width: 300px;
+    background-color: var(--vscode-editorHoverWidget-background);
+    color: var(--vscode-editorHoverWidget-foreground);
+    border: 1px solid var(--vscode-editorHoverWidget-border);
+    padding: 5px;
+    position: absolute;
+    z-index: 1;
+  }
+  
+  /* Show the tooltip text when you mouse over the tooltip container */
+  .azgridview th:hover .tooltiptext {
+    visibility: visible;
+  }

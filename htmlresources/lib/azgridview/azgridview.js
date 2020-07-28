@@ -4,9 +4,16 @@ class AZGridView {
         this._elementId = elementId;
         this._columns = columns;
         this._container = document.getElementById(this._elementId);
-        this._container.className = 'azgridviewcont';
+        if (editable)
+            this._container.className = 'azgridviewcont azgridviewconteditable';
+        else
+            this._container.className = 'azgridviewcont azgridviewcontreadonly';
+
         this._selStyle = 'azgridviewrowsel';
         this._currRowStyle = this._selStyle + ' azgridviewrowactive'; 
+
+        if (this._container.tabIndex < 0)
+            this._container.tabIndex = 0;
 
         this._defaultCellStyle = '';
         this._selCellStyle = 'azgridviewselcell'; 
@@ -269,7 +276,20 @@ class AZGridView {
         for (let i=0; i<this._columns.length; i++) {
             if (!this._columns[i].hidden) {
                 let col = document.createElement('th');
-                col.innerText = this._columns[i].caption;
+                if (this._columns[i].description) {
+                    let txt = document.createElement('span');
+                    txt.innerText = this._columns[i].caption;
+                    col.appendChild(txt);
+
+                    txt = document.createElement('span');
+                    txt.innerText = this._columns[i].description;
+                    txt.className = 'tooltiptext';
+                    col.appendChild(txt);
+
+                } else {
+                    col.innerText = this._columns[i].caption;
+                }
+
                 if (this._columns[i].style)
                     col.style = this._columns[i].style;
                 row.appendChild(col);
@@ -451,6 +471,7 @@ class AZGridView {
                 this.setCurrCell(row.rowIndex, columnIdx, !e.ctrlKey, ((e.ctrlKey) && (!e.shiftKey)), !e.shiftKey, false);
             }
             this._pointerMoved = false;
+            this._dataRowSelected = (row.rowIndex >= this._minRowIndex);
             this._table.setPointerCapture(e.pointerId);
             this._table.addEventListener('pointermove', this._mouseMoveFunction);
         }
@@ -462,7 +483,7 @@ class AZGridView {
             this._table.releasePointerCapture(e.pointerId);
             this.startEdit();
 
-            if ((!this._pointerMoved) && (this._inEditMode) && (this._currColumn >=0) && (this.isColBool(this._currColumn)))
+            if ((!this._pointerMoved) && (this._inEditMode) && (this._dataRowSelected) && (this._currColumn >=0) && (this.isColBool(this._currColumn)))
                 this.toggleBool();
         }
     }
@@ -879,7 +900,7 @@ class AZGridView {
 
             if (clearCell) {
                 if (isBool)
-                    cell.tabIndex = undefined;
+                    cell.tabIndex = -1;
                 else {
                     while (cell.firstChild) {
                         cell.removeChild(cell.firstChild);

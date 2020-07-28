@@ -16,7 +16,7 @@ class TableFieldsGridView extends AZGridView {
         
         if (showPK)
             fields.unshift(
-                {name: 'pk', caption: 'PK', style: 'width: 32px', type: 'boolean'}
+                {name: 'pk', caption: 'PK', style: 'width: 32px', type: 'boolean', description: 'Primary Key Field'}
             );
 
         super('fieldsgrid', fields,
