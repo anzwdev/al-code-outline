@@ -69,7 +69,7 @@ export class ProjectItemWizardPage extends BaseWebViewEditor {
         let fileName : string = await this.getObjectFileName(objectType, objectId, objectName);
         let destPath = this.getDestFilePath(this._settings.destDirectoryPath, objectType);
         if (destPath) {
-            let fullPath : string = FileBuilder.generateObjectFileInDir(destPath, fileName, content);
+            let fullPath : string | undefined = FileBuilder.generateObjectFileInDir(destPath, fileName, content);
             if (fullPath)
                 FileBuilder.showFile(fullPath);
         }
@@ -79,7 +79,7 @@ export class ProjectItemWizardPage extends BaseWebViewEditor {
         let fileName : string = await this.getExtObjectFileName(objectType, objectId, objectName, extendedObjectName);
         let destPath = this.getDestFilePath(this._settings.destDirectoryPath, objectType);
         if (destPath) {
-            let fullPath : string = FileBuilder.generateObjectFileInDir(destPath, fileName, content);
+            let fullPath : string | undefined = FileBuilder.generateObjectFileInDir(destPath, fileName, content);
             if (fullPath)
                 FileBuilder.showFile(fullPath);
         }

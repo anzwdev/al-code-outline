@@ -3,8 +3,13 @@
 ## 2.0.6
  - Issue #153 - Hide content of custom editor and show warning if document cannot be parsed
  - Issue #162 - Table Wizard: Mark PK fields
+ - Issue #164 - Can't Generate any files through the wizard
  - Boolean column type support added to the data grid
  
+ Thank you
+ - NKarolak for reporting issue #162
+ - jigsawmegs for reporting issue #164
+
 ## 2.0.5
 
  - Issue #131 - "AL Outline" panel is blank - legacy Nav2018 version of the language server added

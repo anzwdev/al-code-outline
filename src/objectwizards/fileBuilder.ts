@@ -73,23 +73,36 @@ export class FileBuilder {
         const newFilePath : string = path.join(newFileDirectory, fileName);
         const fileAlreadyExists = await this.fileExists(newFilePath);
         if (!fileAlreadyExists) {
-            fs.appendFileSync(newFilePath, content);
+            try {
+                fs.appendFileSync(newFilePath, content);
+            }
+            catch (e) {
+                vscode.window.showErrorMessage('Cannot create the AL file, please check if you selected correct output directory and your "CRS.FileNamePattern" setting. Error: ' + e.message);
+                return undefined;
+            }
         }
         return newFilePath;
     }
 
-    public static generateObjectFileInDir(dirPath: string, fileName: string, content: string) : string {
-        let parsedPath = path.parse(fileName);
-        let newFilePath : string = path.join(dirPath, fileName);        
-        let fileIndex = 0;
-        while (fs.existsSync(newFilePath)) {
-            fileIndex++;
-            fileName = parsedPath.name + ' ' + fileIndex.toString() + parsedPath.ext;
-            newFilePath = path.join(dirPath, fileName);
+    public static generateObjectFileInDir(dirPath: string, fileName: string, content: string) : string | undefined {
+        try
+        {
+            let parsedPath = path.parse(fileName);
+            let newFilePath : string = path.join(dirPath, fileName);        
+            let fileIndex = 0;
+            while (fs.existsSync(newFilePath)) {
+                fileIndex++;
+                fileName = parsedPath.name + ' ' + fileIndex.toString() + parsedPath.ext;
+                newFilePath = path.join(dirPath, fileName);
+            }
+            this.mkdirFullPathRecursiveSync(dirPath);
+            fs.appendFileSync(newFilePath, content);
+            return newFilePath;
         }
-        this.mkdirFullPathRecursiveSync(dirPath);
-        fs.appendFileSync(newFilePath, content);
-        return newFilePath;
+        catch (e) {
+            vscode.window.showErrorMessage('Cannot create the AL file, please check if you selected correct output directory and your "CRS.FileNamePattern" setting. Error: ' + e.message);
+            return undefined;
+        }
     }
 
     private static mkdirFullPathRecursiveSync(destPath: string) {

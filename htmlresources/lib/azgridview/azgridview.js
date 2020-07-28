@@ -214,17 +214,22 @@ class AZGridView {
         return (this._columns[colIdx].type === 'boolean');
     }
 
+    getDataValue(idx, colIdx) {
+        let value;
+        if (this._listMode)
+            value = this._data[idx];
+        else
+            value = this._data[idx][this._columns[colIdx].name];
+        if (value === undefined)
+            value = '';
+        return value;
+    }
+
     renderRowCells(row, index) {
         row.tabData = this._data[index];
         for (let i=0; i<this._columns.length; i++) {
             if (!this._columns[i].hidden) {
-                let value;
-                if (this._listMode)
-                    value = this._data[index];
-                else
-                    value = this._data[index][this._columns[i].name];
-                if (value === undefined)
-                    value = '';
+                let value = this.getDataValue(index, i);
                 let col = document.createElement('td');
                 
                 if (this.isColBool(i))
@@ -273,6 +278,7 @@ class AZGridView {
             return;
 
         let row = document.createElement('tr');
+        let cellIdx = 0;
         for (let i=0; i<this._columns.length; i++) {
             if (!this._columns[i].hidden) {
                 let col = document.createElement('th');
@@ -293,10 +299,36 @@ class AZGridView {
                 if (this._columns[i].style)
                     col.style = this._columns[i].style;
                 row.appendChild(col);
+
+                this._columns[i].cellIdx = cellIdx;
+                cellIdx++;
             }
         }
         this._tabHead.appendChild(row);
     }
+
+    refreshRow(rowIdx) {
+        for (let i = 0; i<this._columns.length; i++) {
+            this.refreshCell(rowIdx, i);
+        }
+    }   
+
+    refreshCell(rowIdx, colIdx) {
+        if (!this._columns[colIdx].hidden) {
+            let editMode = ((this._inEditMode) && 
+                ((this._minRowIndex + rowId) == this._currRow) &&
+                (this._currColumn == colIdx));
+
+            let value = this.getDataValue(rowIdx, colIdx);
+            let cell = this._table.rows[rowIdx + this._minRowIndex].cells[this._columns[colIdx].cellIdx];
+
+            if (this.isColBool(colId))
+                this.setBoolCellValue()
+            else if (!editMode)
+                cell.innerText = value;
+        }
+    }
+
 
     setCurrCell(rowIndex, columnIndex, clearSel, invertSel, setStart, enableEditor) {
         if ((this._inEditMode) && (this.rowIndex >= this._table.rows.length) && (this._editor.value))
