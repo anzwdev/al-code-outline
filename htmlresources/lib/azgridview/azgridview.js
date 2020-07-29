@@ -4,16 +4,19 @@ class AZGridView {
         this._elementId = elementId;
         this._columns = columns;
         this._container = document.getElementById(this._elementId);
-        if (editable)
+        this._container.className = 'azgridviewcont';
+
+        this._tabIndex = Math.max(this._container.tabIndex, 0);        
+        if (editable) {
+            this._container.tabIndex = -1;
             this._container.className = 'azgridviewcont azgridviewconteditable';
-        else
+        } else {
+            this._container.tabIndex = this._tabIndex;
             this._container.className = 'azgridviewcont azgridviewcontreadonly';
+        }
 
         this._selStyle = 'azgridviewrowsel';
         this._currRowStyle = this._selStyle + ' azgridviewrowactive'; 
-
-        if (this._container.tabIndex < 0)
-            this._container.tabIndex = 0;
 
         this._defaultCellStyle = '';
         this._selCellStyle = 'azgridviewselcell'; 
@@ -60,9 +63,13 @@ class AZGridView {
             this._editor = document.createElement('input');
             this._editor.type = 'text';
             this._editor.className = 'azgridvieweditor';
+            this._editor.tabIndex = this._tabIndex;
 
             this._editor.addEventListener('input', event => {
                 this.onEditorChanged();
+            });
+            this._editor.addEventListener('blur', event => {
+                this.saveData(false);
             });
 
             //init editor autocomplete
@@ -154,7 +161,6 @@ class AZGridView {
     }
 
     getData() {
-        this.endEdit();
         return this._data;
     }
 
@@ -175,7 +181,7 @@ class AZGridView {
         //append empty row if editable
         if (this._editable) {
             rowCount++;
-            tbody.appendChild(this.renderEmptyRow());
+            this.addEmptyRow(tbody);
         }
 
         if ((newIdx < 0) && (rowCount > 0))
@@ -191,19 +197,6 @@ class AZGridView {
         this.setCurrCell(newIdx, 0, false, false, true, true);
     }
 
-    renderEmptyRow() {
-        let row = document.createElement('tr');
-        for (let i=0; i<this._columns.length; i++) {
-            if (!this._columns[i].hidden) {
-                let col = document.createElement('td');
-                if (this.isColBool(i))
-                    col.appendChild(this.createBool(false));
-                row.appendChild(col);
-            }
-        }
-        return row;
-    }
-
     renderRow(index) {
         let row = document.createElement('tr');
         this.renderRowCells(row, index);
@@ -215,26 +208,31 @@ class AZGridView {
     }
 
     getDataValue(idx, colIdx) {
+        let data = (idx < this._data.length)?this._data[idx]:this._newRowData;
+        
         let value;
         if (this._listMode)
-            value = this._data[idx];
+            value = data;
         else
-            value = this._data[idx][this._columns[colIdx].name];
+            value = data[this._columns[colIdx].name];
         if (value === undefined)
             value = '';
         return value;
     }
 
     renderRowCells(row, index) {
-        row.tabData = this._data[index];
+        row.tabData = (index < this._data.length)?this._data[index]:this._newRowData;
         for (let i=0; i<this._columns.length; i++) {
             if (!this._columns[i].hidden) {
                 let value = this.getDataValue(index, i);
                 let col = document.createElement('td');
                 
-                if (this.isColBool(i))
+                if (this.isColBool(i)) {
                     col.appendChild(this.createBool(value));
-                else
+                    col.addEventListener('blur', event => {
+                        this.saveData(false);
+                    });
+                } else
                     col.innerText = value;
 
                 row.appendChild(col);
@@ -869,7 +867,7 @@ class AZGridView {
 
                 if (isBool) {
                     this._originalValue = this.getBoolCellValue(cell);
-                    cell.tabIndex = 1;
+                    cell.tabIndex = this._tabIndex;
                     cell.focus();
                 } else {
                     this._originalValue = cell.innerText;
@@ -999,13 +997,18 @@ class AZGridView {
         return value;
     }
 
-    createDataEntry() {
+    createDataEntry(idx) {
         if (this._listMode)
             return "";
         let item = {};
         for (let i=0; i<this._columns.length; i++) {
-            item[this._columns[i].name] = '';
+            if (this.isColBool(i))
+                item[this._columns[i].name] = false;
+            else
+                item[this._columns[i].name] = '';
         }
+        if (this.onCreateDataEntry)
+            this.onCreateDataEntry(this._data, idx, item);
         return item;
     }
 
@@ -1013,22 +1016,28 @@ class AZGridView {
         //insert last row data
         let rowIndex = this._table.rows.length - 1; 
         let row = this._table.rows[rowIndex];
-        let item = this.createDataEntry();
-        this._data.push(item);
-        row.tabData = item;
+        this._data.push(this._newRowData);
+        row.tabData = this._newRowData;
 
-        this._tabBody.appendChild(this.renderEmptyRow());
+        this.addEmptyRow(this._tabBody);
+    }
+
+    addEmptyRow(tbody) {
+        this._newRowData = this.createDataEntry(this._data.length);
+        tbody.appendChild(this.renderRow(this._data.length));
     }
 
     insertRow() {
         if ((this._editable) && (this._currRow >= this._minRowIndex) && (this._currRow < this._table.rows.length)) {
+            //this.endEdit();
             let idx = this._currRow - this._minRowIndex;
-            let item = this.createDataEntry();
+            let item = this.createDataEntry(idx);
             this._data.splice(idx, 0, item);
             let row = this._table.insertRow(this._currRow);
             this.renderRowCells(row, idx);
             this._currRow++;
             this.setCurrCell(this._currRow-1, 0, true, false, true, true);
+            //this.startEdit();
         }
     }
 

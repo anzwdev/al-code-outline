@@ -7,6 +7,10 @@ class TableWizard {
 
         //initialize controls
         this._fieldsgrid = new TableFieldsGridView(true);
+        this._fieldsgrid.onCreateDataEntry = (data, idx, item) => {
+            if ((idx == 0) && (data.length == 0))
+                item.pk = true;
+        };
 
         // Handle messages sent from the extension to the webview
         window.addEventListener('message', event => {
