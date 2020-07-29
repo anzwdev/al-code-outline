@@ -40,14 +40,16 @@ export class AppJsonEditor extends JsonFormEditor {
     protected getDocumentData(): any {
         let data = super.getDocumentData();
 
-        this.afterReadRefList(data.dependencies);
-        this.afterReadRefList(data.internalsVisibleTo);
+        if (data) {
+            this.afterReadRefList(data.dependencies);
+            this.afterReadRefList(data.internalsVisibleTo);
 
-        if (data.idRange) {
-            if (!data.idRanges)
-                data.idRanges = [];
-            data.idRanges.push(data.idRange);
-            data.idRange = undefined;
+            if (data.idRange) {
+                if (!data.idRanges)
+                    data.idRanges = [];
+                data.idRanges.push(data.idRange);
+                data.idRange = undefined;
+            }
         }
 
         return data;

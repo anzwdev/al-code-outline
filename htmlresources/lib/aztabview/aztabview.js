@@ -18,6 +18,18 @@ class AZTabView {
         });
     }
 
+    show() {
+        htmlHelper.show(this._tabsContainer);
+        if (this._activeTab)
+            this._activeTab.tabContent.className = 'tabvcontent tabvcactive';
+    }
+
+    hide() {
+        htmlHelper.hide(this._tabsContainer);
+        if (this._activeTab)
+            this._activeTab.tabContent.className = 'tabvcontent';
+    }
+
     addTab(caption) {
         let tab = {
             caption: caption,

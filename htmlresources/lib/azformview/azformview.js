@@ -12,6 +12,14 @@ class AZFormView {
         this.renderView();
     }
 
+    show() {
+        this._tabView.show();
+    }
+
+    hide() {
+        this._tabView.hide();
+    }
+
     renderView() {
         if (!this._fields)
             return;

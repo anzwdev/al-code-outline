@@ -185,7 +185,7 @@
        */
       function keyup(ev) {
           var keyCode = ev.which || ev.keyCode || 0;
-          var ignore = [38 /* Up */, 13 /* Enter */, 27 /* Esc */, 39 /* Right */, 37 /* Left */, 16 /* Shift */, 17 /* Ctrl */, 18 /* Alt */, 20 /* CapsLock */, 91 /* WindowsKey */, 9 /* Tab */];
+          var ignore = [38 /* Up */, 13 /* Enter */, 27 /* Esc */, 39 /* Right */, 37 /* Left */, 16 /* Shift */, 17 /* Ctrl */, 18 /* Alt */, 20 /* CapsLock */, 91 /* WindowsKey */, 9 /* Tab */, 119 /* F8 */];
 
           //disable drop down on key down
           if (disableOpenOnKeyDown)
@@ -292,9 +292,9 @@
        */
       function keydown(ev) {
           var keyCode = ev.which || ev.keyCode || 0;
-          if (keyCode === 38 /* Up */ || keyCode === 40 /* Down */ || keyCode === 27 /* Esc */) {
+          if (keyCode === 38 /* Up */ || keyCode === 40 /* Down */ || keyCode === 27 /* Esc */ || keyCode === 119 /* F8 */) {
               var containerIsDisplayed = containerDisplayed();
-              if (keyCode === 27 /* Esc */) {
+              if ((keyCode === 27 /* Esc */) || (keyCode === 119 /* F8 */ )) {
                   clear();
               }
               else {

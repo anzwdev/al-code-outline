@@ -84,20 +84,14 @@ export class TextDocumentWebViewEditor extends BaseWebViewEditor {
         return success;
     }
 
-    protected getTextDocumentAsJson(withError: boolean): any {
+    protected getTextDocumentAsJson(): any {
         if (!this.document)
             return undefined;
         
         const text = this.document.getText();
 		if (text.trim().length === 0)
 			return {};
-		try {
-			return JSON.parse(text);
-		} catch {
-            if (withError)
-                throw new Error('Could not get document as json. Content is not valid json');
-        }
-        return {};
+        return JSON.parse(text);
     }
  
     protected updateTextDocumentFromJson(json: any) {
