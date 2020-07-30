@@ -62,6 +62,7 @@ export class SymbolsTreeProvider implements vscode.TreeDataProvider<AZSymbolInfo
                 case AZSymbolKind.Field:
                 case AZSymbolKind.PageField:
                 case AZSymbolKind.PageAction:
+                case AZSymbolKind.PropertyList:
                 //Other Symbols
                 case AZSymbolKind.Class:
                 case AZSymbolKind.Field:
@@ -80,7 +81,7 @@ export class SymbolsTreeProvider implements vscode.TreeDataProvider<AZSymbolInfo
         treeItem.iconPath = this.getSymbolIcon(element);
         treeItem.collapsibleState = this.getNodeCollapsibleState(element);
         
-            //node command
+        //node command
         if (element.selectionRange) 
             treeItem.command = {
                 command: 'azALDevTools.selectDocumentText',
@@ -103,6 +104,16 @@ export class SymbolsTreeProvider implements vscode.TreeDataProvider<AZSymbolInfo
         return [];
     }
 
+    getParent(element: AZSymbolInformation): AZSymbolInformation | undefined {
+        return element.parent;
+    }
+
     //#endregion
+
+    getSymbolAtPosition(position: vscode.Position): AZSymbolInformation | undefined {
+        if (this._treeRoot)
+            return this._treeRoot.findSymbolAtPosition(position, false);
+        return undefined;
+    }
 
 }

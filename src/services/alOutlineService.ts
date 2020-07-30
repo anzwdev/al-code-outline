@@ -5,31 +5,53 @@ import { ALSymbolsBasedPageWizard } from '../objectwizards/symbolwizards/alSymbo
 import { ALSymbolsBasedReportWizard } from '../objectwizards/symbolwizards/alSymbolsBasedReportWizard';
 import { ALSymbolsBasedXmlPortWizard } from '../objectwizards/symbolwizards/alSymbolsBasedXmlPortWizard';
 import { ALSymbolsBasedQueryWizard } from '../objectwizards/symbolwizards/alSymbolsBasedQueryWizard';
+import { AZSymbolInformation } from '../symbollibraries/azSymbolInformation';
 
 export class ALOutlineService {
     context: DevToolsExtensionContext;
     symbolsTreeProvider: SymbolsTreeProvider;
+    treeView: vscode.TreeView<AZSymbolInformation>;
+    protected _selectionChange: boolean;
+    protected _selectionChangedHandler: vscode.Disposable | undefined;
+    protected _followCursor: boolean;
     
     constructor(newContext: DevToolsExtensionContext) {
         //initialize
         this.context = newContext;
+        this._selectionChange = false;
+        this._selectionChangedHandler = undefined;
+        this._followCursor = !!this.context.vscodeExtensionContext.globalState.get<boolean>("azALDevTools.alOutlineFollowCursor");
 
         //register symbols tree provider
         this.symbolsTreeProvider = new SymbolsTreeProvider(this.context);
         this.context.vscodeExtensionContext.subscriptions.push(
-            vscode.window.registerTreeDataProvider('azALDevTools_SymbolsTreeProvider', this.symbolsTreeProvider));
-    
+            vscode.window.registerTreeDataProvider('azALDevTools.SymbolsTreeProvider', this.symbolsTreeProvider));
+        this.treeView = vscode.window.createTreeView<AZSymbolInformation>('azALDevTools.SymbolsTreeProvider', { 
+            treeDataProvider: this.symbolsTreeProvider
+        });
+            
         //register commands
         this.registerCommands();
+
+        //initialize follow cursor functionality
+        this.setFollowCursor(this._followCursor);
     }
 
     protected registerCommands() {
-        let that = this;
+        this.context.vscodeExtensionContext.subscriptions.push(
+            vscode.commands.registerCommand(
+                'azALDevTools.alOutlineEnableFollowCursor', 
+                () => this.setFollowCursor(true)));
 
         this.context.vscodeExtensionContext.subscriptions.push(
             vscode.commands.registerCommand(
+                'azALDevTools.alOutlineDisableFollowCursor', 
+                () => this.setFollowCursor(false)));
+        
+        this.context.vscodeExtensionContext.subscriptions.push(
+            vscode.commands.registerCommand(
                 'azALDevTools.refreshOutlineView', 
-                () => that.symbolsTreeProvider.refresh()));
+                () => this.symbolsTreeProvider.refresh()));
     
         //al symbols commands
         this.context.vscodeExtensionContext.subscriptions.push(
@@ -70,25 +92,25 @@ export class ALOutlineService {
         this.context.vscodeExtensionContext.subscriptions.push(
             vscode.commands.registerCommand(
                 'alOutline.runPage', offset => {
-                that.context.objectRunner.runSymbolAsync(offset);
+                this.context.objectRunner.runSymbolAsync(offset);
             }));
         this.context.vscodeExtensionContext.subscriptions.push(
             vscode.commands.registerCommand(
                 'alOutline.runTable', 
                 offset => {
-                    that.context.objectRunner.runSymbolAsync(offset);
+                    this.context.objectRunner.runSymbolAsync(offset);
             }));
         this.context.vscodeExtensionContext.subscriptions.push(
             vscode.commands.registerCommand(
                 'alOutline.runReport', 
                 offset => {
-                    that.context.objectRunner.runSymbolAsync(offset);
+                    this.context.objectRunner.runSymbolAsync(offset);
             }));
         this.context.vscodeExtensionContext.subscriptions.push(
             vscode.commands.registerCommand(
                 'azALDevTools.selectDocumentText',
                 (range) => {
-                    if (vscode.window.activeTextEditor) {
+                    if ((!this._selectionChange) && (vscode.window.activeTextEditor)) {
                         let vscodeRange = new vscode.Range(range.start.line, range.start.character, 
                             range.end.line, range.end.character);
     
@@ -99,5 +121,36 @@ export class ALOutlineService {
             }));
             
     }
+
+    setFollowCursor(value: boolean) {
+        this._followCursor = value;
+        if ((this._followCursor) && (!this._selectionChangedHandler)) {
+            this._selectionChangedHandler = vscode.window.onDidChangeTextEditorSelection((e) => {
+                this.onTextEditorSelectionChanged(e);
+            });
+        } else if ((!this._followCursor) && (this._selectionChangedHandler)) {
+            this._selectionChangedHandler.dispose();
+            this._selectionChangedHandler = undefined;
+        }
+
+        vscode.commands.executeCommand('setContext', 'azALDevTools:alOutlineFollowCursor', this._followCursor);
+        this.context.vscodeExtensionContext.globalState.update("azALDevTools.alOutlineFollowCursor", this._followCursor);
+    }
+
+    private async onTextEditorSelectionChanged(e: vscode.TextEditorSelectionChangeEvent) {
+        if ((this.treeView.visible) && (e.selections.length > 0)) {
+            let symbol = this.symbolsTreeProvider.getSymbolAtPosition(e.selections[0].active);
+            if (symbol) {
+                this._selectionChange = true;
+                await this.treeView.reveal(symbol, {
+                    select: true,
+                    focus: false,
+                    expand: false
+                });
+                this._selectionChange = false;
+            }
+        }
+    }
+
 
 }

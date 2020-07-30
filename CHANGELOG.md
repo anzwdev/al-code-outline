@@ -1,5 +1,11 @@
 # Change Log
 
+## 2.0.7
+ - Issue #158 - Add "follow cursor" functionality to the AL Outline Panel
+
+ Thank you
+ - NKarolak for suggesting enhancement #158
+
 ## 2.0.6
  - Issue #153 - Hide content of custom editor and show warning if document cannot be parsed
  - Issue #162 - Table Wizard: Mark PK fields

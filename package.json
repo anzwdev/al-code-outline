@@ -2,7 +2,7 @@
 	"name": "al-code-outline",
 	"displayName": "AZ AL Dev Tools/AL Code Outline",
 	"description": "AZ AL Development Tools: AL code outline, object browser, object creators",
-	"version": "2.0.6",
+	"version": "2.0.7",
 	"publisher": "andrzejzwierzchowski",
 	"engines": {
 		"vscode": "^1.47.0"
@@ -24,7 +24,7 @@
 	"activationEvents": [
 		"onLanguage:al",
 		"onLanguage:alapp",
-		"onView:azALDevTools_SymbolsTreeProvider",
+		"onView:azALDevTools.SymbolsTreeProvider",
 		"onCommand:azALDevTools.viewALApp",
 		"onCommand:azALDevTools.viewActionImages",
 		"onCommand:azALDevTools.showAllProjectSymbols",
@@ -56,7 +56,7 @@
 		"views": {
 			"explorer": [
 				{
-					"id": "azALDevTools_SymbolsTreeProvider",
+					"id": "azALDevTools.SymbolsTreeProvider",
 					"name": "AL Outline"
 				}
 			]
@@ -165,48 +165,79 @@
 				"category": "AZ AL Dev Tools",
 				"command": "azALDevTools.AddProjectToolTip",
 				"title": "Add ToolTips to the Active Project"
+			},
+			{
+				"command": "azALDevTools.alOutlineEnableFollowCursor",
+				"title": "Enable 'Follow Cursor'"
+			},
+			{
+				"command": "azALDevTools.alOutlineDisableFollowCursor",
+				"title": "Disable 'Follow Cursor'"
 			}
 		],
 		"menus": {
+			"commandPalette": [
+				{
+					"command": "azALDevTools.refreshOutlineView",
+					"when": "false"
+				},
+				{
+					"command": "azALDevTools.alOutlineEnableFollowCursor",
+					"when": "false"
+				},
+				{
+					"command": "azALDevTools.alOutlineDisableFollowCursor",
+					"when": "false"
+				}			
+			],
+
 			"view/title": [
 				{
 					"command": "azALDevTools.refreshOutlineView",
-					"when": "view == azALDevTools_SymbolsTreeProvider",
+					"when": "view == azALDevTools.SymbolsTreeProvider",
 					"group": "navigation"
+				},
+				{
+					"command": "azALDevTools.alOutlineEnableFollowCursor",
+					"when": "view == azALDevTools.SymbolsTreeProvider && !azALDevTools:alOutlineFollowCursor"
+				},
+				{
+					"command": "azALDevTools.alOutlineDisableFollowCursor",
+					"when": "view == azALDevTools.SymbolsTreeProvider && azALDevTools:alOutlineFollowCursor"
 				}
 			],
 			"view/item/context": [
 				{
 					"command": "alOutline.runPage",
-					"when": "view == azALDevTools_SymbolsTreeProvider && viewItem == PageObject"
+					"when": "view == azALDevTools.SymbolsTreeProvider && viewItem == PageObject"
 				},
 				{
 					"command": "alOutline.runReport",
-					"when": "view == azALDevTools_SymbolsTreeProvider && viewItem == ReportObject"
+					"when": "view == azALDevTools.SymbolsTreeProvider && viewItem == ReportObject"
 				},
 				{
 					"command": "alOutline.runTable",
-					"when": "view == azALDevTools_SymbolsTreeProvider && viewItem == TableObject"
+					"when": "view == azALDevTools.SymbolsTreeProvider && viewItem == TableObject"
 				},
 				{
 					"command": "alOutline.createCardPage",
-					"when": "view == azALDevTools_SymbolsTreeProvider && viewItem == TableObject"
+					"when": "view == azALDevTools.SymbolsTreeProvider && viewItem == TableObject"
 				},
 				{
 					"command": "alOutline.createListPage",
-					"when": "view == azALDevTools_SymbolsTreeProvider && viewItem == TableObject"
+					"when": "view == azALDevTools.SymbolsTreeProvider && viewItem == TableObject"
 				},
 				{
 					"command": "alOutline.createReport",
-					"when": "view == azALDevTools_SymbolsTreeProvider && viewItem == TableObject"
+					"when": "view == azALDevTools.SymbolsTreeProvider && viewItem == TableObject"
 				},
 				{
 					"command": "alOutline.createXmlPort",
-					"when": "view == azALDevTools_SymbolsTreeProvider && viewItem == TableObject"
+					"when": "view == azALDevTools.SymbolsTreeProvider && viewItem == TableObject"
 				},
 				{
 					"command": "alOutline.createQuery",
-					"when": "view == azALDevTools_SymbolsTreeProvider && viewItem == TableObject"
+					"when": "view == azALDevTools.SymbolsTreeProvider && viewItem == TableObject"
 				}
 			],
 			"explorer/context": [

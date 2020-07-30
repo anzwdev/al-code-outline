@@ -1,5 +1,4 @@
-'use strict';
-
+import * as vscode from 'vscode';
 import { AZSymbolKind } from "./azSymbolKind";
 import { TextRange } from "./textRange";
 
@@ -13,7 +12,9 @@ export class AZSymbolInformation {
     kind : AZSymbolKind;
     icon : string;
     childSymbols : AZSymbolInformation[] | undefined;
+    //full symbol range from the begining to the end of symbol definition
     range: TextRange | undefined;
+    //smaller symbol range, usual symbol name
     selectionRange : TextRange | undefined;
     contentRange: TextRange | undefined;
     containsDiagnostics: boolean | undefined;
@@ -373,6 +374,25 @@ export class AZSymbolInformation {
         while ((symbol) && (!symbol.isALObject()))
             symbol = symbol.parent;
         return symbol;
+    }
+
+    public findSymbolAtPosition(position: vscode.Position, incCurr: boolean): AZSymbolInformation | undefined {
+        if ((this.range) && 
+            (this.range.start.compareVsPosition(position) <= 0) && 
+            (this.range.end.compareVsPosition(position) >= 0)) {
+
+            if (this.childSymbols) {
+                for (let i=0; i<this.childSymbols.length; i++) {
+                    let symbol = this.childSymbols[i].findSymbolAtPosition(position, true);
+                    if (symbol)
+                        return symbol;
+                }
+            }
+            if (incCurr)
+                return this;
+        } 
+
+        return undefined;
     }
 
     public getPath() : number[] {
