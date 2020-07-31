@@ -7,11 +7,8 @@ import { ALInterfaceWizardData } from "../wizards/alInterfaceWizardData";
 import { DevToolsExtensionContext } from "../../devToolsExtensionContext";
 
 export class ALSymbolsBasedInterfaceWizard extends ALSymbolsBasedWizard {
-    protected _toolsExtensionContext : DevToolsExtensionContext;
-
-    constructor(toolsExtensionContext : DevToolsExtensionContext) {
-        super();
-        this._toolsExtensionContext = toolsExtensionContext;
+    constructor(context : DevToolsExtensionContext) {
+        super(context);
     }
 
     //#region Wizards with UI

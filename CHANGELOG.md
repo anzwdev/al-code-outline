@@ -1,9 +1,11 @@
 # Change Log
 
 ## 2.0.7
+ - Issue #147 - Set the default object ID suggested by the symbols-based wizards to the next available object ID 
  - Issue #158 - Add "follow cursor" functionality to the AL Outline Panel
 
  Thank you
+ - rvanbekkum for suggesting enhancement #147 
  - NKarolak for suggesting enhancement #158
 
 ## 2.0.6

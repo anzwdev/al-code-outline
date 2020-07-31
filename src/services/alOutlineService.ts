@@ -58,35 +58,35 @@ export class ALOutlineService {
             vscode.commands.registerCommand(
             'alOutline.createCardPage', 
             offset => {
-                let builder = new ALSymbolsBasedPageWizard();
+                let builder = new ALSymbolsBasedPageWizard(this.context);
                 builder.showPageWizard(offset, 'Card');
             }));
         this.context.vscodeExtensionContext.subscriptions.push(
             vscode.commands.registerCommand(
                 'alOutline.createListPage', 
                 offset => {
-                    let builder = new ALSymbolsBasedPageWizard();
+                    let builder = new ALSymbolsBasedPageWizard(this.context);
                     builder.showPageWizard(offset, 'List');
             }));
         this.context.vscodeExtensionContext.subscriptions.push(
             vscode.commands.registerCommand(
                 'alOutline.createReport', 
                 offset => {
-                    let builder = new ALSymbolsBasedReportWizard();
+                    let builder = new ALSymbolsBasedReportWizard(this.context);
                     builder.showReportWizard(offset);
             }));
         this.context.vscodeExtensionContext.subscriptions.push(
             vscode.commands.registerCommand(
                 'alOutline.createXmlPort', 
                 offset => {
-                    let builder = new ALSymbolsBasedXmlPortWizard();
+                    let builder = new ALSymbolsBasedXmlPortWizard(this.context);
                     builder.showXmlPortWizard(offset);
             }));
         this.context.vscodeExtensionContext.subscriptions.push(
             vscode.commands.registerCommand(
                 'alOutline.createQuery', 
                 offset => {
-                    let builder = new ALSymbolsBasedQueryWizard();
+                    let builder = new ALSymbolsBasedQueryWizard(this.context);
                     builder.showQueryWizard(offset);
             }));
         this.context.vscodeExtensionContext.subscriptions.push(

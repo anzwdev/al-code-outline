@@ -4,11 +4,12 @@ import { AZSymbolInformation } from '../../symbollibraries/azSymbolInformation';
 import { AZSymbolKind } from '../../symbollibraries/azSymbolKind';
 import { ALSymbolsBasedWizard } from './alSymbolsBasedWizard';
 import { ALSyntaxWriter } from '../../allanguage/alSyntaxWriter';
+import { DevToolsExtensionContext } from '../../devToolsExtensionContext';
 
 export class ALSymbolsBasedTableExtWizard extends ALSymbolsBasedWizard {
 
-    constructor() {
-        super();
+    constructor(context: DevToolsExtensionContext) {
+        super(context);
     }
 
     //#region Wizards with UI
@@ -25,13 +26,12 @@ export class ALSymbolsBasedTableExtWizard extends ALSymbolsBasedWizard {
             return;
 
         const extObjType : AZSymbolKind = AZSymbolKind.TableExtensionObject;
+        let relativeFileDir = await this.getRelativeFileDir(extObjType);
 
-        let startObjectId: number = await this.getObjectId("Please enter a starting ID for the table extensions.", 0);
+        let startObjectId: number = await this.getObjectId(relativeFileDir, "tableextension", "Please enter a starting ID for the table extensions.", 0);
         if (startObjectId < 0) {
             return;
         }
-
-        let relativeFileDir = await this.getRelativeFileDir(extObjType);
 
         for (let i = 0; i < tableSymbols.length; i++) {
             let tableSymbol = tableSymbols[i];
@@ -47,8 +47,9 @@ export class ALSymbolsBasedTableExtWizard extends ALSymbolsBasedWizard {
             return;
             
         const extObjType : AZSymbolKind = AZSymbolKind.TableExtensionObject;
+        let relativeFileDir = await this.getRelativeFileDir(extObjType);
 
-        let extObjectId : number = await this.getObjectId("Please enter an ID for the table extension.", 0);
+        let extObjectId : number = await this.getObjectId(relativeFileDir, "tableextension", "Please enter an ID for the table extension.", 0);
         if (extObjectId < 0) {
             return;
         }
@@ -61,7 +62,6 @@ export class ALSymbolsBasedTableExtWizard extends ALSymbolsBasedWizard {
             return;
         }
         
-        let relativeFileDir = await this.getRelativeFileDir(extObjType);
         await this.createAndShowNewTableExtension(tableSymbol, extObjType, extObjectId, extObjectName, relativeFileDir);
     }
 
