@@ -3,11 +3,12 @@ import { AZSymbolInformation } from '../../symbollibraries/azSymbolInformation';
 import { AZSymbolKind } from '../../symbollibraries/azSymbolKind';
 import { ALSymbolsBasedWizard } from './alSymbolsBasedWizard';
 import { ALSyntaxWriter } from '../../allanguage/alSyntaxWriter';
+import { DevToolsExtensionContext } from '../../devToolsExtensionContext';
 
 export class ALSymbolsBasedReportWizard extends ALSymbolsBasedWizard {
 
-    constructor() {
-        super();
+    constructor(context: DevToolsExtensionContext) {
+        super(context);
     }
 
     //#region Wizards with UI
@@ -25,13 +26,12 @@ export class ALSymbolsBasedReportWizard extends ALSymbolsBasedWizard {
             return;
 
         const objType : AZSymbolKind = AZSymbolKind.ReportObject;
+        let relativeFileDir = await this.getRelativeFileDir(objType);
 
-        let startObjectId: number = await this.getObjectId(`Please enter a starting ID for the report objects.`, 0);
+        let startObjectId: number = await this.getObjectId(relativeFileDir, "report", `Please enter a starting ID for the report objects.`, 0);
         if (startObjectId < 0) {
             return;
         }
-
-        let relativeFileDir = await this.getRelativeFileDir(objType);
 
         for (let i = 0; i < tableSymbols.length; i++) {
             let tableSymbol = tableSymbols[i];
@@ -47,8 +47,9 @@ export class ALSymbolsBasedReportWizard extends ALSymbolsBasedWizard {
             return;
             
         const objType : AZSymbolKind = AZSymbolKind.ReportObject;
+        let relativeFileDir = await this.getRelativeFileDir(objType);
 
-        let objectId : number = await this.getObjectId("Please enter an ID for the report object.", 0);
+        let objectId : number = await this.getObjectId(relativeFileDir, "report", "Please enter an ID for the report object.", 0);
         if (objectId < 0) {
             return;
         }
@@ -57,7 +58,6 @@ export class ALSymbolsBasedReportWizard extends ALSymbolsBasedWizard {
         if (!objectName)
             return;
 
-        let relativeFileDir = await this.getRelativeFileDir(objType);
         await this.createAndShowNewReport(tableSymbol, objType, objectId, objectName, relativeFileDir);
     }
 

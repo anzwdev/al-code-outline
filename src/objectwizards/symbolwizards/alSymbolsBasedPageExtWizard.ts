@@ -4,11 +4,12 @@ import { AZSymbolInformation } from '../../symbollibraries/azSymbolInformation';
 import { AZSymbolKind } from '../../symbollibraries/azSymbolKind';
 import { ALSymbolsBasedWizard } from './alSymbolsBasedWizard';
 import { ALSyntaxWriter } from '../../allanguage/alSyntaxWriter';
+import { DevToolsExtensionContext } from '../../devToolsExtensionContext';
 
 export class ALSymbolsBasedPageExtWizard extends ALSymbolsBasedWizard {
 
-    constructor() {
-        super();
+    constructor(context: DevToolsExtensionContext) {
+        super(context);
     }
 
     //#region Wizards with UI
@@ -25,13 +26,12 @@ export class ALSymbolsBasedPageExtWizard extends ALSymbolsBasedWizard {
             return;
 
         const extObjType : AZSymbolKind = AZSymbolKind.PageExtensionObject;
+        let relativeFileDir: string | undefined = await this.getRelativeFileDir(extObjType);
 
-        let startObjectId: number = await this.getObjectId("Please enter a starting ID for the page extensions.", 0);
+        let startObjectId: number = await this.getObjectId(relativeFileDir, "pageextension", "Please enter a starting ID for the page extensions.", 0);
         if (startObjectId < 0) {
             return;
         }
-
-        let relativeFileDir: string | undefined = await this.getRelativeFileDir(extObjType);
 
         for (let i = 0; i < pageSymbols.length; i++) {
             let pageSymbol = pageSymbols[i];
@@ -47,8 +47,9 @@ export class ALSymbolsBasedPageExtWizard extends ALSymbolsBasedWizard {
             return;
 
         const extObjType : AZSymbolKind = AZSymbolKind.PageExtensionObject;
+        let relativeFileDir = await this.getRelativeFileDir(extObjType);
         
-        let extObjectId : number = await this.getObjectId("Please enter an ID for the page extension.", 0);
+        let extObjectId : number = await this.getObjectId(relativeFileDir, "pageextension", "Please enter an ID for the page extension.", 0);
         if (extObjectId < 0) {
             return;
         }
@@ -61,7 +62,6 @@ export class ALSymbolsBasedPageExtWizard extends ALSymbolsBasedWizard {
             return;
         }
 
-        let relativeFileDir = await this.getRelativeFileDir(extObjType);
         await this.createAndShowNewPageExtension(pageSymbol, extObjType, extObjectId, extObjectName, relativeFileDir);
     }
 

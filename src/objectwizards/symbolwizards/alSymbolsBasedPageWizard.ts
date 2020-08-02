@@ -4,11 +4,12 @@ import { AZSymbolKind } from '../../symbollibraries/azSymbolKind';
 import { ALSymbolsBasedWizard } from './alSymbolsBasedWizard';
 import { FileBuilder } from '../fileBuilder';
 import { ALSyntaxWriter } from '../../allanguage/alSyntaxWriter';
+import { DevToolsExtensionContext } from '../../devToolsExtensionContext';
 
 export class ALSymbolsBasedPageWizard extends ALSymbolsBasedWizard {
 
-    constructor() {
-        super();
+    constructor(context: DevToolsExtensionContext) {
+        super(context);
     }
 
     //#region Wizards with UI
@@ -25,13 +26,12 @@ export class ALSymbolsBasedPageWizard extends ALSymbolsBasedWizard {
             return;
 
         const objType : AZSymbolKind = AZSymbolKind.PageObject;
+        let relativeFileDir: string | undefined = await this.getRelativeFileDir(objType);
 
-        let startObjectId: number = await this.getObjectId(`Please enter a starting ID for the ${pageType} pages.`, 0);
+        let startObjectId: number = await this.getObjectId(relativeFileDir, "page", `Please enter a starting ID for the ${pageType} pages.`, 0);
         if (startObjectId < 0) {
             return;
         }
-
-        let relativeFileDir: string | undefined = await this.getRelativeFileDir(objType);
 
         for (let i = 0; i < tableSymbols.length; i++) {
             let tableSymbol = tableSymbols[i];
@@ -47,8 +47,9 @@ export class ALSymbolsBasedPageWizard extends ALSymbolsBasedWizard {
             return;
 
         const objType : AZSymbolKind = AZSymbolKind.PageObject;
+        let relativeFileDir = await this.getRelativeFileDir(objType);
 
-        let objectId : number = await this.getObjectId(`Please enter an ID for the ${pageType} page.`, 0);
+        let objectId : number = await this.getObjectId(relativeFileDir, "page", `Please enter an ID for the ${pageType} page.`, 0);
         if (objectId < 0) {
             return;
         }
@@ -60,7 +61,6 @@ export class ALSymbolsBasedPageWizard extends ALSymbolsBasedWizard {
             return;
         }
 
-        let relativeFileDir = await this.getRelativeFileDir(objType);
         await this.createAndShowNewPage(tableSymbol, objType, objectId, objectName, pageType, relativeFileDir);
     }
 

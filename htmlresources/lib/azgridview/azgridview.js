@@ -982,12 +982,12 @@ class AZGridView {
             value = value.toLowerCase();
 
             for (let i=0; i<autocompl.length; i++) {
-                if (autocompl[i].toLowerCase() == value)
+                if ((autocompl[i]) && (autocompl[i].toString().toLowerCase() == value))
                     return autocompl[i];
             }
 
             for (let i=0; i<autocompl.length; i++) {
-                if (autocompl[i].toLowerCase().startsWith(value))
+                if ((autocompl[i]) && (autocompl[i].toString().toLowerCase().startsWith(value)))
                     return autocompl[i];
             }
 

@@ -1,10 +1,13 @@
 import * as vscode from 'vscode';
 import { FileBuilder } from '../fileBuilder';
 import { AZSymbolKind } from '../../symbollibraries/azSymbolKind';
+import { DevToolsExtensionContext } from '../../devToolsExtensionContext';
 
 export class ALSymbolsBasedWizard {
-  
-    constructor() {
+    protected _toolsExtensionContext: DevToolsExtensionContext;
+
+    constructor(context: DevToolsExtensionContext) {
+        this._toolsExtensionContext = context;
     }
 
     protected async showNewDocument(content : string, fileName?: string, relativeFileDir?: string) {
@@ -24,8 +27,19 @@ export class ALSymbolsBasedWizard {
             FileBuilder.showFile(filePath);
     }
 
-    protected async getObjectId(promptText: string, defaultObjectId: number) : Promise<number> {
-        let objectIdString : string | undefined = defaultObjectId.toString();
+    protected async getObjectId(destPath: string | undefined, objectType: string, promptText: string, defaultObjectId: number) : Promise<number> {
+        let uri: vscode.Uri | undefined;
+        if (destPath)
+            uri = vscode.Uri.file(destPath);
+        let objectIdString: string | undefined = await this._toolsExtensionContext.alLangProxy.getNextObjectId(uri, objectType);
+
+        if (objectIdString) {
+            let objectId : number = Number(objectIdString);
+            if (!isNaN(objectId))
+                return objectId;   
+        }
+        
+        objectIdString = defaultObjectId.toString();
         if (this.shouldPromptForObjectId())
             objectIdString = await this.promptForObjectId(promptText, objectIdString);
 
