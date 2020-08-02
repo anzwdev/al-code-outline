@@ -32,14 +32,19 @@ export class ALSymbolsBasedWizard {
         if (destPath)
             uri = vscode.Uri.file(destPath);
         let objectIdString: string | undefined = await this._toolsExtensionContext.alLangProxy.getNextObjectId(uri, objectType);
+        let idAssigned = false;
 
         if (objectIdString) {
             let objectId : number = Number(objectIdString);
-            if (!isNaN(objectId))
-                return objectId;   
+            if (!isNaN(objectId)) {
+                //if (!confirmId)
+                //    return objectId;
+                idAssigned = true;
+            }
         }
-        
-        objectIdString = defaultObjectId.toString();
+
+        if (!idAssigned)
+            objectIdString = defaultObjectId.toString();
         if (this.shouldPromptForObjectId())
             objectIdString = await this.promptForObjectId(promptText, objectIdString);
 
