@@ -285,6 +285,17 @@ export class ALLangServerProxy {
         return "";
     }
 
+    async getPageList(resourceUri: vscode.Uri | undefined) : Promise<string[]> {
+        let fileContent = "page 0 _symbolcache\n{\nprocedure t()\nvar\nf:page ;\nbegin\nend;\n}";
+        let list = await this.getCompletionForSourceCode(resourceUri, "Loading list of tables.", fileContent,
+            4, 7, 7, 1);
+
+        //process results
+        if (list)
+            return this.getSymbolLabels(list, vscode.CompletionItemKind.Class);
+        return [];
+    }
+
     async getTableList(resourceUri: vscode.Uri | undefined) : Promise<string[]> {
         let fileContent = "codeunit 0 _symbolcache\n{\nprocedure t()\nvar\nf:record ;\nbegin\nend;\n}";
         let list = await this.getCompletionForSourceCode(resourceUri, "Loading list of tables.", fileContent,
