@@ -11,7 +11,7 @@ export class ALCreateInterfaceCodeCommand extends ALCodeCommand {
         super(context, 'CreateInterface', 'AZDevTools.ALCreateInterfaceCodeCommand');
     }
 
-    collectCodeActions(docSymbols: AZDocumentSymbolsLibrary, symbol: AZSymbolInformation, document: vscode.TextDocument, range: vscode.Range | vscode.Selection, context: vscode.CodeActionContext, actions: vscode.CodeAction[]) {
+    collectCodeActions(docSymbols: AZDocumentSymbolsLibrary, symbol: AZSymbolInformation, document: vscode.TextDocument, range: vscode.Range | vscode.Selection, context: vscode.CodeActionContext, actions: vscode.CodeAction[], onSaveEdit: vscode.WorkspaceEdit | undefined): vscode.WorkspaceEdit | undefined {
         if ((symbol) && 
             (symbol.kind == AZSymbolKind.CodeunitObject) && 
             (symbol.selectionRange) &&
@@ -24,6 +24,8 @@ export class ALCreateInterfaceCodeCommand extends ALCodeCommand {
             };
             actions.push(action);
         }
+
+        return onSaveEdit;
     }
 
     protected async runAsync(docSymbols: AZDocumentSymbolsLibrary, document: vscode.TextDocument, range: vscode.Range) {

@@ -12,7 +12,7 @@ export class ALAddReportFieldsCodeCommand extends ALBaseAddFieldsCodeCommand {
         super(context, 'AddReportFields', 'AZDevTools.ALAddReportFieldsCodeCommand');
     }
 
-    collectCodeActions(docSymbols: AZDocumentSymbolsLibrary, symbol: AZSymbolInformation | undefined, document: vscode.TextDocument, range: vscode.Range | vscode.Selection, context: vscode.CodeActionContext, actions: vscode.CodeAction[]) {
+    collectCodeActions(docSymbols: AZDocumentSymbolsLibrary, symbol: AZSymbolInformation | undefined, document: vscode.TextDocument, range: vscode.Range | vscode.Selection, context: vscode.CodeActionContext, actions: vscode.CodeAction[], onSaveEdit: vscode.WorkspaceEdit | undefined): vscode.WorkspaceEdit | undefined {
         if ((symbol) && 
             ((symbol.kind == AZSymbolKind.ReportDataItem) ||
              (symbol.kind == AZSymbolKind.ReportColumn))) {
@@ -24,6 +24,8 @@ export class ALAddReportFieldsCodeCommand extends ALBaseAddFieldsCodeCommand {
             };
             actions.push(action);
         }
+
+        return onSaveEdit;
     }
 
     protected async runAsync(docSymbols: AZDocumentSymbolsLibrary, document: vscode.TextDocument, range: vscode.Range) {

@@ -10,29 +10,20 @@ export class ALCodeCopFixAA0008 extends ALCodeFix {
         super(context, "AA0008");
     }
 
-    collectCodeActions(docSymbols: AZDocumentSymbolsLibrary, symbol: AZSymbolInformation | undefined, document: vscode.TextDocument, range: vscode.Range | vscode.Selection, context: vscode.CodeActionContext, actions: vscode.CodeAction[]) {
+    collectCodeActions(docSymbols: AZDocumentSymbolsLibrary, symbol: AZSymbolInformation | undefined, document: vscode.TextDocument, range: vscode.Range | vscode.Selection, context: vscode.CodeActionContext, actions: vscode.CodeAction[], onSaveEdit: vscode.WorkspaceEdit | undefined): vscode.WorkspaceEdit | undefined {
         let settings =  vscode.workspace.getConfiguration('alOutline', document.uri);
         let fixOnSave = settings.get<boolean>('fixCodeCopMissingParenthesesOnSave');      
-        if (!fixOnSave)
-            return;  
-
-        let edit: vscode.WorkspaceEdit | undefined;
-
-        for (let i=0; i<context.diagnostics.length; i++) {
-            if (context.diagnostics[i].code === this.diagnosticCode) {
-                if (!edit)
-                    edit = new vscode.WorkspaceEdit();
-                edit.insert(document.uri, context.diagnostics[i].range.end, '()');
+        if (fixOnSave) {
+            for (let i=0; i<context.diagnostics.length; i++) {
+                if (context.diagnostics[i].code === this.diagnosticCode) {
+                    if (!onSaveEdit)
+                        onSaveEdit = new vscode.WorkspaceEdit();
+                    onSaveEdit.insert(document.uri, context.diagnostics[i].range.end, '()');
+                }
             }
         }
 
-        if (edit) {
-            let fix = new vscode.CodeAction(`Add parenthesis`, this.getCodeActionKind(fixOnSave));
-            fix.edit = edit;
-            fix.isPreferred = true;
-            actions.push(fix);
-        }
-
+        return onSaveEdit;
     }
 
 }

@@ -1,10 +1,12 @@
 # Change Log
 
 ## 2.0.9
- - Issue #169 - Enum Extension is missing from Object Types 
+ - Issue #169 - Enum Extension is missing from Object Types
+ - Issue #170 - Problem using multiple codeactions on save
 
  Thank you
  - LucVanDyck for reporting issue #169
+ - ti-jalopez for reporting issue #170
 
 ## 2.0.8
  - Issue #147 - Small functionality fix - symbols-based wizards suggest object id but allow user to change it
