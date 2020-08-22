@@ -1,5 +1,11 @@
 # Change Log
 
+## 2.0.9
+ - Issue #169 - Enum Extension is missing from Object Types 
+
+ Thank you
+ - LucVanDyck for reporting issue #169
+
 ## 2.0.8
  - Issue #147 - Small functionality fix - symbols-based wizards suggest object id but allow user to change it
 
