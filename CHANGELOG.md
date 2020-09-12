@@ -1,5 +1,23 @@
 # Change Log
 
+## 2.0.10
+ - Issue #176 - Add DataClassification to the Active Editor/Project
+
+ Thank you
+  - apoyas for reporting issue #176
+
+## 2.0.9
+ - Issue #169 - Enum Extension is missing from Object Types
+ - Issue #170 - Problem using multiple codeactions on save
+ - Issue #172 - IDs missing for EnumValue in symbols tree
+ - Issue #173 - Extends property is empty for EnumExtension and TableExtension symbols
+ - Simple page extension wizard by rvanbekkum
+
+ Thank you
+ - LucVanDyck for reporting issue #169
+ - ti-jalopez for reporting issue #170
+ - rvanbekkum for page extension wizard pull request and reporting issues #172 and #173
+
 ## 2.0.8
  - Issue #147 - Small functionality fix - symbols-based wizards suggest object id but allow user to change it
 

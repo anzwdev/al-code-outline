@@ -48,6 +48,7 @@ export class ALCodeActionsProvider implements vscode.CodeActionProvider {
 
     protected async collectCodeActions(document: vscode.TextDocument, range: vscode.Range | vscode.Selection, context: vscode.CodeActionContext): Promise<vscode.CodeAction[]> {
         let actions: vscode.CodeAction[] = []; 
+        let onSaveEdit: vscode.WorkspaceEdit | undefined = undefined;
 
         if (this._toolsExtensionContext.alLangProxy.version.major < 1)
             return actions;
@@ -56,7 +57,15 @@ export class ALCodeActionsProvider implements vscode.CodeActionProvider {
         let symbol = docSymbols.findSymbolInRange(range);
 
         for (let i=0; i<this._codeCommands.length; i++) {
-            this._codeCommands[i].collectCodeActions(docSymbols, symbol, document, range, context, actions);
+            onSaveEdit = this._codeCommands[i].collectCodeActions(docSymbols, symbol, document, range, context, actions, onSaveEdit);
+        }
+
+        //create OnSave action
+        if (onSaveEdit) {
+            let actionKind = vscode.CodeActionKind.SourceFixAll; //.append('al');
+            let action = new vscode.CodeAction("Fix document on save", actionKind);
+            action.edit = onSaveEdit;
+            actions.push(action);
         }
 
         return actions;

@@ -60,7 +60,8 @@ class ObjectBrowser {
         this.initModeBtnEventHandlers('tableextensionModeBtn', 'TableExtension', 'pageextensionModeBtn', 'profileModeBtn');
         this.initModeBtnEventHandlers('profileModeBtn', 'Profile', 'tableextensionModeBtn', 'pagecustomizationModeBtn');
         this.initModeBtnEventHandlers('pagecustomizationModeBtn', 'PageCustomization', 'profileModeBtn', 'enumModeBtn');
-        this.initModeBtnEventHandlers('enumModeBtn', 'Enum', 'pagecustomizationModeBtn', 'dotnetpackageModeBtn');
+        this.initModeBtnEventHandlers('enumModeBtn', 'Enum', 'pagecustomizationModeBtn', 'enumextensionModeBtn');
+        this.initModeBtnEventHandlers('enumextensionModeBtn', 'EnumExtension', 'enumModeBtn', 'dotnetpackageModeBtn');
         this.initModeBtnEventHandlers('dotnetpackageModeBtn', 'DotNetPackage', 'enumModeBtn', 'interfaceModeBtn');
         this.initModeBtnEventHandlers('interfaceModeBtn', 'Interface', 'dotnetpackageModeBtn', 'allModeBtn');
         this.initModeBtnEventHandlers('allModeBtn', 'All', 'interfaceModeBtn', '');        
@@ -181,8 +182,9 @@ class ObjectBrowser {
         typeSort[ALSymbolKind.ProfileObject] = 10;
         typeSort[ALSymbolKind.PageCustomizationObject] = 11;
         typeSort[ALSymbolKind.EnumType] = 12;
-        typeSort[ALSymbolKind.DotNetPackage] = 13;
-        typeSort[ALSymbolKind.Interface] = 14;
+        typeSort[ALSymbolKind.EnumExtensionType] = 13;
+        typeSort[ALSymbolKind.DotNetPackage] = 14;
+        typeSort[ALSymbolKind.Interface] = 15;
 
         if ((this._data) && (this._data.length > 1)) {
             this._data.sort(function(a,b) {
@@ -230,7 +232,9 @@ class ObjectBrowser {
                 return "PageCustomization";
             case ALSymbolKind.EnumType:
                 return "Enum";
-            case ALSymbolKind.DotNetPackage:
+            case ALSymbolKind.EnumExtensionType:
+                return "EnumExtension";
+                case ALSymbolKind.DotNetPackage:
                 return "DotNetPackage";
             case ALSymbolKind.Interface:
                 return "Interface";

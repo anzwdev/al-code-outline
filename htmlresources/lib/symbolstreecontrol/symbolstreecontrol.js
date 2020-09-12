@@ -145,7 +145,7 @@ class SymbolsTreeControl {
 
                 let cap = document.createElement('div');
                 cap.className = "cap";
-                if ((this._showIds) && (data.id))
+                if ((this._showIds) && ((data.id) || (data.kind == 315)))   //!!!TO-DO!!! enumvalue - dirty hack
                     cap.innerText  = data.id + ' ' + data.fullName;
                 else
                     cap.innerText = data.fullName;

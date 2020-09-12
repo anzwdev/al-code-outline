@@ -11,31 +11,31 @@ export class ALSortPropertiesCommand extends ALBaseSortCodeCommand {
         super(context, "SortProperties");
     }
 
-    collectCodeActions(docSymbols: AZDocumentSymbolsLibrary, symbol: AZSymbolInformation | undefined, document: vscode.TextDocument, range: vscode.Range | vscode.Selection, context: vscode.CodeActionContext, actions: vscode.CodeAction[]) {
-        let edit: vscode.WorkspaceEdit | undefined =  undefined;
-        let fixOnSave = this.canRunOnSave(document.uri); 
-        let actionKind = this.getCodeActionKind(fixOnSave);
-
-        if (fixOnSave) {
+    collectCodeActions(docSymbols: AZDocumentSymbolsLibrary, symbol: AZSymbolInformation | undefined, document: vscode.TextDocument, range: vscode.Range | vscode.Selection, context: vscode.CodeActionContext, actions: vscode.CodeAction[], onSaveEdit: vscode.WorkspaceEdit | undefined): vscode.WorkspaceEdit | undefined {
+        if (this.canRunOnSave(document.uri)) {
             let objList: AZSymbolInformation[] = [];
             if (docSymbols.rootSymbol) {
                 docSymbols.rootSymbol.collectObjectSymbols(objList);
                 for (let i=0; i<objList.length; i++)
-                    edit = this.prepareEdit(objList[i], document, edit);
+                    onSaveEdit = this.prepareEdit(objList[i], document, onSaveEdit);
             }
         } else {
+            let edit: vscode.WorkspaceEdit | undefined =  undefined;
+
             //collect list of objects in selection range
             if ((symbol) && (symbol.isALObject()) && (symbol.kind != AZSymbolKind.Interface) && 
                 (symbol.selectionRange) &&
                 (symbol.selectionRange.start.line == range.start.line))                
                 edit = this.prepareEdit(symbol, document, undefined);
+
+            if (edit) {
+                let action = new vscode.CodeAction("Sort properties", vscode.CodeActionKind.QuickFix);
+                action.edit = edit;
+                actions.push(action);
+            }
         }
 
-        if (edit) {
-            let action = new vscode.CodeAction("Sort properties", actionKind);
-            action.edit = edit;
-            actions.push(action);
-        }
+        return onSaveEdit;
     }
 
     protected prepareEdit(symbol: AZSymbolInformation, document: vscode.TextDocument, edit: vscode.WorkspaceEdit | undefined): vscode.WorkspaceEdit | undefined {

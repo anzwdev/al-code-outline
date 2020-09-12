@@ -2,6 +2,7 @@ import * as vscode from 'vscode';
 import { DevToolsExtensionContext } from "../devToolsExtensionContext";
 import { AppAreasModifier } from '../alsyntaxmodifiers/appAreasModifier';
 import { ToolTipModifier } from '../alsyntaxmodifiers/toolTipsModifier';
+import { DataClassificationModifier } from '../alsyntaxmodifiers/dataClassificationModifier';
 
 export class ALCodeTransformationService {
     protected _context: DevToolsExtensionContext;
@@ -48,6 +49,27 @@ export class ALCodeTransformationService {
                 }
             )
         );
+
+        this._context.vscodeExtensionContext.subscriptions.push(
+            vscode.commands.registerCommand(
+                'azALDevTools.AddEditorDataClassification',
+                () => {
+                    let modifier: DataClassificationModifier = new DataClassificationModifier(this._context);
+                    modifier.AddMissingDataClassificationToActiveEditor();
+                }
+            )
+        );
+
+        this._context.vscodeExtensionContext.subscriptions.push(
+            vscode.commands.registerCommand(
+                'azALDevTools.AddProjectDataClassification',
+                () => {
+                    let modifier: DataClassificationModifier = new DataClassificationModifier(this._context);
+                    modifier.AddMissinDataClassificationToWorkspace();
+                }
+            )
+        );
+
 
     }
 

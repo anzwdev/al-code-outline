@@ -14,6 +14,7 @@ import { ALTableWizard } from '../objectwizards/wizards/alTableWizard';
 import { ALCodeunitWizard } from '../objectwizards/wizards/alCodeunitWizard';
 import { ALInterfaceWizard } from '../objectwizards/wizards/alInterfaceWizard';
 import { ALTableExtWizard } from '../objectwizards/wizards/alTableExtWizard';
+import { ALPageExtWizard } from '../objectwizards/wizards/alPageExtWizard';
 
 export class ALObjectWizardsService {
     protected _context: DevToolsExtensionContext;
@@ -27,7 +28,8 @@ export class ALObjectWizardsService {
         this._wizards.push(new ALTableWizard(context, 'Table', 'New AL Table Wizard', 'Allows to select table name and enter list of fields'));
         this._wizards.push(new ALTableExtWizard(context, 'Table Extension', 'New AL Table Extension Wizard', 'Allows to add list of fields to existing table'));
         this._wizards.push(new ALPageWizard(context, 'Page', 'New AL Page Wizard', 'Allows to select page type, fast tabs, source table and fields.'));
-        
+        this._wizards.push(new ALPageExtWizard(context, 'Page Extension', 'New AL Page Extension Wizard', 'Allows to add layout and action controls to existing page'));
+
         this._wizards.push(new ALCodeunitWizard(context, 'Codeunit', 'New AL Codeunit Wizard', 'Allows to create simple codeunits and interface implementations'));
 
         this._wizards.push(new ALInterfaceWizard(context, 'Interface', 'New AL Interface Wizard', 'Allows to create a new interface and copy public procedures from a codeunit'));

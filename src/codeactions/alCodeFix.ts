@@ -12,7 +12,7 @@ export class ALCodeFix extends ALCodeAction {
         this.diagnosticCode = diagCode;
     }
 
-    collectCodeActions(docSymbols: AZDocumentSymbolsLibrary, symbol: AZSymbolInformation | undefined, document: vscode.TextDocument, range: vscode.Range | vscode.Selection, context: vscode.CodeActionContext, actions: vscode.CodeAction[]) {
+    collectCodeActions(docSymbols: AZDocumentSymbolsLibrary, symbol: AZSymbolInformation | undefined, document: vscode.TextDocument, range: vscode.Range | vscode.Selection, context: vscode.CodeActionContext, actions: vscode.CodeAction[], onSaveEdit: vscode.WorkspaceEdit | undefined): vscode.WorkspaceEdit | undefined {
         for (let i=0; i<context.diagnostics.length; i++) {
             if (context.diagnostics[i].code === this.diagnosticCode) {
                 let codeFix = this.createFix(document, context.diagnostics[i]);
@@ -20,6 +20,7 @@ export class ALCodeFix extends ALCodeAction {
                     actions.push(codeFix);
             }
         }
+        return onSaveEdit;
     }
 
     createFix(document: vscode.TextDocument, diagnostic: vscode.Diagnostic): vscode.CodeAction | undefined {
