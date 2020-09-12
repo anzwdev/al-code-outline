@@ -1,5 +1,11 @@
 # Change Log
 
+## 2.0.10
+ - Issue #176 - Add DataClassification to the Active Editor/Project
+
+ Thank you
+  - apoyas for reporting issue #176
+
 ## 2.0.9
  - Issue #169 - Enum Extension is missing from Object Types
  - Issue #170 - Problem using multiple codeactions on save
