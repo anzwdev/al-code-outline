@@ -1,5 +1,11 @@
 # Change Log
 
+## 2.0.11
+ - Issue #176 - Do not add DataClassification to flow fields and flow filters
+
+ Thank you
+  - apoyas for reporting issue #176
+
 ## 2.0.10
  - Issue #176 - Add DataClassification to the Active Editor/Project
 
