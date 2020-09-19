@@ -29,10 +29,12 @@ export class ALCodeActionsProvider implements vscode.CodeActionProvider {
             new ALAddReportFieldsCodeCommand(this._toolsExtensionContext),
             new ALAddXmlPortFieldsCodeCommand(this._toolsExtensionContext, 'fieldelement', 'Add multiple field elements'),
             new ALAddXmlPortFieldsCodeCommand(this._toolsExtensionContext, 'fieldattribute', 'Add multiple field attributes'),
-            new ALSortProceduresCodeCommand(this._toolsExtensionContext),
+            //sorting
+            new ALSortVariablesCommand(this._toolsExtensionContext),
             new ALSortReportColumnsCommand(this._toolsExtensionContext),
             new ALSortPropertiesCommand(this._toolsExtensionContext),
-            new ALSortVariablesCommand(this._toolsExtensionContext),
+            new ALSortProceduresCodeCommand(this._toolsExtensionContext),
+            
             new ALCreateInterfaceCodeCommand(this._toolsExtensionContext),
             //diagnostics fixes
             //AA0005 fix disabled, needs some fixes before going live
@@ -61,10 +63,17 @@ export class ALCodeActionsProvider implements vscode.CodeActionProvider {
         }
 
         //create OnSave action
-        if (onSaveEdit) {
+        let actionsList = vscode.workspace.getConfiguration('alOutline', document.uri).get<string[]>('codeActionsOnSave');
+        if ((actionsList) && (actionsList.length > 0)) {
             let actionKind = vscode.CodeActionKind.SourceFixAll; //.append('al');
             let action = new vscode.CodeAction("Fix document on save", actionKind);
-            action.edit = onSaveEdit;
+            action.command = {
+                title: "Fix document on save",
+                command: "azALDevTools.fixDocumentOnSave",
+                arguments: [
+                    document
+                ]
+            };
             actions.push(action);
         }
 

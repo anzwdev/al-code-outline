@@ -57,23 +57,21 @@ export class ALSortVariablesCommand extends ALBaseSortCodeCommand {
         if (symbolsList.length == 0)
             return edit;
 
-        if (!edit)
-            edit = new vscode.WorkspaceEdit();
         if (symbolsList.length > 0) {
             for (let i=0; i<symbolsList.length; i++) {
-                this.sortVariables(document, symbolsList[i], edit);
+                edit = this.sortVariables(document, symbolsList[i], edit);
             }
         }
         return edit;
     }
 
-    protected sortVariables(document: vscode.TextDocument, symbol: AZSymbolInformation, editBuilder: vscode.WorkspaceEdit) {
+    protected sortVariables(document: vscode.TextDocument, symbol: AZSymbolInformation, editBuilder: vscode.WorkspaceEdit | undefined): vscode.WorkspaceEdit | undefined {
         // Collect nodes
         let childSymbolsList: AZSymbolInformation[] = [];
         symbol.collectChildSymbolsByKindList([AZSymbolKind.VariableDeclaration, 
             AZSymbolKind.VariableDeclarationName], false, childSymbolsList);
         if (childSymbolsList.length == 0)
-            return;
+            return editBuilder;
 
         // Sort nodes
         childSymbolsList.sort((symbolA, symbolB) => {
@@ -109,10 +107,15 @@ export class ALSortVariablesCommand extends ALBaseSortCodeCommand {
         if (symbol.contentRange) {
             const deleteRange = new vscode.Range(symbol.contentRange.start.line, symbol.contentRange.start.character, 
                 symbol.contentRange.end.line, symbol.contentRange.end.character);
+
+            if (!editBuilder)
+                editBuilder = new vscode.WorkspaceEdit();
+
             editBuilder.delete(document.uri, deleteRange);
-            
             editBuilder.insert(document.uri, deleteRange.start, newSource);
         }
+
+        return editBuilder;
     }
 
     protected compareSymbols(symbolA: AZSymbolInformation, symbolB: AZSymbolInformation): number {

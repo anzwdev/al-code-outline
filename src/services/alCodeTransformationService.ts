@@ -3,12 +3,33 @@ import { DevToolsExtensionContext } from "../devToolsExtensionContext";
 import { AppAreasModifier } from '../alsyntaxmodifiers/appAreasModifier';
 import { ToolTipModifier } from '../alsyntaxmodifiers/toolTipsModifier';
 import { DataClassificationModifier } from '../alsyntaxmodifiers/dataClassificationModifier';
+import { OnDocumentSaveModifier } from '../alsyntaxmodifiers/onDocumentSaveModifier';
 
 export class ALCodeTransformationService {
     protected _context: DevToolsExtensionContext;
 
     constructor(context: DevToolsExtensionContext) {
         this._context = context;
+
+        this._context.vscodeExtensionContext.subscriptions.push(
+            vscode.commands.registerCommand(
+                'azALDevTools.SortEditorProperties',
+                () => {
+                    let cmd = new OnDocumentSaveModifier(this._context);
+                    cmd.RunForActiveEditor();
+                }
+            )
+        );
+
+        this._context.vscodeExtensionContext.subscriptions.push(
+            vscode.commands.registerCommand(
+                'azALDevTools.fixDocumentOnSave',
+                async (document) => {
+                    let cmd = new OnDocumentSaveModifier(this._context);
+                    await cmd.RunForDocument(document, false);
+                }
+            )
+        );
 
         this._context.vscodeExtensionContext.subscriptions.push(
             vscode.commands.registerCommand(
