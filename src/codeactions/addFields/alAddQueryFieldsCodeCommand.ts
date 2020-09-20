@@ -12,7 +12,7 @@ export class ALAddQueryFieldsCodeCommand extends ALBaseAddFieldsCodeCommand {
         super(context, 'AddQueryFields', 'AZDevTools.ALAddQueryFieldsCodeCommand');
     }
 
-    collectCodeActions(docSymbols: AZDocumentSymbolsLibrary, symbol: AZSymbolInformation | undefined, document: vscode.TextDocument, range: vscode.Range | vscode.Selection, context: vscode.CodeActionContext, actions: vscode.CodeAction[], onSaveEdit: vscode.WorkspaceEdit | undefined): vscode.WorkspaceEdit | undefined {        
+    collectCodeActions(docSymbols: AZDocumentSymbolsLibrary, symbol: AZSymbolInformation | undefined, document: vscode.TextDocument, range: vscode.Range | vscode.Selection, context: vscode.CodeActionContext, actions: vscode.CodeAction[]) {        
         if ((symbol) && 
             ((symbol.kind == AZSymbolKind.QueryDataItem) ||
              (symbol.kind == AZSymbolKind.QueryColumn))) {
@@ -24,8 +24,6 @@ export class ALAddQueryFieldsCodeCommand extends ALBaseAddFieldsCodeCommand {
             };
             actions.push(action);
         }
-
-        return onSaveEdit;
     }
 
     protected async runAsync(docSymbols: AZDocumentSymbolsLibrary, document: vscode.TextDocument, range: vscode.Range) {

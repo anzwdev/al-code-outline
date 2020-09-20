@@ -2,7 +2,7 @@
 	"name": "al-code-outline",
 	"displayName": "AZ AL Dev Tools/AL Code Outline",
 	"description": "AZ AL Development Tools: AL code outline, object browser, object creators",
-	"version": "2.0.11",
+	"version": "2.0.12",
 	"publisher": "andrzejzwierzchowski",
 	"engines": {
 		"vscode": "^1.47.0"
@@ -41,10 +41,7 @@
 		"onCommand:azALDevTools.AddProjectToolTip",
 		"onCommand:azALDevTools.AddEditorDataClassification",
 		"onCommand:azALDevTools.AddProjectDataClassification",
-
-		"onCommand:azALDevTools.SortEditorProperties",
 		"onCommand:azALDevTools.fixDocumentOnSave",
-
 		"onCustomEditor:azALDevTools.jsonEditor",
 		"onCustomEditor:azALDevTools.appPackageEditor"
 	],
@@ -182,14 +179,6 @@
 				"command": "azALDevTools.AddProjectDataClassification",
 				"title": "Add Data Classification to the Active Project"
 			},
-
-			{
-				"category": "AZ AL Dev Tools",
-				"command": "azALDevTools.SortEditorProperties",
-				"title": "Sort Properties in the Active Editor"
-			},
-
-
 			{
 				"command": "azALDevTools.alOutlineEnableFollowCursor",
 				"title": "Enable 'Follow Cursor'"

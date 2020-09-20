@@ -13,16 +13,6 @@ export class ALCodeTransformationService {
 
         this._context.vscodeExtensionContext.subscriptions.push(
             vscode.commands.registerCommand(
-                'azALDevTools.SortEditorProperties',
-                () => {
-                    let cmd = new OnDocumentSaveModifier(this._context);
-                    cmd.RunForActiveEditor();
-                }
-            )
-        );
-
-        this._context.vscodeExtensionContext.subscriptions.push(
-            vscode.commands.registerCommand(
                 'azALDevTools.fixDocumentOnSave',
                 async (document) => {
                     let cmd = new OnDocumentSaveModifier(this._context);

@@ -11,15 +11,8 @@ export class ALSortReportColumnsCommand extends ALBaseSortCodeCommand {
         super(context, "SortReportColumns");
     }
 
-    collectCodeActions(docSymbols: AZDocumentSymbolsLibrary, symbol: AZSymbolInformation | undefined, document: vscode.TextDocument, range: vscode.Range | vscode.Selection, context: vscode.CodeActionContext, actions: vscode.CodeAction[], onSaveEdit: vscode.WorkspaceEdit | undefined): vscode.WorkspaceEdit | undefined {
-        if (this.canRunOnSave(document.uri)) {
-            let objList: AZSymbolInformation[] = [];
-            if (docSymbols.rootSymbol) {
-                docSymbols.rootSymbol.collectObjectSymbols(objList);
-                for (let i=0; i<objList.length; i++)
-                    onSaveEdit = this.prepareEdit(objList[i], document, onSaveEdit);
-            }
-        } else {
+    collectCodeActions(docSymbols: AZDocumentSymbolsLibrary, symbol: AZSymbolInformation | undefined, document: vscode.TextDocument, range: vscode.Range | vscode.Selection, context: vscode.CodeActionContext, actions: vscode.CodeAction[]) {
+        if (!this.canRunOnSave(document.uri)) {
             let edit: vscode.WorkspaceEdit | undefined = undefined;
 
             //prepare code fix
@@ -35,8 +28,6 @@ export class ALSortReportColumnsCommand extends ALBaseSortCodeCommand {
                 actions.push(action);
             }        
         }
-
-        return onSaveEdit;
     }
 
     protected prepareEdit(symbol: AZSymbolInformation, document: vscode.TextDocument, edit: vscode.WorkspaceEdit | undefined): vscode.WorkspaceEdit | undefined {
