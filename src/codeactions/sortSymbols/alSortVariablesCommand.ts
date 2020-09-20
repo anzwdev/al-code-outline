@@ -14,15 +14,8 @@ export class ALSortVariablesCommand extends ALBaseSortCodeCommand {
         super(context, "SortVariables");
     }
 
-    collectCodeActions(docSymbols: AZDocumentSymbolsLibrary, symbol: AZSymbolInformation | undefined, document: vscode.TextDocument, range: vscode.Range | vscode.Selection, context: vscode.CodeActionContext, actions: vscode.CodeAction[], onSaveEdit: vscode.WorkspaceEdit | undefined): vscode.WorkspaceEdit | undefined {
-        if (this.canRunOnSave(document.uri)) {
-            let objList: AZSymbolInformation[] = [];       
-            if (docSymbols.rootSymbol) {
-                docSymbols.rootSymbol.collectObjectSymbols(objList);
-                for (let i=0; i<objList.length; i++)
-                    onSaveEdit = this.prepareEdit(objList[i], document, onSaveEdit);
-            }
-        } else {
+    collectCodeActions(docSymbols: AZDocumentSymbolsLibrary, symbol: AZSymbolInformation | undefined, document: vscode.TextDocument, range: vscode.Range | vscode.Selection, context: vscode.CodeActionContext, actions: vscode.CodeAction[]) {
+        if (!this.canRunOnSave(document.uri)) {
             let edit: vscode.WorkspaceEdit | undefined = undefined;
 
             //collect list of objects in selection range
@@ -38,8 +31,6 @@ export class ALSortVariablesCommand extends ALBaseSortCodeCommand {
                 actions.push(action);
             }
         }
-
-        return onSaveEdit;
     }
 
     protected prepareEdit(symbol: AZSymbolInformation, document: vscode.TextDocument, edit: vscode.WorkspaceEdit | undefined): vscode.WorkspaceEdit | undefined {
@@ -57,23 +48,21 @@ export class ALSortVariablesCommand extends ALBaseSortCodeCommand {
         if (symbolsList.length == 0)
             return edit;
 
-        if (!edit)
-            edit = new vscode.WorkspaceEdit();
         if (symbolsList.length > 0) {
             for (let i=0; i<symbolsList.length; i++) {
-                this.sortVariables(document, symbolsList[i], edit);
+                edit = this.sortVariables(document, symbolsList[i], edit);
             }
         }
         return edit;
     }
 
-    protected sortVariables(document: vscode.TextDocument, symbol: AZSymbolInformation, editBuilder: vscode.WorkspaceEdit) {
+    protected sortVariables(document: vscode.TextDocument, symbol: AZSymbolInformation, editBuilder: vscode.WorkspaceEdit | undefined): vscode.WorkspaceEdit | undefined {
         // Collect nodes
         let childSymbolsList: AZSymbolInformation[] = [];
         symbol.collectChildSymbolsByKindList([AZSymbolKind.VariableDeclaration, 
             AZSymbolKind.VariableDeclarationName], false, childSymbolsList);
         if (childSymbolsList.length == 0)
-            return;
+            return editBuilder;
 
         // Sort nodes
         childSymbolsList.sort((symbolA, symbolB) => {
@@ -109,10 +98,15 @@ export class ALSortVariablesCommand extends ALBaseSortCodeCommand {
         if (symbol.contentRange) {
             const deleteRange = new vscode.Range(symbol.contentRange.start.line, symbol.contentRange.start.character, 
                 symbol.contentRange.end.line, symbol.contentRange.end.character);
+
+            if (!editBuilder)
+                editBuilder = new vscode.WorkspaceEdit();
+
             editBuilder.delete(document.uri, deleteRange);
-            
             editBuilder.insert(document.uri, deleteRange.start, newSource);
         }
+
+        return editBuilder;
     }
 
     protected compareSymbols(symbolA: AZSymbolInformation, symbolB: AZSymbolInformation): number {

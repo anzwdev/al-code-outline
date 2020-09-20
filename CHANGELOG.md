@@ -1,5 +1,10 @@
 # Change Log
 
+## 2.0.12
+ - Issue #170 - Problem using multiple codeactions on save
+
+Thank you ti-jalopez and StefanMaron for your comments about issue #170 
+
 ## 2.0.11
  - Issue #176 - Do not add DataClassification to flow fields and flow filters
 
