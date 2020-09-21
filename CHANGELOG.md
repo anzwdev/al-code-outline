@@ -1,5 +1,8 @@
 # Change Log
 
+## 2.0.13
+ - Issue #170 - Missing sorting by type name added
+
 ## 2.0.12
  - Issue #170 - Problem using multiple codeactions on save
 
