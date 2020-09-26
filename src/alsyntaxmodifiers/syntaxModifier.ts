@@ -1,6 +1,7 @@
 import * as vscode from 'vscode';
 import { DevToolsExtensionContext } from "../devToolsExtensionContext";
 import { ToolsWorkspaceCommandRequest } from '../langserver/toolsWorkspaceCommandRequest';
+import { TextRange } from '../symbollibraries/textRange';
 import { NumberHelper } from '../tools/numberHelper';
 import { TextEditorHelper } from '../tools/textEditorHelper';
 
@@ -25,7 +26,7 @@ export class SyntaxModifier {
         if (!workspaceUri)
             return;
 
-        let request: ToolsWorkspaceCommandRequest = new ToolsWorkspaceCommandRequest(this._commandName, '', workspaceUri.fsPath, this.getParameters(workspaceUri));
+        let request: ToolsWorkspaceCommandRequest = new ToolsWorkspaceCommandRequest(this._commandName, '', workspaceUri.fsPath, undefined, this.getParameters(workspaceUri));
         let response = await this._context.toolsLangServerClient.workspaceCommand(request);
 
         if (response) {
@@ -45,16 +46,16 @@ export class SyntaxModifier {
     async RunForActiveEditor() {
         if (!vscode.window.activeTextEditor)
             return;
-        await this.RunForDocument(vscode.window.activeTextEditor.document, true);
+        await this.RunForDocument(vscode.window.activeTextEditor.document, undefined, true);
     }
 
-    async RunForDocument(document: vscode.TextDocument, withUI: boolean) {
+    async RunForDocument(document: vscode.TextDocument, range: TextRange | undefined, withUI: boolean) {
         let text = document.getText();
 
         if (!text)
             return;
         
-        let request: ToolsWorkspaceCommandRequest = new ToolsWorkspaceCommandRequest(this._commandName, text, '', this.getParameters(document.uri));
+        let request: ToolsWorkspaceCommandRequest = new ToolsWorkspaceCommandRequest(this._commandName, text, '', range, this.getParameters(document.uri));
         let response = await this._context.toolsLangServerClient.workspaceCommand(request);
         if (response) {
             if ((response.error) && (response.errorMessage)) {

@@ -4,6 +4,7 @@ import { AppAreasModifier } from '../alsyntaxmodifiers/appAreasModifier';
 import { ToolTipModifier } from '../alsyntaxmodifiers/toolTipsModifier';
 import { DataClassificationModifier } from '../alsyntaxmodifiers/dataClassificationModifier';
 import { OnDocumentSaveModifier } from '../alsyntaxmodifiers/onDocumentSaveModifier';
+import { SyntaxModifier } from '../alsyntaxmodifiers/syntaxModifier';
 
 export class ALCodeTransformationService {
     protected _context: DevToolsExtensionContext;
@@ -11,12 +12,17 @@ export class ALCodeTransformationService {
     constructor(context: DevToolsExtensionContext) {
         this._context = context;
 
+        this.registerDocumentRangeCommand('azALDevTools.sortVariables', 'sortVariables');
+        this.registerDocumentRangeCommand('azALDevTools.sortProcedures', 'sortProcedures');
+        this.registerDocumentRangeCommand('azALDevTools.sortProperties', 'sortProperties');
+        this.registerDocumentRangeCommand('azALDevTools.sortReportColumns', 'sortReportColumns');
+
         this._context.vscodeExtensionContext.subscriptions.push(
             vscode.commands.registerCommand(
                 'azALDevTools.fixDocumentOnSave',
                 async (document) => {
                     let cmd = new OnDocumentSaveModifier(this._context);
-                    await cmd.RunForDocument(document, false);
+                    await cmd.RunForDocument(document, undefined, false);
                 }
             )
         );
@@ -84,6 +90,28 @@ export class ALCodeTransformationService {
 
     }
 
+    protected registerDocumentCommand(name: string, modifierFactory: () => SyntaxModifier) {
+        this._context.vscodeExtensionContext.subscriptions.push(
+            vscode.commands.registerCommand(
+                name,
+                async (document) => {
+                    let cmd = modifierFactory();
+                    await cmd.RunForDocument(document, undefined, false);
+                }
+            )
+        );
+    }
 
+    protected registerDocumentRangeCommand(name: string, workspaceCommandName: string) {
+        this._context.vscodeExtensionContext.subscriptions.push(
+            vscode.commands.registerCommand(
+                name,
+                async (document, range) => {
+                    let cmd = new SyntaxModifier(this._context, workspaceCommandName);
+                    await cmd.RunForDocument(document, range, false);
+                }
+            )
+        );
+    }
 
 }

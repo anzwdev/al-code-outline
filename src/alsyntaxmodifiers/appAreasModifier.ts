@@ -28,7 +28,7 @@ export class AppAreasModifier {
         if (!workspaceUri)
             return;
 
-        let request: ToolsWorkspaceCommandRequest = new ToolsWorkspaceCommandRequest('addAppAreas', '', workspaceUri.fsPath, {
+        let request: ToolsWorkspaceCommandRequest = new ToolsWorkspaceCommandRequest('addAppAreas', '', workspaceUri.fsPath, undefined, {
             appArea: name
         });
         let response = await this._context.toolsLangServerClient.workspaceCommand(request);
@@ -57,7 +57,7 @@ export class AppAreasModifier {
         if (!text)
             return;
         
-        let request: ToolsWorkspaceCommandRequest = new ToolsWorkspaceCommandRequest('addAppAreas', text, '', {
+        let request: ToolsWorkspaceCommandRequest = new ToolsWorkspaceCommandRequest('addAppAreas', text, '', undefined, {
             appArea: name
         });
         let response = await this._context.toolsLangServerClient.workspaceCommand(request);
