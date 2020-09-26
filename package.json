@@ -2,7 +2,7 @@
 	"name": "al-code-outline",
 	"displayName": "AZ AL Dev Tools/AL Code Outline",
 	"description": "AZ AL Development Tools: AL code outline, object browser, object creators",
-	"version": "2.0.13",
+	"version": "2.0.14",
 	"publisher": "andrzejzwierzchowski",
 	"engines": {
 		"vscode": "^1.47.0"
@@ -42,6 +42,7 @@
 		"onCommand:azALDevTools.AddEditorDataClassification",
 		"onCommand:azALDevTools.AddProjectDataClassification",
 		"onCommand:azALDevTools.fixDocumentOnSave",
+		"onCommand:azALDevTools.RemoveProjectWithStatements",
 		"onCustomEditor:azALDevTools.jsonEditor",
 		"onCustomEditor:azALDevTools.appPackageEditor"
 	],
@@ -178,6 +179,11 @@
 				"category": "AZ AL Dev Tools",
 				"command": "azALDevTools.AddProjectDataClassification",
 				"title": "Add Data Classification to the Active Project"
+			},
+			{
+				"category": "AZ AL Dev Tools",
+				"command": "azALDevTools.RemoveProjectWithStatements",
+				"title": "Remove WITH Statements from the Active Project"
 			},
 			{
 				"command": "azALDevTools.alOutlineEnableFollowCursor",

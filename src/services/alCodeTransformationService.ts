@@ -5,6 +5,7 @@ import { ToolTipModifier } from '../alsyntaxmodifiers/toolTipsModifier';
 import { DataClassificationModifier } from '../alsyntaxmodifiers/dataClassificationModifier';
 import { OnDocumentSaveModifier } from '../alsyntaxmodifiers/onDocumentSaveModifier';
 import { SyntaxModifier } from '../alsyntaxmodifiers/syntaxModifier';
+import { WithModifier } from '../alsyntaxmodifiers/withModifier';
 
 export class ALCodeTransformationService {
     protected _context: DevToolsExtensionContext;
@@ -26,6 +27,16 @@ export class ALCodeTransformationService {
                 }
             )
         );
+
+        this._context.vscodeExtensionContext.subscriptions.push(
+            vscode.commands.registerCommand(
+                'azALDevTools.RemoveProjectWithStatements',
+                () => {
+                    let withModified: WithModifier = new WithModifier(this._context);
+                    withModified.RunForWorkspace();
+                }
+            )
+        );       
 
         this._context.vscodeExtensionContext.subscriptions.push(
             vscode.commands.registerCommand(

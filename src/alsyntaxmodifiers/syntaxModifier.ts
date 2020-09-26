@@ -15,10 +15,8 @@ export class SyntaxModifier {
     }
 
     async RunForWorkspace() {
-        let confirmation = await vscode.window.showInformationMessage(
-            'Do you want to run this command for all files in the current project folder?', 
-            'Yes', 'No');
-        if (confirmation !== 'Yes')
+        let confirmation = await this.confirmRunForWorkspace();
+        if (!confirmation)
             return;
 
         let workspaceUri = TextEditorHelper.getActiveWorkspaceFolderUri();
@@ -37,6 +35,13 @@ export class SyntaxModifier {
                     NumberHelper.zeroIfNotDef(response.parameters.noOfChangedFiles).toString() +
                     ' file(s) modified.');
         }
+    }
+
+    protected async confirmRunForWorkspace(): Promise<boolean> {
+        let confirmation = await vscode.window.showInformationMessage(
+            'Do you want to run this command for all files in the current project folder?', 
+            'Yes', 'No');
+        return (confirmation === 'Yes');
     }
 
     protected getParameters(uri: vscode.Uri): any {

@@ -3,6 +3,7 @@
 ## 2.0.14
  - Sort code actions logic moved to .net language server
  - Issue #165 - Sort procedures code action removed from procedure level
+ - New "Remove WITH statements from the Active Project" command for BC 17
 
  Thank you
   - rvanbekkum for reporting issue #165
