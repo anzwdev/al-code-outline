@@ -6,6 +6,8 @@ export class WithModifier extends SyntaxModifier {
 
     constructor(context: DevToolsExtensionContext) {
         super(context, "removeWith");
+        this._showProgress = true;
+        this._progressMessage = "Processing project files. Please wait...";
     }
 
     protected async confirmRunForWorkspace(): Promise<boolean> {

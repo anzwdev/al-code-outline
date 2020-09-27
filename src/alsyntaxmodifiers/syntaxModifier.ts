@@ -1,6 +1,7 @@
 import * as vscode from 'vscode';
 import { DevToolsExtensionContext } from "../devToolsExtensionContext";
 import { ToolsWorkspaceCommandRequest } from '../langserver/toolsWorkspaceCommandRequest';
+import { ToolsWorkspaceCommandResponse } from '../langserver/toolsWorkspaceCommandResponse';
 import { TextRange } from '../symbollibraries/textRange';
 import { NumberHelper } from '../tools/numberHelper';
 import { TextEditorHelper } from '../tools/textEditorHelper';
@@ -8,10 +9,14 @@ import { TextEditorHelper } from '../tools/textEditorHelper';
 export class SyntaxModifier {
     protected _commandName: string;
     protected _context: DevToolsExtensionContext;
+    protected _showProgress: boolean;
+    protected _progressMessage: string;
 
     constructor(context: DevToolsExtensionContext, commandName: string) {
         this._commandName = commandName;
         this._context = context;
+        this._showProgress = false;
+        this._progressMessage = 'Please wait...';
     }
 
     async RunForWorkspace() {
@@ -24,8 +29,19 @@ export class SyntaxModifier {
         if (!workspaceUri)
             return;
 
-        let request: ToolsWorkspaceCommandRequest = new ToolsWorkspaceCommandRequest(this._commandName, '', workspaceUri.fsPath, undefined, this.getParameters(workspaceUri));
-        let response = await this._context.toolsLangServerClient.workspaceCommand(request);
+        let request: ToolsWorkspaceCommandRequest = new ToolsWorkspaceCommandRequest(this._commandName, '', workspaceUri.fsPath, undefined, this.getParameters(workspaceUri));       
+        let response: ToolsWorkspaceCommandResponse | undefined;
+
+        if (this._showProgress) {
+            response = await vscode.window.withProgress<ToolsWorkspaceCommandResponse | undefined>({
+                    location: vscode.ProgressLocation.Notification,
+                    title: this._progressMessage
+                }, async (progress) => {
+                    return await this._context.toolsLangServerClient.workspaceCommand(request);
+                });
+        } else {
+            response = await this._context.toolsLangServerClient.workspaceCommand(request);
+        }
 
         if (response) {
             if ((response.error) && (response.errorMessage))
