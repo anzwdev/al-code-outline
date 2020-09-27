@@ -1,5 +1,8 @@
 # Change Log
 
+## 2.0.15
+ - New "Remove WITH statements from the Active Editor" command for BC 17
+
 ## 2.0.14
  - Sort code actions logic moved to .net language server
  - Issue #165 - Sort procedures code action removed from procedure level
