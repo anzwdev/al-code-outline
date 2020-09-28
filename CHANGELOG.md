@@ -1,5 +1,19 @@
 # Change Log
 
+## 2.0.15
+ - New "Remove WITH statements from the Active Editor" command for BC 17
+
+## 2.0.14
+ - Sort code actions logic moved to .net language server
+ - Issue #165 - Sort procedures code action removed from procedure level
+ - New "Remove WITH statements from the Active Project" command for BC 17
+
+ Thank you
+  - rvanbekkum for reporting issue #165
+
+## 2.0.13
+ - Issue #170 - Missing sorting by type name added
+
 ## 2.0.12
  - Issue #170 - Problem using multiple codeactions on save
 

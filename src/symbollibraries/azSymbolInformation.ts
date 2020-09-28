@@ -89,20 +89,42 @@ export class AZSymbolInformation {
 
     public isALObject() : boolean {
         return ((this.kind == AZSymbolKind.TableObject) ||
-        (this.kind == AZSymbolKind.CodeunitObject) ||
-        (this.kind == AZSymbolKind.PageObject) ||
-        (this.kind == AZSymbolKind.ReportObject) ||
-        (this.kind == AZSymbolKind.QueryObject) ||
-        (this.kind == AZSymbolKind.XmlPortObject) ||
-        (this.kind == AZSymbolKind.TableExtensionObject) ||
-        (this.kind == AZSymbolKind.PageExtensionObject) ||
-        (this.kind == AZSymbolKind.ControlAddInObject) ||
-        (this.kind == AZSymbolKind.EnumType) ||
-        (this.kind == AZSymbolKind.EnumExtensionType) ||
-        (this.kind == AZSymbolKind.DotNetPackage) ||
-        (this.kind == AZSymbolKind.ProfileObject) ||
-        (this.kind == AZSymbolKind.PageCustomizationObject) ||
-        (this.kind == AZSymbolKind.Interface));
+            (this.kind == AZSymbolKind.CodeunitObject) ||
+            (this.kind == AZSymbolKind.PageObject) ||
+            (this.kind == AZSymbolKind.ReportObject) ||
+            (this.kind == AZSymbolKind.QueryObject) ||
+            (this.kind == AZSymbolKind.XmlPortObject) ||
+            (this.kind == AZSymbolKind.TableExtensionObject) ||
+            (this.kind == AZSymbolKind.PageExtensionObject) ||
+            (this.kind == AZSymbolKind.ControlAddInObject) ||
+            (this.kind == AZSymbolKind.EnumType) ||
+            (this.kind == AZSymbolKind.EnumExtensionType) ||
+            (this.kind == AZSymbolKind.DotNetPackage) ||
+            (this.kind == AZSymbolKind.ProfileObject) ||
+            (this.kind == AZSymbolKind.PageCustomizationObject) ||
+            (this.kind == AZSymbolKind.Interface));
+    }
+
+    public isMethod() : boolean {
+        return ((this.kind == AZSymbolKind.TestDeclaration) ||
+            (this.kind == AZSymbolKind.ConfirmHandlerDeclaration) ||
+            (this.kind == AZSymbolKind.FilterPageHandlerDeclaration) ||
+            (this.kind == AZSymbolKind.HyperlinkHandlerDeclaration) ||
+            (this.kind == AZSymbolKind.MessageHandlerDeclaration) ||
+            (this.kind == AZSymbolKind.ModalPageHandlerDeclaration) ||
+            (this.kind == AZSymbolKind.PageHandlerDeclaration) ||
+            //(this.kind == AZSymbolKind.RecallNotificationHandler) || // is missing
+            (this.kind == AZSymbolKind.ReportHandlerDeclaration) ||
+            (this.kind == AZSymbolKind.RequestPageHandlerDeclaration) ||
+            (this.kind == AZSymbolKind.SendNotificationHandlerDeclaration) ||
+            (this.kind == AZSymbolKind.SessionSettingsHandlerDeclaration) ||
+            (this.kind == AZSymbolKind.StrMenuHandlerDeclaration) ||
+            (this.kind == AZSymbolKind.MethodDeclaration) ||
+            (this.kind == AZSymbolKind.LocalMethodDeclaration) ||
+            (this.kind == AZSymbolKind.EventSubscriberDeclaration) ||
+            (this.kind == AZSymbolKind.EventDeclaration) ||
+            (this.kind == AZSymbolKind.BusinessEventDeclaration) ||
+            (this.kind == AZSymbolKind.IntegrationEventDeclaration));
     }
 
     public createSharedCopy() : AZSymbolInformation {

@@ -1,5 +1,6 @@
 import * as vscode from 'vscode';
 import { DevToolsExtensionContext } from "../devToolsExtensionContext";
+import { TextRange } from '../symbollibraries/textRange';
 import { SyntaxModifier } from "./syntaxModifier";
 
 export class OnDocumentSaveModifier extends SyntaxModifier {
@@ -32,9 +33,9 @@ export class OnDocumentSaveModifier extends SyntaxModifier {
         }
     }
 
-    async RunForDocument(document: vscode.TextDocument, withUI: boolean) {
+    async RunForDocument(document: vscode.TextDocument, range: TextRange | undefined, withUI: boolean) {
         this.getCommandsList(document.uri);
         if (this._commandsList)
-            await super.RunForDocument(document, withUI);
+            await super.RunForDocument(document, range, withUI);
     }
 }

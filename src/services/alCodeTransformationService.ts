@@ -4,6 +4,8 @@ import { AppAreasModifier } from '../alsyntaxmodifiers/appAreasModifier';
 import { ToolTipModifier } from '../alsyntaxmodifiers/toolTipsModifier';
 import { DataClassificationModifier } from '../alsyntaxmodifiers/dataClassificationModifier';
 import { OnDocumentSaveModifier } from '../alsyntaxmodifiers/onDocumentSaveModifier';
+import { SyntaxModifier } from '../alsyntaxmodifiers/syntaxModifier';
+import { WithModifier } from '../alsyntaxmodifiers/withModifier';
 
 export class ALCodeTransformationService {
     protected _context: DevToolsExtensionContext;
@@ -11,22 +13,47 @@ export class ALCodeTransformationService {
     constructor(context: DevToolsExtensionContext) {
         this._context = context;
 
+        this.registerDocumentRangeCommand('azALDevTools.sortVariables', 'sortVariables');
+        this.registerDocumentRangeCommand('azALDevTools.sortProcedures', 'sortProcedures');
+        this.registerDocumentRangeCommand('azALDevTools.sortProperties', 'sortProperties');
+        this.registerDocumentRangeCommand('azALDevTools.sortReportColumns', 'sortReportColumns');
+
         this._context.vscodeExtensionContext.subscriptions.push(
             vscode.commands.registerCommand(
                 'azALDevTools.fixDocumentOnSave',
                 async (document) => {
                     let cmd = new OnDocumentSaveModifier(this._context);
-                    await cmd.RunForDocument(document, false);
+                    await cmd.RunForDocument(document, undefined, false);
                 }
             )
         );
 
         this._context.vscodeExtensionContext.subscriptions.push(
             vscode.commands.registerCommand(
+                'azALDevTools.RemoveEditorWithStatements',
+                () => {
+                    let withModifier: WithModifier = new WithModifier(this._context);
+                    withModifier.RunForActiveEditor();
+                }
+            )
+        );
+
+        this._context.vscodeExtensionContext.subscriptions.push(
+            vscode.commands.registerCommand(
+                'azALDevTools.RemoveProjectWithStatements',
+                () => {
+                    let withModifier: WithModifier = new WithModifier(this._context);
+                    withModifier.RunForWorkspace();
+                }
+            )
+        );       
+
+        this._context.vscodeExtensionContext.subscriptions.push(
+            vscode.commands.registerCommand(
                 'azALDevTools.AddEditorApplicationAreas',
                 () => {
-                    let appAreasModified: AppAreasModifier = new AppAreasModifier(this._context);
-                    appAreasModified.AddMissingAppAreaToActiveEditor(undefined);
+                    let appAreasModifier: AppAreasModifier = new AppAreasModifier(this._context);
+                    appAreasModifier.AddMissingAppAreaToActiveEditor(undefined);
                 }
             )
         );
@@ -35,8 +62,8 @@ export class ALCodeTransformationService {
             vscode.commands.registerCommand(
                 'azALDevTools.AddProjectApplicationAreas',
                 () => {
-                    let appAreasModified: AppAreasModifier = new AppAreasModifier(this._context);
-                    appAreasModified.AddMissinAppAreaToWorkspace(undefined);
+                    let appAreasModifier: AppAreasModifier = new AppAreasModifier(this._context);
+                    appAreasModifier.AddMissinAppAreaToWorkspace(undefined);
                 }
             )
         );
@@ -45,8 +72,8 @@ export class ALCodeTransformationService {
             vscode.commands.registerCommand(
                 'azALDevTools.AddEditorToolTip',
                 () => {
-                    let ToolTipModified: ToolTipModifier = new ToolTipModifier(this._context);
-                    ToolTipModified.AddMissingToolTipToActiveEditor(undefined);
+                    let toolTipModifier: ToolTipModifier = new ToolTipModifier(this._context);
+                    toolTipModifier.AddMissingToolTipToActiveEditor(undefined);
                 }
             )
         );
@@ -55,8 +82,8 @@ export class ALCodeTransformationService {
             vscode.commands.registerCommand(
                 'azALDevTools.AddProjectToolTip',
                 () => {
-                    let ToolTipModified: ToolTipModifier = new ToolTipModifier(this._context);
-                    ToolTipModified.AddMissinToolTipToWorkspace(undefined);
+                    let toolTipModifier: ToolTipModifier = new ToolTipModifier(this._context);
+                    toolTipModifier.AddMissinToolTipToWorkspace(undefined);
                 }
             )
         );
@@ -84,6 +111,28 @@ export class ALCodeTransformationService {
 
     }
 
+    protected registerDocumentCommand(name: string, modifierFactory: () => SyntaxModifier) {
+        this._context.vscodeExtensionContext.subscriptions.push(
+            vscode.commands.registerCommand(
+                name,
+                async (document) => {
+                    let cmd = modifierFactory();
+                    await cmd.RunForDocument(document, undefined, false);
+                }
+            )
+        );
+    }
 
+    protected registerDocumentRangeCommand(name: string, workspaceCommandName: string) {
+        this._context.vscodeExtensionContext.subscriptions.push(
+            vscode.commands.registerCommand(
+                name,
+                async (document, range) => {
+                    let cmd = new SyntaxModifier(this._context, workspaceCommandName);
+                    await cmd.RunForDocument(document, range, false);
+                }
+            )
+        );
+    }
 
 }

@@ -23,7 +23,7 @@ export class ToolTipModifier {
         vscode.workspace.saveAll();
         if (!workspaceUri)
             return;
-        let request: ToolsWorkspaceCommandRequest = new ToolsWorkspaceCommandRequest('addToolTips', '', workspaceUri.fsPath, {
+        let request: ToolsWorkspaceCommandRequest = new ToolsWorkspaceCommandRequest('addToolTips', '', workspaceUri.fsPath, undefined, {
             toolTipField: this.getFieldTooltip(workspaceUri), 
             toolTipAction: this.getActionTooltip(workspaceUri)
         });
@@ -54,7 +54,7 @@ export class ToolTipModifier {
         if (workspaceUri)
             workspacePath = workspaceUri.fsPath;
 
-        let request: ToolsWorkspaceCommandRequest = new ToolsWorkspaceCommandRequest('addToolTips', text, workspacePath, {
+        let request: ToolsWorkspaceCommandRequest = new ToolsWorkspaceCommandRequest('addToolTips', text, workspacePath, undefined, {
             toolTipField: this.getFieldTooltip(documentUri), 
             toolTipAction: this.getActionTooltip(documentUri)
         });

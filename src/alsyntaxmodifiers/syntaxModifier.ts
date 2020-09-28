@@ -1,23 +1,27 @@
 import * as vscode from 'vscode';
 import { DevToolsExtensionContext } from "../devToolsExtensionContext";
 import { ToolsWorkspaceCommandRequest } from '../langserver/toolsWorkspaceCommandRequest';
+import { ToolsWorkspaceCommandResponse } from '../langserver/toolsWorkspaceCommandResponse';
+import { TextRange } from '../symbollibraries/textRange';
 import { NumberHelper } from '../tools/numberHelper';
 import { TextEditorHelper } from '../tools/textEditorHelper';
 
 export class SyntaxModifier {
     protected _commandName: string;
     protected _context: DevToolsExtensionContext;
+    protected _showProgress: boolean;
+    protected _progressMessage: string;
 
     constructor(context: DevToolsExtensionContext, commandName: string) {
         this._commandName = commandName;
         this._context = context;
+        this._showProgress = false;
+        this._progressMessage = 'Please wait...';
     }
 
     async RunForWorkspace() {
-        let confirmation = await vscode.window.showInformationMessage(
-            'Do you want to run this command for all files in the current project folder?', 
-            'Yes', 'No');
-        if (confirmation !== 'Yes')
+        let confirmation = await this.confirmRunForWorkspace();
+        if (!confirmation)
             return;
 
         let workspaceUri = TextEditorHelper.getActiveWorkspaceFolderUri();
@@ -25,8 +29,8 @@ export class SyntaxModifier {
         if (!workspaceUri)
             return;
 
-        let request: ToolsWorkspaceCommandRequest = new ToolsWorkspaceCommandRequest(this._commandName, '', workspaceUri.fsPath, this.getParameters(workspaceUri));
-        let response = await this._context.toolsLangServerClient.workspaceCommand(request);
+        let request: ToolsWorkspaceCommandRequest = new ToolsWorkspaceCommandRequest(this._commandName, '', workspaceUri.fsPath, undefined, this.getParameters(workspaceUri));       
+        let response = await this.runWorkspaceCommand(request);
 
         if (response) {
             if ((response.error) && (response.errorMessage))
@@ -38,24 +42,49 @@ export class SyntaxModifier {
         }
     }
 
+    protected async confirmRunForWorkspace(): Promise<boolean> {
+        let confirmation = await vscode.window.showInformationMessage(
+            'Do you want to run this command for all files in the current project folder?', 
+            'Yes', 'No');
+        return (confirmation === 'Yes');
+    }
+
+    protected async runWorkspaceCommand(request: ToolsWorkspaceCommandRequest): Promise<ToolsWorkspaceCommandResponse | undefined> {
+        if (this._showProgress)
+            return await vscode.window.withProgress<ToolsWorkspaceCommandResponse | undefined>({
+                    location: vscode.ProgressLocation.Notification,
+                    title: this._progressMessage
+                }, async (progress) => {
+                    return await this._context.toolsLangServerClient.workspaceCommand(request);
+                });
+        return await this._context.toolsLangServerClient.workspaceCommand(request);
+    }
+
     protected getParameters(uri: vscode.Uri): any {
-        return {};
+        return {
+            sourceFilePath: uri.fsPath
+        };
     }
 
     async RunForActiveEditor() {
         if (!vscode.window.activeTextEditor)
             return;
-        await this.RunForDocument(vscode.window.activeTextEditor.document, true);
+        await this.RunForDocument(vscode.window.activeTextEditor.document, undefined, true);
     }
 
-    async RunForDocument(document: vscode.TextDocument, withUI: boolean) {
+    async RunForDocument(document: vscode.TextDocument, range: TextRange | undefined, withUI: boolean) {
         let text = document.getText();
 
         if (!text)
             return;
-        
-        let request: ToolsWorkspaceCommandRequest = new ToolsWorkspaceCommandRequest(this._commandName, text, '', this.getParameters(document.uri));
-        let response = await this._context.toolsLangServerClient.workspaceCommand(request);
+
+        let workspaceUri = TextEditorHelper.getActiveWorkspaceFolderUri();
+        let workspacePath = '';
+        if (workspaceUri)
+            workspacePath = workspaceUri.fsPath;                
+
+        let request: ToolsWorkspaceCommandRequest = new ToolsWorkspaceCommandRequest(this._commandName, text, workspacePath, range, this.getParameters(document.uri));
+        let response = await this.runWorkspaceCommand(request);
         if (response) {
             if ((response.error) && (response.errorMessage)) {
                 if (withUI)

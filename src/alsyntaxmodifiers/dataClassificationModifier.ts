@@ -27,7 +27,7 @@ export class DataClassificationModifier {
         if (!workspaceUri)
             return;
 
-        let request: ToolsWorkspaceCommandRequest = new ToolsWorkspaceCommandRequest('addDataClassification', '', workspaceUri.fsPath, {
+        let request: ToolsWorkspaceCommandRequest = new ToolsWorkspaceCommandRequest('addDataClassification', '', workspaceUri.fsPath, undefined, {
             dataClassification: name
         });
         let response = await this._context.toolsLangServerClient.workspaceCommand(request);
@@ -55,7 +55,7 @@ export class DataClassificationModifier {
         if (!text)
             return;
         
-        let request: ToolsWorkspaceCommandRequest = new ToolsWorkspaceCommandRequest('addDataClassification', text, '', {
+        let request: ToolsWorkspaceCommandRequest = new ToolsWorkspaceCommandRequest('addDataClassification', text, '', undefined, {
             dataClassification: name
         });
         let response = await this._context.toolsLangServerClient.workspaceCommand(request);
