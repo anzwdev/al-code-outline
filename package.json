@@ -2,7 +2,7 @@
 	"name": "al-code-outline",
 	"displayName": "AZ AL Dev Tools/AL Code Outline",
 	"description": "AZ AL Development Tools: AL code outline, object browser, object creators",
-	"version": "2.0.15",
+	"version": "2.0.16",
 	"publisher": "andrzejzwierzchowski",
 	"engines": {
 		"vscode": "^1.47.0"
@@ -184,12 +184,12 @@
 			{
 				"category": "AZ AL Dev Tools",
 				"command": "azALDevTools.RemoveEditorWithStatements",
-				"title": "Remote WITH Statements from the Active Editor"
+				"title": "Remove 'with' usage from the Active Editor"
 			},
 			{
 				"category": "AZ AL Dev Tools",
 				"command": "azALDevTools.RemoveProjectWithStatements",
-				"title": "Remove WITH Statements from the Active Project"
+				"title": "Remove 'with' usage from the Active Project"
 			},
 			{
 				"command": "azALDevTools.alOutlineEnableFollowCursor",
