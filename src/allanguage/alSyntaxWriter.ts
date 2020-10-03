@@ -9,6 +9,7 @@ export class ALSyntaxWriter {
     private indentPart : string;  
     public applicationArea : string;   
     private propertiesCache : NameValue[];
+    private eol: string;
 
     constructor(destUri: vscode.Uri | undefined) {
         let config = vscode.workspace.getConfiguration('alOutline', destUri);
@@ -17,7 +18,8 @@ export class ALSyntaxWriter {
         this.indentText = "";
         this.indentPart = "    ";
         this.applicationArea = StringHelper.emptyIfNotDef(config.get<string>('defaultAppArea'));
-        this.propertiesCache = [];
+        this.propertiesCache = [];        
+        this.eol = StringHelper.getDefaultEndOfLine(destUri);
     }
 
     public toString() : string {
@@ -41,7 +43,7 @@ export class ALSyntaxWriter {
     }
 
     public writeLine(line : string) {
-        this.content += (this.indentText + line + "\n");
+        this.content += (this.indentText + line + this.eol);
     }
 
     public writeStartBlock() {
@@ -202,14 +204,14 @@ export class ALSyntaxWriter {
     }
 
     public writePageField(fieldName : string) {
-        this.writeStartNameSourceBlock("field", this.encodeName(fieldName), this.encodeName(fieldName));
+        this.writeStartNameSourceBlock("field", this.encodeName(fieldName), 'Rec.' + this.encodeName(fieldName));
         this.writeApplicationArea();
         this.writeEndBlock();
     }
 
     public writeApiPageField(fieldName : string) {
         let name : string = this.createApiName(fieldName);
-        this.writeStartNameSourceBlock("field", this.encodeName(name), this.encodeName(fieldName));
+        this.writeStartNameSourceBlock("field", this.encodeName(name), 'Rec.' + this.encodeName(fieldName));
         this.addProperty("Caption", this.encodeString(name));
         this.addApplicationAreaProperty();
         this.writeProperties();

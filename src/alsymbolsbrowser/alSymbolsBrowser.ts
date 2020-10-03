@@ -15,6 +15,7 @@ import { ALSymbolsBasedTableExtWizard } from '../objectwizards/symbolwizards/alS
 import { ALSyntaxHelper } from '../allanguage/alSyntaxHelper';
 import { SymbolsTreeView } from '../symbolstreeview/symbolsTreeView';
 import { TextEditorHelper } from '../tools/textEditorHelper';
+import { StringHelper } from '../tools/stringHelper';
 
 /**
  * AL Symbols Browser
@@ -179,12 +180,13 @@ export class ALSymbolsBrowser extends BaseWebViewEditor {
     }
 
     protected async copySelected(path : number[] | undefined, selPaths: number[][] | undefined) {
+        let eol = StringHelper.getDefaultEndOfLine(undefined);
         let symbolList = await this.getObjectsFromPath(selPaths, AZSymbolKind.AnyALObject);
         if (symbolList) {
             let objectsText = 'Type\tId\tName';
             for (let i=0; i<symbolList.length; i++) {
                 symbolList[i]
-                objectsText += ('\n' + 
+                objectsText += (eol + 
                     symbolList[i].getObjectTypeName() + '\t' + 
                     symbolList[i].id.toString() + '\t' + 
                     symbolList[i].name);

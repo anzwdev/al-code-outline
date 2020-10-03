@@ -35,6 +35,8 @@ export class ALBaseAddFieldsCodeCommand extends ALCodeCommand {
         if (!vscode.window.activeTextEditor)
             return;
         
+        let eol = vscode.window.activeTextEditor.document.eol;
+
         let line : number = 0;
         let column : number = 0;
 
@@ -65,7 +67,7 @@ export class ALBaseAddFieldsCodeCommand extends ALCodeCommand {
             //is insert in the first content line?
             if (line == symbol.contentRange.start.line) {
                 column = nextSymbolColumn;
-                content = '\n' + content; 
+                content = eol + content; 
             }; 
 
         }

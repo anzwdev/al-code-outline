@@ -1,5 +1,14 @@
 # Change Log
 
+## 2.0.17
+ - Issue #181 - Language server recompiled to work with BC 2020 Wave 2 AL compiler
+ - Issue #184 - New AL File Wizard: Keep line ending settings (CRLF vs. LF)
+ - Add 'Rec.' to page fields source in the page wizard
+
+ Thank you
+  - pri-kise for reporting issue #181
+  - NKarolak for reporting issue #184
+
 ## 2.0.16
  - Issue #165 - Restore missing alphanumeric sorting in sort code actions
 

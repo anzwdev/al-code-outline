@@ -5,6 +5,7 @@ import * as path from 'path';
 import { BaseWebViewEditor } from '../webviews/baseWebViewEditor';
 import { ALActionImageInfo } from './alActionImageInfo';
 import { DevToolsExtensionContext } from '../devToolsExtensionContext';
+import { StringHelper } from '../tools/stringHelper';
 
 export class ALActionImageBrowser extends BaseWebViewEditor {
     protected _devToolsContext: DevToolsExtensionContext;
@@ -59,35 +60,37 @@ export class ALActionImageBrowser extends BaseWebViewEditor {
     }
 
     protected async copyAction(name: string, withUI: boolean) {
+        let eol = StringHelper.getDefaultEndOfLine(undefined);
         await vscode.env.clipboard.writeText(
-            'action(' + name + 'Action)\n' +
-            '{\n' +
-            '    ApplicationArea = All;\n' +
-            '    Image = ' + name + ';\n' +
-            '\n' +
-            '    trigger OnAction()\n' +
-            '    begin\n' +
-            '\n' +
-            '    end;\n' +
-            '}\n');
+            'action(' + name + 'Action)' + eol +
+            '{' + eol +
+            '    ApplicationArea = All;' + eol +
+            '    Image = ' + name + ';' + eol +
+            '' + eol +
+            '    trigger OnAction()' + eol +
+            '    begin' + eol +
+            '' + eol +
+            '    end;' + eol +
+            '}' + eol);
         if (withUI)
             vscode.window.showInformationMessage('Action code has been copied to the clipboard');
     }
 
     protected async copyPromotedAction(name: string, withUI: boolean) {
+        let eol = StringHelper.getDefaultEndOfLine(undefined);
         await vscode.env.clipboard.writeText(
-            'action(' + name + 'Action)\n' +
-            '{\n' +
-            '    ApplicationArea = All;\n' +
-            '    Image = ' + name + ';\n' +
-            '    Promoted = true;\n' +
-            '    PromotedCategory = Process;\n' +
-            '\n' +
-            '    trigger OnAction()\n' +
-            '    begin\n' +
-            '\n' +
-            '    end;\n' +
-            '}\n');
+            'action(' + name + 'Action)' + eol +
+            '{' + eol +
+            '    ApplicationArea = All;' + eol +
+            '    Image = ' + name + ';' + eol +
+            '    Promoted = true;' + eol +
+            '    PromotedCategory = Process;' + eol +
+            eol +
+            '    trigger OnAction()' + eol +
+            '    begin' + eol +
+            eol +
+            '    end;' + eol +
+            '}' + eol);
         if (withUI)
             vscode.window.showInformationMessage('Promoted action code has been copied to the clipboard');
     }
