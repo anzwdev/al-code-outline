@@ -3,6 +3,7 @@ import { DevToolsExtensionContext } from "../../devToolsExtensionContext";
 import { ALCodeCommand } from '../alCodeCommand';
 import { AZSymbolInformation } from '../../symbollibraries/azSymbolInformation';
 import { AZSymbolKind } from '../../symbollibraries/azSymbolKind';
+import { ALSyntaxHelper } from '../../allanguage/alSyntaxHelper';
 
 export class ALBaseAddFieldsCodeCommand extends ALCodeCommand {
     constructor(context : DevToolsExtensionContext, shortName: string, commandName: string) {
@@ -14,8 +15,13 @@ export class ALBaseAddFieldsCodeCommand extends ALCodeCommand {
             return undefined;        
         if (existingFields) {        
             for (let i=0; i<existingFields.length; i++) {
-                if ((existingFields[i].kind == existingFieldKind) && (existingFields[i].source)) {
-                    let idx = fieldNames.indexOf(existingFields[i].source!)
+                let srcName = existingFields[i].source;
+                if ((existingFields[i].kind == existingFieldKind) && (srcName)) {
+                    //detect fields declared as rec.
+                    if (srcName.toLowerCase().startsWith("rec."))
+                        srcName = ALSyntaxHelper.fromNameText(srcName.substr(4));
+
+                    let idx = fieldNames.indexOf(srcName)
                     if (idx >= 0) {
                         if (idx < (fieldNames.length - 1))
                             fieldNames[idx] = fieldNames[fieldNames.length - 1];

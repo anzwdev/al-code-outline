@@ -4,12 +4,14 @@
  - Issue #181 - Language server recompiled to work with BC 2020 Wave 2 AL compiler
  - Issue #184 - New AL File Wizard: Keep line ending settings (CRLF vs. LF)
  - Issue #186 - "Remove 'with' usage" adds redundant names of Rec *and* other vars to field names
- - Add 'Rec.' to page fields source in the page wizard
+ - Issue #187 - API pages naming and no translation
+ - Add 'Rec.' to page fields source in the page wizard and "Add fields" code action
 
  Thank you
   - pri-kise for reporting issue #181
   - NKarolak for reporting issue #184
   - dtkb for reporting issue #186
+  - jwikman for reporting issue #187
 
 ## 2.0.16
  - Issue #165 - Restore missing alphanumeric sorting in sort code actions

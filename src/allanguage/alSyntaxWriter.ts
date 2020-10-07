@@ -212,7 +212,7 @@ export class ALSyntaxWriter {
     public writeApiPageField(fieldName : string) {
         let name : string = this.createApiName(fieldName);
         this.writeStartNameSourceBlock("field", this.encodeName(name), 'Rec.' + this.encodeName(fieldName));
-        this.addProperty("Caption", this.encodeString(name));
+        this.addProperty("Caption", this.encodeString(name) + ', Locked = true');
         this.addApplicationAreaProperty();
         this.writeProperties();
         this.writeEndBlock();
@@ -241,7 +241,10 @@ export class ALSyntaxWriter {
     }
 
     public createApiName(source : string) : string {
-        return source.replace(/[^A-Za-z]/g, '');
+        let name = source.replace(/[^A-Za-z]/g, '');
+        if (name.length > 1)
+            return name.substr(0, 1).toLowerCase() + name.substr(1);
+        return name.toLowerCase();
     }
 
 }
