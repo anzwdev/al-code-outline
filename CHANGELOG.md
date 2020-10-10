@@ -1,5 +1,11 @@
 # Change Log
 
+## 2.0.18
+ - Issue #187 - Do not remove numbers from API fields names
+
+Thank you
+  - jwikman for reporting issue #187
+
 ## 2.0.17
  - Issue #181 - Language server recompiled to work with BC 2020 Wave 2 AL compiler
  - Issue #184 - New AL File Wizard: Keep line ending settings (CRLF vs. LF)

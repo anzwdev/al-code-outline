@@ -241,7 +241,12 @@ export class ALSyntaxWriter {
     }
 
     public createApiName(source : string) : string {
-        let name = source.replace(/[^A-Za-z]/g, '');
+        let name = source.replace(/[^A-Za-z0-9]/g, '');
+        
+        while ((name.length > 0) && (name[0] >= '0') && (name[0] <= '9')) {
+            name = name.substr(1);
+        }
+
         if (name.length > 1)
             return name.substr(0, 1).toLowerCase() + name.substr(1);
         return name.toLowerCase();
