@@ -1,4 +1,13 @@
+import * as vscode from 'vscode';
+
 export class StringHelper {
+
+    static getDefaultEndOfLine(destUri: vscode.Uri | undefined): string {
+        let eolText = vscode.workspace.getConfiguration('files', destUri).get<string>('eol');
+        if ((eolText) && (eolText != 'auto'))
+            return eolText;
+        return (process.platform === 'win32' ? '\r\n' : '\n');
+    }
 
     static emptyIfNotDef(value: string | undefined) {
         if (value)

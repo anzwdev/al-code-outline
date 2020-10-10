@@ -6,6 +6,7 @@ import { ToolsGetCodeAnalyzersRulesRequest } from '../langserver/toolsGetCodeAna
 import { TextEditorHelper } from '../tools/textEditorHelper';
 import { CodeAnalyzerInfo } from './codeAnalyzerInfo';
 import { CARuleInfo } from '../langserver/caRuleInfo';
+import { StringHelper } from '../tools/stringHelper';
 
 export class CARulesViewer extends BaseWebViewEditor {
     protected _devToolsContext: DevToolsExtensionContext;
@@ -110,13 +111,14 @@ export class CARulesViewer extends BaseWebViewEditor {
     }
 
     protected newRuleSet(rulesIndexes: number[]) {
+        let eol = StringHelper.getDefaultEndOfLine(undefined);
         let ruleSetText = '{' + 
-            '\n    "name": "Name",' +
-            '\n    "description": "Description",' +
-            '\n    "rules": [' +
+            eol + '    "name": "Name",' +
+            eol + '    "description": "Description",' +
+            eol + '    "rules": [' +
             this.getRulesAsString(rulesIndexes, '        ') +
-            '\n    ],' +
-            '\n}'; 
+            eol + '    ],' +
+            eol + '}';
 
         TextEditorHelper.showNewDocument(ruleSetText, 'json');
     }
@@ -127,11 +129,12 @@ export class CARulesViewer extends BaseWebViewEditor {
     }
 
     protected copyTable(rulesIndexes: number[]) {
+        let eol = StringHelper.getDefaultEndOfLine(undefined);
         let rulesText = 'Id\tTitle\tDefault Severity\tAnalyzer';
         if (this._rules) {
             for (let i=0; i<rulesIndexes.length; i++) {
                 let rule = this._rules[rulesIndexes[i]];
-                rulesText += ('\n' + rule.id + '\t' + 
+                rulesText += (eol + rule.id + '\t' +
                     rule.title + '\t' + 
                     rule.defaultSeverity + '\t' +
                     rule.analyzer);
@@ -141,23 +144,28 @@ export class CARulesViewer extends BaseWebViewEditor {
     }
 
     protected getRulesAsString(rulesIndexes: number[], indentText: string) : string {
+        let eol = StringHelper.getDefaultEndOfLine(undefined);
         let rules = '';
         if (this._rules) {
             for (let i=0; i<rulesIndexes.length; i++) {
                 let ruleDef = this._rules[rulesIndexes[i]];
                 if (i > 0)
                     rules += ',';
-                rules += ('\n// Rule: ' + ruleDef.title);
-                rules += ('\n//       Default action: ' + ruleDef.defaultSeverity)
-                rules += ('\n' + JSON.stringify({
+                rules += (eol + '// Rule: ' + ruleDef.title);
+                rules += (eol + '//       Default action: ' + ruleDef.defaultSeverity)
+                rules += (eol + JSON.stringify({
                     id: ruleDef.id,
                     action: ruleDef.defaultSeverity,
                     justification: 'Justification'
                 }, undefined, 4));
             }
 
-            if (indentText.length > 0)
-            rules = rules.replace(/\n/g, '\n' + indentText);
+            if (indentText.length > 0) {
+                if (eol == '\n')
+                    rules = rules.replace(/\n/g, eol + indentText);
+                else
+                    rules = rules.replace(/\r\n/g, eol + indentText);
+            }
         }
         return rules;
     }
