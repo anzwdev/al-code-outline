@@ -2,9 +2,13 @@
 
 ## 2.0.18
  - Issue #187 - Do not remove numbers from API fields names
+ - Issue #188 - Formatting result after using "Remove 'with' usage"
+ - Issue #191 - "Remove 'with' usage" still prepends redundant record names to 3rd/later fields
 
 Thank you
   - jwikman for reporting issue #187
+  - bvbeek for reporting issue #188
+  - dtkb for reporting issue #191
 
 ## 2.0.17
  - Issue #181 - Language server recompiled to work with BC 2020 Wave 2 AL compiler
