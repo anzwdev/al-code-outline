@@ -8,6 +8,9 @@ export class ALReportSyntaxBuilder {
     }
 
     buildFromReportWizardData(destUri: vscode.Uri | undefined, data : ALReportWizardData) : string {
+        let settings =  vscode.workspace.getConfiguration('alOutline', destUri);
+        let addDataItemName = settings.get<boolean>('addDataItemToReportColumnName');
+
         //generate file content
         let writer : ALSyntaxWriter = new ALSyntaxWriter(destUri);
 
@@ -20,7 +23,7 @@ export class ALReportSyntaxBuilder {
             writer.writeProperty("WordLayout", writer.encodeString(data.wordLayout));
 
         //write dataset
-        this.writeDataSet(writer, data);
+        this.writeDataSet(writer, data, addDataItemName);
 
         //write report request page suggetsion
         if (data.createRequestPage)
@@ -31,7 +34,7 @@ export class ALReportSyntaxBuilder {
         return writer.toString();
     }
 
-    private writeDataSet(writer : ALSyntaxWriter, data : ALReportWizardData) {
+    private writeDataSet(writer : ALSyntaxWriter, data : ALReportWizardData, addDataItemName: boolean | undefined) {
         let dataSetName = writer.createName(data.selectedTable);
         writer.writeStartNamedBlock("dataset");
 
@@ -39,7 +42,11 @@ export class ALReportSyntaxBuilder {
 
         if (data.selectedFieldList) {
             for (let i=0; i<data.selectedFieldList.length; i++) {
-                writer.writeNameSourceBlock("column", writer.createName(data.selectedFieldList[i]), 
+                let columnName = writer.createName(data.selectedFieldList[i]);
+                if (addDataItemName)
+                    columnName = dataSetName + "_" + columnName;
+                
+                writer.writeNameSourceBlock("column", columnName, 
                     writer.encodeName(data.selectedFieldList[i]));
             }
         }

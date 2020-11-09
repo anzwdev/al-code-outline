@@ -2,7 +2,7 @@
 	"name": "al-code-outline",
 	"displayName": "AZ AL Dev Tools/AL Code Outline",
 	"description": "AZ AL Development Tools: AL code outline, object browser, object creators",
-	"version": "2.0.18",
+	"version": "2.0.19",
 	"publisher": "andrzejzwierzchowski",
 	"engines": {
 		"vscode": "^1.47.0"
@@ -347,6 +347,11 @@
 						"type": "boolean",
 						"default": true,
 						"description": "Automatically show any newly created files in the editor."
+					},
+					"alOutline.addDataItemToReportColumnName": {
+						"type": "boolean",
+						"default": false,
+						"description": "Iclude data item name in the name of the report column"
 					},
 					"alOutline.defaultAppArea": {
 						"type": "string",

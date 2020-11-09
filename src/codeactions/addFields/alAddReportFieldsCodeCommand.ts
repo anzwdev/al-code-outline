@@ -28,6 +28,9 @@ export class ALAddReportFieldsCodeCommand extends ALBaseAddFieldsCodeCommand {
 
     protected async runAsync(docSymbols: AZDocumentSymbolsLibrary, document: vscode.TextDocument, range: vscode.Range) {
         //get required details from document source code
+        let settings =  vscode.workspace.getConfiguration('alOutline', document.uri);
+        let addDataItemName = settings.get<boolean>('addDataItemToReportColumnName');
+
         let symbol = this._toolsExtensionContext.activeDocumentSymbols.findSymbolInRange(range);
         if (!symbol)
             return;       
@@ -61,7 +64,10 @@ export class ALAddReportFieldsCodeCommand extends ALBaseAddFieldsCodeCommand {
         let writer: ALSyntaxWriter = new ALSyntaxWriter(document.uri);
         writer.setIndent(indent);
         for (let i=0; i<selectedFields.length; i++) {
-            writer.writeNameSourceBlock("column", writer.createName(selectedFields[i]), writer.encodeName(selectedFields[i]));
+            let columnName = writer.createName(selectedFields[i]);
+            if (dataItemSymbol && dataItemSymbol.name)
+                columnName = dataItemSymbol.name + "_" + columnName;
+            writer.writeNameSourceBlock("column", columnName, writer.encodeName(selectedFields[i]));
         }
         let source = writer.toString();
 

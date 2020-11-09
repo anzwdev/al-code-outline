@@ -1,5 +1,11 @@
 # Change Log
 
+## 2.0.19
+ - New "addDataItemToReportColumnName" setting to include data set name in report column names
+
+Thank you
+  - Luc van Vugt for "addDataItemToReportColumnName" functionality suggestion
+
 ## 2.0.18
  - Issue #187 - Do not remove numbers from API fields names
  - Issue #188 - Formatting result after using "Remove 'with' usage"

@@ -184,6 +184,7 @@ This extension has originally been inspired by "Code Outline" extension created 
 
 This extension contributes the following settings:
 
+* `alOutline.addDataItemToReportColumnName`: include data set name in report columns names
 * `alOutline.docCommentsType`: enable documention comments, available values: none, xml 
 * `alOutline.autorefresh`: refresh code outline tree automatically
 * `alOutline.autoGenerateFiles`: automatically generate files for newly created objects
