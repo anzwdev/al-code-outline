@@ -1,5 +1,12 @@
 # Change Log
 
+## 2.0.20
+ - New commands "Add Field Captions to the Active Editor" and "Add Field Captions to the Active Project"
+ - Issue #197 - "remove with" command error - "Index out of range"
+
+Thank you
+  - fvet for reporting issue #197
+
 ## 2.0.19
  - New "addDataItemToReportColumnName" setting to include data set name in report column names
 

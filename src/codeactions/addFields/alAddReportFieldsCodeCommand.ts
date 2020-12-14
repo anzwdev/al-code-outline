@@ -66,7 +66,7 @@ export class ALAddReportFieldsCodeCommand extends ALBaseAddFieldsCodeCommand {
         for (let i=0; i<selectedFields.length; i++) {
             let columnName = writer.createName(selectedFields[i]);
             if (dataItemSymbol && dataItemSymbol.name)
-                columnName = dataItemSymbol.name + "_" + columnName;
+                columnName = columnName + "_" + dataItemSymbol.name;
             writer.writeNameSourceBlock("column", columnName, writer.encodeName(selectedFields[i]));
         }
         let source = writer.toString();

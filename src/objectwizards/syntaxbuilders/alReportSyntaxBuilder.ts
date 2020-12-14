@@ -44,7 +44,7 @@ export class ALReportSyntaxBuilder {
             for (let i=0; i<data.selectedFieldList.length; i++) {
                 let columnName = writer.createName(data.selectedFieldList[i]);
                 if (addDataItemName)
-                    columnName = dataSetName + "_" + columnName;
+                    columnName = columnName + "_" + dataSetName;
                 
                 writer.writeNameSourceBlock("column", columnName, 
                     writer.encodeName(data.selectedFieldList[i]));
