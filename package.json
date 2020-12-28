@@ -2,7 +2,7 @@
 	"name": "al-code-outline",
 	"displayName": "AZ AL Dev Tools/AL Code Outline",
 	"description": "AZ AL Development Tools: AL code outline, object browser, object creators",
-	"version": "2.0.20",
+	"version": "2.0.21",
 	"publisher": "andrzejzwierzchowski",
 	"engines": {
 		"vscode": "^1.47.0"
@@ -176,12 +176,12 @@
 			{
 				"category": "AZ AL Dev Tools",
 				"command": "azALDevTools.AddEditorFieldCaption",
-				"title": "Add Field Captions to the Active Editor"
+				"title": "Add Table Field Captions to the Active Editor"
 			},
 			{
 				"category": "AZ AL Dev Tools",
 				"command": "azALDevTools.AddProjectFieldCaption",
-				"title": "Add Field Captions to the Active Project"
+				"title": "Add Table Field Captions to the Active Project"
 			},
 			{
 				"category": "AZ AL Dev Tools",
