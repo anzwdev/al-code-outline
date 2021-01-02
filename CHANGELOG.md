@@ -1,5 +1,36 @@
 # Change Log
 
+## 2.0.21
+ - Commands "Add Field Captions..." renamed to "Add Table Field Captions..."
+ - OnSave code actions fix to work with both "source.fixAll.al" and "source.fixAll" vs code settings 
+ - Fix problem with sorting procedure, variables, properties and report columns when file contains regions
+
+Thank you
+  - gunnargestsson for reporting OnSave code actions and sorting issues
+
+## 2.0.20
+ - New commands "Add Field Captions to the Active Editor" and "Add Field Captions to the Active Project"
+ - Issue #197 - "remove with" command error - "Index out of range"
+
+Thank you
+  - fvet for reporting issue #197
+
+## 2.0.19
+ - New "addDataItemToReportColumnName" setting to include data set name in report column names
+
+Thank you
+  - Luc van Vugt for "addDataItemToReportColumnName" functionality suggestion
+
+## 2.0.18
+ - Issue #187 - Do not remove numbers from API fields names
+ - Issue #188 - Formatting result after using "Remove 'with' usage"
+ - Issue #191 - "Remove 'with' usage" still prepends redundant record names to 3rd/later fields
+
+Thank you
+  - jwikman for reporting issue #187
+  - bvbeek for reporting issue #188
+  - dtkb for reporting issue #191
+
 ## 2.0.17
  - Issue #181 - Language server recompiled to work with BC 2020 Wave 2 AL compiler
  - Issue #184 - New AL File Wizard: Keep line ending settings (CRLF vs. LF)

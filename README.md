@@ -119,6 +119,8 @@ Extension adds a few commands that allow to automatically modify al code in the 
 * `Add Application Areas to the Active Project`: adds missing application areas to all page controls in the current project
 * `Add ToolTips to the Active Editor`: adds missing tooltips to all page fields and actions in the current editor
 * `Add ToolTips to the Active Project`: adds missing tooltips to all page fields and actions in the current project
+* `Add Field Captions to the Active Editor`: adds missing captions to all table fields in the current editor
+* `Add Field Captions to the Active Project`: adds missing captions to all table fields in the current project
 * `Remove 'with' usage from the Active Editor`: removes all implicit and explicit 'with' usage from the current editor
 * `Remove 'with' usage from the Active Project`: removes all implicit and explicit 'with' usage from the current project
 
@@ -184,6 +186,7 @@ This extension has originally been inspired by "Code Outline" extension created 
 
 This extension contributes the following settings:
 
+* `alOutline.addDataItemToReportColumnName`: include data set name in report columns names
 * `alOutline.docCommentsType`: enable documention comments, available values: none, xml 
 * `alOutline.autorefresh`: refresh code outline tree automatically
 * `alOutline.autoGenerateFiles`: automatically generate files for newly created objects

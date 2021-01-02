@@ -64,7 +64,7 @@ export class ALCodeActionsProvider implements vscode.CodeActionProvider {
         //create OnSave action
         let actionsList = vscode.workspace.getConfiguration('alOutline', document.uri).get<string[]>('codeActionsOnSave');
         if ((actionsList) && (actionsList.length > 0)) {
-            let actionKind = vscode.CodeActionKind.SourceFixAll; //.append('al');
+            let actionKind = vscode.CodeActionKind.SourceFixAll.append('al');
             let action = new vscode.CodeAction("Fix document on save", actionKind);
             action.command = {
                 title: "Fix document on save",

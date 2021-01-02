@@ -6,6 +6,7 @@ import { DataClassificationModifier } from '../alsyntaxmodifiers/dataClassificat
 import { OnDocumentSaveModifier } from '../alsyntaxmodifiers/onDocumentSaveModifier';
 import { SyntaxModifier } from '../alsyntaxmodifiers/syntaxModifier';
 import { WithModifier } from '../alsyntaxmodifiers/withModifier';
+import { FieldCaptionsModifier } from '../alsyntaxmodifiers/fieldCaptionsModifier';
 
 export class ALCodeTransformationService {
     protected _context: DevToolsExtensionContext;
@@ -87,6 +88,28 @@ export class ALCodeTransformationService {
                 }
             )
         );
+
+        this._context.vscodeExtensionContext.subscriptions.push(
+            vscode.commands.registerCommand(
+                'azALDevTools.AddEditorFieldCaption',
+                () => {
+                    let fieldCaptionsModifier: FieldCaptionsModifier = new FieldCaptionsModifier(this._context);
+                    fieldCaptionsModifier.RunForActiveEditor();
+                }
+            )
+        );
+
+        this._context.vscodeExtensionContext.subscriptions.push(
+            vscode.commands.registerCommand(
+                'azALDevTools.AddProjectFieldCaption',
+                () => {
+                    let fieldCaptionsModifier: FieldCaptionsModifier = new FieldCaptionsModifier(this._context);
+                    fieldCaptionsModifier.RunForWorkspace();
+                }
+            )
+        );
+
+
 
         this._context.vscodeExtensionContext.subscriptions.push(
             vscode.commands.registerCommand(
