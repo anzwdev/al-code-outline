@@ -3,9 +3,10 @@
 ## 2.0.21
  - Commands "Add Field Captions..." renamed to "Add Table Field Captions..."
  - OnSave code actions fix to work with both "source.fixAll.al" and "source.fixAll" vs code settings 
+ - Fix problem with sorting procedures when file contains regions
 
 Thank you
-  - gunnargestsson for reporting OnSave code actions issue
+  - gunnargestsson for reporting OnSave code actions and procedures sorting issues
 
 ## 2.0.20
  - New commands "Add Field Captions to the Active Editor" and "Add Field Captions to the Active Project"
