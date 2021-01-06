@@ -24,6 +24,8 @@ export class SyntaxModifier {
         if (!confirmation)
             return;
 
+        await this.askForParameters();
+
         let workspaceUri = TextEditorHelper.getActiveWorkspaceFolderUri();
         vscode.workspace.saveAll();
         if (!workspaceUri)
@@ -78,6 +80,8 @@ export class SyntaxModifier {
         if (!text)
             return;
 
+        await this.askForParameters();
+
         let workspaceUri = TextEditorHelper.getActiveWorkspaceFolderUri();
         let workspacePath = '';
         if (workspaceUri)
@@ -106,6 +110,9 @@ export class SyntaxModifier {
             } else if (withUI)
                 vscode.window.showInformationMessage('There was nothing to change.');
         }
+    }
+
+    protected async askForParameters() {
     }
 
 }

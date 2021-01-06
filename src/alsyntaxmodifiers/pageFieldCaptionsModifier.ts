@@ -14,8 +14,15 @@ export class PageFieldCaptionsModifier extends SyntaxModifier {
 
     protected getParameters(uri: vscode.Uri): any {
         let parameters = super.getParameters(uri);
-        parameters.useNameIfNoCaption = this._useNameIfNoCaption;
+        parameters.useNameIfNoCaption = this._useNameIfNoCaption?"true":"false";
         return parameters;
+    }
+
+    protected async askForParameters() {
+        let inclFieldsWithNoCaption = await vscode.window.showInformationMessage(
+            'Do you want to use table field names if table field captions are not defined?', 
+            'Yes', 'No');
+        this._useNameIfNoCaption = (inclFieldsWithNoCaption === "Yes");
     }
 
 }
