@@ -1,5 +1,11 @@
 # Change Log
 
+## 2.0.22
+ - Issue #199 - new "Add Page Controls Captions to the Active Editor" and "Add Page Controls Captions to the Active Project" commands.
+
+Thank you
+  - gunnargestsson for reporting the issue #199
+
 ## 2.0.21
  - Commands "Add Field Captions..." renamed to "Add Table Field Captions..."
  - OnSave code actions fix to work with both "source.fixAll.al" and "source.fixAll" vs code settings 

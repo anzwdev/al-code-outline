@@ -1,28 +1,56 @@
 import * as vscode from 'vscode';
 import { DevToolsExtensionContext } from "../devToolsExtensionContext";
+import { NameValueQuickPickItem } from '../tools/nameValueQuickPickItem';
 import { SyntaxModifier } from "./syntaxModifier";
 
 export class PageFieldCaptionsModifier extends SyntaxModifier {
-    protected _useNameIfNoCaption: boolean;
+    protected _controlTypes: any;
 
     constructor(context: DevToolsExtensionContext) {
-        super(context, "addPageFieldCaptions");
+        super(context, "addPageControlCaptions");
         this._showProgress = true;
         this._progressMessage = "Processing project files. Please wait...";
-        this._useNameIfNoCaption = false;
+        this._controlTypes = {};
+        this.clearControlTypes();
     }
 
     protected getParameters(uri: vscode.Uri): any {
         let parameters = super.getParameters(uri);
-        parameters.useNameIfNoCaption = this._useNameIfNoCaption?"true":"false";
+        parameters.setActionsCaptions = this._controlTypes.setActionsCaptions;
+        parameters.setActionGroupsCaptions = this._controlTypes.setActionGroupsCaptions;
+        parameters.setGroupsCaptions = this._controlTypes.setGroupsCaptions;
+        parameters.setPartsCaptions = this._controlTypes.setPartsCaptions;
+        parameters.setFieldsCaptions = this._controlTypes.setFieldsCaptions;
+
         return parameters;
     }
 
     protected async askForParameters() {
-        let inclFieldsWithNoCaption = await vscode.window.showInformationMessage(
-            'Do you want to use table field names if table field captions are not defined?', 
-            'Yes', 'No');
-        this._useNameIfNoCaption = (inclFieldsWithNoCaption === "Yes");
+        let quickPickItems = [
+            new NameValueQuickPickItem('Page actions', 'setActionsCaptions', true),
+            new NameValueQuickPickItem('Page action groups', 'setActionGroupsCaptions', true),
+            new NameValueQuickPickItem('Page groups', 'setGroupsCaptions', true),
+            new NameValueQuickPickItem('Page parts', 'setPartsCaptions', false),
+            new NameValueQuickPickItem('Page fields', 'setFieldsCaptions', false)
+        ];
+
+        let selectedValues = await vscode.window.showQuickPick(
+            quickPickItems, { canPickMany: true, placeHolder: 'Select page controls to update' });
+
+        this.clearControlTypes();
+        if (selectedValues) {
+            for (let i=0; i<selectedValues.length; i++) {
+                this._controlTypes[selectedValues[i].value] = "true";
+            }
+        }
+    }
+
+    private clearControlTypes() {
+        this._controlTypes.setActionsCaptions = "false";
+        this._controlTypes.setActionGroupsCaptions = "false";
+        this._controlTypes.setGroupsCaptions = "false";
+        this._controlTypes.setPartsCaptions = "false";
+        this._controlTypes.setFieldsCaptions = "false";
     }
 
 }
