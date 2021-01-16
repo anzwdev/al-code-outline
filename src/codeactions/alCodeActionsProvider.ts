@@ -27,8 +27,8 @@ export class ALCodeActionsProvider implements vscode.CodeActionProvider {
             new ALAddPageFieldsCodeCommand(this._toolsExtensionContext),
             new ALAddQueryFieldsCodeCommand(this._toolsExtensionContext),
             new ALAddReportFieldsCodeCommand(this._toolsExtensionContext),
-            new ALAddXmlPortFieldsCodeCommand(this._toolsExtensionContext, 'fieldelement', 'Add multiple field elements'),
-            new ALAddXmlPortFieldsCodeCommand(this._toolsExtensionContext, 'fieldattribute', 'Add multiple field attributes'),
+            new ALAddXmlPortFieldsCodeCommand(this._toolsExtensionContext, 'fieldelement', 'Add multiple field elements (AZ AL Dev Tools)'),
+            new ALAddXmlPortFieldsCodeCommand(this._toolsExtensionContext, 'fieldattribute', 'Add multiple field attributes (AZ AL Dev Tools)'),
             //sorting
             new ALSortVariablesCommand(this._toolsExtensionContext),
             new ALSortReportColumnsCommand(this._toolsExtensionContext),
@@ -65,7 +65,7 @@ export class ALCodeActionsProvider implements vscode.CodeActionProvider {
         let actionsList = vscode.workspace.getConfiguration('alOutline', document.uri).get<string[]>('codeActionsOnSave');
         if ((actionsList) && (actionsList.length > 0)) {
             let actionKind = vscode.CodeActionKind.SourceFixAll.append('al');
-            let action = new vscode.CodeAction("Fix document on save", actionKind);
+            let action = new vscode.CodeAction("Fix document on save (AZ AL Dev Tools)", actionKind);
             action.command = {
                 title: "Fix document on save",
                 command: "azALDevTools.fixDocumentOnSave",

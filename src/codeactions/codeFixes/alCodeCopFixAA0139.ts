@@ -9,7 +9,7 @@ export class ALCodeCopFixAA0139 extends ALCodeFix {
     }
 
     createFix(document: vscode.TextDocument, diagnostic: vscode.Diagnostic): vscode.CodeAction | undefined {
-        const fix = new vscode.CodeAction(`Add CopyStr`, vscode.CodeActionKind.QuickFix);
+        const fix = new vscode.CodeAction(`Add CopyStr (AZ AL Dev Tools)`, vscode.CodeActionKind.QuickFix);
         fix.edit = new vscode.WorkspaceEdit();
         fix.diagnostics = [diagnostic];
         let currRange = diagnostic.range;

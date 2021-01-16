@@ -16,7 +16,7 @@ export class ALCreateInterfaceCodeCommand extends ALCodeCommand {
             (symbol.kind == AZSymbolKind.CodeunitObject) && 
             (symbol.selectionRange) &&
             (symbol.selectionRange.start.line == range.start.line)) {
-            let action = new vscode.CodeAction("Create interface", vscode.CodeActionKind.QuickFix);
+            let action = new vscode.CodeAction("Create interface (AZ AL Dev Tools)", vscode.CodeActionKind.QuickFix);
             action.command = { 
                 command: this.name, 
                 title: 'Create interface...',

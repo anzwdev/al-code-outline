@@ -22,7 +22,7 @@ export class ALSortProceduresCodeCommand extends ALCodeAction {
                     symbol = symbol.findParentObject();
 
                 if ((symbol) && (!symbol.containsDiagnostics)) {
-                    let action = new vscode.CodeAction("Sort procedures", vscode.CodeActionKind.QuickFix);
+                    let action = new vscode.CodeAction("Sort procedures (AZ AL Dev Tools)", vscode.CodeActionKind.QuickFix);
                     action.command = {
                         command: "azALDevTools.sortProcedures",
                         title: "Sort Procedures",

@@ -1,10 +1,12 @@
 # Change Log
 
 ## 2.0.23
+ - Issue #204 - AA0137 - "Unused variable" fixes can break code, add "AZ AL Dev Tools" to all code actions descriptions
  - Issue #207 - ApplicationArea on a page object
 
 Thank you
-  - gunnargestsson for reporting the issue #207
+  - rdebath for reporting the issue #204
+  - gunnargestsson for reporting the issue #207  
 
 ## 2.0.22
  - Issue #199 - new "Add Page Controls Captions to the Active Editor" and "Add Page Controls Captions to the Active Project" commands.

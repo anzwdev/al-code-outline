@@ -20,6 +20,8 @@ export class ALCodeTransformationService {
         this.registerDocumentRangeCommand('azALDevTools.sortProperties', 'sortProperties');
         this.registerDocumentRangeCommand('azALDevTools.sortReportColumns', 'sortReportColumns');
 
+        this.registerDocumentRangeCommand('azALDevTools.removeVariable', 'removeVariable');
+
         this._context.vscodeExtensionContext.subscriptions.push(
             vscode.commands.registerCommand(
                 'azALDevTools.fixDocumentOnSave',

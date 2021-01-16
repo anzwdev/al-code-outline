@@ -16,7 +16,7 @@ export class ALAddQueryFieldsCodeCommand extends ALBaseAddFieldsCodeCommand {
         if ((symbol) && 
             ((symbol.kind == AZSymbolKind.QueryDataItem) ||
              (symbol.kind == AZSymbolKind.QueryColumn))) {
-            let action = new vscode.CodeAction("Add multiple fields", vscode.CodeActionKind.QuickFix);
+            let action = new vscode.CodeAction("Add multiple fields (AZ AL Dev Tools)", vscode.CodeActionKind.QuickFix);
             action.command = { 
                 command: this.name, 
                 title: 'Add multiple fields...',

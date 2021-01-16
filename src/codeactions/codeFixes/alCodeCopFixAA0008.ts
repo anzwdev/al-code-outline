@@ -24,7 +24,7 @@ export class ALCodeCopFixAA0008 extends ALCodeFix {
             }
             if (onSaveEdit) {
                 let actionKind = vscode.CodeActionKind.SourceFixAll.append('al');
-                let action = new vscode.CodeAction("Fix missing parentheses", actionKind);
+                let action = new vscode.CodeAction("Fix missing parentheses (AZ AL Dev Tools)", actionKind);
                 action.edit = onSaveEdit;
                 actions.push(action);
             }
