@@ -586,8 +586,7 @@ export class ALLangServerProxy {
         return undefined;
     }
 
-    getRuntimeVersion(resourceUri: vscode.Uri | undefined): Version {
-        let version = new Version();
+    getAppManifest(resourceUri: vscode.Uri | undefined): any {
         let folder: vscode.WorkspaceFolder | undefined;
         if (resourceUri) 
             folder = vscode.workspace.getWorkspaceFolder(resourceUri);
@@ -600,14 +599,46 @@ export class ALLangServerProxy {
             try {
                 let fs = require('fs');
                 let content = fs.readFileSync(appFilePath, 'utf8');
-                let appData = JSON.parse(content);
-                if (appData.runtime)
-                    version.parse(appData.runtime);
+                return JSON.parse(content);
             }
             catch (e) {
             }
         }
+
+        return undefined;
+    }
+
+    getRuntimeVersion(resourceUri: vscode.Uri | undefined): Version {
+        let version = new Version();
+        let appData = this.getAppManifest(resourceUri);
+        if ((appData) && (appData.runtime))
+            version.parse(appData.runtime);
         return version;
+    }
+
+    getIdRangeStart(resourceUri: vscode.Uri | undefined): number {
+        let val: number = 0;
+        let appData = this.getAppManifest(resourceUri);
+        if (appData) {
+            
+            if ((appData.idRange) && (appData.idRange.from)) {
+                val = Number.parseInt(appData.idRange.from);
+                if (!isNaN(val))
+                    return val;
+            }
+            
+            if ((appData.idRanges) && (appData.idRanges.length)) {
+                for (let i=0; i<appData.idRanges.length; i++) {
+                    if (appData.idRanges[i].from) {
+                        val = Number.parseInt(appData.idRanges[i].from);
+                        if (!isNaN(val))
+                            return val;
+                    }
+                }
+            }
+        }
+
+        return 0;
     }
 
     supportsInterfaces(resourceUri: vscode.Uri | undefined) {

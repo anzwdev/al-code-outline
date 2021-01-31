@@ -1,5 +1,11 @@
 # Change Log
 
+## 2.0.24
+ - Issue #200 - Suggest fields ids in table and table extension wizards
+
+Thank you
+  - mjmatthiesen for reporting issue #200
+
 ## 2.0.23
  - Issue #204 - AA0137 - "Unused variable" fixes can break code, add "AZ AL Dev Tools" to all code actions descriptions
  - Issue #207 - ApplicationArea on a page object

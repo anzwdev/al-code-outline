@@ -10,6 +10,17 @@ class TableWizard {
         this._fieldsgrid.onCreateDataEntry = (data, idx, item) => {
             if ((idx == 0) && (data.length == 0))
                 item.pk = true;
+
+            let prevId = this.getId(data, idx - 1); 
+            let newId = prevId;
+            if (idx < data.length) {
+                newId = Math.round((prevId + this.getId(data, idx)) / 2);
+                if (newId == prevId)
+                    newId++;
+            } else
+                newId += 1;
+
+            item.id = newId.toString();
         };
 
         // Handle messages sent from the extension to the webview
@@ -28,6 +39,15 @@ class TableWizard {
         this.sendMessage({
             command: 'documentLoaded'
         });
+    }
+
+    getId(data, idx) {
+        if ((idx >=0) && (idx < data.length) && (data[idx].id)) {
+            let val = Number.parseInt(data[idx].id);
+            if (!isNaN(val))
+                return val;
+        }
+        return 0;
     }
 
     onMessage(message) {     

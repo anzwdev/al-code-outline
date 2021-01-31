@@ -320,8 +320,8 @@ class AZGridView {
             let value = this.getDataValue(rowIdx, colIdx);
             let cell = this._table.rows[rowIdx + this._minRowIndex].cells[this._columns[colIdx].cellIdx];
 
-            if (this.isColBool(colId))
-                this.setBoolCellValue()
+            if (this.isColBool(colIdx))
+                this.setBoolCellValue(cell, value)
             else if (!editMode)
                 cell.innerText = value;
         }
@@ -354,8 +354,20 @@ class AZGridView {
                 this.endEdit();
                 this.refreshRowStyle(this._currRow, false);
                 this.refreshCellStyle(this._currRow, this._currColumn, false);
+
+                if (this._currRow == this._table.rows.length - 1) {
+                    this._newRowData = this.createDataEntry(this._data.length, true);
+                    this.refreshRow(this._currRow - this._minRowIndex);
+                }
+
                 this._currRow = rowIndex;
                 this._currColumn = columnIndex;
+
+                if (this._currRow == this._table.rows.length - 1) {
+                    this._newRowData = this.createDataEntry(this._data.length, false);
+                    this.refreshRow(this._currRow - this._minRowIndex);
+                }
+
                 this.refreshRowStyle(this._currRow, true);
                 this.refreshCellStyle(this._currRow, this._currColumn, true);
                 if (enableEditor)
@@ -997,7 +1009,7 @@ class AZGridView {
         return value;
     }
 
-    createDataEntry(idx) {
+    createDataEntry(idx, preview) {
         if (this._listMode)
             return "";
         let item = {};
@@ -1007,7 +1019,7 @@ class AZGridView {
             else
                 item[this._columns[i].name] = '';
         }
-        if (this.onCreateDataEntry)
+        if ((!preview) && (this.onCreateDataEntry))
             this.onCreateDataEntry(this._data, idx, item);
         return item;
     }
@@ -1023,7 +1035,7 @@ class AZGridView {
     }
 
     addEmptyRow(tbody) {
-        this._newRowData = this.createDataEntry(this._data.length);
+        this._newRowData = this.createDataEntry(this._data.length, true);
         tbody.appendChild(this.renderRow(this._data.length));
     }
 
@@ -1031,7 +1043,7 @@ class AZGridView {
         if ((this._editable) && (this._currRow >= this._minRowIndex) && (this._currRow < this._table.rows.length)) {
             //this.endEdit();
             let idx = this._currRow - this._minRowIndex;
-            let item = this.createDataEntry(idx);
+            let item = this.createDataEntry(idx, false);
             this._data.splice(idx, 0, item);
             let row = this._table.insertRow(this._currRow);
             this.renderRowCells(row, idx);
