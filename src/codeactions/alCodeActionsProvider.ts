@@ -15,6 +15,7 @@ import { ALCodeCopFixAA0005 } from './codeFixes/alCodeCopFixAA0005';
 import { ALCodeCopFixAA0008 } from './codeFixes/alCodeCopFixAA0008';
 import { ALCodeCopFixAA0137 } from './codeFixes/alCodeCopFixAA0137';
 import { ALCodeCopFixAA0139 } from './codeFixes/alCodeCopFixAA0139';
+import { ALSortTableFieldsCommand } from './sortSymbols/alSortTableFieldsCommand';
 
 export class ALCodeActionsProvider implements vscode.CodeActionProvider {
     protected _toolsExtensionContext : DevToolsExtensionContext;
@@ -30,6 +31,7 @@ export class ALCodeActionsProvider implements vscode.CodeActionProvider {
             new ALAddXmlPortFieldsCodeCommand(this._toolsExtensionContext, 'fieldelement', 'Add multiple field elements (AZ AL Dev Tools)'),
             new ALAddXmlPortFieldsCodeCommand(this._toolsExtensionContext, 'fieldattribute', 'Add multiple field attributes (AZ AL Dev Tools)'),
             //sorting
+            new ALSortTableFieldsCommand(this._toolsExtensionContext),
             new ALSortVariablesCommand(this._toolsExtensionContext),
             new ALSortReportColumnsCommand(this._toolsExtensionContext),
             new ALSortPropertiesCommand(this._toolsExtensionContext),

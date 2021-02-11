@@ -19,6 +19,7 @@ export class ALCodeTransformationService {
         this.registerDocumentRangeCommand('azALDevTools.sortProcedures', 'sortProcedures');
         this.registerDocumentRangeCommand('azALDevTools.sortProperties', 'sortProperties');
         this.registerDocumentRangeCommand('azALDevTools.sortReportColumns', 'sortReportColumns');
+        this.registerDocumentRangeCommand('azALDevTools.sortTableFields', 'sortTableFields');
 
         this.registerDocumentRangeCommand('azALDevTools.removeVariable', 'removeVariable');
 

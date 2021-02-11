@@ -1,5 +1,8 @@
 # Change Log
 
+## 2.0.25
+ - Issue #210 - Sort table fields
+
 ## 2.0.24
  - Issue #200 - Suggest fields ids in table and table extension wizards
 
