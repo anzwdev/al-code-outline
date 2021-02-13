@@ -2,6 +2,10 @@
 
 ## 2.0.25
  - Issue #210 - Sort table fields
+ - Issue #211 - Selecting the last row in filtered data grid shows wrong data
+
+Thank you
+  - rvanbekkum for reporting issue 211
 
 ## 2.0.24
  - Issue #200 - Suggest fields ids in table and table extension wizards

@@ -198,7 +198,7 @@ class AZGridView {
     }
 
     renderRow(index) {
-        let row = document.createElement('tr');
+        let row = document.createElement('tr');       
         this.renderRowCells(row, index);
         return row;
     }
@@ -209,7 +209,6 @@ class AZGridView {
 
     getDataValue(idx, colIdx) {
         let data = (idx < this._data.length)?this._data[idx]:this._newRowData;
-        
         let value;
         if (this._listMode)
             value = data;
@@ -222,6 +221,7 @@ class AZGridView {
 
     renderRowCells(row, index) {
         row.tabData = (index < this._data.length)?this._data[index]:this._newRowData;
+        row.tabDataIdx = index;
         for (let i=0; i<this._columns.length; i++) {
             if (!this._columns[i].hidden) {
                 let value = this.getDataValue(index, i);
@@ -306,19 +306,22 @@ class AZGridView {
     }
 
     refreshRow(rowIdx) {
-        for (let i = 0; i<this._columns.length; i++) {
-            this.refreshCell(rowIdx, i);
+        let dataIndex = this._table.rows[rowIdx].tabDataIdx;
+        if (dataIndex !== undefined) {
+            for (let i = 0; i<this._columns.length; i++) {
+                this.refreshCell(rowIdx, i, dataIndex);
+            }
         }
     }   
 
-    refreshCell(rowIdx, colIdx) {
+    refreshCell(rowIdx, colIdx, dataIndex) {
         if (!this._columns[colIdx].hidden) {
             let editMode = ((this._inEditMode) && 
-                ((this._minRowIndex + rowId) == this._currRow) &&
+                (rowIdx == this._currRow) &&
                 (this._currColumn == colIdx));
 
-            let value = this.getDataValue(rowIdx, colIdx);
-            let cell = this._table.rows[rowIdx + this._minRowIndex].cells[this._columns[colIdx].cellIdx];
+            let value = this.getDataValue(dataIndex, colIdx);
+            let cell = this._table.rows[rowIdx].cells[this._columns[colIdx].cellIdx];
 
             if (this.isColBool(colIdx))
                 this.setBoolCellValue(cell, value)
@@ -357,7 +360,7 @@ class AZGridView {
 
                 if (this._currRow == this._table.rows.length - 1) {
                     this._newRowData = this.createDataEntry(this._data.length, true);
-                    this.refreshRow(this._currRow - this._minRowIndex);
+                    this.refreshRow(this._currRow);
                 }
 
                 this._currRow = rowIndex;
@@ -365,7 +368,7 @@ class AZGridView {
 
                 if (this._currRow == this._table.rows.length - 1) {
                     this._newRowData = this.createDataEntry(this._data.length, false);
-                    this.refreshRow(this._currRow - this._minRowIndex);
+                    this.refreshRow(this._currRow);
                 }
 
                 this.refreshRowStyle(this._currRow, true);
