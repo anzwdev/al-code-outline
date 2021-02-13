@@ -79,7 +79,8 @@ When new objects are created, generators use "CRS AL Language Extension" templat
 ### Code actions
 
 Extension adds VS Code editor code actions to some of al elements to help developers modify or insert code quickly. At this these types of actions available:
- - Sorting actions that can sort 
+ - Sorting actions that can sort
+  - `Sort table fields` available when cursor is at the first line of table, table extension, fields keyword or table/table extension field. It will sort all fields by the field number. 
   - `Sort procedures` available when cursor is at the first line of a procedure. This action will sort procedures of the same type (i.e. local) in a natural order
   - `Sort data item columns` available when cursor is at report data item, column or first line of the object declaration. This action will sort all columns inside data item in a natural order. If it is invoked from the first line of the object, it will sort columns inside all data items.
   - `Sort properties` available from the first line of any object declaration. It will sort properties of every element declared inside the object.

@@ -1,5 +1,26 @@
 # Change Log
 
+## 2.0.25
+ - Issue #210 - Sort table fields
+ - Issue #211 - Selecting the last row in filtered data grid shows wrong data
+
+Thank you
+  - rvanbekkum for reporting issue 211
+
+## 2.0.24
+ - Issue #200 - Suggest fields ids in table and table extension wizards
+
+Thank you
+  - mjmatthiesen for reporting issue #200
+
+## 2.0.23
+ - Issue #204 - AA0137 - "Unused variable" fixes can break code, add "AZ AL Dev Tools" to all code actions descriptions
+ - Issue #207 - ApplicationArea on a page object
+
+Thank you
+  - rdebath for reporting the issue #204
+  - gunnargestsson for reporting the issue #207  
+
 ## 2.0.22
  - Issue #199 - new "Add Page Controls Captions to the Active Editor" and "Add Page Controls Captions to the Active Project" commands.
 

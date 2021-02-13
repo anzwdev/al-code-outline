@@ -21,7 +21,7 @@ export class ALSortVariablesCommand extends ALCodeAction {
                 (symbol.selectionRange) &&
                 (symbol.selectionRange.start.line == range.start.line)) {
 
-                    let action = new vscode.CodeAction("Sort variables", vscode.CodeActionKind.QuickFix);
+                    let action = new vscode.CodeAction("Sort variables (AZ AL Dev Tools)", vscode.CodeActionKind.QuickFix);
                     action.command = {
                         command: "azALDevTools.sortVariables",
                         title: "Sort Variables",

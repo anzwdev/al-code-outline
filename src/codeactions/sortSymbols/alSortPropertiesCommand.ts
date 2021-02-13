@@ -21,7 +21,7 @@ export class ALSortPropertiesCommand extends ALCodeAction {
                 (symbol.selectionRange) &&
                 (symbol.selectionRange.start.line == range.start.line)) {
 
-                let action = new vscode.CodeAction("Sort properties", vscode.CodeActionKind.QuickFix);
+                let action = new vscode.CodeAction("Sort properties (AZ AL Dev Tools)", vscode.CodeActionKind.QuickFix);
                 action.command = {
                     command: "azALDevTools.sortProperties",
                     title: "Sort Properties",

@@ -15,6 +15,7 @@ import { ALCodeCopFixAA0005 } from './codeFixes/alCodeCopFixAA0005';
 import { ALCodeCopFixAA0008 } from './codeFixes/alCodeCopFixAA0008';
 import { ALCodeCopFixAA0137 } from './codeFixes/alCodeCopFixAA0137';
 import { ALCodeCopFixAA0139 } from './codeFixes/alCodeCopFixAA0139';
+import { ALSortTableFieldsCommand } from './sortSymbols/alSortTableFieldsCommand';
 
 export class ALCodeActionsProvider implements vscode.CodeActionProvider {
     protected _toolsExtensionContext : DevToolsExtensionContext;
@@ -27,9 +28,10 @@ export class ALCodeActionsProvider implements vscode.CodeActionProvider {
             new ALAddPageFieldsCodeCommand(this._toolsExtensionContext),
             new ALAddQueryFieldsCodeCommand(this._toolsExtensionContext),
             new ALAddReportFieldsCodeCommand(this._toolsExtensionContext),
-            new ALAddXmlPortFieldsCodeCommand(this._toolsExtensionContext, 'fieldelement', 'Add multiple field elements'),
-            new ALAddXmlPortFieldsCodeCommand(this._toolsExtensionContext, 'fieldattribute', 'Add multiple field attributes'),
+            new ALAddXmlPortFieldsCodeCommand(this._toolsExtensionContext, 'fieldelement', 'Add multiple field elements (AZ AL Dev Tools)'),
+            new ALAddXmlPortFieldsCodeCommand(this._toolsExtensionContext, 'fieldattribute', 'Add multiple field attributes (AZ AL Dev Tools)'),
             //sorting
+            new ALSortTableFieldsCommand(this._toolsExtensionContext),
             new ALSortVariablesCommand(this._toolsExtensionContext),
             new ALSortReportColumnsCommand(this._toolsExtensionContext),
             new ALSortPropertiesCommand(this._toolsExtensionContext),
@@ -65,7 +67,7 @@ export class ALCodeActionsProvider implements vscode.CodeActionProvider {
         let actionsList = vscode.workspace.getConfiguration('alOutline', document.uri).get<string[]>('codeActionsOnSave');
         if ((actionsList) && (actionsList.length > 0)) {
             let actionKind = vscode.CodeActionKind.SourceFixAll.append('al');
-            let action = new vscode.CodeAction("Fix document on save", actionKind);
+            let action = new vscode.CodeAction("Fix document on save (AZ AL Dev Tools)", actionKind);
             action.command = {
                 title: "Fix document on save",
                 command: "azALDevTools.fixDocumentOnSave",

@@ -4,6 +4,20 @@ class TableExtWizard extends TableBasedObjectWizard {
         super(1);
 
         this._fieldsgrid = new TableFieldsGridView(false);
+
+        this._fieldsgrid.onCreateDataEntry = (data, idx, item) => {
+            let prevId = this.getId(data, idx - 1); 
+            let newId = prevId;
+            if (idx < data.length) {
+                newId = Math.round((prevId + this.getId(data, idx)) / 2);
+                if (newId == prevId)
+                    newId++;
+            } else
+                newId += 1;
+
+            item.id = newId.toString();
+        };
+
         htmlHelper.hideById("prevBtn");
         htmlHelper.hideById("nextBtn");
     }
@@ -85,6 +99,23 @@ class TableExtWizard extends TableBasedObjectWizard {
         }
         return true;
     }
+
+    getId(data, idx) {
+        if ((idx >=0) && (idx < data.length) && (data[idx].id)) {
+            let val = Number.parseInt(data[idx].id);
+            if (!isNaN(val))
+                return val;
+        }
+
+        if (this._data.idRangeStart) {
+            let val = Number.parseInt(this._data.idRangeStart);
+            if (!isNaN(val))
+                return val - 1;
+        }
+
+        return 0;
+    }
+
 }
 
 var wizard;

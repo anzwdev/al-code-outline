@@ -28,7 +28,7 @@ export class ALSortReportColumnsCommand extends ALCodeAction {
                     symbol = symbol.findParentByKind(AZSymbolKind.ReportDataItem);
     
                 if ((symbol) && (!symbol.containsDiagnostics)) {
-                    let action = new vscode.CodeAction("Sort data item columns", vscode.CodeActionKind.QuickFix);
+                    let action = new vscode.CodeAction("Sort data item columns (AZ AL Dev Tools)", vscode.CodeActionKind.QuickFix);
                     action.command = {
                         command: "azALDevTools.sortReportColumns",
                         title: "Sort Report Columns",
