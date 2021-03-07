@@ -42,8 +42,8 @@ export class ALXmlPortSyntaxBuilder {
         {
             for (let i=0; i<data.selectedFieldList.length;i++) {
                 writer.writeNameSourceBlock(fieldNodeName, 
-                    writer.createName(data.selectedFieldList[i]), 
-                    tableElementName + "." + writer.encodeName(data.selectedFieldList[i]));
+                    writer.createName(data.selectedFieldList[i].name!), 
+                    tableElementName + "." + writer.encodeName(data.selectedFieldList[i].name!));
             }
         }
 

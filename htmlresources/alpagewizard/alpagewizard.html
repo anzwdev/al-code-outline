@@ -146,7 +146,14 @@
 
                 <div class="multiselect">
                     <div class="multiselsrc" id="srcfieldsdiv">
-                        <div class="mselcaption" id="srcfieldscapt">Available Fields:</div>
+                        
+                        <div class="mselcaptionadv" id="srcfieldscapt">
+                            <div class="mselcapmain">Available Fields:</div>
+                            <div class="mselcaptb">Sort by:</div>
+                            <button id="srcfldsortname" class="mselcaptb mseltbbtn">Name</button>
+                            <button id="srcfldsortid" class="mselcaptb mseltbbtn">Id</button>
+                        </div>
+
                         <input class="mselfilter" id="srcfieldsfilter" type="text" placeholder="Enter fields filter...">
                         <select class="msellist" id="srcfields" multiple="multiple"></select>
                     </div>

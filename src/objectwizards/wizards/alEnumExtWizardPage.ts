@@ -6,6 +6,7 @@ import { ALEnumExtWizardData } from './alEnumExtWizardData';
 import { ALEnumExtSyntaxBuilder } from '../syntaxbuilders/alEnumExtSyntaxBuilder';
 import { DevToolsExtensionContext } from '../../devToolsExtensionContext';
 import { ALObjectWizardSettings } from './alObjectWizardSettings';
+import { SymbolWithNameInformation } from '../../symbolsinformation/smbolWithNameInformation';
 
 export class ALEnumExtWizardPage extends ProjectItemWizardPage {
     private _enumExtWizardData : ALEnumExtWizardData;
@@ -29,7 +30,15 @@ export class ALEnumExtWizardPage extends ProjectItemWizardPage {
     }
 
     protected async loadBaseEnums() {
-        this._enumExtWizardData.baseEnumList = await this._toolsExtensionContext.alLangProxy.getEnumList(this._settings.getDestDirectoryUri());
+        let response = await this._toolsExtensionContext.toolsLangServerClient.getEnumsList({
+                path: this._settings.getDestDirectoryPath()
+            });
+        if (response)
+            this._enumExtWizardData.baseEnumList = SymbolWithNameInformation.toNamesList(response.symbols);
+        else
+            this._enumExtWizardData.baseEnumList = [];
+
+        //this._enumExtWizardData.baseEnumList = await this._toolsExtensionContext.alLangProxy.getEnumList(this._settings.getDestDirectoryUri());
         this.sendMessage({
             command : "setEnums",
             data : this._enumExtWizardData.baseEnumList

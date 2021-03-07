@@ -124,7 +124,40 @@ header {
 .mselcaption {
     flex: 0 0 26px;
 }
-.mselbtn, .button {
+.mselcaptionadv {
+    display: flex;
+    flex-direction: row;
+    align-items: stretch;
+    justify-content: center;
+}
+
+.mselcaptionadv .mselcapmain {
+    flex: 1 1 auto;
+}
+.mselcaptionadv .mselcaptb {
+    flex: 0 0 auto;
+    margin: 0px 2px 4px 2px;    
+}
+.mseltbbtn, .mseltbbtnsel {
+    width: 64px;
+    border: 0px solid var(--vscode-panel-border);
+    font-size: var(--font-size);
+    font-weight: var(--font-weight);    
+    font-family: var(--font-family);
+}
+.mseltbbtn {
+    background-color: var(--vscode-list-inactiveSelectionBackground) !important;
+    color: var(--vscode-list-inactiveSelectionForeground) !important;
+}
+.mseltbbtnsel {
+    background-color: var(--vscode-list-activeSelectionBackground) !important;
+    color: var(--vscode-list-activeSelectionForeground) !important;
+}
+.mseltbbtn:hover, .mseltbbtnsel:hover {
+    background-color: var(--vscode-button-hoverBackground) !important;
+    color: var(--vscode-button-foreground) !important;
+}
+.mseltbbtn, .mselbtn, .button {
     background-color: var(--vscode-button-background);
     color: var(--vscode-button-foreground);
     border: 0px solid var(--vscode-panel-border);
@@ -132,7 +165,7 @@ header {
     font-weight: var(--font-weight);    
     font-family: var(--font-family);
 }
-.mselbtn:hover, .button:hover {
+.mseltbbtn:hover, .mselbtn:hover, .button:hover {
     background-color: var(--vscode-button-hoverBackground);
 }
 .button {

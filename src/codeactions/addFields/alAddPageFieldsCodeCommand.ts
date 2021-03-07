@@ -4,8 +4,10 @@ import { ALSyntaxWriter } from '../../allanguage/alSyntaxWriter';
 import { AZSymbolKind } from '../../symbollibraries/azSymbolKind';
 import { AZSymbolInformation } from '../../symbollibraries/azSymbolInformation';
 import { ALBaseAddFieldsCodeCommand } from './alBaseAddFieldsCodeCommand';
-import { FieldsSelector } from './fieldsSelector';
 import { AZDocumentSymbolsLibrary } from '../../symbollibraries/azDocumentSymbolsLibrary';
+import { ToolsGetPageDetailsRequest } from '../../langserver/symbolsinformation/toolsGetPageDetailsRequest';
+import { TableFieldInformation } from '../../symbolsinformation/tableFieldInformation';
+import { TableFieldsSelector } from './tableFieldsSelector';
 
 export class ALAddPageFieldsCodeCommand extends ALBaseAddFieldsCodeCommand {
     constructor(context : DevToolsExtensionContext) {
@@ -46,27 +48,16 @@ export class ALAddPageFieldsCodeCommand extends ALBaseAddFieldsCodeCommand {
             
             return;
 
-        //collect existing page fields
-        let existingFields : AZSymbolInformation[] = [];
-        pageSymbol.collectChildSymbols(AZSymbolKind.PageField, true, existingFields);
-
-        //load list of table fields
-        let fieldNames: string[] | undefined;
-        
-        if ((pageSymbol.kind == AZSymbolKind.PageObject) && (pageSymbol.source))
-            fieldNames = await this._toolsExtensionContext.alLangProxy.getFieldList(this.getDocumentUri(), pageSymbol.source);
-        else if (pageSymbol.extends)
-            fieldNames = await this._toolsExtensionContext.alLangProxy.getAvailablePageFieldList(this.getDocumentUri(), pageSymbol.extends);
-        else
+        //get available fields from the language server
+        let response = await this._toolsExtensionContext.toolsLangServerClient.getPageDetails(
+            new ToolsGetPageDetailsRequest(document.uri.fsPath, pageSymbol.name, false, true));
+        if ((!response) || (!response.symbol) || (!response.symbol.availableTableFields))
             return;
 
-        //remove existing fields from the list
-        fieldNames = this.removeExistingFields(fieldNames, existingFields, AZSymbolKind.PageField, 'All available table fields have already been added to the page.');
-        if (!fieldNames)
-            return;
+        let fieldNames: TableFieldInformation[] = response.symbol.availableTableFields;
 
         //ask for fields
-        let fieldsSelector = new FieldsSelector();
+        let fieldsSelector = new TableFieldsSelector();
         let selectedFields = await fieldsSelector.selectFields('Select table fields', fieldNames);
         if (!selectedFields)
             return;
@@ -84,7 +75,7 @@ export class ALAddPageFieldsCodeCommand extends ALBaseAddFieldsCodeCommand {
         let writer: ALSyntaxWriter = new ALSyntaxWriter(document.uri);
         writer.setIndent(indent);
         for (let i=0; i<selectedFields.length; i++) {
-            writer.writePageField(selectedFields[i]);
+            writer.writePageField(selectedFields[i].name!);
         }
         let source = writer.toString();
 

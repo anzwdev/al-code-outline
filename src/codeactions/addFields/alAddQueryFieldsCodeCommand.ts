@@ -3,9 +3,10 @@ import { DevToolsExtensionContext } from '../../devToolsExtensionContext';
 import { ALSyntaxWriter } from '../../allanguage/alSyntaxWriter';
 import { AZSymbolKind } from '../../symbollibraries/azSymbolKind';
 import { ALBaseAddFieldsCodeCommand } from './alBaseAddFieldsCodeCommand';
-import { FieldsSelector } from './fieldsSelector';
 import { AZSymbolInformation } from '../../symbollibraries/azSymbolInformation';
 import { AZDocumentSymbolsLibrary } from '../../symbollibraries/azDocumentSymbolsLibrary';
+import { ToolsGetTableFieldsListRequest } from '../../langserver/symbolsinformation/toolsGetTableFieldsListRequest';
+import { TableFieldsSelector } from './tableFieldsSelector';
 
 export class ALAddQueryFieldsCodeCommand extends ALBaseAddFieldsCodeCommand {
     constructor(context : DevToolsExtensionContext) {
@@ -43,16 +44,16 @@ export class ALAddQueryFieldsCodeCommand extends ALBaseAddFieldsCodeCommand {
             return;
 
         //get list of fields
-        let fieldNames: string[] | undefined = await this._toolsExtensionContext.alLangProxy.getFieldList(this.getDocumentUri(), dataItemSymbol.source);
+        let fields = await this.getTableFields(dataItemSymbol.source);
 
         //remove existing fields from the list
-        fieldNames = this.removeExistingFields(fieldNames, dataItemSymbol.childSymbols, AZSymbolKind.QueryColumn, 'All available table fields have already been added to the query.');
-        if (!fieldNames)
+        fields = this.removeExistingFields(fields, dataItemSymbol.childSymbols, AZSymbolKind.QueryColumn, 'All available table fields have already been added to the query.');
+        if (!fields)
             return;
 
         //ask for fields
-        let fieldsSelector = new FieldsSelector();
-        let selectedFields = await fieldsSelector.selectFields('Select table fields', fieldNames);
+        let fieldsSelector = new TableFieldsSelector();
+        let selectedFields = await fieldsSelector.selectFields('Select table fields', fields);
         if (!selectedFields)
             return;
 
@@ -62,7 +63,7 @@ export class ALAddQueryFieldsCodeCommand extends ALBaseAddFieldsCodeCommand {
         let writer: ALSyntaxWriter = new ALSyntaxWriter(document.uri);
         writer.setIndent(indent);
         for (let i=0; i<selectedFields.length; i++) {
-            writer.writeNameSourceBlock("column", writer.createName(selectedFields[i]), writer.encodeName(selectedFields[i]));
+            writer.writeNameSourceBlock("column", writer.createName(selectedFields[i].name!), writer.encodeName(selectedFields[i].name!));
         }
         let source = writer.toString();
 

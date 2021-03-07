@@ -1,21 +1,22 @@
 import * as vscode from 'vscode';
-import { FieldQuickPickItem } from './fieldQuickPickItem';
+import { TableFieldInformation } from '../../symbolsinformation/tableFieldInformation';
+import { TableFieldQuickPickItem } from './tableFieldQuickPickItem';
 
-export class FieldsSelector {
+export class TableFieldsSelector {
 
-    selectFields(placeholder: string, fieldsList: string[]): Promise<string[] | undefined> {
-        let items: FieldQuickPickItem[] = [];
+    selectFields(placeholder: string, fieldsList: TableFieldInformation[]): Promise<TableFieldInformation[] | undefined> {
+        let items: TableFieldQuickPickItem[] = [];
         for (let i=0; i<fieldsList.length; i++) {
-            items.push(new FieldQuickPickItem(fieldsList[i]));
+            items.push(new TableFieldQuickPickItem(fieldsList[i]));
         }
 
         let selectionOrder = this.isInSelectionOrderMode();
-        let quickPick = vscode.window.createQuickPick<FieldQuickPickItem>();
+        let quickPick = vscode.window.createQuickPick<TableFieldQuickPickItem>();
         quickPick.placeholder = placeholder;
         quickPick.canSelectMany = true;
         quickPick.items = items;
-       
-        let selectedItems: FieldQuickPickItem[] = [];
+
+        let selectedItems: TableFieldQuickPickItem[] = [];
 
         return new Promise<any>((resolve, reject) => {
             try {
@@ -25,7 +26,7 @@ export class FieldsSelector {
                 quickPick.onDidChangeSelection((itemList) => {
                     if ((selectionOrder) && (!this.fieldsListsEquals(itemList, selectedItems))) {
                         //collect not selected items
-                        let notSelItems:FieldQuickPickItem[] = [];
+                        let notSelItems:TableFieldQuickPickItem[] = [];
                         for (let i=0; i<quickPick.items.length; i++) {
                             if (itemList.indexOf(quickPick.items[i]) < 0) {
                                 notSelItems.push(quickPick.items[i]);
@@ -48,9 +49,9 @@ export class FieldsSelector {
                 });
                 
                 quickPick.onDidAccept(() => {
-                    let data: string[] = [];
+                    let data: TableFieldInformation[] = [];
                     for (let i=0; i<quickPick.selectedItems.length; i++) {
-                        data.push(quickPick.selectedItems[i].label);
+                        data.push(quickPick.selectedItems[i].fieldInformation);
                     }
                     resolve(data);
                     quickPick.hide();
@@ -65,7 +66,7 @@ export class FieldsSelector {
         });
     }
 
-    private fieldsListsEquals(fieldList1: FieldQuickPickItem[], fieldList2: FieldQuickPickItem[]): boolean {
+    private fieldsListsEquals(fieldList1: TableFieldQuickPickItem[], fieldList2: TableFieldQuickPickItem[]): boolean {
         if (fieldList1.length != fieldList2.length)
             return false;
         for (let i=0; i<fieldList1.length; i++) {

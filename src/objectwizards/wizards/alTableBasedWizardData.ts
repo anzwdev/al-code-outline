@@ -1,12 +1,15 @@
 'use strict';
 
+import { TableFieldInformation } from "../../symbolsinformation/tableFieldInformation";
+import { TableInformation } from "../../symbolsinformation/tableInformation";
+
 export class ALTableBasedWizardData {
     objectId : string;
     objectName : string;
     tableList : string[] | undefined;
     selectedTable : string;
-    fieldList : string[] | undefined;
-    selectedFieldList : string[] | undefined;
+    fieldList : TableFieldInformation[] | undefined;
+    selectedFieldList : TableFieldInformation[] | undefined;
     fixedTable : boolean;
     applicationArea : string;
 

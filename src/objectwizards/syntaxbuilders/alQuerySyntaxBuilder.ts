@@ -50,8 +50,8 @@ export class ALQuerySyntaxBuilder {
         writer.writeStartNameSourceBlock("dataitem", dataItemName, writer.encodeName(data.selectedTable));
         if (data.selectedFieldList) {
             for (let i=0; i<data.selectedFieldList.length; i++) {
-                writer.writeNameSourceBlock("column", writer.createName(data.selectedFieldList[i]), 
-                    writer.encodeName(data.selectedFieldList[i]));
+                writer.writeNameSourceBlock("column", writer.createName(data.selectedFieldList[i].name!), 
+                    writer.encodeName(data.selectedFieldList[i].name!));
             }
         }
         writer.writeEndBlock();

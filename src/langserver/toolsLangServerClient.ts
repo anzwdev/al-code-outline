@@ -25,6 +25,20 @@ import { ALFullSyntaxTreeHelper } from '../symbollibraries/alFullSyntaxTreeHelpe
 import { ToolsWorkspaceCommandRequest } from './toolsWorkspaceCommandRequest';
 import { ToolsWorkspaceCommandResponse } from './toolsWorkspaceCommandResponse';
 import { Version } from '../tools/version';
+import { ToolsWorkspaceFoldersChangeRequest } from './toolsWorkspaceFoldersChangeRequest';
+import { ToolsDocumentChangeRequest } from './toolsDocumentChangeRequest';
+import { ToolsFilesRequest } from './toolsFilesRequest';
+import { ToolsFilesRenameRequest } from './toolsFilesRenameRequest';
+import { ToolsGetTableFieldsListRequest } from './symbolsinformation/toolsGetTableFieldsListRequest';
+import { ToolsSymbolInformationRequest } from './symbolsinformation/toolsSymbolInformationRequest';
+import { ToolsGetTablesListResponse } from './symbolsinformation/toolsGetTablesListResponse';
+import { ToolsGetCodeunitsListResponse } from './symbolsinformation/toolsGetCodeunitsListResponse';
+import { ToolsGetEnumsListResponse } from './symbolsinformation/toolsGetEnumsListResponse';
+import { ToolsGetInterfacesListResponse } from './symbolsinformation/toolsGetInterfacesListResponse';
+import { ToolsFileSystemFileChangeRequest } from './toolsFileSystemFileChangeRequest';
+import { ToolsGetTableFieldsListResponse } from './symbolsinformation/toolsGetTableFieldsListResponse';
+import { ToolsGetPageDetailsRequest } from './symbolsinformation/toolsGetPageDetailsRequest';
+import { ToolsGetPageDetailsResponse } from './symbolsinformation/toolsGetPageDetailsResponse';
 
 export class ToolsLangServerClient implements vscode.Disposable {
     _context : vscode.ExtensionContext;
@@ -235,6 +249,104 @@ export class ToolsLangServerClient implements vscode.Disposable {
         }
     }
 
+    //symbols information requests
+    public getTablesList(params: ToolsSymbolInformationRequest) : Promise<ToolsGetTablesListResponse | undefined> {
+        return this.sendRequest<ToolsSymbolInformationRequest, ToolsGetTablesListResponse>(params, 'al/gettableslist');
+    }
+
+    public getCodeunitsList(params: ToolsSymbolInformationRequest) : Promise<ToolsGetCodeunitsListResponse | undefined> {
+        return this.sendRequest<ToolsSymbolInformationRequest, ToolsGetCodeunitsListResponse>(params, 'al/getcodeunitslist');
+    }
+
+    public getEnumsList(params: ToolsSymbolInformationRequest) : Promise<ToolsGetEnumsListResponse | undefined> {
+        return this.sendRequest<ToolsSymbolInformationRequest, ToolsGetEnumsListResponse>(params, 'al/getenumslist');
+    }
+
+    public getInterfacesList(params: ToolsSymbolInformationRequest) : Promise<ToolsGetInterfacesListResponse | undefined> {
+        return this.sendRequest<ToolsSymbolInformationRequest, ToolsGetInterfacesListResponse>(params, 'al/getinterfaceslist');
+    }
+
+    public getTableFieldsList(params: ToolsGetTableFieldsListRequest) : Promise<ToolsGetTableFieldsListResponse | undefined> {
+        return this.sendRequest<ToolsGetTableFieldsListRequest, ToolsGetTableFieldsListResponse>(params, 'al/gettablefieldslist');
+    }
+
+    public getPageDetails(params: ToolsGetPageDetailsRequest) : Promise<ToolsGetPageDetailsResponse | undefined> {
+        return this.sendRequest<ToolsGetPageDetailsRequest, ToolsGetPageDetailsResponse>(params, 'al/getpagedetails');
+    }
+
+    //workspace and file notifications
+
+    public workspaceFolderChange(params: ToolsWorkspaceFoldersChangeRequest) {
+        this.sendNotification(params, 'ws/workspaceFoldersChange');
+    }
+
+    public async documentOpen(params: ToolsDocumentChangeRequest) {
+        this.sendNotification(params, "ws/documentOpen");
+    }
+
+    public async documentChange(params: ToolsDocumentChangeRequest) {        
+        this.sendNotification(params, "ws/documentChange");
+    }
+
+    public async documentSave(params: ToolsDocumentChangeRequest) {
+        this.sendNotification(params, "ws/documentSave");
+    }
+
+    public documentClose(params: ToolsDocumentChangeRequest) {
+        this.sendNotification(params, "ws/documentClose");
+    }
+
+    public fileCreate(params: ToolsFilesRequest) {
+        this.sendNotification(params, "ws/fileCreate");
+    }
+
+    public fileDelete(params: ToolsFilesRequest) {
+        this.sendNotification(params, "ws/fileDelete");
+    }
+
+    public fileRename(params: ToolsFilesRenameRequest) {
+        this.sendNotification(params, "ws/fileRename");
+    }
+
+    public async fileSystemFileChange(params: ToolsFileSystemFileChangeRequest) {
+        this.sendNotification(params, "ws/fsFileChange");
+    }
+
+    public async fileSystemFileCreate(params: ToolsFileSystemFileChangeRequest) {
+        this.sendNotification(params, "ws/fsFileCreate");
+    }
+
+    public async fileSystemFileDelete(params: ToolsFileSystemFileChangeRequest) {
+        this.sendNotification(params, "ws/fsFileDelete");
+    }
+
+
+    //internal communication methods
+
+    protected sendNotification<T>(params: T, command: string) {
+        try {
+            if (!this._connection)
+                return undefined;
+
+            let reqType = new rpc.NotificationType<T, void>(command);
+            this._connection.sendNotification(reqType, params);
+        }
+        catch (e) {
+        }
+    }
+
+    protected async sendRequest<Req, Res>(params: Req, command: string) : Promise<Res | undefined> {
+        try {
+            if (!this._connection)
+                return undefined;
+            let reqType = new rpc.RequestType<Req, Res, void, void>(command);
+            let val = await this._connection.sendRequest(reqType, params);
+            return val;
+        }
+        catch(e) {
+            return undefined;
+        }
+    }
 
     public isEnabled() : boolean {
         if (this._connection)
