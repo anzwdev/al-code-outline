@@ -52,7 +52,7 @@ export class ALAddQueryFieldsCodeCommand extends ALBaseAddFieldsCodeCommand {
             return;
 
         //ask for fields
-        let fieldsSelector = new TableFieldsSelector();
+        let fieldsSelector = new TableFieldsSelector(this._toolsExtensionContext);
         let selectedFields = await fieldsSelector.selectFields('Select table fields', fields);
         if (!selectedFields)
             return;

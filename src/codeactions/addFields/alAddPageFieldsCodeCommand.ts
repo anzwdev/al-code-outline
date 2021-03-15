@@ -57,7 +57,7 @@ export class ALAddPageFieldsCodeCommand extends ALBaseAddFieldsCodeCommand {
         let fieldNames: TableFieldInformation[] = response.symbol.availableTableFields;
 
         //ask for fields
-        let fieldsSelector = new TableFieldsSelector();
+        let fieldsSelector = new TableFieldsSelector(this._toolsExtensionContext);
         let selectedFields = await fieldsSelector.selectFields('Select table fields', fieldNames);
         if (!selectedFields)
             return;

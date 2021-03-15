@@ -1,6 +1,7 @@
 'use strict';
 
 import * as vscode from 'vscode';
+import * as path from 'path';
 import { ALLangServerProxy } from './allanguage/alLangServerProxy';
 import { ToolsLangServerClient } from './langserver/toolsLangServerClient';
 import { AZActiveDocumentSymbolsLibrary } from './symbollibraries/azActiveDocumentSymbolsLibrary';
@@ -73,6 +74,18 @@ export class DevToolsExtensionContext implements vscode.Disposable {
     showSymbolsBrowser(library: AZSymbolsLibrary) {
         let symbolsBrowser : ALSymbolsBrowser = new ALSymbolsBrowser(this, library);
         symbolsBrowser.show();
+    }
+
+    getImageUri(name: string, theme: string) {
+        return vscode.Uri.file(this.vscodeExtensionContext.asAbsolutePath(path.join("resources", "images", theme, name)));
+    }
+
+    getLightImageUri(name: string) {
+        return this.getImageUri(name, "light");
+    }
+
+    getDarkImageUri(name: string) {
+        return this.getImageUri(name, "dark");
     }
 
     dispose() {
