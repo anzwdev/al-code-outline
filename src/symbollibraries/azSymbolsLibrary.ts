@@ -33,6 +33,16 @@ export class AZSymbolsLibrary {
         return loaded;
     }
 
+    loadFromAny(source: any) {
+        if (source)
+            this.rootSymbol = AZSymbolInformation.fromAny(source);
+        else
+            this.rootSymbol = AZSymbolInformation.create(AZSymbolKind.Document, this.displayName);
+        this.updateObjectList();
+        if (this._onSymbolsChanged)
+            this._onSymbolsChanged.fire(this);
+    }
+
     public setRootSymbol(symbol : AZSymbolInformation | undefined) {
         this.rootSymbol = symbol;
         if (this._onSymbolsChanged)
@@ -223,6 +233,5 @@ export class AZSymbolsLibrary {
     }
 
     //#region
-
 
 } 

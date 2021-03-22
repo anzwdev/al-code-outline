@@ -462,6 +462,11 @@
 						"type": "string",
 						"default": "Specifies the value of the %1 field",
 						"description": "The default tooltip template for page fields. Use %1 as placeholder for field caption or name."
+					},
+					"alOutline.addToolTipsToPageFields": {
+						"type": "boolean",
+						"default": true,
+						"description": "Add tooltips to page fields"
 					}
 				}
 			}

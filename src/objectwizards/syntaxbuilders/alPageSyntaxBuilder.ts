@@ -55,7 +55,8 @@ export class ALPageSyntaxBuilder {
                     writer.writeStartGroup("group", fastTab.name);
                     if (fastTab.fields) {
                         for (let fldIdx = 0; fldIdx < fastTab.fields.length; fldIdx++) {
-                            writer.writePageField(fastTab.fields[fldIdx].name!);
+                            writer.writePageField(fastTab.fields[fldIdx].name!, fastTab.fields[fldIdx].caption,
+                                data.createTooltips);
                         }
                     }
                     writer.writeEndBlock();                    
@@ -68,7 +69,7 @@ export class ALPageSyntaxBuilder {
                     if (isApi)
                         writer.writeApiPageField(data.selectedFieldList[i].name!);
                     else
-                        writer.writePageField(data.selectedFieldList[i].name!);
+                        writer.writePageField(data.selectedFieldList[i].name!, data.selectedFieldList[i].caption, data.createTooltips);
                 }
             }       
             writer.writeEndBlock();

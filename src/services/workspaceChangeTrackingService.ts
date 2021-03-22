@@ -1,6 +1,7 @@
 import * as vscode from 'vscode';
 import { DevToolsExtensionContext } from "../devToolsExtensionContext";
 import { ToolsDocumentChangeRequest } from '../langserver/toolsDocumentChangeRequest';
+import { ToolsDocumentContentChangeRequest } from '../langserver/toolsDocumentContentChangeRequest';
 import { ToolsFileSystemFileChangeRequest } from '../langserver/toolsFileSystemFileChangeRequest';
 import { ToolsWorkspaceFoldersChangeRequest } from '../langserver/toolsWorkspaceFoldersChangeRequest';
 
@@ -27,9 +28,15 @@ export class WorkspaceChangeTrackingService {
             }));
 
         this._context.vscodeExtensionContext.subscriptions.push(
-            vscode.workspace.onDidChangeTextDocument(e => {                
-                if ((e.document) && (e.document.uri))
-                    this._context.toolsLangServerClient.documentChange(new ToolsDocumentChangeRequest(e.document.uri.fsPath, undefined));
+            vscode.workspace.onDidChangeTextDocument(async e => {                
+                if ((e.document) && (e.document.uri)) {
+                    let buildSymbols = (this._context.activeDocumentSymbols.isActiveDocument(e.document)) && (e.document.languageId == "al");
+                    
+                    let response = await this._context.toolsLangServerClient.documentChange(new ToolsDocumentContentChangeRequest(e.document.uri.fsPath, e.document.getText(), buildSymbols));                    
+                    
+                    if ((buildSymbols) && (response))
+                        this._context.activeDocumentSymbols.loadFromAny(response.root);
+                }
             }));
 
         this._context.vscodeExtensionContext.subscriptions.push(

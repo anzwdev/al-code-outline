@@ -64,11 +64,8 @@ export class AZDocumentSymbolsLibrary extends AZSymbolsLibrary {
         if (document) {
             if (document.uri)
                 this._docUri = document.uri;
-            let symbolsLoad : Thenable<vscode.SymbolInformation[] | vscode.DocumentSymbol[] | undefined> = 
-                vscode.commands.executeCommand<vscode.SymbolInformation[] | vscode.DocumentSymbol[]>('vscode.executeDocumentSymbolProvider', this._docUri);
 
             if (document.languageId == "al") {
-                
                 //al language - use our special language server to parse source code
                 let source : string = document.getText();
         
@@ -78,30 +75,16 @@ export class AZDocumentSymbolsLibrary extends AZSymbolsLibrary {
 
                 let request : ToolsDocumentSymbolsRequest = new ToolsDocumentSymbolsRequest(source, documentPath, true);
                 let response : ToolsDocumentSymbolsResponse | undefined = await this._context.toolsLangServerClient.getALDocumentSymbols(request);
-                if ((response) && (response.root)) {
-                    newRootSymbol = AZSymbolInformation.fromAny(response.root);                    
-                    //merge symbols with symbols returned from Microsoft AL Language Extension
-                    let symbols = undefined;
-                    try {
-                        symbols = await symbolsLoad;
-                    }
-                    catch (e) {
-                        symbols = undefined;
-                    }
-
-                    if (symbols) {
-                        let fieldSymbols = this.collectVsCodeFieldSymbols(symbols);
-                        if ((fieldSymbols) && (fieldSymbols.length > 0))
-                            this.mergeFieldSymbolNames(this.rootSymbol, fieldSymbols);
-                    }
-                } else
+                if ((response) && (response.root))
+                    newRootSymbol = AZSymbolInformation.fromAny(response.root);
+                else
                     newRootSymbol = AZSymbolInformation.create(AZSymbolKind.Document, this.displayName);
             } else {
                 //use standard visual studio code symbols functionality to load symbols
                 newRootSymbol = AZSymbolInformation.create(AZSymbolKind.Document, this.displayName);                
                 let symbols = undefined;
                 try {
-                    symbols = await symbolsLoad;
+                    symbols = await vscode.commands.executeCommand<vscode.SymbolInformation[] | vscode.DocumentSymbol[]>('vscode.executeDocumentSymbolProvider', this._docUri);
                 }
                 catch (e) {
                     symbols = undefined;
@@ -119,80 +102,6 @@ export class AZDocumentSymbolsLibrary extends AZSymbolsLibrary {
         }
         return true;
     }
-
-    //#region update field names from our language server with values returned by Microsoft AL Language Extension 
-    
-    protected mergeFieldSymbolNames(azSymbol : AZSymbolInformation | undefined, vsFieldSymbols : vscode.DocumentSymbol[]) {
-        if (!azSymbol)
-            return;
-        if ((azSymbol.kind == AZSymbolKind.PageField) || 
-            (azSymbol.kind == AZSymbolKind.QueryColumn) || 
-            (azSymbol.kind == AZSymbolKind.QueryFilter)) {
-            if (azSymbol.range) {
-                let vsSymbol = this.findVsCodeSymbolByRange(vsFieldSymbols, azSymbol.range);
-                if (vsSymbol)
-                    azSymbol.fullName = vsSymbol.name;
-            }
-        } else if (azSymbol.childSymbols) {
-            for (let i=0; i<azSymbol.childSymbols.length; i++) {
-                this.mergeFieldSymbolNames(azSymbol.childSymbols[i], vsFieldSymbols);
-            }
-        }
-    }
-
-    protected findVsCodeSymbolByRange(symbols: vscode.DocumentSymbol[], range : TextRange) : vscode.DocumentSymbol | undefined {
-        for (let i=0; i<symbols.length; i++) {
-            if (range.intersectVsRange(symbols[i].range))
-                return symbols[i];
-        }
-        return undefined;
-    }
-
-    protected collectVsCodeFieldSymbols(symbols : vscode.SymbolInformation[] | vscode.DocumentSymbol[] | undefined) : vscode.DocumentSymbol[] | undefined {
-        if (!symbols)
-            return undefined;
-        let fieldList : vscode.DocumentSymbol[] = [];
-        if (this.isDocumentSymbolsList(symbols))
-            this.collectVSCodeFieldDocSymbols(symbols as vscode.DocumentSymbol[], fieldList);
-        else
-            this.collectVSCodeFieldSymbolInf(symbols as vscode.SymbolInformation[], fieldList);
-
-        fieldList.sort(function(v1, v2){
-            if (v1.range.start.line == v2.range.start.line) {
-                if (v1.range.start.character == v2.range.start.character) {
-                    if (v1.range.end.line == v2.range.end.line)
-                        return v2.range.end.character - v1.range.end.character;
-                    else
-                        return v2.range.end.line - v1.range.end.line;
-                } else 
-                    return v2.range.start.character - v1.range.start.character;
-            } else
-                return v2.range.start.line - v1.range.start.line
-            });
-
-        return fieldList;
-    }
-
-    protected collectVSCodeFieldDocSymbols(symbols : vscode.DocumentSymbol[], collected: vscode.DocumentSymbol[]) {
-        for (let i=0; i<symbols.length; i++) {
-            //if (symbols[i].kind == vscode.SymbolKind.Field)
-            //    collected.push(symbols[i]);
-            if ((!symbols[i].children) || (symbols[i].children.length == 0))
-                collected.push(symbols[i]);
-            else
-                this.collectVSCodeFieldDocSymbols(symbols[i].children, collected);           
-        }
-    }
-
-    protected collectVSCodeFieldSymbolInf(symbols : vscode.SymbolInformation[], collected: vscode.DocumentSymbol[]) {
-        for (let i=0; i<symbols.length; i++) {
-            //if (symbols[i].kind == vscode.SymbolKind.Field)
-                collected.push(new vscode.DocumentSymbol(symbols[i].name, '', symbols[i].kind,
-                    symbols[i].location.range, symbols[i].location.range));
-        }
-    }
-
-    //#endregion
 
     //#region standard vscode symbols processing
 
@@ -256,7 +165,6 @@ export class AZDocumentSymbolsLibrary extends AZSymbolsLibrary {
             case vscode.SymbolKind.Operator: return AZSymbolKind.Operator;
             case vscode.SymbolKind.TypeParameter: return AZSymbolKind.Parameter;
         }
-        return AZSymbolKind.Undefined;
     }
 
     //#endregion

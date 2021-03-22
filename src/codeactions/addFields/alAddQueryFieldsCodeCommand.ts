@@ -5,7 +5,6 @@ import { AZSymbolKind } from '../../symbollibraries/azSymbolKind';
 import { ALBaseAddFieldsCodeCommand } from './alBaseAddFieldsCodeCommand';
 import { AZSymbolInformation } from '../../symbollibraries/azSymbolInformation';
 import { AZDocumentSymbolsLibrary } from '../../symbollibraries/azDocumentSymbolsLibrary';
-import { ToolsGetTableFieldsListRequest } from '../../langserver/symbolsinformation/toolsGetTableFieldsListRequest';
 import { TableFieldsSelector } from './tableFieldsSelector';
 
 export class ALAddQueryFieldsCodeCommand extends ALBaseAddFieldsCodeCommand {

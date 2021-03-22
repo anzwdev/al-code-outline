@@ -1,5 +1,16 @@
 # Change Log
 
+## 2.0.26
+ - Redesigned language server
+ - Sort fields by Id or Name in fields selectors (code actions, wizards)
+ - Issue #208 - Add tooltip to 'add multiple fields'
+ - Add tooltips to pages created by page wizard
+ - Issue #218 - Remove prefix/suffix when adding captions or tooltips
+
+Thank you
+ - TheDenSter for reporting issue #208
+ - DanielGoehler for reporting issue #218
+
 ## 2.0.25
  - Issue #210 - Sort table fields
  - Issue #211 - Selecting the last row in filtered data grid shows wrong data

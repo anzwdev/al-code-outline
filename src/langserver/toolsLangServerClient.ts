@@ -39,6 +39,8 @@ import { ToolsFileSystemFileChangeRequest } from './toolsFileSystemFileChangeReq
 import { ToolsGetTableFieldsListResponse } from './symbolsinformation/toolsGetTableFieldsListResponse';
 import { ToolsGetPageDetailsRequest } from './symbolsinformation/toolsGetPageDetailsRequest';
 import { ToolsGetPageDetailsResponse } from './symbolsinformation/toolsGetPageDetailsResponse';
+import { ToolsDocumentContentChangeRequest } from './toolsDocumentContentChangeRequest';
+import { ToolsDocumentContentChangeResponse } from './toolsDocumentContentChangeResponse';
 
 export class ToolsLangServerClient implements vscode.Disposable {
     _context : vscode.ExtensionContext;
@@ -284,8 +286,8 @@ export class ToolsLangServerClient implements vscode.Disposable {
         this.sendNotification(params, "ws/documentOpen");
     }
 
-    public async documentChange(params: ToolsDocumentChangeRequest) {        
-        this.sendNotification(params, "ws/documentChange");
+    public async documentChange(params: ToolsDocumentContentChangeRequest) : Promise<ToolsDocumentContentChangeResponse | undefined> {
+        return this.sendRequest<ToolsDocumentContentChangeRequest, ToolsDocumentContentChangeResponse>(params, "ws/documentContentChange");
     }
 
     public async documentSave(params: ToolsDocumentChangeRequest) {

@@ -37,9 +37,11 @@ export class ALAddPageFieldsCodeCommand extends ALBaseAddFieldsCodeCommand {
         let symbol = this._toolsExtensionContext.activeDocumentSymbols.findSymbolInRange(range);
         if (!symbol)
             return;
+        let config = vscode.workspace.getConfiguration('alOutline', document.uri);
         let parentKind: AZSymbolKind[] = [AZSymbolKind.PageObject, AZSymbolKind.PageExtensionObject];
         let pageSymbol = symbol.findParentByKindList(parentKind);
         let isFieldSymbol = ((symbol.kind == AZSymbolKind.PageField) || (symbol.kind == AZSymbolKind.PageUserControl));
+        let addToolTips = !!config.get<boolean>('addToolTipsToPageFields');
 
         if ((!pageSymbol) || 
             ((!isFieldSymbol) && (!symbol.contentRange)) || 
@@ -75,7 +77,7 @@ export class ALAddPageFieldsCodeCommand extends ALBaseAddFieldsCodeCommand {
         let writer: ALSyntaxWriter = new ALSyntaxWriter(document.uri);
         writer.setIndent(indent);
         for (let i=0; i<selectedFields.length; i++) {
-            writer.writePageField(selectedFields[i].name!);
+            writer.writePageField(selectedFields[i].name!, selectedFields[i].caption, addToolTips);
         }
         let source = writer.toString();
 

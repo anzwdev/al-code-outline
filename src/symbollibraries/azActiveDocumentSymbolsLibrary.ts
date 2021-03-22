@@ -1,8 +1,6 @@
 import * as vscode from 'vscode';
-import * as path from 'path';
 import { AZDocumentSymbolsLibrary } from "./azDocumentSymbolsLibrary";
 import { DevToolsExtensionContext } from "../devToolsExtensionContext";
-import { AZSymbolInformation } from './azSymbolInformation';
 
 export class AZActiveDocumentSymbolsLibrary extends AZDocumentSymbolsLibrary {
     private _autoReload : boolean;
@@ -18,20 +16,15 @@ export class AZActiveDocumentSymbolsLibrary extends AZDocumentSymbolsLibrary {
     
         //active document content changed - symbols need update
         vscode.workspace.onDidChangeTextDocument(e => {
-            if ((vscode.window.activeTextEditor) && 
-                (e.document) && 
-                (vscode.window.activeTextEditor.document.uri.fsPath == e.document.uri.fsPath))
-            this.onActiveDocumentChanged();
+            if ((this.isActiveDocument(e.document)) && (e.document.languageId != "al"))
+                this.onActiveDocumentChanged();
         });
 
         //document saved - symbols should be reloaded because document could be formatted
         vscode.workspace.onDidSaveTextDocument(document => {
-            if ((vscode.window.activeTextEditor) && 
-                (document) && 
-                (vscode.window.activeTextEditor.document.uri.fsPath == document.uri.fsPath))
-            this.onActiveDocumentChanged();
+            if (this.isActiveDocument(document))
+                this.onActiveDocumentChanged();
         });
-
     }
 
     protected onActiveDocumentChanged() {
@@ -47,6 +40,12 @@ export class AZActiveDocumentSymbolsLibrary extends AZDocumentSymbolsLibrary {
         this._reloadRequired = true;
         if (this._autoReload)
             this.loadAsync(false);
+    }
+
+    public isActiveDocument(document: vscode.TextDocument): boolean {
+        return ((!!vscode.window.activeTextEditor) && 
+            (!!document) && 
+            (vscode.window.activeTextEditor.document.uri.fsPath == document.uri.fsPath));
     }
 
 }

@@ -9,6 +9,7 @@ export class ALSyntaxWriter {
     private indentPart : string;  
     public applicationArea : string;   
     private propertiesCache : NameValue[];
+    private fieldToolTip: string;
     private eol: string;
 
     constructor(destUri: vscode.Uri | undefined) {
@@ -18,6 +19,7 @@ export class ALSyntaxWriter {
         this.indentText = "";
         this.indentPart = "    ";
         this.applicationArea = StringHelper.emptyIfNotDef(config.get<string>('defaultAppArea'));
+        this.fieldToolTip = StringHelper.emptyIfNotDef(config.get<string>('pageFieldToolTip'));
         this.propertiesCache = [];        
         this.eol = StringHelper.getDefaultEndOfLine(destUri);
     }
@@ -203,8 +205,10 @@ export class ALSyntaxWriter {
         this.writeEndBlock();
     }
 
-    public writePageField(fieldName : string) {
+    public writePageField(fieldName : string, fieldCaption: string | undefined, createToolTip: boolean) {
         this.writeStartNameSourceBlock("field", this.encodeName(fieldName), 'Rec.' + this.encodeName(fieldName));
+        if (createToolTip)
+            this.writeTooltip(this.fieldToolTip, fieldCaption);        
         this.writeApplicationArea();
         this.writeEndBlock();
     }
@@ -221,6 +225,13 @@ export class ALSyntaxWriter {
     public writeApplicationArea() {
         if ((this.applicationArea) && (this.applicationArea !== ""))
             this.writeProperty("ApplicationArea", this.applicationArea);
+    }
+
+    public writeTooltip(template: string, value: string | undefined) {
+        if ((template) && (template != "") && (value) && (value != "")) {
+            value = template.replace(new RegExp("%1", "g"), value);
+            this.writeProperty("ToolTip", this.encodeString(value));
+        }
     }
 
     public addApplicationAreaProperty() {
