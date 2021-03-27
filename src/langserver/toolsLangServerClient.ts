@@ -41,6 +41,8 @@ import { ToolsGetPageDetailsRequest } from './symbolsinformation/toolsGetPageDet
 import { ToolsGetPageDetailsResponse } from './symbolsinformation/toolsGetPageDetailsResponse';
 import { ToolsDocumentContentChangeRequest } from './toolsDocumentContentChangeRequest';
 import { ToolsDocumentContentChangeResponse } from './toolsDocumentContentChangeResponse';
+import { ToolsGetXmlPortTableElementDetailsRequest } from './symbolsinformation/toolsGetXmlPortTableElementDetailsRequest';
+import { toolsGetXmlPortTableElementDetailsResponse } from './symbolsinformation/toolsGetXmlPortTableElementDetailsResponse';
 
 export class ToolsLangServerClient implements vscode.Disposable {
     _context : vscode.ExtensionContext;
@@ -274,6 +276,10 @@ export class ToolsLangServerClient implements vscode.Disposable {
 
     public getPageDetails(params: ToolsGetPageDetailsRequest) : Promise<ToolsGetPageDetailsResponse | undefined> {
         return this.sendRequest<ToolsGetPageDetailsRequest, ToolsGetPageDetailsResponse>(params, 'al/getpagedetails');
+    }
+
+    public getXmlPortTableElementDetails(params: ToolsGetXmlPortTableElementDetailsRequest) : Promise<toolsGetXmlPortTableElementDetailsResponse | undefined> {
+        return this.sendRequest<ToolsGetXmlPortTableElementDetailsRequest, toolsGetXmlPortTableElementDetailsResponse>(params, 'al/getxmlporttableelementdetails');
     }
 
     //workspace and file notifications

@@ -6,6 +6,8 @@ import { ALSyntaxWriter } from '../../allanguage/alSyntaxWriter';
 import { AZSymbolInformation } from '../../symbollibraries/azSymbolInformation';
 import { AZDocumentSymbolsLibrary } from '../../symbollibraries/azDocumentSymbolsLibrary';
 import { TableFieldsSelector } from './tableFieldsSelector';
+import { ToolsGetXmlPortTableElementDetailsRequest } from '../../langserver/symbolsinformation/toolsGetXmlPortTableElementDetailsRequest';
+import { TableFieldInformation } from '../../symbolsinformation/tableFieldInformation';
 
 export class ALAddXmlPortFieldsCodeCommand extends ALBaseAddFieldsCodeCommand {
     elementType: string;
@@ -47,13 +49,26 @@ export class ALAddXmlPortFieldsCodeCommand extends ALBaseAddFieldsCodeCommand {
             ((isFieldSymbol) && (!symbol.range)))            
             return;
 
+        let xmlPortSymbol = dataItemSymbol.findParentByKind(AZSymbolKind.XmlPortObject);
+        if (!xmlPortSymbol)
+            return;
+
         //get list of fields
+        let response = await this._toolsExtensionContext.toolsLangServerClient.getXmlPortTableElementDetails(
+            new ToolsGetXmlPortTableElementDetailsRequest(document.uri.fsPath, xmlPortSymbol.name, dataItemSymbol.name, false, true));
+        if ((!response) || (!response.symbol) || (!response.symbol.availableTableFields))
+            return;
+
+        let fields: TableFieldInformation[] = response.symbol.availableTableFields;
+
+        /*
         let fields = await this.getTableFields(dataItemSymbol.source);
 
         //remove existing fields from the list
         fields = this.removeExistingFields(fields, dataItemSymbol.childSymbols, AZSymbolKind.XmlPortFieldElement, 'All available table fields have already been added to the query.');
         if (!fields)
             return;
+        */
 
         //ask for fields
         let fieldsSelector = new TableFieldsSelector(this._toolsExtensionContext);
