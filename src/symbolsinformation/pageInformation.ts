@@ -1,8 +1,4 @@
-import { SymbolWithIdInformation } from "./symbolWithIdInformation";
-import { TableFieldInformation } from "./tableFieldInformation";
+import { TableBasedSymbolWithIdInformation } from "./tableBasedSymolWithIdInformation";
 
-export class PageInformation extends SymbolWithIdInformation {
-    source: string | undefined;
-    pageTableFields: TableFieldInformation[] | undefined;
-    availableTableFields: TableFieldInformation[] | undefined;
+export class PageInformation extends TableBasedSymbolWithIdInformation {
 }

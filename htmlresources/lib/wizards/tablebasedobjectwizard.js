@@ -13,7 +13,11 @@ class TableBasedObjectWizard {
         //initialize properties
         this._vscode = acquireVsCodeApi();
 
-        document.getElementById('srcfldsortname').className = "mselcaptb mseltbbtnsel";
+        let fldSortName = document.getElementById('srcfldsortname');
+        let fldSortId = document.getElementById('srcfldsortid');
+
+        if (fldSortName)
+            fldSortName.className = "mselcaptb mseltbbtnsel";
         
         // Handle messages sent from the extension to the webview
         window.addEventListener('message', event => {
@@ -36,12 +40,14 @@ class TableBasedObjectWizard {
             this.onCancel();
         });      
 
-        document.getElementById('srcfldsortid').addEventListener('click', event => {
-            this.sortSrcFieldsBy("id");
-        });
-        document.getElementById('srcfldsortname').addEventListener('click', event => {
-            this.sortSrcFieldsBy("name");
-        });
+        if (fldSortId)
+            fldSortId.addEventListener('click', event => {
+                this.sortSrcFieldsBy("id");
+            });
+        if (fldSortName)
+            fldSortName.addEventListener('click', event => {
+                this.sortSrcFieldsBy("name");
+            });
 
 
         this.sendMessage({

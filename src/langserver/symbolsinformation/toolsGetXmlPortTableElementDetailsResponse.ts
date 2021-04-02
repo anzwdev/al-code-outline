@@ -1,6 +1,6 @@
 import { XmlPortTableElementInformation } from "../../symbolsinformation/xmlPortTableElementInformation";
-import { toolsSymbolInformationDetailsResponse } from "./toolsSymbolInformationDetailsResponse";
+import { ToolsSymbolInformationDetailsResponse } from "./toolsSymbolInformationDetailsResponse";
 
-export class toolsGetXmlPortTableElementDetailsResponse extends toolsSymbolInformationDetailsResponse<XmlPortTableElementInformation> {
+export class toolsGetXmlPortTableElementDetailsResponse extends ToolsSymbolInformationDetailsResponse<XmlPortTableElementInformation> {
 
 }

@@ -48,4 +48,8 @@ export class AZActiveDocumentSymbolsLibrary extends AZDocumentSymbolsLibrary {
             (vscode.window.activeTextEditor.document.uri.fsPath == document.uri.fsPath));
     }
 
+    public initializeContent() {
+        this.onActiveDocumentChanged();
+    }
+
 }

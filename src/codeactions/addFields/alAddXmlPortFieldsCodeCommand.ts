@@ -61,15 +61,6 @@ export class ALAddXmlPortFieldsCodeCommand extends ALBaseAddFieldsCodeCommand {
 
         let fields: TableFieldInformation[] = response.symbol.availableTableFields;
 
-        /*
-        let fields = await this.getTableFields(dataItemSymbol.source);
-
-        //remove existing fields from the list
-        fields = this.removeExistingFields(fields, dataItemSymbol.childSymbols, AZSymbolKind.XmlPortFieldElement, 'All available table fields have already been added to the query.');
-        if (!fields)
-            return;
-        */
-
         //ask for fields
         let fieldsSelector = new TableFieldsSelector(this._toolsExtensionContext);
         let selectedFields = await fieldsSelector.selectFields('Select table fields', fields);

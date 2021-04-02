@@ -1,14 +1,8 @@
-import { ToolsSymbolInformationRequest } from "./toolsSymbolInformationRequest";
+import { ToolsGetTableBasedSymbolDetailsRequest } from "./toolsGetTableBasedSymbolDetailsRequest";
 
-export class ToolsGetPageDetailsRequest  extends ToolsSymbolInformationRequest {
-    name: string;
-    getPageFields: boolean;
-    getAvailableFields: boolean;
+export class ToolsGetPageDetailsRequest  extends ToolsGetTableBasedSymbolDetailsRequest {
 
-    constructor(newPath: string | undefined, newName: string, newGetPageFields: boolean, newGetAvailableFields: boolean) {
-        super(newPath);
-        this.name = newName;
-        this.getPageFields = newGetPageFields;
-        this.getAvailableFields = newGetAvailableFields;
+    constructor(newPath: string | undefined, newName: string, newGetExistingFields: boolean, newGetAvailableFields: boolean) {
+        super(newPath, newName, newGetExistingFields, newGetAvailableFields);
     }
 }

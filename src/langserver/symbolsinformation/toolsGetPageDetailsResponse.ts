@@ -1,6 +1,6 @@
 import { PageInformation } from "../../symbolsinformation/pageInformation";
-import { toolsSymbolInformationDetailsResponse } from "./toolsSymbolInformationDetailsResponse";
+import { ToolsSymbolInformationDetailsResponse } from "./toolsSymbolInformationDetailsResponse";
 
-export class ToolsGetPageDetailsResponse extends toolsSymbolInformationDetailsResponse<PageInformation> {
+export class ToolsGetPageDetailsResponse extends ToolsSymbolInformationDetailsResponse<PageInformation> {
     
 }

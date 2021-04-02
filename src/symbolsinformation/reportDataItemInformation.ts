@@ -1,4 +1,5 @@
 import { TableBasedSymbolWithNameInformation } from "./tableBasedSymbolWithNameInformation";
 
-export class XmlPortTableElementInformation extends TableBasedSymbolWithNameInformation {
+export class ReportDataItemInformation extends TableBasedSymbolWithNameInformation {
+   
 }

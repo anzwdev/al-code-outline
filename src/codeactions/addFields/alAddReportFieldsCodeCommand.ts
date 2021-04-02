@@ -6,6 +6,8 @@ import { ALBaseAddFieldsCodeCommand } from './alBaseAddFieldsCodeCommand';
 import { AZSymbolInformation } from '../../symbollibraries/azSymbolInformation';
 import { AZDocumentSymbolsLibrary } from '../../symbollibraries/azDocumentSymbolsLibrary';
 import { TableFieldsSelector } from './tableFieldsSelector';
+import { ToolsGetReportDataItemDetailsRequest } from '../../langserver/symbolsinformation/toolsGetReportDataItemDetailsRequest';
+import { TableFieldInformation } from '../../symbolsinformation/tableFieldInformation';
 
 export class ALAddReportFieldsCodeCommand extends ALBaseAddFieldsCodeCommand {
     constructor(context : DevToolsExtensionContext) {
@@ -44,6 +46,19 @@ export class ALAddReportFieldsCodeCommand extends ALBaseAddFieldsCodeCommand {
             ((isFieldSymbol) && (!symbol.range)))            
             return;
 
+        let objectSymbol = dataItemSymbol.findParentByKind(AZSymbolKind.ReportObject);
+        if (!objectSymbol)
+            return;
+   
+        //get list of fields
+        let response = await this._toolsExtensionContext.toolsLangServerClient.getReportDataItemDetails(
+            new ToolsGetReportDataItemDetailsRequest(document.uri.fsPath, objectSymbol.name, dataItemSymbol.name, false, true));
+        if ((!response) || (!response.symbol) || (!response.symbol.availableTableFields))
+            return;
+
+        let fields: TableFieldInformation[] = response.symbol.availableTableFields;
+
+        /*
         //get list of fields
         let fields = await this.getTableFields(dataItemSymbol.source);
         
@@ -51,6 +66,7 @@ export class ALAddReportFieldsCodeCommand extends ALBaseAddFieldsCodeCommand {
         fields = this.removeExistingFields(fields, dataItemSymbol.childSymbols, AZSymbolKind.ReportColumn, 'All available table fields have already been added to the report.');
         if (!fields)
             return;
+        */
 
         //ask for fields
         let fieldsSelector = new TableFieldsSelector(this._toolsExtensionContext);

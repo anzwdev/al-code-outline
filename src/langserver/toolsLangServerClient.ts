@@ -43,6 +43,14 @@ import { ToolsDocumentContentChangeRequest } from './toolsDocumentContentChangeR
 import { ToolsDocumentContentChangeResponse } from './toolsDocumentContentChangeResponse';
 import { ToolsGetXmlPortTableElementDetailsRequest } from './symbolsinformation/toolsGetXmlPortTableElementDetailsRequest';
 import { toolsGetXmlPortTableElementDetailsResponse } from './symbolsinformation/toolsGetXmlPortTableElementDetailsResponse';
+import { ToolsGetReportDataItemDetailsRequest } from './symbolsinformation/toolsGetReportDataItemDetailsRequest';
+import { ToolsGetReportDataItemDetailsResponse } from './symbolsinformation/toolsGetReportDataItemDetailsResponse';
+import { ToolsGetQueryDataItemDetailsRequest } from './symbolsinformation/toolsGetQueryDataItemDetailsRequest';
+import { ToolsGetQueryDataItemDetailsResponse } from './symbolsinformation/toolsGetQueryDataItemDetailsResponse';
+import { ToolsGetPagesListResponse } from './symbolsinformation/toolsGetPagesListResponse';
+import { ToolsGetReportsListResponse } from './symbolsinformation/toolsGetReportsListResponse';
+import { ToolsGetQueriesListResponse } from './symbolsinformation/toolsGetQueriesListResponse';
+import { ToolsGetXmlPortsListResponse } from './symbolsinformation/toolsGetXmlPortsListResponse';
 
 export class ToolsLangServerClient implements vscode.Disposable {
     _context : vscode.ExtensionContext;
@@ -270,6 +278,22 @@ export class ToolsLangServerClient implements vscode.Disposable {
         return this.sendRequest<ToolsSymbolInformationRequest, ToolsGetInterfacesListResponse>(params, 'al/getinterfaceslist');
     }
 
+    public getPagesList(params: ToolsSymbolInformationRequest) : Promise<ToolsGetPagesListResponse | undefined> {
+        return this.sendRequest<ToolsSymbolInformationRequest, ToolsGetPagesListResponse>(params, 'al/getpageslist');
+    }
+
+    public getReportsList(params: ToolsSymbolInformationRequest) : Promise<ToolsGetReportsListResponse | undefined> {
+        return this.sendRequest<ToolsSymbolInformationRequest, ToolsGetReportsListResponse>(params, 'al/getreportslist');
+    }
+
+    public getQueriesList(params: ToolsSymbolInformationRequest) : Promise<ToolsGetQueriesListResponse | undefined> {
+        return this.sendRequest<ToolsSymbolInformationRequest, ToolsGetQueriesListResponse>(params, 'al/getquerieslist');
+    }
+
+    public getXmlPortsList(params: ToolsSymbolInformationRequest) : Promise<ToolsGetXmlPortsListResponse | undefined> {
+        return this.sendRequest<ToolsSymbolInformationRequest, ToolsGetXmlPortsListResponse>(params, 'al/getxmlportslist');
+    }
+
     public getTableFieldsList(params: ToolsGetTableFieldsListRequest) : Promise<ToolsGetTableFieldsListResponse | undefined> {
         return this.sendRequest<ToolsGetTableFieldsListRequest, ToolsGetTableFieldsListResponse>(params, 'al/gettablefieldslist');
     }
@@ -280,6 +304,14 @@ export class ToolsLangServerClient implements vscode.Disposable {
 
     public getXmlPortTableElementDetails(params: ToolsGetXmlPortTableElementDetailsRequest) : Promise<toolsGetXmlPortTableElementDetailsResponse | undefined> {
         return this.sendRequest<ToolsGetXmlPortTableElementDetailsRequest, toolsGetXmlPortTableElementDetailsResponse>(params, 'al/getxmlporttableelementdetails');
+    }
+
+    public getReportDataItemDetails(params: ToolsGetReportDataItemDetailsRequest) : Promise<ToolsGetReportDataItemDetailsResponse | undefined> {
+        return this.sendRequest<ToolsGetReportDataItemDetailsRequest, ToolsGetReportDataItemDetailsResponse>(params, 'al/getreportdataitemdetails');
+    }
+
+    public getQueryDataItemDetails(params: ToolsGetQueryDataItemDetailsRequest) : Promise<ToolsGetQueryDataItemDetailsResponse | undefined> {
+        return this.sendRequest<ToolsGetQueryDataItemDetailsRequest, ToolsGetQueryDataItemDetailsResponse>(params, 'al/getquerydataitemdetails');
     }
 
     //workspace and file notifications
