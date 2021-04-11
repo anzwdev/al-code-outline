@@ -17,6 +17,7 @@ export class ALAddReportFieldsCodeCommand extends ALBaseAddFieldsCodeCommand {
     collectCodeActions(docSymbols: AZDocumentSymbolsLibrary, symbol: AZSymbolInformation | undefined, document: vscode.TextDocument, range: vscode.Range | vscode.Selection, context: vscode.CodeActionContext, actions: vscode.CodeAction[]) {
         if ((symbol) && 
             ((symbol.kind == AZSymbolKind.ReportDataItem) ||
+             (symbol.kind == AZSymbolKind.ReportExtensionAddColumnChange) ||
              (symbol.kind == AZSymbolKind.ReportColumn))) {
             let action = new vscode.CodeAction("Add multiple fields (AZ AL Dev Tools)", vscode.CodeActionKind.QuickFix);
             action.command = { 
@@ -38,21 +39,31 @@ export class ALAddReportFieldsCodeCommand extends ALBaseAddFieldsCodeCommand {
             return;       
         let isFieldSymbol = (symbol.kind == AZSymbolKind.ReportColumn);
         let dataItemSymbol: AZSymbolInformation | undefined = symbol;
-        if (isFieldSymbol)
-            dataItemSymbol = symbol.findParentByKind(AZSymbolKind.ReportDataItem);
+        if (isFieldSymbol) {
+            let dataItemKind: AZSymbolKind[] = [AZSymbolKind.ReportDataItem, AZSymbolKind.ReportExtensionAddColumnChange];
+            dataItemSymbol = symbol.findParentByKindList(dataItemKind);
+        }
         if ((!dataItemSymbol) ||
-            (!dataItemSymbol.source) || 
+            //(!dataItemSymbol.source) || 
             (!dataItemSymbol.contentRange) || 
             ((isFieldSymbol) && (!symbol.range)))            
             return;
 
-        let objectSymbol = dataItemSymbol.findParentByKind(AZSymbolKind.ReportObject);
+        let parentKind: AZSymbolKind[] = [AZSymbolKind.ReportObject, AZSymbolKind.ReportExtensionObject];
+        let objectSymbol = dataItemSymbol.findParentByKindList(parentKind);
         if (!objectSymbol)
             return;
-   
+        let reportName = (objectSymbol.kind == AZSymbolKind.ReportExtensionObject)?objectSymbol.extends:objectSymbol.name;
+        if (!reportName)
+            return;
+
+        let dataItemName = (dataItemSymbol.kind == AZSymbolKind.ReportExtensionAddColumnChange)?dataItemSymbol.extends:dataItemSymbol.name;
+        if (!dataItemName)
+            return;
+
         //get list of fields
         let response = await this._toolsExtensionContext.toolsLangServerClient.getReportDataItemDetails(
-            new ToolsGetReportDataItemDetailsRequest(document.uri.fsPath, objectSymbol.name, dataItemSymbol.name, false, true));
+            new ToolsGetReportDataItemDetailsRequest(document.uri.fsPath, reportName, dataItemName, false, true));
         if ((!response) || (!response.symbol) || (!response.symbol.availableTableFields))
             return;
 
@@ -81,8 +92,8 @@ export class ALAddReportFieldsCodeCommand extends ALBaseAddFieldsCodeCommand {
         writer.setIndent(indent);
         for (let i=0; i<selectedFields.length; i++) {
             let columnName = writer.createName(selectedFields[i].name!);
-            if (dataItemSymbol && dataItemSymbol.name)
-                columnName = columnName + "_" + dataItemSymbol.name;
+            if (dataItemName)
+                columnName = columnName + "_" + writer.createName(dataItemName);
             writer.writeNameSourceBlock("column", columnName, writer.encodeName(selectedFields[i].name!));
         }
         let source = writer.toString();

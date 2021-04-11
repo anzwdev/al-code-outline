@@ -1,5 +1,8 @@
 # Change Log
 
+## 3.0.1
+ - Issue #222 - Add support for new al object types
+
 ## 3.0.0
  - Redesigned language server
  - Add tooltips to fields created by the page wizard

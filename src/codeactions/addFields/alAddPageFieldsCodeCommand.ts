@@ -50,9 +50,13 @@ export class ALAddPageFieldsCodeCommand extends ALBaseAddFieldsCodeCommand {
             
             return;
 
+        let pageName = (pageSymbol.kind == AZSymbolKind.PageExtensionObject)?pageSymbol.extends:pageSymbol.name;
+        if (!pageName)
+            return;
+
         //get available fields from the language server
         let response = await this._toolsExtensionContext.toolsLangServerClient.getPageDetails(
-            new ToolsGetPageDetailsRequest(document.uri.fsPath, pageSymbol.name, false, true));
+            new ToolsGetPageDetailsRequest(document.uri.fsPath, pageName, false, true));
         if ((!response) || (!response.symbol) || (!response.symbol.availableTableFields))
             return;
 

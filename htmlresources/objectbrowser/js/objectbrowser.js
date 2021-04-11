@@ -63,7 +63,10 @@ class ObjectBrowser {
         this.initModeBtnEventHandlers('enumModeBtn', 'Enum', 'pagecustomizationModeBtn', 'enumextensionModeBtn');
         this.initModeBtnEventHandlers('enumextensionModeBtn', 'EnumExtension', 'enumModeBtn', 'dotnetpackageModeBtn');
         this.initModeBtnEventHandlers('dotnetpackageModeBtn', 'DotNetPackage', 'enumModeBtn', 'interfaceModeBtn');
-        this.initModeBtnEventHandlers('interfaceModeBtn', 'Interface', 'dotnetpackageModeBtn', 'allModeBtn');
+        this.initModeBtnEventHandlers('interfaceModeBtn', 'Interface', 'dotnetpackageModeBtn', 'reportExtensionModeBtn');
+        this.initModeBtnEventHandlers('reportExtensionModeBtn', 'ReportExtension', 'interfaceModeBtn', 'permissionSetModeBtn');
+        this.initModeBtnEventHandlers('permissionSetModeBtn', 'PermissionSet', 'reportExtensionModeBtn', 'permissionSetExtensionModeBtn');
+        this.initModeBtnEventHandlers('permissionSetExtensionModeBtn', 'PermissionSetExtension', 'permissionSetModeBtn', 'allModeBtn');
         this.initModeBtnEventHandlers('allModeBtn', 'All', 'interfaceModeBtn', '');        
 
         document.getElementById('searchtype').addEventListener('keydown', event => {
@@ -185,6 +188,10 @@ class ObjectBrowser {
         typeSort[ALSymbolKind.EnumExtensionType] = 13;
         typeSort[ALSymbolKind.DotNetPackage] = 14;
         typeSort[ALSymbolKind.Interface] = 15;
+        typeSort[ALSymbolKind.ReportExtensionObject] = 16;
+        typeSort[ALSymbolKind.PermissionSet] = 17,
+        typeSort[ALSymbolKind.PermissionSetExtension] = 18;
+        typeSort[ALSymbolKind.Entitlement] = 19;
 
         if ((this._data) && (this._data.length > 1)) {
             this._data.sort(function(a,b) {
@@ -238,6 +245,14 @@ class ObjectBrowser {
                 return "DotNetPackage";
             case ALSymbolKind.Interface:
                 return "Interface";
+            case ALSymbolKind.ReportExtensionObject:
+                return 'ReportExtension';
+            case ALSymbolKind.PermissionSet:
+                return 'PermissionSet';
+            case ALSymbolKind.PermissionSetExtension:
+                return 'PermissionSetExtension';
+            case ALSymbolKind.Entitlement:
+                return 'Entitlement';
             default:
                 return "Undefined";
         }

@@ -126,6 +126,20 @@ export enum AZSymbolKind {
 
     VariableDeclarationName = 429,
     
+    Entitlement = 430,
+    PermissionSet = 431,
+    PermissionSetExtension = 432,
+    //ReportExtension = 433,
+    ReportExtensionAddColumnChange = 434,
+    ReportExtensionAddDataItemChange = 435,
+    ReportExtensionDataSetAddColumn = 436,
+    ReportExtensionDataSetAddDataItem = 437,
+    ReportExtensionDataSetModify = 438,
+    ReportExtensionDataSetSection = 439,
+    ReportExtensionModifyChange = 440,
+    ReportExtensionObject = 441,
+    RequestPageExtension = 442,
+
     LocalMethodDeclaration = 50001,
     PrimaryKey = 50002,
     Module = 50003,
@@ -146,6 +160,10 @@ export enum AZSymbolKind {
     EnumTypeList = 50017,
     EnumExtensionTypeList = 50018,
     InterfaceObjectList = 50059,
+    ReportExtensionObjectList = 50060,
+    PermissionSetList = 50061,
+    PermissionSetExtensionList = 50062,
+    EntitlementList = 50063,
 
     Namespace = 50019,
     Package = 50020,
@@ -196,6 +214,6 @@ export enum AZSymbolKind {
     SyntaxTreeToken = 50057,
     SyntaxTreeTrivia = 50058
 
-    //Next available id 50060
+    //Next available id 50064
 
 }

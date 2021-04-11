@@ -157,8 +157,12 @@ export class FileBuilder {
             case AZSymbolKind.DotNetPackage: return 'dotnetpackage';
             case AZSymbolKind.EnumExtensionType: return 'enumextension';
             case AZSymbolKind.Interface: return 'interface';
+            case AZSymbolKind.ReportExtensionObject: return 'reportextension';
+            case AZSymbolKind.PermissionSet: return 'permissionset';
+            case AZSymbolKind.PermissionSetExtension: return 'permissionsetextension';
+            case AZSymbolKind.Entitlement: return 'entitlement';
        }
-        return '';
+       return '';
     }
 
     public static SymbolKindToCamelCaseName(symbolKind : AZSymbolKind) {
@@ -178,6 +182,10 @@ export class FileBuilder {
             case AZSymbolKind.DotNetPackage: return 'DotNetPackage';
             case AZSymbolKind.EnumExtensionType: return 'EnumExtension';
             case AZSymbolKind.Interface: return 'Interface';
+            case AZSymbolKind.ReportExtensionObject: return 'ReportExtension';
+            case AZSymbolKind.PermissionSet: return 'PermissionSet';
+            case AZSymbolKind.PermissionSetExtension: return 'PermissionSetExtension';
+            case AZSymbolKind.Entitlement: return 'Entitlement';
        }
         return '';
     }
