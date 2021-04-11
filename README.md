@@ -206,12 +206,12 @@ This extension contributes the following settings:
 * `fieldsSelectionOrder`: specifies how "Add multiple fields" functionality adds fields, available options are: "alphabetic" and "selection order"
 * `alOutline.codeActionsOnSave`: list of code actions that should be run on document save, available options are: SortReportColumns, SortProperties, SortProcedures, SortVariables
 * `alOutline.pageActionToolTip`: default tooltip template for page actions. Use %1 as placeholder for action caption or name
-* `alOutline.pageFieldToolTip`: The default tooltip template for page fields. Use %1 as placeholder for field caption or name
+* `alOutline.pageFieldToolTip`: default tooltip template for page fields. Use %1 as placeholder for field caption or name
+* `alOutline.addToolTipsToPageFields`: set to true to add tooltips to page fields when 'Add multiple fields' action is used
 
 ## Known Issues
 
-- When AL project is opened in Visual Studio Code, AL Code Outline pane might not be visible or might be empty even if one of *.al files is opened. You have to switch to another al file to display/refresh it.
-- It takes some time to parse all *.al files when new project is opened so code outline will stay empty during that time. You can use Refresh button to force it to reload content. 
+- It takes some time to parse all *.al files when new project is opened so code outline will stay empty during that time.
 - Extension uses CRS-AL-LANGUAGE-EXTENSION for generating file names for new objects. As a result you will see plenty of new snippets added by the CRS extension. If you don't want to see them, go to Visual Studio settings and disable them in CRS-AL-LANGUAGE-EXTENSION section.
 
 ## About me

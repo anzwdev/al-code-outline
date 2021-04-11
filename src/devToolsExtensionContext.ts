@@ -1,6 +1,7 @@
 'use strict';
 
 import * as vscode from 'vscode';
+import * as path from 'path';
 import { ALLangServerProxy } from './allanguage/alLangServerProxy';
 import { ToolsLangServerClient } from './langserver/toolsLangServerClient';
 import { AZActiveDocumentSymbolsLibrary } from './symbollibraries/azActiveDocumentSymbolsLibrary';
@@ -16,6 +17,7 @@ import { ALSymbolsService } from './services/alSymbolsService';
 import { ALCodeTransformationService } from './services/alCodeTransformationService';
 import { ALCodeActionsService } from './services/ALCodeActionsService';
 import { EditorsService } from './services/editorsService';
+import { WorkspaceChangeTrackingService } from './services/workspaceChangeTrackingService';
 
 export class DevToolsExtensionContext implements vscode.Disposable {
     alLangProxy : ALLangServerProxy;    
@@ -32,6 +34,7 @@ export class DevToolsExtensionContext implements vscode.Disposable {
     alCodeTransformationService: ALCodeTransformationService;
     alCodeActionsService: ALCodeActionsService;
     editorsService: EditorsService;
+    workspaceChangeTrackingService: WorkspaceChangeTrackingService;
 
     constructor(context : vscode.ExtensionContext) {
         this.alLangProxy = new ALLangServerProxy()
@@ -54,6 +57,7 @@ export class DevToolsExtensionContext implements vscode.Disposable {
         this.alCodeTransformationService = new ALCodeTransformationService(this);
         this.alCodeActionsService = new ALCodeActionsService(this);
         this.editorsService = new EditorsService(this);
+        this.workspaceChangeTrackingService = new WorkspaceChangeTrackingService(this);
     }
 
     getUseSymbolsBrowser() : boolean {
@@ -70,6 +74,18 @@ export class DevToolsExtensionContext implements vscode.Disposable {
     showSymbolsBrowser(library: AZSymbolsLibrary) {
         let symbolsBrowser : ALSymbolsBrowser = new ALSymbolsBrowser(this, library);
         symbolsBrowser.show();
+    }
+
+    getImageUri(name: string, theme: string) {
+        return vscode.Uri.file(this.vscodeExtensionContext.asAbsolutePath(path.join("resources", "images", theme, name)));
+    }
+
+    getLightImageUri(name: string) {
+        return this.getImageUri(name, "light");
+    }
+
+    getDarkImageUri(name: string) {
+        return this.getImageUri(name, "dark");
     }
 
     dispose() {

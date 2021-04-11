@@ -4,6 +4,8 @@ class FilteredList {
         this._filterId = filterId;
         this._listId = listId;
         this._filterValue = undefined;
+        this._captionMember = undefined;
+        this._sortByMember = undefined;
 
         if (this._filterId) {
             let filterElement = document.getElementById(this._filterId);
@@ -18,6 +20,13 @@ class FilteredList {
             this._data = data.slice();
         else
             this._data = [];
+        if (this._data) {
+            for (let i=0; i<this._data.length; i++) {
+                if (this._data[i].id)
+                    this._data[i].idname = this._data[i].id.toString() + ": " + this._data[i].name;
+            }
+        }
+        this.sort();
         this.updateListUI();
     }
 
@@ -58,11 +67,18 @@ class FilteredList {
         if (this._data) {
             let childItems = document.createDocumentFragment();
             for (let i=0; i<this._data.length; i++) {
-                if (this.valueInFilter(this._data[i]))
-                    childItems.appendChild(this.createOption(i, this._data[i]));
+                this.appendEntryHtml(childItems, i);
             }
             element.appendChild(childItems)
         }
+        
+    }
+
+    getDataCaption(idx) {
+        let value = this._data[idx];
+        if ((value) && (this._captionMember))
+            value = value[this._captionMember];
+        return value;
     }
 
     getAll() {
@@ -106,11 +122,16 @@ class FilteredList {
             let childNodes = document.createDocumentFragment();
             for (let i = 0; i<values.length; i++) {
                 this._data.push(values[i]);
-                if (this.valueInFilter(this._data[i]))
-                    childNodes.appendChild(this.createOption(this._data.length - 1, values[i]));
+                this.appendEntryHtml(childNodes, this._data.length - 1);
             }
             element.appendChild(childNodes);
         }
+    }
+
+    appendEntryHtml(childItems, idx) {
+        let caption = this.getDataCaption(idx);
+        if (this.valueInFilter(caption))
+            childItems.appendChild(this.createOption(idx, caption));
     }
 
     createOption(newValue, newText) {
@@ -118,6 +139,33 @@ class FilteredList {
         element.text = newText;
         element.value = newValue;
         return element;
+    }
+
+    sort() {
+        if ((this._data) && (this._sortByMember)) {
+            this._data.sort((a,b) => {
+                let valA = a[this._sortByMember];
+                let valB = b[this._sortByMember];
+                if (valA > valB)
+                    return 1;
+                if (valA < valB)
+                    return -1;
+                return 0;
+            });
+        }
+    }
+
+    sortBy(name, caption) {
+        if (caption)
+            this._captionMember = caption;
+        this._sortByMember = name;
+        this.sort();
+        this.updateListUI();
+    }
+
+    setCaptionMember(value) {
+        this._captionMember = value;
+        this.updateListUI();
     }
 
 }

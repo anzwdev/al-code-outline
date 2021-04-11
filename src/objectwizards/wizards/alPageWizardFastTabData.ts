@@ -1,8 +1,10 @@
 'use strict';
 
+import { TableFieldInformation } from "../../symbolsinformation/tableFieldInformation";
+
 export class ALPageWizardFastTabData {
     name : string;
-    fields : string[];
+    fields : TableFieldInformation[];
 
     constructor(newName : string) {
         this.name = newName;

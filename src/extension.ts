@@ -12,7 +12,7 @@ import { ALProjectSymbolsLibrary } from './symbollibraries/alProjectSymbolsLibra
 // your extension is activated the very first time the command is executed
 export function activate(context: vscode.ExtensionContext) {
     const toolsExtensionContext: DevToolsExtensionContext = new DevToolsExtensionContext(context);
-    toolsExtensionContext.activeDocumentSymbols.loadAsync(false);
+    toolsExtensionContext.activeDocumentSymbols.initializeContent();
     context.subscriptions.push(toolsExtensionContext);
 
     //al app viewer

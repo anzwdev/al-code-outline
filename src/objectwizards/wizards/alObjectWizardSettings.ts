@@ -14,7 +14,14 @@ export class ALObjectWizardSettings {
         if (!this._destDirectoryUri)
             this._destDirectoryUri = vscode.Uri.file(this.destDirectoryPath);
         return this._destDirectoryUri;
-    }  
+    }
+
+    getDestDirectoryPath() : string | undefined {
+        let destUri = this.getDestDirectoryUri();
+        if (destUri)
+            return destUri.fsPath;
+        return undefined;
+    }
 
 
 }

@@ -129,7 +129,7 @@ export class ALSymbolsBasedPageWizard extends ALSymbolsBasedWizard {
         tableSymbol.collectChildSymbols(AZSymbolKind.Field, true, fieldList);
         fieldList.forEach(
             item => {
-                writer.writePageField(item.name);
+                writer.writePageField(item.name, item.name, false);
             }
         );
         

@@ -7,6 +7,7 @@ import { ALPageWizardFastTabData } from './alPageWizardFastTabData';
 import { ALPageSyntaxBuilder } from '../syntaxbuilders/alPageSyntaxBuilder';
 import { DevToolsExtensionContext } from '../../devToolsExtensionContext';
 import { ALObjectWizardSettings } from './alObjectWizardSettings';
+import { ToolsDocumentChangeRequest } from '../../langserver/toolsDocumentChangeRequest';
 
 export class ALPageWizardPage extends ALTableBasedWizardPage {
     protected _pageWizardData : ALPageWizardData;
@@ -39,6 +40,7 @@ export class ALPageWizardPage extends ALTableBasedWizardPage {
         this._pageWizardData.apiVersion = data.apiVersion;
         this._pageWizardData.entityName = data.entityName;
         this._pageWizardData.entitySetName = data.entitySetName;
+        this._pageWizardData.createTooltips = data.createTooltips;
     
         //information about selected fields
         this._pageWizardData.selectedFieldList = [];

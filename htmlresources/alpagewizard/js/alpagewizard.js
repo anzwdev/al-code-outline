@@ -42,6 +42,7 @@ class PageWizard extends TableBasedObjectWizard {
         document.getElementById("fasttabs").value = this._data.fastTabs;
         document.getElementById("apparea").value = this._data.applicationArea;
         document.getElementById("usagecat").value = this._data.usageCategory;
+        document.getElementById("createtooltips").checked = this._data.createTooltips;
 
         document.getElementById("apipublisher").value = this._data.apiPublisher;
         document.getElementById("apigroup").value = this._data.apiGroup;
@@ -71,6 +72,7 @@ class PageWizard extends TableBasedObjectWizard {
                 fastTabs : this._data.fastTabs,
                 applicationArea : this._data.applicationArea,
                 usageCategory : this._data.usageCategory,
+                createTooltips : this._data.createTooltips,
                 fields: this._data.selectedFieldList,
                 fastTabsData: this._data.fastTabsData,
                 apiPublisher: this._data.apiPublisher,
@@ -101,6 +103,7 @@ class PageWizard extends TableBasedObjectWizard {
         this._data.fastTabs = document.getElementById("fasttabs").value;
         this._data.applicationArea = document.getElementById("apparea").value;
         this._data.usageCategory = document.getElementById("usagecat").value;
+        this._data.createTooltips = document.getElementById("createtooltips").checked;
         this._data.apiPublisher = document.getElementById("apipublisher").value;
         this._data.apiGroup = document.getElementById("apigroup").value;
         this._data.apiVersion = document.getElementById("apiversion").value;
@@ -154,17 +157,19 @@ class PageWizard extends TableBasedObjectWizard {
             htmlHelper.hideById("usagecatline");
 
         if (this._data.pageType == "API") {
+            htmlHelper.hideById("createtooltipsline");
             htmlHelper.showById("apipublisherline");
             htmlHelper.showById("apigroupline");
             htmlHelper.showById("apiversionline");
             htmlHelper.showById("entitynameline");
-            htmlHelper.showById("entitysetnameline");        
+            htmlHelper.showById("entitysetnameline");
         } else {
             htmlHelper.hideById("apipublisherline");
             htmlHelper.hideById("apigroupline");
             htmlHelper.hideById("apiversionline");
             htmlHelper.hideById("entitynameline");
             htmlHelper.hideById("entitysetnameline");
+            htmlHelper.showById("createtooltipsline");
         }
         this.updateMainButtons();
     }

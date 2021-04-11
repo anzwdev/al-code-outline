@@ -3,10 +3,11 @@ import { ALBaseAddFieldsCodeCommand } from "./alBaseAddFieldsCodeCommand";
 import { DevToolsExtensionContext } from "../../devToolsExtensionContext";
 import { AZSymbolKind } from '../../symbollibraries/azSymbolKind';
 import { ALSyntaxWriter } from '../../allanguage/alSyntaxWriter';
-import { settings } from 'cluster';
-import { FieldsSelector } from './fieldsSelector';
 import { AZSymbolInformation } from '../../symbollibraries/azSymbolInformation';
 import { AZDocumentSymbolsLibrary } from '../../symbollibraries/azDocumentSymbolsLibrary';
+import { TableFieldsSelector } from './tableFieldsSelector';
+import { ToolsGetXmlPortTableElementDetailsRequest } from '../../langserver/symbolsinformation/toolsGetXmlPortTableElementDetailsRequest';
+import { TableFieldInformation } from '../../symbolsinformation/tableFieldInformation';
 
 export class ALAddXmlPortFieldsCodeCommand extends ALBaseAddFieldsCodeCommand {
     elementType: string;
@@ -48,17 +49,21 @@ export class ALAddXmlPortFieldsCodeCommand extends ALBaseAddFieldsCodeCommand {
             ((isFieldSymbol) && (!symbol.range)))            
             return;
 
-        //get list of fields
-        let fieldNames: string[] | undefined = await this._toolsExtensionContext.alLangProxy.getFieldList(this.getDocumentUri(), dataItemSymbol.source);
-
-        //remove existing fields from the list
-        fieldNames = this.removeExistingFields(fieldNames, dataItemSymbol.childSymbols, AZSymbolKind.QueryColumn, 'All available table fields have already been added to the query.');
-        if (!fieldNames)
+        let xmlPortSymbol = dataItemSymbol.findParentByKind(AZSymbolKind.XmlPortObject);
+        if (!xmlPortSymbol)
             return;
 
+        //get list of fields
+        let response = await this._toolsExtensionContext.toolsLangServerClient.getXmlPortTableElementDetails(
+            new ToolsGetXmlPortTableElementDetailsRequest(document.uri.fsPath, xmlPortSymbol.name, dataItemSymbol.name, false, true));
+        if ((!response) || (!response.symbol) || (!response.symbol.availableTableFields))
+            return;
+
+        let fields: TableFieldInformation[] = response.symbol.availableTableFields;
+
         //ask for fields
-        let fieldsSelector = new FieldsSelector();
-        let selectedFields = await fieldsSelector.selectFields('Select table fields', fieldNames);
+        let fieldsSelector = new TableFieldsSelector(this._toolsExtensionContext);
+        let selectedFields = await fieldsSelector.selectFields('Select table fields', fields);
         if (!selectedFields)
             return;
 
@@ -68,7 +73,7 @@ export class ALAddXmlPortFieldsCodeCommand extends ALBaseAddFieldsCodeCommand {
         let writer: ALSyntaxWriter = new ALSyntaxWriter(document.uri);
         writer.setIndent(indent);
         for (let i=0; i<selectedFields.length; i++) {
-            writer.writeNameSourceBlock(this.elementType, writer.createName(selectedFields[i]), dataItemSymbol.name + '.' + writer.encodeName(selectedFields[i]));
+            writer.writeNameSourceBlock(this.elementType, writer.createName(selectedFields[i].name!), dataItemSymbol.name + '.' + writer.encodeName(selectedFields[i].name!));
         }
         let source = writer.toString();
 

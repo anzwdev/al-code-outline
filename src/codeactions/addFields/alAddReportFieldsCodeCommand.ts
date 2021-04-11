@@ -3,9 +3,11 @@ import { DevToolsExtensionContext } from '../../devToolsExtensionContext';
 import { ALSyntaxWriter } from '../../allanguage/alSyntaxWriter';
 import { AZSymbolKind } from '../../symbollibraries/azSymbolKind';
 import { ALBaseAddFieldsCodeCommand } from './alBaseAddFieldsCodeCommand';
-import { FieldsSelector } from './fieldsSelector';
 import { AZSymbolInformation } from '../../symbollibraries/azSymbolInformation';
 import { AZDocumentSymbolsLibrary } from '../../symbollibraries/azDocumentSymbolsLibrary';
+import { TableFieldsSelector } from './tableFieldsSelector';
+import { ToolsGetReportDataItemDetailsRequest } from '../../langserver/symbolsinformation/toolsGetReportDataItemDetailsRequest';
+import { TableFieldInformation } from '../../symbolsinformation/tableFieldInformation';
 
 export class ALAddReportFieldsCodeCommand extends ALBaseAddFieldsCodeCommand {
     constructor(context : DevToolsExtensionContext) {
@@ -44,17 +46,31 @@ export class ALAddReportFieldsCodeCommand extends ALBaseAddFieldsCodeCommand {
             ((isFieldSymbol) && (!symbol.range)))            
             return;
 
+        let objectSymbol = dataItemSymbol.findParentByKind(AZSymbolKind.ReportObject);
+        if (!objectSymbol)
+            return;
+   
         //get list of fields
-        let fieldNames: string[] | undefined = await this._toolsExtensionContext.alLangProxy.getFieldList(this.getDocumentUri(), dataItemSymbol.source);
-        
-        //remove existing fields from the list
-        fieldNames = this.removeExistingFields(fieldNames, dataItemSymbol.childSymbols, AZSymbolKind.ReportColumn, 'All available table fields have already been added to the report.');
-        if (!fieldNames)
+        let response = await this._toolsExtensionContext.toolsLangServerClient.getReportDataItemDetails(
+            new ToolsGetReportDataItemDetailsRequest(document.uri.fsPath, objectSymbol.name, dataItemSymbol.name, false, true));
+        if ((!response) || (!response.symbol) || (!response.symbol.availableTableFields))
             return;
 
+        let fields: TableFieldInformation[] = response.symbol.availableTableFields;
+
+        /*
+        //get list of fields
+        let fields = await this.getTableFields(dataItemSymbol.source);
+        
+        //remove existing fields from the list
+        fields = this.removeExistingFields(fields, dataItemSymbol.childSymbols, AZSymbolKind.ReportColumn, 'All available table fields have already been added to the report.');
+        if (!fields)
+            return;
+        */
+
         //ask for fields
-        let fieldsSelector = new FieldsSelector();
-        let selectedFields = await fieldsSelector.selectFields('Select table fields', fieldNames);
+        let fieldsSelector = new TableFieldsSelector(this._toolsExtensionContext);
+        let selectedFields = await fieldsSelector.selectFields('Select table fields', fields);
         if (!selectedFields)
             return;
 
@@ -64,10 +80,10 @@ export class ALAddReportFieldsCodeCommand extends ALBaseAddFieldsCodeCommand {
         let writer: ALSyntaxWriter = new ALSyntaxWriter(document.uri);
         writer.setIndent(indent);
         for (let i=0; i<selectedFields.length; i++) {
-            let columnName = writer.createName(selectedFields[i]);
+            let columnName = writer.createName(selectedFields[i].name!);
             if (dataItemSymbol && dataItemSymbol.name)
                 columnName = columnName + "_" + dataItemSymbol.name;
-            writer.writeNameSourceBlock("column", columnName, writer.encodeName(selectedFields[i]));
+            writer.writeNameSourceBlock("column", columnName, writer.encodeName(selectedFields[i].name!));
         }
         let source = writer.toString();
 

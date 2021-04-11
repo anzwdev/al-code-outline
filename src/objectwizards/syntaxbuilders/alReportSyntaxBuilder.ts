@@ -42,12 +42,12 @@ export class ALReportSyntaxBuilder {
 
         if (data.selectedFieldList) {
             for (let i=0; i<data.selectedFieldList.length; i++) {
-                let columnName = writer.createName(data.selectedFieldList[i]);
+                let columnName = writer.createName(data.selectedFieldList[i].name!);
                 if (addDataItemName)
                     columnName = columnName + "_" + dataSetName;
                 
                 writer.writeNameSourceBlock("column", columnName, 
-                    writer.encodeName(data.selectedFieldList[i]));
+                    writer.encodeName(data.selectedFieldList[i].name!));
             }
         }
 

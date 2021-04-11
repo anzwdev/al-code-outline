@@ -1,5 +1,21 @@
 # Change Log
 
+## 3.0.0
+ - Redesigned language server
+ - Add tooltips to fields created by the page wizard
+ - Missing tooltips/page field captions commands can now use table field captions from referenced extensions
+ - 'Add multiple fields' command on page extension can detect fields already added to the page in all referenced extensions
+ - Do not show obsolete or disabled fields in the wizards or 'Add multiple fields' commands
+ - Bugfix - existing xml ports fields not detected by the 'add multiple fields' command
+ - Issue #190 & #205 - Sort fields by Id or Name in fields selectors (code actions, wizards)
+ - Issue #208 - Add tooltip to 'add multiple fields'
+ - Issue #218 - Remove prefix/suffix when adding captions or tooltips
+
+Thank you
+ - TheDenSter for reporting issue #208
+ - DanielGoehler for reporting issue #218
+ - Waldo and theschitz for reporting issues #190 and #205
+
 ## 2.0.25
  - Issue #210 - Sort table fields
  - Issue #211 - Selecting the last row in filtered data grid shows wrong data

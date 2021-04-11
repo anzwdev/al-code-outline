@@ -5,9 +5,20 @@ class TableBasedObjectWizard {
         this._destFields = new FilteredList('destfieldsfilter', 'destfields');
         this._maxStepNo = maxStepNo;
 
+        this._srcFields._captionMember = 'name';
+        this._srcFields._sortByMember = 'name';
+
+        this._destFields._captionMember = 'name';
+
         //initialize properties
         this._vscode = acquireVsCodeApi();
-       
+
+        let fldSortName = document.getElementById('srcfldsortname');
+        let fldSortId = document.getElementById('srcfldsortid');
+
+        if (fldSortName)
+            fldSortName.className = "mselcaptb mseltbbtnsel";
+        
         // Handle messages sent from the extension to the webview
         window.addEventListener('message', event => {
             this.onMessage(event.data);
@@ -28,6 +39,15 @@ class TableBasedObjectWizard {
         document.getElementById('cancelBtn').addEventListener('click', event => {
             this.onCancel();
         });      
+
+        if (fldSortId)
+            fldSortId.addEventListener('click', event => {
+                this.sortSrcFieldsBy("id");
+            });
+        if (fldSortName)
+            fldSortName.addEventListener('click', event => {
+                this.sortSrcFieldsBy("name");
+            });
 
 
         this.sendMessage({
@@ -136,7 +156,7 @@ class TableBasedObjectWizard {
 
     setFields(data) {
         if (!this._data)
-            this.data = {};
+            this._data = {};
         this._data.fieldList = data;
         this.loadFields();
     }
@@ -211,5 +231,17 @@ class TableBasedObjectWizard {
         }
         return true;
     }
+
+    sortSrcFieldsBy(name) {
+        let dispField = 'name';
+        //let dispField = name;
+        //if (name == 'id')
+        //    dispField = 'idname';
+        this._srcFields.sortBy(name, dispField);
+        document.getElementById('srcfldsortid').className = (name == 'id')?"mselcaptb mseltbbtnsel":"mselcaptb mseltbbtn";
+        document.getElementById('srcfldsortname').className = (name == 'name')?"mselcaptb mseltbbtnsel":"mselcaptb mseltbbtn";
+    }
+
+    
 
 }

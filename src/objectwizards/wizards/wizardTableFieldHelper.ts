@@ -8,11 +8,19 @@ export class WizardTableFieldHelper {
             'Guid', 'Integer', 'Media', 'MediaSet', 'Option', 'RecordId', 'TableFilter',
             'Text', 'Time'];
 
-        let enumList: string[] = await extensionContext.alLangProxy.getEnumList(resourceUri);
-        if (enumList.length > 0) {
-            for (let i = 0; i < enumList.length; i++) {
-                types.push('Enum ' + enumList[i]);
+        let response = await extensionContext.toolsLangServerClient.getEnumsList({
+            path: resourceUri?resourceUri.fsPath:undefined
+        });
+
+        if ((response) && (response.symbols)) {
+            for (let i=0; i<response.symbols.length; i++) {
+                types.push('enum ' + response.symbols[i].name);
             }
+        //let enumList: string[] = await extensionContext.alLangProxy.getEnumList(resourceUri);
+        //if (enumList.length > 0) {
+        //    for (let i = 0; i < enumList.length; i++) {
+        //        types.push('Enum ' + enumList[i]);
+        //    }
         }
         else {
             types.push('Enum');

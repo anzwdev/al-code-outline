@@ -14,7 +14,7 @@ export class ALPageWizardData extends ALTableBasedWizardData {
     apiVersion : string;
     entityName : string;
     entitySetName : string;
-
+    createTooltips: boolean;
     fastTabsData : ALPageWizardFastTabData[];
 
     constructor() {
@@ -25,6 +25,7 @@ export class ALPageWizardData extends ALTableBasedWizardData {
         //this.usageCategory = vscode.workspace.getConfiguration('azALDevTools').get('defaultListUsageCategory');
         this.applicationArea = "All";
         this.usageCategory = "";
+        this.createTooltips = false;
         //api fields
         this.caption = "";
         this.apiPublisher = "publisherName";

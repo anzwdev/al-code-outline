@@ -4,6 +4,9 @@ import { ProjectItemWizardPage } from './projectItemWizardPage';
 import { ALTableBasedWizardData } from './alTableBasedWizardData';
 import { DevToolsExtensionContext } from '../../devToolsExtensionContext';
 import { ALObjectWizardSettings } from './alObjectWizardSettings';
+import { ToolsSymbolInformationRequest } from '../../langserver/symbolsinformation/toolsSymbolInformationRequest';
+import { ToolsGetTableFieldsListRequest } from '../../langserver/symbolsinformation/toolsGetTableFieldsListRequest';
+import { TableInformation } from '../../symbolsinformation/tableInformation';
 
 export class ALTableBasedWizardPage extends ProjectItemWizardPage {
     private _tableWizardData : ALTableBasedWizardData;
@@ -28,7 +31,21 @@ export class ALTableBasedWizardPage extends ProjectItemWizardPage {
     }
 
     protected async loadTables() {
-        this._tableWizardData.tableList = await this._toolsExtensionContext.alLangProxy.getTableList(this._settings.getDestDirectoryUri());
+        //!!!this._tableWizardData.tableList = await this._toolsExtensionContext.alLangProxy.getTableList(this._settings.getDestDirectoryUri());
+
+        let tableList: string[] = [];
+        let response = await this._toolsExtensionContext.toolsLangServerClient.getTablesList(
+            new ToolsSymbolInformationRequest(this._settings.getDestDirectoryPath()));
+        if ((response) && (response.symbols)) {
+            for (let i=0; i<response.symbols.length; i++) {
+                let name = response.symbols[i].name;
+                if (name)
+                    tableList.push(name);
+            }
+        }    
+
+        this._tableWizardData.tableList = tableList;
+
         this.sendMessage({
             command : "setTables",
             data : this._tableWizardData.tableList
@@ -38,7 +55,24 @@ export class ALTableBasedWizardPage extends ProjectItemWizardPage {
     protected async loadFields() {
         try
         {
-            this._tableWizardData.fieldList = await this._toolsExtensionContext.alLangProxy.getFieldList(this._settings.getDestDirectoryUri(), this._tableWizardData.selectedTable);
+            //this._tableWizardData.fieldList = await this._toolsExtensionContext.alLangProxy.getFieldList(this._settings.getDestDirectoryUri(), this._tableWizardData.selectedTable);
+            
+            let fieldList: string[] = [];
+            let response = await this._toolsExtensionContext.toolsLangServerClient.getTableFieldsList(
+                new ToolsGetTableFieldsListRequest(this._settings.getDestDirectoryPath(), 
+                this._tableWizardData.selectedTable, false, false));
+            if ((response) && (response.symbols)) {
+                for (let i=0; i<response.symbols.length; i++) {
+                    let name = response.symbols[i].name;
+                    if (name)
+                        fieldList.push(name);
+                }
+
+                this._tableWizardData.fieldList = response.symbols;
+
+            }        
+            //this._tableWizardData.fieldList = fieldList;
+            
             this.sendMessage({
                 command: "setFields",
                 data : this._tableWizardData.fieldList
