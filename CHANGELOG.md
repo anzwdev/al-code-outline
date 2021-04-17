@@ -1,5 +1,12 @@
 # Change Log
 
+## 3.0.2
+ - "remove with" commands small fixes
+ - Issue #229 - Running al wizards from command line instead of using context menu in Explorer
+
+Thank you
+ - fwet for reporting issue #229
+
 ## 3.0.1
  - Issue #222 - Add support for new al object types
 

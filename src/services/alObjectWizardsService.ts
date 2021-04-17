@@ -54,14 +54,26 @@ export class ALObjectWizardsService {
 
     protected async runALWizards(fileUri: vscode.Uri|undefined) {
         let settings: ALObjectWizardSettings = new ALObjectWizardSettings();           
-        if (fileUri) {
-            let fullPath: string = fileUri.fsPath;
-            if (fs.lstatSync(fullPath).isDirectory()) {
-                settings.destDirectoryPath = fullPath;
-            } else {
-                let parsedPath = path.parse(fullPath);
-                settings.destDirectoryPath = parsedPath.dir;
-            }
+
+        //try to detect destination folder
+        if (!fileUri) {
+            if ((vscode.window.activeTextEditor) && (vscode.window.activeTextEditor.document) && (vscode.window.activeTextEditor.document.uri))
+                fileUri = vscode.window.activeTextEditor.document.uri;
+            else if ((vscode.workspace.workspaceFolders) && (vscode.workspace.workspaceFolders.length > 0))
+                fileUri = vscode.workspace.workspaceFolders[0].uri;
+        }
+
+        if (!fileUri) {
+            await vscode.window.showErrorMessage('File cannot be created. Cannot detect destination folder.');
+            return;
+        }
+
+        let fullPath: string = fileUri.fsPath;
+        if (fs.lstatSync(fullPath).isDirectory()) {
+            settings.destDirectoryPath = fullPath;
+        } else {
+            let parsedPath = path.parse(fullPath);
+            settings.destDirectoryPath = parsedPath.dir;
         }
 
         //select wizard
