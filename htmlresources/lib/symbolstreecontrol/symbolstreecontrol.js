@@ -206,6 +206,10 @@ class SymbolsTreeControl {
             (symbol.kind == ALSymbolKind.EnumType) ||
             (symbol.kind == ALSymbolKind.EnumExtensionType) ||
             (symbol.kind == ALSymbolKind.DotNetPackage) ||
+            (symbol.kind == ALSymbolKind.ReportExtensionObject) ||
+            (symbol.kind == ALSymbolKind.PermissionSet) ||
+            (symbol.kind == ALSymbolKind.PermissionSetExtension) ||
+            (symbol.kind == ALSymbolKind.Entitlement) ||
             (symbol.kind == ALSymbolKind.Interface)));
     }
 

@@ -116,6 +116,14 @@ export class ALSyntaxHelper {
                 return "Profile";
             case AZSymbolKind.Interface:
                 return "Interface";
+            case AZSymbolKind.ReportExtensionObject:
+                return 'ReportExtension';
+            case AZSymbolKind.PermissionSet:
+                return 'PermissionSet';
+            case AZSymbolKind.PermissionSetExtension:
+                return 'PermissionSetExtension';
+            case AZSymbolKind.Entitlement:
+                return 'Entitlement';
         }
         return undefined;
 

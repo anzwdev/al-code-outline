@@ -102,7 +102,11 @@ export class AZSymbolInformation {
             (this.kind == AZSymbolKind.DotNetPackage) ||
             (this.kind == AZSymbolKind.ProfileObject) ||
             (this.kind == AZSymbolKind.PageCustomizationObject) ||
-            (this.kind == AZSymbolKind.Interface));
+            (this.kind == AZSymbolKind.Interface) ||
+            (this.kind == AZSymbolKind.ReportExtensionObject) ||
+            (this.kind == AZSymbolKind.PermissionSet) ||
+            (this.kind == AZSymbolKind.PermissionSetExtension) ||
+            (this.kind == AZSymbolKind.Entitlement));
     }
 
     public isMethod() : boolean {
@@ -205,6 +209,12 @@ export class AZSymbolInformation {
             case AZSymbolKind.PageCustomizationObject : return 'pagecustomization';
             case AZSymbolKind.EnumType : return 'enum';
             case AZSymbolKind.DotNetPackage : return 'dotnetlib';
+
+            case AZSymbolKind.ReportExtensionObject: return 'report';
+            case AZSymbolKind.PermissionSet: return 'profile';
+            case AZSymbolKind.PermissionSetExtension: return 'profile';
+            case AZSymbolKind.Entitlement: return 'profile';
+
             case AZSymbolKind.Interface: return 'interface';
             case AZSymbolKind.Property : return 'property';
             case AZSymbolKind.VariableDeclaration : return 'variable';
@@ -460,6 +470,14 @@ export class AZSymbolInformation {
                 return "EnumExtension";
             case AZSymbolKind.Interface:
                 return "Interface";
+            case AZSymbolKind.ReportExtensionObject:
+                return 'ReportExtension';
+            case AZSymbolKind.PermissionSet:
+                return 'PermissionSet';
+            case AZSymbolKind.PermissionSetExtension:
+                return 'PermissionSetExtension';
+            case AZSymbolKind.Entitlement:
+                return 'Entitlement';
             default:
                 return "Undefined";
         }

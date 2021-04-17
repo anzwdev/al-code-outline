@@ -19,6 +19,8 @@ export class ALSortReportColumnsCommand extends ALCodeAction {
             if ((symbol) &&
                 ((symbol.kind == AZSymbolKind.ReportDataItem) ||
                  (symbol.kind == AZSymbolKind.ReportColumn) ||
+                 (symbol.kind == AZSymbolKind.ReportExtensionAddColumnChange) ||
+                 (symbol.kind == AZSymbolKind.ReportExtensionObject) ||
                  (symbol.kind == AZSymbolKind.ReportObject)) &&                
                 (symbol.selectionRange) && 
                 (symbol.selectionRange.start.line == range.start.line)) {
