@@ -4,12 +4,13 @@
  - "remove with" commands small fixes
  - Issue #223 - Create missing captions for Table, Page, Report, XmlPort and Query objects
  - Issue #227 - "Remove 'with' usage" does not work on TestPages
+ - Issue #228 - Add multiple fields for API pages does not respect API field properties
  - Issue #229 - Running al wizards from command line instead of using context menu in Explorer
 
 Thank you
  - DanielGoehler for reporting issue #223
  - lvanvugt for reporting the issue #227
- - fwet for reporting issue #229
+ - fwet for reporting issues #228 and #229
 
 ## 3.0.1
  - Issue #222 - Add support for new al object types

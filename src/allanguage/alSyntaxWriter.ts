@@ -217,7 +217,6 @@ export class ALSyntaxWriter {
         let name : string = this.createApiName(fieldName);
         this.writeStartNameSourceBlock("field", this.encodeName(name), 'Rec.' + this.encodeName(fieldName));
         this.addProperty("Caption", this.encodeString(name) + ', Locked = true');
-        this.addApplicationAreaProperty();
         this.writeProperties();
         this.writeEndBlock();
     }
