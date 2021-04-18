@@ -2,9 +2,13 @@
 
 ## 3.0.2
  - "remove with" commands small fixes
+ - Issue #223 - Create missing captions for Table, Page, Report, XmlPort and Query objects
+ - Issue #227 - "Remove 'with' usage" does not work on TestPages
  - Issue #229 - Running al wizards from command line instead of using context menu in Explorer
 
 Thank you
+ - DanielGoehler for reporting issue #223
+ - lvanvugt for reporting the issue #227
  - fwet for reporting issue #229
 
 ## 3.0.1

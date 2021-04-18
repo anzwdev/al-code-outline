@@ -124,6 +124,8 @@ Extension adds a few commands that allow to automatically modify al code in the 
 * `Add Table Field Captions to the Active Project`: adds missing captions to all table fields in the current project
 * `Add Page Controls Captions to the Active Editor`: adds missing captions to page controls in the current editor
 * `Add Page Controls Captions to the Active Project`: adds missing captions to page controls in the current project
+* `Add Object Captions to the Active Editor`: adds missing captions to all table, page, report, xmlport and query objects in the current editor
+* `Add Object Captions to the Active Project`: adds missing captions to all table, page, report, xmlport and query objects in the current project
 * `Remove 'with' usage from the Active Editor`: removes all implicit and explicit 'with' usage from the current editor
 * `Remove 'with' usage from the Active Project`: removes all implicit and explicit 'with' usage from the current project
 
