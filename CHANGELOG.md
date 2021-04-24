@@ -1,5 +1,13 @@
 # Change Log
 
+## 3.0.3
+ - Issue #232 - Add multiple fields does not work on page extensions
+ - Issue #233 - Table field captions not detected for page extension fields and fields based on record variables
+
+Thank you
+ - meckerlen and vsd1 for reporting issue #232
+ - DavidFeldhoff for reporting issue #233
+
 ## 3.0.2
  - "remove with" commands small fixes
  - Issue #223 - Create missing captions for Table, Page, Report, XmlPort and Query objects
