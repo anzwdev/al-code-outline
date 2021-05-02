@@ -51,6 +51,8 @@ import { ToolsGetPagesListResponse } from './symbolsinformation/toolsGetPagesLis
 import { ToolsGetReportsListResponse } from './symbolsinformation/toolsGetReportsListResponse';
 import { ToolsGetQueriesListResponse } from './symbolsinformation/toolsGetQueriesListResponse';
 import { ToolsGetXmlPortsListResponse } from './symbolsinformation/toolsGetXmlPortsListResponse';
+import { ToolsGetProjectSettingsRequest } from './toolsGetProjectSettingsRequest';
+import { ToolsGetProjectSettingsResponse } from './toolsGetProjectSettingsResponse';
 
 export class ToolsLangServerClient implements vscode.Disposable {
     _context : vscode.ExtensionContext;
@@ -312,6 +314,10 @@ export class ToolsLangServerClient implements vscode.Disposable {
 
     public getQueryDataItemDetails(params: ToolsGetQueryDataItemDetailsRequest) : Promise<ToolsGetQueryDataItemDetailsResponse | undefined> {
         return this.sendRequest<ToolsGetQueryDataItemDetailsRequest, ToolsGetQueryDataItemDetailsResponse>(params, 'al/getquerydataitemdetails');
+    }
+
+    public getProjectSettings(params: ToolsGetProjectSettingsRequest) : Promise<ToolsGetProjectSettingsResponse | undefined> {
+        return this.sendRequest<ToolsGetProjectSettingsRequest, ToolsGetProjectSettingsResponse>(params, 'al/getprojectsettings');
     }
 
     //workspace and file notifications

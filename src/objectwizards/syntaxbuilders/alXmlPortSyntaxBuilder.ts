@@ -1,6 +1,7 @@
 import * as vscode from 'vscode';
 import { ALXmlPortWizardData } from "../wizards/alXmlPortWizardData";
 import { ALSyntaxWriter } from "../../allanguage/alSyntaxWriter";
+import { ALSyntaxHelper } from '../../allanguage/alSyntaxHelper';
 
 export class ALXmlPortSyntaxBuilder {
 
@@ -12,6 +13,10 @@ export class ALXmlPortSyntaxBuilder {
         let writer : ALSyntaxWriter = new ALSyntaxWriter(destUri);
 
         writer.writeStartObject("xmlport", data.objectId, data.objectName);
+        
+        writer.addProperty("Caption", writer.encodeString(ALSyntaxHelper.removePrefixSuffix(data.objectName, data.projectSettings)));
+
+        writer.writeProperties();
 
         //write dataset
         this.writeSchema(writer, data);

@@ -1,4 +1,5 @@
 import * as vscode from 'vscode';
+import { ALSyntaxHelper } from '../../allanguage/alSyntaxHelper';
 import { ALSyntaxWriter } from "../../allanguage/alSyntaxWriter";
 import { ALQueryWizardData } from "../wizards/alQueryWizardData";
 
@@ -21,6 +22,8 @@ export class ALQuerySyntaxBuilder {
             writer.addProperty("APIVersion", writer.encodeString(data.apiVersion));
             writer.addProperty("EntityName", writer.encodeString(data.entityName));
             writer.addProperty("EntitySetName", writer.encodeString(data.entitySetName));
+        } else {
+            writer.addProperty("Caption", writer.encodeString(ALSyntaxHelper.removePrefixSuffix(data.objectName, data.projectSettings)));
         }
 
         writer.writeProperties();

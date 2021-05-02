@@ -1,7 +1,7 @@
 'use strict';
 
+import { ToolsGetProjectSettingsResponse } from "../../langserver/toolsGetProjectSettingsResponse";
 import { TableFieldInformation } from "../../symbolsinformation/tableFieldInformation";
-import { TableInformation } from "../../symbolsinformation/tableInformation";
 
 export class ALTableBasedWizardData {
     objectId : string;
@@ -12,6 +12,7 @@ export class ALTableBasedWizardData {
     selectedFieldList : TableFieldInformation[] | undefined;
     fixedTable : boolean;
     applicationArea : string;
+    projectSettings: ToolsGetProjectSettingsResponse | undefined;
 
     constructor() {
         this.objectId = "";
@@ -22,6 +23,7 @@ export class ALTableBasedWizardData {
         this.selectedFieldList = undefined;
         this.fixedTable = false;
         this.applicationArea = "All";
+        this.projectSettings = undefined;
     }
 
 }

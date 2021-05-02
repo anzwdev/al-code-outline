@@ -1,6 +1,7 @@
 import * as vscode from 'vscode';
 import { ALReportWizardData } from "../wizards/alReportWizardData";
 import { ALSyntaxWriter } from "../../allanguage/alSyntaxWriter";
+import { ALSyntaxHelper } from '../../allanguage/alSyntaxHelper';
 
 export class ALReportSyntaxBuilder {
     
@@ -16,11 +17,22 @@ export class ALReportSyntaxBuilder {
 
         writer.writeStartObject("report", data.objectId, data.objectName);
 
+        writer.addProperty("Caption", writer.encodeString(ALSyntaxHelper.removePrefixSuffix(data.objectName, data.projectSettings)));
+
         //write layout path
         if (data.rdlcLayout != "")
-            writer.writeProperty("RDLCLayout", writer.encodeString(data.rdlcLayout));
+            writer.addProperty("RDLCLayout", writer.encodeString(data.rdlcLayout));
         if (data.wordLayout != "")
-            writer.writeProperty("WordLayout", writer.encodeString(data.wordLayout));
+            writer.addProperty("WordLayout", writer.encodeString(data.wordLayout));
+
+        if ((data.usageCategory) && (data.usageCategory !== "") && (data.usageCategory !== "None")) {
+            //application area requires useage category to be set
+            if ((data.applicationArea) && (data.applicationArea !== ""))
+                writer.addProperty("ApplicationArea", data.applicationArea);
+            writer.addProperty("UsageCategory", data.usageCategory);
+        }
+
+        writer.writeProperties();
 
         //write dataset
         this.writeDataSet(writer, data, addDataItemName);

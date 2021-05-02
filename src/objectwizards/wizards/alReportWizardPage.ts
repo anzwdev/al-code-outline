@@ -28,12 +28,17 @@ export class ALReportWizardPage extends ALTableBasedWizardPage {
         this._reportWizardData.objectId = data.objectId;
         this._reportWizardData.objectName = data.objectName;
         this._reportWizardData.selectedTable = data.selectedTable;
+        this._reportWizardData.applicationArea = data.applicationArea;
+        this._reportWizardData.usageCategory = data.usageCategory;
         this._reportWizardData.selectedFieldList = [];
         if (data.fields) {
             for (var i = 0; i<data.fields.length; i++) {
                 this._reportWizardData.selectedFieldList.push(data.fields[i]);
             }
         }
+
+        //load project settings from the language server
+        this._reportWizardData.projectSettings = await this.getProjectSettings();
 
         //build new object
         var builder : ALReportSyntaxBuilder = new ALReportSyntaxBuilder();

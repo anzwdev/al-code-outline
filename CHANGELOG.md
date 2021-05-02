@@ -1,13 +1,21 @@
 # Change Log
 
 ## 3.0.3
+ - Usage category and ApplicationArea in the report wizard
+ - Issue #231 - Modify wizards to create object captions without prefix/suffix
  - Issue #232 - Add multiple fields does not work on page extensions
  - Issue #233 - Table field captions not detected for page extension fields and fields based on record variables
+ - Issue #234 - Symbols browser not working when profile object added to the project
+ - Issue #235 - Table lookup broken
+ - Part of issue #194 - Empty outline, empty list of tables in the wizards
 
 Thank you
+ - fvet, jwinberg for reporting issue #194
  - meckerlen and vsd1 for reporting issue #232
- - DavidFeldhoff for reporting issue #233
-
+ - DavidFeldhoff for reporting issue #233 and comments in #194 
+ - mhenricus and jmadrigalTCN for reporting the issue #234
+ - gnaaktgeboren for reporting issue #235
+ 
 ## 3.0.2
  - "remove with" commands small fixes
  - Issue #223 - Create missing captions for Table, Page, Report, XmlPort and Query objects
