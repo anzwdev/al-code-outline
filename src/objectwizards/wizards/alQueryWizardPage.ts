@@ -42,6 +42,9 @@ export class ALQueryWizardPage extends ALTableBasedWizardPage {
             }
         }
 
+        //load project settings from the language server
+        this._queryWizardData.projectSettings = await this.getProjectSettings();
+
         //build new object
         var builder : ALQuerySyntaxBuilder = new ALQuerySyntaxBuilder();
         var source = builder.buildFromQueryWizardData(this._settings.getDestDirectoryUri(), this._queryWizardData);

@@ -8,6 +8,7 @@ import { SyntaxModifier } from '../alsyntaxmodifiers/syntaxModifier';
 import { WithModifier } from '../alsyntaxmodifiers/withModifier';
 import { FieldCaptionsModifier } from '../alsyntaxmodifiers/fieldCaptionsModifier';
 import { PageControlsCaptionsModifier } from '../alsyntaxmodifiers/pageControlsCaptionsModifier';
+import { ObjectCaptionsModifier } from '../alsyntaxmodifiers/objectCaptionsModifier';
 
 export class ALCodeTransformationService {
     protected _context: DevToolsExtensionContext;
@@ -132,6 +133,27 @@ export class ALCodeTransformationService {
                 }
             )
         );
+
+        this._context.vscodeExtensionContext.subscriptions.push(
+            vscode.commands.registerCommand(
+                'azALDevTools.AddEditorObjectCaption',
+                () => {
+                    let objectCaptionsModifier: ObjectCaptionsModifier = new ObjectCaptionsModifier(this._context);
+                    objectCaptionsModifier.RunForActiveEditor();
+                }
+            )
+        );
+
+        this._context.vscodeExtensionContext.subscriptions.push(
+            vscode.commands.registerCommand(
+                'azALDevTools.AddProjectObjectCaption',
+                () => {
+                    let objectCaptionsModifier: ObjectCaptionsModifier = new ObjectCaptionsModifier(this._context);
+                    objectCaptionsModifier.RunForWorkspace();
+                }
+            )
+        );
+
 
 
         this._context.vscodeExtensionContext.subscriptions.push(

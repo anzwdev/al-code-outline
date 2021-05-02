@@ -8,6 +8,8 @@ import { ALObjectWizardSettings } from './alObjectWizardSettings';
 import { ICRSExtensionPublicApi } from 'crs-al-language-extension-api';
 import { CRSALLangExtHelper } from '../../crsAlLangExtHelper';
 import { FileBuilder } from '../fileBuilder';
+import { ToolsGetProjectSettingsRequest } from '../../langserver/toolsGetProjectSettingsRequest';
+import { ToolsGetProjectSettingsResponse } from '../../langserver/toolsGetProjectSettingsResponse';
 
 export class ProjectItemWizardPage extends BaseWebViewEditor {
     protected _toolsExtensionContext : DevToolsExtensionContext;
@@ -118,6 +120,21 @@ export class ProjectItemWizardPage extends BaseWebViewEditor {
         targetPath = path.join(targetPath, objectType.toLowerCase());
 
         return targetPath;
+    }
+
+    protected async getProjectSettings() : Promise<ToolsGetProjectSettingsResponse | undefined> {
+        let uri = this._settings.getDestDirectoryUri();
+        if (!uri) {
+            let folders = vscode.workspace.workspaceFolders;
+            if ((folders) && (folders.length > 0))
+                uri = folders[0].uri;
+        }
+
+        //get project settings
+        if (uri)
+            return await this._toolsExtensionContext.toolsLangServerClient.getProjectSettings(new ToolsGetProjectSettingsRequest(uri.fsPath));
+
+        return undefined;
     }
 
 }

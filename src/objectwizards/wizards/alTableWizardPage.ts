@@ -41,6 +41,9 @@ export class ALTableWizardPage extends ProjectItemWizardPage {
         this._tableWizardData.objectName = data.objectName;
         this._tableWizardData.fields = WizardTableFieldHelper.validateFields(data.fields);
     
+        //load project settings from the language server
+        this._tableWizardData.projectSettings = await this.getProjectSettings();
+
         //build new object
         var builder : ALTableSyntaxBuilder = new ALTableSyntaxBuilder();
         var source = builder.buildFromTableWizardData(this._settings.getDestDirectoryUri(), this._tableWizardData);

@@ -1,6 +1,7 @@
 import * as vscode from 'vscode';
 import { ALTableWizardData } from "../wizards/alTableWizardData";
 import { ALSyntaxWriter } from "../../allanguage/alSyntaxWriter";
+import { ALSyntaxHelper } from '../../allanguage/alSyntaxHelper';
 
 export class ALTableSyntaxBuilder {
     constructor() {
@@ -11,8 +12,9 @@ export class ALTableSyntaxBuilder {
         let writer : ALSyntaxWriter = new ALSyntaxWriter(destUri);
 
         writer.writeStartObject("table", data.objectId, data.objectName);
-        writer.writeProperty("Caption", writer.encodeString(data.objectName));
-        writer.writeProperty("DataClassification", "ToBeClassified");
+        writer.addProperty("Caption", writer.encodeString(ALSyntaxHelper.removePrefixSuffix(data.objectName, data.projectSettings)));
+        writer.addProperty("DataClassification", "ToBeClassified");
+        writer.writeProperties();
         writer.writeLine("");
 
         //write fields here

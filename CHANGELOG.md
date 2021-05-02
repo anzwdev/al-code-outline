@@ -1,5 +1,33 @@
 # Change Log
 
+## 3.0.3
+ - Usage category and ApplicationArea in the report wizard
+ - Issue #231 - Modify wizards to create object captions without prefix/suffix
+ - Issue #232 - Add multiple fields does not work on page extensions
+ - Issue #233 - Table field captions not detected for page extension fields and fields based on record variables
+ - Issue #234 - Symbols browser not working when profile object added to the project
+ - Issue #235 - Table lookup broken
+ - Part of issue #194 - Empty outline, empty list of tables in the wizards
+
+Thank you
+ - fvet, jwinberg for reporting issue #194
+ - meckerlen and vsd1 for reporting issue #232
+ - DavidFeldhoff for reporting issue #233 and comments in #194 
+ - mhenricus and jmadrigalTCN for reporting the issue #234
+ - gnaaktgeboren for reporting issue #235
+ 
+## 3.0.2
+ - "remove with" commands small fixes
+ - Issue #223 - Create missing captions for Table, Page, Report, XmlPort and Query objects
+ - Issue #227 - "Remove 'with' usage" does not work on TestPages
+ - Issue #228 - Add multiple fields for API pages does not respect API field properties
+ - Issue #229 - Running al wizards from command line instead of using context menu in Explorer
+
+Thank you
+ - DanielGoehler for reporting issue #223
+ - lvanvugt for reporting the issue #227
+ - fwet for reporting issues #228 and #229
+
 ## 3.0.1
  - Issue #222 - Add support for new al object types
 

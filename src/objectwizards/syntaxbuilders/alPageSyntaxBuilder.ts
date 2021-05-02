@@ -1,4 +1,5 @@
 import * as vscode from 'vscode';
+import { ALSyntaxHelper } from '../../allanguage/alSyntaxHelper';
 import { ALSyntaxWriter } from "../../allanguage/alSyntaxWriter";
 import { ALPageWizardData } from "../wizards/alPageWizardData";
 
@@ -28,12 +29,12 @@ export class ALPageSyntaxBuilder {
             writer.addProperty("DelayedInsert", "true");
             writer.addProperty("Caption", writer.encodeString(writer.createApiName(data.objectName)));
         } else {
-            writer.addProperty("Caption", writer.encodeString(data.objectName));
+            writer.addProperty("Caption", writer.encodeString(ALSyntaxHelper.removePrefixSuffix(data.objectName, data.projectSettings)));
         }
 
         //usage category and application area for list pages
         if (data.pageType === "List") {            
-            if ((data.usageCategory) && (data.usageCategory !== "")) {
+            if ((data.usageCategory) && (data.usageCategory !== "") && (data.usageCategory !== "None")) {
                 //application area requires useage category to be set
                 if ((data.applicationArea) && (data.applicationArea !== ""))
                     writer.addProperty("ApplicationArea", data.applicationArea);

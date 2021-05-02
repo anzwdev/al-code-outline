@@ -30,6 +30,8 @@ class ReportWizard extends TableBasedObjectWizard {
         document.getElementById("objectid").value = this._data.objectId;
         document.getElementById("objectname").value = this._data.objectName;
         document.getElementById("srctable").value = this._data.selectedTable;
+        document.getElementById("apparea").value = this._data.applicationArea;
+        document.getElementById("usagecat").value = this._data.usageCategory;
         this.updateMainButtons();
         this.loadTables();
         this.loadFields();
@@ -47,6 +49,8 @@ class ReportWizard extends TableBasedObjectWizard {
                 objectId : this._data.objectId,
                 objectName : this._data.objectName,
                 selectedTable : this._data.selectedTable,
+                applicationArea : this._data.applicationArea,
+                usageCategory : this._data.usageCategory,
                 fields: this._data.selectedFieldList
             }
         });
@@ -64,6 +68,9 @@ class ReportWizard extends TableBasedObjectWizard {
         this._data.objectId = document.getElementById("objectid").value;
         this._data.objectName = document.getElementById("objectname").value;
         this._data.selectedTable = document.getElementById("srctable").value;
+        this._data.applicationArea = document.getElementById("apparea").value;
+        this._data.usageCategory = document.getElementById("usagecat").value;
+        
         if (prevTableName != this._data.selectedTable) {
             htmlHelper.clearChildrenById("srcfields");
             htmlHelper.clearChildrenById("destfields");

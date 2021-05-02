@@ -2,6 +2,7 @@ import * as vscode from 'vscode';
 import { ALSyntaxHelper } from './alSyntaxHelper';
 import { StringHelper } from '../tools/stringHelper';
 import { NameValue } from '../tools/nameValue';
+import { ToolsGetProjectSettingsResponse } from '../langserver/toolsGetProjectSettingsResponse';
 
 export class ALSyntaxWriter {
     private content : string;
@@ -217,7 +218,6 @@ export class ALSyntaxWriter {
         let name : string = this.createApiName(fieldName);
         this.writeStartNameSourceBlock("field", this.encodeName(name), 'Rec.' + this.encodeName(fieldName));
         this.addProperty("Caption", this.encodeString(name) + ', Locked = true');
-        this.addApplicationAreaProperty();
         this.writeProperties();
         this.writeEndBlock();
     }

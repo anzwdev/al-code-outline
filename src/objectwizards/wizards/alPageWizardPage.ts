@@ -7,7 +7,6 @@ import { ALPageWizardFastTabData } from './alPageWizardFastTabData';
 import { ALPageSyntaxBuilder } from '../syntaxbuilders/alPageSyntaxBuilder';
 import { DevToolsExtensionContext } from '../../devToolsExtensionContext';
 import { ALObjectWizardSettings } from './alObjectWizardSettings';
-import { ToolsDocumentChangeRequest } from '../../langserver/toolsDocumentChangeRequest';
 
 export class ALPageWizardPage extends ALTableBasedWizardPage {
     protected _pageWizardData : ALPageWizardData;
@@ -62,6 +61,9 @@ export class ALPageWizardPage extends ALTableBasedWizardPage {
                 this._pageWizardData.fastTabsData.push(fastTabDetails);
             }
         }
+
+        //load project settings from the language server
+        this._pageWizardData.projectSettings = await this.getProjectSettings();
 
         //build new object
         let builder : ALPageSyntaxBuilder = new ALPageSyntaxBuilder();

@@ -1,5 +1,6 @@
 'use strict';
 
+import { ToolsGetProjectSettingsResponse } from "../langserver/toolsGetProjectSettingsResponse";
 import { AZSymbolKind } from "../symbollibraries/azSymbolKind";
 
 export class ALSyntaxHelper {
@@ -60,6 +61,64 @@ export class ALSyntaxHelper {
 
     static spaceChar(text : string) : boolean {
         return (text <= ' ');
+    }
+
+    static removePrefixSuffix(text: string, projectSettings: ToolsGetProjectSettingsResponse | undefined): string
+    {
+        if (projectSettings) {
+            //remove first suffix
+            var data = ALSyntaxHelper.removeSuffix(text, projectSettings.mandatorySuffixes);
+            if (data.found)
+                return data.text;
+
+            //remove first prefix
+            data = ALSyntaxHelper.removePrefix(data.text, projectSettings.mandatoryPrefixes);
+            if (data.found)
+                return data.text;
+
+            //remove first prefix/suffix
+            data = ALSyntaxHelper.removeSuffix(data.text, projectSettings.mandatoryAffixes);
+            if (data.found)
+                return data.text;
+            data = ALSyntaxHelper.removePrefix(data.text, projectSettings.mandatoryAffixes);
+            if (data.found)
+                return data.text;
+        }
+
+        return text;
+    }
+
+    static removePrefix(text: string, prefixes: string[] | undefined): { text: string, found: boolean } {
+        if (prefixes) {
+            for (let i = 0; i < prefixes.length; i++) {
+                if ((prefixes[i]) && (prefixes[i].trim().length > 0) && (text.startsWith(prefixes[i])))
+                    return {
+                        found: true, 
+                        text: text.substring(prefixes[i].length).trim()
+                    };
+            }
+        }
+        return {
+            found: false,
+            text: text
+        };
+    }
+
+    static removeSuffix(text: string, suffixes: string[] | undefined): { text: string, found: boolean } {
+        if (suffixes) {
+            for (let i = 0; i < suffixes.length; i++)
+            {
+                if ((suffixes[i]) && (suffixes[i].trim().length > 0) && (text.endsWith(suffixes[i])))
+                    return {
+                        found: true,
+                        text: text.substring(0, text.length - suffixes[i].length).trim()
+                    };
+            }
+        }
+        return {
+            found: false,
+            text: text
+        };
     }
 
     static kindToVariableType(kind : AZSymbolKind) : string | undefined {
@@ -126,7 +185,6 @@ export class ALSyntaxHelper {
                 return 'Entitlement';
         }
         return undefined;
-
     }
-    
+
 }

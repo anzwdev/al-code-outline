@@ -46,9 +46,10 @@ export class ALAddPageFieldsCodeCommand extends ALBaseAddFieldsCodeCommand {
         if ((!pageSymbol) || 
             ((!isFieldSymbol) && (!symbol.contentRange)) || 
             ((isFieldSymbol) && (!symbol.range)) || 
-            ((!pageSymbol.source) && (!pageSymbol.extends)))
-            
+            ((!pageSymbol.source) && (!pageSymbol.extends)))           
             return;
+
+        let isApiPage : boolean = ((!!pageSymbol.subtype) && (pageSymbol.subtype.toLowerCase() == 'api'));
 
         let pageName = (pageSymbol.kind == AZSymbolKind.PageExtensionObject)?pageSymbol.extends:pageSymbol.name;
         if (!pageName)
@@ -81,7 +82,10 @@ export class ALAddPageFieldsCodeCommand extends ALBaseAddFieldsCodeCommand {
         let writer: ALSyntaxWriter = new ALSyntaxWriter(document.uri);
         writer.setIndent(indent);
         for (let i=0; i<selectedFields.length; i++) {
-            writer.writePageField(selectedFields[i].name!, selectedFields[i].caption, addToolTips);
+            if (isApiPage)
+                writer.writeApiPageField(selectedFields[i].name!);
+            else
+                writer.writePageField(selectedFields[i].name!, selectedFields[i].caption, addToolTips);
         }
         let source = writer.toString();
 
