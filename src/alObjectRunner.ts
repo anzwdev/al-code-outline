@@ -57,7 +57,7 @@ export class ALObjectRunner {
                 port: launchConfiguration.port,
                 schemaUpdateMode: launchConfiguration.schemaUpdateMode,
                 server: launchConfiguration.server,
-                serverinstance: launchConfiguration.serverInstance,
+                serverInstance: launchConfiguration.serverInstance,
                 startupObjectId: objectId,
                 startupObjectType: objectType,
                 tenant: launchConfiguration.tenant,

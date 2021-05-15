@@ -86,12 +86,12 @@ export class ToolsLangServerClient implements vscode.Disposable {
             //find binaries path
             if (this._alExtensionVersion.major <= 1)
                 langServerPath = this._context.asAbsolutePath("bin/netframeworknav2018/AZALDevToolsServer.NetFrameworkNav2018.exe");
-            else if (platform == "win32")
-                langServerPath = this._context.asAbsolutePath("bin/netframework/AZALDevToolsServer.NetFramework.exe");
             else {
                 langServerPath = this._context.asAbsolutePath("bin/netcore/" + platform + "/AZALDevToolsServer.NetCore");
-                let fs = require('fs');
-                fs.chmodSync(langServerPath, 0o755);
+                if (platform == "darwin") {
+                    let fs = require('fs');
+                    fs.chmodSync(langServerPath, 0o755);
+                }
             }
 
             //start child process
