@@ -1,5 +1,16 @@
 # Change Log
 
+## 3.0.4
+ - Both Windows and Mac language servers use .net 5 now
+ - Issue #233 - Use table field caption changed by the table extension
+ - Issue #239 - Language server breaks when Table Extension object contains field modification
+ - Issue #240 - Run in Web Client in Symbols browser
+
+ Thank you
+  - DavidFeldhoff for reporting issue #233
+  - pavelichenco for reporting issue #239
+  - misacrni for reporting issue #240
+
 ## 3.0.3
  - Usage category and ApplicationArea in the report wizard
  - Issue #231 - Modify wizards to create object captions without prefix/suffix
