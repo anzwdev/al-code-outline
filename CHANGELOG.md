@@ -1,5 +1,11 @@
 # Change Log
 
+## 3.0.5
+ - Issue #237 - Support Workspace Trust
+
+ Thank you
+  - lramos15 for reporting issue #237
+
 ## 3.0.4
  - Both Windows and Mac language servers use .net 5 now
  - Issue #233 - Use table field caption changed by the table extension

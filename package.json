@@ -21,6 +21,11 @@
 	"keywords": [
 		"al"
 	],
+	"capabilities": {
+		"untrustedWorkspaces": {
+			"supported": true
+		}
+	},
 	"activationEvents": [
 		"onLanguage:al",
 		"onLanguage:alapp",
