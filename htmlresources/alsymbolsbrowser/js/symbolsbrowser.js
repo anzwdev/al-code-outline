@@ -105,7 +105,8 @@ class ObjectBrowser {
                 }
             },
             items: {
-                "definition": {name: "Go to definition"},
+                "definition": {name: "Go to definition (project file or server definition)"},
+                "localdefinition": {name: "Open definition from app file"},
                 "shownewtab": {name: "Open symbol in new tab"},
                 "sep1": "---------",
                 "runinwebclient": {

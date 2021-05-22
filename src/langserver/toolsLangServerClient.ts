@@ -53,6 +53,10 @@ import { ToolsGetQueriesListResponse } from './symbolsinformation/toolsGetQuerie
 import { ToolsGetXmlPortsListResponse } from './symbolsinformation/toolsGetXmlPortsListResponse';
 import { ToolsGetProjectSettingsRequest } from './toolsGetProjectSettingsRequest';
 import { ToolsGetProjectSettingsResponse } from './toolsGetProjectSettingsResponse';
+import { ToolsGetLibrarySymbolLocationRequest } from './toolsGetLibrarySymbolLocationRequest';
+import { ToolsGetLibrarySymbolLocationResponse } from './toolsGetLibrarySymbolLocationResponse';
+import { ToolsGetALAppContentRequest } from './toolsGetALAppContentRequest';
+import { ToolsGetALAppContentResponse } from './toolsGetALAppContentResponse';
 
 export class ToolsLangServerClient implements vscode.Disposable {
     _context : vscode.ExtensionContext;
@@ -261,6 +265,15 @@ export class ToolsLangServerClient implements vscode.Disposable {
         catch(e) {
             return undefined;
         }
+    }
+
+    //symbol location
+    public getLibrarySymbolLocation(params: ToolsGetLibrarySymbolLocationRequest) : Promise<ToolsGetLibrarySymbolLocationResponse | undefined> {
+        return this.sendRequest<ToolsGetLibrarySymbolLocationRequest, ToolsGetLibrarySymbolLocationResponse>(params, 'al/librarysymbollocation');
+    }
+
+    public getALAppContent(params: ToolsGetALAppContentRequest) : Promise<ToolsGetALAppContentResponse | undefined> {
+        return this.sendRequest<ToolsGetALAppContentRequest, ToolsGetALAppContentResponse>(params, 'al/getalappcontent');
     }
 
     //symbols information requests

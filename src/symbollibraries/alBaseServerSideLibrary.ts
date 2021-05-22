@@ -4,6 +4,8 @@ import { AZSymbolKind } from "./azSymbolKind";
 import { AZSymbolInformation } from "./azSymbolInformation";
 import { ToolsLibrarySymbolsDetailsRequest } from "../langserver/toolsLibrarySymbolsDetailsRequest";
 import { ToolsCloseSymbolsLibraryRequest } from "../langserver/toolsCloseSymbolsLibraryRequest";
+import { ALSymbolSourceLocation } from "./alSymbolSourceLocation";
+import { ToolsGetLibrarySymbolLocationRequest } from "../langserver/toolsGetLibrarySymbolLocationRequest";
 
 export class ALBaseServerSideLibrary extends AZSymbolsLibrary {
     protected _context : DevToolsExtensionContext;
@@ -32,6 +34,14 @@ export class ALBaseServerSideLibrary extends AZSymbolsLibrary {
         }
 
         return symbolList;
+    }
+
+    public async getSymbolLocationByPath(symbolPath: number[]) : Promise<ALSymbolSourceLocation | undefined> {
+        let data = await this._context.toolsLangServerClient.getLibrarySymbolLocation(
+            new ToolsGetLibrarySymbolLocationRequest(this._libraryId, symbolPath));
+        if (data)
+            return data.location;
+        return undefined;
     }
 
     public async unloadAsync() {

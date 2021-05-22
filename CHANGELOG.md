@@ -1,9 +1,11 @@
 # Change Log
 
 ## 3.0.5
+ - Issue #194 - Object definition not available - load definition from app file if ShowMyCode is set true
  - Issue #237 - Support Workspace Trust
 
  Thank you
+  - fvet for reporting issue #194
   - lramos15 for reporting issue #237
 
 ## 3.0.4

@@ -1,6 +1,7 @@
 'use strict';
 
 import * as vscode from 'vscode';
+import { ALSymbolSourceLocation } from './alSymbolSourceLocation';
 import { AZSymbolInformation } from "./azSymbolInformation";
 import { AZSymbolKind } from './azSymbolKind';
 
@@ -233,5 +234,9 @@ export class AZSymbolsLibrary {
     }
 
     //#region
+
+    public async getSymbolLocationByPath(symbolPath: number[]) : Promise<ALSymbolSourceLocation | undefined> {
+        return undefined;
+    }
 
 } 
