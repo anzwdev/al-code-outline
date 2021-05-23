@@ -3,6 +3,7 @@
 ## 3.0.5
  - Issue #194 - Object definition not available - load definition from app file if ShowMyCode is set true
  - Issue #237 - Support Workspace Trust
+ - New "azALDevTools.showExtensionLog" command to open extension log file
 
  Thank you
   - fvet for reporting issue #194

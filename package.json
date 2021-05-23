@@ -55,6 +55,7 @@
 		"onCommand:azALDevTools.fixDocumentOnSave",
 		"onCommand:azALDevTools.RemoveProjectWithStatements",
 		"onCommand:azALDevTools.RemoveEditorWithStatements",
+		"onCommand:azALDevTools.showExtensionLog",
 		"onCustomEditor:azALDevTools.jsonEditor",
 		"onCustomEditor:azALDevTools.appPackageEditor"
 	],
@@ -239,6 +240,11 @@
 			{
 				"command": "azALDevTools.alOutlineDisableFollowCursor",
 				"title": "Disable 'Follow Cursor'"
+			},
+			{
+				"category": "AZ AL Dev Tools",
+				"command": "azALDevTools.showExtensionLog",
+				"title": "Open AZ AL Dev Tools log file"
 			}
 		],
 		"menus": {
