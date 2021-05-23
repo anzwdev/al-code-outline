@@ -18,6 +18,7 @@ import { ALCodeTransformationService } from './services/alCodeTransformationServ
 import { ALCodeActionsService } from './services/ALCodeActionsService';
 import { EditorsService } from './services/editorsService';
 import { WorkspaceChangeTrackingService } from './services/workspaceChangeTrackingService';
+import { DiagnosticsService } from './services/diagnosticsService';
 
 export class DevToolsExtensionContext implements vscode.Disposable {
     alLangProxy : ALLangServerProxy;    
@@ -35,6 +36,7 @@ export class DevToolsExtensionContext implements vscode.Disposable {
     alCodeActionsService: ALCodeActionsService;
     editorsService: EditorsService;
     workspaceChangeTrackingService: WorkspaceChangeTrackingService;
+    diagnosticsService: DiagnosticsService;
 
     constructor(context : vscode.ExtensionContext) {
         this.alLangProxy = new ALLangServerProxy()
@@ -58,6 +60,7 @@ export class DevToolsExtensionContext implements vscode.Disposable {
         this.alCodeActionsService = new ALCodeActionsService(this);
         this.editorsService = new EditorsService(this);
         this.workspaceChangeTrackingService = new WorkspaceChangeTrackingService(this);
+        this.diagnosticsService = new DiagnosticsService(this);
     }
 
     getUseSymbolsBrowser() : boolean {

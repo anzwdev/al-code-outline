@@ -53,13 +53,18 @@ import { ToolsGetQueriesListResponse } from './symbolsinformation/toolsGetQuerie
 import { ToolsGetXmlPortsListResponse } from './symbolsinformation/toolsGetXmlPortsListResponse';
 import { ToolsGetProjectSettingsRequest } from './toolsGetProjectSettingsRequest';
 import { ToolsGetProjectSettingsResponse } from './toolsGetProjectSettingsResponse';
+import { ToolsGetLibrarySymbolLocationRequest } from './toolsGetLibrarySymbolLocationRequest';
+import { ToolsGetLibrarySymbolLocationResponse } from './toolsGetLibrarySymbolLocationResponse';
+import { ToolsGetALAppContentRequest } from './toolsGetALAppContentRequest';
+import { ToolsGetALAppContentResponse } from './toolsGetALAppContentResponse';
 
 export class ToolsLangServerClient implements vscode.Disposable {
     _context : vscode.ExtensionContext;
     _childProcess : cp.ChildProcess | undefined;
     _connection : rpc.MessageConnection | undefined;
     _alExtensionPath : string;
-    _alExtensionVersion : Version;    
+    _alExtensionVersion : Version;
+    errorLogUri : vscode.Uri | undefined;
 
     constructor(context : vscode.ExtensionContext, alExtensionPath : string, alExtensionVersion: Version) {
         this._context = context;
@@ -67,6 +72,7 @@ export class ToolsLangServerClient implements vscode.Disposable {
         this._connection = undefined;
         this._alExtensionPath = alExtensionPath;
         this._alExtensionVersion = alExtensionVersion;
+        this.errorLogUri = undefined;
         this.initialize();
     }
 
@@ -84,15 +90,18 @@ export class ToolsLangServerClient implements vscode.Disposable {
             let langServerPath : string;
 
             //find binaries path
-            if (this._alExtensionVersion.major <= 1)
+            if (this._alExtensionVersion.major <= 1) {
                 langServerPath = this._context.asAbsolutePath("bin/netframeworknav2018/AZALDevToolsServer.NetFrameworkNav2018.exe");
-            else {
+                this.errorLogUri = vscode.Uri.file(this._context.asAbsolutePath("bin/netframeworknav2018/log.txt"));
+            } else {                
                 langServerPath = this._context.asAbsolutePath("bin/netcore/" + platform + "/AZALDevToolsServer.NetCore");
+                this.errorLogUri = vscode.Uri.file(this._context.asAbsolutePath("bin/netcore/" + platform + "/log.txt"));
                 if (platform == "darwin") {
                     let fs = require('fs');
                     fs.chmodSync(langServerPath, 0o755);
                 }
             }
+
 
             //start child process
             this._childProcess = cp.spawn(langServerPath, [this._alExtensionPath]);
@@ -261,6 +270,15 @@ export class ToolsLangServerClient implements vscode.Disposable {
         catch(e) {
             return undefined;
         }
+    }
+
+    //symbol location
+    public getLibrarySymbolLocation(params: ToolsGetLibrarySymbolLocationRequest) : Promise<ToolsGetLibrarySymbolLocationResponse | undefined> {
+        return this.sendRequest<ToolsGetLibrarySymbolLocationRequest, ToolsGetLibrarySymbolLocationResponse>(params, 'al/librarysymbollocation');
+    }
+
+    public getALAppContent(params: ToolsGetALAppContentRequest) : Promise<ToolsGetALAppContentResponse | undefined> {
+        return this.sendRequest<ToolsGetALAppContentRequest, ToolsGetALAppContentResponse>(params, 'al/getalappcontent');
     }
 
     //symbols information requests

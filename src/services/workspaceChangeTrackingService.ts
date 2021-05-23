@@ -44,33 +44,12 @@ export class WorkspaceChangeTrackingService {
                 this._context.toolsLangServerClient.documentClose(new ToolsDocumentChangeRequest(e.uri.fsPath, undefined));
             }));
     
-        /*
-        //These events are handled by file system watcher
-        this._context.vscodeExtensionContext.subscriptions.push(
-            vscode.workspace.onDidSaveTextDocument(e => {
-                this._context.toolsLangServerClient.documentSave(new ToolsDocumentChangeRequest(e.uri.fsPath, undefined));
-            }));
-
-        //file events started from vs code ui
-        this._context.vscodeExtensionContext.subscriptions.push(
-            vscode.workspace.onDidCreateFiles(e => {             
-                this._context.toolsLangServerClient.fileCreate(new ToolsFilesRequest(e.files));
-            }));
-
-        this._context.vscodeExtensionContext.subscriptions.push(
-            vscode.workspace.onDidDeleteFiles(e => {
-                this._context.toolsLangServerClient.fileDelete(new ToolsFilesRequest(e.files));
-            }));
-
-        this._context.vscodeExtensionContext.subscriptions.push(
-            vscode.workspace.onDidRenameFiles(e => {
-                this._context.toolsLangServerClient.fileRename(new ToolsFilesRenameRequest(e.files));
-            }));   
-        */
-
         let watcher =  vscode.workspace.createFileSystemWatcher("**/*"); //we are tracking all file changes to handle folders  .{al,app,json}");
         watcher.onDidChange(e => {
             this._context.toolsLangServerClient.fileSystemFileChange(new ToolsFileSystemFileChangeRequest(e.fsPath));
+            //notify symbols service that the app file has changed and any files extracted from this file should be refreshed
+            if (e.path.endsWith('.app'))
+                this._context.symbolsService.appFileChanged(e);
         });
         watcher.onDidCreate(e => {
             this._context.toolsLangServerClient.fileSystemFileCreate(new ToolsFileSystemFileChangeRequest(e.fsPath));

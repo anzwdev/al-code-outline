@@ -16,6 +16,8 @@ import { ALSyntaxHelper } from '../allanguage/alSyntaxHelper';
 import { SymbolsTreeView } from '../symbolstreeview/symbolsTreeView';
 import { TextEditorHelper } from '../tools/textEditorHelper';
 import { StringHelper } from '../tools/stringHelper';
+import { ToolsGetLibrarySymbolLocationRequest } from '../langserver/toolsGetLibrarySymbolLocationRequest';
+import { AppFileTextContentProvider } from '../editorextensions/appFileTextContentProvider';
 
 /**
  * AL Symbols Browser
@@ -105,7 +107,6 @@ export class ALSymbolsBrowser extends BaseWebViewEditor {
         }
     }
 
-
     protected processWebViewMessage(message : any) : boolean {
         if (super.processWebViewMessage(message))
             return true;
@@ -114,6 +115,9 @@ export class ALSymbolsBrowser extends BaseWebViewEditor {
             case 'definition':
                 this.goToDefinition(message.path);
                 return true;
+            case 'localdefinition':
+                    this.goToLocalDefinition(message.path);
+                    return true;
             case 'shownewtab':
                 this.showNewTab(message.path);
                 break;
@@ -280,6 +284,24 @@ export class ALSymbolsBrowser extends BaseWebViewEditor {
                 vscode.window.showErrorMessage('Object definition is not available.');
             }
         }
+    }
+    
+    protected async goToLocalDefinition(path: number[] | undefined) {
+        if (!path)
+            return;
+        let location = await this._library.getSymbolLocationByPath(path);
+        if ((!location) || (!location.schema) || (!location.sourcePath))
+            return;
+
+        let preview = !vscode.workspace.getConfiguration('alOutline').get('openDefinitionInNewTab');            
+        let position: vscode.Position | undefined = undefined;
+        if (location.range)
+            position = new vscode.Position(location.range.start.line, location.range.start.character);
+
+        if (location.schema == 'file')
+            TextEditorHelper.openEditor(vscode.Uri.file(location.sourcePath), true, preview, position);
+        else
+            TextEditorHelper.openEditor(vscode.Uri.parse(AppFileTextContentProvider.scheme + ':' + location.sourcePath), true, preview, position);
     }
 
     protected async runInWebClient(path : number[] | undefined) {
