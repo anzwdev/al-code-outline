@@ -1,5 +1,11 @@
 # Change Log
 
+## 3.0.6
+ - Issue #244 - Add ToolTip not working correct if ' is used
+
+ Thank you
+  - Duffy77 for reporting issue #244
+  
 ## 3.0.5
  - Issue #194 - Object definition not available - load definition from app file if ShowMyCode is set true
  - Issue #237 - Support Workspace Trust

@@ -2,7 +2,7 @@
 	"name": "al-code-outline",
 	"displayName": "AZ AL Dev Tools/AL Code Outline",
 	"description": "AZ AL Development Tools: AL code outline, object browser, object creators",
-	"version": "3.0.5",
+	"version": "3.0.6",
 	"publisher": "andrzejzwierzchowski",
 	"engines": {
 		"vscode": "^1.47.0"
@@ -484,7 +484,12 @@
 					"alOutline.pageFieldToolTip": {
 						"type": "string",
 						"default": "Specifies the value of the %1 field",
-						"description": "The default tooltip template for page fields. Use %1 as placeholder for field caption or name."
+						"description": "The default tooltip template for page fields. Use %1 or %Caption% as placeholder for field caption or name, %Caption.Comment% as placeholder for field caption comment"
+					},
+					"alOutline.pageFieldToolTipComment": {
+						"type": "string",
+						"default": "%Caption.Comment%",
+						"description": "The default tooltip comment template for page fields. Use %Caption% as placeholder for field caption or name, %Caption.Comment% as placeholder for field caption comment"
 					},
 					"alOutline.addToolTipsToPageFields": {
 						"type": "boolean",
