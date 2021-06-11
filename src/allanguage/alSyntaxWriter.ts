@@ -2,7 +2,6 @@ import * as vscode from 'vscode';
 import { ALSyntaxHelper } from './alSyntaxHelper';
 import { StringHelper } from '../tools/stringHelper';
 import { NameValue } from '../tools/nameValue';
-import { ToolsGetProjectSettingsResponse } from '../langserver/toolsGetProjectSettingsResponse';
 
 export class ALSyntaxWriter {
     private content : string;
@@ -11,6 +10,7 @@ export class ALSyntaxWriter {
     public applicationArea : string;   
     private propertiesCache : NameValue[];
     private fieldToolTip: string;
+    private fieldToolTipComment: string;
     private eol: string;
 
     constructor(destUri: vscode.Uri | undefined) {
@@ -21,6 +21,7 @@ export class ALSyntaxWriter {
         this.indentPart = "    ";
         this.applicationArea = StringHelper.emptyIfNotDef(config.get<string>('defaultAppArea'));
         this.fieldToolTip = StringHelper.emptyIfNotDef(config.get<string>('pageFieldToolTip'));
+        this.fieldToolTipComment = StringHelper.emptyIfNotDef(config.get<string>('pageFieldToolTipComment'));
         this.propertiesCache = [];        
         this.eol = StringHelper.getDefaultEndOfLine(destUri);
     }
@@ -206,10 +207,10 @@ export class ALSyntaxWriter {
         this.writeEndBlock();
     }
 
-    public writePageField(fieldName : string, fieldCaption: string | undefined, createToolTip: boolean) {
+    public writePageField(fieldName : string, fieldCaption: string | undefined, fieldCaptionComment: string | undefined, createToolTip: boolean) {
         this.writeStartNameSourceBlock("field", this.encodeName(fieldName), 'Rec.' + this.encodeName(fieldName));
         if (createToolTip)
-            this.writeTooltip(this.fieldToolTip, fieldCaption);        
+            this.writeTooltip(this.fieldToolTip, this.fieldToolTipComment, fieldCaption, fieldCaptionComment);
         this.writeApplicationArea();
         this.writeEndBlock();
     }
@@ -227,11 +228,28 @@ export class ALSyntaxWriter {
             this.writeProperty("ApplicationArea", this.applicationArea);
     }
 
-    public writeTooltip(template: string, value: string | undefined) {
-        if ((template) && (template != "") && (value) && (value != "")) {
-            value = template.replace(new RegExp("%1", "g"), value);
-            this.writeProperty("ToolTip", this.encodeString(value));
+    public writeTooltip(captionTemplate: string, commentTemplate: string, value: string | undefined, comment: string | undefined) {
+        if ((captionTemplate) && (captionTemplate != "") && (value) && (value != "")) {
+            let textValue = this.applyCaptionTemplate(captionTemplate, value, comment);
+            let commentValue = this.applyCaptionTemplate(commentTemplate, value, comment);
+            textValue = this.encodeString(textValue);
+            if ((commentValue) && (commentValue != ""))
+                textValue = textValue + ", Comment = " + this.encodeString(commentValue);
+            this.writeProperty("ToolTip", textValue);
         }
+    }
+
+    protected applyCaptionTemplate(template: string, value: string | undefined, comment: string | undefined) {
+        if ((template) && (template != "")) {
+            if (!value)
+                value = "";
+            if (!comment)
+                comment = "";
+            template = template.replace(new RegExp("%1", "g"), value);
+            template = template.replace(new RegExp("%Caption%", "g"), value);
+            template = template.replace(new RegExp("%Caption.Comment%", "g"), comment);
+        }
+        return template;
     }
 
     public addApplicationAreaProperty() {

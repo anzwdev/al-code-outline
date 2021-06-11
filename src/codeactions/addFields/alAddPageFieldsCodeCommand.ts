@@ -85,7 +85,8 @@ export class ALAddPageFieldsCodeCommand extends ALBaseAddFieldsCodeCommand {
             if (isApiPage)
                 writer.writeApiPageField(selectedFields[i].name!);
             else
-                writer.writePageField(selectedFields[i].name!, selectedFields[i].caption, addToolTips);
+                writer.writePageField(selectedFields[i].name!, selectedFields[i].caption,
+                    selectedFields[i].captionLabel?.comment, addToolTips);
         }
         let source = writer.toString();
 
