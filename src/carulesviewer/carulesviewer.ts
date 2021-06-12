@@ -42,6 +42,7 @@ export class CARulesViewer extends BaseWebViewEditor {
         this._analyzers.push(new CodeAnalyzerInfo('${CodeCop}', '${CodeCop}', false));
         this._analyzers.push(new CodeAnalyzerInfo('${PerTenantExtensionCop}', '${PerTenantExtensionCop}', false));
         this._analyzers.push(new CodeAnalyzerInfo('${UICop}', '${UICop}', false));
+        this._analyzers.push(new CodeAnalyzerInfo('Compiler', 'Compiler', false));
 
         let alConfig = vscode.workspace.getConfiguration('al', undefined);
         let codeAnalyzersSetting = alConfig.get<string[]|undefined>("codeAnalyzers");

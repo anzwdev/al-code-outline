@@ -1,10 +1,12 @@
 # Change Log
 
 ## 3.0.6
+ - Issue #88 - "Show Code Analyzer Rules" - include compiler rules (ALxxxx)
  - Issue #244 - Add ToolTip not working correct if ' is used
  - Issue #250 - ToolTip is added when ToolTipML is already set
 
  Thank you
+  - rvanbekkum for reporting issue #88
   - Duffy77 for reporting issue #244
   - wbrakowski for reporting issue #250
   
