@@ -11,7 +11,6 @@ import { ALCreateInterfaceCodeCommand } from './createObjects/alCreateInterfaceC
 import { AZDocumentSymbolsLibrary } from '../symbollibraries/azDocumentSymbolsLibrary';
 import { ALCodeAction } from './alCodeAction';
 import { ALSortVariablesCommand } from './sortSymbols/alSortVariablesCommand';
-import { ALCodeCopFixAA0005 } from './codeFixes/alCodeCopFixAA0005';
 import { ALCodeCopFixAA0008 } from './codeFixes/alCodeCopFixAA0008';
 import { ALCodeCopFixAA0137 } from './codeFixes/alCodeCopFixAA0137';
 import { ALCodeCopFixAA0139 } from './codeFixes/alCodeCopFixAA0139';

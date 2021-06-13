@@ -29,7 +29,8 @@ export class OnDocumentSaveModifier extends SyntaxModifier {
 
     protected getParameters(uri: vscode.Uri): any {
         return {
-            commandsList: this._commandsList
+            commandsList: this._commandsList,
+            skipFormatting: 'true'
         }
     }
 
