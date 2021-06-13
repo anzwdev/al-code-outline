@@ -3,9 +3,10 @@
 import * as vscode from 'vscode';
 import * as path from 'path';
 import { BaseWebViewEditor } from '../webviews/baseWebViewEditor';
-import { ALActionImageInfo } from './alActionImageInfo';
 import { DevToolsExtensionContext } from '../devToolsExtensionContext';
 import { StringHelper } from '../tools/stringHelper';
+import { ToolsGetImagesRequest } from '../langserver/languageInformation/toolsGetImagesRequest';
+import { ImageInformation } from '../langserver/languageInformation/imageInformation';
 
 export class ALActionImageBrowser extends BaseWebViewEditor {
     protected _devToolsContext: DevToolsExtensionContext;
@@ -28,11 +29,12 @@ export class ALActionImageBrowser extends BaseWebViewEditor {
     }
 
     async loadData() {
-        let data: ALActionImageInfo[] = await this.getImageList();
-        this.sendMessage({
-            command : 'setData',
-            data : data
-        });
+        let data: ImageInformation[] | undefined = await this.getImageList();
+        if (data)
+            this.sendMessage({
+                command : 'setData',
+                data : data
+            });
     }
 
     protected processWebViewMessage(message : any) : boolean {
@@ -95,43 +97,16 @@ export class ALActionImageBrowser extends BaseWebViewEditor {
             vscode.window.showInformationMessage('Promoted action code has been copied to the clipboard');
     }
 
-    async getImageList() : Promise<ALActionImageInfo[]> {
-        let fileContent = 'page 0 MyPage9999\n{\nactions\n{\narea(Processing)\n{\naction(ActionName)\n{\nImage=;\n}\n}\n}\n}';
-
-        let list = await this._devToolsContext.alLangProxy.getCompletionForSourceCode(undefined, 'Loading list of action images.', fileContent,
-            8, 6, 12, 1);
-
-        //process results
-        let out : ALActionImageInfo[] = [];
-        
-        if (list && list.items) {
-            for (let i=0; i<list.items.length; i++) {
-                let item : vscode.CompletionItem = list.items[i];
-                if (item.kind == vscode.CompletionItemKind.Property) {
-                    if (item.documentation) {
-                        let docContent : any = item.documentation;
-                        let imageString = docContent.value;
-                        //decode image
-                        let pos : number = imageString.indexOf('(data');
-                        if (pos >= 0)
-                            imageString = imageString.substr(pos + 1);
-                        pos = imageString.indexOf(')');
-                        if (pos >= 0)
-                            imageString = imageString.substr(0, pos);                            
-
-                        let imageInfo : ALActionImageInfo = new ALActionImageInfo();
-                        imageInfo.name = item.label;
-                        imageInfo.content = imageString;
-                        out.push(imageInfo);
-                    }
-
-                //    out.push(ALSyntaxHelper.fromNameText(item.label));
-                }
-            }
-        }
-
-        return out;
-        
+    async getImageList() : Promise<ImageInformation[] | undefined> {
+        return await vscode.window.withProgress<ImageInformation[] | undefined>({
+            location: vscode.ProgressLocation.Notification,
+            title: 'Loading list of action images.'
+        }, async (progress) => {
+            let response = await this._devToolsContext.toolsLangServerClient.getImages(new ToolsGetImagesRequest('actionImages'));
+            if ((response) && (response.images))
+                return response.images;
+            return [];   
+        });
     }
 
 } 

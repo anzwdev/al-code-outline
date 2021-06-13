@@ -57,6 +57,8 @@ import { ToolsGetLibrarySymbolLocationRequest } from './toolsGetLibrarySymbolLoc
 import { ToolsGetLibrarySymbolLocationResponse } from './toolsGetLibrarySymbolLocationResponse';
 import { ToolsGetALAppContentRequest } from './toolsGetALAppContentRequest';
 import { ToolsGetALAppContentResponse } from './toolsGetALAppContentResponse';
+import { ToolsGetImagesRequest } from './languageInformation/toolsGetImagesRequest';
+import { ToolsGetImagesResponse } from './languageInformation/toolsGetImagesResponse';
 
 export class ToolsLangServerClient implements vscode.Disposable {
     _context : vscode.ExtensionContext;
@@ -336,6 +338,12 @@ export class ToolsLangServerClient implements vscode.Disposable {
 
     public getProjectSettings(params: ToolsGetProjectSettingsRequest) : Promise<ToolsGetProjectSettingsResponse | undefined> {
         return this.sendRequest<ToolsGetProjectSettingsRequest, ToolsGetProjectSettingsResponse>(params, 'al/getprojectsettings');
+    }
+
+    //language information
+
+    public getImages(params: ToolsGetImagesRequest) : Promise<ToolsGetImagesResponse | undefined> {
+        return this.sendRequest<ToolsGetImagesRequest, ToolsGetImagesResponse>(params, "al/getimages");
     }
 
     //workspace and file notifications
