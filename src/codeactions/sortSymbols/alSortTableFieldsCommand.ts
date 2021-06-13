@@ -12,7 +12,7 @@ export class ALSortTableFieldsCommand extends ALCodeAction {
     }
 
     collectCodeActions(docSymbols: AZDocumentSymbolsLibrary, symbol: AZSymbolInformation | undefined, document: vscode.TextDocument, range: vscode.Range | vscode.Selection, context: vscode.CodeActionContext, actions: vscode.CodeAction[]) {
-        if (!this.canRunOnSave(document.uri)) {
+        if (!this.canRunOnSave(document)) {
             let edit: vscode.WorkspaceEdit | undefined = undefined;
 
             if ((symbol) &&

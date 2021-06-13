@@ -1,5 +1,21 @@
 # Change Log
 
+## 3.0.6
+ - Issue #88 - "Show Code Analyzer Rules" - include compiler rules (ALxxxx)
+ - Issue #213 - Code Actions On Save - incorrect document formatting
+ - Issue #228 - API fields names and captions
+ - Issue #244 - Add ToolTip not working correct if ' is used
+ - Issue #246 - 'Show Action Images' does not work in a multi-root workspace
+ - Issue #247 - Exclude specific object from codeActionsOnSave
+ - Issue #250 - ToolTip is added when ToolTipML is already set
+ 
+ Thank you
+  - rvanbekkum for reporting issue #88
+  - mjmatthiesen and daansaveyn for reporting problems with document formatting after OnSave code actions are run
+  - Duffy77 for reporting issue #244
+  - fvet for reporting issue #228, #246, #247
+  - wbrakowski for reporting issue #250
+  
 ## 3.0.5
  - Issue #194 - Object definition not available - load definition from app file if ShowMyCode is set true
  - Issue #237 - Support Workspace Trust

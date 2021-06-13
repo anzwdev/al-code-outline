@@ -42,6 +42,7 @@ export class ALAddPageFieldsCodeCommand extends ALBaseAddFieldsCodeCommand {
         let pageSymbol = symbol.findParentByKindList(parentKind);
         let isFieldSymbol = ((symbol.kind == AZSymbolKind.PageField) || (symbol.kind == AZSymbolKind.PageUserControl));
         let addToolTips = !!config.get<boolean>('addToolTipsToPageFields');
+        let useTableFieldCaptionsInApi = !!config.get<boolean>('useTableFieldCaptionsInApiFields');
 
         if ((!pageSymbol) || 
             ((!isFieldSymbol) && (!symbol.contentRange)) || 
@@ -83,9 +84,11 @@ export class ALAddPageFieldsCodeCommand extends ALBaseAddFieldsCodeCommand {
         writer.setIndent(indent);
         for (let i=0; i<selectedFields.length; i++) {
             if (isApiPage)
-                writer.writeApiPageField(selectedFields[i].name!);
+                writer.writeApiPageField(selectedFields[i].name!, selectedFields[i].caption, 
+                    selectedFields[i].captionLabel?.comment, useTableFieldCaptionsInApi);
             else
-                writer.writePageField(selectedFields[i].name!, selectedFields[i].caption, addToolTips);
+                writer.writePageField(selectedFields[i].name!, selectedFields[i].caption,
+                    selectedFields[i].captionLabel?.comment, addToolTips);
         }
         let source = writer.toString();
 

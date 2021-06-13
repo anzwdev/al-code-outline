@@ -2,7 +2,7 @@
 	"name": "al-code-outline",
 	"displayName": "AZ AL Dev Tools/AL Code Outline",
 	"description": "AZ AL Development Tools: AL code outline, object browser, object creators",
-	"version": "3.0.5",
+	"version": "3.0.6",
 	"publisher": "andrzejzwierzchowski",
 	"engines": {
 		"vscode": "^1.47.0"
@@ -476,6 +476,16 @@
 						"description": "Specifies which code-actions should be applied when a file is saved. Valid values are SortReportColumns, SortProcedures, SortProperties and SortVariables",
 						"scope": "resource"
 					},
+					"alOutline.codeActionsOnSaveIgnoreFiles": {
+						"type": "array",
+						"items": {
+							"type": "string"
+						},
+						"default": [],
+						"uniqueItems": true,
+						"description": "Specifies which files should be ignored by code actions run when document is saved",
+						"scope": "resource"
+					},
 					"alOutline.pageActionToolTip": {
 						"type": "string",
 						"default": "Executes the %1 action",
@@ -484,13 +494,24 @@
 					"alOutline.pageFieldToolTip": {
 						"type": "string",
 						"default": "Specifies the value of the %1 field",
-						"description": "The default tooltip template for page fields. Use %1 as placeholder for field caption or name."
+						"description": "The default tooltip template for page fields. Use %1 or %Caption% as placeholder for field caption or name, %Caption.Comment% as placeholder for field caption comment"
+					},
+					"alOutline.pageFieldToolTipComment": {
+						"type": "string",
+						"default": "%Caption.Comment%",
+						"description": "The default tooltip comment template for page fields. Use %Caption% as placeholder for field caption or name, %Caption.Comment% as placeholder for field caption comment"
 					},
 					"alOutline.addToolTipsToPageFields": {
 						"type": "boolean",
 						"default": true,
 						"description": "Add tooltips to page fields"
+					},
+					"alOutline.useTableFieldCaptionsInApiFields": {
+						"type": "boolean",
+						"default": true,
+						"description": "Set to true, to use table field captions in API pages fields. Set to false, to use camelCase api field names in api field captions"
 					}
+
 				}
 			}
 		]

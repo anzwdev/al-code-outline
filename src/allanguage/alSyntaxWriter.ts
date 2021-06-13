@@ -2,7 +2,6 @@ import * as vscode from 'vscode';
 import { ALSyntaxHelper } from './alSyntaxHelper';
 import { StringHelper } from '../tools/stringHelper';
 import { NameValue } from '../tools/nameValue';
-import { ToolsGetProjectSettingsResponse } from '../langserver/toolsGetProjectSettingsResponse';
 
 export class ALSyntaxWriter {
     private content : string;
@@ -11,6 +10,7 @@ export class ALSyntaxWriter {
     public applicationArea : string;   
     private propertiesCache : NameValue[];
     private fieldToolTip: string;
+    private fieldToolTipComment: string;
     private eol: string;
 
     constructor(destUri: vscode.Uri | undefined) {
@@ -21,6 +21,7 @@ export class ALSyntaxWriter {
         this.indentPart = "    ";
         this.applicationArea = StringHelper.emptyIfNotDef(config.get<string>('defaultAppArea'));
         this.fieldToolTip = StringHelper.emptyIfNotDef(config.get<string>('pageFieldToolTip'));
+        this.fieldToolTipComment = StringHelper.emptyIfNotDef(config.get<string>('pageFieldToolTipComment'));
         this.propertiesCache = [];        
         this.eol = StringHelper.getDefaultEndOfLine(destUri);
     }
@@ -206,18 +207,28 @@ export class ALSyntaxWriter {
         this.writeEndBlock();
     }
 
-    public writePageField(fieldName : string, fieldCaption: string | undefined, createToolTip: boolean) {
+    public writePageField(fieldName : string, fieldCaption: string | undefined, fieldCaptionComment: string | undefined, createToolTip: boolean) {
         this.writeStartNameSourceBlock("field", this.encodeName(fieldName), 'Rec.' + this.encodeName(fieldName));
         if (createToolTip)
-            this.writeTooltip(this.fieldToolTip, fieldCaption);        
+            this.writeTooltip(this.fieldToolTip, this.fieldToolTipComment, fieldCaption, fieldCaptionComment);
         this.writeApplicationArea();
         this.writeEndBlock();
     }
 
-    public writeApiPageField(fieldName : string) {
+    public writeApiPageField(fieldName : string, fieldCaption: string | undefined, fieldCaptionComment: string | undefined, useTableFieldCaption: boolean) {
         let name : string = this.createApiName(fieldName);
         this.writeStartNameSourceBlock("field", this.encodeName(name), 'Rec.' + this.encodeName(fieldName));
-        this.addProperty("Caption", this.encodeString(name) + ', Locked = true');
+        
+        if (useTableFieldCaption) {
+            if ((!fieldCaption) || (fieldCaption === ''))
+                fieldCaption = fieldName;
+            if ((fieldCaptionComment) && (fieldCaptionComment !== ''))
+                this.addProperty("Caption", this.encodeString(fieldCaption) + ', Comment = ' + this.encodeString(fieldCaptionComment));
+            else
+                this.addProperty("Caption", this.encodeString(fieldCaption));
+        } else
+            this.addProperty("Caption", this.encodeString(name) + ', Locked = true');
+        
         this.writeProperties();
         this.writeEndBlock();
     }
@@ -227,11 +238,28 @@ export class ALSyntaxWriter {
             this.writeProperty("ApplicationArea", this.applicationArea);
     }
 
-    public writeTooltip(template: string, value: string | undefined) {
-        if ((template) && (template != "") && (value) && (value != "")) {
-            value = template.replace(new RegExp("%1", "g"), value);
-            this.writeProperty("ToolTip", this.encodeString(value));
+    public writeTooltip(captionTemplate: string, commentTemplate: string, value: string | undefined, comment: string | undefined) {
+        if ((captionTemplate) && (captionTemplate != "") && (value) && (value != "")) {
+            let textValue = this.applyCaptionTemplate(captionTemplate, value, comment);
+            let commentValue = this.applyCaptionTemplate(commentTemplate, value, comment);
+            textValue = this.encodeString(textValue);
+            if ((commentValue) && (commentValue != ""))
+                textValue = textValue + ", Comment = " + this.encodeString(commentValue);
+            this.writeProperty("ToolTip", textValue);
         }
+    }
+
+    protected applyCaptionTemplate(template: string, value: string | undefined, comment: string | undefined) {
+        if ((template) && (template != "")) {
+            if (!value)
+                value = "";
+            if (!comment)
+                comment = "";
+            template = template.replace(new RegExp("%1", "g"), value);
+            template = template.replace(new RegExp("%Caption%", "g"), value);
+            template = template.replace(new RegExp("%Caption.Comment%", "g"), comment);
+        }
+        return template;
     }
 
     public addApplicationAreaProperty() {
@@ -252,15 +280,49 @@ export class ALSyntaxWriter {
     }
 
     public createApiName(source : string) : string {
-        let name = source.replace(/[^A-Za-z0-9]/g, '');
-        
-        while ((name.length > 0) && (name[0] >= '0') && (name[0] <= '9')) {
-            name = name.substr(1);
+        let text = '';
+        let toLower = true;
+        let toUpper = false;
+        source = source.trim();        
+        for (let i=0; i<source.length; i++) {
+            let character = source[i];
+            let isLowerCaseLetterChar = ((character >= 'a') && (character <= 'z'));
+            let isUpperCaseLetterChar = ((character >= 'A') && (character <= 'Z'));
+            let isDigitChar = ((character >= '0') && (character <= '9'));
+            let validCharacter = ((isLowerCaseLetterChar) || (isUpperCaseLetterChar) || ((isDigitChar) && (text !== '')));            
+
+            if ((text !== '') || (validCharacter)) {
+                //if text starts with upperCase, conver all these characters to lowerCase
+                if (isUpperCaseLetterChar) {
+                    toUpper = false;
+
+                    //do not convert to lowerCase if next character is lowerCase (i.e. EDIDocument => ediDocument), but only if it is not first character in the name (i.e. MyField => myField)
+                    if ((text !== '') && (toLower) && (i < (source.length - 1))) {
+                        let nextCharacter = source[i + 1];
+                        if (((nextCharacter >= 'a') && (nextCharacter <= 'z')))
+                            toLower = false;
+                    }
+
+                    if (toLower)
+                        character = character.toLowerCase();
+                } else {
+                    toLower = false;
+                    if ((isLowerCaseLetterChar) && (toUpper)) {
+                        character = character.toUpperCase();
+                        toUpper = false;
+                    }
+                    //if current character is not lowerCase letter, then convert next lowerCase letter to upperCase
+                    if (!isLowerCaseLetterChar)
+                        toUpper = true;
+                }
+
+                //append letters to text
+                if (validCharacter)
+                    text = text + character;
+            }
         }
 
-        if (name.length > 1)
-            return name.substr(0, 1).toLowerCase() + name.substr(1);
-        return name.toLowerCase();
-    }
+        return text;
+   }
 
 }

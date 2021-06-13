@@ -24,7 +24,8 @@ export class ToolTipModifier {
         if (!workspaceUri)
             return;
         let request: ToolsWorkspaceCommandRequest = new ToolsWorkspaceCommandRequest('addToolTips', '', workspaceUri.fsPath, undefined, {
-            toolTipField: this.getFieldTooltip(workspaceUri), 
+            toolTipField: this.getFieldTooltip(workspaceUri),
+            toolTipFieldComment: this.getFieldTooltipComment(workspaceUri),
             toolTipAction: this.getActionTooltip(workspaceUri)
         });
         let response = await this._context.toolsLangServerClient.workspaceCommand(request);
@@ -56,6 +57,7 @@ export class ToolTipModifier {
 
         let request: ToolsWorkspaceCommandRequest = new ToolsWorkspaceCommandRequest('addToolTips', text, workspacePath, undefined, {
             toolTipField: this.getFieldTooltip(documentUri), 
+            toolTipFieldComment: this.getFieldTooltipComment(workspaceUri),
             toolTipAction: this.getActionTooltip(documentUri)
         });
         let response = await this._context.toolsLangServerClient.workspaceCommand(request);
@@ -95,6 +97,15 @@ export class ToolTipModifier {
             vscode.workspace.getConfiguration('alOutline', uri).get('pageFieldToolTip'));
         if (toolTip == '') {
             toolTip = 'Specifies the value for the field %1';
+        }
+        return toolTip;
+    }
+
+    protected getFieldTooltipComment(uri: vscode.Uri | undefined): string {
+        let toolTip = StringHelper.emptyIfNotDef(
+            vscode.workspace.getConfiguration('alOutline', uri).get('pageFieldToolTipComment'));
+        if (toolTip == '') {
+            toolTip = '%Caption.Comment%';
         }
         return toolTip;
     }

@@ -2,6 +2,7 @@ import * as vscode from 'vscode';
 import { DevToolsExtensionContext } from "../devToolsExtensionContext";
 import { AZDocumentSymbolsLibrary } from "../symbollibraries/azDocumentSymbolsLibrary";
 import { AZSymbolInformation } from "../symbollibraries/azSymbolInformation";
+import { ALCodeActionsProvider } from './alCodeActionsProvider';
 
 export class ALCodeAction {
     protected _toolsExtensionContext : DevToolsExtensionContext;
@@ -19,11 +20,15 @@ export class ALCodeAction {
         return this._toolsExtensionContext.activeDocumentSymbols.getDocUri();
     }
 
-    protected canRunOnSave(resource?: vscode.Uri): boolean {
+    protected canRunOnSave(document: vscode.TextDocument): boolean {
         if (!this._shortName)
             return false;    
+
+        let configuration = vscode.workspace.getConfiguration('alOutline', document.uri);
+        if (!ALCodeActionsProvider.canRunOnSaveOnFile(configuration, document))
+            return false;
             
-        let actionsList = vscode.workspace.getConfiguration('alOutline', resource).get<string[]>('codeActionsOnSave');
+        let actionsList = configuration.get<string[]>('codeActionsOnSave');
         if (actionsList)
             return (actionsList.indexOf(this._shortName) >= 0);
         return false;
