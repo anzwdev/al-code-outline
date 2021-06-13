@@ -476,6 +476,16 @@
 						"description": "Specifies which code-actions should be applied when a file is saved. Valid values are SortReportColumns, SortProcedures, SortProperties and SortVariables",
 						"scope": "resource"
 					},
+					"alOutline.codeActionsOnSaveIgnoreFiles": {
+						"type": "array",
+						"items": {
+							"type": "string"
+						},
+						"default": [],
+						"uniqueItems": true,
+						"description": "Specifies which files should be ignored by code actions run when document is saved",
+						"scope": "resource"
+					},
 					"alOutline.pageActionToolTip": {
 						"type": "string",
 						"default": "Executes the %1 action",

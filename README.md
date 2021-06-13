@@ -207,6 +207,7 @@ This extension contributes the following settings:
 * `alOutline.openDefinitionInNewTab`: set to true to always open documents in a new tab from "Go to definition" command in "AL Object Browser"
 * `fieldsSelectionOrder`: specifies how "Add multiple fields" functionality adds fields, available options are: "alphabetic" and "selection order"
 * `alOutline.codeActionsOnSave`: list of code actions that should be run on document save, available options are: SortReportColumns, SortProperties, SortProcedures, SortVariables
+* `codeActionsOnSaveIgnoreFiles`: array of vscode patters of files that should be ignored when OnSave code actions are run. To make it work, the pattern should always start with '\*\*/', so for all files in folder 'OldFiles' the pattern should be '\*\*/OldFiles/*.al'
 * `alOutline.pageActionToolTip`: default tooltip template for page actions. Use %1 as placeholder for action caption or name
 * `alOutline.pageFieldToolTip`: default tooltip template for page fields. Use %1 as placeholder for field caption or name
 * `alOutline.addToolTipsToPageFields`: set to true to add tooltips to page fields when 'Add multiple fields' action is used

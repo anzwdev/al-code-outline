@@ -64,21 +64,42 @@ export class ALCodeActionsProvider implements vscode.CodeActionProvider {
         }
 
         //create OnSave action
-        let actionsList = vscode.workspace.getConfiguration('alOutline', document.uri).get<string[]>('codeActionsOnSave');
+        let configuration = vscode.workspace.getConfiguration('alOutline', document.uri);
+        let actionsList = configuration.get<string[]>('codeActionsOnSave');
         if ((actionsList) && (actionsList.length > 0)) {
-            let actionKind = vscode.CodeActionKind.SourceFixAll.append('al');
-            let action = new vscode.CodeAction("Fix document on save (AZ AL Dev Tools)", actionKind);
-            action.command = {
-                title: "Fix document on save",
-                command: "azALDevTools.fixDocumentOnSave",
-                arguments: [
-                    document
-                ]
-            };
-            actions.push(action);
+            //check if document can run actions on save
+            if (ALCodeActionsProvider.canRunOnSaveOnFile(configuration, document)) {
+                let actionKind = vscode.CodeActionKind.SourceFixAll.append('al');
+                let action = new vscode.CodeAction("Fix document on save (AZ AL Dev Tools)", actionKind);
+                action.command = {
+                    title: "Fix document on save",
+                    command: "azALDevTools.fixDocumentOnSave",
+                    arguments: [
+                        document
+                    ]
+                };
+                actions.push(action);
+            }
         }
 
         return actions;
+    }
+
+    public static canRunOnSaveOnFile(configuration: vscode.WorkspaceConfiguration, document: vscode.TextDocument) : boolean {
+        let ignorePatterns = configuration.get<string[]>('codeActionsOnSaveIgnoreFiles');
+        if ((ignorePatterns) && (ignorePatterns.length > 0)) {
+            let selectors = ignorePatterns.map(pattern => {
+                return {   
+                    language: 'al',                 
+                    pattern: pattern
+                };
+            });
+
+            let matchValue =vscode.languages.match(selectors, document);
+            if (matchValue > 0)
+                return false;
+        }
+        return true;
     }
 
     protected async getDocumentSymbolsAsync(document: vscode.TextDocument): Promise<AZDocumentSymbolsLibrary> {
