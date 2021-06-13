@@ -8,6 +8,9 @@ export class ALPageSyntaxBuilder {
     }    
 
     buildFromPageWizardData(destUri: vscode.Uri | undefined, data : ALPageWizardData) : string {
+        let config = vscode.workspace.getConfiguration('alOutline', destUri);
+        let useTableFieldCaptionsInApi = !!config.get<boolean>('useTableFieldCaptionsInApiFields');
+
         //generate file content
         let writer : ALSyntaxWriter = new ALSyntaxWriter(destUri);
         if (data.applicationArea)
@@ -68,7 +71,8 @@ export class ALPageSyntaxBuilder {
             if (data.selectedFieldList) {
                 for (let i=0; i<data.selectedFieldList.length; i++) {
                     if (isApi)
-                        writer.writeApiPageField(data.selectedFieldList[i].name!);
+                        writer.writeApiPageField(data.selectedFieldList[i].name!, data.selectedFieldList[i].caption,
+                            data.selectedFieldList[i].captionLabel?.comment, useTableFieldCaptionsInApi);
                     else
                         writer.writePageField(data.selectedFieldList[i].name!, data.selectedFieldList[i].caption,
                             data.selectedFieldList[i].captionLabel?.comment, data.createTooltips);

@@ -211,6 +211,7 @@ This extension contributes the following settings:
 * `alOutline.pageActionToolTip`: default tooltip template for page actions. Use %1 as placeholder for action caption or name
 * `alOutline.pageFieldToolTip`: default tooltip template for page fields. Use %1 as placeholder for field caption or name
 * `alOutline.addToolTipsToPageFields`: set to true to add tooltips to page fields when 'Add multiple fields' action is used
+* `alOutline.useTableFieldCaptionsInApiFields`: set to true, to use table field captions in API pages fields like in standard BC APIs v 2.0 (i.e. ```Caption='Customer No.';```), set to false to use camelCase api page field name in api page field caption together with Locked property like in standard BC APIs v 1.0 (i.e. ```Caption='customerNo', Locked = true;```). Default value is true.
 
 ## Known Issues
 

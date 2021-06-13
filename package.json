@@ -505,7 +505,13 @@
 						"type": "boolean",
 						"default": true,
 						"description": "Add tooltips to page fields"
+					},
+					"alOutline.useTableFieldCaptionsInApiFields": {
+						"type": "boolean",
+						"default": true,
+						"description": "Set to true, to use table field captions in API pages fields. Set to false, to use camelCase api field names in api field captions"
 					}
+
 				}
 			}
 		]

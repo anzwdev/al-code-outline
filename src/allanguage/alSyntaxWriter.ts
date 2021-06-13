@@ -215,10 +215,20 @@ export class ALSyntaxWriter {
         this.writeEndBlock();
     }
 
-    public writeApiPageField(fieldName : string) {
+    public writeApiPageField(fieldName : string, fieldCaption: string | undefined, fieldCaptionComment: string | undefined, useTableFieldCaption: boolean) {
         let name : string = this.createApiName(fieldName);
         this.writeStartNameSourceBlock("field", this.encodeName(name), 'Rec.' + this.encodeName(fieldName));
-        this.addProperty("Caption", this.encodeString(name) + ', Locked = true');
+        
+        if (useTableFieldCaption) {
+            if ((!fieldCaption) || (fieldCaption === ''))
+                fieldCaption = fieldName;
+            if ((fieldCaptionComment) && (fieldCaptionComment !== ''))
+                this.addProperty("Caption", this.encodeString(fieldCaption) + ', Comment = ' + this.encodeString(fieldCaptionComment));
+            else
+                this.addProperty("Caption", this.encodeString(fieldCaption));
+        } else
+            this.addProperty("Caption", this.encodeString(name) + ', Locked = true');
+        
         this.writeProperties();
         this.writeEndBlock();
     }
@@ -270,15 +280,49 @@ export class ALSyntaxWriter {
     }
 
     public createApiName(source : string) : string {
-        let name = source.replace(/[^A-Za-z0-9]/g, '');
-        
-        while ((name.length > 0) && (name[0] >= '0') && (name[0] <= '9')) {
-            name = name.substr(1);
+        let text = '';
+        let toLower = true;
+        let toUpper = false;
+        source = source.trim();        
+        for (let i=0; i<source.length; i++) {
+            let character = source[i];
+            let isLowerCaseLetterChar = ((character >= 'a') && (character <= 'z'));
+            let isUpperCaseLetterChar = ((character >= 'A') && (character <= 'Z'));
+            let isDigitChar = ((character >= '0') && (character <= '9'));
+            let validCharacter = ((isLowerCaseLetterChar) || (isUpperCaseLetterChar) || ((isDigitChar) && (text !== '')));            
+
+            if ((text !== '') || (validCharacter)) {
+                //if text starts with upperCase, conver all these characters to lowerCase
+                if (isUpperCaseLetterChar) {
+                    toUpper = false;
+
+                    //do not convert to lowerCase if next character is lowerCase (i.e. EDIDocument => ediDocument), but only if it is not first character in the name (i.e. MyField => myField)
+                    if ((text !== '') && (toLower) && (i < (source.length - 1))) {
+                        let nextCharacter = source[i + 1];
+                        if (((nextCharacter >= 'a') && (nextCharacter <= 'z')))
+                            toLower = false;
+                    }
+
+                    if (toLower)
+                        character = character.toLowerCase();
+                } else {
+                    toLower = false;
+                    if ((isLowerCaseLetterChar) && (toUpper)) {
+                        character = character.toUpperCase();
+                        toUpper = false;
+                    }
+                    //if current character is not lowerCase letter, then convert next lowerCase letter to upperCase
+                    if (!isLowerCaseLetterChar)
+                        toUpper = true;
+                }
+
+                //append letters to text
+                if (validCharacter)
+                    text = text + character;
+            }
         }
 
-        if (name.length > 1)
-            return name.substr(0, 1).toLowerCase() + name.substr(1);
-        return name.toLowerCase();
-    }
+        return text;
+   }
 
 }
