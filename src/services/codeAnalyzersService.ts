@@ -1,13 +1,13 @@
 import * as vscode from 'vscode';
 import { DevToolsExtensionContext } from '../devToolsExtensionContext';
 import { CARulesViewer } from '../carulesviewer/caRulesViewer';
+import { DevToolsExtensionService } from './devToolsExtensionService';
 
-export class CodeAnalyzersService {
-    protected _context: DevToolsExtensionContext;
+export class CodeAnalyzersService extends DevToolsExtensionService {
     protected _codeAnalyzersViewer: CARulesViewer | undefined;
 
     constructor(newContext: DevToolsExtensionContext) {
-        this._context = newContext;
+        super(newContext);
         this._codeAnalyzersViewer = undefined;
         this.registerCommands();
     }

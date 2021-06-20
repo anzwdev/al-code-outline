@@ -9,12 +9,12 @@ import { WithModifier } from '../alsyntaxmodifiers/withModifier';
 import { FieldCaptionsModifier } from '../alsyntaxmodifiers/fieldCaptionsModifier';
 import { PageControlsCaptionsModifier } from '../alsyntaxmodifiers/pageControlsCaptionsModifier';
 import { ObjectCaptionsModifier } from '../alsyntaxmodifiers/objectCaptionsModifier';
+import { DevToolsExtensionService } from './devToolsExtensionService';
 
-export class ALCodeTransformationService {
-    protected _context: DevToolsExtensionContext;
+export class ALCodeTransformationService extends DevToolsExtensionService {
 
     constructor(context: DevToolsExtensionContext) {
-        this._context = context;
+        super(context);
 
         this.registerDocumentRangeCommand('azALDevTools.sortVariables', 'sortVariables');
         this.registerDocumentRangeCommand('azALDevTools.sortProcedures', 'sortProcedures');

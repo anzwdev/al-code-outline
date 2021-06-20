@@ -1,6 +1,12 @@
 # Change Log
 
 ## 3.0.6
+ - Issue #252 - sortVariables / sortProperties with // comments results in invalid objects
+
+ Thank you
+  - fvet for reporting issue #252
+
+## 3.0.6
  - Issue #88 - "Show Code Analyzer Rules" - include compiler rules (ALxxxx)
  - Issue #213 - Code Actions On Save - incorrect document formatting
  - Issue #228 - API fields names and captions

@@ -208,8 +208,9 @@ This extension contributes the following settings:
 * `fieldsSelectionOrder`: specifies how "Add multiple fields" functionality adds fields, available options are: "alphabetic" and "selection order"
 * `alOutline.codeActionsOnSave`: list of code actions that should be run on document save, available options are: SortReportColumns, SortProperties, SortProcedures, SortVariables
 * `codeActionsOnSaveIgnoreFiles`: array of vscode patters of files that should be ignored when OnSave code actions are run. To make it work, the pattern should always start with '\*\*/', so for all files in folder 'OldFiles' the pattern should be '\*\*/OldFiles/*.al'
-* `alOutline.pageActionToolTip`: default tooltip template for page actions. Use %1 as placeholder for action caption or name
-* `alOutline.pageFieldToolTip`: default tooltip template for page fields. Use %1 as placeholder for field caption or name
+* `alOutline.pageActionToolTip`: tooltip template for page actions. Use %1 as placeholder for action caption or name
+* `alOutline.pageFieldToolTip`: tooltip template for page fields. Use %1 or %Caption% as placeholder for field caption or name and %Caption.Comment% for field caption comment. The default value is "Specifies the value of the %1 field"
+* `alOutline.pageFieldToolTipComment`: tooltip comment template for page fields. Use %1 or %Caption% as placeholder for field caption or name and %Caption.Comment% for field caption comment. The default value is "%Caption.Comment%". If these default values of pageFieldToolTip and pageFieldToolTipComment settings are used then if table field caption is defined as ```Caption = 'Customer No.', Comment = 'Comment Text'``` then created ToolTip will be defined as ```ToolTip = 'Specifies the value of  the Customer No. field', Comment = 'Comment Text'```
 * `alOutline.addToolTipsToPageFields`: set to true to add tooltips to page fields when 'Add multiple fields' action is used
 * `alOutline.useTableFieldCaptionsInApiFields`: set to true, to use table field captions in API pages fields like in standard BC APIs v 2.0 (i.e. ```Caption='Customer No.';```), set to false to use camelCase api page field name in api page field caption together with Locked property like in standard BC APIs v 1.0 (i.e. ```Caption='customerNo', Locked = true;```). Default value is true.
 

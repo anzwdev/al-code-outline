@@ -1,12 +1,12 @@
 import * as vscode from 'vscode';
 import { DevToolsExtensionContext } from "../devToolsExtensionContext";
 import { TextEditorHelper } from '../tools/textEditorHelper';
+import { DevToolsExtensionService } from './devToolsExtensionService';
 
-export class DiagnosticsService {
-    protected _context: DevToolsExtensionContext;
+export class DiagnosticsService extends DevToolsExtensionService {
 
     constructor(context: DevToolsExtensionContext) {        
-        this._context = context;
+        super(context);
         this.registerCommands();
     }
 

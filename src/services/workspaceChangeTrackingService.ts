@@ -4,12 +4,12 @@ import { ToolsDocumentChangeRequest } from '../langserver/toolsDocumentChangeReq
 import { ToolsDocumentContentChangeRequest } from '../langserver/toolsDocumentContentChangeRequest';
 import { ToolsFileSystemFileChangeRequest } from '../langserver/toolsFileSystemFileChangeRequest';
 import { ToolsWorkspaceFoldersChangeRequest } from '../langserver/toolsWorkspaceFoldersChangeRequest';
+import { DevToolsExtensionService } from './devToolsExtensionService';
 
-export class WorkspaceChangeTrackingService {
-    protected _context: DevToolsExtensionContext;
+export class WorkspaceChangeTrackingService extends DevToolsExtensionService {
 
     constructor(context: DevToolsExtensionContext) {
-        this._context = context;
+        super(context);
         this.registerEventHandlers();
         this.initializeWorkspace();
     }
