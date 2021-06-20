@@ -1,9 +1,11 @@
 # Change Log
 
-## 3.0.6
+## 3.0.7
+ - Issue #245 - Error during Build : al-lang-proxy\tempalfile.al(1,10) after using "go to definition"
  - Issue #252 - sortVariables / sortProperties with // comments results in invalid objects
 
  Thank you
+  - misacrni for reporting issue #245
   - fvet for reporting issue #252
 
 ## 3.0.6

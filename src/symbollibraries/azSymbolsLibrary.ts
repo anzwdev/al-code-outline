@@ -239,4 +239,8 @@ export class AZSymbolsLibrary {
         return undefined;
     }
 
+    public getUri(): vscode.Uri | undefined {
+        return undefined;
+    }
+
 } 

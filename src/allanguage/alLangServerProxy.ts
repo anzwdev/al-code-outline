@@ -6,6 +6,7 @@ import * as vscodelangclient from 'vscode-languageclient';
 import { ALSyntaxHelper } from './alSyntaxHelper';
 import { Version } from '../tools/version';
 import { TextEditorHelper } from '../tools/textEditorHelper';
+import { ObjectCaptionsModifier } from '../alsyntaxmodifiers/objectCaptionsModifier';
 
 export class ALLangServerProxy {
     private langClient : vscodelangclient.LanguageClient | undefined;
@@ -405,8 +406,6 @@ export class ALLangServerProxy {
         return out;
     }
 
-
-
     async getWorkspaceSymbol(objectType : string, objectName : string) : Promise<vscode.Location | undefined> {       
         let list = await vscode.commands.executeCommand<vscode.SymbolInformation[] | undefined>('vscode.executeWorkspaceSymbolProvider', objectName);
         if ((!list) || (list.length == 0))
@@ -431,9 +430,20 @@ export class ALLangServerProxy {
                 objectType + ' ' + 
                 ALSyntaxHelper.toNameText(objectName) + 
                 ';\nbegin\nend;\n}';
+            let lastSourceLine = 7;
+            let lastSourceColumn = 1;
             
             if ((!vscode.workspace.workspaceFolders) || (vscode.workspace.workspaceFolders.length == 0))
                 return undefined;
+
+            /*
+            let objectId = 22;
+            let val = true;
+            let tmpUri = vscode.Uri.parse('al-preview://allang/' + vscode.workspace.workspaceFolders[0].name + '/' + objectType + '/' + objectId + '/' + objectName + '.dal');
+            let location = new vscode.Location(tmpUri, new vscode.Position(0, 0));
+            if (val)
+                return location;
+            */
 
             try {
 
@@ -455,48 +465,29 @@ export class ALLangServerProxy {
                 let srcPos = new vscode.Position(4, 5 + objectType.length);
                 let docPos : vscode.Location | undefined = await this.getDefinitionLocationFromDocument(docUri.toString(), srcPos);
 
-                /*
-                //run goToDefinition on virtual document
-                let tokenSource : vscode.CancellationTokenSource = new vscode.CancellationTokenSource();
-                let token : vscode.CancellationToken = tokenSource.token;
-                let posLine = 4;
-                let posColumn = 5 + objectType.length;
+                //clear document content
+                this.langClient.sendNotification('textDocument/didChange', {
+                    textDocument: {
+                        uri: docUri.toString()                                
+                    },
+                    contentChanges: [
+                        {
+                            range: {
+                                start: {
+                                    line: 0,
+                                    character: 0
+                                },
+                                end: {
+                                    line: lastSourceLine,
+                                    character: lastSourceColumn
+                                }
 
-                let docPos : vscode.Location | undefined;
-
-                let launchConfiguration = await this.getLaunchConfiguration();
-                //let launchFilePath = path.join(vscode.workspace.workspaceFolders[0].uri.fsPath, '.vscode/launch.json');
-                //let config = vscode.workspace.getConfiguration("launch", vscode.Uri.file(launchFilePath));
-                //let allConfigList : any[] | undefined = config.get("configurations");
-                //if (!allConfigList)
-                //    return undefined;
-                //let configList = allConfigList.filter(p => p.type === 'al');
-                //if ((configList) && (configList.length > 0)) { 
-                if (launchConfiguration) {
-
-                    let docPosTemp : any = await this.langClient.sendRequest<any>('al/gotodefinition', {
-                        launchConfiguration : launchConfiguration,
-                        textDocumentPositionParams : {
-                            textDocument : {
-                                uri : docUri.toString()
                             },
-                            position : {
-                                line : posLine,
-                                character : posColumn
-                            }
-                        },
-                        context : undefined
-                    }, token);
-
-                    if (docPosTemp) {
-                        docPos = new vscode.Location(
-                            vscode.Uri.parse(docPosTemp.uri),
-                            new vscode.Range(docPosTemp.range.start.line, docPosTemp.range.start.character,
-                                docPosTemp.range.end.line, docPosTemp.range.end.character));                    
-                    }
-
-                }
-                */
+                            rangeLength: sourceCode.length,
+                            text: ''
+                        }
+                    ]
+                });
 
                 //close document
                 this.langClient.sendNotification('textDocument/didClose', { textDocument: {

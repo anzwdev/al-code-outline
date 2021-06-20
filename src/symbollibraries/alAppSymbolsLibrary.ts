@@ -12,10 +12,12 @@ import { NumberHelper } from '../tools/numberHelper';
 
 export class ALAppSymbolsLibrary extends ALBaseServerSideLibrary {
     filePath : string;
+    protected _fileUri : vscode.Uri;
 
     constructor(context : DevToolsExtensionContext, sourceFilePath : string) {
         super(context);
         this.filePath = sourceFilePath;
+        this._fileUri = vscode.Uri.file(this.filePath);
         this.displayName = path.parse(sourceFilePath).base; 
     }
   
@@ -40,6 +42,10 @@ export class ALAppSymbolsLibrary extends ALBaseServerSideLibrary {
             return false;
         }
         return true;
+    }
+
+    public getUri(): vscode.Uri | undefined {
+        return this._fileUri;
     }
 
 } 
