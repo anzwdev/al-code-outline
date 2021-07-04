@@ -501,6 +501,11 @@
 						"default": "%Caption.Comment%",
 						"description": "The default tooltip comment template for page fields. Use %Caption% as placeholder for field caption or name, %Caption.Comment% as placeholder for field caption comment"
 					},
+					"alOutline.useTableFieldDescriptionAsToolTip": {
+						"type": "boolean",
+						"default": false,
+						"description": "Use table field description as page field tooltip"
+					},
 					"alOutline.addToolTipsToPageFields": {
 						"type": "boolean",
 						"default": true,

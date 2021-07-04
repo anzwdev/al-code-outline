@@ -60,7 +60,7 @@ export class ALPageSyntaxBuilder {
                     if (fastTab.fields) {
                         for (let fldIdx = 0; fldIdx < fastTab.fields.length; fldIdx++) {
                             writer.writePageField(fastTab.fields[fldIdx].name!, fastTab.fields[fldIdx].caption,
-                                fastTab.fields[fldIdx].captionLabel?.comment, data.createTooltips);
+                                fastTab.fields[fldIdx].captionLabel?.comment, fastTab.fields[fldIdx].description, data.createTooltips);
                         }
                     }
                     writer.writeEndBlock();                    
@@ -75,7 +75,7 @@ export class ALPageSyntaxBuilder {
                             data.selectedFieldList[i].captionLabel?.comment, useTableFieldCaptionsInApi);
                     else
                         writer.writePageField(data.selectedFieldList[i].name!, data.selectedFieldList[i].caption,
-                            data.selectedFieldList[i].captionLabel?.comment, data.createTooltips);
+                            data.selectedFieldList[i].captionLabel?.comment, data.selectedFieldList[i].description, data.createTooltips);
                 }
             }       
             writer.writeEndBlock();

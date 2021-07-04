@@ -26,7 +26,8 @@ export class ToolTipModifier {
         let request: ToolsWorkspaceCommandRequest = new ToolsWorkspaceCommandRequest('addToolTips', '', workspaceUri.fsPath, undefined, {
             toolTipField: this.getFieldTooltip(workspaceUri),
             toolTipFieldComment: this.getFieldTooltipComment(workspaceUri),
-            toolTipAction: this.getActionTooltip(workspaceUri)
+            toolTipAction: this.getActionTooltip(workspaceUri),
+            useFieldDescription: this.getUseFieldDescription(workspaceUri)
         });
         let response = await this._context.toolsLangServerClient.workspaceCommand(request);
 
@@ -57,8 +58,9 @@ export class ToolTipModifier {
 
         let request: ToolsWorkspaceCommandRequest = new ToolsWorkspaceCommandRequest('addToolTips', text, workspacePath, undefined, {
             toolTipField: this.getFieldTooltip(documentUri), 
-            toolTipFieldComment: this.getFieldTooltipComment(workspaceUri),
-            toolTipAction: this.getActionTooltip(documentUri)
+            toolTipFieldComment: this.getFieldTooltipComment(documentUri),
+            toolTipAction: this.getActionTooltip(documentUri),
+            useFieldDescription: this.getUseFieldDescription(documentUri)
         });
         let response = await this._context.toolsLangServerClient.workspaceCommand(request);
         if (response) {
@@ -108,6 +110,11 @@ export class ToolTipModifier {
             toolTip = '%Caption.Comment%';
         }
         return toolTip;
+    }
+
+    protected getUseFieldDescription(uri: vscode.Uri | undefined): boolean {
+        let value : boolean = !!vscode.workspace.getConfiguration('alOutline', uri).get<boolean>('useTableFieldDescriptionAsToolTip');
+        return value;
     }
 
 }

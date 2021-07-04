@@ -88,7 +88,7 @@ export class ALAddPageFieldsCodeCommand extends ALBaseAddFieldsCodeCommand {
                     selectedFields[i].captionLabel?.comment, useTableFieldCaptionsInApi);
             else
                 writer.writePageField(selectedFields[i].name!, selectedFields[i].caption,
-                    selectedFields[i].captionLabel?.comment, addToolTips);
+                    selectedFields[i].captionLabel?.comment, selectedFields[i].description, addToolTips);
         }
         let source = writer.toString();
 
