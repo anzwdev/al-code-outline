@@ -47,6 +47,7 @@ export class ALAddQueryFieldsCodeCommand extends ALBaseAddFieldsCodeCommand {
         let objectSymbol = dataItemSymbol.findParentByKind(AZSymbolKind.QueryObject);
         if (!objectSymbol)
             return;
+        let isApi: boolean = ((!!objectSymbol.subtype) && (objectSymbol.subtype.toLowerCase() == 'api'));
 
         //get list of fields
         let response = await this._toolsExtensionContext.toolsLangServerClient.getQueryDataItemDetails(
@@ -78,7 +79,8 @@ export class ALAddQueryFieldsCodeCommand extends ALBaseAddFieldsCodeCommand {
         let writer: ALSyntaxWriter = new ALSyntaxWriter(document.uri);
         writer.setIndent(indent);
         for (let i=0; i<selectedFields.length; i++) {
-            writer.writeNameSourceBlock("column", writer.createName(selectedFields[i].name!), writer.encodeName(selectedFields[i].name!));
+            let columnName = isApi?writer.createApiName(selectedFields[i].name!):writer.createName(selectedFields[i].name!);
+            writer.writeNameSourceBlock("column", writer.encodeName(columnName), writer.encodeName(selectedFields[i].name!));
         }
         let source = writer.toString();
 

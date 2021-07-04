@@ -2,10 +2,12 @@
 
 ## 3.0.8
  - Issue #256 - Suggestion: Tooltip generation from field's description
+ - Issue #257 - Issue with Field Name Area for API page
 
 Thank you
  - mjmatthiesen for reporting issue #256
-
+ - pri-kise for reporting issue #257
+ 
 ## 3.0.7
  - Issue #245 - Error during Build : al-lang-proxy\tempalfile.al(1,10) after using "go to definition"
  - Issue #252 - sortVariables / sortProperties with // comments results in invalid objects

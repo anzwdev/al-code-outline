@@ -5,9 +5,31 @@ import { AZSymbolKind } from "../symbollibraries/azSymbolKind";
 
 export class ALSyntaxHelper {
     static nameCharacters = '0123456789QWERTYUIOPLKJHGFDSAZXCVBNMqwertyuioplkjhgfdsazxcvbnm-_"';
+    static keyWords = '|action|actions|add|addafter|addbefore|addfirst|addlast|and|area|array|ascending|assembly|asserterror|automation|average|begin' +
+        '|biginteger|bigtext|blob|boolean|break|byte|case|char|chartpart|clienttype|code|codeunit|column|completiontriggererrorlevel' +
+        '|connectiontype|const|controladdin|count|cuegroup|customizes|database|dataclassification|dataitem|datascope|dataset|date|dateformula' +
+        '|datetime|decimal|defaultlayout|descending|dialog|dictionary|div|do|dotnet|dotnetassembly|dotnettypedeclaration|downto|duration' +
+        '|elements|else|end|entitlement|enum|enumextension|errorinfo|errortype|event|executioncontext|executionmode|exist|exit|extends' +
+        '|field|fieldattribute|fieldclass|fieldelement|fieldgroup|fieldgroups|fieldref|fields|fieldtype|file|filter|filterpagebuilder|fixed' +
+        '|for|foreach|function|grid|group|guid|httpclient|httpcontent|httpheaders|httprequestmessage|httpresponsemessage|if|implements|in' +
+        '|indataset|instream|integer|interface|internal|joker|jsonarray|jsonobject|jsontoken|jsonvalue|key|keyref|keys|label|labels|layout|list' +
+        '|local|lookup|max|min|mod|modify|moduledependencyinfo|moduleinfo|moveafter|movebefore|movefirst|movelast|none|not|notification' +
+        '|notificationscope|objecttype|of|option|or|order|outstream|page|pagecustomization|pageextension|pageresult|part|permissionset' +
+        '|permissionsetextension|procedure|profile|program|protected|query|record|recordid|recordref|repeat|repeater|report|reportextension' +
+        '|reportformat|requestpage|runonclient|schema|securityfilter|securityfiltering|separator|sessionsettings|sorting|sum|suppressdispose' +
+        '|systempart|table|tableconnectiontype|tabledata|tableelement|tableextension|tablefilter|temporary|testaction|testfield|testfilterfield' +
+        '|testpage|testpermissions|testrequestpage|text|textattribute|textbuilder|textconst|textelement|textencoding|then|time|to|transactionmodel' +
+        '|transactiontype|trigger|type|until|upperlimit|usercontrol|value|var|variant|verbosity|version|view|views|webserviceactioncontext' +
+        '|webserviceactionresultcode|where|while|with|withevents|xmlattribute|xmlattributecollection|xmlcdata|xmlcomment|xmldeclaration' +
+        '|xmldocument|xmldocumenttype|xmlelement|xmlnamespacemanager|xmlnametable|xmlnode|xmlnodelist|xmlport|xmlprocessinginstruction' +
+        '|xmlreadoptions|xmltext|xmlwriteoptions|xor|';   
+
+    static isKeyword(name: string) : boolean {
+        return (!!((name) && (ALSyntaxHelper.keyWords.indexOf("|" + name.toLowerCase() + "|") >= 0)));
+    }
 
     static toNameText(name : string) : string {
-        if (name.match(/^[a-zA-Z_]\w*$/))
+        if ((name.match(/^[a-zA-Z_]\w*$/)) && (!ALSyntaxHelper.isKeyword(name)))
             return name;
         return "\"" + name.replace(new RegExp("\"", "g"), "\"\"") + "\"";
     }
