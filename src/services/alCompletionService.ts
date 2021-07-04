@@ -1,13 +1,13 @@
 import * as vscode from 'vscode';
 import { DevToolsExtensionContext } from "../devToolsExtensionContext";
 import { ALDocCommentsProvider } from "../editorextensions/alDocCommentsProvider";
+import { DevToolsExtensionService } from './devToolsExtensionService';
 
-export class ALCompletionService {
-    protected _context: DevToolsExtensionContext;
+export class ALCompletionService extends DevToolsExtensionService {
     protected _alDocCommentsProvider: ALDocCommentsProvider;
 
     constructor(context: DevToolsExtensionContext) {
-        this._context = context;
+        super(context);
 
         //documentation completion provider
         this._alDocCommentsProvider= new ALDocCommentsProvider(this._context);

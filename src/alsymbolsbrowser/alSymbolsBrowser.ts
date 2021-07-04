@@ -16,8 +16,9 @@ import { ALSyntaxHelper } from '../allanguage/alSyntaxHelper';
 import { SymbolsTreeView } from '../symbolstreeview/symbolsTreeView';
 import { TextEditorHelper } from '../tools/textEditorHelper';
 import { StringHelper } from '../tools/stringHelper';
-import { ToolsGetLibrarySymbolLocationRequest } from '../langserver/toolsGetLibrarySymbolLocationRequest';
 import { AppFileTextContentProvider } from '../editorextensions/appFileTextContentProvider';
+import { ToolsGetProjectSymbolLocationRequest } from '../langserver/toolsGetProjectSymbolLocationRequest';
+import { ALSymbolSourceLocation } from '../symbollibraries/alSymbolSourceLocation';
 
 /**
  * AL Symbols Browser
@@ -266,17 +267,33 @@ export class ALSymbolsBrowser extends BaseWebViewEditor {
             let preview = !vscode.workspace.getConfiguration('alOutline').get('openDefinitionInNewTab');
             let targetLocation : vscode.Location | undefined = undefined;
             let alSymbol : AZSymbolInformation = alSymbolList[0];
-            //get data type name
+            
+            //try to find symbol location
+            let workspaceFolder: vscode.WorkspaceFolder | undefined = undefined;
+            let libraryUri = this._library.getUri();
+            if (libraryUri)
+                workspaceFolder = vscode.workspace.getWorkspaceFolder(libraryUri);
+            if ((!workspaceFolder) && (vscode.workspace.workspaceFolders) && (vscode.workspace.workspaceFolders.length > 0))
+                workspaceFolder = vscode.workspace.workspaceFolders[0];
+
+            //get location from extension language server
+            if (workspaceFolder) {
+                let projectSymbolResponse = await this._devToolsContext.toolsLangServerClient.getProjectSymbolLocation(
+                    new ToolsGetProjectSymbolLocationRequest(workspaceFolder.uri.fsPath, alSymbol.kind.toString(), alSymbol.name));
+                if ((projectSymbolResponse) && (projectSymbolResponse.location)) {
+                    if (this.openALSymbolSourceLocation(projectSymbolResponse.location, workspaceFolder.name))
+                        return;
+                }
+            }
+
+            //use Microsoft AL Language Server to open definition
             let typeName : string | undefined = ALSyntaxHelper.kindToVariableType(alSymbol.kind);
             if (!typeName) {
-                let typeName = ALSyntaxHelper.kindToWorkspaceSymbolType(alSymbol.kind);
-                if (!typeName) {
-                    vscode.window.showErrorMessage('This object type is not supported.');
-                    return;    
-                }               
-                targetLocation = await this._devToolsContext.alLangProxy.getWorkspaceSymbol(typeName, alSymbol.name);
-            } else
-                targetLocation = await this._devToolsContext.alLangProxy.getDefinitionLocation(typeName, alSymbol.name);
+                vscode.window.showErrorMessage('This object type is not supported.');
+                return;    
+            }
+            
+            targetLocation = await this._devToolsContext.alLangProxy.getDefinitionLocation(typeName, alSymbol.name);
     
             if (targetLocation) {
                 TextEditorHelper.openEditor(targetLocation.uri, true, preview, targetLocation.range.start);
@@ -290,9 +307,12 @@ export class ALSymbolsBrowser extends BaseWebViewEditor {
         if (!path)
             return;
         let location = await this._library.getSymbolLocationByPath(path);
-        if ((!location) || (!location.schema) || (!location.sourcePath))
+        if (!location)
             return;
 
+        this.openALSymbolSourceLocation(location, '');
+
+        /*
         let preview = !vscode.workspace.getConfiguration('alOutline').get('openDefinitionInNewTab');            
         let position: vscode.Position | undefined = undefined;
         if (location.range)
@@ -302,6 +322,32 @@ export class ALSymbolsBrowser extends BaseWebViewEditor {
             TextEditorHelper.openEditor(vscode.Uri.file(location.sourcePath), true, preview, position);
         else
             TextEditorHelper.openEditor(vscode.Uri.parse(AppFileTextContentProvider.scheme + ':' + location.sourcePath), true, preview, position);
+        */
+    }
+
+    protected openALSymbolSourceLocation(location: ALSymbolSourceLocation, workspaceFolderName: string): boolean {
+        if ((!location.schema) || (!location.sourcePath))
+            return false;
+        
+        let preview = !vscode.workspace.getConfiguration('alOutline').get('openDefinitionInNewTab');            
+        let position: vscode.Position | undefined = undefined;
+        if (location.range)
+            position = new vscode.Position(location.range.start.line, location.range.start.character);
+
+        if (location.sourcePath) {
+            if (location.schema == 'file') {
+                TextEditorHelper.openEditor(vscode.Uri.file(location.sourcePath), true, preview, position);
+                return true;
+            } else if (location.schema == 'alapp') {
+                TextEditorHelper.openEditor(vscode.Uri.parse(AppFileTextContentProvider.scheme + ':' + location.sourcePath), true, preview, position);
+                return true;
+            } else if (location.schema == 'al-preview') {
+                let alPreviewUri = vscode.Uri.parse('al-preview://allang/' + workspaceFolderName + '/' + location.sourcePath);
+                TextEditorHelper.openEditor(alPreviewUri, true, preview, position);
+                return true;
+            }
+        }
+        return false;
     }
 
     protected async runInWebClient(path : number[] | undefined) {

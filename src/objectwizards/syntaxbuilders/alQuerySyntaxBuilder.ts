@@ -31,7 +31,7 @@ export class ALQuerySyntaxBuilder {
         writer.writeLine("");
 
         //write dataset
-        this.writeDataSet(writer, data);
+        this.writeDataSet(writer, data, isApi);
 
         //write triggers
         writer.writeLine("");
@@ -46,14 +46,15 @@ export class ALQuerySyntaxBuilder {
 
     }
 
-    private writeDataSet(writer : ALSyntaxWriter, data : ALQueryWizardData) {
-        let dataItemName = writer.createName(data.selectedTable);
-        
+    private writeDataSet(writer : ALSyntaxWriter, data : ALQueryWizardData, isApi: boolean) {
+        let dataItemName = isApi?writer.createApiName(data.selectedTable):writer.createName(data.selectedTable);
+
         writer.writeStartNamedBlock("elements");
-        writer.writeStartNameSourceBlock("dataitem", dataItemName, writer.encodeName(data.selectedTable));
+        writer.writeStartNameSourceBlock("dataitem", writer.encodeName(dataItemName), writer.encodeName(data.selectedTable));
         if (data.selectedFieldList) {
             for (let i=0; i<data.selectedFieldList.length; i++) {
-                writer.writeNameSourceBlock("column", writer.createName(data.selectedFieldList[i].name!), 
+                let columnName = isApi?writer.createApiName(data.selectedFieldList[i].name!):writer.createName(data.selectedFieldList[i].name!);
+                writer.writeNameSourceBlock("column", writer.encodeName(columnName), 
                     writer.encodeName(data.selectedFieldList[i].name!));
             }
         }

@@ -2,14 +2,14 @@ import * as vscode from 'vscode';
 import { DevToolsExtensionContext } from '../devToolsExtensionContext';
 import { SymbolsTreeView } from '../symbolstreeview/symbolsTreeView';
 import { SyntaxTreeView } from '../syntaxtreeview/syntaxTreeView';
+import { DevToolsExtensionService } from './devToolsExtensionService';
 
-export class ALSymbolsTreeService {
-    protected _context: DevToolsExtensionContext;
+export class ALSymbolsTreeService extends DevToolsExtensionService {
     protected _uriSymbolTreeViews : { [id: string] : SymbolsTreeView | undefined };
 
     constructor(newContext: DevToolsExtensionContext) {
         //initialize
-        this._context = newContext;
+        super(newContext);
         this._uriSymbolTreeViews = {};
 
         //register commands

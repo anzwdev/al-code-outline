@@ -15,14 +15,14 @@ import { ALCodeunitWizard } from '../objectwizards/wizards/alCodeunitWizard';
 import { ALInterfaceWizard } from '../objectwizards/wizards/alInterfaceWizard';
 import { ALTableExtWizard } from '../objectwizards/wizards/alTableExtWizard';
 import { ALPageExtWizard } from '../objectwizards/wizards/alPageExtWizard';
+import { DevToolsExtensionService } from './devToolsExtensionService';
 
-export class ALObjectWizardsService {
-    protected _context: DevToolsExtensionContext;
+export class ALObjectWizardsService extends DevToolsExtensionService {
     protected _wizards: ALObjectWizard[];
 
     constructor(context: DevToolsExtensionContext) {
         //initialize
-        this._context = context;
+        super(context);
         //create list of wizards
         this._wizards = [];
         this._wizards.push(new ALTableWizard(context, 'Table', 'New AL Table Wizard', 'Allows to select table name and enter list of fields'));

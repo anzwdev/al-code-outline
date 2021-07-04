@@ -11,6 +11,7 @@ export class ALSyntaxWriter {
     private propertiesCache : NameValue[];
     private fieldToolTip: string;
     private fieldToolTipComment: string;
+    private useTableFieldDescriptionAsToolTip: boolean;
     private eol: string;
 
     constructor(destUri: vscode.Uri | undefined) {
@@ -22,6 +23,7 @@ export class ALSyntaxWriter {
         this.applicationArea = StringHelper.emptyIfNotDef(config.get<string>('defaultAppArea'));
         this.fieldToolTip = StringHelper.emptyIfNotDef(config.get<string>('pageFieldToolTip'));
         this.fieldToolTipComment = StringHelper.emptyIfNotDef(config.get<string>('pageFieldToolTipComment'));
+        this.useTableFieldDescriptionAsToolTip = !!config.get<boolean>('useTableFieldDescriptionAsToolTip');
         this.propertiesCache = [];        
         this.eol = StringHelper.getDefaultEndOfLine(destUri);
     }
@@ -207,10 +209,10 @@ export class ALSyntaxWriter {
         this.writeEndBlock();
     }
 
-    public writePageField(fieldName : string, fieldCaption: string | undefined, fieldCaptionComment: string | undefined, createToolTip: boolean) {
+    public writePageField(fieldName : string, fieldCaption: string | undefined, fieldCaptionComment: string | undefined, fieldDescription: string | undefined, createToolTip: boolean) {
         this.writeStartNameSourceBlock("field", this.encodeName(fieldName), 'Rec.' + this.encodeName(fieldName));
         if (createToolTip)
-            this.writeTooltip(this.fieldToolTip, this.fieldToolTipComment, fieldCaption, fieldCaptionComment);
+            this.writeTooltip(this.fieldToolTip, this.fieldToolTipComment, fieldCaption, fieldCaptionComment, fieldDescription);
         this.writeApplicationArea();
         this.writeEndBlock();
     }
@@ -238,15 +240,20 @@ export class ALSyntaxWriter {
             this.writeProperty("ApplicationArea", this.applicationArea);
     }
 
-    public writeTooltip(captionTemplate: string, commentTemplate: string, value: string | undefined, comment: string | undefined) {
-        if ((captionTemplate) && (captionTemplate != "") && (value) && (value != "")) {
-            let textValue = this.applyCaptionTemplate(captionTemplate, value, comment);
+    public writeTooltip(captionTemplate: string, commentTemplate: string, value: string | undefined, comment: string | undefined, fieldDescription: string | undefined) {
+        let textValue: string | undefined = undefined;
+
+        if ((this.useTableFieldDescriptionAsToolTip) && (fieldDescription) && (fieldDescription != ""))
+            textValue = this.encodeString(fieldDescription);
+        else if ((captionTemplate) && (captionTemplate != "") && (value) && (value != "")) {
+            textValue = this.applyCaptionTemplate(captionTemplate, value, comment);
             let commentValue = this.applyCaptionTemplate(commentTemplate, value, comment);
             textValue = this.encodeString(textValue);
             if ((commentValue) && (commentValue != ""))
-                textValue = textValue + ", Comment = " + this.encodeString(commentValue);
-            this.writeProperty("ToolTip", textValue);
+                textValue = textValue + ", Comment = " + this.encodeString(commentValue);            
         }
+        if ((textValue) && (textValue != ""))
+            this.writeProperty("ToolTip", textValue);
     }
 
     protected applyCaptionTemplate(template: string, value: string | undefined, comment: string | undefined) {

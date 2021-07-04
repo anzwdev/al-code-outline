@@ -2,15 +2,15 @@ import * as vscode from 'vscode';
 import { DevToolsExtensionContext } from '../devToolsExtensionContext';
 import { JsonEditorProvider } from '../editors/jsonEditorProvider';
 import { AppPackageEditorProvider } from '../editors/appPackageEditorProvider';
+import { DevToolsExtensionService } from './devToolsExtensionService';
 //import { AppJsonEditorProvider } from '../editors/appJsonEditorProvider';
 //import { RuleSetEditorProvider } from '../editors/ruleSetEditorProvider';
 //import { AppSourceCopEditorProvider } from '../editors/appSourceCopEditorProvider';
 
-export class EditorsService {
-    protected _context: DevToolsExtensionContext;   
+export class EditorsService extends DevToolsExtensionService {
 
     constructor(newContext: DevToolsExtensionContext) {
-        this._context = newContext;
+        super(newContext);
         this.registerEditors();
     }
 

@@ -59,6 +59,8 @@ import { ToolsGetALAppContentRequest } from './toolsGetALAppContentRequest';
 import { ToolsGetALAppContentResponse } from './toolsGetALAppContentResponse';
 import { ToolsGetImagesRequest } from './languageInformation/toolsGetImagesRequest';
 import { ToolsGetImagesResponse } from './languageInformation/toolsGetImagesResponse';
+import { ToolsGetProjectSymbolLocationRequest } from './toolsGetProjectSymbolLocationRequest';
+import { ToolsGetProjectSymbolLocationResponse } from './toolsGetProjectSymbolLocationResponse';
 
 export class ToolsLangServerClient implements vscode.Disposable {
     _context : vscode.ExtensionContext;
@@ -277,6 +279,10 @@ export class ToolsLangServerClient implements vscode.Disposable {
     //symbol location
     public getLibrarySymbolLocation(params: ToolsGetLibrarySymbolLocationRequest) : Promise<ToolsGetLibrarySymbolLocationResponse | undefined> {
         return this.sendRequest<ToolsGetLibrarySymbolLocationRequest, ToolsGetLibrarySymbolLocationResponse>(params, 'al/librarysymbollocation');
+    }
+
+    public getProjectSymbolLocation(params: ToolsGetProjectSymbolLocationRequest) : Promise<ToolsGetProjectSymbolLocationResponse | undefined> {
+        return this.sendRequest<ToolsGetProjectSymbolLocationRequest, ToolsGetProjectSymbolLocationResponse>(params, 'al/projectsymbollocation');
     }
 
     public getALAppContent(params: ToolsGetALAppContentRequest) : Promise<ToolsGetALAppContentResponse | undefined> {

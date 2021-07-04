@@ -1,12 +1,12 @@
 import * as vscode from 'vscode';
 import { DevToolsExtensionContext } from "../devToolsExtensionContext";
 import { ALCodeActionsProvider } from '../codeactions/alCodeActionsProvider';
+import { DevToolsExtensionService } from './devToolsExtensionService';
 
-export class ALCodeActionsService {
-    protected _context: DevToolsExtensionContext;
+export class ALCodeActionsService extends DevToolsExtensionService {
 
     constructor(context: DevToolsExtensionContext) {
-        this._context = context;
+        super(context);
 
         //code actions
         let alCodeActionsProvider: ALCodeActionsProvider = new ALCodeActionsProvider(this._context);

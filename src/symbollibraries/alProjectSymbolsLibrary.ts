@@ -10,11 +10,13 @@ import { ALBaseServerSideLibrary } from './alBaseServerSideLibrary';
 
 export class ALProjectSymbolsLibrary extends ALBaseServerSideLibrary {
     protected _projectPath : string;
+    protected _projectUri : vscode.Uri;
     protected _includeDependencies : boolean;
 
     constructor(context : DevToolsExtensionContext, newIncludeDependencies : boolean, newProjectPath : string) {
         super(context);
         this._projectPath = newProjectPath;
+        this._projectUri = vscode.Uri.file(this._projectPath);
         this._includeDependencies = newIncludeDependencies;
         this.displayName = "Project Symbols"; 
     }
@@ -53,6 +55,10 @@ export class ALProjectSymbolsLibrary extends ALBaseServerSideLibrary {
             return false;
         }
         return true;
+    }
+
+    public getUri(): vscode.Uri | undefined {
+        return this._projectUri;
     }
 
 
