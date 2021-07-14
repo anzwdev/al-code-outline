@@ -1,5 +1,8 @@
 # Change Log
 
+## 3.0.9
+ - app packages handling fixes
+
 ## 3.0.8
  - Issue #256 - Suggestion: Tooltip generation from field's description
  - Issue #257 - Issue with Field Name Area for API page
