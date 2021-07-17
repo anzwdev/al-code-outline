@@ -1,5 +1,8 @@
 # Change Log
 
+## 3.0.10
+ - Extension unload fixes
+
 ## 3.0.9
  - app packages handling fixes
 

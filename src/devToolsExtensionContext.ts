@@ -95,6 +95,7 @@ export class DevToolsExtensionContext implements vscode.Disposable {
     }
 
     dispose() {
+        this.toolsLangServerClient.dispose();
     }
 
 }
