@@ -1,5 +1,12 @@
 # Change Log
 
+## 3.0.11
+ - another extension unload fix for MacOS
+ - Issue #259 - Support Copy-Paste of rows in 'New AL Table Wizard'
+
+Thank you
+ - fvet for reporting issue #259
+
 ## 3.0.10
  - Extension unload fixes
 

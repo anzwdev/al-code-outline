@@ -71,6 +71,16 @@ class AZGridView {
             this._editor.addEventListener('blur', event => {
                 this.saveData(false);
             });
+            //init clipboard event handlers
+            this._editor.addEventListener('paste', event => {
+                if (this.handleClipboardPaste(event.clipboardData))
+                    event.preventDefault();
+            });
+            this._editor.addEventListener('copy', event => {
+                if (this.handleClipboardCopy(event.clipboardData))
+                    event.preventDefault();
+            });
+
 
             //init editor autocomplete
             let me = this;
@@ -1106,6 +1116,57 @@ class AZGridView {
             this._editor.focus();
         else
             this._container.focus();
+    }
+
+    handleClipboardPaste(clipboardData) {
+        let vals = clipboardData.getData('text').trim().split(/\r?\n */).map(r=>r.split(/\t/));
+        if ((vals) && (vals.length > 0) && (vals[0]) && (vals[0].length > 1)) {
+            this.endEdit();
+            
+            //collect data
+            for (let lineIdx = 0; lineIdx < vals.length; lineIdx++) {
+                let line = vals[lineIdx];
+                let item = {};
+                let srcColIdx = 0;
+                for (let destColIdx = 0; destColIdx < this._columns.length; destColIdx++) {
+                    let col = this._columns[destColIdx];
+                    if (!col.hidden) {
+                        let colData = '';
+                        if (srcColIdx < line.length) {
+                            colData = line[srcColIdx];
+                            srcColIdx++;
+                        }
+                        //set field
+                        if (this.isColBool(destColIdx))
+                            item[col.name] = !!((colData) && ((colData == '1') || (colData.toLowerCase() == 'true')));
+                        else
+                            item[col.name] = colData;
+                    }
+                }
+                //update data and render row
+                let destRowIdx = this._currRow - this._minRowIndex;            
+                if (destRowIdx < this._data.length)                
+                    this._data.splice(destRowIdx, 0, item);
+                else
+                    this._data.push(item);
+                let htmlRow = this._table.insertRow(this._currRow);
+                this.renderRowCells(htmlRow, destRowIdx);       
+                this._currRow++;
+            }
+            this.startEdit();
+            return true;
+        }
+        return false;
+    }
+
+    handleClipboardCopy(clipboardData) {
+        let selData = this.getSelected();
+        if (selData.length > 1) {
+            //build data
+
+            return true;
+        }
+        return false;
     }
 
 }
