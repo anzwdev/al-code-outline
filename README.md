@@ -128,6 +128,10 @@ Extension adds a few commands that allow to automatically modify al code in the 
 * `Add Object Captions to the Active Project`: adds missing captions to all table, page, report, xmlport and query objects in the current project
 * `Remove 'with' usage from the Active Editor`: removes all implicit and explicit 'with' usage from the current editor
 * `Remove 'with' usage from the Active Project`: removes all implicit and explicit 'with' usage from the current project
+* `Add Data Classification to the Active Editor`: adds missing data classification to all table fields in the current editor
+* `Add Data Classification to the Active Project`: adds missing data classification to all table fields in the current project
+* `Fix Keywords Case in the Active Editor`: fixes keywords case in the current editor
+* `Fix Keywords Case in the Active Project`: fixes keywords case in the current project
 
 Default application area and templates for field and action tooltips can be specified using these VS Code settings: `alOutline.defaultAppArea`, `alOutline.pageActionToolTip` and `alOutline.pageFieldToolTip` 
 

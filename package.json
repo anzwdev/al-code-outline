@@ -55,6 +55,8 @@
 		"onCommand:azALDevTools.fixDocumentOnSave",
 		"onCommand:azALDevTools.RemoveProjectWithStatements",
 		"onCommand:azALDevTools.RemoveEditorWithStatements",
+		"onCommand:azALDevTools.FixProjectKeywordsCase",
+		"onCommand:azALDevTools.FixEditorKeywordsCase",
 		"onCommand:azALDevTools.showExtensionLog",
 		"onCustomEditor:azALDevTools.jsonEditor",
 		"onCustomEditor:azALDevTools.appPackageEditor"
@@ -232,6 +234,16 @@
 				"category": "AZ AL Dev Tools",
 				"command": "azALDevTools.RemoveProjectWithStatements",
 				"title": "Remove 'with' usage from the Active Project"
+			},
+			{
+				"category": "AZ AL Dev Tools",
+				"command": "azALDevTools.FixEditorKeywordsCase",
+				"title": "Fix Keywords Case in the Active Editor"
+			},
+			{
+				"category": "AZ AL Dev Tools",
+				"command": "azALDevTools.FixProjectKeywordsCase",
+				"title": "Fix Keywords Case in the Active Project"
 			},
 			{
 				"command": "azALDevTools.alOutlineEnableFollowCursor",
