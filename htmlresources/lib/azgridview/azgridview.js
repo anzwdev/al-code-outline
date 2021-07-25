@@ -316,8 +316,8 @@ class AZGridView {
     }
 
     refreshRow(rowIdx) {
-        let dataIndex = this._table.rows[rowIdx].tabDataIdx;
-        if (dataIndex !== undefined) {
+        let dataIndex = (this._editable)?rowIdx - this._minRowIndex:this._table.rows[rowIdx].tabDataIdx;    //rows can be filtered
+        if ((dataIndex !== undefined) && (dataIndex >= 0)) {
             for (let i = 0; i<this._columns.length; i++) {
                 this.refreshCell(rowIdx, i, dataIndex);
             }
@@ -342,7 +342,7 @@ class AZGridView {
 
 
     setCurrCell(rowIndex, columnIndex, clearSel, invertSel, setStart, enableEditor) {
-        if ((this._inEditMode) && (this.rowIndex >= this._table.rows.length) && (this._editor.value))
+        if ((this._inEditMode) && (rowIndex >= this._table.rows.length) && (this._editor.value))
             this.addDataRow();
         
         if (rowIndex < this._minRowIndex)
@@ -929,6 +929,10 @@ class AZGridView {
         this._inEditMode = false;
     }
 
+    cancelEdit() {
+        this._inEditMode = false;
+    }
+
     saveData(clearCell) {       
         if ((this._inEditMode) && (this.validCellSelected())) {            
             let isBool = this.isColBool(this._currColumn); 
@@ -1121,8 +1125,12 @@ class AZGridView {
     handleClipboardPaste(clipboardData) {
         let vals = clipboardData.getData('text').trim().split(/\r?\n */).map(r=>r.split(/\t/));
         if ((vals) && (vals.length > 0) && (vals[0]) && (vals[0].length > 1)) {
-            this.endEdit();
-            
+            let lastRow = ((this._currRow - this._minRowIndex) == this._data.length);           
+            if (lastRow)
+                this.cancelEdit();
+            else            
+                this.endEdit();           
+
             //collect data
             for (let lineIdx = 0; lineIdx < vals.length; lineIdx++) {
                 let line = vals[lineIdx];
@@ -1153,6 +1161,12 @@ class AZGridView {
                 this.renderRowCells(htmlRow, destRowIdx);       
                 this._currRow++;
             }
+
+            if (lastRow) {
+                this._newRowData = this.createDataEntry(this._data.length, false);
+                this.refreshRow(this._currRow);
+            }
+
             this.startEdit();
             return true;
         }
@@ -1160,10 +1174,25 @@ class AZGridView {
     }
 
     handleClipboardCopy(clipboardData) {
-        let selData = this.getSelected();
         if (selData.length > 1) {
             //build data
+            let eol = '\r\n';
+            let content = '';
+            for (let rowIdx = 0; rowIdx < selData.length; rowIdx++) {
+                if (rowIdx > 0)
+                    content += eol;
+                for (let colIdx = 0; colIdx < this._columns.length; colIdx++) {
+                    if (!this._columns[colIdx].hidden) {
+                        let val = selData[rowIdx][this._columns[colIdx].name];
+                        if (val !== undefined)
+                            content += (val.toString() + '\t');
+                        else
+                            content += '\t';
+                    }
+                }
+            }
 
+            clipboardData.setData('text', content);
             return true;
         }
         return false;
