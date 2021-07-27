@@ -10,6 +10,7 @@ import { FieldCaptionsModifier } from '../alsyntaxmodifiers/fieldCaptionsModifie
 import { PageControlsCaptionsModifier } from '../alsyntaxmodifiers/pageControlsCaptionsModifier';
 import { ObjectCaptionsModifier } from '../alsyntaxmodifiers/objectCaptionsModifier';
 import { DevToolsExtensionService } from './devToolsExtensionService';
+import { FixKeywordsCaseModifier } from '../alsyntaxmodifiers/fixKeywordsCaseModifier';
 
 export class ALCodeTransformationService extends DevToolsExtensionService {
 
@@ -154,7 +155,25 @@ export class ALCodeTransformationService extends DevToolsExtensionService {
             )
         );
 
+        this._context.vscodeExtensionContext.subscriptions.push(
+            vscode.commands.registerCommand(
+                'azALDevTools.FixEditorKeywordsCase',
+                () => {
+                    let fixKeywordsCaseModifier: FixKeywordsCaseModifier = new FixKeywordsCaseModifier(this._context);
+                    fixKeywordsCaseModifier.RunForActiveEditor();
+                }
+            )
+        );
 
+        this._context.vscodeExtensionContext.subscriptions.push(
+            vscode.commands.registerCommand(
+                'azALDevTools.FixProjectKeywordsCase',
+                () => {
+                    let fixKeywordsCaseModifier: FixKeywordsCaseModifier = new FixKeywordsCaseModifier(this._context);
+                    fixKeywordsCaseModifier.RunForWorkspace();
+                }
+            )
+        );
 
         this._context.vscodeExtensionContext.subscriptions.push(
             vscode.commands.registerCommand(

@@ -71,6 +71,16 @@ class AZGridView {
             this._editor.addEventListener('blur', event => {
                 this.saveData(false);
             });
+            //init clipboard event handlers
+            this._editor.addEventListener('paste', event => {
+                if (this.handleClipboardPaste(event.clipboardData))
+                    event.preventDefault();
+            });
+            this._editor.addEventListener('copy', event => {
+                if (this.handleClipboardCopy(event.clipboardData))
+                    event.preventDefault();
+            });
+
 
             //init editor autocomplete
             let me = this;
@@ -306,8 +316,8 @@ class AZGridView {
     }
 
     refreshRow(rowIdx) {
-        let dataIndex = this._table.rows[rowIdx].tabDataIdx;
-        if (dataIndex !== undefined) {
+        let dataIndex = (this._editable)?rowIdx - this._minRowIndex:this._table.rows[rowIdx].tabDataIdx;    //rows can be filtered
+        if ((dataIndex !== undefined) && (dataIndex >= 0)) {
             for (let i = 0; i<this._columns.length; i++) {
                 this.refreshCell(rowIdx, i, dataIndex);
             }
@@ -332,7 +342,7 @@ class AZGridView {
 
 
     setCurrCell(rowIndex, columnIndex, clearSel, invertSel, setStart, enableEditor) {
-        if ((this._inEditMode) && (this.rowIndex >= this._table.rows.length) && (this._editor.value))
+        if ((this._inEditMode) && (rowIndex >= this._table.rows.length) && (this._editor.value))
             this.addDataRow();
         
         if (rowIndex < this._minRowIndex)
@@ -919,6 +929,10 @@ class AZGridView {
         this._inEditMode = false;
     }
 
+    cancelEdit() {
+        this._inEditMode = false;
+    }
+
     saveData(clearCell) {       
         if ((this._inEditMode) && (this.validCellSelected())) {            
             let isBool = this.isColBool(this._currColumn); 
@@ -1106,6 +1120,82 @@ class AZGridView {
             this._editor.focus();
         else
             this._container.focus();
+    }
+
+    handleClipboardPaste(clipboardData) {
+        let vals = clipboardData.getData('text').trim().split(/\r?\n */).map(r=>r.split(/\t/));
+        if ((vals) && (vals.length > 0) && (vals[0]) && (vals[0].length > 1)) {
+            let lastRow = ((this._currRow - this._minRowIndex) == this._data.length);           
+            if (lastRow)
+                this.cancelEdit();
+            else            
+                this.endEdit();           
+
+            //collect data
+            for (let lineIdx = 0; lineIdx < vals.length; lineIdx++) {
+                let line = vals[lineIdx];
+                let item = {};
+                let srcColIdx = 0;
+                for (let destColIdx = 0; destColIdx < this._columns.length; destColIdx++) {
+                    let col = this._columns[destColIdx];
+                    if (!col.hidden) {
+                        let colData = '';
+                        if (srcColIdx < line.length) {
+                            colData = line[srcColIdx];
+                            srcColIdx++;
+                        }
+                        //set field
+                        if (this.isColBool(destColIdx))
+                            item[col.name] = !!((colData) && ((colData == '1') || (colData.toLowerCase() == 'true')));
+                        else
+                            item[col.name] = colData;
+                    }
+                }
+                //update data and render row
+                let destRowIdx = this._currRow - this._minRowIndex;            
+                if (destRowIdx < this._data.length)                
+                    this._data.splice(destRowIdx, 0, item);
+                else
+                    this._data.push(item);
+                let htmlRow = this._table.insertRow(this._currRow);
+                this.renderRowCells(htmlRow, destRowIdx);       
+                this._currRow++;
+            }
+
+            if (lastRow) {
+                this._newRowData = this.createDataEntry(this._data.length, false);
+                this.refreshRow(this._currRow);
+            }
+
+            this.startEdit();
+            return true;
+        }
+        return false;
+    }
+
+    handleClipboardCopy(clipboardData) {
+        if (selData.length > 1) {
+            //build data
+            let eol = '\r\n';
+            let content = '';
+            for (let rowIdx = 0; rowIdx < selData.length; rowIdx++) {
+                if (rowIdx > 0)
+                    content += eol;
+                for (let colIdx = 0; colIdx < this._columns.length; colIdx++) {
+                    if (!this._columns[colIdx].hidden) {
+                        let val = selData[rowIdx][this._columns[colIdx].name];
+                        if (val !== undefined)
+                            content += (val.toString() + '\t');
+                        else
+                            content += '\t';
+                    }
+                }
+            }
+
+            clipboardData.setData('text', content);
+            return true;
+        }
+        return false;
     }
 
 }

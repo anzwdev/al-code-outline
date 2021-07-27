@@ -82,6 +82,7 @@ export class ToolsLangServerClient implements vscode.Disposable {
 
     dispose() {
         if (this._connection) {
+            this.exit();
             this._connection.dispose();
             this._connection = undefined;
         }
@@ -274,6 +275,11 @@ export class ToolsLangServerClient implements vscode.Disposable {
         catch(e) {
             return undefined;
         }
+    }
+
+    //exit
+    public exit() {
+        this.sendNotification({}, 'exit');
     }
 
     //symbol location
