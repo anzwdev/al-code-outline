@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta http-equiv="Content-Security-Policy" content="default-src 'none'; img-src ##CSPSOURCE## https: data:; script-src ##CSPSOURCE## 'unsafe-eval'; style-src ##CSPSOURCE##; font-src ##CSPSOURCE##;" />
+        <script src="##EXTENSIONPATH##/htmlresources/lib/jquery/jquery.min.js"></script>
+        <script src="##EXTENSIONPATH##/htmlresources/lib/jquery-ui/jquery-ui.min.js"></script>
+        <script src="##EXTENSIONPATH##/htmlresources/lib/autocomplete/autocomplete.js"></script>
+        <script src="##EXTENSIONPATH##/htmlresources/lib/helpers/htmlhelper.js"></script>
+        <script src="##EXTENSIONPATH##/htmlresources/lib/filteredlist/filteredlist.js"></script>
+        <script src="##EXTENSIONPATH##/htmlresources/alreportextwizard/js/alreportextwizard.js"></script>
+        <link rel="stylesheet" type="text/css" href="##EXTENSIONPATH##/htmlresources/lib/jquery-ui/jquery-ui.min.css">
+        <link rel="stylesheet" type="text/css" href="##EXTENSIONPATH##/htmlresources/lib/autocomplete/autocomplete.css">
+        <link rel="stylesheet" type="text/css" href="##EXTENSIONPATH##/htmlresources/lib/wizards/wizards.css">
+        <link rel="stylesheet" type="text/css" href="##EXTENSIONPATH##/htmlresources/alreportextwizard/css/alreportextwizard.css">
+    </head>
+    <body>
+        <div id="main" class="main">
+            <div id="header" class="header">
+                <div class="title">New Report Extension Wizard</div>
+            </div>
+
+            <div id="wizardstep1" class="wizard">
+
+                <div class="formline">
+                    <div class="formheader">Please enter report extension properties.</div>
+                </div>
+                        
+                <div class="formline">
+                    <div class="formcaption">Object Id:</div>
+                    <div class="formfield">
+                        <input type="text" id="objectid" name="objectid" class="fixedtext">
+                    </div>
+                </div>
+        
+                <div class="formline">
+                    <div class="formcaption">Object Name:</div>
+                    <div class="formfield">
+                        <input type="text" id="objectname" name="objectname" class="fulltext">
+                    </div>
+                </div>
+    
+                <div class="formline">
+                    <div class="formcaption">Extends:</div>
+                    <div class="formfield">
+                        <input type="text" id="basereport" name="basereport" class="fulltext" />
+                    </div>
+                </div>
+                
+            </div>
+
+            <div id="footer" class="footer">
+                <button id="prevBtn" class="button">Previous</button>
+                <button id="nextBtn" class="button">Next</button>
+                <button id="finishBtn" class="button">Finish</button>
+                <button id="cancelBtn" class="button">Cancel</button>
+            </div>
+        </div>
+
+    </body>
+</html>
