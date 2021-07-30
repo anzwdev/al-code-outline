@@ -151,6 +151,24 @@ export class ALSyntaxWriter {
         this.writeEndBlock();
     }
 
+    public writeStartDataset() {
+        this.writeLine("dataset");
+        this.writeStartBlock();
+    }
+
+    public writeEndDataset() {
+        this.writeEndBlock();
+    }
+
+    public writeStartRequestPage() {
+        this.writeLine("requestpage");
+        this.writeStartBlock();
+    }
+
+    public writeEndRequestPage() {
+        this.writeEndBlock();
+    }
+
     public writeStartFields() {
         this.writeLine("fields");
         this.writeStartBlock();

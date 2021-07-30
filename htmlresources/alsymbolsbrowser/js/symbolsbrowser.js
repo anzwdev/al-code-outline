@@ -153,6 +153,11 @@ class ObjectBrowser {
                     disabled: function(key, opt) {
                         return (Number($(this).data("kind")) != ALSymbolKind.PageObject);
                     }},
+                "extendreport": {
+                    name: "New Report Extension",
+                    disabled: function(key, opt) {
+                        return (Number($(this).data("kind")) != ALSymbolKind.ReportObject);
+                    }},
                 "sep4": "---------",
                 "expandcollapse": {name: "Expand/collapse child nodes"},
                 }
