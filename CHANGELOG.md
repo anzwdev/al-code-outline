@@ -1,5 +1,13 @@
 # Change Log
 
+## 3.0.12
+ - New Report Extension Symbols-based Object Wizard by rvanbekkum
+ - New Report Extension Wizard by rvanbekkum
+ - Making a few ALLangServerProxy functions obsolete and switching to background language server
+
+ Thank you
+  - rvanbekkum for "Report Extension Symbols-based Object Wizard" and "New Report Extension Wizard" pull requests
+
 ## 3.0.11
  - another extension unload fix for MacOS
  - Issue #259 - Support Copy-Paste of rows in 'New AL Table Wizard'

@@ -4,6 +4,8 @@ import { ALObjectWizardSettings } from "./alObjectWizardSettings";
 import { ALReportExtWizardData } from './alReportExtWizardData';
 import { ALReportExtSyntaxBuilder } from '../syntaxbuilders/alReportExtSyntaxBuilder';
 import { ProjectItemWizardPage } from './projectItemWizardPage';
+import { ToolsSymbolInformationRequest } from '../../langserver/symbolsinformation/toolsSymbolInformationRequest';
+import { SymbolWithNameInformation } from '../../symbolsinformation/smbolWithNameInformation';
 
 export class ALReportExtWizardPage extends ProjectItemWizardPage {
     protected _reportExtWizardData : ALReportExtWizardData;
@@ -61,8 +63,13 @@ export class ALReportExtWizardPage extends ProjectItemWizardPage {
     }
 
     protected async loadReports() {
-        let resourceUri = this._settings.getDestDirectoryUri();
-        this._reportExtWizardData.reportList = await this._toolsExtensionContext.alLangProxy.getReportList(resourceUri);
+        let response = await this._toolsExtensionContext.toolsLangServerClient.getReportsList(
+            new ToolsSymbolInformationRequest(this._settings.getDestDirectoryPath()));
+        if (response)
+            this._reportExtWizardData.reportList = SymbolWithNameInformation.toNamesList(response.symbols);
+
+        //let resourceUri = this._settings.getDestDirectoryUri();
+        //this._reportExtWizardData.reportList = await this._toolsExtensionContext.alLangProxy.getReportList(resourceUri);
         if ((this._reportExtWizardData.reportList) && (this._reportExtWizardData.reportList.length > 0)) {
             this.sendMessage({
                 command : "setReports",
