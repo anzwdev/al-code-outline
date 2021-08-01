@@ -319,6 +319,11 @@ class ObjectBrowser {
                         disabled: function(key, opt) {
                          return ($(this).data("objt") != "Page");
                         }},
+                    "extendreport": {
+                        name: "New Report Extension",
+                        disabled: function(key, opt) {
+                            return ($(this).data("objt") != "Report");
+                        }},
                     "sep4": "---------",
                     "copysel": {
                         name: "Copy Selected"
