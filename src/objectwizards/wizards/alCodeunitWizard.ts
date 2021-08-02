@@ -16,10 +16,10 @@ export class ALCodeunitWizard extends ALObjectWizard {
     }
 
     protected async runAsync(settings: ALObjectWizardSettings) {
-        let objectId : string = await this._toolsExtensionContext.alLangProxy.getNextObjectId(settings.getDestDirectoryUri(), "Codeunit");
+        let objectId : number = await this._toolsExtensionContext.toolsLangServerClient.getNextObjectId(settings.getDestDirectoryPath(), "Codeunit");
 
         let wizardData : ALCodeunitWizardData = new ALCodeunitWizardData();
-        wizardData.objectId = objectId;
+        wizardData.objectId = objectId.toString();
         wizardData.objectName = '';//settings.getInputNameVariable();
         let wizardPage : ALCodeunitWizardPage = new ALCodeunitWizardPage(this._toolsExtensionContext, settings, wizardData);
         wizardPage.show();

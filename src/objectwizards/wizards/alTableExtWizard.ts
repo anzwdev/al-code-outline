@@ -19,15 +19,14 @@ export class ALTableExtWizard extends ALObjectWizard {
     }
 
     protected async runAsync(settings: ALObjectWizardSettings) {
-        let alLangProxy : ALLangServerProxy = this._toolsExtensionContext.alLangProxy;
-        let objectId : string = await alLangProxy.getNextObjectId(settings.getDestDirectoryUri(), "tableextension");
+        let objectId : number = await this._toolsExtensionContext.toolsLangServerClient.getNextObjectId(settings.getDestDirectoryPath(), "tableextension");
 
         let wizardData : ALTableExtWizardData = new ALTableExtWizardData();
-        wizardData.objectId = objectId;
+        wizardData.objectId = objectId.toString();
         wizardData.objectName = '';
         wizardData.selectedTable = '';
         wizardData.idRangeStart = 
-            alLangProxy.getIdRangeStart(settings.getDestDirectoryUri());
+            this._toolsExtensionContext.alLangProxy.getIdRangeStart(settings.getDestDirectoryUri());
         let wizardPage : ALTableExtWizardPage = new ALTableExtWizardPage(this._toolsExtensionContext, settings, wizardData);
         wizardPage.show();
     }

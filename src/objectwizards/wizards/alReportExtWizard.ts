@@ -16,11 +16,10 @@ export class ALReportExtWizard extends ALObjectWizard {
     }
 
     protected async runAsync(settings: ALObjectWizardSettings) {
-        // Currently there is a bug in the AL compiler: https://github.com/microsoft/AL/issues/6689
-        let objectId : string = await this._toolsExtensionContext.alLangProxy.getNextObjectId(settings.getDestDirectoryUri(), "reportextension");
+        let objectId : number = await this._toolsExtensionContext.toolsLangServerClient.getNextObjectId(settings.getDestDirectoryPath(), "reportextension");
 
         let wizardData : ALReportExtWizardData = new ALReportExtWizardData();
-        wizardData.objectId = objectId;
+        wizardData.objectId = objectId.toString();
         wizardData.objectName = '';
         wizardData.baseReport = '';
         let wizardPage : ALReportExtWizardPage = new ALReportExtWizardPage(this._toolsExtensionContext, settings, wizardData);

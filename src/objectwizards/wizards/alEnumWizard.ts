@@ -19,11 +19,10 @@ export class ALEnumWizard extends ALObjectWizard {
     }
 
     protected async runAsync(settings: ALObjectWizardSettings) {
-        let alLangProxy : ALLangServerProxy = new ALLangServerProxy();
-        let objectId : string = await alLangProxy.getNextObjectId(settings.getDestDirectoryUri(), "enum");
+        let objectId : number = await this._toolsExtensionContext.toolsLangServerClient.getNextObjectId(settings.getDestDirectoryPath(), "enum");
 
         let wizardData : ALEnumWizardData = new ALEnumWizardData();
-        wizardData.objectId = objectId;
+        wizardData.objectId = objectId.toString();
         wizardData.objectName = '';
         let wizardPage : ALEnumWizardPage = new ALEnumWizardPage(this._toolsExtensionContext, settings, wizardData);
         wizardPage.show();

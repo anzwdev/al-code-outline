@@ -269,7 +269,10 @@ export class ALLangServerProxy {
             });
     }
 
-    async getNextObjectId(resourceUri: vscode.Uri | undefined, objectType : string) : Promise<string> {
+    /**
+     * @deprecated This method should not be used. Please use getNextObjectId method from ToolsLangServerClient class
+     */
+     async getNextObjectId(resourceUri: vscode.Uri | undefined, objectType : string) : Promise<string> {
         let fileContent = objectType + " 0 _symbolcache\n{\n}";
         let list = await this.getCompletionForSourceCode(resourceUri, "Finding next free object id.", fileContent,
             0, objectType.length + 1, 2, 1); 
@@ -367,6 +370,9 @@ export class ALLangServerProxy {
         return out;
     }
 
+    /**
+     * @deprecated This method should not be used. Please use getPageDetails method from ToolsLangServerClient class
+     */
     async getAvailablePageFieldList(resourceUri: vscode.Uri | undefined, pageName : string) : Promise<string[]> {
         pageName = ALSyntaxHelper.toNameText(pageName);
 
@@ -380,6 +386,9 @@ export class ALLangServerProxy {
         return [];
     }
 
+    /**
+     * @deprecated This method should not be used. Please use getTableFieldsList method from ToolsLangServerClient class
+     */
     async getFieldList(resourceUri: vscode.Uri | undefined, tableName : string) : Promise<string[]> {
         tableName = ALSyntaxHelper.toNameText(tableName);
         
@@ -393,7 +402,10 @@ export class ALLangServerProxy {
         return [];
     }
 
-    async getEnumList(resourceUri: vscode.Uri | undefined) : Promise<string[]> {
+    /**
+     * @deprecated This method should not be used. Please use getEnumsList method from ToolsLangServerClient class
+     */
+     async getEnumList(resourceUri: vscode.Uri | undefined) : Promise<string[]> {
         let fileContent = "codeunit 0 _symbolcache\n{\nprocedure t()\nvar\nf:enum ;\nbegin\nend;\n}";
         let list = await this.getCompletionForSourceCode(resourceUri, "Loading list of enums.", fileContent,
             4, 7, 7, 1);
@@ -447,15 +459,6 @@ export class ALLangServerProxy {
             
             if ((!vscode.workspace.workspaceFolders) || (vscode.workspace.workspaceFolders.length == 0))
                 return undefined;
-
-            /*
-            let objectId = 22;
-            let val = true;
-            let tmpUri = vscode.Uri.parse('al-preview://allang/' + vscode.workspace.workspaceFolders[0].name + '/' + objectType + '/' + objectId + '/' + objectName + '.dal');
-            let location = new vscode.Location(tmpUri, new vscode.Position(0, 0));
-            if (val)
-                return location;
-            */
 
             try {
 

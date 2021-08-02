@@ -20,10 +20,10 @@ export class ALPageWizard extends ALObjectWizard {
 
     protected async runAsync(settings: ALObjectWizardSettings) {
         let config = vscode.workspace.getConfiguration('alOutline', settings.getDestDirectoryUri());
-        let objectId : string = await this._toolsExtensionContext.alLangProxy.getNextObjectId(settings.getDestDirectoryUri(), "Page");
+        let objectId : number = await this._toolsExtensionContext.toolsLangServerClient.getNextObjectId(settings.getDestDirectoryPath(), "Page");
 
         let wizardData : ALPageWizardData = new ALPageWizardData();
-        wizardData.objectId = objectId;
+        wizardData.objectId = objectId.toString();
         wizardData.objectName = '';//settings.getInputNameVariable();
         wizardData.createTooltips = !!config.get<boolean>('addToolTipsToPageFields');
 

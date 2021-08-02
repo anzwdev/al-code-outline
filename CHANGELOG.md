@@ -4,6 +4,7 @@
  - New Report Extension Symbols-based Object Wizard by rvanbekkum
  - New Report Extension Wizard by rvanbekkum
  - Making a few ALLangServerProxy functions obsolete and switching to background language server
+ - getNextObjectId redesigned to use custom code instead of AL Compiler
 
  Thank you
   - rvanbekkum for "Report Extension Symbols-based Object Wizard" and "New Report Extension Wizard" pull requests
