@@ -15,6 +15,7 @@ import { ALCodeunitWizard } from '../objectwizards/wizards/alCodeunitWizard';
 import { ALInterfaceWizard } from '../objectwizards/wizards/alInterfaceWizard';
 import { ALTableExtWizard } from '../objectwizards/wizards/alTableExtWizard';
 import { ALPageExtWizard } from '../objectwizards/wizards/alPageExtWizard';
+import { ALReportExtWizard } from '../objectwizards/wizards/alReportExtWizard';
 import { DevToolsExtensionService } from './devToolsExtensionService';
 
 export class ALObjectWizardsService extends DevToolsExtensionService {
@@ -36,6 +37,7 @@ export class ALObjectWizardsService extends DevToolsExtensionService {
 
         this._wizards.push(new ALXmlPortWizard(context, 'XmlPort', 'New AL XmlPort Wizard', 'Allows to select source table and fields'));
         this._wizards.push(new ALReportWizard(context, 'Report', 'New AL Report Wizard', 'Allows to select source table and fields'));
+        this._wizards.push(new ALReportExtWizard(context, 'Report Extension', 'New AL Report Extension Wizard', 'Allows to add dataitems and columns to existing reports'));
         this._wizards.push(new ALQueryWizard(context, 'Query', 'New AL Query Wizard', 'Allows to select query type, source table and fields'));
         this._wizards.push(new ALEnumWizard(context, 'Enum', 'New AL Enum Wizard', 'Allows to select list of enum values and captions'));
         this._wizards.push(new ALEnumExtWizard(context, 'Enum Extension', 'New AL Enum Extension Wizard', 'Allows to add list of enum values and captions to existing enum'));        

@@ -61,6 +61,8 @@ import { ToolsGetImagesRequest } from './languageInformation/toolsGetImagesReque
 import { ToolsGetImagesResponse } from './languageInformation/toolsGetImagesResponse';
 import { ToolsGetProjectSymbolLocationRequest } from './toolsGetProjectSymbolLocationRequest';
 import { ToolsGetProjectSymbolLocationResponse } from './toolsGetProjectSymbolLocationResponse';
+import { ToolsGetNextObjectIdRequest } from './symbolsinformation/toolsGetNextObjectIdRequest';
+import { ToolsGetNextObjectIdResponse } from './symbolsinformation/toolsGetNextObjectIdResponse';
 
 export class ToolsLangServerClient implements vscode.Disposable {
     _context : vscode.ExtensionContext;
@@ -350,6 +352,15 @@ export class ToolsLangServerClient implements vscode.Disposable {
 
     public getProjectSettings(params: ToolsGetProjectSettingsRequest) : Promise<ToolsGetProjectSettingsResponse | undefined> {
         return this.sendRequest<ToolsGetProjectSettingsRequest, ToolsGetProjectSettingsResponse>(params, 'al/getprojectsettings');
+    }
+
+    //next available object id
+    public async getNextObjectId(path: string | undefined, objectType: string) : Promise<number> {
+        let response = await this.sendRequest<ToolsGetNextObjectIdRequest, ToolsGetNextObjectIdResponse>(
+            new ToolsGetNextObjectIdRequest(path, objectType), 'al/getnextobjectid');
+        if ((response) && (response.id))
+            return response.id;
+        return 0;
     }
 
     //language information

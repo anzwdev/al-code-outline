@@ -29,31 +29,18 @@ export class ALSymbolsBasedWizard {
 
     protected async getObjectId(destPath: string | undefined, objectType: string, promptText: string, defaultObjectId: number) : Promise<number> {
         let uri: vscode.Uri | undefined;
-        if (destPath)
-            uri = vscode.Uri.file(destPath);
-        let objectIdString: string | undefined = await this._toolsExtensionContext.alLangProxy.getNextObjectId(uri, objectType);
-        let idAssigned = false;
-
-        if (objectIdString) {
-            let objectId : number = Number(objectIdString);
-            if (!isNaN(objectId)) {
-                //if (!confirmId)
-                //    return objectId;
-                idAssigned = true;
-            }
-        }
-
-        if (!idAssigned)
-            objectIdString = defaultObjectId.toString();
-        if (this.shouldPromptForObjectId())
-            objectIdString = await this.promptForObjectId(promptText, objectIdString);
-
-        if (!objectIdString)
-            return -1;
         
-        let objectId : number = Number(objectIdString);
-        if (isNaN(objectId)) {
-            return -1;
+        let objectId: number = await this._toolsExtensionContext.toolsLangServerClient.getNextObjectId(destPath, objectType);
+        if (objectId == 0)
+            objectId = defaultObjectId;
+
+        if (this.shouldPromptForObjectId()) {
+            let objectIdString = await this.promptForObjectId(promptText, objectId.toString());
+            if (!objectIdString)
+                return -1;
+            objectId = Number(objectIdString);
+            if (isNaN(objectId))
+                return -1;
         }
 
         return objectId;

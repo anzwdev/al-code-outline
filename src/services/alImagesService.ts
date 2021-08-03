@@ -20,7 +20,6 @@ export class ALImagesService extends DevToolsExtensionService {
                     actionImageBrowser.show();
                 }
             ));
-
     }
 
 }

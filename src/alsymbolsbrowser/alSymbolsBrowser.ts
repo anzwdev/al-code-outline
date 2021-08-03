@@ -11,6 +11,7 @@ import { ALSymbolsBasedQueryWizard } from '../objectwizards/symbolwizards/alSymb
 import { ALSymbolsBasedReportWizard } from '../objectwizards/symbolwizards/alSymbolsBasedReportWizard';
 import { ALSymbolsBasedXmlPortWizard } from '../objectwizards/symbolwizards/alSymbolsBasedXmlPortWizard';
 import { ALSymbolsBasedPageExtWizard } from '../objectwizards/symbolwizards/alSymbolsBasedPageExtWizard';
+import { ALSymbolsBasedReportExtWizard } from '../objectwizards/symbolwizards/alSymbolsBasedReportExtWizard';
 import { ALSymbolsBasedTableExtWizard } from '../objectwizards/symbolwizards/alSymbolsBasedTableExtWizard';
 import { ALSyntaxHelper } from '../allanguage/alSyntaxHelper';
 import { SymbolsTreeView } from '../symbolstreeview/symbolsTreeView';
@@ -146,6 +147,9 @@ export class ALSymbolsBrowser extends BaseWebViewEditor {
             case 'extendpage':
                 this.createPageExt(message.path, message.selpaths);
                 return true;
+            case 'extendreport':
+                this.createReportExt(message.path, message.selpaths);
+                return true;
             case 'copysel':
                 this.copySelected(message.path, message.selpaths);
                 return true;
@@ -236,6 +240,14 @@ export class ALSymbolsBrowser extends BaseWebViewEditor {
         let symbolList = await this.getObjectsFromPath(selPaths, AZSymbolKind.PageObject);
         if (symbolList) {
             let builder : ALSymbolsBasedPageExtWizard = new ALSymbolsBasedPageExtWizard(this._devToolsContext);
+            builder.showWizard(symbolList);
+        }
+    }
+
+    protected async createReportExt(path : number[] | undefined, selPaths: number[][] | undefined) {
+        let symbolList = await this.getObjectsFromPath(selPaths, AZSymbolKind.ReportObject);
+        if (symbolList) {
+            let builder : ALSymbolsBasedReportExtWizard = new ALSymbolsBasedReportExtWizard(this._devToolsContext);
             builder.showWizard(symbolList);
         }
     }

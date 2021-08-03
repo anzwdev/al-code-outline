@@ -4,6 +4,8 @@ import { ALObjectWizardSettings } from "./alObjectWizardSettings";
 import { ALPageExtWizardData } from './alPageExtWizardData';
 import { ALPageExtSyntaxBuilder } from '../syntaxbuilders/alPageExtSyntaxBuilder';
 import { ProjectItemWizardPage } from './projectItemWizardPage';
+import { ToolsSymbolInformationRequest } from '../../langserver/symbolsinformation/toolsSymbolInformationRequest';
+import { SymbolWithNameInformation } from '../../symbolsinformation/smbolWithNameInformation';
 
 export class ALPageExtWizardPage extends ProjectItemWizardPage {
     protected _pageExtWizardData : ALPageExtWizardData;
@@ -61,8 +63,13 @@ export class ALPageExtWizardPage extends ProjectItemWizardPage {
     }
 
     protected async loadPages() {
-        let resourceUri = this._settings.getDestDirectoryUri();
-        this._pageExtWizardData.pageList = await this._toolsExtensionContext.alLangProxy.getPageList(resourceUri);
+        let response = await this._toolsExtensionContext.toolsLangServerClient.getPagesList(
+            new ToolsSymbolInformationRequest(this._settings.getDestDirectoryPath()));
+        if (response)
+            this._pageExtWizardData.pageList = SymbolWithNameInformation.toNamesList(response.symbols);
+
+        //let resourceUri = this._settings.getDestDirectoryUri();
+        //this._pageExtWizardData.pageList = await this._toolsExtensionContext.alLangProxy.getPageList(resourceUri);
         if ((this._pageExtWizardData.pageList) && (this._pageExtWizardData.pageList.length > 0)) {
             this.sendMessage({
                 command : "setPages",

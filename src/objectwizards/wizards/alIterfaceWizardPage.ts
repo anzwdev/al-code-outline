@@ -4,6 +4,8 @@ import { DevToolsExtensionContext } from "../../devToolsExtensionContext";
 import { ALObjectWizardSettings } from "./alObjectWizardSettings";
 import { ProjectItemWizardPage } from "./projectItemWizardPage";
 import { ALInterfaceSyntaxBuilder } from '../syntaxbuilders/alInterfaceSyntaxBuilder';
+import { ToolsSymbolInformationRequest } from '../../langserver/symbolsinformation/toolsSymbolInformationRequest';
+import { SymbolWithNameInformation } from '../../symbolsinformation/smbolWithNameInformation';
 
 export class ALInterfaceWizardPage extends ProjectItemWizardPage {
     protected _wizardData : ALInterfaceWizardData;
@@ -41,8 +43,13 @@ export class ALInterfaceWizardPage extends ProjectItemWizardPage {
     }
 
     protected async loadCodeunits() {
-        let resourceUri = this._settings.getDestDirectoryUri();
-        this._wizardData.codeunitList = await this._toolsExtensionContext.alLangProxy.getCodeunitList(resourceUri);
+        let response = await this._toolsExtensionContext.toolsLangServerClient.getCodeunitsList(
+            new ToolsSymbolInformationRequest(this._settings.getDestDirectoryPath()));
+        if (response)
+            this._wizardData.codeunitList = SymbolWithNameInformation.toNamesList(response.symbols);
+
+        //let resourceUri = this._settings.getDestDirectoryUri();
+        //this._wizardData.codeunitList = await this._toolsExtensionContext.alLangProxy.getCodeunitList(resourceUri);
         if ((this._wizardData.codeunitList) && (this._wizardData.codeunitList.length > 0))
             this.sendMessage({
                 command : "setCodeunits",

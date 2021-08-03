@@ -4,6 +4,8 @@ import { DevToolsExtensionContext } from "../../devToolsExtensionContext";
 import { ALObjectWizardSettings } from "./alObjectWizardSettings";
 import { ALCodeunitWizardData } from "./alCodeunitWizardData";
 import { ALCodeunitSyntaxBuilder } from '../syntaxbuilders/alCodeunitSyntaxBuilder';
+import { ToolsSymbolInformationRequest } from '../../langserver/symbolsinformation/toolsSymbolInformationRequest';
+import { SymbolWithNameInformation } from '../../symbolsinformation/smbolWithNameInformation';
 
 export class ALCodeunitWizardPage extends ALTableBasedWizardPage {
     protected _codeunitWizardData : ALCodeunitWizardData;
@@ -53,7 +55,11 @@ export class ALCodeunitWizardPage extends ALTableBasedWizardPage {
     protected async loadInterfaces() {
         let resourceUri = this._settings.getDestDirectoryUri();
         if (this._toolsExtensionContext.alLangProxy.supportsInterfaces(resourceUri)) {
-            this._codeunitWizardData.interfaceList = await this._toolsExtensionContext.alLangProxy.getInterfaceList(resourceUri);
+            let response = await this._toolsExtensionContext.toolsLangServerClient.getInterfacesList(
+                new ToolsSymbolInformationRequest(this._settings.getDestDirectoryPath()));
+            if (response)
+            this._codeunitWizardData.interfaceList = SymbolWithNameInformation.toNamesList(response.symbols);
+            //this._codeunitWizardData.interfaceList = await this._toolsExtensionContext.alLangProxy.getInterfaceList(resourceUri);
             if ((this._codeunitWizardData.interfaceList) && (this._codeunitWizardData.interfaceList.length > 0))
                 this.sendMessage({
                     command : "setInterfaces",
