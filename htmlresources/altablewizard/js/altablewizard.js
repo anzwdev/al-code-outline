@@ -72,6 +72,7 @@ class TableWizard {
             //initialize inputs
             document.getElementById("objectid").value = this._data.objectId;
             document.getElementById("objectname").value = this._data.objectName;
+            document.getElementById("datapercompany").checked = this._data.dataPerCompany;
             //initialize fields list
             if (this._data.fields)
                 this._fieldsgrid.setData(this._data.fields);
@@ -96,6 +97,7 @@ class TableWizard {
             data: {
                 objectId : this._data.objectId,
                 objectName : this._data.objectName,
+                dataPerCompany : this._data.dataPerCompany,
                 fields: this._data.fields
             }
         });
@@ -110,6 +112,7 @@ class TableWizard {
     collectStepData(finishSelected) {
         this._data.objectId = document.getElementById("objectid").value;
         this._data.objectName = document.getElementById("objectname").value;
+        this._data.dataPerCompany = document.getElementById("datapercompany").checked;
         this._data.fields = this._fieldsgrid.getData();
     }
 

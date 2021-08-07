@@ -14,6 +14,8 @@ export class ALTableSyntaxBuilder {
         writer.writeStartObject("table", data.objectId, data.objectName);
         writer.addProperty("Caption", writer.encodeString(ALSyntaxHelper.removePrefixSuffix(data.objectName, data.projectSettings)));
         writer.addProperty("DataClassification", "ToBeClassified");
+        if (!data.dataPerCompany)
+            writer.addProperty("DataPerCompany", "false");
         writer.writeProperties();
         writer.writeLine("");
 
