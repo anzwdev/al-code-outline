@@ -1,5 +1,11 @@
 # Change Log
 
+## 3.0.13
+ - Issue #262 - Fix keyword casing in variable data types
+
+Thank you
+ - fvet for reporting issue #262
+
 ## 3.0.12
  - New Report Extension Symbols-based Object Wizard by rvanbekkum
  - New Report Extension Wizard by rvanbekkum
@@ -15,7 +21,7 @@
  - Issue #262 - Fix keyword casing
 
 Thank you
- - fvet for reporting issue #259 and #262
+ - fvet for reporting issues #259 and #262
 
 ## 3.0.10
  - Extension unload fixes
