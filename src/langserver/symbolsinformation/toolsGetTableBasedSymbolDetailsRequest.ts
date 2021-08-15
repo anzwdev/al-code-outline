@@ -6,7 +6,7 @@ export class ToolsGetTableBasedSymbolDetailsRequest extends ToolsSymbolInformati
     getAvailableFields: boolean;
 
     constructor(newPath: string | undefined, newName: string, newGetExistingFields: boolean, newGetAvailableFields: boolean) {
-        super(newPath);
+        super(newPath, true);
         this.name = newName;
         this.getExistingFields = newGetExistingFields;
         this.getAvailableFields = newGetAvailableFields;

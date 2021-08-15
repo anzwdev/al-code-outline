@@ -17,6 +17,8 @@ import { ALTableExtWizard } from '../objectwizards/wizards/alTableExtWizard';
 import { ALPageExtWizard } from '../objectwizards/wizards/alPageExtWizard';
 import { ALReportExtWizard } from '../objectwizards/wizards/alReportExtWizard';
 import { DevToolsExtensionService } from './devToolsExtensionService';
+import { ALPermissionSetWizard } from '../objectwizards/wizards/alPermissionSetWizard';
+import { ALPermissionSetExtensionWizard } from '../objectwizards/wizards/alPermissionSetExtensionWizard';
 
 export class ALObjectWizardsService extends DevToolsExtensionService {
     protected _wizards: ALObjectWizard[];
@@ -41,6 +43,9 @@ export class ALObjectWizardsService extends DevToolsExtensionService {
         this._wizards.push(new ALQueryWizard(context, 'Query', 'New AL Query Wizard', 'Allows to select query type, source table and fields'));
         this._wizards.push(new ALEnumWizard(context, 'Enum', 'New AL Enum Wizard', 'Allows to select list of enum values and captions'));
         this._wizards.push(new ALEnumExtWizard(context, 'Enum Extension', 'New AL Enum Extension Wizard', 'Allows to add list of enum values and captions to existing enum'));        
+
+        this._wizards.push(new ALPermissionSetWizard(context, 'PermissionSet', 'New AL PermissionSet Wizard', 'Allows to create permission set for extension objects'));
+        this._wizards.push(new ALPermissionSetExtensionWizard(context, 'PermissionSetExtension', 'New AL PermissionSetExtension Wizard', 'Allows to create permission set extension for extension objects'));
 
         //register commands
         this._context.vscodeExtensionContext.subscriptions.push(

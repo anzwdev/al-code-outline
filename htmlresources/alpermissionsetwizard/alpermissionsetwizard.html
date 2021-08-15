@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta http-equiv="Content-Security-Policy" content="default-src 'none'; img-src ##CSPSOURCE## https: data:; script-src ##CSPSOURCE## 'unsafe-eval'; style-src ##CSPSOURCE##; font-src ##CSPSOURCE##;" />
+        <script src="##EXTENSIONPATH##/htmlresources/lib/jquery/jquery.min.js"></script>
+        <script src="##EXTENSIONPATH##/htmlresources/lib/jquery-ui/jquery-ui.min.js"></script>
+        <script src="##EXTENSIONPATH##/htmlresources/lib/autocomplete/autocomplete.js"></script>
+        <script src="##EXTENSIONPATH##/htmlresources/lib/helpers/htmlhelper.js"></script>
+        <script src="##EXTENSIONPATH##/htmlresources/lib/filteredlist/filteredlist.js"></script>
+        <script src="##EXTENSIONPATH##/htmlresources/lib/wizards/baseobjectwizard.js"></script>
+        <script src="##EXTENSIONPATH##/htmlresources/alpermissionsetwizard/js/alpermissionsetwizard.js"></script>
+        <script src="##EXTENSIONPATH##/htmlresources/alpermissionsetwizard/js/startup.js"></script>
+        <link rel="stylesheet" type="text/css" href="##EXTENSIONPATH##/htmlresources/lib/jquery-ui/jquery-ui.min.css">
+        <link rel="stylesheet" type="text/css" href="##EXTENSIONPATH##/htmlresources/lib/autocomplete/autocomplete.css">
+        <link rel="stylesheet" type="text/css" href="##EXTENSIONPATH##/htmlresources/lib/wizards/wizards.css">
+    </head>
+    <body>
+        <div id="main" class="main">
+            <div id="header" class="header">
+                <div class="title">New Permission Set Wizard</div>
+            </div>
+
+            <div id="wizardstep1" class="wizard">
+
+                <div class="formline">
+                    <div class="formheader">Please enter permission set properties.</div>
+                </div>
+                               
+                <div class="formline">
+                    <div class="formcaption">Object Id:</div>
+                    <div class="formfield">
+                        <input type="text" id="objectid" name="objectid" class="fixedtext">
+                    </div>
+                </div>
+                
+                <div class="formline">
+                    <div class="formcaption">Object Name:</div>
+                    <div class="formfield">
+                        <input type="text" id="objectname" name="objectname" class="fulltext">
+                    </div>
+                </div>
+                   
+                <div id="inclallobjectsline" class="formline">
+                    <div class="formcaption">Include All Ext. Objects:</div>
+                    <div class="formfield">
+                        <input type="checkbox" id="inclallobjects" name="inclallobjects">
+                    </div>
+                </div>
+
+            </div>
+
+            <div id="wizardstep2" class="wizard">
+
+                <div class="formline">
+                    <div class="formheader">Please select permission sets to include.</div>
+                </div>
+
+                <div class="multiselect">
+                    <div class="multiselsrc" id="srcpermsdiv">
+                        
+                        <div class="mselcaptionadv" id="srcpermscapt">
+                            <div class="mselcapmain">Available Permission Sets:</div>
+                        </div>
+
+                        <input class="mselfilter" id="srcpermsfilter" type="text" placeholder="Enter permission sets filter...">
+                        <select class="msellist" id="srcperms" multiple="multiple"></select>
+                    </div>
+
+                    <div class="multiselbtns">
+                        <div><button class="mselbtn" id="mselright">&gt;</button></div>
+                        <div><button class="mselbtn" id="mselallright">&gt;&gt;</button></div>
+                        <div><button class="mselbtn" id="mselallleft">&lt;&lt;</button></div>
+                        <div><button class="mselbtn" id="mselleft">&lt;</button></div>
+                    </div>
+
+                    <div class="multiseldest" id="destpermsdiv">
+                        <div class="mselcaption" id="destpermscapt">Selected Permission Sets:</div>
+                        <input class="mselfilter" id="destpermsfilter" type="text" placeholder="Enter permission sets filter...">
+                        <select class="msellist" id="destperms" multiple="multiple">
+                        </select>
+                    </div>
+
+                </div>
+
+            </div>
+
+            <div id="footer" class="footer">
+                <button id="prevBtn" class="button">Previous</button>
+                <button id="nextBtn" class="button">Next</button>
+                <button id="finishBtn" class="button">Finish</button>
+                <button id="cancelBtn" class="button">Cancel</button>
+            </div>
+        </div>
+
+    </body>
+</html>

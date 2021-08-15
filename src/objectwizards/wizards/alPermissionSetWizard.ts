@@ -1,13 +1,10 @@
-'use strict';
-
-import { ALObjectWizard } from "./alObjectWizard";
-import { ALEnumWizardData } from "./alEnumWizardData";
-import { ALEnumWizardPage } from "./alEnumWizardPage";
 import { DevToolsExtensionContext } from "../../devToolsExtensionContext";
+import { ALObjectWizard } from "./alObjectWizard";
 import { ALObjectWizardSettings } from "./alObjectWizardSettings";
+import { ALPermissionSetWizardData } from "./alPermissionSetWizardData";
+import { ALPermissionSetWizardPage } from "./alPermissionSetWizardPage";
 
-export class ALEnumWizard extends ALObjectWizard {
-    
+export class ALPermissionSetWizard extends ALObjectWizard {
     constructor(toolsExtensionContext : DevToolsExtensionContext, newLabel: string, newDescription : string, newDetails: string) {
         super(toolsExtensionContext, newLabel, newDescription, newDetails);
     }
@@ -18,13 +15,14 @@ export class ALEnumWizard extends ALObjectWizard {
     }
 
     protected async runAsync(settings: ALObjectWizardSettings) {
-        let objectId : number = await this._toolsExtensionContext.toolsLangServerClient.getNextObjectId(settings.getDestDirectoryPath(), "enum");
+        let objectId : number = await this._toolsExtensionContext.toolsLangServerClient.getNextObjectId(settings.getDestDirectoryPath(), "permissionset");
 
-        let wizardData : ALEnumWizardData = new ALEnumWizardData();
+        let wizardData : ALPermissionSetWizardData = new ALPermissionSetWizardData();
         wizardData.objectId = objectId.toString();
         wizardData.objectName = '';
-        let wizardPage : ALEnumWizardPage = new ALEnumWizardPage(this._toolsExtensionContext, settings, wizardData);
+        let wizardPage : ALPermissionSetWizardPage = new ALPermissionSetWizardPage(this._toolsExtensionContext, undefined, settings, wizardData);
         wizardPage.show();
     }
 
-} 
+   
+}

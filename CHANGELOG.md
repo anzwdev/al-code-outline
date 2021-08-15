@@ -2,11 +2,12 @@
 
 ## 3.0.13
  - Issue #262 - Fix keyword casing in variable data types
+ - Issue #265 - AL File Wizards for Permission Set, Permission Set Extension
  - Issue #266 - Add DataPerCompany to AL Table File Wizard
 
 Thank you
  - fvet for reporting issue #262
- - rvanbekkum for reporting issue #266
+ - rvanbekkum for reporting issues #265, #266
 
 ## 3.0.12
  - New Report Extension Symbols-based Object Wizard by rvanbekkum

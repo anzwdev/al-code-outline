@@ -187,6 +187,19 @@ export class ALSyntaxWriter {
         this.writeLine(name + " = " + value + ";");
     }
 
+    public writeStartProperty(name : string) {
+        this.writeLine(name + " =");
+        this.incIndent();
+    }
+    
+    public writePropertyValue(value: string, lastValue: boolean) {
+        if (lastValue) {
+            this.writeLine(value + ";");
+            this.decIndent();
+        } else
+            this.writeLine(value + ",");
+    }
+
     public addProperty(name : string, value : string) {
         this.propertiesCache.push(new NameValue(name, value));
     }

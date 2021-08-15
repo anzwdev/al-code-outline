@@ -44,7 +44,7 @@ export class ALInterfaceWizardPage extends ProjectItemWizardPage {
 
     protected async loadCodeunits() {
         let response = await this._toolsExtensionContext.toolsLangServerClient.getCodeunitsList(
-            new ToolsSymbolInformationRequest(this._settings.getDestDirectoryPath()));
+            new ToolsSymbolInformationRequest(this._settings.getDestDirectoryPath(), false));
         if (response)
             this._wizardData.codeunitList = SymbolWithNameInformation.toNamesList(response.symbols);
 
