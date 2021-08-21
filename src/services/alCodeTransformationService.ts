@@ -22,6 +22,10 @@ export class ALCodeTransformationService extends DevToolsExtensionService {
         this.registerDocumentRangeCommand('azALDevTools.sortProperties', 'sortProperties');
         this.registerDocumentRangeCommand('azALDevTools.sortReportColumns', 'sortReportColumns');
         this.registerDocumentRangeCommand('azALDevTools.sortTableFields', 'sortTableFields');
+        this.registerDocumentRangeCommand('azALDevTools.sortPermissions', 'sortPermissions');
+        this.registerDocumentRangeCommand('azALDevTools.sortPermissionSetList', 'sortPermissionSetList');
+
+        this.registerDocumentRangeCommand('azALDevTools.addAllObjectsPermissions', 'addAllObjectsPermissions');
 
         this.registerDocumentRangeCommand('azALDevTools.removeVariable', 'removeVariable');
 
