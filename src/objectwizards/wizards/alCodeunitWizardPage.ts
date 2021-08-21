@@ -56,7 +56,7 @@ export class ALCodeunitWizardPage extends ALTableBasedWizardPage {
         let resourceUri = this._settings.getDestDirectoryUri();
         if (this._toolsExtensionContext.alLangProxy.supportsInterfaces(resourceUri)) {
             let response = await this._toolsExtensionContext.toolsLangServerClient.getInterfacesList(
-                new ToolsSymbolInformationRequest(this._settings.getDestDirectoryPath()));
+                new ToolsSymbolInformationRequest(this._settings.getDestDirectoryPath(), false));
             if (response)
             this._codeunitWizardData.interfaceList = SymbolWithNameInformation.toNamesList(response.symbols);
             //this._codeunitWizardData.interfaceList = await this._toolsExtensionContext.alLangProxy.getInterfaceList(resourceUri);

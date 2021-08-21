@@ -64,7 +64,7 @@ export class ALPageExtWizardPage extends ProjectItemWizardPage {
 
     protected async loadPages() {
         let response = await this._toolsExtensionContext.toolsLangServerClient.getPagesList(
-            new ToolsSymbolInformationRequest(this._settings.getDestDirectoryPath()));
+            new ToolsSymbolInformationRequest(this._settings.getDestDirectoryPath(), false));
         if (response)
             this._pageExtWizardData.pageList = SymbolWithNameInformation.toNamesList(response.symbols);
 

@@ -2,7 +2,7 @@
 	"name": "al-code-outline",
 	"displayName": "AZ AL Dev Tools/AL Code Outline",
 	"description": "AZ AL Development Tools: AL code outline, object browser, object creators",
-	"version": "3.0.11",
+	"version": "3.0.13",
 	"publisher": "andrzejzwierzchowski",
 	"engines": {
 		"vscode": "^1.47.0"
@@ -474,18 +474,22 @@
 								"SortReportColumns",
 								"SortProperties",
 								"SortProcedures",
-								"SortVariables"
+								"SortVariables",
+								"SortPermissions",
+								"SortPermissionSetList"
 							],
 							"enumDescriptions": [
 								"Sort report DataItem columns",
 								"Sort properties",
 								"Sort procedures",
-								"Sort variables"
+								"Sort variables",
+								"Sort permissions",
+								"Sort permission sets"
 							]
 						},
 						"default": [],
 						"uniqueItems": true,
-						"description": "Specifies which code-actions should be applied when a file is saved. Valid values are SortReportColumns, SortProcedures, SortProperties and SortVariables",
+						"description": "Specifies which code-actions should be applied when a file is saved. Valid values are SortReportColumns, SortProcedures, SortProperties, SortVariables, SortPermissions and SortPermissionSetList",
 						"scope": "resource"
 					},
 					"alOutline.codeActionsOnSaveIgnoreFiles": {

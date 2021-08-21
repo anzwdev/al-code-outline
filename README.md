@@ -31,6 +31,8 @@ Extensions add new "New AL File Wizard" item to EXPLORER context menu. It allows
    - Query Wizard
    - Enum Wizard
    - Enum Extension Wizard
+   - PermissionSet Wizard
+   - PermissionSetExtension Wizard
 
  ![Page Wizard](resources/screen2-pagewizard.gif)
 
@@ -85,8 +87,11 @@ Extension adds VS Code editor code actions to some of al elements to help develo
   - `Sort data item columns` available when cursor is at report data item, column or first line of the object declaration. This action will sort all columns inside data item in a natural order. If it is invoked from the first line of the object, it will sort columns inside all data items.
   - `Sort properties` available from the first line of any object declaration. It will sort properties of every element declared inside the object.
   - `Sort variables` available from the first line of any object declaration or from "var" keyword of local or global variables section
+  - `Sort permissions` available when cursor is at the first line of Permissions property. It will sort all entries in this property
+  - `Sort permission sets` available when cursor is at the first line of IncludedPermissionSets property. It will sort all entries in this property.
  - Code generation actions
   - `Create interface` action available on the first line of codeunit declaration, it creates a new interface with all public functions from the codeunit
+ - `Add all extension objects permissions` available on the first line of Permissions property. It adds all objects from the current extension to this property. If permissions are added to PermissionSet or PermisionSetExtension object, `table`, `tabledata`, `page`, `report`, `xmlport`, `query` and `codeunit` entries will be added. For all other object types, only `tabledata` entries will be created.
  - `Add multiple fields` when cursor is at these elements in the editor:
   - "group" and "repeater" on pages
   - "group", "repeater", "addfirst", "addlast", "addafter" and "addbefore" on page extensions

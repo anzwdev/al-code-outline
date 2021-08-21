@@ -15,6 +15,9 @@ import { ALCodeCopFixAA0008 } from './codeFixes/alCodeCopFixAA0008';
 import { ALCodeCopFixAA0137 } from './codeFixes/alCodeCopFixAA0137';
 import { ALCodeCopFixAA0139 } from './codeFixes/alCodeCopFixAA0139';
 import { ALSortTableFieldsCommand } from './sortSymbols/alSortTableFieldsCommand';
+import { ALSortPermissionsCommand } from './sortSymbols/alSortPermissionsCommand';
+import { ALAddAllPermissionsCodeCommand } from './alAddAllPermissionsCodeCommand';
+import { ALSortPermissionSetListCommand } from './sortSymbols/alSortPermissionSetListCommand';
 
 export class ALCodeActionsProvider implements vscode.CodeActionProvider {
     protected _toolsExtensionContext : DevToolsExtensionContext;
@@ -29,12 +32,17 @@ export class ALCodeActionsProvider implements vscode.CodeActionProvider {
             new ALAddReportFieldsCodeCommand(this._toolsExtensionContext),
             new ALAddXmlPortFieldsCodeCommand(this._toolsExtensionContext, 'fieldelement', 'Add multiple field elements (AZ AL Dev Tools)'),
             new ALAddXmlPortFieldsCodeCommand(this._toolsExtensionContext, 'fieldattribute', 'Add multiple field attributes (AZ AL Dev Tools)'),
+
+            new ALAddAllPermissionsCodeCommand(this._toolsExtensionContext),
+
             //sorting
             new ALSortTableFieldsCommand(this._toolsExtensionContext),
             new ALSortVariablesCommand(this._toolsExtensionContext),
             new ALSortReportColumnsCommand(this._toolsExtensionContext),
             new ALSortPropertiesCommand(this._toolsExtensionContext),
             new ALSortProceduresCodeCommand(this._toolsExtensionContext),
+            new ALSortPermissionsCommand(this._toolsExtensionContext),
+            new ALSortPermissionSetListCommand(this._toolsExtensionContext),
             
             new ALCreateInterfaceCodeCommand(this._toolsExtensionContext),
             //diagnostics fixes

@@ -1,5 +1,18 @@
 # Change Log
 
+## 3.0.13
+ - Issue #262 - Fix keyword casing in variable data types
+ - Issue #265 - AL File Wizards for Permission Set, Permission Set Extension
+ - Issue #266 - Add DataPerCompany to AL Table File Wizard
+ - New code actions:
+   - Sort permissions - sorts entries in the Permissions property, can be run on document save
+   - Sort permission sets - sorts entries in the IncludedPermissionSets property, can be run on document save
+   - Add all extension objects permissions - adds all objects from the current extension to the Permissions property  
+
+Thank you
+ - fvet for reporting issue #262
+ - rvanbekkum for reporting issues #265, #266
+
 ## 3.0.12
  - New Report Extension Symbols-based Object Wizard by rvanbekkum
  - New Report Extension Wizard by rvanbekkum
@@ -15,7 +28,7 @@
  - Issue #262 - Fix keyword casing
 
 Thank you
- - fvet for reporting issue #259 and #262
+ - fvet for reporting issues #259 and #262
 
 ## 3.0.10
  - Extension unload fixes

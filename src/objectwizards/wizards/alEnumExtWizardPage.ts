@@ -31,7 +31,7 @@ export class ALEnumExtWizardPage extends ProjectItemWizardPage {
 
     protected async loadBaseEnums() {
         let response = await this._toolsExtensionContext.toolsLangServerClient.getEnumsList({
-                path: this._settings.getDestDirectoryPath()
+                path: this._settings.getDestDirectoryPath(), includeNonAccessible: false
             });
         if (response)
             this._enumExtWizardData.baseEnumList = SymbolWithNameInformation.toNamesList(response.symbols);

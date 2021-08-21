@@ -6,7 +6,7 @@ export class ToolsGetTableFieldsListRequest extends ToolsSymbolInformationReques
     inlcudeObsolete: boolean;
 
     constructor(newPath: string | undefined, newTable: string, newIncludeDisabled: boolean, newIncludeObsolete: boolean) {
-        super(newPath);
+        super(newPath, true);
         this.table = newTable;
         this.includeDisabled = newIncludeDisabled;
         this.inlcudeObsolete = newIncludeObsolete;

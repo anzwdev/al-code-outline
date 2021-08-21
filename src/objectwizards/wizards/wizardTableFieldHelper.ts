@@ -9,7 +9,7 @@ export class WizardTableFieldHelper {
             'Text', 'Time'];
 
         let response = await extensionContext.toolsLangServerClient.getEnumsList({
-            path: resourceUri?resourceUri.fsPath:undefined
+            path: resourceUri?resourceUri.fsPath:undefined, includeNonAccessible: false
         });
 
         if ((response) && (response.symbols)) {

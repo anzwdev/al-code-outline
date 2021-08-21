@@ -63,6 +63,9 @@ import { ToolsGetProjectSymbolLocationRequest } from './toolsGetProjectSymbolLoc
 import { ToolsGetProjectSymbolLocationResponse } from './toolsGetProjectSymbolLocationResponse';
 import { ToolsGetNextObjectIdRequest } from './symbolsinformation/toolsGetNextObjectIdRequest';
 import { ToolsGetNextObjectIdResponse } from './symbolsinformation/toolsGetNextObjectIdResponse';
+import { ToolsGetObjectsListRequest } from './symbolsinformation/toolsGetObjectsListRequest';
+import { ToolsGetObjectsListResponse } from './symbolsinformation/toolsGetObjectsListResponse';
+import { ToolsGetPermissionSetsListResponse } from './symbolsinformation/toolsGetPermissionSetsListResponse';
 
 export class ToolsLangServerClient implements vscode.Disposable {
     _context : vscode.ExtensionContext;
@@ -298,6 +301,10 @@ export class ToolsLangServerClient implements vscode.Disposable {
     }
 
     //symbols information requests
+    public getObjectsList(params: ToolsGetObjectsListRequest) : Promise<ToolsGetObjectsListResponse | undefined> {
+        return this.sendRequest<ToolsGetObjectsListRequest, ToolsGetObjectsListResponse>(params, 'al/getobjectslist');
+    }
+
     public getTablesList(params: ToolsSymbolInformationRequest) : Promise<ToolsGetTablesListResponse | undefined> {
         return this.sendRequest<ToolsSymbolInformationRequest, ToolsGetTablesListResponse>(params, 'al/gettableslist');
     }
@@ -328,6 +335,10 @@ export class ToolsLangServerClient implements vscode.Disposable {
 
     public getXmlPortsList(params: ToolsSymbolInformationRequest) : Promise<ToolsGetXmlPortsListResponse | undefined> {
         return this.sendRequest<ToolsSymbolInformationRequest, ToolsGetXmlPortsListResponse>(params, 'al/getxmlportslist');
+    }
+
+    public getPermissionSetsList(params: ToolsSymbolInformationRequest) : Promise<ToolsGetPermissionSetsListResponse | undefined> {
+        return this.sendRequest<ToolsSymbolInformationRequest, ToolsGetPermissionSetsListResponse>(params, 'al/getpermissionsetslist');
     }
 
     public getTableFieldsList(params: ToolsGetTableFieldsListRequest) : Promise<ToolsGetTableFieldsListResponse | undefined> {

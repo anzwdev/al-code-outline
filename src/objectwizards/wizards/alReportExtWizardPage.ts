@@ -64,7 +64,7 @@ export class ALReportExtWizardPage extends ProjectItemWizardPage {
 
     protected async loadReports() {
         let response = await this._toolsExtensionContext.toolsLangServerClient.getReportsList(
-            new ToolsSymbolInformationRequest(this._settings.getDestDirectoryPath()));
+            new ToolsSymbolInformationRequest(this._settings.getDestDirectoryPath(), false));
         if (response)
             this._reportExtWizardData.reportList = SymbolWithNameInformation.toNamesList(response.symbols);
 

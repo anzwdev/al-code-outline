@@ -35,7 +35,7 @@ export class ALTableBasedWizardPage extends ProjectItemWizardPage {
 
         let tableList: string[] = [];
         let response = await this._toolsExtensionContext.toolsLangServerClient.getTablesList(
-            new ToolsSymbolInformationRequest(this._settings.getDestDirectoryPath()));
+            new ToolsSymbolInformationRequest(this._settings.getDestDirectoryPath(), false));
         if ((response) && (response.symbols)) {
             for (let i=0; i<response.symbols.length; i++) {
                 let name = response.symbols[i].name;
