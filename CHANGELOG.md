@@ -4,6 +4,10 @@
  - Issue #262 - Fix keyword casing in variable data types
  - Issue #265 - AL File Wizards for Permission Set, Permission Set Extension
  - Issue #266 - Add DataPerCompany to AL Table File Wizard
+ - New code actions:
+   - Sort permissions - sorts entries in the Permissions property, can be run on document save
+   - Sort permission sets - sorts entries in the IncludedPermissionSets property, can be run on document save
+   - Add all extension objects permissions - adds all objects from the current extension to the Permissions property  
 
 Thank you
  - fvet for reporting issue #262
