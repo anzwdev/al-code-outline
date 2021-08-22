@@ -1,5 +1,8 @@
 # Change Log
 
+## 3.0.14
+ - Dependencies update (github dependabot pull requests)
+
 ## 3.0.13
  - Issue #262 - Fix keyword casing in variable data types
  - Issue #265 - AL File Wizards for Permission Set, Permission Set Extension

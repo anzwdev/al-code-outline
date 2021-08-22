@@ -2,7 +2,7 @@
 	"name": "al-code-outline",
 	"displayName": "AZ AL Dev Tools/AL Code Outline",
 	"description": "AZ AL Development Tools: AL code outline, object browser, object creators",
-	"version": "3.0.13",
+	"version": "3.0.14",
 	"publisher": "andrzejzwierzchowski",
 	"engines": {
 		"vscode": "^1.47.0"
@@ -272,9 +272,8 @@
 				{
 					"command": "azALDevTools.alOutlineDisableFollowCursor",
 					"when": "false"
-				}			
+				}
 			],
-
 			"view/title": [
 				{
 					"command": "azALDevTools.refreshOutlineView",
@@ -532,7 +531,6 @@
 						"default": true,
 						"description": "Set to true, to use table field captions in API pages fields. Set to false, to use camelCase api field names in api field captions"
 					}
-
 				}
 			}
 		]
