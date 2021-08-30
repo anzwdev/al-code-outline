@@ -7,6 +7,7 @@
         <script src="##EXTENSIONPATH##/htmlresources/lib/autocomplete/autocomplete.js"></script>
         <script src="##EXTENSIONPATH##/htmlresources/lib/helpers/htmlhelper.js"></script>
         <script src="##EXTENSIONPATH##/htmlresources/lib/filteredlist/filteredlist.js"></script>
+        <script src="##EXTENSIONPATH##/htmlresources/lib/wizards/baseobjectwizard.js"></script>
         <script src="##EXTENSIONPATH##/htmlresources/alreportextwizard/js/alreportextwizard.js"></script>
         <link rel="stylesheet" type="text/css" href="##EXTENSIONPATH##/htmlresources/lib/jquery-ui/jquery-ui.min.css">
         <link rel="stylesheet" type="text/css" href="##EXTENSIONPATH##/htmlresources/lib/autocomplete/autocomplete.css">
@@ -46,6 +47,49 @@
                     </div>
                 </div>
                 
+            </div>
+
+            <div id="wizardstep2" class="wizard">
+
+                <div class="formline">
+                    <div class="formheader">Please select data items columns to add.</div>
+                </div>
+
+                <div id="activedataitemline" class="formlinecenter">
+                    <div class="formcaptionct">Report data item:</div>
+                    <div class="formfieldct"><select id="activedataitem"></select></div>
+                </div>
+
+                <div class="multiselect">
+                    <div class="multiselsrc" id="srcfieldsdiv">
+                        
+                        <div class="mselcaptionadv" id="srcfieldscapt">
+                            <div class="mselcapmain">Available Fields:</div>
+                            <div class="mselcaptb">Sort by:</div>
+                            <button id="srcfldsortname" class="mselcaptb mseltbbtn">Name</button>
+                            <button id="srcfldsortid" class="mselcaptb mseltbbtn">Id</button>
+                        </div>
+
+                        <input class="mselfilter" id="srcfieldsfilter" type="text" placeholder="Enter fields filter...">
+                        <select class="msellist" id="srcfields" multiple="multiple"></select>
+                    </div>
+
+                    <div class="multiselbtns">
+                        <div><button class="mselbtn" id="mselright">&gt;</button></div>
+                        <div><button class="mselbtn" id="mselallright">&gt;&gt;</button></div>
+                        <div><button class="mselbtn" id="mselallleft">&lt;&lt;</button></div>
+                        <div><button class="mselbtn" id="mselleft">&lt;</button></div>
+                    </div>
+
+                    <div class="multiseldest" id="destfieldsdiv">
+                        <div class="mselcaption" id="destfieldscapt">Selected Fields:</div>
+                        <input class="mselfilter" id="destfieldsfilter" type="text" placeholder="Enter fields filter...">
+                        <select class="msellist" id="destfields" multiple="multiple">
+                        </select>
+                    </div>
+
+                </div>
+
             </div>
 
             <div id="footer" class="footer">
