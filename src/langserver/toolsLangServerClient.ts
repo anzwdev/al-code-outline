@@ -66,6 +66,8 @@ import { ToolsGetNextObjectIdResponse } from './symbolsinformation/toolsGetNextO
 import { ToolsGetObjectsListRequest } from './symbolsinformation/toolsGetObjectsListRequest';
 import { ToolsGetObjectsListResponse } from './symbolsinformation/toolsGetObjectsListResponse';
 import { ToolsGetPermissionSetsListResponse } from './symbolsinformation/toolsGetPermissionSetsListResponse';
+import { ToolsGetReportDetailsRequest } from './symbolsinformation/toolsGetReportDetailsRequest';
+import { ToolsGetReportDetailsResponse } from './symbolsinformation/toolsGetReportDetailsResponse';
 
 export class ToolsLangServerClient implements vscode.Disposable {
     _context : vscode.ExtensionContext;
@@ -355,6 +357,10 @@ export class ToolsLangServerClient implements vscode.Disposable {
 
     public getReportDataItemDetails(params: ToolsGetReportDataItemDetailsRequest) : Promise<ToolsGetReportDataItemDetailsResponse | undefined> {
         return this.sendRequest<ToolsGetReportDataItemDetailsRequest, ToolsGetReportDataItemDetailsResponse>(params, 'al/getreportdataitemdetails');
+    }
+
+    public getReportDetails(params: ToolsGetReportDetailsRequest) : Promise<ToolsGetReportDetailsResponse | undefined> {
+        return this.sendRequest<ToolsGetReportDetailsRequest, ToolsGetReportDetailsResponse>(params, 'al/getreportdetails');
     }
 
     public getQueryDataItemDetails(params: ToolsGetQueryDataItemDetailsRequest) : Promise<ToolsGetQueryDataItemDetailsResponse | undefined> {

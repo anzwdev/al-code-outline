@@ -178,6 +178,10 @@ export class ALSyntaxWriter {
         this.writeEndBlock();
     }
 
+    public writeStartAdd(name: string) {
+        this.writeStartGroup("add", name);
+    }
+
     public writeStartGroup(type : string, name : string) {
         this.writeLine(type + "(" + name + ")");
         this.writeStartBlock();
@@ -216,6 +220,15 @@ export class ALSyntaxWriter {
             
             this.propertiesCache = [];
         }
+    }
+
+    public writeReportColumn(dataSetName: string, source: string, addDataItemName: boolean) {
+        let columnName = this.createName(source);
+        if (addDataItemName)
+            columnName = columnName + "_" + this.createName(dataSetName);
+        
+        this.writeNameSourceBlock("column", columnName, 
+            this.encodeName(source));        
     }
 
     public writeTableField(fieldId: string, fieldName: string, fieldDataType: string, fieldLength: string, dataClassification: string) {

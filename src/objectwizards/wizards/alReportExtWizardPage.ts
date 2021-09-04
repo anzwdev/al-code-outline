@@ -6,6 +6,8 @@ import { ALReportExtSyntaxBuilder } from '../syntaxbuilders/alReportExtSyntaxBui
 import { ProjectItemWizardPage } from './projectItemWizardPage';
 import { ToolsSymbolInformationRequest } from '../../langserver/symbolsinformation/toolsSymbolInformationRequest';
 import { SymbolWithNameInformation } from '../../symbolsinformation/smbolWithNameInformation';
+import { ToolsGetReportDetailsRequest } from '../../langserver/symbolsinformation/toolsGetReportDetailsRequest';
+import { ALReportExtWizardDataItemData } from './alReportExtWizardDataItemData';
 
 export class ALReportExtWizardPage extends ProjectItemWizardPage {
     protected _reportExtWizardData : ALReportExtWizardData;
@@ -42,9 +44,22 @@ export class ALReportExtWizardPage extends ProjectItemWizardPage {
             case 'loadReports':
                 this.loadReports();
                 return true;
+            case 'selectReport':
+                this.loadBaseReport(message.baseReport);
+                return true;
         }
 
         return false;
+    }
+
+    protected anyToDataItem(data: any): ALReportExtWizardDataItemData {
+        let dataItem: ALReportExtWizardDataItemData = new ALReportExtWizardDataItemData(data.name);
+        if (data.fields) {
+            for (var i = 0; i<data.fields.length; i++) {
+                dataItem.fields.push(data.fields[i]);
+            }
+        }            
+        return dataItem;
     }
 
     protected async finishWizard(data : any) : Promise<boolean> {
@@ -52,6 +67,13 @@ export class ALReportExtWizardPage extends ProjectItemWizardPage {
         this._reportExtWizardData.objectId = data.objectId;
         this._reportExtWizardData.objectName = data.objectName;
         this._reportExtWizardData.baseReport = data.baseReport;
+        this._reportExtWizardData.dataItems = [];
+
+        if ((data.dataItems) && (data.dataItems.length > 0)) {
+            for (let i=0; i<data.dataItems.length; i++) {
+                this._reportExtWizardData.dataItems.push(this.anyToDataItem(data.dataItems[i]));
+            }
+        }
 
         //build new object
         let builder : ALReportExtSyntaxBuilder = new ALReportExtSyntaxBuilder();
@@ -68,12 +90,25 @@ export class ALReportExtWizardPage extends ProjectItemWizardPage {
         if (response)
             this._reportExtWizardData.reportList = SymbolWithNameInformation.toNamesList(response.symbols);
 
-        //let resourceUri = this._settings.getDestDirectoryUri();
-        //this._reportExtWizardData.reportList = await this._toolsExtensionContext.alLangProxy.getReportList(resourceUri);
         if ((this._reportExtWizardData.reportList) && (this._reportExtWizardData.reportList.length > 0)) {
             this.sendMessage({
                 command : "setReports",
                 data : this._reportExtWizardData.reportList
+            });
+        }
+    }
+
+    protected async loadBaseReport(baseReport: string | undefined) {
+        if (!baseReport)
+            return;
+
+        let response = await this._toolsExtensionContext.toolsLangServerClient.getReportDetails(
+            new ToolsGetReportDetailsRequest(this._settings.getDestDirectoryPath(), baseReport, true, true));
+
+        if ((response) && (response.symbol)) {
+            this.sendMessage({
+                command: 'setBaseReport',
+                data: response.symbol
             });
         }
     }
