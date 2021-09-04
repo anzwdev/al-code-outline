@@ -2,6 +2,9 @@
 
 ## 3.0.14
  - Dependencies update (github dependabot pull requests)
+ - Fields selection in Report Extension Wizard
+ - Error handling fixes - missing LogError calls added
+ - Packlage loading tries to open it multiple times with delay if file is locked
 
 ## 3.0.13
  - Issue #262 - Fix keyword casing in variable data types
