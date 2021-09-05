@@ -11,6 +11,8 @@ import { PageControlsCaptionsModifier } from '../alsyntaxmodifiers/pageControlsC
 import { ObjectCaptionsModifier } from '../alsyntaxmodifiers/objectCaptionsModifier';
 import { DevToolsExtensionService } from './devToolsExtensionService';
 import { FixKeywordsCaseModifier } from '../alsyntaxmodifiers/fixKeywordsCaseModifier';
+import { FixIdentifiersCaseModifier } from '../alsyntaxmodifiers/fixIdentifiersCaseModifier';
+import { ConvertObjectIdsToNamesModifier } from '../alsyntaxmodifiers/convertObjectIdsToNamesModifier';
 
 export class ALCodeTransformationService extends DevToolsExtensionService {
 
@@ -179,6 +181,46 @@ export class ALCodeTransformationService extends DevToolsExtensionService {
             )
         );
 
+        this._context.vscodeExtensionContext.subscriptions.push(
+            vscode.commands.registerCommand(
+                'azALDevTools.FixEditorIdentifiersCase',
+                () => {
+                    let fixIdentifiersCaseModifier: FixIdentifiersCaseModifier = new FixIdentifiersCaseModifier(this._context);
+                    fixIdentifiersCaseModifier.RunForActiveEditor();
+                }
+            )
+        );
+
+        this._context.vscodeExtensionContext.subscriptions.push(
+            vscode.commands.registerCommand(
+                'azALDevTools.FixProjectIdentifiersCase',
+                () => {
+                    let fixIdentifiersCaseModifier: FixIdentifiersCaseModifier = new FixIdentifiersCaseModifier(this._context);
+                    fixIdentifiersCaseModifier.RunForWorkspace();
+                }
+            )
+        );
+
+        this._context.vscodeExtensionContext.subscriptions.push(
+            vscode.commands.registerCommand(
+                'azALDevTools.ConvertEditorObjectIdsToNames',
+                () => {
+                    let convertIdsToNamesModifier: ConvertObjectIdsToNamesModifier = new ConvertObjectIdsToNamesModifier(this._context);
+                    convertIdsToNamesModifier.RunForActiveEditor();
+                }
+            )
+        );
+
+        this._context.vscodeExtensionContext.subscriptions.push(
+            vscode.commands.registerCommand(
+                'azALDevTools.ConvertProjectObjectIdsToNames',
+                () => {
+                    let convertIdsToNamesModifier: ConvertObjectIdsToNamesModifier = new ConvertObjectIdsToNamesModifier(this._context);
+                    convertIdsToNamesModifier.RunForWorkspace();
+                }
+            )
+        );
+        
         this._context.vscodeExtensionContext.subscriptions.push(
             vscode.commands.registerCommand(
                 'azALDevTools.AddEditorDataClassification',

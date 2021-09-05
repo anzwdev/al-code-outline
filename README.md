@@ -137,6 +137,11 @@ Extension adds a few commands that allow to automatically modify al code in the 
 * `Add Data Classification to the Active Project`: adds missing data classification to all table fields in the current project
 * `Fix Keywords Case in the Active Editor`: fixes keywords case in the current editor
 * `Fix Keywords Case in the Active Project`: fixes keywords case in the current project
+* `Fix Identifiers and Keywords Case in the Active Editor`: fixes keywords and identifiers case in the current editor. It is much slower than `Fix Keywords Case` commands as it needs to compile whole project first to have full information about all symbols.
+* `Fix Identifiers and Keywords Case in the Active Project`: fixes keywords and identifiers case in the current project. It is much slower than `Fix Keywords Case` commands as it needs to compile whole project first to have full information about all symbols.
+* `Convert Object Ids to Names in the Active Editor`: converts object ids to names in the current editor
+* `Convert Object Ids to Names in the Active Project`: converts object ids to names in the current project
+
 
 Default application area and templates for field and action tooltips can be specified using these VS Code settings: `alOutline.defaultAppArea`, `alOutline.pageActionToolTip` and `alOutline.pageFieldToolTip` 
 

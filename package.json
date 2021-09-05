@@ -2,7 +2,7 @@
 	"name": "al-code-outline",
 	"displayName": "AZ AL Dev Tools/AL Code Outline",
 	"description": "AZ AL Development Tools: AL code outline, object browser, object creators",
-	"version": "3.0.14",
+	"version": "3.0.15",
 	"publisher": "andrzejzwierzchowski",
 	"engines": {
 		"vscode": "^1.47.0"
@@ -57,6 +57,10 @@
 		"onCommand:azALDevTools.RemoveEditorWithStatements",
 		"onCommand:azALDevTools.FixProjectKeywordsCase",
 		"onCommand:azALDevTools.FixEditorKeywordsCase",
+		"onCommand:azALDevTools.FixEditorIdentifiersCase",
+		"onCommand:azALDevTools.FixProjectIdentifiersCase",	
+		"onCommand:azALDevTools.ConvertEditorObjectIdsToNames",
+		"onCommand:azALDevTools.ConvertProjectObjectIdsToNames",	
 		"onCommand:azALDevTools.showExtensionLog",
 		"onCustomEditor:azALDevTools.jsonEditor",
 		"onCustomEditor:azALDevTools.appPackageEditor"
@@ -244,6 +248,26 @@
 				"category": "AZ AL Dev Tools",
 				"command": "azALDevTools.FixProjectKeywordsCase",
 				"title": "Fix Keywords Case in the Active Project"
+			},
+			{
+				"category": "AZ AL Dev Tools",
+				"command": "azALDevTools.FixEditorIdentifiersCase",
+				"title": "Fix Identifiers and Keywords Case in the Active Editor"
+			},
+			{
+				"category": "AZ AL Dev Tools",
+				"command": "azALDevTools.FixProjectIdentifiersCase",
+				"title": "Fix Identifiers and Keywords Case in the Active Project"
+			},
+			{
+				"category": "AZ AL Dev Tools",
+				"command": "azALDevTools.ConvertEditorObjectIdsToNames",
+				"title": "Convert Object Ids to Names in the Active Editor"
+			},
+			{
+				"category": "AZ AL Dev Tools",
+				"command": "azALDevTools.ConvertProjectObjectIdsToNames",
+				"title": "Convert Object Ids to Names in the Active Project"
 			},
 			{
 				"command": "azALDevTools.alOutlineEnableFollowCursor",
