@@ -1,5 +1,12 @@
 # Change Log
 
+## 3.0.15
+ - Issue #262 - New workspace commands: "Fix case of functions/variables references and keywords"
+ - New workspace commands "Convert Object Ids to Names in the Active Editor" and "Convert Object Ids to Names in the Active Project"
+
+Thank you
+ - fvet for reporting issue #262
+
 ## 3.0.14
  - Dependencies update (github dependabot pull requests)
  - Fields selection in Report Extension Wizard
