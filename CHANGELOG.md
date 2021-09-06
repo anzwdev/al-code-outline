@@ -1,5 +1,11 @@
 # Change Log
 
+## 3.0.16
+ - Issue #254 - "Add multiple fields" does not open fields list 
+ - Issue #271 - FileWizard: ObjectId always zero since last update
+
+Thank you NKarolak and DavidFeldhoff for help with these 2 issues
+
 ## 3.0.15
  - Issue #262 - New workspace commands: "Fix case of functions/variables references and keywords"
  - New workspace commands "Convert Object Ids to Names in the Active Editor" and "Convert Object Ids to Names in the Active Project"
