@@ -2,6 +2,8 @@
 
 ## 3.0.17
  - Sugest xml documentation comments for old version of AL extension only as current one can do it
+ - Enum extension wizard - suggest first value id from project ranges
+ - Do not show FlowFilters on the list if available fields in wizards
 
 ## 3.0.16
  - Issue #254 - "Add multiple fields" does not open fields list 
