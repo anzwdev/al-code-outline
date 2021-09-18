@@ -1,5 +1,8 @@
 # Change Log
 
+## 3.0.17
+ - Sugest xml documentation comments for old version of AL extension only as current one can do it
+
 ## 3.0.16
  - Issue #254 - "Add multiple fields" does not open fields list 
  - Issue #271 - FileWizard: ObjectId always zero since last update
