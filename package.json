@@ -167,7 +167,7 @@
 			{
 				"category": "AZ AL Dev Tools",
 				"command": "azALDevTools.newALFile",
-				"title": "New AL File Wizard"
+				"title": "New AL File Wizard (AZ AL Dev Tools)"
 			},
 			{
 				"category": "AZ AL Dev Tools",

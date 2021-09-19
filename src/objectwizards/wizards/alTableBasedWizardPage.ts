@@ -6,7 +6,6 @@ import { DevToolsExtensionContext } from '../../devToolsExtensionContext';
 import { ALObjectWizardSettings } from './alObjectWizardSettings';
 import { ToolsSymbolInformationRequest } from '../../langserver/symbolsinformation/toolsSymbolInformationRequest';
 import { ToolsGetTableFieldsListRequest } from '../../langserver/symbolsinformation/toolsGetTableFieldsListRequest';
-import { TableInformation } from '../../symbolsinformation/tableInformation';
 
 export class ALTableBasedWizardPage extends ProjectItemWizardPage {
     private _tableWizardData : ALTableBasedWizardData;
