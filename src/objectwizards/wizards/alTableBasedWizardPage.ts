@@ -6,7 +6,6 @@ import { DevToolsExtensionContext } from '../../devToolsExtensionContext';
 import { ALObjectWizardSettings } from './alObjectWizardSettings';
 import { ToolsSymbolInformationRequest } from '../../langserver/symbolsinformation/toolsSymbolInformationRequest';
 import { ToolsGetTableFieldsListRequest } from '../../langserver/symbolsinformation/toolsGetTableFieldsListRequest';
-import { TableInformation } from '../../symbolsinformation/tableInformation';
 
 export class ALTableBasedWizardPage extends ProjectItemWizardPage {
     private _tableWizardData : ALTableBasedWizardData;
@@ -60,7 +59,7 @@ export class ALTableBasedWizardPage extends ProjectItemWizardPage {
             let fieldList: string[] = [];
             let response = await this._toolsExtensionContext.toolsLangServerClient.getTableFieldsList(
                 new ToolsGetTableFieldsListRequest(this._settings.getDestDirectoryPath(), 
-                this._tableWizardData.selectedTable, false, false));
+                this._tableWizardData.selectedTable, false, false, true, true, false));
             if ((response) && (response.symbols)) {
                 for (let i=0; i<response.symbols.length; i++) {
                     let name = response.symbols[i].name;

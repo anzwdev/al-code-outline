@@ -1,5 +1,16 @@
 # Change Log
 
+## 3.0.17
+ - Issue #278 - AZ AL Dev Tools: Fix Identifiers and Keywords Case in the Active Project incorrectly renames system parts
+ - Issue #279 - AZ AL Dev Tools: Fix Identifiers and Keywords Case in the Active Project changes ApplicationArea to Text
+ - Issue #280 - AZ AL Dev Tools: Fix Identifiers and Keywords Case in the Active Project does not fix area(...) casing
+ - Sugest xml documentation comments for old version of AL extension only as current one can do it
+ - Enum extension wizard - suggest first value id from project ranges
+ - Do not show FlowFilters on the list if available fields in wizards and "Add multiple fields" code actions
+ - "New AL File Wizard" command renamed to "New AL File Wizard (AZ AL Dev Tools)" so people know where to send any change requests or report issues
+
+ Thank you ernestasjuska for reporting issues #278, #279, #280
+
 ## 3.0.16
  - Issue #254 - "Add multiple fields" does not open fields list 
  - Issue #271 - FileWizard: ObjectId always zero since last update
