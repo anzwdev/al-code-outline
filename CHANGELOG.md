@@ -1,5 +1,12 @@
 # Change Log
 
+## 3.0.18
+ - Issue #278 - AZ AL Dev Tools: Fix Identifiers and Keywords Case in the Active Project incorrectly renames system parts
+ - Issue #279 - AZ AL Dev Tools: Fix Identifiers and Keywords Case in the Active Project changes ApplicationArea to Text
+ - Issue #280 - AZ AL Dev Tools: Fix Identifiers and Keywords Case in the Active Project does not fix area(...) casing
+
+ Thank you ernestasjuska for reporting issues #278, #279, #280
+ 
 ## 3.0.17
  - Sugest xml documentation comments for old version of AL extension only as current one can do it
  - Enum extension wizard - suggest first value id from project ranges
