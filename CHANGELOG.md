@@ -3,9 +3,11 @@
 ## 3.0.18
  - Language server recompiled against the BC 19 version of the AL Language Extension 
  - Issue #282 - AZ AL Dev Tools: Fix Identifiers and Keywords Case in the Active Project incorrectly renames dotnet type definitions
+ - Issue #277 - Add Table Field Captions > Exclude 'Removed' fields
 
 Thank you
  - ernestasjuska for reporting issue #282
+ - fvet for reporting issue #277
 
 ## 3.0.17
  - Issue #278 - AZ AL Dev Tools: Fix Identifiers and Keywords Case in the Active Project incorrectly renames system parts

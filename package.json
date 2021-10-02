@@ -553,7 +553,12 @@
 					"alOutline.useTableFieldCaptionsInApiFields": {
 						"type": "boolean",
 						"default": true,
-						"description": "Set to true, to use table field captions in API pages fields. Set to false, to use camelCase api field names in api field captions"
+						"description": "Set to true to use table field captions in API pages fields. Set to false, to use camelCase api field names in api field captions"
+					},
+					"alOutline.lockRemovedFieldsCaptions": {
+						"type": "boolean",
+						"default": false,
+						"description": "Set to true to lock captions of removed fields when 'Add Table Field Captions' command is run"
 					}
 				}
 			}
