@@ -527,12 +527,12 @@
 					},
 					"alOutline.pageActionToolTip": {
 						"type": "string",
-						"default": "Executes the %1 action",
+						"default": "Executes the %1 action.",
 						"description": "The default tooltip template for page actions. Use %1 as placeholder for action caption or name."
 					},
 					"alOutline.pageFieldToolTip": {
 						"type": "string",
-						"default": "Specifies the value of the %1 field",
+						"default": "Specifies the value of the %1 field.",
 						"description": "The default tooltip template for page fields. Use %1 or %Caption% as placeholder for field caption or name, %Caption.Comment% as placeholder for field caption comment"
 					},
 					"alOutline.pageFieldToolTipComment": {

@@ -42,20 +42,33 @@ export class ALProjectSymbolsLibrary extends ALBaseServerSideLibrary {
                 this.rootSymbol = AZSymbolInformation.fromAny(response.root);
             else
                 this.rootSymbol = AZSymbolInformation.create(AZSymbolKind.ProjectDefinition, this.displayName);
-            if (response)
+            
+            if (response) {
                 this._libraryId = response.libraryId;
+
+                if (response.error) {
+                    this.showLoadError(response.errorMessage);
+                    return false;
+                }
+            }
+
         }
         catch (e) {
-            let msg : string = 'Loading project symbols failed.';
-            if (e.message)
-                msg = msg + ' (' + e.message + ')';
-            else
-                msg = msg + ' (UNDEFINED ERROR)';
-            vscode.window.showErrorMessage(msg);
+            this.showLoadError(e.message);
             return false;
         }
         return true;
     }
+
+    protected showLoadError(errorMessage: string | undefined) {
+        let msg : string = 'Loading project symbols failed.';
+        if (errorMessage)
+            msg = msg + ' (' + errorMessage + ')';
+        else
+            msg = msg + ' (UNDEFINED ERROR)';
+        vscode.window.showErrorMessage(msg);
+    }
+
 
     public getUri(): vscode.Uri | undefined {
         return this._projectUri;

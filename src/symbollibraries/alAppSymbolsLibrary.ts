@@ -29,19 +29,29 @@ export class ALAppSymbolsLibrary extends ALBaseServerSideLibrary {
                 this.rootSymbol = AZSymbolInformation.fromAny(response.root);
             else
                 this.rootSymbol = AZSymbolInformation.create(AZSymbolKind.Document, this.displayName);
-            if (response)
+            
+            if (response) {
                 this._libraryId = NumberHelper.zeroIfNotDef(response.libraryId);
+                if (response.error) {
+                    this.showLoadError(response.errorMessage);
+                    return false;
+                }
+            }
         }
-        catch (e) {
-            let msg : string = 'Loading symbols from file "' + this.filePath + '" failed.';
-            if (e.message)
-                msg = msg + ' (' + e.message + ')';
-            else
-                msg = msg + ' (UNDEFINED ERROR)';
-            vscode.window.showErrorMessage(msg);
+        catch (e: any) {
+            this.showLoadError(e.message);
             return false;
         }
         return true;
+    }
+
+    protected showLoadError(errorMessage: string | undefined) {
+        let msg : string = 'Loading symbols from file "' + this.filePath + '" failed.';
+        if (errorMessage)
+            msg = msg + ' (' + errorMessage + ')';
+        else
+            msg = msg + ' (UNDEFINED ERROR)';
+        vscode.window.showErrorMessage(msg);
     }
 
     public getUri(): vscode.Uri | undefined {
