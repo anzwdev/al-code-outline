@@ -38,7 +38,7 @@ export class ALAppSymbolsLibrary extends ALBaseServerSideLibrary {
                 }
             }
         }
-        catch (e: any) {
+        catch (e) {
             this.showLoadError(e.message);
             return false;
         }
