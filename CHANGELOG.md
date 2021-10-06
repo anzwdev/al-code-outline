@@ -1,5 +1,16 @@
 # Change Log
 
+## 3.0.18
+ - Language server recompiled against the BC 19 version of the AL Language Extension 
+ - Issue #277 - Add Table Field Captions > Exclude 'Removed' fields
+ - Issue #282 - AZ AL Dev Tools: Fix Identifiers and Keywords Case in the Active Project incorrectly renames dotnet type definitions
+ - Issue #283 - ToolTip should end with a dot ('.') 
+
+Thank you
+ - fvet for reporting issue #277
+ - ernestasjuska for reporting issue #282
+ - lvanvugt for reporting issue #283
+
 ## 3.0.17
  - Issue #278 - AZ AL Dev Tools: Fix Identifiers and Keywords Case in the Active Project incorrectly renames system parts
  - Issue #279 - AZ AL Dev Tools: Fix Identifiers and Keywords Case in the Active Project changes ApplicationArea to Text
