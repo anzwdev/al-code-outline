@@ -1,5 +1,11 @@
 # Change Log
 
+## 3.0.19
+ - Issue #285 - Show object name length/character count in AL Object File Wizards
+
+Thank you
+ - rvanbekkum for reporting issue #285
+
 ## 3.0.18
  - Language server recompiled against the BC 19 version of the AL Language Extension 
  - Issue #277 - Add Table Field Captions > Exclude 'Removed' fields
