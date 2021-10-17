@@ -6,6 +6,7 @@ class BaseObjectWizard {
         this._vscode = acquireVsCodeApi();
         this.initSteps();
         this.updateMainButtons();
+        this.initNameLenUpdate();
      
         // Handle messages sent from the extension to the webview
         window.addEventListener('message', event => {
@@ -112,5 +113,20 @@ class BaseObjectWizard {
         }
         return true;
     }  
+
+    initNameLenUpdate() {
+        this._ctName = document.getElementById('objectname');
+        this._ctNameLen = document.getElementById('objectnamelen');
+        if ((this._ctName) && (this._ctNameLen)) {
+            this.updateNameLen();
+            this._ctName.addEventListener('input', event => {
+                this.updateNameLen();
+            });   
+        }
+    }
+
+    updateNameLen() {
+        this._ctNameLen.innerText = this._ctName.value.length.toString();
+    }
 
 }

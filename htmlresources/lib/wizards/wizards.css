@@ -81,7 +81,29 @@ header {
     align-items: stretch;
     justify-content: stretch;
 }
-.formfield .fulltext, .formfield .fullopt {
+
+.formfield .fulltextcont {
+    display: flex;
+    flex-direction: row;
+    align-items: stretch;
+    justify-content: stretch;
+}
+.formfield .fulltextcont input {
+    flex: 1 1 auto;
+    border: 0px solid #000 !important;
+}
+.formfield .fulltextcont input:focus, .formfield .fulltextcont input:active {
+    outline: none !important;
+}
+.formfield .fulltextcont .inputadd {
+    flex: 0 0 auto;
+    color: var(--vscode-list-inactiveSelectionForeground)
+}
+.fulltextcont:focus-within {
+    border: 1px solid var(--vscode-focusBorder);
+}
+
+.formfield .fulltext, .formfield .fullopt, .formfield .fulltextcont {
     flex: 1 1 auto;
 }
 .formfield .fixedtext, .formfield .fixedopt {
@@ -179,7 +201,7 @@ header {
 }
 
 
-input, select {
+input, select, .fulltextcont {
     background: var(--vscode-input-background);
     border: 1px solid var(--vscode-panel-border);
     color: var(--vscode-input-foreground);

@@ -4,6 +4,8 @@ class PageExtWizard {
         this._step = 1;
         this._vscode = acquireVsCodeApi();
 
+        this.initNameLenUpdate();
+        
         // Handle messages sent from the extension to the webview
         window.addEventListener('message', event => {
             this.onMessage(event.data);
@@ -156,6 +158,21 @@ class PageExtWizard {
             return false;
         }
         return true;
+    }
+
+    initNameLenUpdate() {
+        this._ctName = document.getElementById('objectname');
+        this._ctNameLen = document.getElementById('objectnamelen');
+        if ((this._ctName) && (this._ctNameLen)) {
+            this.updateNameLen();
+            this._ctName.addEventListener('input', event => {
+                this.updateNameLen();
+            });   
+        }
+    }
+
+    updateNameLen() {
+        this._ctNameLen.innerText = this._ctName.value.length.toString();
     }
 }
 
