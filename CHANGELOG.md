@@ -1,5 +1,11 @@
 # Change Log
 
+## 3.0.20
+ - Issue #290 - Add application areas and captions to page labels
+
+Thank you
+ - gretanorv for reporting issue #290
+
 ## 3.0.19
  - Issue #285 - Show object name length/character count in AL Object File Wizards
  - Issue #286 - "Fix Identifiers and Keywords Case" does not fix ReportFormat and built-in report method casing

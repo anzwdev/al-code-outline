@@ -20,6 +20,7 @@ export class PageControlsCaptionsModifier extends SyntaxModifier {
         parameters.setGroupsCaptions = this._controlTypes.setGroupsCaptions;
         parameters.setPartsCaptions = this._controlTypes.setPartsCaptions;
         parameters.setFieldsCaptions = this._controlTypes.setFieldsCaptions;
+        parameters.setLabelsCaptions = this._controlTypes.setLabelsCaptions;
 
         return parameters;
     }
@@ -31,7 +32,8 @@ export class PageControlsCaptionsModifier extends SyntaxModifier {
             new NameValueQuickPickItem('Page action groups', 'setActionGroupsCaptions', this._controlTypes.setActionGroupsCaptions),
             new NameValueQuickPickItem('Page groups', 'setGroupsCaptions', this._controlTypes.setGroupsCaptions),
             new NameValueQuickPickItem('Page parts', 'setPartsCaptions', this._controlTypes.setPartsCaptions),
-            new NameValueQuickPickItem('Page fields', 'setFieldsCaptions', this._controlTypes.setFieldsCaptions)
+            new NameValueQuickPickItem('Page fields', 'setFieldsCaptions', this._controlTypes.setFieldsCaptions),
+            new NameValueQuickPickItem('Page labels', 'setLabelsCaptions', this._controlTypes.setLabelsCaptions)
         ];
 
         let selectedValues = await vscode.window.showQuickPick(
@@ -54,18 +56,21 @@ export class PageControlsCaptionsModifier extends SyntaxModifier {
         this._controlTypes.setGroupsCaptions = !!vsctx.globalState.get<boolean>("azALDevTools.setPgCap.setGroupsCaptions");
         this._controlTypes.setPartsCaptions = !!vsctx.globalState.get<boolean>("azALDevTools.setPgCap.setPartsCaptions");
         this._controlTypes.setFieldsCaptions = !!vsctx.globalState.get<boolean>("azALDevTools.setPgCap.setFieldsCaptions");
+        this._controlTypes.setLabelsCaptions = !!vsctx.globalState.get<boolean>("azALDevTools.setPgCap.setLabelsCaptions");
         //set defaults
         if ((!this._controlTypes.setActionsCaptions) &&
             (!this._controlTypes.setActionGroupsCaptions) &&
             (!this._controlTypes.setGroupsCaptions) &&
             (!this._controlTypes.setPartsCaptions) &&
-            (!this._controlTypes.setFieldsCaptions)) {
+            (!this._controlTypes.setFieldsCaptions) &&
+            (!this._controlTypes.setLabelsCaptions)) {
 
             this._controlTypes.setActionsCaptions = true;
             this._controlTypes.setActionGroupsCaptions = true;
             this._controlTypes.setGroupsCaptions = true;
             this._controlTypes.setPartsCaptions = false;
             this._controlTypes.setFieldsCaptions = false;
+            this._controlTypes.setLabelsCaptions = false;
         }
     }
 
@@ -76,6 +81,7 @@ export class PageControlsCaptionsModifier extends SyntaxModifier {
         vsctx.globalState.update("azALDevTools.setPgCap.setGroupsCaptions", this._controlTypes.setGroupsCaptions);
         vsctx.globalState.update("azALDevTools.setPgCap.setPartsCaptions", this._controlTypes.setPartsCaptions);
         vsctx.globalState.update("azALDevTools.setPgCap.setFieldsCaptions", this._controlTypes.setFieldsCaptions);
+        vsctx.globalState.update("azALDevTools.setPgCap.setLabelsCaptions", this._controlTypes.setLabelsCaptions);
     }
 
     private clearControlTypes() {
@@ -84,6 +90,7 @@ export class PageControlsCaptionsModifier extends SyntaxModifier {
         this._controlTypes.setGroupsCaptions = false;
         this._controlTypes.setPartsCaptions = false;
         this._controlTypes.setFieldsCaptions = false;
+        this._controlTypes.setLabelsCaptions = false;
     }
 
 }
