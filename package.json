@@ -270,6 +270,16 @@
 				"title": "Convert Object Ids to Names in the Active Project"
 			},
 			{
+				"category": "AZ AL Dev Tools",
+				"command": "azALDevTools.RemoveEditorUnusedVariables",
+				"title": "Remove Unused Variables from the Active Editor"
+			},
+			{
+				"category": "AZ AL Dev Tools",
+				"command": "azALDevTools.RemoveProjectUnusedVariables",
+				"title": "Remove Unused Variables from the Active Project"
+			},
+			{
 				"command": "azALDevTools.alOutlineEnableFollowCursor",
 				"title": "Enable 'Follow Cursor'"
 			},

@@ -3,10 +3,12 @@
 ## 3.0.20
  - Issue #290 - Add application areas and captions to page labels
  - Issue #289 - Add Object Captions to Active Project - exclude API pages
+ - Issue #226 and #287 - new "Remove Unused Variables from the Active Editor" and "Remove Unused Variables from the Active Project" commands
 
 Thank you
  - gretanorv for reporting issue #290
- - fvet for reporting issue #289
+ - fvet for reporting issues #287 and #289
+ - nikolaysotirov for reporting issue #226
 
 ## 3.0.19
  - Issue #285 - Show object name length/character count in AL Object File Wizards
