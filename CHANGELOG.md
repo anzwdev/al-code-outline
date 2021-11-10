@@ -4,6 +4,7 @@
  - Issue #290 - Add application areas and captions to page labels
  - Issue #289 - Add Object Captions to Active Project - exclude API pages
  - Issue #226 and #287 - new "Remove Unused Variables from the Active Editor" and "Remove Unused Variables from the Active Project" commands
+ - Language server recompiled to work with the latest version of AL extension
 
 Thank you
  - gretanorv for reporting issue #290
