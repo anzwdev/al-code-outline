@@ -141,7 +141,8 @@ Extension adds a few commands that allow to automatically modify al code in the 
 * `Fix Identifiers and Keywords Case in the Active Project`: fixes keywords and identifiers case in the current project. It is much slower than `Fix Keywords Case` commands as it needs to compile whole project first to have full information about all symbols.
 * `Convert Object Ids to Names in the Active Editor`: converts object ids to names in the current editor
 * `Convert Object Ids to Names in the Active Project`: converts object ids to names in the current project
-
+* `Remove Unused Variables from the Active Editor`: removes unused variables from the current editor
+* `Remove Unused Variables from the Active Project`: removes unused variables from the current project
 
 Default application area and templates for field and action tooltips can be specified using these VS Code settings: `alOutline.defaultAppArea`, `alOutline.pageActionToolTip` and `alOutline.pageFieldToolTip` 
 

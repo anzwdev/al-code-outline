@@ -16,7 +16,7 @@ export class ALCodeCopFixAA0137 extends ALCodeFix {
 
         fix.command = {
             command: "azALDevTools.removeVariable",
-            title: "Sort Properties",
+            title: "Remove variable",
             arguments: [document, fixRange]
         }
 

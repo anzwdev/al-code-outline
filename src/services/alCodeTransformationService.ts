@@ -13,6 +13,7 @@ import { DevToolsExtensionService } from './devToolsExtensionService';
 import { FixKeywordsCaseModifier } from '../alsyntaxmodifiers/fixKeywordsCaseModifier';
 import { FixIdentifiersCaseModifier } from '../alsyntaxmodifiers/fixIdentifiersCaseModifier';
 import { ConvertObjectIdsToNamesModifier } from '../alsyntaxmodifiers/convertObjectIdsToNamesModifier';
+import { RemoveUnusedVariablesModifier } from '../alsyntaxmodifiers/removeUnusedVariablesModifier';
 
 export class ALCodeTransformationService extends DevToolsExtensionService {
 
@@ -241,6 +242,25 @@ export class ALCodeTransformationService extends DevToolsExtensionService {
             )
         );
 
+        this._context.vscodeExtensionContext.subscriptions.push(
+            vscode.commands.registerCommand(
+                'azALDevTools.RemoveEditorUnusedVariables',
+                () => {
+                    let removeUnusedVariablesModifier: RemoveUnusedVariablesModifier = new RemoveUnusedVariablesModifier(this._context);
+                    removeUnusedVariablesModifier.RunForActiveEditor();
+                }
+            )
+        );
+
+        this._context.vscodeExtensionContext.subscriptions.push(
+            vscode.commands.registerCommand(
+                'azALDevTools.RemoveProjectUnusedVariables',
+                () => {
+                    let removeUnusedVariablesModifier: RemoveUnusedVariablesModifier = new RemoveUnusedVariablesModifier(this._context);
+                    removeUnusedVariablesModifier.RunForWorkspace();
+                }
+            )
+        );
 
     }
 
