@@ -2,7 +2,7 @@
 	"name": "al-code-outline",
 	"displayName": "AZ AL Dev Tools/AL Code Outline",
 	"description": "AZ AL Development Tools: AL code outline, object browser, object creators",
-	"version": "3.0.20",
+	"version": "3.0.21",
 	"publisher": "andrzejzwierzchowski",
 	"engines": {
 		"vscode": "^1.47.0"
@@ -60,7 +60,9 @@
 		"onCommand:azALDevTools.FixEditorIdentifiersCase",
 		"onCommand:azALDevTools.FixProjectIdentifiersCase",	
 		"onCommand:azALDevTools.ConvertEditorObjectIdsToNames",
-		"onCommand:azALDevTools.ConvertProjectObjectIdsToNames",	
+		"onCommand:azALDevTools.ConvertProjectObjectIdsToNames",
+		"onCommand:azALDevTools.AddMissingEditorParentheses",
+		"onCommand:azALDevTools.AddMissingProjectParentheses",
 		"onCommand:azALDevTools.showExtensionLog",
 		"onCustomEditor:azALDevTools.jsonEditor",
 		"onCustomEditor:azALDevTools.appPackageEditor"
@@ -269,6 +271,18 @@
 				"command": "azALDevTools.ConvertProjectObjectIdsToNames",
 				"title": "Convert Object Ids to Names in the Active Project"
 			},
+
+			{
+				"category": "AZ AL Dev Tools",
+				"command": "azALDevTools.AddMissingEditorParentheses",
+				"title": "Add Missing Parentheses to the Active Editor"
+			},
+			{
+				"category": "AZ AL Dev Tools",
+				"command": "azALDevTools.AddMissingProjectParentheses",
+				"title": "Add Missing Parentheses to the Active Project"
+			},
+
 			{
 				"category": "AZ AL Dev Tools",
 				"command": "azALDevTools.RemoveEditorUnusedVariables",
