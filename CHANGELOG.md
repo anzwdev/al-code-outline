@@ -1,5 +1,8 @@
 # Change Log
 
+## 3.0.21
+ - Convert ID to Names fixes
+
 ## 3.0.20
  - Issue #290 - Add application areas and captions to page labels
  - Issue #289 - Add Object Captions to Active Project - exclude API pages
