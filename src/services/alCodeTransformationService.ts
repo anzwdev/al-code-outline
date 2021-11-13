@@ -14,6 +14,7 @@ import { FixKeywordsCaseModifier } from '../alsyntaxmodifiers/fixKeywordsCaseMod
 import { FixIdentifiersCaseModifier } from '../alsyntaxmodifiers/fixIdentifiersCaseModifier';
 import { ConvertObjectIdsToNamesModifier } from '../alsyntaxmodifiers/convertObjectIdsToNamesModifier';
 import { RemoveUnusedVariablesModifier } from '../alsyntaxmodifiers/removeUnusedVariablesModifier';
+import { AddMissingParenthesesModifier } from '../alsyntaxmodifiers/addMissingParenthesesModifier';
 
 export class ALCodeTransformationService extends DevToolsExtensionService {
 
@@ -218,6 +219,26 @@ export class ALCodeTransformationService extends DevToolsExtensionService {
                 () => {
                     let convertIdsToNamesModifier: ConvertObjectIdsToNamesModifier = new ConvertObjectIdsToNamesModifier(this._context);
                     convertIdsToNamesModifier.RunForWorkspace();
+                }
+            )
+        );
+
+        this._context.vscodeExtensionContext.subscriptions.push(
+            vscode.commands.registerCommand(
+                'azALDevTools.AddMissingEditorParentheses',
+                () => {
+                    let addMissingParenthesesModifier: AddMissingParenthesesModifier = new AddMissingParenthesesModifier(this._context);
+                    addMissingParenthesesModifier.RunForActiveEditor();
+                }
+            )
+        );
+
+        this._context.vscodeExtensionContext.subscriptions.push(
+            vscode.commands.registerCommand(
+                'azALDevTools.AddMissingProjectParentheses',
+                () => {
+                    let addMissingParenthesesModifier: AddMissingParenthesesModifier = new AddMissingParenthesesModifier(this._context);
+                    addMissingParenthesesModifier.RunForWorkspace();
                 }
             )
         );
