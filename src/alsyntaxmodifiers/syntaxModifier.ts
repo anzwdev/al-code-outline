@@ -31,17 +31,29 @@ export class SyntaxModifier {
         if (!workspaceUri)
             return;
 
-        let request: ToolsWorkspaceCommandRequest = new ToolsWorkspaceCommandRequest(this._commandName, '', workspaceUri.fsPath, undefined, this.getParameters(workspaceUri));       
+        let request: ToolsWorkspaceCommandRequest = new ToolsWorkspaceCommandRequest(this._commandName, '', workspaceUri.fsPath, undefined, undefined, this.getParameters(workspaceUri));       
         let response = await this.runWorkspaceCommand(request);
 
         if (response) {
-            if ((response.error) && (response.errorMessage))
-                vscode.window.showErrorMessage(response.errorMessage);
-            else
-                vscode.window.showInformationMessage(
-                    NumberHelper.zeroIfNotDef(response.parameters.noOfChangedFiles).toString() +
-                    ' file(s) modified.');
+            if ((response.error) && (response.errorMessage)) {
+                let errorMessage = response.errorMessage;
+                if (response.parameters)
+                errorMessage = NumberHelper.zeroIfNotDef(response.parameters.noOfChangedFiles).toString() + " file(s) modified. " + errorMessage;
+                vscode.window.showErrorMessage(errorMessage);
+            } else
+                this.showWorkspaceSuccessMessage(response);
         }
+    }
+
+    protected showWorkspaceSuccessMessage(response: ToolsWorkspaceCommandResponse) {
+        vscode.window.showInformationMessage(
+            NumberHelper.zeroIfNotDef(response.parameters.noOfChangedFiles).toString() +
+            ' file(s) modified.');
+    }
+
+    protected showDocumentSuccessMessage(response: ToolsWorkspaceCommandResponse) {
+        vscode.window.showInformationMessage(
+            'Command completed.');
     }
 
     protected async confirmRunForWorkspace(): Promise<boolean> {
@@ -63,9 +75,7 @@ export class SyntaxModifier {
     }
 
     protected getParameters(uri: vscode.Uri): any {
-        return {
-            sourceFilePath: uri.fsPath
-        };
+        return {};
     }
 
     async RunForActiveEditor() {
@@ -86,8 +96,11 @@ export class SyntaxModifier {
         let workspacePath = '';
         if (workspaceUri)
             workspacePath = workspaceUri.fsPath;                
+        let filePath: string | undefined = undefined;
+        if (document.uri)
+            filePath = document.uri.fsPath;
 
-        let request: ToolsWorkspaceCommandRequest = new ToolsWorkspaceCommandRequest(this._commandName, text, workspacePath, range, this.getParameters(document.uri));
+        let request: ToolsWorkspaceCommandRequest = new ToolsWorkspaceCommandRequest(this._commandName, text, workspacePath, filePath, range, this.getParameters(document.uri));
         let response = await this.runWorkspaceCommand(request);
         if (response) {
             if ((response.error) && (response.errorMessage)) {
@@ -105,8 +118,7 @@ export class SyntaxModifier {
                 edit.replace(document.uri, textRange, text);
                 await vscode.workspace.applyEdit(edit);
                 if (withUI)
-                    vscode.window.showInformationMessage(
-                        'Command completed.');
+                    this.showDocumentSuccessMessage(response);
             } else if (withUI)
                 vscode.window.showInformationMessage('There was nothing to change.');
         }

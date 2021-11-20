@@ -68,7 +68,7 @@ export class ALCodeTransformationService extends DevToolsExtensionService {
                 'azALDevTools.AddEditorApplicationAreas',
                 () => {
                     let appAreasModifier: AppAreasModifier = new AppAreasModifier(this._context);
-                    appAreasModifier.AddMissingAppAreaToActiveEditor(undefined);
+                    appAreasModifier.RunForActiveEditor();
                 }
             )
         );
@@ -78,7 +78,7 @@ export class ALCodeTransformationService extends DevToolsExtensionService {
                 'azALDevTools.AddProjectApplicationAreas',
                 () => {
                     let appAreasModifier: AppAreasModifier = new AppAreasModifier(this._context);
-                    appAreasModifier.AddMissinAppAreaToWorkspace(undefined);
+                    appAreasModifier.RunForWorkspace();
                 }
             )
         );
@@ -88,7 +88,7 @@ export class ALCodeTransformationService extends DevToolsExtensionService {
                 'azALDevTools.AddEditorToolTip',
                 () => {
                     let toolTipModifier: ToolTipModifier = new ToolTipModifier(this._context);
-                    toolTipModifier.AddMissingToolTipToActiveEditor(undefined);
+                    toolTipModifier.RunForActiveEditor();
                 }
             )
         );
@@ -98,7 +98,7 @@ export class ALCodeTransformationService extends DevToolsExtensionService {
                 'azALDevTools.AddProjectToolTip',
                 () => {
                     let toolTipModifier: ToolTipModifier = new ToolTipModifier(this._context);
-                    toolTipModifier.AddMissinToolTipToWorkspace(undefined);
+                    toolTipModifier.RunForWorkspace();
                 }
             )
         );
@@ -248,7 +248,7 @@ export class ALCodeTransformationService extends DevToolsExtensionService {
                 'azALDevTools.AddEditorDataClassification',
                 () => {
                     let modifier: DataClassificationModifier = new DataClassificationModifier(this._context);
-                    modifier.AddMissingDataClassificationToActiveEditor();
+                    modifier.RunForActiveEditor();
                 }
             )
         );
@@ -258,7 +258,7 @@ export class ALCodeTransformationService extends DevToolsExtensionService {
                 'azALDevTools.AddProjectDataClassification',
                 () => {
                     let modifier: DataClassificationModifier = new DataClassificationModifier(this._context);
-                    modifier.AddMissinDataClassificationToWorkspace();
+                    modifier.RunForWorkspace();
                 }
             )
         );
