@@ -1,5 +1,11 @@
 # Change Log
 
+## 3.0.22
+ - Issue #294 - Error adding Parentheses to Active Project - include processed file name in the error log
+
+Thank you
+ - GreatScott000 for reporting issue #294
+
 ## 3.0.21
  - Convert ID to Names fixes
  - new "Add Missing Parentheses to the Active Editor" and "Add Missing Parentheses to the Active Project" commands
