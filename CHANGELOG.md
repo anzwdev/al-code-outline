@@ -1,5 +1,12 @@
 # Change Log
 
+## 3.0.23
+ - Issue #294 - Error adding Parentheses to Active Project - issue fix
+ - Issue #298 - Parenthesis added when not required, causes compile error
+
+Thank you
+ - GreatScott000 for reporting and helping investigate issues #294 and #298
+
 ## 3.0.22
  - Issue #294 - Error adding Parentheses to Active Project - include processed file name in the error log
 
