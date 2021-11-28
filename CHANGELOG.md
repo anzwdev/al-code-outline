@@ -1,5 +1,11 @@
 # Change Log
 
+## 3.0.24
+ - Issue #296 - Codeunit Wizard does not copy temporary flags
+
+Thank you
+ - cosmolange for reporting issue #296
+
 ## 3.0.23
  - Issue #294 - Error adding Parentheses to Active Project - issue fix
  - Issue #298 - Parenthesis added when not required, causes compile error

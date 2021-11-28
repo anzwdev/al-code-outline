@@ -68,6 +68,8 @@ import { ToolsGetObjectsListResponse } from './symbolsinformation/toolsGetObject
 import { ToolsGetPermissionSetsListResponse } from './symbolsinformation/toolsGetPermissionSetsListResponse';
 import { ToolsGetReportDetailsRequest } from './symbolsinformation/toolsGetReportDetailsRequest';
 import { ToolsGetReportDetailsResponse } from './symbolsinformation/toolsGetReportDetailsResponse';
+import { toolsGetInterfaceMethodsListRequest } from './symbolsinformation/toolsGetInterfaceMethodsListRequest';
+import { ToolsGetInterfaceMethodsListResponse } from './symbolsinformation/toolsGetInterfaceMethodsListResponse';
 
 export class ToolsLangServerClient implements vscode.Disposable {
     _context : vscode.ExtensionContext;
@@ -322,6 +324,10 @@ export class ToolsLangServerClient implements vscode.Disposable {
     public getInterfacesList(params: ToolsSymbolInformationRequest) : Promise<ToolsGetInterfacesListResponse | undefined> {
         return this.sendRequest<ToolsSymbolInformationRequest, ToolsGetInterfacesListResponse>(params, 'al/getinterfaceslist');
     }
+
+    public getInterfaceMethodsList(params: toolsGetInterfaceMethodsListRequest) : Promise<ToolsGetInterfaceMethodsListResponse | undefined> {
+        return this.sendRequest<toolsGetInterfaceMethodsListRequest, ToolsGetInterfaceMethodsListResponse>(params, 'al/getinterfacemethodslist');
+    }   
 
     public getPagesList(params: ToolsSymbolInformationRequest) : Promise<ToolsGetPagesListResponse | undefined> {
         return this.sendRequest<ToolsSymbolInformationRequest, ToolsGetPagesListResponse>(params, 'al/getpageslist');
