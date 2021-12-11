@@ -45,6 +45,7 @@ export class ALPermissionSetWizardPage extends ProjectItemWizardPage {
         //build parameters
         this._permissionSetWizardData.objectId = data.objectId;
         this._permissionSetWizardData.objectName = data.objectName;
+        this._permissionSetWizardData.objectCaption = data.objectCaption;
         this._permissionSetWizardData.inclAllObjects = data.inclAllObjects;
         this._permissionSetWizardData.selectedPermissionSetList = data.selectedPermissionSetList;
     

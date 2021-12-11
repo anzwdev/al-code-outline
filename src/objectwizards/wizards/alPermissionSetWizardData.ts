@@ -4,6 +4,7 @@ import { ObjectInformation } from "../../symbolsinformation/objectInformation";
 export class ALPermissionSetWizardData {
     objectId : string;
     objectName: string;
+    objectCaption: string;
     inclAllObjects: boolean;
 
     projectSettings: ToolsGetProjectSettingsResponse | undefined;
@@ -14,6 +15,7 @@ export class ALPermissionSetWizardData {
     constructor() {
         this.objectId = '';
         this.objectName = '';
+        this.objectCaption = '';
         this.inclAllObjects = true;
         this.projectSettings = undefined;
         this.permissionSetList = undefined;

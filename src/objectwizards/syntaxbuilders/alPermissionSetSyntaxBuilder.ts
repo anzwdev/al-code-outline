@@ -11,7 +11,11 @@ export class ALPermissionSetSyntaxBuilder {
 
         writer.writeStartObject("permissionset", data.objectId, data.objectName);
         writer.addProperty("Assignable", "true");
-        writer.addProperty("Caption", writer.encodeString(ALSyntaxHelper.removePrefixSuffix(data.objectName, data.projectSettings)));
+
+        if ((data.objectCaption) && (data.objectCaption.length > 0))
+            writer.addProperty("Caption", writer.encodeString(data.objectCaption));
+        else
+            writer.addProperty("Caption", writer.encodeString(ALSyntaxHelper.removePrefixSuffix(data.objectName, data.projectSettings)));
         writer.writeProperties();
         
         this.writeIncludePermissionSetList(writer, data.selectedPermissionSetList);

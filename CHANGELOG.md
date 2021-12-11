@@ -1,6 +1,9 @@
 # Change Log
 
 ## 3.0.24
+  - Issue 301 - PermissionSet wizard - PermissionSet name length cannot be longer than 20 characters
+  
+## 3.0.24
  - Issue #293 - Sorting code-actions as commands for current file and active project
  - Issue #296 - Codeunit Wizard does not copy temporary flags
  - Sort variables crash during variable names list sorting
