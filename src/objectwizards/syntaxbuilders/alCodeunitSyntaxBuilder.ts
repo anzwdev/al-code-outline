@@ -2,6 +2,8 @@ import * as vscode from 'vscode';
 import { ALCodeunitWizardData } from "../wizards/alCodeunitWizardData";
 import { ALSyntaxWriter } from "../../allanguage/alSyntaxWriter";
 import { DevToolsExtensionContext } from "../../devToolsExtensionContext";
+import { ToolsGetInterfaceMethodsListResponse } from '../../langserver/symbolsinformation/toolsGetInterfaceMethodsListResponse';
+import { toolsGetInterfaceMethodsListRequest } from '../../langserver/symbolsinformation/toolsGetInterfaceMethodsListRequest';
 
 export class ALCodeunitSyntaxBuilder {
     protected _toolsExtensionContext : DevToolsExtensionContext;
@@ -30,15 +32,16 @@ export class ALCodeunitSyntaxBuilder {
         writer.writeLine("");
 
         if ((data.interfaceName) && (data.interfaceName != '')) {
-            let methodHeaders: string[] | undefined = await this._toolsExtensionContext.alLangProxy.getObjectMethods(destUri,
-                'Interface', data.interfaceName);
-
-            if ((methodHeaders) && (methodHeaders.length > 0)) {
-                for (let i=0; i<methodHeaders.length; i++) {
-                    writer.writeLine(methodHeaders[i].replace(/,/g, ";"));
-                    writer.writeLine("begin");
-                    writer.writeLine("end;");
-                    writer.writeLine("");
+            let methodsResponse = await this._toolsExtensionContext.toolsLangServerClient.getInterfaceMethodsList(
+                new toolsGetInterfaceMethodsListRequest(destUri?.fsPath, data.interfaceName));
+             if ((methodsResponse) && (methodsResponse.symbols) && (methodsResponse.symbols.length > 0)) {
+                for (let i=0; i<methodsResponse.symbols.length; i++) {
+                    if (methodsResponse.symbols[i].header) {
+                        writer.writeLine(methodsResponse.symbols[i].header!);
+                        writer.writeLine("begin");
+                        writer.writeLine("end;");
+                        writer.writeLine("");
+                    }
                 }        
             }
         }

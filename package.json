@@ -2,7 +2,7 @@
 	"name": "al-code-outline",
 	"displayName": "AZ AL Dev Tools/AL Code Outline",
 	"description": "AZ AL Development Tools: AL code outline, object browser, object creators",
-	"version": "3.0.23",
+	"version": "3.0.24",
 	"publisher": "andrzejzwierzchowski",
 	"engines": {
 		"vscode": "^1.47.0"
@@ -63,6 +63,22 @@
 		"onCommand:azALDevTools.ConvertProjectObjectIdsToNames",
 		"onCommand:azALDevTools.AddMissingEditorParentheses",
 		"onCommand:azALDevTools.AddMissingProjectParentheses",
+
+		"onCommand:azALDevTools.SortEditorPermissions", 
+		"onCommand:azALDevTools.SortWorkspacePermissions",
+		"onCommand:azALDevTools.SortEditorPermissionSetList", 
+		"onCommand:azALDevTools.SortWorkspacePermissionSetList",
+		"onCommand:azALDevTools.SortEditorProcedures", 
+		"onCommand:azALDevTools.SortWorkspaceProcedures",
+		"onCommand:azALDevTools.SortEditorProperties", 
+		"onCommand:azALDevTools.SortWorkspaceProperties",
+		"onCommand:azALDevTools.SortEditorReportColumns",
+		"onCommand:azALDevTools.SortWorkspaceReportColumns",
+		"onCommand:azALDevTools.SortEditorTableFields", 
+		"onCommand:azALDevTools.SortWorkspaceTableFields",
+		"onCommand:azALDevTools.SortEditorVariables", 
+		"onCommand:azALDevTools.SortWorkspaceVariables",
+
 		"onCommand:azALDevTools.showExtensionLog",
 		"onCustomEditor:azALDevTools.jsonEditor",
 		"onCustomEditor:azALDevTools.appPackageEditor"
@@ -271,7 +287,6 @@
 				"command": "azALDevTools.ConvertProjectObjectIdsToNames",
 				"title": "Convert Object Ids to Names in the Active Project"
 			},
-
 			{
 				"category": "AZ AL Dev Tools",
 				"command": "azALDevTools.AddMissingEditorParentheses",
@@ -282,7 +297,6 @@
 				"command": "azALDevTools.AddMissingProjectParentheses",
 				"title": "Add Missing Parentheses to the Active Project"
 			},
-
 			{
 				"category": "AZ AL Dev Tools",
 				"command": "azALDevTools.RemoveEditorUnusedVariables",
@@ -293,6 +307,80 @@
 				"command": "azALDevTools.RemoveProjectUnusedVariables",
 				"title": "Remove Unused Variables from the Active Project"
 			},
+
+			{
+				"category": "AZ AL Dev Tools",
+				"command": "azALDevTools.SortEditorPermissions", 
+				"title": "Sort Permissions in the Active Editor"
+			},
+			{
+				"category": "AZ AL Dev Tools",
+				"command": "azALDevTools.SortWorkspacePermissions",
+				"title": "Sort Permissions in the Active Project"
+			},
+
+			{
+				"category": "AZ AL Dev Tools",
+				"command": "azALDevTools.SortEditorPermissionSetList", 
+				"title": "Sort Included PermissionSets in the Active Editor"
+			},
+			{
+				"category": "AZ AL Dev Tools",
+				"command": "azALDevTools.SortWorkspacePermissionSetList",
+				"title": "Sort Included PermissionSets in the Active Project"
+			},
+
+			{
+				"category": "AZ AL Dev Tools",
+				"command": "azALDevTools.SortEditorProcedures", 
+				"title": "Sort Procedures in the Active Editor"
+			},
+			{
+				"category": "AZ AL Dev Tools",
+				"command": "azALDevTools.SortWorkspaceProcedures",
+				"title": "Sort Procedures in the Active Project"
+			},
+			{
+				"category": "AZ AL Dev Tools",
+				"command": "azALDevTools.SortEditorProperties", 
+				"title": "Sort Properties in the Active Editor"
+			},
+			{
+				"category": "AZ AL Dev Tools",
+				"command": "azALDevTools.SortWorkspaceProperties",
+				"title": "Sort Properties in the Active Project"
+			},
+			{
+				"category": "AZ AL Dev Tools",
+				"command": "azALDevTools.SortEditorReportColumns",
+				"title": "Sort Report Columns in the Active Editor"
+			},
+			{
+				"category": "AZ AL Dev Tools",
+				"command": "azALDevTools.SortWorkspaceReportColumns",
+				"title": "Sort Report Columns in the Active Project"
+			},
+			{
+				"category": "AZ AL Dev Tools",
+				"command": "azALDevTools.SortEditorTableFields", 
+				"title": "Sort Table Fields in the Active Editor"
+			},
+			{
+				"category": "AZ AL Dev Tools",
+				"command": "azALDevTools.SortWorkspaceTableFields",
+				"title": "Sort Table Fields in the Active Project"
+			},
+			{
+				"category": "AZ AL Dev Tools",
+				"command": "azALDevTools.SortEditorVariables",
+				"title": "Sort Variables in the Active Editor"
+			},
+			{
+				"category": "AZ AL Dev Tools",
+				"command": "azALDevTools.SortWorkspaceVariables",
+				"title": "Sort Variables in the Active Project"
+			},
+
 			{
 				"command": "azALDevTools.alOutlineEnableFollowCursor",
 				"title": "Enable 'Follow Cursor'"

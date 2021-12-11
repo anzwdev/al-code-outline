@@ -143,6 +143,20 @@ Extension adds a few commands that allow to automatically modify al code in the 
 * `Convert Object Ids to Names in the Active Project`: converts object ids to names in the current project
 * `Remove Unused Variables from the Active Editor`: removes unused variables from the current editor
 * `Remove Unused Variables from the Active Project`: removes unused variables from the current project
+* `Sort Permissions in the Active Editor`: sorts permissions in the current editor
+* `Sort Permissions in the Active Project`: sorts permissions in the current project
+* `Sort Procedures in the Active Editor`: sorts procedures in the current editor
+* `Sort Procedures in the Active Project`: sorts procedures in the current project
+* `Sort Properties in the Active Editor`: sorts properties in the current editor
+* `Sort Properties in the Active Project`: sorts procedures in the current project
+* `Sort Report Columns in the Active Editor`: sorts report columns in the current editor
+* `Sort Report Columns in the Active Project`: sorts report columns in the current project
+* `Sort Table Fields in the Active Editor`: sorts table fields in the current editor
+* `Sort Table Fields in the Active Project`: sorts report columns in the current project
+* `Sort Variables in the Active Editor`: sorts variables in the current editor
+* `Sort Variables in the Active Project`: sorts variables in the current project
+* `Sort Included PermissionSets in the Active Editor`: sorts permission sets in IncludedPermissionSets property in the current editor
+* `Sort Included PermissionSets in the Active Project`: sorts permission sets in IncludedPermissionSets property in the current project
 
 Default application area and templates for field and action tooltips can be specified using these VS Code settings: `alOutline.defaultAppArea`, `alOutline.pageActionToolTip` and `alOutline.pageFieldToolTip` 
 

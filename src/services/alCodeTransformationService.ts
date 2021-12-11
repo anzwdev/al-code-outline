@@ -15,12 +15,20 @@ import { FixIdentifiersCaseModifier } from '../alsyntaxmodifiers/fixIdentifiersC
 import { ConvertObjectIdsToNamesModifier } from '../alsyntaxmodifiers/convertObjectIdsToNamesModifier';
 import { RemoveUnusedVariablesModifier } from '../alsyntaxmodifiers/removeUnusedVariablesModifier';
 import { AddMissingParenthesesModifier } from '../alsyntaxmodifiers/addMissingParenthesesModifier';
+import { SortProceduresModifier } from '../alsyntaxmodifiers/sortProceduresModifier';
+import { SortPermissionsModifier } from '../alsyntaxmodifiers/sortPermissionsModifier';
+import { SortPropertiesModifier } from '../alsyntaxmodifiers/sortPropertiesModifier';
+import { SortReportColumnsModifier } from '../alsyntaxmodifiers/sortReportColumnsModifier';
+import { SortTableFieldsModifier } from '../alsyntaxmodifiers/sortTableFieldsModifier';
+import { SortVariablesModifier } from '../alsyntaxmodifiers/sortVariablesModifier';
+import { SortPermissionSetListModifier } from '../alsyntaxmodifiers/sortPermissionSetListModifier';
 
 export class ALCodeTransformationService extends DevToolsExtensionService {
 
     constructor(context: DevToolsExtensionContext) {
         super(context);
 
+        //document range commands
         this.registerDocumentRangeCommand('azALDevTools.sortVariables', 'sortVariables');
         this.registerDocumentRangeCommand('azALDevTools.sortProcedures', 'sortProcedures');
         this.registerDocumentRangeCommand('azALDevTools.sortProperties', 'sortProperties');
@@ -28,11 +36,10 @@ export class ALCodeTransformationService extends DevToolsExtensionService {
         this.registerDocumentRangeCommand('azALDevTools.sortTableFields', 'sortTableFields');
         this.registerDocumentRangeCommand('azALDevTools.sortPermissions', 'sortPermissions');
         this.registerDocumentRangeCommand('azALDevTools.sortPermissionSetList', 'sortPermissionSetList');
-
         this.registerDocumentRangeCommand('azALDevTools.addAllObjectsPermissions', 'addAllObjectsPermissions');
-
         this.registerDocumentRangeCommand('azALDevTools.removeVariable', 'removeVariable');
 
+        //onsave command
         this._context.vscodeExtensionContext.subscriptions.push(
             vscode.commands.registerCommand(
                 'azALDevTools.fixDocumentOnSave',
@@ -43,6 +50,7 @@ export class ALCodeTransformationService extends DevToolsExtensionService {
             )
         );
 
+        //editor and worspace commands
         this._context.vscodeExtensionContext.subscriptions.push(
             vscode.commands.registerCommand(
                 'azALDevTools.RemoveEditorWithStatements',
@@ -282,16 +290,40 @@ export class ALCodeTransformationService extends DevToolsExtensionService {
                 }
             )
         );
-
+        
+        this.registerModifierCommands('azALDevTools.SortEditorPermissions', 'azALDevTools.SortWorkspacePermissions', () => new SortPermissionsModifier(this._context));
+        this.registerModifierCommands('azALDevTools.SortEditorPermissionSetList', 'azALDevTools.SortWorkspacePermissionSetList', () => new SortPermissionSetListModifier(this._context));
+        this.registerModifierCommands('azALDevTools.SortEditorProcedures', 'azALDevTools.SortWorkspaceProcedures', () => new SortProceduresModifier(this._context));
+        this.registerModifierCommands('azALDevTools.SortEditorProperties', 'azALDevTools.SortWorkspaceProperties', () => new SortPropertiesModifier(this._context));
+        this.registerModifierCommands('azALDevTools.SortEditorReportColumns', 'azALDevTools.SortWorkspaceReportColumns', () => new SortReportColumnsModifier(this._context));
+        this.registerModifierCommands('azALDevTools.SortEditorTableFields', 'azALDevTools.SortWorkspaceTableFields', () => new SortTableFieldsModifier(this._context));
+        this.registerModifierCommands('azALDevTools.SortEditorVariables', 'azALDevTools.SortWorkspaceVariables', () => new SortVariablesModifier(this._context));
     }
 
-    protected registerDocumentCommand(name: string, modifierFactory: () => SyntaxModifier) {
+    protected registerModifierCommands(editorCmdName: string, workspaceCmdName: string, modifierFactory: () => SyntaxModifier) {
+        this.registerEditorCommand(editorCmdName, modifierFactory);
+        this.registerWorkspaceCommand(workspaceCmdName, modifierFactory);
+    }
+
+    protected registerEditorCommand(name: string, modifierFactory: () => SyntaxModifier) {
         this._context.vscodeExtensionContext.subscriptions.push(
             vscode.commands.registerCommand(
                 name,
                 async (document) => {
                     let cmd = modifierFactory();
-                    await cmd.RunForDocument(document, undefined, false);
+                    await cmd.RunForActiveEditor();
+                }
+            )
+        );
+    }
+
+    protected registerWorkspaceCommand(name: string, modifierFactory: () => SyntaxModifier) {
+        this._context.vscodeExtensionContext.subscriptions.push(
+            vscode.commands.registerCommand(
+                name,
+                async (document) => {
+                    let cmd = modifierFactory();
+                    await cmd.RunForWorkspace();
                 }
             )
         );
