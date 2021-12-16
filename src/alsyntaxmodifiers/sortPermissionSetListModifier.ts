@@ -1,12 +1,10 @@
 import { DevToolsExtensionContext } from "../devToolsExtensionContext";
-import { SyntaxModifier } from "./syntaxModifier";
+import { WorkspaceCommandSyntaxModifier } from "./workspaceCommandSyntaxModifier";
 
-export class SortPermissionSetListModifier extends SyntaxModifier {
+export class SortPermissionSetListModifier extends WorkspaceCommandSyntaxModifier {
 
     constructor(context: DevToolsExtensionContext) {
-        super(context, "sortPermissionSetList");
-        this._showProgress = true;
-        this._progressMessage = "Processing project files. Please wait...";
+        super(context, "Sort PermissionSet List", "sortPermissionSetList");
     }
 
 }

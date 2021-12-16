@@ -78,6 +78,9 @@
 		"onCommand:azALDevTools.SortWorkspaceTableFields",
 		"onCommand:azALDevTools.SortEditorVariables", 
 		"onCommand:azALDevTools.SortWorkspaceVariables",
+		
+		"onCommand:azALDevTools.RunEditorCodeCleanup",
+		"onCommand:azALDevTools.RunWorkspaceCodeCleanup",
 
 		"onCommand:azALDevTools.showExtensionLog",
 		"onCustomEditor:azALDevTools.jsonEditor",
@@ -382,6 +385,17 @@
 			},
 
 			{
+				"category": "AZ AL Dev Tools",
+				"command": "azALDevTools.RunEditorCodeCleanup",
+				"title": "Run Code Cleanup on the Active Editor"
+			},
+			{
+				"category": "AZ AL Dev Tools",
+				"command": "azALDevTools.RunWorkspaceCodeCleanup",
+				"title": "Run Code Cleanup on the Active Project"
+			},
+
+			{
 				"command": "azALDevTools.alOutlineEnableFollowCursor",
 				"title": "Enable 'Follow Cursor'"
 			},
@@ -626,6 +640,54 @@
 						"uniqueItems": true,
 						"description": "Specifies which code-actions should be applied when a file is saved. Valid values are SortReportColumns, SortProcedures, SortProperties, SortVariables, SortPermissions and SortPermissionSetList",
 						"scope": "resource"
+					},
+					"alOutline.codeCleanupActions": {
+						"type": "array",
+						"items": {
+							"type": "string",
+							"enum": [
+								"RemoveWithStatements",
+								"AddApplicationAreas",
+								"AddToolTips",
+								"AddTableFieldCaptions",
+								"AddPageFieldCaptions",
+								"AddObjectCaptions",
+								"FixKeywordsCase",
+								"FixIdentifiersCase",
+								"ConvertObjectIdsToNames",
+								"AddMissingParentheses",
+								"AddDataClassifications",
+								"RemoveUnusedVariables",
+								"SortPermissions",
+								"SortPermissionSetList",
+								"SortProcedures",
+								"SortProperties",
+								"SortReportColumns",
+								"SortTableFields",
+								"SortVariables"
+							],
+							"enumDescriptions": [
+								"Remove With Statements",
+								"Add Application Areas",
+								"Add ToolTips",
+								"Add Table Field Captions",
+								"Add Page Field Captions",
+								"Add Object Captions",
+								"Fix Keywords Case",
+								"Fix Identifiers Case",
+								"Convert Object Ids to Names",
+								"Add Missing Parentheses",
+								"Add DataClassifications",
+								"Remove Unused Variables",
+								"Sort Permissions",
+								"Sort PermissionSet List",
+								"Sort Procedures",
+								"Sort Properties",
+								"Sort Report Columns",
+								"Sort Table Fields",
+								"Sort Variables"
+							]
+						}
 					},
 					"alOutline.codeActionsOnSaveIgnoreFiles": {
 						"type": "array",

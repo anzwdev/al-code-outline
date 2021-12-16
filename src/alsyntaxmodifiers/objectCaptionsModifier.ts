@@ -1,12 +1,10 @@
 import { DevToolsExtensionContext } from "../devToolsExtensionContext";
-import { SyntaxModifier } from "./syntaxModifier";
+import { WorkspaceCommandSyntaxModifier } from "./workspaceCommandSyntaxModifier";
 
-export class ObjectCaptionsModifier extends SyntaxModifier {
+export class ObjectCaptionsModifier extends WorkspaceCommandSyntaxModifier {
     
     constructor(context: DevToolsExtensionContext) {
-        super(context, "addObjectCaptions");
-        this._showProgress = true;
-        this._progressMessage = "Processing project files. Please wait...";
+        super(context, "Add Object Captions", "addObjectCaptions");
     }
 
 }

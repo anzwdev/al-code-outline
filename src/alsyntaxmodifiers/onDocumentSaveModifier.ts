@@ -1,13 +1,14 @@
 import * as vscode from 'vscode';
 import { DevToolsExtensionContext } from "../devToolsExtensionContext";
 import { TextRange } from '../symbollibraries/textRange';
-import { SyntaxModifier } from "./syntaxModifier";
+import { WorkspaceCommandSyntaxModifier } from './workspaceCommandSyntaxModifier';
 
-export class OnDocumentSaveModifier extends SyntaxModifier {
+export class OnDocumentSaveModifier extends WorkspaceCommandSyntaxModifier {
     protected _commandsList: string | undefined;
 
     constructor(context: DevToolsExtensionContext) {
-        super(context, "runMultiple");
+        super(context, "Run Multiple Commands", "runMultiple");
+        this._showProgress = false;
         this._context = context;
         this._commandsList = undefined;
     }

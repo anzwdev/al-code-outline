@@ -22,11 +22,17 @@ import { SortReportColumnsModifier } from '../alsyntaxmodifiers/sortReportColumn
 import { SortTableFieldsModifier } from '../alsyntaxmodifiers/sortTableFieldsModifier';
 import { SortVariablesModifier } from '../alsyntaxmodifiers/sortVariablesModifier';
 import { SortPermissionSetListModifier } from '../alsyntaxmodifiers/sortPermissionSetListModifier';
+import { ISyntaxModifierFactoriesCollection } from '../alsyntaxmodifiers/iSyntaxModifierFactoriesCollection';
+import { BatchSyntaxModifier } from '../alsyntaxmodifiers/batchSyntaxModifier';
+import { WorkspaceCommandSyntaxModifier } from '../alsyntaxmodifiers/workspaceCommandSyntaxModifier';
 
 export class ALCodeTransformationService extends DevToolsExtensionService {
+    protected _syntaxFactories: ISyntaxModifierFactoriesCollection;
 
     constructor(context: DevToolsExtensionContext) {
         super(context);
+
+        this._syntaxFactories = {};
 
         //document range commands
         this.registerDocumentRangeCommand('azALDevTools.sortVariables', 'sortVariables');
@@ -40,267 +46,36 @@ export class ALCodeTransformationService extends DevToolsExtensionService {
         this.registerDocumentRangeCommand('azALDevTools.removeVariable', 'removeVariable');
 
         //onsave command
-        this._context.vscodeExtensionContext.subscriptions.push(
-            vscode.commands.registerCommand(
-                'azALDevTools.fixDocumentOnSave',
-                async (document) => {
-                    let cmd = new OnDocumentSaveModifier(this._context);
-                    await cmd.RunForDocument(document, undefined, false);
-                }
-            )
-        );
-
-        //editor and worspace commands
-        this._context.vscodeExtensionContext.subscriptions.push(
-            vscode.commands.registerCommand(
-                'azALDevTools.RemoveEditorWithStatements',
-                () => {
-                    let withModifier: WithModifier = new WithModifier(this._context);
-                    withModifier.RunForActiveEditor();
-                }
-            )
-        );
-
-        this._context.vscodeExtensionContext.subscriptions.push(
-            vscode.commands.registerCommand(
-                'azALDevTools.RemoveProjectWithStatements',
-                () => {
-                    let withModifier: WithModifier = new WithModifier(this._context);
-                    withModifier.RunForWorkspace();
-                }
-            )
-        );       
-
-        this._context.vscodeExtensionContext.subscriptions.push(
-            vscode.commands.registerCommand(
-                'azALDevTools.AddEditorApplicationAreas',
-                () => {
-                    let appAreasModifier: AppAreasModifier = new AppAreasModifier(this._context);
-                    appAreasModifier.RunForActiveEditor();
-                }
-            )
-        );
-
-        this._context.vscodeExtensionContext.subscriptions.push(
-            vscode.commands.registerCommand(
-                'azALDevTools.AddProjectApplicationAreas',
-                () => {
-                    let appAreasModifier: AppAreasModifier = new AppAreasModifier(this._context);
-                    appAreasModifier.RunForWorkspace();
-                }
-            )
-        );
-
-        this._context.vscodeExtensionContext.subscriptions.push(
-            vscode.commands.registerCommand(
-                'azALDevTools.AddEditorToolTip',
-                () => {
-                    let toolTipModifier: ToolTipModifier = new ToolTipModifier(this._context);
-                    toolTipModifier.RunForActiveEditor();
-                }
-            )
-        );
-
-        this._context.vscodeExtensionContext.subscriptions.push(
-            vscode.commands.registerCommand(
-                'azALDevTools.AddProjectToolTip',
-                () => {
-                    let toolTipModifier: ToolTipModifier = new ToolTipModifier(this._context);
-                    toolTipModifier.RunForWorkspace();
-                }
-            )
-        );
-
-        this._context.vscodeExtensionContext.subscriptions.push(
-            vscode.commands.registerCommand(
-                'azALDevTools.AddEditorFieldCaption',
-                () => {
-                    let fieldCaptionsModifier: FieldCaptionsModifier = new FieldCaptionsModifier(this._context);
-                    fieldCaptionsModifier.RunForActiveEditor();
-                }
-            )
-        );
-
-        this._context.vscodeExtensionContext.subscriptions.push(
-            vscode.commands.registerCommand(
-                'azALDevTools.AddProjectFieldCaption',
-                () => {
-                    let fieldCaptionsModifier: FieldCaptionsModifier = new FieldCaptionsModifier(this._context);
-                    fieldCaptionsModifier.RunForWorkspace();
-                }
-            )
-        );
-
-        this._context.vscodeExtensionContext.subscriptions.push(
-            vscode.commands.registerCommand(
-                'azALDevTools.AddEditorPageFieldCaption',
-                () => {
-                    let pageFieldCaptionsModifier: PageControlsCaptionsModifier = new PageControlsCaptionsModifier(this._context);
-                    pageFieldCaptionsModifier.RunForActiveEditor();
-                }
-            )
-        );
-
-        this._context.vscodeExtensionContext.subscriptions.push(
-            vscode.commands.registerCommand(
-                'azALDevTools.AddProjectPageFieldCaption',
-                () => {
-                    let pageFieldCaptionsModifier: PageControlsCaptionsModifier = new PageControlsCaptionsModifier(this._context);
-                    pageFieldCaptionsModifier.RunForWorkspace();
-                }
-            )
-        );
-
-        this._context.vscodeExtensionContext.subscriptions.push(
-            vscode.commands.registerCommand(
-                'azALDevTools.AddEditorObjectCaption',
-                () => {
-                    let objectCaptionsModifier: ObjectCaptionsModifier = new ObjectCaptionsModifier(this._context);
-                    objectCaptionsModifier.RunForActiveEditor();
-                }
-            )
-        );
-
-        this._context.vscodeExtensionContext.subscriptions.push(
-            vscode.commands.registerCommand(
-                'azALDevTools.AddProjectObjectCaption',
-                () => {
-                    let objectCaptionsModifier: ObjectCaptionsModifier = new ObjectCaptionsModifier(this._context);
-                    objectCaptionsModifier.RunForWorkspace();
-                }
-            )
-        );
-
-        this._context.vscodeExtensionContext.subscriptions.push(
-            vscode.commands.registerCommand(
-                'azALDevTools.FixEditorKeywordsCase',
-                () => {
-                    let fixKeywordsCaseModifier: FixKeywordsCaseModifier = new FixKeywordsCaseModifier(this._context);
-                    fixKeywordsCaseModifier.RunForActiveEditor();
-                }
-            )
-        );
-
-        this._context.vscodeExtensionContext.subscriptions.push(
-            vscode.commands.registerCommand(
-                'azALDevTools.FixProjectKeywordsCase',
-                () => {
-                    let fixKeywordsCaseModifier: FixKeywordsCaseModifier = new FixKeywordsCaseModifier(this._context);
-                    fixKeywordsCaseModifier.RunForWorkspace();
-                }
-            )
-        );
-
-        this._context.vscodeExtensionContext.subscriptions.push(
-            vscode.commands.registerCommand(
-                'azALDevTools.FixEditorIdentifiersCase',
-                () => {
-                    let fixIdentifiersCaseModifier: FixIdentifiersCaseModifier = new FixIdentifiersCaseModifier(this._context);
-                    fixIdentifiersCaseModifier.RunForActiveEditor();
-                }
-            )
-        );
-
-        this._context.vscodeExtensionContext.subscriptions.push(
-            vscode.commands.registerCommand(
-                'azALDevTools.FixProjectIdentifiersCase',
-                () => {
-                    let fixIdentifiersCaseModifier: FixIdentifiersCaseModifier = new FixIdentifiersCaseModifier(this._context);
-                    fixIdentifiersCaseModifier.RunForWorkspace();
-                }
-            )
-        );
-
-        this._context.vscodeExtensionContext.subscriptions.push(
-            vscode.commands.registerCommand(
-                'azALDevTools.ConvertEditorObjectIdsToNames',
-                () => {
-                    let convertIdsToNamesModifier: ConvertObjectIdsToNamesModifier = new ConvertObjectIdsToNamesModifier(this._context);
-                    convertIdsToNamesModifier.RunForActiveEditor();
-                }
-            )
-        );
-
-        this._context.vscodeExtensionContext.subscriptions.push(
-            vscode.commands.registerCommand(
-                'azALDevTools.ConvertProjectObjectIdsToNames',
-                () => {
-                    let convertIdsToNamesModifier: ConvertObjectIdsToNamesModifier = new ConvertObjectIdsToNamesModifier(this._context);
-                    convertIdsToNamesModifier.RunForWorkspace();
-                }
-            )
-        );
-
-        this._context.vscodeExtensionContext.subscriptions.push(
-            vscode.commands.registerCommand(
-                'azALDevTools.AddMissingEditorParentheses',
-                () => {
-                    let addMissingParenthesesModifier: AddMissingParenthesesModifier = new AddMissingParenthesesModifier(this._context);
-                    addMissingParenthesesModifier.RunForActiveEditor();
-                }
-            )
-        );
-
-        this._context.vscodeExtensionContext.subscriptions.push(
-            vscode.commands.registerCommand(
-                'azALDevTools.AddMissingProjectParentheses',
-                () => {
-                    let addMissingParenthesesModifier: AddMissingParenthesesModifier = new AddMissingParenthesesModifier(this._context);
-                    addMissingParenthesesModifier.RunForWorkspace();
-                }
-            )
-        );
+        this.registerDocumentCommand('azALDevTools.fixDocumentOnSave', () => new OnDocumentSaveModifier(this._context));
         
-        this._context.vscodeExtensionContext.subscriptions.push(
-            vscode.commands.registerCommand(
-                'azALDevTools.AddEditorDataClassification',
-                () => {
-                    let modifier: DataClassificationModifier = new DataClassificationModifier(this._context);
-                    modifier.RunForActiveEditor();
-                }
-            )
-        );
+        //editor and workspace commands
+        this.registerModifierCommands('RemoveWithStatements', 'azALDevTools.RemoveEditorWithStatements', 'azALDevTools.RemoveProjectWithStatements', () => new WithModifier(this._context));
+        this.registerModifierCommands('AddApplicationAreas', 'azALDevTools.AddEditorApplicationAreas', 'azALDevTools.AddProjectApplicationAreas', () => new AppAreasModifier(this._context));
+        this.registerModifierCommands('AddToolTips', 'azALDevTools.AddEditorToolTip', 'azALDevTools.AddProjectToolTip', () => new ToolTipModifier(this._context));
+        this.registerModifierCommands('AddTableFieldCaptions', 'azALDevTools.AddEditorFieldCaption', 'azALDevTools.AddProjectFieldCaption', () => new FieldCaptionsModifier(this._context));
+        this.registerModifierCommands('AddPageFieldCaptions', 'azALDevTools.AddEditorPageFieldCaption', 'azALDevTools.AddProjectPageFieldCaption', () => new PageControlsCaptionsModifier(this._context));
+        this.registerModifierCommands('AddObjectCaptions', 'azALDevTools.AddEditorObjectCaption', 'azALDevTools.AddProjectObjectCaption', () => new ObjectCaptionsModifier(this._context));
+        this.registerModifierCommands('FixKeywordsCase', 'azALDevTools.FixEditorKeywordsCase', 'azALDevTools.FixProjectKeywordsCase', () => new FixKeywordsCaseModifier(this._context));
+        this.registerModifierCommands('FixIdentifiersCase', 'azALDevTools.FixEditorIdentifiersCase', 'azALDevTools.FixProjectIdentifiersCase', () => new FixIdentifiersCaseModifier(this._context));
+        this.registerModifierCommands('ConvertObjectIdsToNames', 'azALDevTools.ConvertEditorObjectIdsToNames', 'azALDevTools.ConvertProjectObjectIdsToNames', () => new ConvertObjectIdsToNamesModifier(this._context));
+        this.registerModifierCommands('AddMissingParentheses', 'azALDevTools.AddMissingEditorParentheses', 'azALDevTools.AddMissingProjectParentheses', () => new AddMissingParenthesesModifier(this._context));       
+        this.registerModifierCommands('AddDataClassifications', 'azALDevTools.AddEditorDataClassification', 'azALDevTools.AddProjectDataClassification',() => new DataClassificationModifier(this._context));
+        this.registerModifierCommands('RemoveUnusedVariables', 'azALDevTools.RemoveEditorUnusedVariables', 'azALDevTools.RemoveProjectUnusedVariables', () => new RemoveUnusedVariablesModifier(this._context));
 
-        this._context.vscodeExtensionContext.subscriptions.push(
-            vscode.commands.registerCommand(
-                'azALDevTools.AddProjectDataClassification',
-                () => {
-                    let modifier: DataClassificationModifier = new DataClassificationModifier(this._context);
-                    modifier.RunForWorkspace();
-                }
-            )
-        );
+        this.registerModifierCommands('SortPermissions', 'azALDevTools.SortEditorPermissions', 'azALDevTools.SortWorkspacePermissions', () => new SortPermissionsModifier(this._context));
+        this.registerModifierCommands('SortPermissionSetList', 'azALDevTools.SortEditorPermissionSetList', 'azALDevTools.SortWorkspacePermissionSetList', () => new SortPermissionSetListModifier(this._context));
+        this.registerModifierCommands('SortProcedures', 'azALDevTools.SortEditorProcedures', 'azALDevTools.SortWorkspaceProcedures', () => new SortProceduresModifier(this._context));
+        this.registerModifierCommands('SortProperties', 'azALDevTools.SortEditorProperties', 'azALDevTools.SortWorkspaceProperties', () => new SortPropertiesModifier(this._context));
+        this.registerModifierCommands('SortReportColumns', 'azALDevTools.SortEditorReportColumns', 'azALDevTools.SortWorkspaceReportColumns', () => new SortReportColumnsModifier(this._context));
+        this.registerModifierCommands('SortTableFields', 'azALDevTools.SortEditorTableFields', 'azALDevTools.SortWorkspaceTableFields', () => new SortTableFieldsModifier(this._context));
+        this.registerModifierCommands('SortVariables', 'azALDevTools.SortEditorVariables', 'azALDevTools.SortWorkspaceVariables', () => new SortVariablesModifier(this._context));
 
-        this._context.vscodeExtensionContext.subscriptions.push(
-            vscode.commands.registerCommand(
-                'azALDevTools.RemoveEditorUnusedVariables',
-                () => {
-                    let removeUnusedVariablesModifier: RemoveUnusedVariablesModifier = new RemoveUnusedVariablesModifier(this._context);
-                    removeUnusedVariablesModifier.RunForActiveEditor();
-                }
-            )
-        );
-
-        this._context.vscodeExtensionContext.subscriptions.push(
-            vscode.commands.registerCommand(
-                'azALDevTools.RemoveProjectUnusedVariables',
-                () => {
-                    let removeUnusedVariablesModifier: RemoveUnusedVariablesModifier = new RemoveUnusedVariablesModifier(this._context);
-                    removeUnusedVariablesModifier.RunForWorkspace();
-                }
-            )
-        );
-        
-        this.registerModifierCommands('azALDevTools.SortEditorPermissions', 'azALDevTools.SortWorkspacePermissions', () => new SortPermissionsModifier(this._context));
-        this.registerModifierCommands('azALDevTools.SortEditorPermissionSetList', 'azALDevTools.SortWorkspacePermissionSetList', () => new SortPermissionSetListModifier(this._context));
-        this.registerModifierCommands('azALDevTools.SortEditorProcedures', 'azALDevTools.SortWorkspaceProcedures', () => new SortProceduresModifier(this._context));
-        this.registerModifierCommands('azALDevTools.SortEditorProperties', 'azALDevTools.SortWorkspaceProperties', () => new SortPropertiesModifier(this._context));
-        this.registerModifierCommands('azALDevTools.SortEditorReportColumns', 'azALDevTools.SortWorkspaceReportColumns', () => new SortReportColumnsModifier(this._context));
-        this.registerModifierCommands('azALDevTools.SortEditorTableFields', 'azALDevTools.SortWorkspaceTableFields', () => new SortTableFieldsModifier(this._context));
-        this.registerModifierCommands('azALDevTools.SortEditorVariables', 'azALDevTools.SortWorkspaceVariables', () => new SortVariablesModifier(this._context));
+        this.registerModifierCommands(undefined, 'azALDevTools.PrettifyMyEditorCode', 'azALDevTools.PrettifyMyWorkspaceCode', () => new BatchSyntaxModifier(this._context));
     }
 
-    protected registerModifierCommands(editorCmdName: string, workspaceCmdName: string, modifierFactory: () => SyntaxModifier) {
+    protected registerModifierCommands(name: string | undefined, editorCmdName: string, workspaceCmdName: string, modifierFactory: () => SyntaxModifier) {
+        if (name)
+            this._syntaxFactories[name] = modifierFactory;
         this.registerEditorCommand(editorCmdName, modifierFactory);
         this.registerWorkspaceCommand(workspaceCmdName, modifierFactory);
     }
@@ -312,6 +87,18 @@ export class ALCodeTransformationService extends DevToolsExtensionService {
                 async (document) => {
                     let cmd = modifierFactory();
                     await cmd.RunForActiveEditor();
+                }
+            )
+        );
+    }
+
+    protected registerDocumentCommand(name: string, modifierFactory: () => SyntaxModifier) {
+        this._context.vscodeExtensionContext.subscriptions.push(
+            vscode.commands.registerCommand(
+                name,
+                async (document) => {
+                    let cmd = modifierFactory();
+                    await cmd.RunForDocument(document, undefined, false);
                 }
             )
         );
@@ -334,11 +121,18 @@ export class ALCodeTransformationService extends DevToolsExtensionService {
             vscode.commands.registerCommand(
                 name,
                 async (document, range) => {
-                    let cmd = new SyntaxModifier(this._context, workspaceCommandName);
+                    let cmd = new WorkspaceCommandSyntaxModifier(this._context, workspaceCommandName, workspaceCommandName);
                     await cmd.RunForDocument(document, range, false);
                 }
             )
         );
+    }
+
+    getSyntaxModifier(name: string): SyntaxModifier|undefined {
+        let factory = this._syntaxFactories[name];
+        if (factory)
+            return factory();
+        return undefined;
     }
 
 }

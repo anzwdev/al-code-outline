@@ -1,15 +1,13 @@
 import * as vscode from 'vscode';
 import { DevToolsExtensionContext } from "../devToolsExtensionContext";
 import { NameValueQuickPickItem } from '../tools/nameValueQuickPickItem';
-import { SyntaxModifier } from "./syntaxModifier";
+import { WorkspaceCommandSyntaxModifier } from './workspaceCommandSyntaxModifier';
 
-export class PageControlsCaptionsModifier extends SyntaxModifier {
+export class PageControlsCaptionsModifier extends WorkspaceCommandSyntaxModifier {
     protected _controlTypes: any;
 
     constructor(context: DevToolsExtensionContext) {
-        super(context, "addPageControlCaptions");
-        this._showProgress = true;
-        this._progressMessage = "Processing project files. Please wait...";
+        super(context, "Add Page Control Captions", "addPageControlCaptions");
         this._controlTypes = {};
     }
 
@@ -25,7 +23,7 @@ export class PageControlsCaptionsModifier extends SyntaxModifier {
         return parameters;
     }
 
-    protected async askForParameters() {
+    async askForParameters(uri: vscode.Uri | undefined): Promise<boolean> {
         this.loadState();
         let quickPickItems = [
             new NameValueQuickPickItem('Page actions', 'setActionsCaptions', this._controlTypes.setActionsCaptions),
@@ -46,6 +44,8 @@ export class PageControlsCaptionsModifier extends SyntaxModifier {
             }
         }
         this.saveState();
+
+        return true;
     }
 
     private loadState() {

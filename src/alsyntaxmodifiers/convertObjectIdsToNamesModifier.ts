@@ -1,12 +1,10 @@
 import { DevToolsExtensionContext } from "../devToolsExtensionContext";
-import { SyntaxModifier } from "./syntaxModifier";
+import { WorkspaceCommandSyntaxModifier } from "./workspaceCommandSyntaxModifier";
 
-export class ConvertObjectIdsToNamesModifier extends SyntaxModifier {
+export class ConvertObjectIdsToNamesModifier extends WorkspaceCommandSyntaxModifier {
 
     constructor(context: DevToolsExtensionContext) {
-        super(context, "convertObjectIdsToNames");
-        this._showProgress = true;
-        this._progressMessage = "Processing project files. Please wait...";
+        super(context, "Convert Object Ids to Names", "convertObjectIdsToNames");
     }
 
 }

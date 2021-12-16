@@ -1,13 +1,11 @@
 import * as vscode from 'vscode';
 import { DevToolsExtensionContext } from "../devToolsExtensionContext";
-import { SyntaxModifier } from "./syntaxModifier";
+import { WorkspaceCommandSyntaxModifier } from './workspaceCommandSyntaxModifier';
 
-export class WithModifier extends SyntaxModifier {
+export class WithModifier extends WorkspaceCommandSyntaxModifier {
 
     constructor(context: DevToolsExtensionContext) {
-        super(context, "removeWith");
-        this._showProgress = true;
-        this._progressMessage = "Processing project files. Please wait...";
+        super(context, "Remove With", "removeWith");
     }
 
     protected async confirmRunForWorkspace(): Promise<boolean> {

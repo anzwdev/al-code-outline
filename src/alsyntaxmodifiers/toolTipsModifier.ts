@@ -1,18 +1,14 @@
 import * as vscode from 'vscode';
 import { DevToolsExtensionContext } from "../devToolsExtensionContext";
-import { TextEditorHelper } from '../tools/textEditorHelper';
 import { NumberHelper } from '../tools/numberHelper';
-import { ToolsWorkspaceCommandRequest } from '../langserver/toolsWorkspaceCommandRequest';
 import { StringHelper } from '../tools/stringHelper';
-import { SyntaxModifier } from './syntaxModifier';
 import { ToolsWorkspaceCommandResponse } from '../langserver/toolsWorkspaceCommandResponse';
+import { WorkspaceCommandSyntaxModifier } from './workspaceCommandSyntaxModifier';
 
-export class ToolTipModifier extends SyntaxModifier {
+export class ToolTipModifier extends WorkspaceCommandSyntaxModifier {
 
     constructor(context: DevToolsExtensionContext) {
-        super(context, "addToolTips");
-        this._showProgress = true;
-        this._progressMessage = "Processing project files. Please wait...";
+        super(context, "Add ToolTips", "addToolTips");
     }
 
     protected getParameters(uri: vscode.Uri): any {
@@ -31,18 +27,16 @@ export class ToolTipModifier extends SyntaxModifier {
         return (confirmation === 'Yes');
     }
 
-    protected showWorkspaceSuccessMessage(response: ToolsWorkspaceCommandResponse) {
-        vscode.window.showInformationMessage(
-            NumberHelper.zeroIfNotDef(response.parameters.noOfChanges).toString() +
+    protected getSuccessWorkspaceMessage(response: ToolsWorkspaceCommandResponse): string {
+        return NumberHelper.zeroIfNotDef(response.parameters.noOfChanges).toString() +
             ' toolTip(s) added to ' +
             NumberHelper.zeroIfNotDef(response.parameters.noOfChangedFiles).toString() +
-            ' file(s).');
+            ' file(s).';
     }
 
-    protected showDocumentSuccessMessage(response: ToolsWorkspaceCommandResponse) {
-        vscode.window.showInformationMessage(
-            response.parameters.noOfChanges.toString() +
-            ' ToolTip(s) added.');
+    protected getSuccessDocumentMessage(response: ToolsWorkspaceCommandResponse): string {
+        return response.parameters.noOfChanges.toString() +
+            ' ToolTip(s) added.';
     }
 
     protected getActionTooltip(uri: vscode.Uri | undefined): string {
