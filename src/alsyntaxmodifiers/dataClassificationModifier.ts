@@ -46,9 +46,9 @@ export class DataClassificationModifier extends WorkspaceCommandSyntaxModifier {
         this._dataClassification = await vscode.window.showQuickPick(valuesList, {
             canPickMany: false,
             placeHolder: 'Select Data Classification'
-        });
+        });    
 
-        return true;
+        return !!this._dataClassification;
     }
 
 }

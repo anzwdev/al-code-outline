@@ -63,6 +63,8 @@
 		"onCommand:azALDevTools.ConvertProjectObjectIdsToNames",
 		"onCommand:azALDevTools.AddMissingEditorParentheses",
 		"onCommand:azALDevTools.AddMissingProjectParentheses",
+		"onCommand:azALDevTools.LockEditorRemovedFieldCaptions",
+		"onCommand:azALDevTools.LockProjectRemovedFieldCaptions",
 
 		"onCommand:azALDevTools.SortEditorPermissions", 
 		"onCommand:azALDevTools.SortWorkspacePermissions",
@@ -219,6 +221,16 @@
 				"category": "AZ AL Dev Tools",
 				"command": "azALDevTools.AddProjectFieldCaption",
 				"title": "Add Table Field Captions to the Active Project"
+			},
+			{
+				"category": "AZ AL Dev Tools",
+				"command": "azALDevTools.LockEditorRemovedFieldCaptions",
+				"title": "Lock Removed Table Field Captions in the Active Editor"
+			},
+			{
+				"category": "AZ AL Dev Tools",
+				"command": "azALDevTools.LockProjectRemovedFieldCaptions",
+				"title": "Lock Removed Table Field Captions in the Active Project"
 			},
 			{
 				"category": "AZ AL Dev Tools",
@@ -650,6 +662,7 @@
 								"AddApplicationAreas",
 								"AddToolTips",
 								"AddTableFieldCaptions",
+								"LockRemovedFieldCaptions",
 								"AddPageFieldCaptions",
 								"AddObjectCaptions",
 								"FixKeywordsCase",
@@ -664,13 +677,16 @@
 								"SortProperties",
 								"SortReportColumns",
 								"SortTableFields",
-								"SortVariables"
+								"SortVariables",
+								"FormatDocument",
+								"TrimTrailingWhitespace"
 							],
 							"enumDescriptions": [
 								"Remove With Statements",
 								"Add Application Areas",
 								"Add ToolTips",
 								"Add Table Field Captions",
+								"Lock Removed Table Field Captions",
 								"Add Page Field Captions",
 								"Add Object Captions",
 								"Fix Keywords Case",
@@ -685,7 +701,9 @@
 								"Sort Properties",
 								"Sort Report Columns",
 								"Sort Table Fields",
-								"Sort Variables"
+								"Sort Variables",
+								"Format Document",
+								"Trim Trailing Whitespace"
 							]
 						}
 					},

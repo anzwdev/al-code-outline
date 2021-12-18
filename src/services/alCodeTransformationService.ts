@@ -25,6 +25,9 @@ import { SortPermissionSetListModifier } from '../alsyntaxmodifiers/sortPermissi
 import { ISyntaxModifierFactoriesCollection } from '../alsyntaxmodifiers/iSyntaxModifierFactoriesCollection';
 import { BatchSyntaxModifier } from '../alsyntaxmodifiers/batchSyntaxModifier';
 import { WorkspaceCommandSyntaxModifier } from '../alsyntaxmodifiers/workspaceCommandSyntaxModifier';
+import { LockRemovedFieldsCaptionsModifier } from '../alsyntaxmodifiers/lockRemovedFieldsCaptionsModifier';
+import { FormatDocumentModifier } from '../alsyntaxmodifiers/formatDocumentModifier';
+import { TrimTrailingWhitespaceModifier } from '../alsyntaxmodifiers/trimTrailingWhitespaceModifier';
 
 export class ALCodeTransformationService extends DevToolsExtensionService {
     protected _syntaxFactories: ISyntaxModifierFactoriesCollection;
@@ -53,6 +56,7 @@ export class ALCodeTransformationService extends DevToolsExtensionService {
         this.registerModifierCommands('AddApplicationAreas', 'azALDevTools.AddEditorApplicationAreas', 'azALDevTools.AddProjectApplicationAreas', () => new AppAreasModifier(this._context));
         this.registerModifierCommands('AddToolTips', 'azALDevTools.AddEditorToolTip', 'azALDevTools.AddProjectToolTip', () => new ToolTipModifier(this._context));
         this.registerModifierCommands('AddTableFieldCaptions', 'azALDevTools.AddEditorFieldCaption', 'azALDevTools.AddProjectFieldCaption', () => new FieldCaptionsModifier(this._context));
+        this.registerModifierCommands('LockRemovedFieldCaptions', 'azALDevTools.LockEditorRemovedFieldCaptions', 'azALDevTools.LockProjectRemovedFieldCaptions', () => new LockRemovedFieldsCaptionsModifier(this._context));
         this.registerModifierCommands('AddPageFieldCaptions', 'azALDevTools.AddEditorPageFieldCaption', 'azALDevTools.AddProjectPageFieldCaption', () => new PageControlsCaptionsModifier(this._context));
         this.registerModifierCommands('AddObjectCaptions', 'azALDevTools.AddEditorObjectCaption', 'azALDevTools.AddProjectObjectCaption', () => new ObjectCaptionsModifier(this._context));
         this.registerModifierCommands('FixKeywordsCase', 'azALDevTools.FixEditorKeywordsCase', 'azALDevTools.FixProjectKeywordsCase', () => new FixKeywordsCaseModifier(this._context));
@@ -70,7 +74,11 @@ export class ALCodeTransformationService extends DevToolsExtensionService {
         this.registerModifierCommands('SortTableFields', 'azALDevTools.SortEditorTableFields', 'azALDevTools.SortWorkspaceTableFields', () => new SortTableFieldsModifier(this._context));
         this.registerModifierCommands('SortVariables', 'azALDevTools.SortEditorVariables', 'azALDevTools.SortWorkspaceVariables', () => new SortVariablesModifier(this._context));
 
-        this.registerModifierCommands(undefined, 'azALDevTools.PrettifyMyEditorCode', 'azALDevTools.PrettifyMyWorkspaceCode', () => new BatchSyntaxModifier(this._context));
+        this.registerModifierCommands(undefined, 'azALDevTools.RunEditorCodeCleanup', 'azALDevTools.RunWorkspaceCodeCleanup', () => new BatchSyntaxModifier(this._context));
+
+        //register code cleanup only modifiers
+        this._syntaxFactories["FormatDocument"] = (() => new FormatDocumentModifier(this._context));
+        this._syntaxFactories["TrimTrailingWhitespace"] = (() => new TrimTrailingWhitespaceModifier(this._context));
     }
 
     protected registerModifierCommands(name: string | undefined, editorCmdName: string, workspaceCmdName: string, modifierFactory: () => SyntaxModifier) {
@@ -86,7 +94,7 @@ export class ALCodeTransformationService extends DevToolsExtensionService {
                 name,
                 async (document) => {
                     let cmd = modifierFactory();
-                    await cmd.RunForActiveEditor();
+                    await cmd.runForActiveEditor();
                 }
             )
         );
@@ -98,7 +106,7 @@ export class ALCodeTransformationService extends DevToolsExtensionService {
                 name,
                 async (document) => {
                     let cmd = modifierFactory();
-                    await cmd.RunForDocument(document, undefined, false);
+                    await cmd.runForDocument(document, undefined, false);
                 }
             )
         );
@@ -110,7 +118,7 @@ export class ALCodeTransformationService extends DevToolsExtensionService {
                 name,
                 async (document) => {
                     let cmd = modifierFactory();
-                    await cmd.RunForWorkspace();
+                    await cmd.runForWorkspace();
                 }
             )
         );
@@ -122,7 +130,7 @@ export class ALCodeTransformationService extends DevToolsExtensionService {
                 name,
                 async (document, range) => {
                     let cmd = new WorkspaceCommandSyntaxModifier(this._context, workspaceCommandName, workspaceCommandName);
-                    await cmd.RunForDocument(document, range, false);
+                    await cmd.runForDocument(document, range, false);
                 }
             )
         );

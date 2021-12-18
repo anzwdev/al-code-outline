@@ -37,6 +37,9 @@ export class PageControlsCaptionsModifier extends WorkspaceCommandSyntaxModifier
         let selectedValues = await vscode.window.showQuickPick(
             quickPickItems, { canPickMany: true, placeHolder: 'Select page controls to update' });
 
+        if (!selectedValues)
+            return false;
+
         this.clearControlTypes();
         if (selectedValues) {
             for (let i=0; i<selectedValues.length; i++) {

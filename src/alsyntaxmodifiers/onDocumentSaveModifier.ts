@@ -35,9 +35,9 @@ export class OnDocumentSaveModifier extends WorkspaceCommandSyntaxModifier {
         }
     }
 
-    async RunForDocument(document: vscode.TextDocument, range: TextRange | undefined, withUI: boolean) {
+    async runForDocument(document: vscode.TextDocument, range: TextRange | undefined, withUI: boolean) {
         this.getCommandsList(document.uri);
         if (this._commandsList)
-            await super.RunForDocument(document, range, withUI);
+            await super.runForDocument(document, range, withUI);
     }
 }

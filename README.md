@@ -127,6 +127,8 @@ Extension adds a few commands that allow to automatically modify al code in the 
 * `Add ToolTips to the Active Project`: adds missing tooltips to all page fields and actions in the current project
 * `Add Table Field Captions to the Active Editor`: adds missing captions to all table fields in the current editor
 * `Add Table Field Captions to the Active Project`: adds missing captions to all table fields in the current project
+* `Lock Removed Table Field Captions in the Active Editor`: locks captions of removed table fields in the current editor
+* `Lock Removed Table Field Captions in the Active Project`: locks captions of removed table fields in the current project
 * `Add Page Controls Captions to the Active Editor`: adds missing captions to page controls in the current editor
 * `Add Page Controls Captions to the Active Project`: adds missing captions to page controls in the current project
 * `Add Object Captions to the Active Editor`: adds missing captions to all table, page, report, xmlport and query objects in the current editor
@@ -248,7 +250,7 @@ This extension contributes the following settings:
 * `alOutline.addToolTipsToPageFields`: set to true to add tooltips to page fields when 'Add multiple fields' action is used
 * `alOutline.useTableFieldCaptionsInApiFields`: set to true, to use table field captions in API pages fields like in standard BC APIs v 2.0 (i.e. ```Caption='Customer No.';```), set to false to use camelCase api page field name in api page field caption together with Locked property like in standard BC APIs v 1.0 (i.e. ```Caption='customerNo', Locked = true;```). Default value is true
 * `alOutline.lockRemovedFieldsCaptions`: set to true to lock captions of removed fields when 'Add Table Field Captions' command is run
-* `alOutline.codeCleanupActions`: array of names of actions that will be run by code cleanup commands. These actions are available: RemoveWithStatements, AddApplicationAreas, AddToolTips, AddTableFieldCaptions, AddPageFieldCaptions, AddObjectCaptions, FixKeywordsCase, FixIdentifiersCase, ConvertObjectIdsToNames, AddMissingParentheses, AddDataClassifications, RemoveUnusedVariables, SortPermissions, SortPermissionSetList, SortProcedures, SortProperties, SortReportColumns, SortTableFields, SortVariables
+* `alOutline.codeCleanupActions`: array of names of actions that will be run by code cleanup commands. These actions are available: RemoveWithStatements, AddApplicationAreas, AddToolTips, AddTableFieldCaptions, "LockRemovedFieldCaptions", AddPageFieldCaptions, AddObjectCaptions, FixKeywordsCase, FixIdentifiersCase, ConvertObjectIdsToNames, AddMissingParentheses, AddDataClassifications, RemoveUnusedVariables, SortPermissions, SortPermissionSetList, SortProcedures, SortProperties, SortReportColumns, SortTableFields, SortVariables, "FormatDocument", "TrimTrailingWhitespace"
 
 ## Known Issues
 

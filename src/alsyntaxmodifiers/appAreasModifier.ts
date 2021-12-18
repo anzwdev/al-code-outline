@@ -45,6 +45,8 @@ export class AppAreasModifier extends WorkspaceCommandSyntaxModifier {
             canPickMany: false,
             placeHolder: 'Select Application Area'
         });
+        if (!appAreaName)
+            return false;
         if (appAreaName === 'Custom')
             appAreaName = await vscode.window.showInputBox({
                 placeHolder: "Enter your custom Application Area"

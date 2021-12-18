@@ -17,7 +17,7 @@ export class SyntaxModifier {
         this.name = newName;
     }
 
-    async RunForWorkspace() {
+    async runForWorkspace() {
         let confirmation = await this.confirmRunForWorkspace();
         if (!confirmation)
             return;
@@ -28,8 +28,10 @@ export class SyntaxModifier {
             return;
 
         let cont = await this.askForParameters(workspaceUri);
-        if (!cont)
+        if (!cont) {
+            vscode.window.showInformationMessage("Command cancelled");
             return;
+        }
 
         let result = await this.runForWorkspaceWithoutUI(workspaceUri);
 
@@ -47,7 +49,7 @@ export class SyntaxModifier {
 
     protected async confirmRunForWorkspace(): Promise<boolean> {
         let confirmation = await vscode.window.showInformationMessage(
-            'Do you want to run this command for all files in the current project folder?', 
+            'Do you want to run this command for all files in the current project folder?',
             'Yes', 'No');
         return (confirmation === 'Yes');
     }
@@ -56,13 +58,13 @@ export class SyntaxModifier {
         return {};
     }
 
-    async RunForActiveEditor() {
+    async runForActiveEditor() {
         if (!vscode.window.activeTextEditor)
             return;
-        await this.RunForDocument(vscode.window.activeTextEditor.document, undefined, true);
+        await this.runForDocument(vscode.window.activeTextEditor.document, undefined, true);
     }
 
-    async RunForDocument(document: vscode.TextDocument, range: TextRange | undefined, withUI: boolean) {
+    async runForDocument(document: vscode.TextDocument, range: TextRange | undefined, withUI: boolean) {
         let text = document.getText();
 
         if (!text)
@@ -73,10 +75,12 @@ export class SyntaxModifier {
             return;
 
         let cont = await this.askForParameters(document.uri);
-        if (!cont)
+        if (!cont) {
+            vscode.window.showInformationMessage("Command cancelled");
             return;
+        }
 
-        let result = await this.RunForDocumentWithoutUI(text, workspaceUri, document.uri, range);
+        let result = await this.runForDocumentWithoutUI(text, workspaceUri, document.uri, range);
 
         if (result) {
             if (!result.success) {
@@ -102,12 +106,16 @@ export class SyntaxModifier {
             vscode.window.showInformationMessage('There was nothing to change.');
     }
 
-    async RunForDocumentWithoutUI(text: string, workspaceUri: vscode.Uri, documentUri: vscode.Uri, range: TextRange | undefined): Promise<ISyntaxModifierResult | undefined> {
+    async runForDocumentWithoutUI(text: string, workspaceUri: vscode.Uri, documentUri: vscode.Uri, range: TextRange | undefined): Promise<ISyntaxModifierResult | undefined> {
         return undefined;
     }
 
     async askForParameters(uri: vscode.Uri | undefined): Promise<boolean> {
         return true;
+    }
+
+    hideProgress() {
+        this._showProgress = false;
     }
 
 }

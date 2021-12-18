@@ -39,7 +39,7 @@ export class WorkspaceCommandSyntaxModifier extends SyntaxModifier {
         return undefined;
     }
 
-    async RunForDocumentWithoutUI(text: string, workspaceUri: vscode.Uri, documentUri: vscode.Uri, range: TextRange | undefined): Promise<ISyntaxModifierResult | undefined> {
+    async runForDocumentWithoutUI(text: string, workspaceUri: vscode.Uri, documentUri: vscode.Uri, range: TextRange | undefined): Promise<ISyntaxModifierResult | undefined> {
         let request: ToolsWorkspaceCommandRequest = new ToolsWorkspaceCommandRequest(this._commandName, text, workspaceUri.fsPath, documentUri.fsPath, range, this.getParameters(documentUri));
         let response = await this.runWorkspaceCommand(request);
 
@@ -62,7 +62,7 @@ export class WorkspaceCommandSyntaxModifier extends SyntaxModifier {
 
         return {
             success: true,
-            message: 'There was nothing to change.',
+            message: 'There was nothing to change',
             source: undefined
         };
     }
@@ -80,7 +80,7 @@ export class WorkspaceCommandSyntaxModifier extends SyntaxModifier {
 
     protected getSuccessWorkspaceMessage(response: ToolsWorkspaceCommandResponse): string {
         return NumberHelper.zeroIfNotDef(response.parameters.noOfChangedFiles).toString() +
-            ' file(s) modified.';
+            ' file(s) modified';
     }
 
     protected getSuccessDocumentMessage(response: ToolsWorkspaceCommandResponse): string {

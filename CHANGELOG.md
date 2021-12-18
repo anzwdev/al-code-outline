@@ -1,9 +1,13 @@
 # Change Log
 
 ## 3.0.24
-  - Issue #301 - PermissionSet wizard - PermissionSet name length cannot be longer than 20 characters
-  - Issue #295 - New "Code Cleanup" commands for workspace and editor
-  
+ - Issue #301 - PermissionSet wizard - PermissionSet name length cannot be longer than 20 characters
+ - Issue #295 - New "Code Cleanup" commands for workspace and editor
+ - Issue #295 - New "Lock Removed Table Field Captions" commands for workspace and editor
+
+Thank you
+ - fvet and dkatson for issue #295 ideas
+
 ## 3.0.24
  - Issue #293 - Sorting code-actions as commands for current file and active project
  - Issue #296 - Codeunit Wizard does not copy temporary flags

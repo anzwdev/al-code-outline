@@ -7,17 +7,34 @@ import { SyntaxModifier } from "./syntaxModifier";
 export class BatchSyntaxModifier extends SyntaxModifier {
     protected _modifiers: SyntaxModifier[] | undefined;
 
-
     constructor(context: DevToolsExtensionContext) {
-        super(context, "Code Cleanup");
+        super(context, 'Code Cleanup');
         this._modifiers = undefined;
+        this._progressMessage = '';
     }
 
     async runForWorkspaceWithoutUI(workspaceUri: vscode.Uri): Promise<ISyntaxModifierResult | undefined> {
+        if (this._showProgress)
+            return await vscode.window.withProgress<ISyntaxModifierResult | undefined>({
+                    location: vscode.ProgressLocation.Notification,
+                    title: this._progressMessage
+                }, async (progress) => {
+                    return await this.runForWorkspaceWithoutUIWithProgress(workspaceUri, progress);
+                });
+        return await this.runForWorkspaceWithoutUIWithProgress(workspaceUri, undefined);
+    }    
+
+    async runForWorkspaceWithoutUIWithProgress(workspaceUri: vscode.Uri, progress: vscode.Progress<{ message?: string; increment?: number }> | undefined): Promise<ISyntaxModifierResult | undefined> {
         let allMessages = '';
 
         if (this._modifiers) {
-            for (let i=0; i<this._modifiers.length; i++) {
+            let count = this._modifiers.length;
+            for (let i=0; i<count; i++) {
+                if (progress)
+                    progress.report({
+                        message: 'Runnung Command ' + (i+1).toString() + ' of ' + count.toString() + ': ' + this._modifiers[i].name, 
+                        increment: (100 * i / count)});
+                        
                 let result = await this._modifiers[i].runForWorkspaceWithoutUI(workspaceUri);
                 allMessages = this.appendResult(allMessages, this._modifiers[i].name, result);
             }
@@ -30,13 +47,30 @@ export class BatchSyntaxModifier extends SyntaxModifier {
         };
     }    
 
-    async RunForDocumentWithoutUI(text: string, workspaceUri: vscode.Uri, documentUri: vscode.Uri, range: TextRange | undefined): Promise<ISyntaxModifierResult | undefined> {
+    async runForDocumentWithoutUI(text: string, workspaceUri: vscode.Uri, documentUri: vscode.Uri, range: TextRange | undefined): Promise<ISyntaxModifierResult | undefined> {
+        if (this._showProgress)
+            return await vscode.window.withProgress<ISyntaxModifierResult | undefined>({
+                    location: vscode.ProgressLocation.Notification,
+                    title: this._progressMessage
+                }, async (progress) => {
+                    return await this.runForDocumentWithoutUIWithProgress(text, workspaceUri, documentUri, range, progress);
+                });
+        return await this.runForDocumentWithoutUIWithProgress(text, workspaceUri, documentUri, range, undefined);
+    }
+
+    protected async runForDocumentWithoutUIWithProgress(text: string, workspaceUri: vscode.Uri, documentUri: vscode.Uri, range: TextRange | undefined, progress: vscode.Progress<{ message?: string; increment?: number }> | undefined): Promise<ISyntaxModifierResult | undefined> {
         let allMessages = '';
 
         if (this._modifiers) {
-            for (let i=0; i<this._modifiers.length; i++) {
-                let result = await this._modifiers[i].RunForDocumentWithoutUI(text, workspaceUri, documentUri, range);
-                if ((result) && (result.source) && (result.source != ''))
+            let count = this._modifiers.length;
+            for (let i=0; i<count; i++) {                
+                if (progress)
+                    progress.report({
+                        message: 'Runnung Command ' + (i+1).toString() + ' of ' + count.toString() + ': ' + this._modifiers[i].name, 
+                        increment: (100 * i / count)});
+
+                let result = await this._modifiers[i].runForDocumentWithoutUI(text, workspaceUri, documentUri, range);
+                if ((result) && (result.success) && (result.source) && (result.source != ''))
                     text = result.source;
                 allMessages = this.appendResult(allMessages, this._modifiers[i].name, result);
             }
@@ -45,12 +79,13 @@ export class BatchSyntaxModifier extends SyntaxModifier {
         return {
             success: true,
             message: allMessages,
-            source: undefined
+            source: text
         };
     }
 
     async askForParameters(uri: vscode.Uri | undefined): Promise<boolean> {
-        this.collectModifiers(uri);
+        if (!this.collectModifiers(uri))
+            return false;
 
         if ((this._modifiers) && (this._modifiers.length > 0))  { 
             for (let i=0; i<this._modifiers.length; i++) {
@@ -74,25 +109,32 @@ export class BatchSyntaxModifier extends SyntaxModifier {
                 allMessages = allMessages + "error";
             if (result.message)
                 allMessages = allMessages + " - " + result.message;
-            allMessages = allMessages + "\n";
+            allMessages = allMessages + ", ";
         }
         return allMessages;
     }
 
-    protected collectModifiers(uri: vscode.Uri | undefined) {
+    protected collectModifiers(uri: vscode.Uri | undefined): boolean {
         let modifiersList: SyntaxModifier[] = [];
 
         //get modifiers names
-        let actionNames = vscode.workspace.getConfiguration('alOutline', uri).get<string[]>('codeActionsOnSave');
+        let actionNames = vscode.workspace.getConfiguration('alOutline', uri).get<string[]>('codeCleanupActions');
         if ((actionNames) && (actionNames.length > 0)) {
             for (let i=0; i<actionNames.length; i++) {
                 let modifier = this._context.alCodeTransformationService.getSyntaxModifier(actionNames[i]);
-                if (modifier)
+                if (modifier) {
+                    modifier.hideProgress();
                     modifiersList.push(modifier);
+                } else {
+                    this._modifiers = [];
+                    vscode.window.showErrorMessage('Uknnown command in "alOutline.codeCleanupActions" setting: ' + actionNames[i]);
+                    return false;
+                }
             }
         }
 
         this._modifiers = modifiersList;
+        return true;
     }
 
 }

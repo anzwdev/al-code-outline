@@ -31,6 +31,9 @@ export class RemoveUnusedVariablesModifier extends WorkspaceCommandSyntaxModifie
         let selectedValues = await vscode.window.showQuickPick(
             quickPickItems, { canPickMany: true, placeHolder: 'Select variables to remove' });
 
+        if (!selectedValues)
+            return false;
+
         this.clearVariableTypes();
         if (selectedValues) {
             for (let i=0; i<selectedValues.length; i++) {
