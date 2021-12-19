@@ -13,9 +13,9 @@ export class ALPermissionSetSyntaxBuilder {
         writer.addProperty("Assignable", "true");
 
         if ((data.objectCaption) && (data.objectCaption.length > 0))
-            writer.addProperty("Caption", writer.encodeString(data.objectCaption));
+            writer.addProperty("Caption", writer.encodeString(data.objectCaption) + ', MaxLength = 30');
         else
-            writer.addProperty("Caption", writer.encodeString(ALSyntaxHelper.removePrefixSuffix(data.objectName, data.projectSettings)));
+            writer.addProperty("Caption", writer.encodeString(ALSyntaxHelper.removePrefixSuffix(data.objectName, data.projectSettings)) + ', MaxLength = 30');
         writer.writeProperties();
         
         this.writeIncludePermissionSetList(writer, data.selectedPermissionSetList);
