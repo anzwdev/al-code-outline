@@ -80,9 +80,9 @@
 		"onCommand:azALDevTools.SortWorkspaceTableFields",
 		"onCommand:azALDevTools.SortEditorVariables", 
 		"onCommand:azALDevTools.SortWorkspaceVariables",
-		
 		"onCommand:azALDevTools.RunEditorCodeCleanup",
 		"onCommand:azALDevTools.RunWorkspaceCodeCleanup",
+		"onCommand:azALDevTools.RunModifiedFilesCodeCleanup",
 
 		"onCommand:azALDevTools.showExtensionLog",
 		"onCustomEditor:azALDevTools.jsonEditor",
@@ -405,6 +405,11 @@
 				"category": "AZ AL Dev Tools",
 				"command": "azALDevTools.RunWorkspaceCodeCleanup",
 				"title": "Run Code Cleanup on the Active Project"
+			},
+			{
+				"category": "AZ AL Dev Tools",
+				"command": "azALDevTools.RunModifiedFilesCodeCleanup",
+				"title": "Run Code Cleanup on Uncommited Files in the Active Project"
 			},
 
 			{

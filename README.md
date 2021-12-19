@@ -161,6 +161,7 @@ Extension adds a few commands that allow to automatically modify al code in the 
 * `Sort Included PermissionSets in the Active Project`: sorts permission sets in IncludedPermissionSets property in the current project
 * `Run Code Cleanup on the Active Editor`: runs code cleanup on the current editor
 * `Run Code Cleanup on the Active Project`: runs code cleanup on the current project
+* `Run Code Cleanup on Uncommited Files in the Active Project`: runs code cleanup on all uncommited al files in the current project
 
 Default application area and templates for field and action tooltips can be specified using these VS Code settings: `alOutline.defaultAppArea`, `alOutline.pageActionToolTip` and `alOutline.pageFieldToolTip` 
 

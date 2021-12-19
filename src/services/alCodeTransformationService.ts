@@ -75,6 +75,7 @@ export class ALCodeTransformationService extends DevToolsExtensionService {
         this.registerModifierCommands('SortVariables', 'azALDevTools.SortEditorVariables', 'azALDevTools.SortWorkspaceVariables', () => new SortVariablesModifier(this._context));
 
         this.registerModifierCommands(undefined, 'azALDevTools.RunEditorCodeCleanup', 'azALDevTools.RunWorkspaceCodeCleanup', () => new BatchSyntaxModifier(this._context));
+        this.registerModifiedFilesOnlyCommand('azALDevTools.RunModifiedFilesCodeCleanup', () => new BatchSyntaxModifier(this._context));
 
         //register code cleanup only modifiers
         this._syntaxFactories["FormatDocument"] = (() => new FormatDocumentModifier(this._context));
@@ -118,6 +119,20 @@ export class ALCodeTransformationService extends DevToolsExtensionService {
                 name,
                 async (document) => {
                     let cmd = modifierFactory();
+                    cmd.modifiedFilesOnly = false;
+                    await cmd.runForWorkspace();
+                }
+            )
+        );
+    }
+
+    protected registerModifiedFilesOnlyCommand(name: string, modifierFactory: () => SyntaxModifier) {
+        this._context.vscodeExtensionContext.subscriptions.push(
+            vscode.commands.registerCommand(
+                name,
+                async (document) => {
+                    let cmd = modifierFactory();
+                    cmd.modifiedFilesOnly = true;
                     await cmd.runForWorkspace();
                 }
             )

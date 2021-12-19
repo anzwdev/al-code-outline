@@ -26,23 +26,37 @@ export class BatchSyntaxModifier extends SyntaxModifier {
 
     async runForWorkspaceWithoutUIWithProgress(workspaceUri: vscode.Uri, progress: vscode.Progress<{ message?: string; increment?: number }> | undefined): Promise<ISyntaxModifierResult | undefined> {
         let allMessages = '';
+        let hasError = false;
 
-        if (this._modifiers) {
+        if ((this._modifiers) && (this._modifiers.length > 0)) {
             let count = this._modifiers.length;
+            let incVal = 100 / count;
+
             for (let i=0; i<count; i++) {
                 if (progress)
                     progress.report({
                         message: 'Runnung Command ' + (i+1).toString() + ' of ' + count.toString() + ': ' + this._modifiers[i].name, 
-                        increment: (100 * i / count)});
+                        increment: incVal });
                         
                 let result = await this._modifiers[i].runForWorkspaceWithoutUI(workspaceUri);
-                allMessages = this.appendResult(allMessages, this._modifiers[i].name, result);
+
+                if ((!result) || (!result.success)) {
+                    hasError = true;
+                    allMessages = this.appendResult(allMessages, this._modifiers[i].name, result);
+                }
             }
         }
 
+        if (hasError)
+            return {
+                success: false,
+                message: 'One or more of actions failed: ' + allMessages,
+                source: undefined
+            };
+
         return {
             success: true,
-            message: allMessages,
+            message: 'All code cleanup actions completed',
             source: undefined
         };
     }    
@@ -60,6 +74,7 @@ export class BatchSyntaxModifier extends SyntaxModifier {
 
     protected async runForDocumentWithoutUIWithProgress(text: string, workspaceUri: vscode.Uri, documentUri: vscode.Uri, range: TextRange | undefined, progress: vscode.Progress<{ message?: string; increment?: number }> | undefined): Promise<ISyntaxModifierResult | undefined> {
         let allMessages = '';
+        let hasError = false;
 
         if (this._modifiers) {
             let count = this._modifiers.length;
@@ -72,14 +87,25 @@ export class BatchSyntaxModifier extends SyntaxModifier {
                 let result = await this._modifiers[i].runForDocumentWithoutUI(text, workspaceUri, documentUri, range);
                 if ((result) && (result.success) && (result.source) && (result.source != ''))
                     text = result.source;
-                allMessages = this.appendResult(allMessages, this._modifiers[i].name, result);
+
+                if ((!result) || (!result.success)) {
+                    hasError = true;
+                    allMessages = this.appendResult(allMessages, this._modifiers[i].name, result);
+                }                
             }
         }
 
+        if (hasError)
+            return {
+                success: false,
+                message: 'One or more of actions failed: ' + allMessages,
+                source: undefined
+            };
+
         return {
             success: true,
-            message: allMessages,
-            source: text
+            message: 'All code cleanup actions completed',
+            source: undefined
         };
     }
 
@@ -124,6 +150,7 @@ export class BatchSyntaxModifier extends SyntaxModifier {
                 let modifier = this._context.alCodeTransformationService.getSyntaxModifier(actionNames[i]);
                 if (modifier) {
                     modifier.hideProgress();
+                    modifier.modifiedFilesOnly = this.modifiedFilesOnly;
                     modifiersList.push(modifier);
                 } else {
                     this._modifiers = [];
@@ -136,5 +163,19 @@ export class BatchSyntaxModifier extends SyntaxModifier {
         this._modifiers = modifiersList;
         return true;
     }
+
+    protected async confirmRunForWorkspace(): Promise<boolean> {
+        let msgText: string;
+        if (this.modifiedFilesOnly)
+            msgText = 'Do you want to run this command for all uncommited files in the current project folder?';
+        else
+            msgText = 'Do you want to run this command for all files in the current project folder?';
+
+        let confirmation = await vscode.window.showInformationMessage(
+            msgText, 'Yes', 'No');
+        return (confirmation === 'Yes');
+    }
+
+
 
 }

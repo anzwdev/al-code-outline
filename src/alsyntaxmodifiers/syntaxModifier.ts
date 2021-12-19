@@ -9,12 +9,14 @@ export class SyntaxModifier {
     protected _showProgress: boolean;
     protected _progressMessage: string;
     name: string;
+    modifiedFilesOnly: boolean;
 
     constructor(context: DevToolsExtensionContext, newName: string) {
         this._context = context;
         this._showProgress = true;
         this._progressMessage = "Processing project files. Please wait...";
         this.name = newName;
+        this.modifiedFilesOnly = false;
     }
 
     async runForWorkspace() {
@@ -55,7 +57,10 @@ export class SyntaxModifier {
     }
 
     protected getParameters(uri: vscode.Uri): any {
-        return {};
+        let values: any = {};
+        if (this.modifiedFilesOnly)
+            values.modifiedFilesOnly = true;
+        return values;
     }
 
     async runForActiveEditor() {

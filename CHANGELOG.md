@@ -2,7 +2,7 @@
 
 ## 3.0.24
  - Issue #301 - PermissionSet wizard - PermissionSet name length cannot be longer than 20 characters
- - Issue #295 - New "Code Cleanup" commands for workspace and editor
+ - Issue #295 - New "Code Cleanup" commands for workspace, editor and uncommited only workspace files
  - Issue #295 - New "Lock Removed Table Field Captions" commands for workspace and editor
 
 Thank you
