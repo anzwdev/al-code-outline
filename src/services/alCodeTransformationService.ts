@@ -28,6 +28,7 @@ import { WorkspaceCommandSyntaxModifier } from '../alsyntaxmodifiers/workspaceCo
 import { LockRemovedFieldsCaptionsModifier } from '../alsyntaxmodifiers/lockRemovedFieldsCaptionsModifier';
 import { FormatDocumentModifier } from '../alsyntaxmodifiers/formatDocumentModifier';
 import { TrimTrailingWhitespaceModifier } from '../alsyntaxmodifiers/trimTrailingWhitespaceModifier';
+import { RemoveBeginEndModifier } from '../alsyntaxmodifiers/removeBeginEndModifier';
 
 export class ALCodeTransformationService extends DevToolsExtensionService {
     protected _syntaxFactories: ISyntaxModifierFactoriesCollection;
@@ -65,6 +66,7 @@ export class ALCodeTransformationService extends DevToolsExtensionService {
         this.registerModifierCommands('AddMissingParentheses', 'azALDevTools.AddMissingEditorParentheses', 'azALDevTools.AddMissingProjectParentheses', () => new AddMissingParenthesesModifier(this._context));       
         this.registerModifierCommands('AddDataClassifications', 'azALDevTools.AddEditorDataClassification', 'azALDevTools.AddProjectDataClassification',() => new DataClassificationModifier(this._context));
         this.registerModifierCommands('RemoveUnusedVariables', 'azALDevTools.RemoveEditorUnusedVariables', 'azALDevTools.RemoveProjectUnusedVariables', () => new RemoveUnusedVariablesModifier(this._context));
+        this.registerModifierCommands('RemoveBeginEnd', 'azALDevTools.RemoveEditorBeginEnd', 'azALDevTools.RemoveProjectBeginEnd', () => new RemoveBeginEndModifier(this._context));
 
         this.registerModifierCommands('SortPermissions', 'azALDevTools.SortEditorPermissions', 'azALDevTools.SortWorkspacePermissions', () => new SortPermissionsModifier(this._context));
         this.registerModifierCommands('SortPermissionSetList', 'azALDevTools.SortEditorPermissionSetList', 'azALDevTools.SortWorkspacePermissionSetList', () => new SortPermissionSetListModifier(this._context));

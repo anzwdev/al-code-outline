@@ -3,12 +3,14 @@
 ## 3.0.24
  - Issue #295 - New "Code Cleanup" commands for workspace, editor and uncommited only workspace files
  - Issue #295 - New "Lock Removed Table Field Captions" commands for workspace and editor
+ - Issue #300 - Idea: Fix begin..end (AA0005) warnings in project/editor
  - Issue #301 - PermissionSet wizard - PermissionSet name length cannot be longer than 20 characters
  - Issue #306 - Add MaxLength property to Caption when Permission Set is created
 
 Thank you
  - fvet and dkatson for issue #295 ideas
  - rvanbekkum for reporting issue #306
+ - dannoe for posting idea #300
 
 ## 3.0.24
  - Issue #293 - Sorting code-actions as commands for current file and active project

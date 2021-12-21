@@ -65,6 +65,8 @@
 		"onCommand:azALDevTools.AddMissingProjectParentheses",
 		"onCommand:azALDevTools.LockEditorRemovedFieldCaptions",
 		"onCommand:azALDevTools.LockProjectRemovedFieldCaptions",
+		"onCommand:azALDevTools.RemoveEditorBeginEnd",
+		"onCommand:azALDevTools.RemoveProjectBeginEnd",
 
 		"onCommand:azALDevTools.SortEditorPermissions", 
 		"onCommand:azALDevTools.SortWorkspacePermissions",
@@ -322,7 +324,16 @@
 				"command": "azALDevTools.RemoveProjectUnusedVariables",
 				"title": "Remove Unused Variables from the Active Project"
 			},
-
+			{
+				"category": "AZ AL Dev Tools",
+				"command": "azALDevTools.RemoveEditorBeginEnd",
+				"title": "Remove Begin..End around Single Statements from the Active Editor"
+			},
+			{
+				"category": "AZ AL Dev Tools",
+				"command": "azALDevTools.RemoveProjectBeginEnd",
+				"title": "Remove Begin..End around Single Statements from the Active Project"
+			},
 			{
 				"category": "AZ AL Dev Tools",
 				"command": "azALDevTools.SortEditorPermissions", 
@@ -683,6 +694,7 @@
 								"SortReportColumns",
 								"SortTableFields",
 								"SortVariables",
+								"RemoveBeginEnd",
 								"FormatDocument",
 								"TrimTrailingWhitespace"
 							],
@@ -707,6 +719,7 @@
 								"Sort Report Columns",
 								"Sort Table Fields",
 								"Sort Variables",
+								"Remove Begin..End",
 								"Format Document",
 								"Trim Trailing Whitespace"
 							]
