@@ -11,7 +11,7 @@ export class ALAddAllPermissionsCodeCommand extends ALCodeAction {
         super(context, "AddAllObjectsPermissions");
     }
 
-    collectCodeActions(docSymbols: AZDocumentSymbolsLibrary, symbol: AZSymbolInformation | undefined, document: vscode.TextDocument, range: vscode.Range | vscode.Selection, context: vscode.CodeActionContext, actions: vscode.CodeAction[]) {
+    collectCodeActions(docSymbols: AZDocumentSymbolsLibrary, symbol: AZSymbolInformation | undefined, document: vscode.TextDocument, range: vscode.Range | vscode.Selection, diagnostics: vscode.Diagnostic[], actions: vscode.CodeAction[]) {
         let edit: vscode.WorkspaceEdit | undefined =  undefined;
 
         //collect list of objects in selection range

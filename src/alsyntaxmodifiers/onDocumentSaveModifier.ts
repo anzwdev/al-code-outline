@@ -15,15 +15,19 @@ export class OnDocumentSaveModifier extends WorkspaceCommandSyntaxModifier {
 
     private getCommandsList(uri: vscode.Uri) {
         this._commandsList = '';
+        let noOfCommands = 0;
         let actionsList = vscode.workspace.getConfiguration('alOutline', uri).get<string[]>('codeActionsOnSave');
         if ((actionsList) && (actionsList.length > 0)) {
             for (let i=0; i<actionsList.length; i++) {
                 let name = actionsList[i];
-                name = name.substr(0,1).toLowerCase() + name.substr(1);
-                if (i > 0)
-                    this._commandsList = this._commandsList + ',' + name;
-                else
-                    this._commandsList = name;
+                if (name != 'FixCodeCopMissingParentheses') {
+                    name = name.substring(0,1).toLowerCase() + name.substring(1);
+                    if (noOfCommands > 0)
+                        this._commandsList = this._commandsList + ',' + name;
+                    else
+                        this._commandsList = name;
+                    noOfCommands++;
+                }
             }
         }
     }
@@ -37,7 +41,7 @@ export class OnDocumentSaveModifier extends WorkspaceCommandSyntaxModifier {
 
     async runForDocument(document: vscode.TextDocument, range: TextRange | undefined, withUI: boolean) {
         this.getCommandsList(document.uri);
-        if (this._commandsList)
+        if ((this._commandsList) && (this._commandsList != ''))
             await super.runForDocument(document, range, withUI);
     }
 }

@@ -653,7 +653,8 @@
 								"SortProcedures",
 								"SortVariables",
 								"SortPermissions",
-								"SortPermissionSetList"
+								"SortPermissionSetList",
+								"FixCodeCopMissingParentheses"
 							],
 							"enumDescriptions": [
 								"Sort report DataItem columns",
@@ -661,7 +662,8 @@
 								"Sort procedures",
 								"Sort variables",
 								"Sort permissions",
-								"Sort permission sets"
+								"Sort permission sets",
+								"Fix CodeCop missing parantheses warning"
 							]
 						},
 						"default": [],

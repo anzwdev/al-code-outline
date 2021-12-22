@@ -14,7 +14,7 @@ export class ALAddQueryFieldsCodeCommand extends ALBaseAddFieldsCodeCommand {
         super(context, 'AddQueryFields', 'AZDevTools.ALAddQueryFieldsCodeCommand');
     }
 
-    collectCodeActions(docSymbols: AZDocumentSymbolsLibrary, symbol: AZSymbolInformation | undefined, document: vscode.TextDocument, range: vscode.Range | vscode.Selection, context: vscode.CodeActionContext, actions: vscode.CodeAction[]) {        
+    collectCodeActions(docSymbols: AZDocumentSymbolsLibrary, symbol: AZSymbolInformation | undefined, document: vscode.TextDocument, range: vscode.Range | vscode.Selection, diagnostics: vscode.Diagnostic[], actions: vscode.CodeAction[]) {        
         if ((symbol) && 
             ((symbol.kind == AZSymbolKind.QueryDataItem) ||
              (symbol.kind == AZSymbolKind.QueryColumn))) {

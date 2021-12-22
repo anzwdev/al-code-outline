@@ -54,10 +54,11 @@ export class ALCodeActionsProvider implements vscode.CodeActionProvider {
     }
 
     provideCodeActions(document: vscode.TextDocument, range: vscode.Range | vscode.Selection, context: vscode.CodeActionContext, token: vscode.CancellationToken): vscode.ProviderResult<(vscode.Command | vscode.CodeAction)[]> {
-        return this.collectCodeActions(document,range, context);
+        let diag = vscode.languages.getDiagnostics(document.uri);        
+        return this.collectCodeActions(document,range, diag);
     }
 
-    protected async collectCodeActions(document: vscode.TextDocument, range: vscode.Range | vscode.Selection, context: vscode.CodeActionContext): Promise<vscode.CodeAction[]> {
+    protected async collectCodeActions(document: vscode.TextDocument, range: vscode.Range | vscode.Selection, diagnostic: vscode.Diagnostic[]): Promise<vscode.CodeAction[]> {
         let actions: vscode.CodeAction[] = []; 
 
         if (this._toolsExtensionContext.alLangProxy.version.major < 1)
@@ -67,7 +68,7 @@ export class ALCodeActionsProvider implements vscode.CodeActionProvider {
         let symbol = docSymbols.findSymbolInRange(range);
 
         for (let i=0; i<this._codeCommands.length; i++) {
-            this._codeCommands[i].collectCodeActions(docSymbols, symbol, document, range, context, actions);
+            this._codeCommands[i].collectCodeActions(docSymbols, symbol, document, range, diagnostic, actions);
         }
 
         //create OnSave action

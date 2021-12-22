@@ -14,7 +14,7 @@ export class ALAddPageFieldsCodeCommand extends ALBaseAddFieldsCodeCommand {
         super(context, 'AddPageFields', 'AZDevTools.ALAddPageFieldsCodeCommand');
     }
 
-    collectCodeActions(docSymbols: AZDocumentSymbolsLibrary, symbol: AZSymbolInformation | undefined, document: vscode.TextDocument, range: vscode.Range | vscode.Selection, context: vscode.CodeActionContext, actions: vscode.CodeAction[]) {
+    collectCodeActions(docSymbols: AZDocumentSymbolsLibrary, symbol: AZSymbolInformation | undefined, document: vscode.TextDocument, range: vscode.Range | vscode.Selection, diagnostics: vscode.Diagnostic[], actions: vscode.CodeAction[]) {
         if ((symbol) && 
             ((symbol.kind == AZSymbolKind.PageGroup) ||                 
              (symbol.kind == AZSymbolKind.PageRepeater) ||
