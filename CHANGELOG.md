@@ -1,14 +1,17 @@
 # Change Log
 
-## 3.0.24
+## 3.0.25
+ - Issue #275 - Symbols Browser - Go to definition (project file or server definition) - shared file access fix
  - Issue #209 - Move alOutline.fixCodeCopMissingParenthesesOnSave setting to the options of alOutline.codeActionsOnSave
  - Issue #295 - New "Code Cleanup" commands for workspace, editor and uncommited only workspace files
  - Issue #295 - New "Lock Removed Table Field Captions" commands for workspace and editor
  - Issue #300 - Idea: Fix begin..end (AA0005) warnings in project/editor
  - Issue #301 - PermissionSet wizard - PermissionSet name length cannot be longer than 20 characters
  - Issue #306 - Add MaxLength property to Caption when Permission Set is created
+ - New structure of problems reported by CodeCop was preventing CodeCop code action fixes from running
 
 Thank you
+ - GreatScott000 for reporting issue #275
  - fvet and dkatson for issue #295 ideas
  - rvanbekkum for reporting issue #306
  - dannoe for posting idea #300
