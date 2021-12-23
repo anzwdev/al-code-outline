@@ -13,12 +13,10 @@ export class ALPermissionSetExtensionSyntaxBuilder extends ALPermissionSetSyntax
         this.writeIncludePermissionSetList(writer, data.selectedPermissionSetList);
         this.writePermissions(writer, data.selectedObjectsList);
 
-        writer.writeLine("");
-
         //finish object
         writer.writeEndObject();
         
-        return writer.toString();
+        return writer.toWizardGeneratedString();
     }
 
 }

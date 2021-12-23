@@ -8,7 +8,7 @@ export class StringHelper {
             return eolText;
         return (process.platform === 'win32' ? '\r\n' : '\n');
     }
-
+   
     static emptyIfNotDef(value: string | undefined) {
         if (value)
             return value;

@@ -637,6 +637,11 @@
 							"selection order"
 						]
 					},
+					"alOutline.noEmptyLinesAtTheEndOfWizardGeneratedFiles": {
+						"type": "boolean",
+						"default": false,
+						"description": "Don't create empty lines at the end of files created by wizards."
+					},
 					"alOutline.enableCodeCopFixes": {
 						"type": "boolean",
 						"default": false,

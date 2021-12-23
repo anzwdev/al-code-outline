@@ -22,12 +22,10 @@ export class ALPermissionSetSyntaxBuilder {
 
         this.writePermissions(writer, data.selectedObjectsList);
 
-        writer.writeLine("");
-
         //finish object
         writer.writeEndObject();
         
-        return writer.toString();
+        return writer.toWizardGeneratedString();
     }
 
     protected writeIncludePermissionSetList(writer: ALSyntaxWriter, list: string[] | undefined) {

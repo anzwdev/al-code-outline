@@ -19,7 +19,6 @@ export class ALPageSyntaxBuilder {
         let isApi : boolean = (data.pageType.toLowerCase() === "api");
 
         writer.writeStartObject("page", data.objectId, data.objectName);
-        writer.writeLine("");
         writer.addProperty("PageType", data.pageType);
         writer.addProperty("SourceTable", writer.encodeName(data.selectedTable));
         
@@ -85,10 +84,9 @@ export class ALPageSyntaxBuilder {
         
         writer.writeEndLayout();
         
-        writer.writeLine("");
         writer.writeEndObject();
         
-        return writer.toString();
+        return writer.toWizardGeneratedString();
     }
 
 }

@@ -96,7 +96,7 @@ export class ALSymbolsBasedReportExtWizard extends ALSymbolsBasedWizard {
 
         writer.writeEndObject();
         
-        return writer.toString();
+        return writer.toWizardGeneratedString();
     }
 
     //#endregion

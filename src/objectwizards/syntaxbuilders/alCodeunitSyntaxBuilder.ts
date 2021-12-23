@@ -49,7 +49,7 @@ export class ALCodeunitSyntaxBuilder {
         //finish object
         writer.writeEndObject();
         
-        return writer.toString();
+        return writer.toWizardGeneratedString();
     }
 
 

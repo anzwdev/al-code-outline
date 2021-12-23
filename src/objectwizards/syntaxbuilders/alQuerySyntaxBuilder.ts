@@ -42,7 +42,7 @@ export class ALQuerySyntaxBuilder {
         
         writer.writeEndObject();
         
-        return writer.toString();
+        return writer.toWizardGeneratedString();
 
     }
 

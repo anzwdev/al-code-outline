@@ -14,6 +14,6 @@ export class ALPageExtSyntaxBuilder {
 
         writer.writeEndObject();
 
-        return writer.toString();
+        return writer.toWizardGeneratedString();
     }
 }

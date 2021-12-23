@@ -34,6 +34,6 @@ export class ALReportExtSyntaxBuilder {
 
         writer.writeEndObject();
 
-        return writer.toString();
+        return writer.toWizardGeneratedString();
     }
 }

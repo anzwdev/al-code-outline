@@ -27,7 +27,7 @@ export class ALXmlPortSyntaxBuilder {
 
         writer.writeEndObject();
         
-        return writer.toString();
+        return writer.toWizardGeneratedString();
     }
 
     private writeSchema(writer : ALSyntaxWriter, data : ALXmlPortWizardData) {       

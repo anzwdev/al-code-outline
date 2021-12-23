@@ -94,7 +94,7 @@ export class ALSymbolsBasedXmlPortWizard extends ALSymbolsBasedWizard {
 
         writer.writeEndObject();
         
-        return writer.toString();
+        return writer.toWizardGeneratedString();
     }
 
     private appendSchema(writer : ALSyntaxWriter, tableSymbol : AZSymbolInformation, fieldsAsElements : boolean) {       

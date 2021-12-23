@@ -92,7 +92,7 @@ export class ALSymbolsBasedQueryWizard extends ALSymbolsBasedWizard {
         
         writer.writeEndObject();
         
-        return writer.toString();
+        return writer.toWizardGeneratedString();
     }
 
     private appendElements(writer : ALSyntaxWriter, tableSymbol : AZSymbolInformation) {

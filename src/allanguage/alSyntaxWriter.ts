@@ -12,6 +12,7 @@ export class ALSyntaxWriter {
     private fieldToolTip: string;
     private fieldToolTipComment: string;
     private useTableFieldDescriptionAsToolTip: boolean;
+    private noEmptyLinesAtTheEndOfWizardGeneratedFiles: boolean;
     private eol: string;
 
     constructor(destUri: vscode.Uri | undefined) {
@@ -24,12 +25,30 @@ export class ALSyntaxWriter {
         this.fieldToolTip = StringHelper.emptyIfNotDef(config.get<string>('pageFieldToolTip'));
         this.fieldToolTipComment = StringHelper.emptyIfNotDef(config.get<string>('pageFieldToolTipComment'));
         this.useTableFieldDescriptionAsToolTip = !!config.get<boolean>('useTableFieldDescriptionAsToolTip');
+        this.noEmptyLinesAtTheEndOfWizardGeneratedFiles = !!config.get<boolean>('noEmptyLinesAtTheEndOfWizardGeneratedFiles');
         this.propertiesCache = [];        
         this.eol = StringHelper.getDefaultEndOfLine(destUri);
     }
 
     public toString() : string {
         return this.content;
+    }
+
+    public toWizardGeneratedString() {
+        if (this.noEmptyLinesAtTheEndOfWizardGeneratedFiles)
+            return this.removeEndingEmptyLines();
+        return this.content;
+    }
+
+    protected removeEndingEmptyLines(): string {
+        let len = this.content.length;
+        let eolen = this.eol.length;        
+        while ((len > 0) && (this.content.substring(len-eolen, len) == this.eol)) {
+            len -= eolen;
+        }
+        if (len > 0)
+            return this.content.substring(0, len);
+        return '';
     }
 
     public incIndent() {

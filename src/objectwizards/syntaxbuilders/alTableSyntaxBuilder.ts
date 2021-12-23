@@ -52,13 +52,11 @@ export class ALTableSyntaxBuilder {
             writer.writeProperty("Clustered", "true");
             writer.writeEndBlock();
         }
-
+        
         writer.writeEndBlock();
-
-        writer.writeLine("");
         writer.writeEndObject();
 
-        return writer.toString();
+        return writer.toWizardGeneratedString();
     }
 
 }

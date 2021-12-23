@@ -139,10 +139,9 @@ export class ALSymbolsBasedPageWizard extends ALSymbolsBasedWizard {
         
         writer.writeEndLayout();
         
-        writer.writeLine("");
         writer.writeEndObject();
         
-        return writer.toString();
+        return writer.toWizardGeneratedString();
     }
 
     //#endregion

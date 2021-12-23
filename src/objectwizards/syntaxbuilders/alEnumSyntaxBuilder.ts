@@ -39,10 +39,9 @@ export class ALEnumSyntaxBuilder {
             }
         }
 
-        writer.writeLine("");
         writer.writeEndObject();
         
-        return writer.toString();
+        return writer.toWizardGeneratedString();
     }
 
 } 

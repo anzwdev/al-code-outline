@@ -38,7 +38,7 @@ export class ALInterfaceSyntaxBuilder {
         //finish object
         writer.writeEndObject();
         
-        return writer.toString();
+        return writer.toWizardGeneratedString();
     }
 
 

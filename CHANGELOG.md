@@ -1,6 +1,8 @@
 # Change Log
 
 ## 3.0.25
+ - Issue #215 - Empty lines at end of new files
+   - new setting "alOutline.noEmptyLinesAtTheEndOfWizardGeneratedFiles"
  - Issue #261 - CodeActionsOnSave is terribly slow (AL <> AL code outline)
    - CodeCop warning fixes code actions are disabled by default, they can be enabled by changing "alOutline.enableCodeCopFixes" setting to true
    - "FormatDocument" value has been added to the list of available actions in "alOutline.codeActionsOnSave" setting
@@ -13,6 +15,7 @@
  - New structure of problems reported by CodeCop was preventing CodeCop code action fixes from running
 
 Thank you
+ - mjmatthiesen for reporting idea #215
  - fvet for reporting issue #261
  - GreatScott000 for reporting issue #275
  - fvet and dkatson for issue #295 ideas
