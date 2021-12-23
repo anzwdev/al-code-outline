@@ -12,15 +12,7 @@ export class ALCodeCopFixAA0008 extends ALCodeFix {
 
     collectCodeActions(docSymbols: AZDocumentSymbolsLibrary, symbol: AZSymbolInformation | undefined, document: vscode.TextDocument, range: vscode.Range | vscode.Selection, diagnostics: vscode.Diagnostic[], actions: vscode.CodeAction[]) {
         let settings =  vscode.workspace.getConfiguration('alOutline', document.uri);
-        let fixOnSave: boolean = false;
-        
-        //check alOutline.codeActionsOnSave first
-        let actionsList = settings.get<string[]>('codeActionsOnSave');
-        if (actionsList)
-            fixOnSave = (actionsList.indexOf('FixCodeCopMissingParentheses') >= 0);
-        //check old alOutline.fixCodeCopMissingParenthesesOnSave setting
-        if (!fixOnSave)
-            fixOnSave = !!settings.get<boolean>('fixCodeCopMissingParenthesesOnSave');
+        let fixOnSave: boolean = !!settings.get<boolean>('fixCodeCopMissingParenthesesOnSave');
 
         if (fixOnSave) {
             let onSaveEdit: vscode.WorkspaceEdit | undefined = undefined;

@@ -255,7 +255,6 @@ This extension contributes the following settings:
   - SortVariables,
   - SortPermissions,
   - SortPermissionSetList,
-  - FixCodeCopMissingParentheses,
   - FormatDocument
 * `codeActionsOnSaveIgnoreFiles`: array of vscode patters of files that should be ignored when OnSave code actions are run. To make it work, the pattern should always start with '\*\*/', so for all files in folder 'OldFiles' the pattern should be '\*\*/OldFiles/*.al'
 * `alOutline.pageActionToolTip`: tooltip template for page actions. Use %1 as placeholder for action caption or name

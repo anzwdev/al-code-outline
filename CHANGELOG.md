@@ -5,7 +5,6 @@
    - CodeCop warning fixes code actions are disabled by default, they can be enabled by changing "alOutline.enableCodeCopFixes" setting to true
    - "FormatDocument" value has been added to the list of available actions in "alOutline.codeActionsOnSave" setting
  - Issue #275 - Symbols Browser - Go to definition (project file or server definition) - shared file access fix
- - Issue #209 - Move alOutline.fixCodeCopMissingParenthesesOnSave setting to the options of alOutline.codeActionsOnSave
  - Issue #295 - New "Code Cleanup" commands for workspace, editor and uncommited only workspace files
  - Issue #295 - New "Lock Removed Table Field Captions" commands for workspace and editor
  - Issue #300 - Idea: Fix begin..end (AA0005) warnings in project/editor
