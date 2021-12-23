@@ -113,7 +113,7 @@ Sort procedures, variables, properties and report columns actions can be also ru
 ]
 ```
 
-There are also some additional code actions available for warnings and errors reported by CodeCop code analyzer:
+There are also some additional code actions available for warnings and errors reported by CodeCop code analyzer. Because of performance reasons, there are disabled by default and can be enabled by changing "alOutline.enableCodeCopFixes" setting to true:
  - remove variable for diagnostics AA0137,
  - add CopyStr for diagnostics AA0139
 
@@ -243,7 +243,20 @@ This extension contributes the following settings:
 * `alOutline.webClientPort`: web client port number, use 0 for default http/https ports
 * `alOutline.openDefinitionInNewTab`: set to true to always open documents in a new tab from "Go to definition" command in "AL Object Browser"
 * `fieldsSelectionOrder`: specifies how "Add multiple fields" functionality adds fields, available options are: "alphabetic" and "selection order"
-* `alOutline.codeActionsOnSave`: list of code actions that should be run on document save, available options are: SortTableFields, SortReportColumns, SortProperties, SortProcedures, SortVariables, SortPermissions, SortPermissionSetList, FixCodeCopMissingParentheses
+* `fixCodeCopMissingParenthesesOnSave`: if set to true, it will use warnings reported by CodeCode to add missing parentheses to the current file during save. It requires CodeCop code analyzer to be running and `alOutline.enableCodeCopFixes` setting to be set to true.
+* `enableCodeCopFixes`: if set to true, enables code actions fixing these CodeCop warnings:
+  - remove variable for diagnostics AA0137,
+  - add CopyStr for diagnostics AA0139  
+* `alOutline.codeActionsOnSave`: list of code actions that should be run on document save, available options are: 
+  - SortTableFields, 
+  - SortReportColumns,
+  - SortProperties,
+  - SortProcedures,
+  - SortVariables,
+  - SortPermissions,
+  - SortPermissionSetList,
+  - FixCodeCopMissingParentheses,
+  - FormatDocument
 * `codeActionsOnSaveIgnoreFiles`: array of vscode patters of files that should be ignored when OnSave code actions are run. To make it work, the pattern should always start with '\*\*/', so for all files in folder 'OldFiles' the pattern should be '\*\*/OldFiles/*.al'
 * `alOutline.pageActionToolTip`: tooltip template for page actions. Use %1 as placeholder for action caption or name
 * `alOutline.pageFieldToolTip`: tooltip template for page fields. Use %1 or %Caption% as placeholder for field caption or name and %Caption.Comment% for field caption comment. The default value is "Specifies the value of the %1 field"

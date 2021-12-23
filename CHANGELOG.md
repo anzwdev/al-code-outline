@@ -1,6 +1,9 @@
 # Change Log
 
 ## 3.0.25
+ - Issue #261 - CodeActionsOnSave is terribly slow (AL <> AL code outline)
+   - CodeCop warning fixes code actions are disabled by default, they can be enabled by changing "alOutline.enableCodeCopFixes" setting to true
+   - "FormatDocument" value has been added to the list of available actions in "alOutline.codeActionsOnSave" setting
  - Issue #275 - Symbols Browser - Go to definition (project file or server definition) - shared file access fix
  - Issue #209 - Move alOutline.fixCodeCopMissingParenthesesOnSave setting to the options of alOutline.codeActionsOnSave
  - Issue #295 - New "Code Cleanup" commands for workspace, editor and uncommited only workspace files
@@ -11,6 +14,7 @@
  - New structure of problems reported by CodeCop was preventing CodeCop code action fixes from running
 
 Thank you
+ - fvet for reporting issue #261
  - GreatScott000 for reporting issue #275
  - fvet and dkatson for issue #295 ideas
  - rvanbekkum for reporting issue #306

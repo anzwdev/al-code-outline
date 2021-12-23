@@ -105,7 +105,7 @@ export class BatchSyntaxModifier extends SyntaxModifier {
         return {
             success: true,
             message: 'All code cleanup actions completed',
-            source: undefined
+            source: text
         };
     }
 

@@ -637,6 +637,11 @@
 							"selection order"
 						]
 					},
+					"alOutline.enableCodeCopFixes": {
+						"type": "boolean",
+						"default": false,
+						"description": "Enable code actions fixing CodeCop warnings (AA0008 - missing parentheses, AA0137 - unused variable, AA0139 - possible text overflow)"
+					},
 					"alOutline.fixCodeCopMissingParenthesesOnSave": {
 						"type": "boolean",
 						"default": false,
@@ -654,6 +659,7 @@
 								"SortVariables",
 								"SortPermissions",
 								"SortPermissionSetList",
+								"FormatDocument",
 								"FixCodeCopMissingParentheses"
 							],
 							"enumDescriptions": [
@@ -663,6 +669,7 @@
 								"Sort variables",
 								"Sort permissions",
 								"Sort permission sets",
+								"Format document",
 								"Fix CodeCop missing parantheses warning"
 							]
 						},
