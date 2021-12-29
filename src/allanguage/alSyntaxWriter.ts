@@ -272,10 +272,10 @@ export class ALSyntaxWriter {
         this.writeEndBlock();
     }
 
-    public writePageField(fieldName : string, fieldCaption: string | undefined, fieldCaptionComment: string | undefined, fieldDescription: string | undefined, createToolTip: boolean) {
+    public writePageField(fieldName : string, fieldCaption: string | undefined, fieldCaptionComment: string | undefined, fieldDescription: string | undefined, createToolTip: boolean, existingToolTips: string[] | undefined) {
         this.writeStartNameSourceBlock("field", this.encodeName(fieldName), 'Rec.' + this.encodeName(fieldName));
         if (createToolTip)
-            this.writeTooltip(this.fieldToolTip, this.fieldToolTipComment, fieldCaption, fieldCaptionComment, fieldDescription);
+            this.writeTooltip(this.fieldToolTip, this.fieldToolTipComment, fieldCaption, fieldCaptionComment, fieldDescription, existingToolTips);
         this.writeApplicationArea();
         this.writeEndBlock();
     }
@@ -303,11 +303,13 @@ export class ALSyntaxWriter {
             this.writeProperty("ApplicationArea", this.applicationArea);
     }
 
-    public writeTooltip(captionTemplate: string, commentTemplate: string, value: string | undefined, comment: string | undefined, fieldDescription: string | undefined) {
+    public writeTooltip(captionTemplate: string, commentTemplate: string, value: string | undefined, comment: string | undefined, fieldDescription: string | undefined, existingToolTips: string[] | undefined) {
         let textValue: string | undefined = undefined;
 
         if ((this.useTableFieldDescriptionAsToolTip) && (fieldDescription) && (fieldDescription != ""))
             textValue = this.encodeString(fieldDescription);
+        else if ((existingToolTips) && (existingToolTips.length > 0) && (existingToolTips[0]) && (existingToolTips[0] != ""))
+            textValue = this.encodeString(existingToolTips[0]);
         else if ((captionTemplate) && (captionTemplate != "") && (value) && (value != "")) {
             textValue = this.applyCaptionTemplate(captionTemplate, value, comment);
             let commentValue = this.applyCaptionTemplate(commentTemplate, value, comment);

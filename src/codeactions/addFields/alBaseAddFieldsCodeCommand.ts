@@ -14,7 +14,7 @@ export class ALBaseAddFieldsCodeCommand extends ALCodeCommand {
     
     protected async getTableFields(name: string): Promise<TableFieldInformation[] | undefined> {
         let response = await this._toolsExtensionContext.toolsLangServerClient.getTableFieldsList(new ToolsGetTableFieldsListRequest(
-            this.getDocumentUri()?.fsPath, name, false, false, true, true, true));
+            this.getDocumentUri()?.fsPath, name, false, false, true, true, true, true));
         if (!response)
             return;
         return response.symbols;

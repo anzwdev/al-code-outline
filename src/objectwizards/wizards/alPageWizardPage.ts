@@ -14,6 +14,7 @@ export class ALPageWizardPage extends ALTableBasedWizardPage {
     constructor(toolsExtensionContext : DevToolsExtensionContext, settings: ALObjectWizardSettings, data : ALPageWizardData) {
         super(toolsExtensionContext, "AL Page Wizard", settings, data);
         this._pageWizardData = data;
+        this._includeToolTips = true;
     }
 
     protected getHtmlContentPath() : string {

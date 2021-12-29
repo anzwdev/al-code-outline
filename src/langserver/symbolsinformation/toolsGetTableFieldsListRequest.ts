@@ -7,8 +7,9 @@ export class ToolsGetTableFieldsListRequest extends ToolsSymbolInformationReques
     includeNormal: boolean;
     includeFlowFields: boolean;
     includeFlowFilters: boolean;
+    includeToolTips: boolean;
 
-    constructor(newPath: string | undefined, newTable: string, newIncludeDisabled: boolean, newIncludeObsolete: boolean, newIncludeNormal: boolean, newIncludeFlowFields: boolean, newIncludeFlowFilters: boolean) {
+    constructor(newPath: string | undefined, newTable: string, newIncludeDisabled: boolean, newIncludeObsolete: boolean, newIncludeNormal: boolean, newIncludeFlowFields: boolean, newIncludeFlowFilters: boolean, newIncludeToolTips: boolean) {
         super(newPath, true);
         this.table = newTable;
         this.includeDisabled = newIncludeDisabled;
@@ -16,6 +17,7 @@ export class ToolsGetTableFieldsListRequest extends ToolsSymbolInformationReques
         this.includeNormal = newIncludeNormal;
         this.includeFlowFields = newIncludeFlowFields;
         this.includeFlowFilters = newIncludeFlowFilters;
+        this.includeToolTips = newIncludeToolTips;
     }
 
 }

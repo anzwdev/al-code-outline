@@ -58,7 +58,7 @@ export class ALAddPageFieldsCodeCommand extends ALBaseAddFieldsCodeCommand {
 
         //get available fields from the language server
         let response = await this._toolsExtensionContext.toolsLangServerClient.getPageDetails(
-            new ToolsGetPageDetailsRequest(document.uri.fsPath, pageName, false, true));
+            new ToolsGetPageDetailsRequest(document.uri.fsPath, pageName, false, true, true));
         if ((!response) || (!response.symbol) || (!response.symbol.availableTableFields))
             return;
 
@@ -88,13 +88,11 @@ export class ALAddPageFieldsCodeCommand extends ALBaseAddFieldsCodeCommand {
                     selectedFields[i].captionLabel?.comment, useTableFieldCaptionsInApi);
             else
                 writer.writePageField(selectedFields[i].name!, selectedFields[i].caption,
-                    selectedFields[i].captionLabel?.comment, selectedFields[i].description, addToolTips);
+                    selectedFields[i].captionLabel?.comment, selectedFields[i].description, addToolTips, selectedFields[i].toolTips);
         }
         let source = writer.toString();
 
         await this.insertSymbolContentAsync(symbol, source);
     }
-
-
 
 }
