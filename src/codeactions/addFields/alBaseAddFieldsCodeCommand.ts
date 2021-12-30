@@ -13,8 +13,13 @@ export class ALBaseAddFieldsCodeCommand extends ALCodeCommand {
     }
     
     protected async getTableFields(name: string): Promise<TableFieldInformation[] | undefined> {
+        let uri: vscode.Uri | undefined = this.getDocumentUri();
+        let configuration = vscode.workspace.getConfiguration('alOutline', uri);
+        let reuseToolTips = !configuration.get<boolean>('doNotReuseToolTipsFromOtherPages');
+        let toolTipsSource = configuration.get<string[]>('reuseToolTipsFromDependencies');
+
         let response = await this._toolsExtensionContext.toolsLangServerClient.getTableFieldsList(new ToolsGetTableFieldsListRequest(
-            this.getDocumentUri()?.fsPath, name, false, false, true, true, true, true));
+            uri?.fsPath, name, false, false, true, true, true, reuseToolTips, toolTipsSource));
         if (!response)
             return;
         return response.symbols;

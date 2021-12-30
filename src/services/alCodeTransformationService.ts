@@ -29,6 +29,8 @@ import { LockRemovedFieldsCaptionsModifier } from '../alsyntaxmodifiers/lockRemo
 import { FormatDocumentModifier } from '../alsyntaxmodifiers/formatDocumentModifier';
 import { TrimTrailingWhitespaceModifier } from '../alsyntaxmodifiers/trimTrailingWhitespaceModifier';
 import { RemoveBeginEndModifier } from '../alsyntaxmodifiers/removeBeginEndModifier';
+import { RefreshToolTipsModifier } from '../alsyntaxmodifiers/refreshToolTipsModifier';
+import { ReuseSingleFieldToolTipModifier } from '../alsyntaxmodifiers/reuseSingleFieldToolTipModifier';
 
 export class ALCodeTransformationService extends DevToolsExtensionService {
     protected _syntaxFactories: ISyntaxModifierFactoriesCollection;
@@ -48,6 +50,7 @@ export class ALCodeTransformationService extends DevToolsExtensionService {
         this.registerDocumentRangeCommand('azALDevTools.sortPermissionSetList', 'sortPermissionSetList');
         this.registerDocumentRangeCommand('azALDevTools.addAllObjectsPermissions', 'addAllObjectsPermissions');
         this.registerDocumentRangeCommand('azALDevTools.removeVariable', 'removeVariable');
+        this.registerDocumentSymbolCommand('azALDevTools.ReuseToolTipFromOtherPages', () => new ReuseSingleFieldToolTipModifier(this._context));
 
         //onsave command
         this.registerDocumentCommand('azALDevTools.fixDocumentOnSave', () => new OnDocumentSaveModifier(this._context));
@@ -56,6 +59,7 @@ export class ALCodeTransformationService extends DevToolsExtensionService {
         this.registerModifierCommands('RemoveWithStatements', 'azALDevTools.RemoveEditorWithStatements', 'azALDevTools.RemoveProjectWithStatements', () => new WithModifier(this._context));
         this.registerModifierCommands('AddApplicationAreas', 'azALDevTools.AddEditorApplicationAreas', 'azALDevTools.AddProjectApplicationAreas', () => new AppAreasModifier(this._context));
         this.registerModifierCommands('AddToolTips', 'azALDevTools.AddEditorToolTip', 'azALDevTools.AddProjectToolTip', () => new ToolTipModifier(this._context));
+        this.registerModifierCommands('RefreshToolTips', 'azALDevTools.RefreshEditorToolTips', 'azALDevTools.RefreshProjectToolTips', () => new RefreshToolTipsModifier(this._context));
         this.registerModifierCommands('AddTableFieldCaptions', 'azALDevTools.AddEditorFieldCaption', 'azALDevTools.AddProjectFieldCaption', () => new FieldCaptionsModifier(this._context));
         this.registerModifierCommands('LockRemovedFieldCaptions', 'azALDevTools.LockEditorRemovedFieldCaptions', 'azALDevTools.LockProjectRemovedFieldCaptions', () => new LockRemovedFieldsCaptionsModifier(this._context));
         this.registerModifierCommands('AddPageFieldCaptions', 'azALDevTools.AddEditorPageFieldCaption', 'azALDevTools.AddProjectPageFieldCaption', () => new PageControlsCaptionsModifier(this._context));
@@ -148,6 +152,18 @@ export class ALCodeTransformationService extends DevToolsExtensionService {
                 async (document, range) => {
                     let cmd = new WorkspaceCommandSyntaxModifier(this._context, workspaceCommandName, workspaceCommandName);
                     await cmd.runForDocument(document, range, false);
+                }
+            )
+        );
+    }
+
+    protected registerDocumentSymbolCommand(name: string, modifierFactory: () => SyntaxModifier) {
+        this._context.vscodeExtensionContext.subscriptions.push(
+            vscode.commands.registerCommand(
+                name,
+                async (document, symbol) => {
+                    let cmd = modifierFactory();
+                    await cmd.runForDocumentSymbol(document, symbol, false);
                 }
             )
         );

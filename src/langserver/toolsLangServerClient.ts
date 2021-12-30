@@ -70,6 +70,10 @@ import { ToolsGetReportDetailsRequest } from './symbolsinformation/toolsGetRepor
 import { ToolsGetReportDetailsResponse } from './symbolsinformation/toolsGetReportDetailsResponse';
 import { toolsGetInterfaceMethodsListRequest } from './symbolsinformation/toolsGetInterfaceMethodsListRequest';
 import { ToolsGetInterfaceMethodsListResponse } from './symbolsinformation/toolsGetInterfaceMethodsListResponse';
+import { ToolsGetDependenciesListRequest } from './symbolsinformation/toolsGetDependenciesListRequest';
+import { ToolsGetDependenciesListResponse } from './symbolsinformation/toolsGetDependenciesListResponse';
+import { ToolsGetPageFieldAvailableToolTipsRequest } from './symbolsinformation/toolsGetPageFieldAvailableToolTipsRequest';
+import { ToolsGetPageFieldAvailableToolTipsResponse } from './symbolsinformation/toolsGetPageFieldAvailableToolTipsResponse';
 
 export class ToolsLangServerClient implements vscode.Disposable {
     _context : vscode.ExtensionContext;
@@ -375,6 +379,14 @@ export class ToolsLangServerClient implements vscode.Disposable {
 
     public getProjectSettings(params: ToolsGetProjectSettingsRequest) : Promise<ToolsGetProjectSettingsResponse | undefined> {
         return this.sendRequest<ToolsGetProjectSettingsRequest, ToolsGetProjectSettingsResponse>(params, 'al/getprojectsettings');
+    }
+
+    public getDependenciesList(params: ToolsGetDependenciesListRequest) : Promise<ToolsGetDependenciesListResponse | undefined> {
+        return this.sendRequest<ToolsGetDependenciesListRequest, ToolsGetDependenciesListResponse>(params, 'al/getdependencieslist');
+    }
+
+    public getPageFieldAvailableToolTips(params: ToolsGetPageFieldAvailableToolTipsRequest) : Promise<ToolsGetPageFieldAvailableToolTipsResponse | undefined> {
+        return this.sendRequest<ToolsGetPageFieldAvailableToolTipsRequest, ToolsGetPageFieldAvailableToolTipsResponse>(params, 'al/getpagefieldtooltips');
     }
 
     //next available object id

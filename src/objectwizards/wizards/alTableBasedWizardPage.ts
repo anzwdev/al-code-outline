@@ -10,11 +10,13 @@ import { ToolsGetTableFieldsListRequest } from '../../langserver/symbolsinformat
 export class ALTableBasedWizardPage extends ProjectItemWizardPage {
     private _tableWizardData : ALTableBasedWizardData;
     protected _includeToolTips : boolean;
+    protected _toolTipsSourceDependencies : string[] | undefined;
 
     constructor(toolsExtensionContext : DevToolsExtensionContext, title : string, settings: ALObjectWizardSettings, data : ALTableBasedWizardData) {
         super(toolsExtensionContext, title, settings);
         this._tableWizardData = data;
         this._includeToolTips = false;
+        this._toolTipsSourceDependencies = undefined;
     }
 
     //initialize wizard
@@ -61,7 +63,7 @@ export class ALTableBasedWizardPage extends ProjectItemWizardPage {
             let fieldList: string[] = [];
             let response = await this._toolsExtensionContext.toolsLangServerClient.getTableFieldsList(
                 new ToolsGetTableFieldsListRequest(this._settings.getDestDirectoryPath(), 
-                this._tableWizardData.selectedTable, false, false, true, true, false, this._includeToolTips));
+                this._tableWizardData.selectedTable, false, false, true, true, false, this._includeToolTips, this._toolTipsSourceDependencies));
             if ((response) && (response.symbols)) {
                 for (let i=0; i<response.symbols.length; i++) {
                     let name = response.symbols[i].name;

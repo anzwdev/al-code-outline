@@ -18,6 +18,7 @@ import { ALSortTableFieldsCommand } from './sortSymbols/alSortTableFieldsCommand
 import { ALSortPermissionsCommand } from './sortSymbols/alSortPermissionsCommand';
 import { ALAddAllPermissionsCodeCommand } from './alAddAllPermissionsCodeCommand';
 import { ALSortPermissionSetListCommand } from './sortSymbols/alSortPermissionSetListCommand';
+import { ALReuseToolTipCodeCommand } from './alReuseToolTipCodeCommand';
 
 export class ALCodeActionsProvider implements vscode.CodeActionProvider {
     protected _toolsExtensionContext : DevToolsExtensionContext;
@@ -34,6 +35,7 @@ export class ALCodeActionsProvider implements vscode.CodeActionProvider {
             new ALAddXmlPortFieldsCodeCommand(this._toolsExtensionContext, 'fieldattribute', 'Add multiple field attributes (AZ AL Dev Tools)'),
 
             new ALAddAllPermissionsCodeCommand(this._toolsExtensionContext),
+            new ALReuseToolTipCodeCommand(this._toolsExtensionContext),
 
             //sorting
             new ALSortTableFieldsCommand(this._toolsExtensionContext),

@@ -44,6 +44,8 @@
 		"onCommand:azALDevTools.AddProjectApplicationAreas",
 		"onCommand:azALDevTools.AddEditorToolTip",
 		"onCommand:azALDevTools.AddProjectToolTip",
+		"onCommand:azALDevTools.RefreshEditorToolTips", 
+		"onCommand:azALDevTools.RefreshProjectToolTips",
 		"onCommand:azALDevTools.AddEditorDataClassification",
 		"onCommand:azALDevTools.AddProjectDataClassification",
 		"onCommand:azALDevTools.AddEditorFieldCaption",
@@ -213,6 +215,16 @@
 				"category": "AZ AL Dev Tools",
 				"command": "azALDevTools.AddProjectToolTip",
 				"title": "Add ToolTips to the Active Project"
+			},
+			{
+				"category": "AZ AL Dev Tools",
+				"command": "azALDevTools.RefreshEditorToolTips",
+				"title": "Refresh ToolTips from Dependencies in the Active Editor"
+			},
+			{
+				"category": "AZ AL Dev Tools",
+				"command": "azALDevTools.RefreshProjectToolTips",
+				"title": "Refresh ToolTips from Dependencies in the Active Project"
 			},
 			{
 				"category": "AZ AL Dev Tools",
@@ -689,6 +701,7 @@
 								"RemoveWithStatements",
 								"AddApplicationAreas",
 								"AddToolTips",
+								"RefreshToolTips",
 								"AddTableFieldCaptions",
 								"LockRemovedFieldCaptions",
 								"AddPageFieldCaptions",
@@ -714,6 +727,7 @@
 								"Remove With Statements",
 								"Add Application Areas",
 								"Add ToolTips",
+								"Refresh ToolTips from Dependencies",
 								"Add Table Field Captions",
 								"Lock Removed Table Field Captions",
 								"Add Page Field Captions",
@@ -781,7 +795,22 @@
 						"type": "boolean",
 						"default": false,
 						"description": "Set to true to lock captions of removed fields when 'Add Table Field Captions' command is run"
+					},
+					"alOutline.doNotReuseToolTipsFromOtherPages": {
+						"type": "boolean",
+						"default": false,
+						"description": "Set to true to disable reusing field tooltips from other pages in the page wizard, 'add multiple fields' page code action and 'add missing tooltips' command"
+					},
+					"alOutline.reuseToolTipsFromDependencies": {
+						"type": "array",
+						"items": {
+							"type": "string"
+						},
+						"default": [],
+						"uniqueItems": true,
+						"description": "Reuse tooltips only defined in these dependencies. If empty, all dependencies will be used. Each entry should be defined as <dependency publisher> + <space> + '-' + <space> + <dependency name>"
 					}
+
 				}
 			}
 		]

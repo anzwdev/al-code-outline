@@ -43,6 +43,8 @@ export class ALAddPageFieldsCodeCommand extends ALBaseAddFieldsCodeCommand {
         let isFieldSymbol = ((symbol.kind == AZSymbolKind.PageField) || (symbol.kind == AZSymbolKind.PageUserControl));
         let addToolTips = !!config.get<boolean>('addToolTipsToPageFields');
         let useTableFieldCaptionsInApi = !!config.get<boolean>('useTableFieldCaptionsInApiFields');
+        let reuseToolTips = !config.get<boolean>('doNotReuseToolTipsFromOtherPages');
+        let toolTipsSource = config.get<string[]>('reuseToolTipsFromDependencies');
 
         if ((!pageSymbol) || 
             ((!isFieldSymbol) && (!symbol.contentRange)) || 
@@ -58,7 +60,7 @@ export class ALAddPageFieldsCodeCommand extends ALBaseAddFieldsCodeCommand {
 
         //get available fields from the language server
         let response = await this._toolsExtensionContext.toolsLangServerClient.getPageDetails(
-            new ToolsGetPageDetailsRequest(document.uri.fsPath, pageName, false, true, true));
+            new ToolsGetPageDetailsRequest(document.uri.fsPath, pageName, false, true, reuseToolTips, toolTipsSource));
         if ((!response) || (!response.symbol) || (!response.symbol.availableTableFields))
             return;
 

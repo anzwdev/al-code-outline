@@ -1,6 +1,12 @@
 # Change Log
 
 ## 3.0.25
+ - Issue #249 - Reuse tooltip from other pages
+   - new commands `Refresh ToolTips from Dependencies in the Active Editor/Project` to refresh page field tooltips from existing tooltips defined in dependencies
+   - page wizard, `add multiple fields` code action and `Add ToolTips to the Active Editor/Project` commands reuse tooltips from other pages
+   - in both cases listed above, if there are more different tooltips defined for a field, a first one that logic finds will be used
+   - new `Reuse tooltip from other pages` code action available on page and page extension fields and on ToolTip property
+   - reusing tooltips in page wizard, `add multiple fields` code action and `Add ToolTips to the Active Editor/Project` commands can be disabled by setting `alOutline.doNotReuseToolTipsFromOtherPages` setting to true, source of tooltips can also be limited to selected dependencies using `alOutline.reuseToolTipsFromDependencies` setting
  - Issue #215 - Empty lines at end of new files
    - new setting "alOutline.noEmptyLinesAtTheEndOfWizardGeneratedFiles"
  - Issue #261 - CodeActionsOnSave is terribly slow (AL <> AL code outline)

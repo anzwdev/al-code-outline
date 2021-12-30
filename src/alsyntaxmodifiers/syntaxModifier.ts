@@ -1,5 +1,6 @@
 import * as vscode from 'vscode';
 import { DevToolsExtensionContext } from "../devToolsExtensionContext";
+import { AZSymbolInformation } from '../symbollibraries/azSymbolInformation';
 import { TextRange } from '../symbollibraries/textRange';
 import { TextEditorHelper } from '../tools/textEditorHelper';
 import { ISyntaxModifierResult } from './iSntaxModifierResult';
@@ -67,6 +68,10 @@ export class SyntaxModifier {
         if (!vscode.window.activeTextEditor)
             return;
         await this.runForDocument(vscode.window.activeTextEditor.document, undefined, true);
+    }
+
+    async runForDocumentSymbol(document: vscode.TextDocument, symbol: AZSymbolInformation, withUI: boolean) {
+        await this.runForDocument(document, symbol.range, withUI);
     }
 
     async runForDocument(document: vscode.TextDocument, range: TextRange | undefined, withUI: boolean) {
