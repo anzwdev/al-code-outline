@@ -19,6 +19,7 @@
  - Issue #301 - PermissionSet wizard - PermissionSet name length cannot be longer than 20 characters
  - Issue #306 - Add MaxLength property to Caption when Permission Set is created
  - Issue #307 - Allow the Syntax Visualizer sash to be moved further
+ - Issue #308 - If possible, only show context menu items when relevant
  - New structure of problems reported by CodeCop was preventing CodeCop code action fixes from running
 
 Thank you
@@ -28,7 +29,7 @@ Thank you
  - fvet and dkatson for issue #295 ideas
  - dannoe for posting idea #300
  - rvanbekkum for reporting issue #306
- - jhoek for reporting issue #307
+ - jhoek for reporting issues #307 and #308
 
 ## 3.0.24
  - Issue #293 - Sorting code-actions as commands for current file and active project

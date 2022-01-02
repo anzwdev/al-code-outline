@@ -10,10 +10,11 @@ export function activate(context: vscode.ExtensionContext) {
     const toolsExtensionContext: DevToolsExtensionContext = new DevToolsExtensionContext(context);
     toolsExtensionContext.activeDocumentSymbols.initializeContent();
     context.subscriptions.push(toolsExtensionContext);
-
+    vscode.commands.executeCommand('setContext', 'azALDevTools.extensionActive', true);
     return toolsExtensionContext;
 }
 
 // this method is called when your extension is deactivated
-export function deactivate() {    
+export function deactivate() {
+    vscode.commands.executeCommand('setContext', 'azALDevTools.extensionActive', false);
 }

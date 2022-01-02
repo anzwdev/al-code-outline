@@ -29,6 +29,7 @@
 	"activationEvents": [
 		"onLanguage:al",
 		"onLanguage:alapp",
+		"workspaceContains:app.json",
 		"onView:azALDevTools.SymbolsTreeProvider",
 		"onCommand:azALDevTools.viewALApp",
 		"onCommand:azALDevTools.viewActionImages",
@@ -434,7 +435,6 @@
 				"command": "azALDevTools.RunModifiedFilesCodeCleanup",
 				"title": "Run Code Cleanup on Uncommited Files in the Active Project"
 			},
-
 			{
 				"command": "azALDevTools.alOutlineEnableFollowCursor",
 				"title": "Enable 'Follow Cursor'"
@@ -452,8 +452,262 @@
 		"menus": {
 			"commandPalette": [
 				{
+					"command": "azALDevTools.viewALApp",
+					"when": "false"
+				},
+				{
+					"command": "azALDevTools.showDocumentSymbols"
+				},
+				{
+					"command": "azALDevTools.showSyntaxTree",
+					"when": "editorLangId == al"
+				},
+				{
+					"command": "azALDevTools.showCodeAnalyzers",
+					"when": "azALDevTools.extensionActive"
+				},
+				{
+					"command": "azALDevTools.goToDefinitionSymbolTree"
+				},
+				{
+					"command": "azALDevTools.viewActionImages",
+					"when": "azALDevTools.extensionActive"
+				},
+				{
+					"command": "azALDevTools.showAllProjectSymbols",
+					"when": "azALDevTools.extensionActive"
+				},
+				{
+					"command": "azALDevTools.showProjectSymbolsWithoutDep",
+					"when": "azALDevTools.extensionActive"
+				},
+				{
 					"command": "azALDevTools.refreshOutlineView",
 					"when": "false"
+				},
+				{
+					"command": "alOutline.createListPage",
+					"when": "false"
+				},
+				{
+					"command": "alOutline.createCardPage",
+					"when": "false"
+				},
+				{
+					"command": "alOutline.createReport",
+					"when": "false"
+				},
+				{
+					"command": "alOutline.createXmlPort",
+					"when": "false"
+				},
+				{
+					"command": "alOutline.createQuery",
+					"when": "false"
+				},
+				{
+					"command": "alOutline.runPage",
+					"when": "false"
+				},
+				{
+					"command": "alOutline.runReport",
+					"when": "false"
+				},
+				{
+					"command": "alOutline.runTable",
+					"when": "false"
+				},
+				{
+					"command": "azALDevTools.newALFile",
+					"when": "azALDevTools.extensionActive"
+				},
+				{
+					"command": "azALDevTools.AddEditorApplicationAreas",
+					"when": "editorLangId == al"
+				},
+				{
+					"command": "azALDevTools.AddProjectApplicationAreas",
+					"when": "azALDevTools.extensionActive"
+				},
+				{
+					"command": "azALDevTools.AddEditorToolTip",
+					"when": "editorLangId == al"
+				},
+				{
+					"command": "azALDevTools.AddProjectToolTip",
+					"when": "azALDevTools.extensionActive"
+				},
+				{
+					"command": "azALDevTools.RefreshEditorToolTips",
+					"when": "editorLangId == al"
+				},
+				{
+					"command": "azALDevTools.RefreshProjectToolTips",
+					"when": "azALDevTools.extensionActive"
+				},
+				{
+					"command": "azALDevTools.AddEditorFieldCaption",
+					"when": "editorLangId == al"
+				},
+				{
+					"command": "azALDevTools.AddProjectFieldCaption",
+					"when": "azALDevTools.extensionActive"
+				},
+				{
+					"command": "azALDevTools.LockEditorRemovedFieldCaptions",
+					"when": "editorLangId == al"
+				},
+				{
+					"command": "azALDevTools.LockProjectRemovedFieldCaptions",
+					"when": "azALDevTools.extensionActive"
+				},
+				{
+					"command": "azALDevTools.AddEditorPageFieldCaption",
+					"when": "editorLangId == al"
+				},
+				{
+					"command": "azALDevTools.AddProjectPageFieldCaption",
+					"when": "azALDevTools.extensionActive"
+				},
+				{
+					"command": "azALDevTools.AddEditorObjectCaption",
+					"when": "editorLangId == al"
+				},
+				{
+					"command": "azALDevTools.AddProjectObjectCaption",
+					"when": "azALDevTools.extensionActive"
+				},
+				{
+					"command": "azALDevTools.AddEditorDataClassification",
+					"when": "editorLangId == al"
+				},
+				{
+					"command": "azALDevTools.AddProjectDataClassification",
+					"when": "azALDevTools.extensionActive"
+				},
+				{
+					"command": "azALDevTools.RemoveEditorWithStatements",
+					"when": "editorLangId == al"
+				},
+				{
+					"command": "azALDevTools.RemoveProjectWithStatements",
+					"when": "azALDevTools.extensionActive"
+				},
+				{
+					"command": "azALDevTools.FixEditorKeywordsCase",
+					"when": "editorLangId == al"
+				},
+				{
+					"command": "azALDevTools.FixProjectKeywordsCase",
+					"when": "azALDevTools.extensionActive"
+				},
+				{
+					"command": "azALDevTools.FixEditorIdentifiersCase",
+					"when": "editorLangId == al"
+				},
+				{
+					"command": "azALDevTools.FixProjectIdentifiersCase",
+					"when": "azALDevTools.extensionActive"
+				},
+				{
+					"command": "azALDevTools.ConvertEditorObjectIdsToNames",
+					"when": "editorLangId == al"
+				},
+				{
+					"command": "azALDevTools.ConvertProjectObjectIdsToNames",
+					"when": "azALDevTools.extensionActive"
+				},
+				{
+					"command": "azALDevTools.AddMissingEditorParentheses",
+					"when": "editorLangId == al"
+				},
+				{
+					"command": "azALDevTools.AddMissingProjectParentheses",
+					"when": "azALDevTools.extensionActive"
+				},
+				{
+					"command": "azALDevTools.RemoveEditorUnusedVariables",
+					"when": "editorLangId == al"
+				},
+				{
+					"command": "azALDevTools.RemoveProjectUnusedVariables",
+					"when": "azALDevTools.extensionActive"
+				},
+				{
+					"command": "azALDevTools.RemoveEditorBeginEnd",
+					"when": "editorLangId == al"
+				},
+				{
+					"command": "azALDevTools.RemoveProjectBeginEnd",
+					"when": "azALDevTools.extensionActive"
+				},
+				{
+					"command": "azALDevTools.SortEditorPermissions", 
+					"when": "editorLangId == al"
+				},
+				{
+					"command": "azALDevTools.SortWorkspacePermissions",
+					"when": "azALDevTools.extensionActive"
+				},
+				{
+					"command": "azALDevTools.SortEditorPermissionSetList", 
+					"when": "editorLangId == al"
+				},
+				{
+					"command": "azALDevTools.SortWorkspacePermissionSetList",
+					"when": "azALDevTools.extensionActive"
+				},
+				{
+					"command": "azALDevTools.SortEditorProcedures", 
+					"when": "editorLangId == al"
+				},
+				{
+					"command": "azALDevTools.SortWorkspaceProcedures",
+					"when": "azALDevTools.extensionActive"
+				},
+				{
+					"command": "azALDevTools.SortEditorProperties", 
+					"when": "editorLangId == al"
+				},
+				{
+					"command": "azALDevTools.SortWorkspaceProperties",
+					"when": "azALDevTools.extensionActive"
+				},
+				{
+					"command": "azALDevTools.SortEditorReportColumns",
+					"when": "editorLangId == al"
+				},
+				{
+					"command": "azALDevTools.SortWorkspaceReportColumns",
+					"when": "azALDevTools.extensionActive"
+				},
+				{
+					"command": "azALDevTools.SortEditorTableFields", 
+					"when": "editorLangId == al"
+				},
+				{
+					"command": "azALDevTools.SortWorkspaceTableFields",
+					"when": "azALDevTools.extensionActive"
+				},
+				{
+					"command": "azALDevTools.SortEditorVariables",
+					"when": "editorLangId == al"
+				},
+				{
+					"command": "azALDevTools.SortWorkspaceVariables",
+					"when": "azALDevTools.extensionActive"
+				},
+				{
+					"command": "azALDevTools.RunEditorCodeCleanup",
+					"when": "editorLangId == al"
+				},
+				{
+					"command": "azALDevTools.RunWorkspaceCodeCleanup",
+					"when": "azALDevTools.extensionActive"
+				},
+				{
+					"command": "azALDevTools.RunModifiedFilesCodeCleanup",
+					"when": "azALDevTools.extensionActive"
 				},
 				{
 					"command": "azALDevTools.alOutlineEnableFollowCursor",
@@ -462,6 +716,10 @@
 				{
 					"command": "azALDevTools.alOutlineDisableFollowCursor",
 					"when": "false"
+				},
+				{
+					"command": "azALDevTools.showExtensionLog",
+					"when": "azALDevTools.extensionActive"
 				}
 			],
 			"view/title": [
@@ -521,7 +779,8 @@
 				},
 				{
 					"command": "azALDevTools.newALFile",
-					"group": "navigation"
+					"group": "navigation",
+					"when": "azALDevTools.extensionActive"
 				}
 			],
 			"editor/title": [
