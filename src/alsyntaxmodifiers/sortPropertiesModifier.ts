@@ -1,12 +1,10 @@
 import { DevToolsExtensionContext } from "../devToolsExtensionContext";
-import { SyntaxModifier } from "./syntaxModifier";
+import { WorkspaceCommandSyntaxModifier } from "./workspaceCommandSyntaxModifier";
 
-export class SortPropertiesModifier  extends SyntaxModifier {
+export class SortPropertiesModifier  extends WorkspaceCommandSyntaxModifier {
 
     constructor(context: DevToolsExtensionContext) {
-        super(context, "sortProperties");
-        this._showProgress = true;
-        this._progressMessage = "Processing project files. Please wait...";
+        super(context, "Sort Properties", "sortProperties");
     }
 
 }

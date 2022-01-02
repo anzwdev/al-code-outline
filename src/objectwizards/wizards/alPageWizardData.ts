@@ -15,6 +15,8 @@ export class ALPageWizardData extends ALTableBasedWizardData {
     entityName : string;
     entitySetName : string;
     createTooltips: boolean;
+    reuseToolTips: boolean;
+    toolTipsSource: string[] | undefined;
     fastTabsData : ALPageWizardFastTabData[];
 
     constructor() {
@@ -33,6 +35,9 @@ export class ALPageWizardData extends ALTableBasedWizardData {
         this.apiVersion = "v1.0";
         this.entityName = "entityName";
         this.entitySetName = "entitySetName"
+        //tooltips
+        this.reuseToolTips = true;
+        this.toolTipsSource = undefined;
         //fast tabs
         this.fastTabsData = [];
     }

@@ -24,6 +24,6 @@ export class ALTableExtSyntaxBuilder {
 
         writer.writeEndObject();
 
-        return writer.toString();
+        return writer.toWizardGeneratedString();
     }
 }

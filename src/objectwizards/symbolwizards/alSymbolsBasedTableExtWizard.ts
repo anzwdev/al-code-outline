@@ -88,7 +88,7 @@ export class ALSymbolsBasedTableExtWizard extends ALSymbolsBasedWizard {
 
         writer.writeEndObject();
         
-        return writer.toString();
+        return writer.toWizardGeneratedString();
     }
 
     //#endregion

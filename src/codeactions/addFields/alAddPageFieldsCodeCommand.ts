@@ -14,7 +14,7 @@ export class ALAddPageFieldsCodeCommand extends ALBaseAddFieldsCodeCommand {
         super(context, 'AddPageFields', 'AZDevTools.ALAddPageFieldsCodeCommand');
     }
 
-    collectCodeActions(docSymbols: AZDocumentSymbolsLibrary, symbol: AZSymbolInformation | undefined, document: vscode.TextDocument, range: vscode.Range | vscode.Selection, context: vscode.CodeActionContext, actions: vscode.CodeAction[]) {
+    collectCodeActions(docSymbols: AZDocumentSymbolsLibrary, symbol: AZSymbolInformation | undefined, document: vscode.TextDocument, range: vscode.Range | vscode.Selection, diagnostics: vscode.Diagnostic[], actions: vscode.CodeAction[]) {
         if ((symbol) && 
             ((symbol.kind == AZSymbolKind.PageGroup) ||                 
              (symbol.kind == AZSymbolKind.PageRepeater) ||
@@ -43,6 +43,8 @@ export class ALAddPageFieldsCodeCommand extends ALBaseAddFieldsCodeCommand {
         let isFieldSymbol = ((symbol.kind == AZSymbolKind.PageField) || (symbol.kind == AZSymbolKind.PageUserControl));
         let addToolTips = !!config.get<boolean>('addToolTipsToPageFields');
         let useTableFieldCaptionsInApi = !!config.get<boolean>('useTableFieldCaptionsInApiFields');
+        let reuseToolTips = !config.get<boolean>('doNotReuseToolTipsFromOtherPages');
+        let toolTipsSource = config.get<string[]>('reuseToolTipsFromDependencies');
 
         if ((!pageSymbol) || 
             ((!isFieldSymbol) && (!symbol.contentRange)) || 
@@ -58,7 +60,7 @@ export class ALAddPageFieldsCodeCommand extends ALBaseAddFieldsCodeCommand {
 
         //get available fields from the language server
         let response = await this._toolsExtensionContext.toolsLangServerClient.getPageDetails(
-            new ToolsGetPageDetailsRequest(document.uri.fsPath, pageName, false, true));
+            new ToolsGetPageDetailsRequest(document.uri.fsPath, pageName, false, true, reuseToolTips, toolTipsSource));
         if ((!response) || (!response.symbol) || (!response.symbol.availableTableFields))
             return;
 
@@ -88,13 +90,11 @@ export class ALAddPageFieldsCodeCommand extends ALBaseAddFieldsCodeCommand {
                     selectedFields[i].captionLabel?.comment, useTableFieldCaptionsInApi);
             else
                 writer.writePageField(selectedFields[i].name!, selectedFields[i].caption,
-                    selectedFields[i].captionLabel?.comment, selectedFields[i].description, addToolTips);
+                    selectedFields[i].captionLabel?.comment, selectedFields[i].description, addToolTips, selectedFields[i].toolTips);
         }
         let source = writer.toString();
 
         await this.insertSymbolContentAsync(symbol, source);
     }
-
-
 
 }

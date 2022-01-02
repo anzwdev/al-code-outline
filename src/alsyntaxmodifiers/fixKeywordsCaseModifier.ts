@@ -1,12 +1,10 @@
 import { DevToolsExtensionContext } from "../devToolsExtensionContext";
-import { SyntaxModifier } from "./syntaxModifier";
+import { WorkspaceCommandSyntaxModifier } from "./workspaceCommandSyntaxModifier";
 
-export class FixKeywordsCaseModifier extends SyntaxModifier {
+export class FixKeywordsCaseModifier extends WorkspaceCommandSyntaxModifier {
 
     constructor(context: DevToolsExtensionContext) {
-        super(context, "fixKeywordsCase");
-        this._showProgress = true;
-        this._progressMessage = "Processing project files. Please wait...";
+        super(context, "Fix Keywords Case", "fixKeywordsCase");
     }
 
 

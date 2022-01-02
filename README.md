@@ -92,6 +92,7 @@ Extension adds VS Code editor code actions to some of al elements to help develo
  - Code generation actions
   - `Create interface` action available on the first line of codeunit declaration, it creates a new interface with all public functions from the codeunit
  - `Add all extension objects permissions` available on the first line of Permissions property. It adds all objects from the current extension to this property. If permissions are added to PermissionSet or PermisionSetExtension object, `table`, `tabledata`, `page`, `report`, `xmlport`, `query` and `codeunit` entries will be added. For all other object types, only `tabledata` entries will be created.
+ - `Reuse tooltip from other pages` action available on the first line of page/page extension field and `ToolTip` property, it allows to select tooltip value from a list of tooltips defined for this table field on other pages in the current project and all dependencies
  - `Add multiple fields` when cursor is at these elements in the editor:
   - "group" and "repeater" on pages
   - "group", "repeater", "addfirst", "addlast", "addafter" and "addbefore" on page extensions
@@ -113,8 +114,7 @@ Sort procedures, variables, properties and report columns actions can be also ru
 ]
 ```
 
-There are also some additional code actions available for warnings and errors reported by CodeCop code analyzer:
- - add parentheses for diagnostics AA0008,
+There are also some additional code actions available for warnings and errors reported by CodeCop code analyzer. Because of performance reasons, there are disabled by default and can be enabled by changing "alOutline.enableCodeCopFixes" setting to true:
  - remove variable for diagnostics AA0137,
  - add CopyStr for diagnostics AA0139
 
@@ -125,8 +125,12 @@ Extension adds a few commands that allow to automatically modify al code in the 
 * `Add Application Areas to the Active Project`: adds missing application areas to all page controls in the current project
 * `Add ToolTips to the Active Editor`: adds missing tooltips to all page fields and actions in the current editor
 * `Add ToolTips to the Active Project`: adds missing tooltips to all page fields and actions in the current project
+* `Refresh ToolTips from Dependencies in the Active Editor`: refreshes tooltips from dependencies in all page fields in the current editor
+* `Refresh ToolTips from Dependencies in the Active Project`: refreshes tooltips from dependencies in all page fields in the current project
 * `Add Table Field Captions to the Active Editor`: adds missing captions to all table fields in the current editor
 * `Add Table Field Captions to the Active Project`: adds missing captions to all table fields in the current project
+* `Lock Removed Table Field Captions in the Active Editor`: locks captions of removed table fields in the current editor
+* `Lock Removed Table Field Captions in the Active Project`: locks captions of removed table fields in the current project
 * `Add Page Controls Captions to the Active Editor`: adds missing captions to page controls in the current editor
 * `Add Page Controls Captions to the Active Project`: adds missing captions to page controls in the current project
 * `Add Object Captions to the Active Editor`: adds missing captions to all table, page, report, xmlport and query objects in the current editor
@@ -143,6 +147,8 @@ Extension adds a few commands that allow to automatically modify al code in the 
 * `Convert Object Ids to Names in the Active Project`: converts object ids to names in the current project
 * `Remove Unused Variables from the Active Editor`: removes unused variables from the current editor
 * `Remove Unused Variables from the Active Project`: removes unused variables from the current project
+* `Remove Begin..End around Single Statements from the Active Editor`: removes begin..end around single statement from the current editor
+* `Remove Begin..End around Single Statements from the Active Project`: removes begin..end around single statement from the current project
 * `Sort Permissions in the Active Editor`: sorts permissions in the current editor
 * `Sort Permissions in the Active Project`: sorts permissions in the current project
 * `Sort Procedures in the Active Editor`: sorts procedures in the current editor
@@ -157,8 +163,13 @@ Extension adds a few commands that allow to automatically modify al code in the 
 * `Sort Variables in the Active Project`: sorts variables in the current project
 * `Sort Included PermissionSets in the Active Editor`: sorts permission sets in IncludedPermissionSets property in the current editor
 * `Sort Included PermissionSets in the Active Project`: sorts permission sets in IncludedPermissionSets property in the current project
+* `Run Code Cleanup on the Active Editor`: runs code cleanup on the current editor
+* `Run Code Cleanup on the Active Project`: runs code cleanup on the current project
+* `Run Code Cleanup on Uncommited Files in the Active Project`: runs code cleanup on all uncommited al files in the current project
 
 Default application area and templates for field and action tooltips can be specified using these VS Code settings: `alOutline.defaultAppArea`, `alOutline.pageActionToolTip` and `alOutline.pageFieldToolTip` 
+
+List of actions run by code cleanup commands can be specified in `alOutline.codeCleanupActions` setting.
 
 ![Action images](resources/screen2-addtooltips.gif)
 
@@ -232,18 +243,34 @@ This extension contributes the following settings:
 * `alOutline.promptForObjectName`: when generating a new object, ask the user to input the object name
 * `alOutline.promptForFilePath`: when generating a new file, ask the user to specify a path relative to the root of the project-folder
 * `alOutline.stripNonAlphanumericCharactersFromObjectNames`: always strip non-alphanumeric characters from generated object names
+* `alOutline.noEmptyLinesAtTheEndOfWizardGeneratedFiles`: don't create empty lines at the end of files generated by the object wizards
 * `alOutline.webClientPort`: web client port number, use 0 for default http/https ports
 * `alOutline.openDefinitionInNewTab`: set to true to always open documents in a new tab from "Go to definition" command in "AL Object Browser"
 * `fieldsSelectionOrder`: specifies how "Add multiple fields" functionality adds fields, available options are: "alphabetic" and "selection order"
-* `alOutline.codeActionsOnSave`: list of code actions that should be run on document save, available options are: SortReportColumns, SortProperties, SortProcedures, SortVariables
+* `fixCodeCopMissingParenthesesOnSave`: if set to true, it will use warnings reported by CodeCode to add missing parentheses to the current file during save. It requires CodeCop code analyzer to be running and `alOutline.enableCodeCopFixes` setting to be set to true.
+* `enableCodeCopFixes`: if set to true, enables code actions fixing these CodeCop warnings:
+  - remove variable for diagnostics AA0137,
+  - add CopyStr for diagnostics AA0139  
+* `alOutline.codeActionsOnSave`: list of code actions that should be run on document save, available options are: 
+  - SortTableFields, 
+  - SortReportColumns,
+  - SortProperties,
+  - SortProcedures,
+  - SortVariables,
+  - SortPermissions,
+  - SortPermissionSetList,
+  - FormatDocument
 * `codeActionsOnSaveIgnoreFiles`: array of vscode patters of files that should be ignored when OnSave code actions are run. To make it work, the pattern should always start with '\*\*/', so for all files in folder 'OldFiles' the pattern should be '\*\*/OldFiles/*.al'
 * `alOutline.pageActionToolTip`: tooltip template for page actions. Use %1 as placeholder for action caption or name
 * `alOutline.pageFieldToolTip`: tooltip template for page fields. Use %1 or %Caption% as placeholder for field caption or name and %Caption.Comment% for field caption comment. The default value is "Specifies the value of the %1 field"
 * `alOutline.pageFieldToolTipComment`: tooltip comment template for page fields. Use %1 or %Caption% as placeholder for field caption or name and %Caption.Comment% for field caption comment. The default value is "%Caption.Comment%". If these default values of pageFieldToolTip and pageFieldToolTipComment settings are used then if table field caption is defined as ```Caption = 'Customer No.', Comment = 'Comment Text'``` then created ToolTip will be defined as ```ToolTip = 'Specifies the value of  the Customer No. field', Comment = 'Comment Text'```
 * `alOutline.useTableFieldDescriptionAsToolTip`: If set to true, table field description will be used as tooltip by commands adding missing captions to pages and page wizard
 * `alOutline.addToolTipsToPageFields`: set to true to add tooltips to page fields when 'Add multiple fields' action is used
-* `alOutline.useTableFieldCaptionsInApiFields`: set to true, to use table field captions in API pages fields like in standard BC APIs v 2.0 (i.e. ```Caption='Customer No.';```), set to false to use camelCase api page field name in api page field caption together with Locked property like in standard BC APIs v 1.0 (i.e. ```Caption='customerNo', Locked = true;```). Default value is true.
+* `alOutline.useTableFieldCaptionsInApiFields`: set to true, to use table field captions in API pages fields like in standard BC APIs v 2.0 (i.e. ```Caption='Customer No.';```), set to false to use camelCase api page field name in api page field caption together with Locked property like in standard BC APIs v 1.0 (i.e. ```Caption='customerNo', Locked = true;```). Default value is true
 * `alOutline.lockRemovedFieldsCaptions`: set to true to lock captions of removed fields when 'Add Table Field Captions' command is run
+* `alOutline.codeCleanupActions`: array of names of actions that will be run by code cleanup commands. These actions are available: RemoveWithStatements, AddApplicationAreas, AddToolTips, RefreshToolTips, AddTableFieldCaptions, "LockRemovedFieldCaptions", AddPageFieldCaptions, AddObjectCaptions, FixKeywordsCase, FixIdentifiersCase, ConvertObjectIdsToNames, AddMissingParentheses, AddDataClassifications, RemoveUnusedVariables, SortPermissions, SortPermissionSetList, SortProcedures, SortProperties, SortReportColumns, SortTableFields, SortVariables, RemoveBeginEnd, FormatDocument, TrimTrailingWhitespace
+* `alOutline.doNotReuseToolTipsFromOtherPages`: set to true to disable reusing field tooltips from other pages in the page wizard, 'add multiple fields' page code action and 'add missing tooltips' command
+* `alOutline.reuseToolTipsFromDependencies`: reuse tooltips only defined in these dependencies, if empty, all dependencies will be used. Each entry should be defined as "dependency publisher" + "space" + "-" + "space" + "dependency name"
 
 ## Known Issues
 

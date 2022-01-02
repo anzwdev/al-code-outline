@@ -1,130 +1,131 @@
 import * as vscode from 'vscode';
 import { DevToolsExtensionContext } from "../devToolsExtensionContext";
-import { ToolsWorkspaceCommandRequest } from '../langserver/toolsWorkspaceCommandRequest';
-import { ToolsWorkspaceCommandResponse } from '../langserver/toolsWorkspaceCommandResponse';
+import { AZSymbolInformation } from '../symbollibraries/azSymbolInformation';
 import { TextRange } from '../symbollibraries/textRange';
-import { NumberHelper } from '../tools/numberHelper';
 import { TextEditorHelper } from '../tools/textEditorHelper';
+import { ISyntaxModifierResult } from './iSntaxModifierResult';
 
 export class SyntaxModifier {
-    protected _commandName: string;
     protected _context: DevToolsExtensionContext;
     protected _showProgress: boolean;
     protected _progressMessage: string;
+    name: string;
+    modifiedFilesOnly: boolean;
 
-    constructor(context: DevToolsExtensionContext, commandName: string) {
-        this._commandName = commandName;
+    constructor(context: DevToolsExtensionContext, newName: string) {
         this._context = context;
-        this._showProgress = false;
-        this._progressMessage = 'Please wait...';
+        this._showProgress = true;
+        this._progressMessage = "Processing project files. Please wait...";
+        this.name = newName;
+        this.modifiedFilesOnly = false;
     }
 
-    async RunForWorkspace() {
+    async runForWorkspace() {
         let confirmation = await this.confirmRunForWorkspace();
         if (!confirmation)
             return;
-
-        await this.askForParameters();
 
         let workspaceUri = TextEditorHelper.getActiveWorkspaceFolderUri();
         vscode.workspace.saveAll();
         if (!workspaceUri)
             return;
 
-        let request: ToolsWorkspaceCommandRequest = new ToolsWorkspaceCommandRequest(this._commandName, '', workspaceUri.fsPath, undefined, undefined, this.getParameters(workspaceUri));       
-        let response = await this.runWorkspaceCommand(request);
+        let cont = await this.askForParameters(workspaceUri);
+        if (!cont) {
+            vscode.window.showInformationMessage("Command cancelled");
+            return;
+        }
 
-        if (response) {
-            if ((response.error) && (response.errorMessage)) {
-                let errorMessage = response.errorMessage;
-                if (response.parameters)
-                errorMessage = NumberHelper.zeroIfNotDef(response.parameters.noOfChangedFiles).toString() + " file(s) modified. " + errorMessage;
-                vscode.window.showErrorMessage(errorMessage);
-            } else
-                this.showWorkspaceSuccessMessage(response);
+        let result = await this.runForWorkspaceWithoutUI(workspaceUri);
+
+        if ((result) && (result.message)) {
+            if (result.success)
+                vscode.window.showInformationMessage(result.message);
+            else
+                vscode.window.showErrorMessage(result.message);
         }
     }
 
-    protected showWorkspaceSuccessMessage(response: ToolsWorkspaceCommandResponse) {
-        vscode.window.showInformationMessage(
-            NumberHelper.zeroIfNotDef(response.parameters.noOfChangedFiles).toString() +
-            ' file(s) modified.');
-    }
-
-    protected showDocumentSuccessMessage(response: ToolsWorkspaceCommandResponse) {
-        vscode.window.showInformationMessage(
-            'Command completed.');
+    async runForWorkspaceWithoutUI(workspaceUri: vscode.Uri): Promise<ISyntaxModifierResult | undefined> {
+        return undefined;
     }
 
     protected async confirmRunForWorkspace(): Promise<boolean> {
         let confirmation = await vscode.window.showInformationMessage(
-            'Do you want to run this command for all files in the current project folder?', 
+            'Do you want to run this command for all files in the current project folder?',
             'Yes', 'No');
         return (confirmation === 'Yes');
     }
 
-    protected async runWorkspaceCommand(request: ToolsWorkspaceCommandRequest): Promise<ToolsWorkspaceCommandResponse | undefined> {
-        if (this._showProgress)
-            return await vscode.window.withProgress<ToolsWorkspaceCommandResponse | undefined>({
-                    location: vscode.ProgressLocation.Notification,
-                    title: this._progressMessage
-                }, async (progress) => {
-                    return await this._context.toolsLangServerClient.workspaceCommand(request);
-                });
-        return await this._context.toolsLangServerClient.workspaceCommand(request);
-    }
-
     protected getParameters(uri: vscode.Uri): any {
-        return {};
+        let values: any = {};
+        if (this.modifiedFilesOnly)
+            values.modifiedFilesOnly = true;
+        return values;
     }
 
-    async RunForActiveEditor() {
+    async runForActiveEditor() {
         if (!vscode.window.activeTextEditor)
             return;
-        await this.RunForDocument(vscode.window.activeTextEditor.document, undefined, true);
+        await this.runForDocument(vscode.window.activeTextEditor.document, undefined, true);
     }
 
-    async RunForDocument(document: vscode.TextDocument, range: TextRange | undefined, withUI: boolean) {
+    async runForDocumentSymbol(document: vscode.TextDocument, symbol: AZSymbolInformation, withUI: boolean) {
+        await this.runForDocument(document, symbol.range, withUI);
+    }
+
+    async runForDocument(document: vscode.TextDocument, range: TextRange | undefined, withUI: boolean) {
         let text = document.getText();
 
         if (!text)
             return;
 
-        await this.askForParameters();
-
         let workspaceUri = TextEditorHelper.getActiveWorkspaceFolderUri();
-        let workspacePath = '';
-        if (workspaceUri)
-            workspacePath = workspaceUri.fsPath;                
-        let filePath: string | undefined = undefined;
-        if (document.uri)
-            filePath = document.uri.fsPath;
+        if ((!workspaceUri) || (!document.uri) || (!document.uri.fsPath))
+            return;
 
-        let request: ToolsWorkspaceCommandRequest = new ToolsWorkspaceCommandRequest(this._commandName, text, workspacePath, filePath, range, this.getParameters(document.uri));
-        let response = await this.runWorkspaceCommand(request);
-        if (response) {
-            if ((response.error) && (response.errorMessage)) {
-                if (withUI)
-                    vscode.window.showErrorMessage(response.errorMessage);
-            } else if ((response.source) && (response.source != text)) {
-                text = response.source;
-                const edit = new vscode.WorkspaceEdit();
-                var firstLine = document.lineAt(0);
-                var lastLine = document.lineAt(document.lineCount - 1);
-                var textRange = new vscode.Range(0,
-                    firstLine.range.start.character,
-                    document.lineCount - 1,
-                    lastLine.range.end.character);
-                edit.replace(document.uri, textRange, text);
-                await vscode.workspace.applyEdit(edit);
-                if (withUI)
-                    this.showDocumentSuccessMessage(response);
-            } else if (withUI)
-                vscode.window.showInformationMessage('There was nothing to change.');
+        let cont = await this.askForParameters(document.uri);
+        if (!cont) {
+            vscode.window.showInformationMessage("Command cancelled");
+            return;
         }
+
+        let result = await this.runForDocumentWithoutUI(text, workspaceUri, document.uri, range);
+
+        if (result) {
+            if (!result.success) {
+                if ((withUI) && (result.message))
+                    vscode.window.showErrorMessage(result.message);
+            } else {
+                if ((result.source) && (result.source != text)) {
+                    text = result.source;
+                    const edit = new vscode.WorkspaceEdit();
+                    var firstLine = document.lineAt(0);
+                    var lastLine = document.lineAt(document.lineCount - 1);
+                    var textRange = new vscode.Range(0,
+                        firstLine.range.start.character,
+                        document.lineCount - 1,
+                        lastLine.range.end.character);
+                    edit.replace(document.uri, textRange, text);
+                    await vscode.workspace.applyEdit(edit);
+                }
+                if ((withUI) && (result.message))
+                    vscode.window.showInformationMessage(result.message);
+            }
+        } else if (withUI)
+            vscode.window.showInformationMessage('There was nothing to change.');
     }
 
-    protected async askForParameters() {
+    async runForDocumentWithoutUI(text: string, workspaceUri: vscode.Uri, documentUri: vscode.Uri, range: TextRange | undefined): Promise<ISyntaxModifierResult | undefined> {
+        return undefined;
+    }
+
+    async askForParameters(uri: vscode.Uri | undefined): Promise<boolean> {
+        return true;
+    }
+
+    hideProgress() {
+        this._showProgress = false;
     }
 
 }

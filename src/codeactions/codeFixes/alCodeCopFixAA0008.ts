@@ -10,16 +10,18 @@ export class ALCodeCopFixAA0008 extends ALCodeFix {
         super(context, "AA0008");
     }
 
-    collectCodeActions(docSymbols: AZDocumentSymbolsLibrary, symbol: AZSymbolInformation | undefined, document: vscode.TextDocument, range: vscode.Range | vscode.Selection, context: vscode.CodeActionContext, actions: vscode.CodeAction[]) {
+    collectCodeActions(docSymbols: AZDocumentSymbolsLibrary, symbol: AZSymbolInformation | undefined, document: vscode.TextDocument, range: vscode.Range | vscode.Selection, diagnostics: vscode.Diagnostic[], actions: vscode.CodeAction[]) {
         let settings =  vscode.workspace.getConfiguration('alOutline', document.uri);
-        let fixOnSave = settings.get<boolean>('fixCodeCopMissingParenthesesOnSave');      
+        let fixOnSave: boolean = !!settings.get<boolean>('fixCodeCopMissingParenthesesOnSave');
+
         if (fixOnSave) {
             let onSaveEdit: vscode.WorkspaceEdit | undefined = undefined;
-            for (let i=0; i<context.diagnostics.length; i++) {
-                if (context.diagnostics[i].code === this.diagnosticCode) {
+            for (let i=0; i<diagnostics.length; i++) {
+                let diagCode: any = diagnostics[i].code;
+                if ((diagCode) && ((diagCode == this.diagnosticCode) || (diagCode.value == this.diagnosticCode))) {
                     if (!onSaveEdit)
                         onSaveEdit = new vscode.WorkspaceEdit();
-                    onSaveEdit.insert(document.uri, context.diagnostics[i].range.end, '()');
+                    onSaveEdit.insert(document.uri, diagnostics[i].range.end, '()');
                 }
             }
             if (onSaveEdit) {

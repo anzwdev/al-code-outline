@@ -5,6 +5,7 @@ class PermissionSetWizard extends BaseObjectWizard {
         this._srcPermSets = new FilteredList('srcpermsfilter', 'srcperms');
         this._destPermSets = new FilteredList('destpermsfilter', 'destperms');
         this.registerPermSSelectionEvents();
+        this.initCaptionLenUpdate();
     }
 
     onMessage(message) {
@@ -22,10 +23,15 @@ class PermissionSetWizard extends BaseObjectWizard {
         super.setData(data);
 
         if (this._data) {
+
             //initialize inputs
             document.getElementById("objectid").value = this._data.objectId;
             document.getElementById("objectname").value = this._data.objectName;
             document.getElementById("inclallobjects").checked = this._data.inclAllObjects;
+
+            let ctObjCaption = document.getElementById("objectcaption");
+            if (ctObjCaption)
+                ctObjCaption.value = this._data.objectCaption;
 
             this.updateControls();
         }
@@ -42,6 +48,7 @@ class PermissionSetWizard extends BaseObjectWizard {
             data: {
                 objectId : this._data.objectId,
                 objectName : this._data.objectName,
+                objectCaption: this._data.objectCaption,
                 inclAllObjects : this._data.inclAllObjects,
                 selectedPermissionSetList: this._data.selectedPermissionSetList
             }
@@ -58,6 +65,10 @@ class PermissionSetWizard extends BaseObjectWizard {
     collectStep1Data(finishSelected) {
         this._data.objectId = document.getElementById("objectid").value;
         this._data.objectName = document.getElementById("objectname").value;
+
+        let ctObjCaption = document.getElementById("objectcaption");
+        if (ctObjCaption)
+            this._data.objectCaption = ctObjCaption.value;
         this._data.inclAllObjects = document.getElementById("inclallobjects").checked;
     }
 
@@ -91,10 +102,10 @@ class PermissionSetWizard extends BaseObjectWizard {
         document.getElementById('mselleft').addEventListener('click', event => {
             this.onMovePermSLeft();
         });      
-        document.getElementById('srcfields').addEventListener('dblclick', event => {
+        document.getElementById('srcperms').addEventListener('dblclick', event => {
             this.onMovePermSRight();
         });
-        document.getElementById('destfields').addEventListener('dblclick', event => {
+        document.getElementById('destperms').addEventListener('dblclick', event => {
             this.onMovePermSLeft();
         });
     }
@@ -117,6 +128,21 @@ class PermissionSetWizard extends BaseObjectWizard {
 
     getSelectedPermissionSets() {
         return this._destPermSets.getAll();
+    }
+
+    initCaptionLenUpdate() {
+        this._ctCaption = document.getElementById('objectcaption');
+        this._ctCaptionLen = document.getElementById('objectcaptionlen');
+        if ((this._ctCaption) && (this._ctCaptionLen)) {
+            this.updateCaptionLen();
+            this._ctCaption.addEventListener('input', event => {
+                this.updateCaptionLen();
+            });   
+        }
+    }
+
+    updateCaptionLen() {
+        this._ctCaptionLen.innerText = this._ctCaption.value.length.toString();
     }
 
 }

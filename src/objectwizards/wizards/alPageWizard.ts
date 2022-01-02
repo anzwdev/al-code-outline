@@ -26,6 +26,8 @@ export class ALPageWizard extends ALObjectWizard {
         wizardData.objectId = objectId.toString();
         wizardData.objectName = '';//settings.getInputNameVariable();
         wizardData.createTooltips = !!config.get<boolean>('addToolTipsToPageFields');
+        wizardData.reuseToolTips = !config.get<boolean>('doNotReuseToolTipsFromOtherPages');
+        wizardData.toolTipsSource = config.get<string[]>('reuseToolTipsFromDependencies');
 
         let wizardPage : ALPageWizardPage = new ALPageWizardPage(this._toolsExtensionContext, settings, wizardData);
         wizardPage.show();

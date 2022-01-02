@@ -1,26 +1,34 @@
 import * as vscode from 'vscode';
 import { DevToolsExtensionContext } from "../devToolsExtensionContext";
-import { TextEditorHelper } from '../tools/textEditorHelper';
 import { NumberHelper } from '../tools/numberHelper';
-import { ToolsWorkspaceCommandRequest } from '../langserver/toolsWorkspaceCommandRequest';
 import { StringHelper } from '../tools/stringHelper';
-import { SyntaxModifier } from './syntaxModifier';
 import { ToolsWorkspaceCommandResponse } from '../langserver/toolsWorkspaceCommandResponse';
+import { WorkspaceCommandSyntaxModifier } from './workspaceCommandSyntaxModifier';
 
-export class ToolTipModifier extends SyntaxModifier {
+export class ToolTipModifier extends WorkspaceCommandSyntaxModifier {
 
     constructor(context: DevToolsExtensionContext) {
-        super(context, "addToolTips");
-        this._showProgress = true;
-        this._progressMessage = "Processing project files. Please wait...";
+        super(context, "Add ToolTips", "addToolTips");
     }
 
     protected getParameters(uri: vscode.Uri): any {
         let parameters = super.getParameters(uri);
-        parameters.toolTipField = this.getFieldTooltip(uri),
-        parameters.toolTipFieldComment = this.getFieldTooltipComment(uri),
-        parameters.toolTipAction = this.getActionTooltip(uri),
-        parameters.useFieldDescription = this.getUseFieldDescription(uri)
+
+        let config = vscode.workspace.getConfiguration('alOutline', uri);
+        
+        parameters.toolTipField = this.getFieldTooltip(config);
+        parameters.toolTipFieldComment = this.getFieldTooltipComment(config);
+        parameters.toolTipAction = this.getActionTooltip(config);
+        parameters.useFieldDescription = this.getUseFieldDescription(config);
+
+        parameters.reuseToolTips = !config.get<boolean>('doNotReuseToolTipsFromOtherPages');
+        let toolTipsSource = config.get<string[]>('reuseToolTipsFromDependencies');
+        if (toolTipsSource)
+            for (let i=0; i<toolTipsSource.length; i++) {
+                let name = "toolTipDependency" + i.toString();
+                parameters[name] = toolTipsSource[i];
+            }
+
         return parameters;
     }
 
@@ -31,49 +39,47 @@ export class ToolTipModifier extends SyntaxModifier {
         return (confirmation === 'Yes');
     }
 
-    protected showWorkspaceSuccessMessage(response: ToolsWorkspaceCommandResponse) {
-        vscode.window.showInformationMessage(
-            NumberHelper.zeroIfNotDef(response.parameters.noOfChanges).toString() +
+    protected getSuccessWorkspaceMessage(response: ToolsWorkspaceCommandResponse): string {
+        return NumberHelper.zeroIfNotDef(response.parameters.noOfChanges).toString() +
             ' toolTip(s) added to ' +
             NumberHelper.zeroIfNotDef(response.parameters.noOfChangedFiles).toString() +
-            ' file(s).');
+            ' file(s).';
     }
 
-    protected showDocumentSuccessMessage(response: ToolsWorkspaceCommandResponse) {
-        vscode.window.showInformationMessage(
-            response.parameters.noOfChanges.toString() +
-            ' ToolTip(s) added.');
+    protected getSuccessDocumentMessage(response: ToolsWorkspaceCommandResponse): string {
+        return response.parameters.noOfChanges.toString() +
+            ' ToolTip(s) added.';
     }
 
-    protected getActionTooltip(uri: vscode.Uri | undefined): string {
+    protected getActionTooltip(config: vscode.WorkspaceConfiguration): string {
         let toolTip = StringHelper.emptyIfNotDef(
-            vscode.workspace.getConfiguration('alOutline', uri).get('pageActionToolTip'));
+            config.get('pageActionToolTip'));
         if (toolTip == '') {
             toolTip = 'Executes the action %1';
         }
         return toolTip;
     }
 
-    protected getFieldTooltip(uri: vscode.Uri | undefined): string {
+    protected getFieldTooltip(config: vscode.WorkspaceConfiguration): string {
         let toolTip = StringHelper.emptyIfNotDef(
-            vscode.workspace.getConfiguration('alOutline', uri).get('pageFieldToolTip'));
+            config.get('pageFieldToolTip'));
         if (toolTip == '') {
             toolTip = 'Specifies the value for the field %1';
         }
         return toolTip;
     }
 
-    protected getFieldTooltipComment(uri: vscode.Uri | undefined): string {
+    protected getFieldTooltipComment(config: vscode.WorkspaceConfiguration): string {
         let toolTip = StringHelper.emptyIfNotDef(
-            vscode.workspace.getConfiguration('alOutline', uri).get('pageFieldToolTipComment'));
+            config.get('pageFieldToolTipComment'));
         if (toolTip == '') {
             toolTip = '%Caption.Comment%';
         }
         return toolTip;
     }
 
-    protected getUseFieldDescription(uri: vscode.Uri | undefined): boolean {
-        let value : boolean = !!vscode.workspace.getConfiguration('alOutline', uri).get<boolean>('useTableFieldDescriptionAsToolTip');
+    protected getUseFieldDescription(config: vscode.WorkspaceConfiguration): boolean {
+        let value : boolean = !!config.get<boolean>('useTableFieldDescriptionAsToolTip');
         return value;
     }
 

@@ -129,7 +129,7 @@ export class ALSymbolsBasedPageWizard extends ALSymbolsBasedWizard {
         tableSymbol.collectChildSymbols(AZSymbolKind.Field, true, fieldList);
         fieldList.forEach(
             item => {
-                writer.writePageField(item.name, item.name, undefined, undefined, false);
+                writer.writePageField(item.name, item.name, undefined, undefined, false, undefined);
             }
         );
         
@@ -139,10 +139,9 @@ export class ALSymbolsBasedPageWizard extends ALSymbolsBasedWizard {
         
         writer.writeEndLayout();
         
-        writer.writeLine("");
         writer.writeEndObject();
         
-        return writer.toString();
+        return writer.toWizardGeneratedString();
     }
 
     //#endregion

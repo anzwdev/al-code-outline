@@ -1,15 +1,13 @@
 import * as vscode from 'vscode';
 import { DevToolsExtensionContext } from "../devToolsExtensionContext";
 import { NameValueQuickPickItem } from '../tools/nameValueQuickPickItem';
-import { SyntaxModifier } from "./syntaxModifier";
+import { WorkspaceCommandSyntaxModifier } from './workspaceCommandSyntaxModifier';
 
-export class RemoveUnusedVariablesModifier extends SyntaxModifier {
+export class RemoveUnusedVariablesModifier extends WorkspaceCommandSyntaxModifier {
     protected _variableTypes: any;
 
     constructor(context: DevToolsExtensionContext) {
-        super(context, "removeUnusedVariables");
-        this._showProgress = true;
-        this._progressMessage = "Processing project files. Please wait...";
+        super(context, "Remove Unused Variables", "removeUnusedVariables");
         this._variableTypes = {};
     }
 
@@ -22,7 +20,7 @@ export class RemoveUnusedVariablesModifier extends SyntaxModifier {
         return parameters;
     }
 
-    protected async askForParameters() {
+    async askForParameters(uri: vscode.Uri | undefined): Promise<boolean> {
         this.loadState();
         let quickPickItems = [
             new NameValueQuickPickItem('Global variables', 'removeGlobalVariables', this._variableTypes.removeGlobalVariables),
@@ -33,6 +31,9 @@ export class RemoveUnusedVariablesModifier extends SyntaxModifier {
         let selectedValues = await vscode.window.showQuickPick(
             quickPickItems, { canPickMany: true, placeHolder: 'Select variables to remove' });
 
+        if (!selectedValues)
+            return false;
+
         this.clearVariableTypes();
         if (selectedValues) {
             for (let i=0; i<selectedValues.length; i++) {
@@ -40,6 +41,8 @@ export class RemoveUnusedVariablesModifier extends SyntaxModifier {
             }
         }
         this.saveState();
+
+        return true;
     }
 
     private loadState() {

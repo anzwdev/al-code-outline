@@ -12,10 +12,11 @@ export class ALCodeFix extends ALCodeAction {
         this.diagnosticCode = diagCode;
     }
 
-    collectCodeActions(docSymbols: AZDocumentSymbolsLibrary, symbol: AZSymbolInformation | undefined, document: vscode.TextDocument, range: vscode.Range | vscode.Selection, context: vscode.CodeActionContext, actions: vscode.CodeAction[]) {
-        for (let i=0; i<context.diagnostics.length; i++) {
-            if (context.diagnostics[i].code === this.diagnosticCode) {
-                let codeFix = this.createFix(document, context.diagnostics[i]);
+    collectCodeActions(docSymbols: AZDocumentSymbolsLibrary, symbol: AZSymbolInformation | undefined, document: vscode.TextDocument, range: vscode.Range | vscode.Selection, diagnostics: vscode.Diagnostic[], actions: vscode.CodeAction[]) {
+        for (let i=0; i<diagnostics.length; i++) {
+            let diagCode: any = diagnostics[i].code;
+            if ((diagCode) && ((diagCode === this.diagnosticCode) || (diagCode.value === this.diagnosticCode))) {
+                let codeFix = this.createFix(document, diagnostics[i]);
                 if (codeFix)
                     actions.push(codeFix);
             }

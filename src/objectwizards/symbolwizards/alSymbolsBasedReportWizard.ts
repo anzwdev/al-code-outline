@@ -84,7 +84,7 @@ export class ALSymbolsBasedReportWizard extends ALSymbolsBasedWizard {
 
         writer.writeEndObject();
         
-        return writer.toString();
+        return writer.toWizardGeneratedString();
     }
 
     private appendDataSet(writer : ALSyntaxWriter, tableSymbol : AZSymbolInformation) {

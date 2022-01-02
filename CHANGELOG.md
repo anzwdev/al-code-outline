@@ -1,5 +1,36 @@
 # Change Log
 
+## 3.0.25
+ - Issue #249 - Reuse tooltip from other pages
+   - new commands `Refresh ToolTips from Dependencies in the Active Editor/Project` to refresh page field tooltips from existing tooltips defined in dependencies
+   - page wizard, `add multiple fields` code action and `Add ToolTips to the Active Editor/Project` commands reuse tooltips from other pages
+   - in both cases listed above, if there are more different tooltips defined for a field, a first one that logic finds will be used
+   - new `Reuse tooltip from other pages` code action available on page and page extension fields and on ToolTip property
+   - reusing tooltips in page wizard, `add multiple fields` code action and `Add ToolTips to the Active Editor/Project` commands can be disabled by setting `alOutline.doNotReuseToolTipsFromOtherPages` setting to true, source of tooltips can also be limited to selected dependencies using `alOutline.reuseToolTipsFromDependencies` setting
+ - Issue #215 - Empty lines at end of new files
+   - new setting "alOutline.noEmptyLinesAtTheEndOfWizardGeneratedFiles"
+ - Issue #261 - CodeActionsOnSave is terribly slow (AL <> AL code outline)
+   - CodeCop warning fixes code actions are disabled by default, they can be enabled by changing "alOutline.enableCodeCopFixes" setting to true
+   - "FormatDocument" value has been added to the list of available actions in "alOutline.codeActionsOnSave" setting
+ - Issue #275 - Symbols Browser - Go to definition (project file or server definition) - shared file access fix
+ - Issue #295 - New "Code Cleanup" commands for workspace, editor and uncommited only workspace files
+ - Issue #295 - New "Lock Removed Table Field Captions" commands for workspace and editor
+ - Issue #300 - Idea: Fix begin..end (AA0005) warnings in project/editor
+ - Issue #301 - PermissionSet wizard - PermissionSet name length cannot be longer than 20 characters
+ - Issue #306 - Add MaxLength property to Caption when Permission Set is created
+ - Issue #307 - Allow the Syntax Visualizer sash to be moved further
+ - Issue #308 - If possible, only show context menu items when relevant
+ - New structure of problems reported by CodeCop was preventing CodeCop code action fixes from running
+
+Thank you
+ - mjmatthiesen for reporting idea #215
+ - fvet for reporting issue #261
+ - GreatScott000 for reporting issue #275
+ - fvet and dkatson for issue #295 ideas
+ - dannoe for posting idea #300
+ - rvanbekkum for reporting issue #306
+ - jhoek for reporting issues #307 and #308
+
 ## 3.0.24
  - Issue #293 - Sorting code-actions as commands for current file and active project
  - Issue #296 - Codeunit Wizard does not copy temporary flags

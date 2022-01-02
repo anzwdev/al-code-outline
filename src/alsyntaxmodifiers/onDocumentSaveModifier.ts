@@ -1,13 +1,14 @@
 import * as vscode from 'vscode';
 import { DevToolsExtensionContext } from "../devToolsExtensionContext";
 import { TextRange } from '../symbollibraries/textRange';
-import { SyntaxModifier } from "./syntaxModifier";
+import { WorkspaceCommandSyntaxModifier } from './workspaceCommandSyntaxModifier';
 
-export class OnDocumentSaveModifier extends SyntaxModifier {
+export class OnDocumentSaveModifier extends WorkspaceCommandSyntaxModifier {
     protected _commandsList: string | undefined;
 
     constructor(context: DevToolsExtensionContext) {
-        super(context, "runMultiple");
+        super(context, "Run Multiple Commands", "runMultiple");
+        this._showProgress = false;
         this._context = context;
         this._commandsList = undefined;
     }
@@ -18,7 +19,7 @@ export class OnDocumentSaveModifier extends SyntaxModifier {
         if ((actionsList) && (actionsList.length > 0)) {
             for (let i=0; i<actionsList.length; i++) {
                 let name = actionsList[i];
-                name = name.substr(0,1).toLowerCase() + name.substr(1);
+                name = name.substring(0,1).toLowerCase() + name.substring(1);
                 if (i > 0)
                     this._commandsList = this._commandsList + ',' + name;
                 else
@@ -34,9 +35,9 @@ export class OnDocumentSaveModifier extends SyntaxModifier {
         }
     }
 
-    async RunForDocument(document: vscode.TextDocument, range: TextRange | undefined, withUI: boolean) {
+    async runForDocument(document: vscode.TextDocument, range: TextRange | undefined, withUI: boolean) {
         this.getCommandsList(document.uri);
-        if (this._commandsList)
-            await super.RunForDocument(document, range, withUI);
+        if ((this._commandsList) && (this._commandsList != ''))
+            await super.runForDocument(document, range, withUI);
     }
 }

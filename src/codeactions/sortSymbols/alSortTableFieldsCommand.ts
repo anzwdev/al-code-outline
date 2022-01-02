@@ -11,7 +11,7 @@ export class ALSortTableFieldsCommand extends ALCodeAction {
         super(context, "SortTableFields");
     }
 
-    collectCodeActions(docSymbols: AZDocumentSymbolsLibrary, symbol: AZSymbolInformation | undefined, document: vscode.TextDocument, range: vscode.Range | vscode.Selection, context: vscode.CodeActionContext, actions: vscode.CodeAction[]) {
+    collectCodeActions(docSymbols: AZDocumentSymbolsLibrary, symbol: AZSymbolInformation | undefined, document: vscode.TextDocument, range: vscode.Range | vscode.Selection, diagnostics: vscode.Diagnostic[], actions: vscode.CodeAction[]) {
         if (!this.canRunOnSave(document)) {
             let edit: vscode.WorkspaceEdit | undefined = undefined;
 

@@ -1,18 +1,14 @@
 import * as vscode from 'vscode';
 import { DevToolsExtensionContext } from "../devToolsExtensionContext";
-import { TextEditorHelper } from '../tools/textEditorHelper';
 import { NumberHelper } from '../tools/numberHelper';
-import { ToolsWorkspaceCommandRequest } from '../langserver/toolsWorkspaceCommandRequest';
-import { SyntaxModifier } from './syntaxModifier';
 import { ToolsWorkspaceCommandResponse } from '../langserver/toolsWorkspaceCommandResponse';
+import { WorkspaceCommandSyntaxModifier } from './workspaceCommandSyntaxModifier';
 
-export class AppAreasModifier extends SyntaxModifier {
+export class AppAreasModifier extends WorkspaceCommandSyntaxModifier {
     protected _appArea : string | undefined;
 
     constructor(context: DevToolsExtensionContext) {
-        super(context, "addAppAreas");
-        this._showProgress = true;
-        this._progressMessage = "Processing project files. Please wait...";
+        super(context, "Add App Areas", "addAppAreas");
         this._appArea = undefined;
     }
 
@@ -29,21 +25,19 @@ export class AppAreasModifier extends SyntaxModifier {
         return (confirmation === 'Yes');
     }
 
-    protected showWorkspaceSuccessMessage(response: ToolsWorkspaceCommandResponse) {
-        vscode.window.showInformationMessage(
-            NumberHelper.zeroIfNotDef(response.parameters.noOfChanges).toString() +                    
+    protected getSuccessWorkspaceMessage(response: ToolsWorkspaceCommandResponse): string {
+        return NumberHelper.zeroIfNotDef(response.parameters.noOfChanges).toString() +                    
             ' application area(s) added to ' +
             NumberHelper.zeroIfNotDef(response.parameters.noOfChangedFiles).toString() +
-            ' file(s).');
+            ' file(s).';
     }
 
-    protected showDocumentSuccessMessage(response: ToolsWorkspaceCommandResponse) {
-        vscode.window.showInformationMessage(
-            response.parameters.noOfChanges.toString() + 
-            ' application area(s) added.');
+    protected getSuccessDocumentMessage(response: ToolsWorkspaceCommandResponse): string {
+        return response.parameters.noOfChanges.toString() + 
+            ' application area(s) added.';
     }
 
-    protected async askForParameters() {
+    async askForParameters(uri: vscode.Uri | undefined): Promise<boolean> {
         let appAreasList = ['Basic', 'FixedAsset', 'All', 'Custom'];
         
         //ask for Application Area Type
@@ -51,11 +45,15 @@ export class AppAreasModifier extends SyntaxModifier {
             canPickMany: false,
             placeHolder: 'Select Application Area'
         });
+        if (!appAreaName)
+            return false;
         if (appAreaName === 'Custom')
             appAreaName = await vscode.window.showInputBox({
                 placeHolder: "Enter your custom Application Area"
             });
         this._appArea = appAreaName;
+
+        return true;
     }
 
 }

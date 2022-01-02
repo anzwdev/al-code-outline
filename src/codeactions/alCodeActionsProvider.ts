@@ -18,6 +18,7 @@ import { ALSortTableFieldsCommand } from './sortSymbols/alSortTableFieldsCommand
 import { ALSortPermissionsCommand } from './sortSymbols/alSortPermissionsCommand';
 import { ALAddAllPermissionsCodeCommand } from './alAddAllPermissionsCodeCommand';
 import { ALSortPermissionSetListCommand } from './sortSymbols/alSortPermissionSetListCommand';
+import { ALReuseToolTipCodeCommand } from './alReuseToolTipCodeCommand';
 
 export class ALCodeActionsProvider implements vscode.CodeActionProvider {
     protected _toolsExtensionContext : DevToolsExtensionContext;
@@ -34,6 +35,7 @@ export class ALCodeActionsProvider implements vscode.CodeActionProvider {
             new ALAddXmlPortFieldsCodeCommand(this._toolsExtensionContext, 'fieldattribute', 'Add multiple field attributes (AZ AL Dev Tools)'),
 
             new ALAddAllPermissionsCodeCommand(this._toolsExtensionContext),
+            new ALReuseToolTipCodeCommand(this._toolsExtensionContext),
 
             //sorting
             new ALSortTableFieldsCommand(this._toolsExtensionContext),
@@ -45,19 +47,28 @@ export class ALCodeActionsProvider implements vscode.CodeActionProvider {
             new ALSortPermissionSetListCommand(this._toolsExtensionContext),
             
             new ALCreateInterfaceCodeCommand(this._toolsExtensionContext),
+            
             //diagnostics fixes
-            //AA0005 fix disabled, needs some fixes before going live
-            //new ALCodeCopFixAA0005(this._toolsExtensionContext),
             new ALCodeCopFixAA0008(this._toolsExtensionContext),
             new ALCodeCopFixAA0137(this._toolsExtensionContext),
             new ALCodeCopFixAA0139(this._toolsExtensionContext)];
     }
 
     provideCodeActions(document: vscode.TextDocument, range: vscode.Range | vscode.Selection, context: vscode.CodeActionContext, token: vscode.CancellationToken): vscode.ProviderResult<(vscode.Command | vscode.CodeAction)[]> {
-        return this.collectCodeActions(document,range, context);
+        //load diagnostics only if CodeCop fixes are enabled
+        let settings =  vscode.workspace.getConfiguration('alOutline', document.uri);
+        let enableCodeCopFixes = !!settings.get<boolean>('enableCodeCopFixes');
+        let diagnostics: vscode.Diagnostic[];
+        if (enableCodeCopFixes)
+            diagnostics = vscode.languages.getDiagnostics(document.uri);
+        else
+            diagnostics = [];
+        
+        //collect code actions
+        return this.collectCodeActions(document,range, diagnostics);
     }
 
-    protected async collectCodeActions(document: vscode.TextDocument, range: vscode.Range | vscode.Selection, context: vscode.CodeActionContext): Promise<vscode.CodeAction[]> {
+    protected async collectCodeActions(document: vscode.TextDocument, range: vscode.Range | vscode.Selection, diagnostic: vscode.Diagnostic[]): Promise<vscode.CodeAction[]> {
         let actions: vscode.CodeAction[] = []; 
 
         if (this._toolsExtensionContext.alLangProxy.version.major < 1)
@@ -67,7 +78,7 @@ export class ALCodeActionsProvider implements vscode.CodeActionProvider {
         let symbol = docSymbols.findSymbolInRange(range);
 
         for (let i=0; i<this._codeCommands.length; i++) {
-            this._codeCommands[i].collectCodeActions(docSymbols, symbol, document, range, context, actions);
+            this._codeCommands[i].collectCodeActions(docSymbols, symbol, document, range, diagnostic, actions);
         }
 
         //create OnSave action
