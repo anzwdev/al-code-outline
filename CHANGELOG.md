@@ -9,9 +9,10 @@
      - "AZ AL Dev Tools: Show CueGroup Action Images"
      - "AZ AL Dev Tools: Show CueGroup Fields Images" - "Copy as action" and "Copy as promoted action" context menu items are not available in this case
      - "AZ AL Dev Tools: Show Role Center Action Images"
+ - Issue #295 - Typo fix
 
 Thank you
- - fvet for reporting issues #310, #311 and #312
+ - fvet for reporting issues #310, #311 #312 and #295
  - rvanbekkum for reporting idea #314
 
 ## 3.0.25
