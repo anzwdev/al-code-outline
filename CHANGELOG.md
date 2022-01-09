@@ -3,9 +3,10 @@
 ## 3.0.26
  - Issue #310 - SortProperties fails in case of extra semicolon
  - Issue #311 - Run code cleanup - specify default parameters
+ - Issue #312 - Run Code Cleanup - Folder settings vs workspace settings
 
 Thank you
- - fvet for reporting issues #310 and #311
+ - fvet for reporting issues #310, #311 and #312
 
 ## 3.0.25
  - Issue #249 - Reuse tooltip from other pages

@@ -838,40 +838,48 @@
 							"none",
 							"xml"
 						],
+						"scope": "resource",
 						"description": "Documentation comments type"
 					},
 					"alOutline.autoGenerateFiles": {
 						"type": "boolean",
 						"default": false,
+						"scope": "resource",
 						"description": "Automatically generate files for newly created objects."
 					},
 					"alOutline.autoGenerateFileDirectory": {
 						"type": "string",
 						"default": "",
+						"scope": "resource",
 						"description": "The default directory to create files in, relative to the root directory (e.g., \"Source\\<ObjectType>\")."
 					},
 					"alOutline.autoShowFiles": {
 						"type": "boolean",
 						"default": true,
+						"scope": "resource",
 						"description": "Automatically show any newly created files in the editor."
 					},
 					"alOutline.addDataItemToReportColumnName": {
 						"type": "boolean",
 						"default": false,
+						"scope": "resource",
 						"description": "Iclude data item name in the name of the report column"
 					},
 					"alOutline.defaultAppArea": {
 						"type": "string",
 						"default": "All",
+						"scope": "resource",
 						"description": "Default application area for page code generator and code cleanup commands"
 					},
 					"alOutline.defaultDataClassification": {
 						"type": "string",
+						"scope": "resource",
 						"description": "Default data classification for code cleanup commands"
 					},
 					"alOutline.defaultAddPageFieldCaptionsSettings": {
 						"type": "object",
 						"description": "Default settings for the AddPageFieldCaption command when run by the Code Cleanup",
+						"scope": "resource",
 						"properties": {
 							"setActionsCaptions": {
 								"type": "boolean",
@@ -902,6 +910,7 @@
 					"alOutline.defaultRemoveUnusedVariablesSettings": {
 						"type": "object",
 						"description": "Default settings for the RemoveUnusedVariables command when run by the Code Cleanup",
+						"scope": "resource",
 						"properties": {
 							"removeGlobalVariables": {
 								"type": "boolean",
@@ -920,41 +929,49 @@
 					"alOutline.defaultListUsageCategory": {
 						"type": "string",
 						"default": "Lists",
+						"scope": "resource",
 						"description": "Default usage category for list pages"
 					},
 					"alOutline.promptForObjectId": {
 						"type": "boolean",
 						"default": true,
+						"scope": "resource",
 						"description": "When generating a new object, ask the user to input the object ID."
 					},
 					"alOutline.promptForObjectName": {
 						"type": "boolean",
 						"default": true,
+						"scope": "resource",
 						"description": "When generating a new object, ask the user to input the object name."
 					},
 					"alOutline.promptForFilePath": {
 						"type": "boolean",
 						"default": false,
+						"scope": "resource",
 						"description": "When generating a new file, ask the user to specify a path relative to the root of the project-folder."
 					},
 					"alOutline.stripNonAlphanumericCharactersFromObjectNames": {
 						"type": "boolean",
 						"default": false,
+						"scope": "resource",
 						"description": "Always strip non-alphanumeric characters from generated object names."
 					},
 					"alOutline.webClientPort": {
 						"type": "number",
 						"default": "0",
+						"scope": "resource",
 						"description": "Web Client port. Enter 0 to use default http/https port number."
 					},
 					"alOutline.openDefinitionInNewTab": {
 						"type": "boolean",
 						"default": false,
+						"scope": "resource",
 						"description": "Always open objects definitions in a new tab."
 					},
 					"alOutline.fieldsSelectionOrder": {
 						"type": "string",
 						"default": "selection order",
+						"scope": "resource",
 						"enum": [
 							"alphabetic",
 							"selection order"
@@ -963,16 +980,19 @@
 					"alOutline.noEmptyLinesAtTheEndOfWizardGeneratedFiles": {
 						"type": "boolean",
 						"default": false,
+						"scope": "resource",
 						"description": "Don't create empty lines at the end of files created by wizards."
 					},
 					"alOutline.enableCodeCopFixes": {
 						"type": "boolean",
 						"default": false,
+						"scope": "resource",
 						"description": "Enable code actions fixing CodeCop warnings (AA0008 - missing parentheses, AA0137 - unused variable, AA0139 - possible text overflow)"
 					},
 					"alOutline.fixCodeCopMissingParenthesesOnSave": {
 						"type": "boolean",
 						"default": false,
+						"scope": "resource",
 						"description": "Fix Code Cop 'Missing Parentheses' warning on save when 'editor.codeActionsOnSave' setting contains 'source.fixAll' value"
 					},
 					"alOutline.codeActionsOnSave": {
@@ -1006,6 +1026,7 @@
 					},
 					"alOutline.codeCleanupActions": {
 						"type": "array",
+						"scope": "resource",
 						"items": {
 							"type": "string",
 							"enum": [
@@ -1060,30 +1081,9 @@
 								"Format Document",
 								"Trim Trailing Whitespace"
 							]
-						}
-					},
-					"alOutline.codeCleanupActionsSettings": {
-						"type": "object",
-						"description": "Settings for actions run by code cleanup commands",
-						"properties": {
-							"applicationArea": {
-								"type": "string",
-								"description": "Application area for AddApplicationAreas command",
-								"default": "All"
-							},
-							"dataClassification": {
-								"type": "string",
-								"description": "Application area for AddDataClassifications command",
-								"default": "CustomerContent"
-							}
-
-
 						},
-						"default": {
-
-						}
+						"description": "List of commands run by the Code Cleanup"
 					},
-
 					"alOutline.codeActionsOnSaveIgnoreFiles": {
 						"type": "array",
 						"items": {
@@ -1097,41 +1097,49 @@
 					"alOutline.pageActionToolTip": {
 						"type": "string",
 						"default": "Executes the %1 action.",
+						"scope": "resource",
 						"description": "The default tooltip template for page actions. Use %1 as placeholder for action caption or name."
 					},
 					"alOutline.pageFieldToolTip": {
 						"type": "string",
 						"default": "Specifies the value of the %1 field.",
+						"scope": "resource",
 						"description": "The default tooltip template for page fields. Use %1 or %Caption% as placeholder for field caption or name, %Caption.Comment% as placeholder for field caption comment"
 					},
 					"alOutline.pageFieldToolTipComment": {
 						"type": "string",
 						"default": "%Caption.Comment%",
+						"scope": "resource",
 						"description": "The default tooltip comment template for page fields. Use %Caption% as placeholder for field caption or name, %Caption.Comment% as placeholder for field caption comment"
 					},
 					"alOutline.useTableFieldDescriptionAsToolTip": {
 						"type": "boolean",
 						"default": false,
+						"scope": "resource",
 						"description": "Use table field description as page field tooltip"
 					},
 					"alOutline.addToolTipsToPageFields": {
 						"type": "boolean",
 						"default": true,
+						"scope": "resource",
 						"description": "Add tooltips to page fields"
 					},
 					"alOutline.useTableFieldCaptionsInApiFields": {
 						"type": "boolean",
 						"default": true,
+						"scope": "resource",
 						"description": "Set to true to use table field captions in API pages fields. Set to false, to use camelCase api field names in api field captions"
 					},
 					"alOutline.lockRemovedFieldsCaptions": {
 						"type": "boolean",
 						"default": false,
+						"scope": "resource",
 						"description": "Set to true to lock captions of removed fields when 'Add Table Field Captions' command is run"
 					},
 					"alOutline.doNotReuseToolTipsFromOtherPages": {
 						"type": "boolean",
 						"default": false,
+						"scope": "resource",
 						"description": "Set to true to disable reusing field tooltips from other pages in the page wizard, 'add multiple fields' page code action and 'add missing tooltips' command"
 					},
 					"alOutline.reuseToolTipsFromDependencies": {
@@ -1140,6 +1148,7 @@
 							"type": "string"
 						},
 						"default": [],
+						"scope": "resource",
 						"uniqueItems": true,
 						"description": "Reuse tooltips only defined in these dependencies. If empty, all dependencies will be used. Each entry should be defined as <dependency publisher> + <space> + '-' + <space> + <dependency name>"
 					}
