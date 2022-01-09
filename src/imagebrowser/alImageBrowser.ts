@@ -8,16 +8,22 @@ import { StringHelper } from '../tools/stringHelper';
 import { ToolsGetImagesRequest } from '../langserver/languageInformation/toolsGetImagesRequest';
 import { ImageInformation } from '../langserver/languageInformation/imageInformation';
 
-export class ALActionImageBrowser extends BaseWebViewEditor {
+export class ALImageBrowser extends BaseWebViewEditor {
     protected _devToolsContext: DevToolsExtensionContext;
+    protected _imagesType: string;
+    protected _withActions: boolean;
+    protected _imageStyleType: string;
 
-    constructor(devToolsContext: DevToolsExtensionContext) {
-        super(devToolsContext.vscodeExtensionContext , "Action Images");
+    constructor(devToolsContext: DevToolsExtensionContext, caption: string, imagesType: string, withActions: boolean, imageStyleType: string) {
+        super(devToolsContext.vscodeExtensionContext , caption);
         this._devToolsContext = devToolsContext;
+        this._imagesType = imagesType;
+        this._withActions = withActions;
+        this._imageStyleType = imageStyleType;
     }
 
     protected getHtmlContentPath() : string {
-        return path.join('htmlresources', 'actionimagebrowser', 'imagebrowser.html');
+        return path.join('htmlresources', 'imagebrowser', 'imagebrowser.html');
     }
 
     protected getViewType() : string {
@@ -33,7 +39,9 @@ export class ALActionImageBrowser extends BaseWebViewEditor {
         if (data)
             this.sendMessage({
                 command : 'setData',
-                data : data
+                data : data,
+                withActions : this._withActions,
+                imageStyleType : this._imageStyleType
             });
     }
 
@@ -100,9 +108,9 @@ export class ALActionImageBrowser extends BaseWebViewEditor {
     async getImageList() : Promise<ImageInformation[] | undefined> {
         return await vscode.window.withProgress<ImageInformation[] | undefined>({
             location: vscode.ProgressLocation.Notification,
-            title: 'Loading list of action images.'
+            title: 'Loading list of images.'
         }, async (progress) => {
-            let response = await this._devToolsContext.toolsLangServerClient.getImages(new ToolsGetImagesRequest('actionImages'));
+            let response = await this._devToolsContext.toolsLangServerClient.getImages(new ToolsGetImagesRequest(this._imagesType));
             if ((response) && (response.images))
                 return response.images;
             return [];   

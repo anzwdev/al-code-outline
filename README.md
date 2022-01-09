@@ -175,10 +175,15 @@ List of actions run by code cleanup commands can be specified in `alOutline.code
 
 ### Action images browser
 
-Extension adds new "AZ AL Dev Tools: Show Action Images" command to the "Command Palette" to load all available action images from active Microsoft AL Language extension and show them in a single web view panel. Action images browser supports filtering, keyboard navigation and adds context menu to each image on the list.  Context menu contains these 3 actions:
+Extension adds new commands to load available images from the active Microsoft AL Language extension and show them in a single web view panel. Images browser supports filtering, keyboard navigation and adds context menu to each image on the list. Context menu contains these 3 actions:
    - Copy name - copies image name to the clipboard
    - Copy as action - generates page action element and copies it to the clipboard
    - Copy as promoted action - generates promoted page action element and copies it to the clipboard
+These commands are available:
+   - "AZ AL Dev Tools: Show Action Images"
+   - "AZ AL Dev Tools: Show CueGroup Action Images"
+   - "AZ AL Dev Tools: Show CueGroup Fields Images" - "Copy as action" and "Copy as promoted action" context menu items are not available in this case
+   - "AZ AL Dev Tools: Show RoleCenter Action Images"
 
 ![Action images](resources/screen2-actionimages.gif)
 

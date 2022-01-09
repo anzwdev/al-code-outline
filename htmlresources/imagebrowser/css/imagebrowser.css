@@ -14,7 +14,6 @@
 }
 .image {
     flex: 0 0 120px;    
-    height: 60px;    
     margin: 2px;
     padding: 4px;
     display: flex;
@@ -23,6 +22,18 @@
     align-items: center;
     justify-content: flex-start;
     border: 1px solid var(--vscode-panel-border);
+}
+.imageaction {
+    height: 60px;
+}
+.imagercaction {
+    height: 50px;
+}
+.imagecgfld {
+    height: 80px;   
+}
+.imagecgaction {
+    height: 100px;
 }
 .image .img {    
     flex: 0 0 auto;

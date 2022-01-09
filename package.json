@@ -33,6 +33,9 @@
 		"onView:azALDevTools.SymbolsTreeProvider",
 		"onCommand:azALDevTools.viewALApp",
 		"onCommand:azALDevTools.viewActionImages",
+		"onCommand:azALDevTools.viewCueGroupActionImages",
+		"onCommand:azALDevTools.viewCueGroupFieldsImages",
+		"onCommand:azALDevTools.viewRoleCenterActionImages",
 		"onCommand:azALDevTools.showAllProjectSymbols",
 		"onCommand:azALDevTools.showProjectSymbolsWithoutDep",
 		"onCommand:azALDevTools.refreshOutlineView",
@@ -141,6 +144,21 @@
 				"category": "AZ AL Dev Tools",
 				"command": "azALDevTools.viewActionImages",
 				"title": "Show Action Images"
+			},
+			{
+				"category": "AZ AL Dev Tools",
+				"command": "azALDevTools.viewCueGroupActionImages",
+				"title": "Show CueGroup Action Images"
+			},
+			{
+				"category": "AZ AL Dev Tools",
+				"command": "azALDevTools.viewCueGroupFieldsImages",
+				"title": "Show CueGroup Fields Images"
+			},
+			{
+				"category": "AZ AL Dev Tools",
+				"command": "azALDevTools.viewRoleCenterActionImages",
+				"title": "Show Role Center Action Images"
 			},
 			{
 				"category": "AZ AL Dev Tools",
@@ -471,6 +489,18 @@
 				},
 				{
 					"command": "azALDevTools.viewActionImages",
+					"when": "azALDevTools.extensionActive"
+				},
+				{
+					"command": "azALDevTools.viewCueGroupActionImages",
+					"when": "azALDevTools.extensionActive"
+				},
+				{
+					"command": "azALDevTools.viewCueGroupFieldsImages",
+					"when": "azALDevTools.extensionActive"
+				},
+				{
+					"command": "azALDevTools.viewRoleCenterActionImages",
 					"when": "azALDevTools.extensionActive"
 				},
 				{
