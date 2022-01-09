@@ -42,6 +42,14 @@ export class RefreshToolTipsModifier extends WorkspaceCommandSyntaxModifier {
             ' tooltip(s) updated.';
     }
 
+    protected loadDefaultParameters(uri: vscode.Uri | undefined): boolean {
+        let defaultParameters = vscode.workspace.getConfiguration('alOutline', uri).get<string[]>('reuseToolTipsFromDependencies');
+        if ((!defaultParameters) || (defaultParameters.length == 0))
+            return false;
+        this._dependencies = defaultParameters;
+        return true;
+    }
+
     async askForParameters(uri: vscode.Uri | undefined): Promise<boolean> {
         //load list of dependencies
         if (!uri)

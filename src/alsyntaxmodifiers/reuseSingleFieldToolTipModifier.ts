@@ -70,7 +70,7 @@ export class ReuseSingleFieldToolTipModifier extends WorkspaceCommandSyntaxModif
         //ask for Application Area Type
         this._toolTip = await vscode.window.showQuickPick(this._availableToolTips!, {
             canPickMany: false,
-            placeHolder: 'Select tooltip fot this field'
+            placeHolder: 'Select tooltip for this field'
         });    
 
         return ((!!this._toolTip) && (this._toolTip != ''));

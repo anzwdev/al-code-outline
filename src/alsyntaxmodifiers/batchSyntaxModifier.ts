@@ -115,7 +115,7 @@ export class BatchSyntaxModifier extends SyntaxModifier {
 
         if ((this._modifiers) && (this._modifiers.length > 0))  { 
             for (let i=0; i<this._modifiers.length; i++) {
-                let cont = await this._modifiers[i].askForParameters(uri);
+                let cont = await this._modifiers[i].loadDefaultOrAskForParameters(uri);
                 if (!cont)
                     return false;
             }

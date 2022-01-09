@@ -863,7 +863,59 @@
 					"alOutline.defaultAppArea": {
 						"type": "string",
 						"default": "All",
-						"description": "Default application area for page code generator"
+						"description": "Default application area for page code generator and code cleanup commands"
+					},
+					"alOutline.defaultDataClassification": {
+						"type": "string",
+						"description": "Default data classification for code cleanup commands"
+					},
+					"alOutline.defaultAddPageFieldCaptionsSettings": {
+						"type": "object",
+						"description": "Default settings for the AddPageFieldCaption command when run by the Code Cleanup",
+						"properties": {
+							"setActionsCaptions": {
+								"type": "boolean",
+								"description": "Set action captions"
+							},
+							"setActionGroupsCaptions": {
+								"type": "boolean",
+								"description": "Set action groups captions"
+							},
+							"setGroupsCaptions": {
+								"type": "boolean",
+								"description": "Set groups captions"
+							},
+							"setPartsCaptions": {
+								"type": "boolean",
+								"description": "Set parts captions"
+							},
+							"setFieldsCaptions": {
+								"type": "boolean",
+								"description": "Set fields captions"
+							},
+							"setLabelsCaptions": {
+								"type": "boolean",
+								"description": "Set labels captions"
+							}
+						}
+					},
+					"alOutline.defaultRemoveUnusedVariablesSettings": {
+						"type": "object",
+						"description": "Default settings for the RemoveUnusedVariables command when run by the Code Cleanup",
+						"properties": {
+							"removeGlobalVariables": {
+								"type": "boolean",
+								"description": "Remove global variables"
+							},
+							"removeLocalVariables": {
+								"type": "boolean",
+								"description": "Remove local variables"
+							},
+							"removeLocalMethodParameters": {
+								"type": "boolean",
+								"description": "Remove local methods parameters"
+							}
+						}
 					},
 					"alOutline.defaultListUsageCategory": {
 						"type": "string",
@@ -1010,6 +1062,28 @@
 							]
 						}
 					},
+					"alOutline.codeCleanupActionsSettings": {
+						"type": "object",
+						"description": "Settings for actions run by code cleanup commands",
+						"properties": {
+							"applicationArea": {
+								"type": "string",
+								"description": "Application area for AddApplicationAreas command",
+								"default": "All"
+							},
+							"dataClassification": {
+								"type": "string",
+								"description": "Application area for AddDataClassifications command",
+								"default": "CustomerContent"
+							}
+
+
+						},
+						"default": {
+
+						}
+					},
+
 					"alOutline.codeActionsOnSaveIgnoreFiles": {
 						"type": "array",
 						"items": {
