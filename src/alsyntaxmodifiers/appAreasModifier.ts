@@ -37,6 +37,11 @@ export class AppAreasModifier extends WorkspaceCommandSyntaxModifier {
             ' application area(s) added.';
     }
 
+    protected loadDefaultParameters(uri: vscode.Uri | undefined): boolean {
+        this._appArea = vscode.workspace.getConfiguration('alOutline', uri).get<string>('defaultAppArea');
+        return ((!!this._appArea) && (this._appArea != ''));
+    }
+
     async askForParameters(uri: vscode.Uri | undefined): Promise<boolean> {
         let appAreasList = ['Basic', 'FixedAsset', 'All', 'Custom'];
         
@@ -47,10 +52,13 @@ export class AppAreasModifier extends WorkspaceCommandSyntaxModifier {
         });
         if (!appAreaName)
             return false;
-        if (appAreaName === 'Custom')
+        if (appAreaName === 'Custom') {
             appAreaName = await vscode.window.showInputBox({
                 placeHolder: "Enter your custom Application Area"
             });
+            if (!appAreaName)
+                return false;
+        }
         this._appArea = appAreaName;
 
         return true;

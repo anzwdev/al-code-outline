@@ -35,7 +35,7 @@ export class BatchSyntaxModifier extends SyntaxModifier {
             for (let i=0; i<count; i++) {
                 if (progress)
                     progress.report({
-                        message: 'Runnung Command ' + (i+1).toString() + ' of ' + count.toString() + ': ' + this._modifiers[i].name, 
+                        message: 'Running Command ' + (i+1).toString() + ' of ' + count.toString() + ': ' + this._modifiers[i].name, 
                         increment: incVal });
                         
                 let result = await this._modifiers[i].runForWorkspaceWithoutUI(workspaceUri);
@@ -81,7 +81,7 @@ export class BatchSyntaxModifier extends SyntaxModifier {
             for (let i=0; i<count; i++) {                
                 if (progress)
                     progress.report({
-                        message: 'Runnung Command ' + (i+1).toString() + ' of ' + count.toString() + ': ' + this._modifiers[i].name, 
+                        message: 'Running Command ' + (i+1).toString() + ' of ' + count.toString() + ': ' + this._modifiers[i].name, 
                         increment: (100 * i / count)});
 
                 let result = await this._modifiers[i].runForDocumentWithoutUI(text, workspaceUri, documentUri, range);
@@ -115,7 +115,7 @@ export class BatchSyntaxModifier extends SyntaxModifier {
 
         if ((this._modifiers) && (this._modifiers.length > 0))  { 
             for (let i=0; i<this._modifiers.length; i++) {
-                let cont = await this._modifiers[i].askForParameters(uri);
+                let cont = await this._modifiers[i].loadDefaultOrAskForParameters(uri);
                 if (!cont)
                     return false;
             }

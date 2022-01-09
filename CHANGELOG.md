@@ -1,5 +1,20 @@
 # Change Log
 
+## 3.0.26
+ - Issue #310 - SortProperties fails in case of extra semicolon
+ - Issue #311 - Run code cleanup - specify default parameters
+ - Issue #312 - Run Code Cleanup - Folder settings vs workspace settings
+ - Issue #314 - Action Images Browser: Tiles
+   - New commands added:
+     - "AZ AL Dev Tools: Show CueGroup Action Images"
+     - "AZ AL Dev Tools: Show CueGroup Fields Images" - "Copy as action" and "Copy as promoted action" context menu items are not available in this case
+     - "AZ AL Dev Tools: Show Role Center Action Images"
+ - Issue #295 - Typo fix
+
+Thank you
+ - fvet for reporting issues #310, #311 #312 and #295
+ - rvanbekkum for reporting idea #314
+
 ## 3.0.25
  - Issue #249 - Reuse tooltip from other pages
    - new commands `Refresh ToolTips from Dependencies in the Active Editor/Project` to refresh page field tooltips from existing tooltips defined in dependencies

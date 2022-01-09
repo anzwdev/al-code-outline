@@ -175,10 +175,15 @@ List of actions run by code cleanup commands can be specified in `alOutline.code
 
 ### Action images browser
 
-Extension adds new "AZ AL Dev Tools: Show Action Images" command to the "Command Palette" to load all available action images from active Microsoft AL Language extension and show them in a single web view panel. Action images browser supports filtering, keyboard navigation and adds context menu to each image on the list.  Context menu contains these 3 actions:
+Extension adds new commands to load available images from the active Microsoft AL Language extension and show them in a single web view panel. Images browser supports filtering, keyboard navigation and adds context menu to each image on the list. Context menu contains these 3 actions:
    - Copy name - copies image name to the clipboard
    - Copy as action - generates page action element and copies it to the clipboard
    - Copy as promoted action - generates promoted page action element and copies it to the clipboard
+These commands are available:
+   - "AZ AL Dev Tools: Show Action Images"
+   - "AZ AL Dev Tools: Show CueGroup Action Images"
+   - "AZ AL Dev Tools: Show CueGroup Fields Images" - "Copy as action" and "Copy as promoted action" context menu items are not available in this case
+   - "AZ AL Dev Tools: Show RoleCenter Action Images"
 
 ![Action images](resources/screen2-actionimages.gif)
 
@@ -270,7 +275,19 @@ This extension contributes the following settings:
 * `alOutline.lockRemovedFieldsCaptions`: set to true to lock captions of removed fields when 'Add Table Field Captions' command is run
 * `alOutline.codeCleanupActions`: array of names of actions that will be run by code cleanup commands. These actions are available: RemoveWithStatements, AddApplicationAreas, AddToolTips, RefreshToolTips, AddTableFieldCaptions, "LockRemovedFieldCaptions", AddPageFieldCaptions, AddObjectCaptions, FixKeywordsCase, FixIdentifiersCase, ConvertObjectIdsToNames, AddMissingParentheses, AddDataClassifications, RemoveUnusedVariables, SortPermissions, SortPermissionSetList, SortProcedures, SortProperties, SortReportColumns, SortTableFields, SortVariables, RemoveBeginEnd, FormatDocument, TrimTrailingWhitespace
 * `alOutline.doNotReuseToolTipsFromOtherPages`: set to true to disable reusing field tooltips from other pages in the page wizard, 'add multiple fields' page code action and 'add missing tooltips' command
-* `alOutline.reuseToolTipsFromDependencies`: reuse tooltips only defined in these dependencies, if empty, all dependencies will be used. Each entry should be defined as "dependency publisher" + "space" + "-" + "space" + "dependency name"
+* `alOutline.reuseToolTipsFromDependencies`: reuse tooltips only defined in these dependencies, if empty, all dependencies will be used. Each entry should be defined as "dependency publisher" + "space" + "-" + "space" + "dependency name". You can also use "*" to use all dependencies. This setting is also used by the Code Cleanup commands
+* `alOutline.defaultDataClassification`: default DataClassification value for Code Cleanup commands
+* `alOutline.defaultAddPageFieldCaptionsSettings` default settings for the AddPageFieldCaption command when run by the Code Cleanup, these properties can be set:
+  * `setActionsCaptions`: set action captions
+  * `setActionGroupsCaptions`: set action groups captions
+  * `setGroupsCaptions`: set groups captions
+  * `setPartsCaptions`: set parts captions
+  * `setFieldsCaptions`: set fields captions
+  * `setLabelsCaptions`: set labels captions
+* `alOutline.defaultRemoveUnusedVariablesSettings`: default settings for the RemoveUnusedVariables command when run by the Code Cleanup, these properties can be set:
+  * `removeGlobalVariables`: remove global variables
+  * `removeLocalVariables`: remove local variables
+  * `removeLocalMethodParameters`: remove local methods parameters
 
 ## Known Issues
 

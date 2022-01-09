@@ -1,37 +1,68 @@
 import * as vscode from 'vscode';
 import { DevToolsExtensionContext } from "../devToolsExtensionContext";
 import { NameValueQuickPickItem } from '../tools/nameValueQuickPickItem';
+import { IAddPageFieldCaptionsSettings } from './iAddPageFieldCaptionsSettings';
 import { WorkspaceCommandSyntaxModifier } from './workspaceCommandSyntaxModifier';
 
 export class PageControlsCaptionsModifier extends WorkspaceCommandSyntaxModifier {
-    protected _controlTypes: any;
+    protected _controlTypes: IAddPageFieldCaptionsSettings;
 
     constructor(context: DevToolsExtensionContext) {
         super(context, "Add Page Control Captions", "addPageControlCaptions");
-        this._controlTypes = {};
+        this._controlTypes = {
+            setActionsCaptions: false,
+            setActionGroupsCaptions: false,
+            setGroupsCaptions: false,
+            setPartsCaptions: false,
+            setFieldsCaptions: false,
+            setLabelsCaptions: false           
+        };
     }
 
     protected getParameters(uri: vscode.Uri): any {
         let parameters = super.getParameters(uri);
-        parameters.setActionsCaptions = this._controlTypes.setActionsCaptions;
-        parameters.setActionGroupsCaptions = this._controlTypes.setActionGroupsCaptions;
-        parameters.setGroupsCaptions = this._controlTypes.setGroupsCaptions;
-        parameters.setPartsCaptions = this._controlTypes.setPartsCaptions;
-        parameters.setFieldsCaptions = this._controlTypes.setFieldsCaptions;
-        parameters.setLabelsCaptions = this._controlTypes.setLabelsCaptions;
-
+        this.copySettings(parameters, this._controlTypes)
         return parameters;
+    }
+
+    protected copySettings(dest: any, src: any) {
+        if (!src)
+            src = {};
+        dest.setActionsCaptions = !!src.setActionsCaptions;
+        dest.setActionGroupsCaptions = !!src.setActionGroupsCaptions;
+        dest.setGroupsCaptions = !!src.setGroupsCaptions;
+        dest.setPartsCaptions = !!src.setPartsCaptions;
+        dest.setFieldsCaptions = !!src.setFieldsCaptions;
+        dest.setLabelsCaptions = !!src.setLabelsCaptions;
+    }
+
+    protected areSettingsEmpty(value: IAddPageFieldCaptionsSettings | undefined) {
+        return ((!value) || (
+            (!value.setActionsCaptions) &&
+            (!value.setActionGroupsCaptions) &&
+            (!value.setGroupsCaptions) &&
+            (!value.setPartsCaptions) &&
+            (!value.setFieldsCaptions) &&
+            (!value.setLabelsCaptions)));
+    }
+
+    protected loadDefaultParameters(uri: vscode.Uri | undefined): boolean {
+        let defaultParameters = vscode.workspace.getConfiguration('alOutline', uri).get<IAddPageFieldCaptionsSettings>('defaultAddPageFieldCaptionsSettings');
+        if (this.areSettingsEmpty(defaultParameters))
+            return false;
+        this.copySettings(this._controlTypes, defaultParameters);
+        return true;
     }
 
     async askForParameters(uri: vscode.Uri | undefined): Promise<boolean> {
         this.loadState();
         let quickPickItems = [
-            new NameValueQuickPickItem('Page actions', 'setActionsCaptions', this._controlTypes.setActionsCaptions),
-            new NameValueQuickPickItem('Page action groups', 'setActionGroupsCaptions', this._controlTypes.setActionGroupsCaptions),
-            new NameValueQuickPickItem('Page groups', 'setGroupsCaptions', this._controlTypes.setGroupsCaptions),
-            new NameValueQuickPickItem('Page parts', 'setPartsCaptions', this._controlTypes.setPartsCaptions),
-            new NameValueQuickPickItem('Page fields', 'setFieldsCaptions', this._controlTypes.setFieldsCaptions),
-            new NameValueQuickPickItem('Page labels', 'setLabelsCaptions', this._controlTypes.setLabelsCaptions)
+            new NameValueQuickPickItem('Page actions', 'setActionsCaptions', !!this._controlTypes.setActionsCaptions),
+            new NameValueQuickPickItem('Page action groups', 'setActionGroupsCaptions', !!this._controlTypes.setActionGroupsCaptions),
+            new NameValueQuickPickItem('Page groups', 'setGroupsCaptions', !!this._controlTypes.setGroupsCaptions),
+            new NameValueQuickPickItem('Page parts', 'setPartsCaptions', !!this._controlTypes.setPartsCaptions),
+            new NameValueQuickPickItem('Page fields', 'setFieldsCaptions', !!this._controlTypes.setFieldsCaptions),
+            new NameValueQuickPickItem('Page labels', 'setLabelsCaptions', !!this._controlTypes.setLabelsCaptions)
         ];
 
         let selectedValues = await vscode.window.showQuickPick(
@@ -40,19 +71,22 @@ export class PageControlsCaptionsModifier extends WorkspaceCommandSyntaxModifier
         if (!selectedValues)
             return false;
 
-        this.clearControlTypes();
+        let data: any = {};
         if (selectedValues) {
             for (let i=0; i<selectedValues.length; i++) {
-                this._controlTypes[selectedValues[i].value] = true;
+                data[selectedValues[i].value] = true;
             }
         }
+        if (this.areSettingsEmpty(data))
+            return false;
+        this.copySettings(this._controlTypes, data);
         this.saveState();
 
         return true;
     }
 
     private loadState() {
-        this._controlTypes = {};
+        this.clearControlTypes();
         let vsctx = this._context.vscodeExtensionContext;
         this._controlTypes.setActionsCaptions = !!vsctx.globalState.get<boolean>("azALDevTools.setPgCap.setActionsCaptions");
         this._controlTypes.setActionGroupsCaptions = !!vsctx.globalState.get<boolean>("azALDevTools.setPgCap.setActionGroupsCaptions");
@@ -61,13 +95,7 @@ export class PageControlsCaptionsModifier extends WorkspaceCommandSyntaxModifier
         this._controlTypes.setFieldsCaptions = !!vsctx.globalState.get<boolean>("azALDevTools.setPgCap.setFieldsCaptions");
         this._controlTypes.setLabelsCaptions = !!vsctx.globalState.get<boolean>("azALDevTools.setPgCap.setLabelsCaptions");
         //set defaults
-        if ((!this._controlTypes.setActionsCaptions) &&
-            (!this._controlTypes.setActionGroupsCaptions) &&
-            (!this._controlTypes.setGroupsCaptions) &&
-            (!this._controlTypes.setPartsCaptions) &&
-            (!this._controlTypes.setFieldsCaptions) &&
-            (!this._controlTypes.setLabelsCaptions)) {
-
+        if (this.areSettingsEmpty(this._controlTypes)) {
             this._controlTypes.setActionsCaptions = true;
             this._controlTypes.setActionGroupsCaptions = true;
             this._controlTypes.setGroupsCaptions = true;

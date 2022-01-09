@@ -116,8 +116,18 @@ export class SyntaxModifier {
             vscode.window.showInformationMessage('There was nothing to change.');
     }
 
+    protected loadDefaultParameters(uri: vscode.Uri | undefined): boolean {
+        return false;
+    }
+
     async runForDocumentWithoutUI(text: string, workspaceUri: vscode.Uri, documentUri: vscode.Uri, range: TextRange | undefined): Promise<ISyntaxModifierResult | undefined> {
         return undefined;
+    }
+
+    async loadDefaultOrAskForParameters(uri: vscode.Uri | undefined): Promise<boolean> {
+        if (this.loadDefaultParameters(uri))
+            return true;
+        return await this.askForParameters(uri);
     }
 
     async askForParameters(uri: vscode.Uri | undefined): Promise<boolean> {

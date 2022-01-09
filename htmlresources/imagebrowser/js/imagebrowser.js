@@ -3,6 +3,8 @@ class ImageBrowser {
     constructor() {
         let that = this;
 
+        this._contextMenuInitialized = false;
+        this._stylesInitialized = false;
         this._selectedIndex = -1;
         this._selectedDataIndex = -1;
         this._itemStyle = 'image';
@@ -10,8 +12,6 @@ class ImageBrowser {
         this._vscode = acquireVsCodeApi();
         this._controlId = 'content';
         this._content = document.getElementById(this._controlId);
-
-        this.initializeContextMenu();
 
         // Handle messages sent from the extension to the webview
         window.addEventListener('message', event => {
@@ -40,6 +40,18 @@ class ImageBrowser {
     }
 
     initializeContextMenu() {
+        let items;
+        if (this._withActions)
+            items = {
+                "copyname": {name: "Copy name"},
+                "copyaction": {name: "Copy as action"},
+                "copypromotedaction": {name: "Copy as promoted action"}
+            };
+        else
+            items = {
+                "copyname": {name: "Copy name"}
+            };
+
         let browser = this;
         $('#' + this._controlId).contextMenu({
             selector: '.image', 
@@ -52,18 +64,21 @@ class ImageBrowser {
                     withui: false
                 });
             },
-            items: {
-                "copyname": {name: "Copy name"},
-                "copyaction": {name: "Copy as action"},
-                "copypromotedaction": {name: "Copy as promoted action"}
-            }
+            items: items
         });
+        this._contextMenuInitialized = true;
+    }
+
+    initializeStyles() {
+        this._itemStyle = 'image ' + this._imageStyleType;
+        this._selItemStyle = 'image imagesel ' + this._imageStyleType;
+        this._stylesInitialized = true;
     }
 
     onMessage(message) {     
         switch (message.command) {
             case 'setData':
-                this.setData(message.data);
+                this.setData(message.data, message.withActions, message.imageStyleType);
                 break;
         }
     }
@@ -72,10 +87,16 @@ class ImageBrowser {
         this._vscode.postMessage(data);    
     }
 
-    setData(data) {
+    setData(data, withActions, imageStyleType) {
         this._selectedIndex = -1;
         this._selectedDataIndex = -1;
         this._data = data;
+        this._withActions = withActions;
+        this._imageStyleType = imageStyleType;
+        if (!this._contextMenuInitialized)
+            this.initializeContextMenu();
+        if (!this._stylesInitialized)
+            this.initializeStyles();
         this.renderData();
     }
 

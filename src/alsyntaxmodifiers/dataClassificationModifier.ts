@@ -37,6 +37,11 @@ export class DataClassificationModifier extends WorkspaceCommandSyntaxModifier {
             ' data classification(s) added.';
     }
 
+    protected loadDefaultParameters(uri: vscode.Uri | undefined): boolean {
+        this._dataClassification = vscode.workspace.getConfiguration('alOutline', uri).get<string>('defaultDataClassification');
+        return ((!!this._dataClassification) && (this._dataClassification != ''));
+    }
+
     async askForParameters(uri: vscode.Uri | undefined): Promise<boolean> {
         let valuesList = ['AccountData', 'CustomerContent',
             'EndUserIdentifiableInformation', 'EndUserPseudonymousIdentifiers',
