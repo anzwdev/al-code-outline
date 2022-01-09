@@ -1,5 +1,11 @@
 # Change Log
 
+## 3.0.26
+ - Issue #310 - SortProperties fails in case of extra semicolon
+
+Thank you
+ - fvet for reporting issue #310
+
 ## 3.0.25
  - Issue #249 - Reuse tooltip from other pages
    - new commands `Refresh ToolTips from Dependencies in the Active Editor/Project` to refresh page field tooltips from existing tooltips defined in dependencies
