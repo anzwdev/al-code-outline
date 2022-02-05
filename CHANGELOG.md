@@ -2,10 +2,11 @@
 
 ## 3.0.27
  - Issue #319 - Duplicating comments on begin..end remove around single statements 
+ - Issue #320 - Missing semicolon on begin..end remove around single statements
 
 Thank you
- - dannoe for reporting issue #319
- 
+ - dannoe for reporting issues #319, #320
+
 ## 3.0.26
  - Issue #310 - SortProperties fails in case of extra semicolon
  - Issue #311 - Run code cleanup - specify default parameters
