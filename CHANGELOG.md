@@ -1,5 +1,11 @@
 # Change Log
 
+## 3.0.27
+ - Issue #319 - Duplicating comments on begin..end remove around single statements 
+
+Thank you
+ - dannoe for reporting issue #319
+ 
 ## 3.0.26
  - Issue #310 - SortProperties fails in case of extra semicolon
  - Issue #311 - Run code cleanup - specify default parameters
