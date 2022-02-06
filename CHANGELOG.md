@@ -4,10 +4,12 @@
  - Issue #319 - Duplicating comments on begin..end remove around single statements 
  - Issue #320 - Missing semicolon on begin..end remove around single statements
  - Issue #323 - Current editor commands crash when run for documents that are not al files
+ - Issue #325 - Incorrect label variables sorting
 
 Thank you
  - dannoe for reporting issues #319, #320
  - deadmouse for reporting issue #323
+ - JavierFuentes for reporting issue #325
 
 ## 3.0.26
  - Issue #310 - SortProperties fails in case of extra semicolon
