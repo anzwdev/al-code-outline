@@ -3,11 +3,13 @@
 ## 3.0.27
  - Issue #319 - Duplicating comments on begin..end remove around single statements 
  - Issue #320 - Missing semicolon on begin..end remove around single statements
+ - Issue #321 - Show Code Analyzer Rules: Select all by default, add support for '${analyzerFolder}' in analyzer name
  - Issue #323 - Current editor commands crash when run for documents that are not al files
  - Issue #325 - Incorrect label variables sorting
 
 Thank you
  - dannoe for reporting issues #319, #320
+ - rvanbekkum for reporting issue #321
  - deadmouse for reporting issue #323
  - JavierFuentes for reporting issue #325
 

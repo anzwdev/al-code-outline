@@ -1,5 +1,6 @@
 import * as vscode from 'vscode';
 import * as path from 'path';
+import * as fs from 'fs';
 import { BaseWebViewEditor } from "../webviews/baseWebViewEditor";
 import { DevToolsExtensionContext } from "../devToolsExtensionContext";
 import { ToolsGetCodeAnalyzersRulesRequest } from '../langserver/toolsGetCodeAnalyzersRulesRequest';
@@ -37,21 +38,32 @@ export class CARulesViewer extends BaseWebViewEditor {
         return undefined;
     }
 
+    protected addCustomAnalyzer(name: string) {
+        if ((name.startsWith('${analyzerFolder}')) && (this._devToolsContext.alLangProxy.extensionPath)) {
+            let fileName = name.substring('${analyzerFolder}'.length);
+            let fullPath = path.join(this._devToolsContext.alLangProxy.extensionPath, 'bin', 'Analyzers', fileName);
+            if (fs.existsSync(fullPath))
+                this._analyzers.push(new CodeAnalyzerInfo(name, name, true));        
+        }
+    }
+
     protected loadCodeAnalyzers() {
-        this._analyzers.push(new CodeAnalyzerInfo('${AppSourceCop}', '${AppSourceCop}', false));
-        this._analyzers.push(new CodeAnalyzerInfo('${CodeCop}', '${CodeCop}', false));
-        this._analyzers.push(new CodeAnalyzerInfo('${PerTenantExtensionCop}', '${PerTenantExtensionCop}', false));
-        this._analyzers.push(new CodeAnalyzerInfo('${UICop}', '${UICop}', false));
-        this._analyzers.push(new CodeAnalyzerInfo('Compiler', 'Compiler', false));
+        this._analyzers.push(new CodeAnalyzerInfo('${AppSourceCop}', '${AppSourceCop}', true));
+        this._analyzers.push(new CodeAnalyzerInfo('${CodeCop}', '${CodeCop}', true));
+        this._analyzers.push(new CodeAnalyzerInfo('${PerTenantExtensionCop}', '${PerTenantExtensionCop}', true));
+        this._analyzers.push(new CodeAnalyzerInfo('${UICop}', '${UICop}', true));
+        this.addCustomAnalyzer('${analyzerFolder}BusinessCentral.LinterCop.dll');
+        this._analyzers.push(new CodeAnalyzerInfo('Compiler', 'Compiler', true));
 
         let alConfig = vscode.workspace.getConfiguration('al', undefined);
         let codeAnalyzersSetting = alConfig.get<string[]|undefined>("codeAnalyzers");
         if (codeAnalyzersSetting) {
             for (let i=0; i<codeAnalyzersSetting.length; i++) {
-                if (codeAnalyzersSetting[i].startsWith('${')) {
-                    let analyzerInfo = this.getAnalyzerInfo(codeAnalyzersSetting[i].trim());
-                    if (analyzerInfo)
-                        analyzerInfo.selected = true;
+                let analyzerName = codeAnalyzersSetting[i].trim();
+                if (analyzerName.startsWith('${')) {
+                    let analyzerInfo = this.getAnalyzerInfo(analyzerName);
+                    if (!analyzerInfo)
+                        this._analyzers.push(new CodeAnalyzerInfo(analyzerName, analyzerName, true));
                 } else {
                     this._analyzers.push(new CodeAnalyzerInfo(path.parse(codeAnalyzersSetting[i]).name,
                         codeAnalyzersSetting[i], true));
