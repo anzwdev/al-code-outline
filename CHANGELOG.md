@@ -1,6 +1,7 @@
 # Change Log
 
 ## 3.0.27
+ - Issue #318 - AZ AL Dev Tools: Fix Identifiers and Keywords Case in the Active Project unquotes identifiers in code that look like keywords 
  - Issue #319 - Duplicating comments on begin..end remove around single statements 
  - Issue #320 - Missing semicolon on begin..end remove around single statements
  - Issue #321 - Show Code Analyzer Rules: Select all by default, add support for '${analyzerFolder}' in analyzer name
@@ -8,6 +9,7 @@
  - Issue #325 - Incorrect label variables sorting
 
 Thank you
+ - ernestasjuska for reporting issue #318
  - dannoe for reporting issues #319, #320
  - rvanbekkum for reporting issue #321
  - deadmouse for reporting issue #323
