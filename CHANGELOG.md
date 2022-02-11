@@ -7,7 +7,8 @@
  - Issue #321 - Show Code Analyzer Rules: Select all by default, add support for '${analyzerFolder}' in analyzer name
  - Issue #323 - Current editor commands crash when run for documents that are not al files
  - Issue #325 - Incorrect label variables sorting
- - Issue #330 - Allow to exclude some of the files from workspace code transformation commands  
+ - Issue #330 - Allow to exclude some of the files from workspace code transformation commands
+ - Issue #332 - No Tooltips for ShowCaption = false
 
 Thank you
  - ernestasjuska for reporting issue #318
@@ -15,6 +16,7 @@ Thank you
  - rvanbekkum for reporting issue #321
  - deadmouse for reporting issue #323
  - JavierFuentes for reporting issue #325 and #330
+ - pri-kise for reporting issue #332
 
 ## 3.0.26
  - Issue #310 - SortProperties fails in case of extra semicolon
