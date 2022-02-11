@@ -62,12 +62,12 @@ class ObjectBrowser {
         this.initModeBtnEventHandlers('pagecustomizationModeBtn', 'PageCustomization', 'profileModeBtn', 'enumModeBtn');
         this.initModeBtnEventHandlers('enumModeBtn', 'Enum', 'pagecustomizationModeBtn', 'enumextensionModeBtn');
         this.initModeBtnEventHandlers('enumextensionModeBtn', 'EnumExtension', 'enumModeBtn', 'dotnetpackageModeBtn');
-        this.initModeBtnEventHandlers('dotnetpackageModeBtn', 'DotNetPackage', 'enumModeBtn', 'interfaceModeBtn');
+        this.initModeBtnEventHandlers('dotnetpackageModeBtn', 'DotNetPackage', 'enumextensionModeBtn', 'interfaceModeBtn');
         this.initModeBtnEventHandlers('interfaceModeBtn', 'Interface', 'dotnetpackageModeBtn', 'reportExtensionModeBtn');
         this.initModeBtnEventHandlers('reportExtensionModeBtn', 'ReportExtension', 'interfaceModeBtn', 'permissionSetModeBtn');
         this.initModeBtnEventHandlers('permissionSetModeBtn', 'PermissionSet', 'reportExtensionModeBtn', 'permissionSetExtensionModeBtn');
         this.initModeBtnEventHandlers('permissionSetExtensionModeBtn', 'PermissionSetExtension', 'permissionSetModeBtn', 'allModeBtn');
-        this.initModeBtnEventHandlers('allModeBtn', 'All', 'interfaceModeBtn', '');        
+        this.initModeBtnEventHandlers('allModeBtn', 'All', 'permissionSetExtensionModeBtn', '');        
 
         document.getElementById('searchtype').addEventListener('keydown', event => {
             me.onSearchKeyDown(event);
