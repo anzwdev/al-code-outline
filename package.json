@@ -893,7 +893,7 @@
 						"type": "boolean",
 						"default": false,
 						"scope": "resource",
-						"description": "Iclude data item name in the name of the report column"
+						"description": "Include data item name in the name of the report column"
 					},
 					"alOutline.defaultAppArea": {
 						"type": "string",

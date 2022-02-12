@@ -9,6 +9,7 @@
  - Issue #325 - Incorrect label variables sorting
  - Issue #330 - Allow to exclude some of the files from workspace code transformation commands
  - Issue #332 - No Tooltips for ShowCaption = false
+ - Pull request #324 by deadmouse - typo fix in the package.json
 
 Thank you
  - ernestasjuska for reporting issue #318
@@ -17,6 +18,7 @@ Thank you
  - deadmouse for reporting issue #323
  - JavierFuentes for reporting issue #325 and #330
  - pri-kise for reporting issue #332
+ - deadmouse for pull request #324
 
 ## 3.0.26
  - Issue #310 - SortProperties fails in case of extra semicolon
