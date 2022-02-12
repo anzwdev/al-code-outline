@@ -1,8 +1,19 @@
+#search {
+    padding-left: 5px;
+}
+
+#searchtypeWrapper {
+    margin: 0;
+    padding: 0;
+    width: 155px; 
+}
+
 #searchtype {
     flex: 1 1 25%;
 }
 #searchid {
     flex: 1 1 25%;
+    margin-left: 16px;
 }
 #searchname {
     flex: 1 1 50%;
@@ -17,19 +28,24 @@
 }
 .types .btnArea {
     margin:5px 10px;
-    padding:0;
+    padding:0 10px 0 0;
     box-sizing: border-box;
+    width: 100%;
 }
 .types .btn {
-    margin:0;
+    margin:0 5px 0 0;
     padding: 4px 10px;
-    width: 150px;
     box-sizing: border-box;
     cursor: default;
 }
 .azgridviewcont {
     flex: 1 1 auto;
     margin: 0 10px 0 0;
+    padding-top: 5px;
+}
+
+.ms-options-wrap > .ms-options {
+    left: inherit
 }
 
 
