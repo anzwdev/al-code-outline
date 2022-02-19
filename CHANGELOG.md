@@ -1,5 +1,11 @@
 # Change Log
 
+## 3.0.28
+ - Issue #338 - Fix Identifiers and Keywords leads to uncompilable report
+
+Thank you
+ - dschulzeOS for reporting issue #338
+ 
 ## 3.0.27
  - Issue #318 - AZ AL Dev Tools: Fix Identifiers and Keywords Case in the Active Project unquotes identifiers in code that look like keywords 
  - Issue #319 - Duplicating comments on begin..end remove around single statements 
