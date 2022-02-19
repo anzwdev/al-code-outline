@@ -1,9 +1,11 @@
 # Change Log
 
 ## 3.0.28
+ - Issue #337 - resourceExposurePolicy is not interpreted properly 
  - Issue #338 - Fix Identifiers and Keywords leads to uncompilable report
-
+ 
 Thank you
+ - aobsgit for reporting issue #337
  - dschulzeOS for reporting issue #338
  
 ## 3.0.27
