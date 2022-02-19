@@ -1191,8 +1191,13 @@
 						"scope": "resource",
 						"uniqueItems": true,
 						"description": "Reuse tooltips only defined in these dependencies. If empty, all dependencies will be used. Each entry should be defined as <dependency publisher> + <space> + '-' + <space> + <dependency name>"
+					},
+					"alOutline.fixCaseRemovesQuotesFromDataTypeIdentifiers": {
+						"type": "boolean",
+						"default": false,
+						"scope": "resource",
+						"description": "Set to true to remove quotes around identifiers having names of al data types when running 'Fix Identifiers and Keywords Case' commands"
 					}
-
 				}
 			}
 		]

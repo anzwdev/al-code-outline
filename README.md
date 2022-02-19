@@ -289,6 +289,7 @@ This extension contributes the following settings:
   * `removeGlobalVariables`: remove global variables
   * `removeLocalVariables`: remove local variables
   * `removeLocalMethodParameters`: remove local methods parameters
+* `alOutline.fixCaseRemovesQuotesFromDataTypeIdentifiers`: when set to true, `Fix Identifiers and Keywords Case` commands will remove quotes around idetifiers that use al data types as names
 
 ## Known Issues
 

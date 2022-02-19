@@ -1,12 +1,15 @@
 # Change Log
 
 ## 3.0.28
+ - Issue #302 - AutoFormat vs. Fix KeyWords casing - Quotes around "Code"
+   - It is now possible to enable or disable removing quotes around identifiers that look like al data types by using `alOutline.fixCaseRemovesQuotesFromDataTypeIdentifiers` setting. Default value is false which means that quotes are not removed.
  - Issue #337 - resourceExposurePolicy is not interpreted properly 
  - Issue #338 - Fix Identifiers and Keywords leads to uncompilable report
  
 Thank you
+ - pri-kise and JavierFuentes for reporting issue #302
  - aobsgit for reporting issue #337
- - dschulzeOS for reporting issue #338
+ - dschulzeOS and JavierFuentes for reporting issue #338/#318
  
 ## 3.0.27
  - Issue #318 - AZ AL Dev Tools: Fix Identifiers and Keywords Case in the Active Project unquotes identifiers in code that look like keywords 
