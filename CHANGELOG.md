@@ -3,11 +3,14 @@
 ## 3.0.28
  - Issue #302 - AutoFormat vs. Fix KeyWords casing - Quotes around "Code"
    - It is now possible to enable or disable removing quotes around identifiers that look like al data types by using `alOutline.fixCaseRemovesQuotesFromDataTypeIdentifiers` setting. Default value is false which means that quotes are not removed.
+ - Issues #305 and #336 - Not able to find symbols using packageCachePath setting
  - Issue #337 - resourceExposurePolicy is not interpreted properly 
  - Issue #338 - Fix Identifiers and Keywords leads to uncompilable report
  
 Thank you
  - pri-kise and JavierFuentes for reporting issue #302
+ - Ponch18 for reporting issue #305
+ - vody for reporting issue #336
  - aobsgit for reporting issue #337
  - dschulzeOS and JavierFuentes for reporting issue #338/#318
  
