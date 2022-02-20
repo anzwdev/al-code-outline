@@ -6,6 +6,7 @@
  - Issues #305 and #336 - Not able to find symbols using packageCachePath setting
  - Issue #337 - resourceExposurePolicy is not interpreted properly 
  - Issue #338 - Fix Identifiers and Keywords leads to uncompilable report
+ - PullRequest #333 by dannoe - Fixed wrong keyboard navigation order and a typo 
  
 Thank you
  - pri-kise and JavierFuentes for reporting issue #302
@@ -13,6 +14,7 @@ Thank you
  - vody for reporting issue #336
  - aobsgit for reporting issue #337
  - dschulzeOS and JavierFuentes for reporting issue #338/#318
+ - dannoe for pull request #333
  
 ## 3.0.27
  - Issue #318 - AZ AL Dev Tools: Fix Identifiers and Keywords Case in the Active Project unquotes identifiers in code that look like keywords 
