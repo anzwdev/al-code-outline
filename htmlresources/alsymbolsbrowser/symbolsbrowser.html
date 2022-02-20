@@ -21,22 +21,24 @@
     </head>
     <body>
         <div id="search" class="search">
-            <select id="searchtype" name="searchtype" class="searchinput" tabindex="1" multiple="multiple">
-                <option value="Table">Tables</option>
-                <option value="Page">Pages</option>
-                <option value="Report">Reports</option>
-                <option value="XmlPort">Xml Ports</option>
-                <option value="Query">Queries</option>
-                <option value="Codeunit">Codeunits</option>
-                <option value="ControlAddIn">Control Add-Ins</option>
-                <option value="PageExtension">Page Extensions</option>
-                <option value="TableExtension">Table Extensions</option>
-                <option value="Profile">Profiles</option>
-                <option value="PageCustomization">Page Customizations</option>
-                <option value="Enum">Enums</option>
-                <option value="DotNetPackage">DotNet Packages</option>
-                <option value="Interface">Interfaces</option>
-            </select>            
+            <div id="searchtypeWrapper">
+                <select id="searchtype" name="searchtype" class="searchinput" tabindex="1" multiple="multiple">
+                    <option value="Table">Tables</option>
+                    <option value="Page">Pages</option>
+                    <option value="Report">Reports</option>
+                    <option value="XmlPort">Xml Ports</option>
+                    <option value="Query">Queries</option>
+                    <option value="Codeunit">Codeunits</option>
+                    <option value="ControlAddIn">Control Add-Ins</option>
+                    <option value="PageExtension">Page Extensions</option>
+                    <option value="TableExtension">Table Extensions</option>
+                    <option value="Profile">Profiles</option>
+                    <option value="PageCustomization">Page Customizations</option>
+                    <option value="Enum">Enums</option>
+                    <option value="DotNetPackage">DotNet Packages</option>
+                    <option value="Interface">Interfaces</option>
+                </select>            
+            </div>
             <input type="text" id="searchid" name="searchid" tabindex="2" class="searchinput" placeholder="Id filter, e.g., 22, 10..50, &gt;20&amp;&lt;30">
             <input type="text" id="searchname" name="searchname" tabindex="3" class="searchinput" placeholder="Name filter, e.g., *Item*, *Customer*">
             <button class="btn" id="searchbtn" tabindex="3">Search</button>

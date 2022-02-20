@@ -265,7 +265,8 @@ This extension contributes the following settings:
   - SortPermissions,
   - SortPermissionSetList,
   - FormatDocument
-* `codeActionsOnSaveIgnoreFiles`: array of vscode patters of files that should be ignored when OnSave code actions are run. To make it work, the pattern should always start with '\*\*/', so for all files in folder 'OldFiles' the pattern should be '\*\*/OldFiles/*.al'
+* `codeActionsOnSaveIgnoreFiles`: array of vscode patterns of files that should be ignored when OnSave code actions are run. To make it work, the pattern should always start with '\*\*/', so for all files in folder 'OldFiles' the pattern should be '\*\*/OldFiles/*.al'
+* `alOutline.codeTransformationIgnoreFiles`: : array of vscode patterns of files that should be ignored when code transformation (i.e. code cleanup) commands are run for the whole project or uncommited files. This is standard glob pattern, so it does not have to start with '\*\*/' so to exclude all files from 'OldFiles' subfolder of project root folder './OldFiles/*.al' will be enough.
 * `alOutline.pageActionToolTip`: tooltip template for page actions. Use %1 as placeholder for action caption or name
 * `alOutline.pageFieldToolTip`: tooltip template for page fields. Use %1 or %Caption% as placeholder for field caption or name and %Caption.Comment% for field caption comment. The default value is "Specifies the value of the %1 field"
 * `alOutline.pageFieldToolTipComment`: tooltip comment template for page fields. Use %1 or %Caption% as placeholder for field caption or name and %Caption.Comment% for field caption comment. The default value is "%Caption.Comment%". If these default values of pageFieldToolTip and pageFieldToolTipComment settings are used then if table field caption is defined as ```Caption = 'Customer No.', Comment = 'Comment Text'``` then created ToolTip will be defined as ```ToolTip = 'Specifies the value of  the Customer No. field', Comment = 'Comment Text'```
@@ -288,6 +289,7 @@ This extension contributes the following settings:
   * `removeGlobalVariables`: remove global variables
   * `removeLocalVariables`: remove local variables
   * `removeLocalMethodParameters`: remove local methods parameters
+* `alOutline.fixCaseRemovesQuotesFromDataTypeIdentifiers`: when set to true, `Fix Identifiers and Keywords Case` commands will remove quotes around idetifiers that use al data types as names
 
 ## Known Issues
 

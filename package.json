@@ -2,7 +2,7 @@
 	"name": "al-code-outline",
 	"displayName": "AZ AL Dev Tools/AL Code Outline",
 	"description": "AZ AL Development Tools: AL code outline, object browser, object creators",
-	"version": "3.0.26",
+	"version": "3.0.28",
 	"publisher": "andrzejzwierzchowski",
 	"engines": {
 		"vscode": "^1.47.0"
@@ -1124,6 +1124,16 @@
 						"description": "Specifies which files should be ignored by code actions run when document is saved",
 						"scope": "resource"
 					},
+					"alOutline.codeTransformationIgnoreFiles": {
+						"type": "array",
+						"items": {
+							"type": "string"
+						},
+						"default": [],
+						"uniqueItems": true,
+						"description": "Specifies which files should be ignored by code transformation commands when run for project or uncommited files",
+						"scope": "resource"
+					},
 					"alOutline.pageActionToolTip": {
 						"type": "string",
 						"default": "Executes the %1 action.",
@@ -1181,8 +1191,13 @@
 						"scope": "resource",
 						"uniqueItems": true,
 						"description": "Reuse tooltips only defined in these dependencies. If empty, all dependencies will be used. Each entry should be defined as <dependency publisher> + <space> + '-' + <space> + <dependency name>"
+					},
+					"alOutline.fixCaseRemovesQuotesFromDataTypeIdentifiers": {
+						"type": "boolean",
+						"default": false,
+						"scope": "resource",
+						"description": "Set to true to remove quotes around identifiers having names of al data types when running 'Fix Identifiers and Keywords Case' commands"
 					}
-
 				}
 			}
 		]

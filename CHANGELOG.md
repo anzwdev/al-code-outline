@@ -1,5 +1,42 @@
 # Change Log
 
+## 3.0.28
+ - Issue #302 - AutoFormat vs. Fix KeyWords casing - Quotes around "Code"
+   - It is now possible to enable or disable removing quotes around identifiers that look like al data types by using `alOutline.fixCaseRemovesQuotesFromDataTypeIdentifiers` setting. Default value is false which means that quotes are not removed.
+ - Issues #305 and #336 - Not able to find symbols using packageCachePath setting
+ - Issue #337 - resourceExposurePolicy is not interpreted properly 
+ - Issue #338 - Fix Identifiers and Keywords leads to uncompilable report
+ - Pull request #333 by dannoe - Fixed wrong keyboard navigation order and a typo
+ - Pull request #334 by dannoe - Polished the layout of the object browser a little bit
+ 
+Thank you
+ - pri-kise and JavierFuentes for reporting issue #302
+ - Ponch18 for reporting issue #305
+ - vody for reporting issue #336
+ - aobsgit for reporting issue #337
+ - dschulzeOS and JavierFuentes for reporting issue #338/#318
+ - dannoe for pull requests #333 and #334
+ 
+## 3.0.27
+ - Issue #318 - AZ AL Dev Tools: Fix Identifiers and Keywords Case in the Active Project unquotes identifiers in code that look like keywords 
+ - Issue #319 - Duplicating comments on begin..end remove around single statements 
+ - Issue #320 - Missing semicolon on begin..end remove around single statements
+ - Issue #321 - Show Code Analyzer Rules: Select all by default, add support for '${analyzerFolder}' in analyzer name
+ - Issue #323 - Current editor commands crash when run for documents that are not al files
+ - Issue #325 - Incorrect label variables sorting
+ - Issue #330 - Allow to exclude some of the files from workspace code transformation commands
+ - Issue #332 - No Tooltips for ShowCaption = false
+ - Pull request #324 by deadmouse - typo fix in the package.json
+
+Thank you
+ - ernestasjuska for reporting issue #318
+ - dannoe for reporting issues #319, #320
+ - rvanbekkum for reporting issue #321
+ - deadmouse for reporting issue #323
+ - JavierFuentes for reporting issue #325 and #330
+ - pri-kise for reporting issue #332
+ - deadmouse for pull request #324
+
 ## 3.0.26
  - Issue #310 - SortProperties fails in case of extra semicolon
  - Issue #311 - Run code cleanup - specify default parameters

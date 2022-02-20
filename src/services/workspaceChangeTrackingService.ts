@@ -1,5 +1,8 @@
+import { config } from 'process';
 import * as vscode from 'vscode';
 import { DevToolsExtensionContext } from "../devToolsExtensionContext";
+import { ToolsALProjectSource } from '../langserver/toolsALProjectSource';
+import { ToolsConfigurationChangeRequest } from '../langserver/toolsConfigurationChangeRequest';
 import { ToolsDocumentChangeRequest } from '../langserver/toolsDocumentChangeRequest';
 import { ToolsDocumentContentChangeRequest } from '../langserver/toolsDocumentContentChangeRequest';
 import { ToolsFileSystemFileChangeRequest } from '../langserver/toolsFileSystemFileChangeRequest';
@@ -57,13 +60,30 @@ export class WorkspaceChangeTrackingService extends DevToolsExtensionService {
         watcher.onDidDelete(e => {
             this._context.toolsLangServerClient.fileSystemFileDelete(new ToolsFileSystemFileChangeRequest(e.fsPath));
         });
-
+       
         this._context.vscodeExtensionContext.subscriptions.push(watcher);
+
+        this._context.vscodeExtensionContext.subscriptions.push(vscode.workspace.onDidChangeConfiguration(configChange => {
+            this.onConfigurationChange(configChange);
+        }));
     }
 
     protected initializeWorkspace() {
         this._context.toolsLangServerClient.workspaceFolderChange(
             new ToolsWorkspaceFoldersChangeRequest(vscode.workspace.workspaceFolders, undefined));
+    }
+
+    protected onConfigurationChange(configChange: vscode.ConfigurationChangeEvent) {
+        //collect configuration changes        
+        let folders = vscode.workspace.workspaceFolders;
+        if ((folders) && (folders.length > 0)) {
+            let projectSources : ToolsALProjectSource[] = [];
+            for (let i=0; i<folders.length; i++)
+                if (configChange.affectsConfiguration('al.packageCachePath', folders[i].uri))
+                    projectSources.push(new ToolsALProjectSource(folders[i].uri));
+            if (projectSources.length > 0)
+                this._context.toolsLangServerClient.configurationChange(new ToolsConfigurationChangeRequest(projectSources));
+        }
     }
 
 }

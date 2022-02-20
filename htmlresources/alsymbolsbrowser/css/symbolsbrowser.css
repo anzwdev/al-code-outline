@@ -1,3 +1,11 @@
+#search {
+    padding-left: 5px;
+}
+#searchtypeWrapper {
+    margin: 0;
+    padding: 0;
+    width: 155px; 
+}
 #searchtype {
     flex: 1 1 25%;
 }

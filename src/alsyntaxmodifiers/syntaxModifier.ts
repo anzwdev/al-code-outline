@@ -57,6 +57,11 @@ export class SyntaxModifier {
         return (confirmation === 'Yes');
     }
 
+    protected getExcludedFiles(uri: vscode.Uri | undefined): string[] | undefined {
+        let configuration = vscode.workspace.getConfiguration('alOutline', uri);
+        return configuration.get<string[]>('codeTransformationIgnoreFiles');
+    }
+
     protected getParameters(uri: vscode.Uri): any {
         let values: any = {};
         if (this.modifiedFilesOnly)

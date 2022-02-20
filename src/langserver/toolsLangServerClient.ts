@@ -74,6 +74,7 @@ import { ToolsGetDependenciesListRequest } from './symbolsinformation/toolsGetDe
 import { ToolsGetDependenciesListResponse } from './symbolsinformation/toolsGetDependenciesListResponse';
 import { ToolsGetPageFieldAvailableToolTipsRequest } from './symbolsinformation/toolsGetPageFieldAvailableToolTipsRequest';
 import { ToolsGetPageFieldAvailableToolTipsResponse } from './symbolsinformation/toolsGetPageFieldAvailableToolTipsResponse';
+import { ToolsConfigurationChangeRequest } from './toolsConfigurationChangeRequest';
 
 export class ToolsLangServerClient implements vscode.Disposable {
     _context : vscode.ExtensionContext;
@@ -450,6 +451,9 @@ export class ToolsLangServerClient implements vscode.Disposable {
         this.sendNotification(params, "ws/fsFileDelete");
     }
 
+    public async configurationChange(params: ToolsConfigurationChangeRequest) {
+        this.sendNotification(params, "ws/configurationChange");
+    }   
 
     //internal communication methods
 

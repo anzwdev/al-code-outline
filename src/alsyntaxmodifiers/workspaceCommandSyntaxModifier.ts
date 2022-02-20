@@ -16,7 +16,7 @@ export class WorkspaceCommandSyntaxModifier extends SyntaxModifier {
     }
 
     async runForWorkspaceWithoutUI(workspaceUri: vscode.Uri): Promise<ISyntaxModifierResult | undefined> {
-        let request: ToolsWorkspaceCommandRequest = new ToolsWorkspaceCommandRequest(this._commandName, '', workspaceUri.fsPath, undefined, undefined, this.getParameters(workspaceUri));
+        let request: ToolsWorkspaceCommandRequest = new ToolsWorkspaceCommandRequest(this._commandName, '', workspaceUri.fsPath, undefined, undefined, this.getParameters(workspaceUri), this.getExcludedFiles(workspaceUri));
         let response = await this.runWorkspaceCommand(request);
 
         if (response) {
@@ -40,7 +40,7 @@ export class WorkspaceCommandSyntaxModifier extends SyntaxModifier {
     }
 
     async runForDocumentWithoutUI(text: string, workspaceUri: vscode.Uri, documentUri: vscode.Uri, range: TextRange | undefined): Promise<ISyntaxModifierResult | undefined> {
-        let request: ToolsWorkspaceCommandRequest = new ToolsWorkspaceCommandRequest(this._commandName, text, workspaceUri.fsPath, documentUri.fsPath, range, this.getParameters(documentUri));
+        let request: ToolsWorkspaceCommandRequest = new ToolsWorkspaceCommandRequest(this._commandName, text, workspaceUri.fsPath, documentUri.fsPath, range, this.getParameters(documentUri), this.getExcludedFiles(documentUri));
         let response = await this.runWorkspaceCommand(request);
 
         if (response) {

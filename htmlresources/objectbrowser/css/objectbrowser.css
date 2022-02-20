@@ -1,3 +1,11 @@
+#search {
+    padding-left: 5px;
+}
+#searchtypeWrapper {
+    margin: 0;
+    padding: 0;
+    width: 155px; 
+}
 #searchtype {
     flex: 1 1 25%;
 }
@@ -17,11 +25,11 @@
 }
 .types .btnArea {
     margin:5px 10px;
-    padding:0;
+    padding:0 10px 0 0;
     box-sizing: border-box;
 }
 .types .btn {
-    margin:0;
+    margin:0 5px 0 0;
     padding: 4px 10px;
     width: 150px;
     box-sizing: border-box;
@@ -30,6 +38,9 @@
 .azgridviewcont {
     flex: 1 1 auto;
     margin: 0 10px 0 0;
+    padding-top: 5px;
 }
+.ms-options-wrap > .ms-options {
+    left: inherit}
 
 
