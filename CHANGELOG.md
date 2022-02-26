@@ -1,5 +1,15 @@
 # Change Log
 
+## 3.0.29
+ - Issue #344 - Fix Identifiers and Keywords fails with the latest release
+ - Issue #343 - Sort commands do not work with the latest AL Language
+ - Issue #341 - Run Code Cleanup fails 
+
+Thank you
+ - fvet for reportitng issue #341
+ - NKarolak for reporting issue #343
+ - ChrisKappe and lvanvugt for reporting issue #344
+
 ## 3.0.28
  - Issue #302 - AutoFormat vs. Fix KeyWords casing - Quotes around "Code"
    - It is now possible to enable or disable removing quotes around identifiers that look like al data types by using `alOutline.fixCaseRemovesQuotesFromDataTypeIdentifiers` setting. Default value is false which means that quotes are not removed.

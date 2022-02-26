@@ -2,7 +2,7 @@
 	"name": "al-code-outline",
 	"displayName": "AZ AL Dev Tools/AL Code Outline",
 	"description": "AZ AL Development Tools: AL code outline, object browser, object creators",
-	"version": "3.0.28",
+	"version": "3.0.29",
 	"publisher": "andrzejzwierzchowski",
 	"engines": {
 		"vscode": "^1.47.0"
@@ -73,7 +73,6 @@
 		"onCommand:azALDevTools.LockProjectRemovedFieldCaptions",
 		"onCommand:azALDevTools.RemoveEditorBeginEnd",
 		"onCommand:azALDevTools.RemoveProjectBeginEnd",
-
 		"onCommand:azALDevTools.SortEditorPermissions", 
 		"onCommand:azALDevTools.SortWorkspacePermissions",
 		"onCommand:azALDevTools.SortEditorPermissionSetList", 
@@ -91,7 +90,6 @@
 		"onCommand:azALDevTools.RunEditorCodeCleanup",
 		"onCommand:azALDevTools.RunWorkspaceCodeCleanup",
 		"onCommand:azALDevTools.RunModifiedFilesCodeCleanup",
-
 		"onCommand:azALDevTools.showExtensionLog",
 		"onCustomEditor:azALDevTools.jsonEditor",
 		"onCustomEditor:azALDevTools.appPackageEditor"
@@ -112,13 +110,24 @@
 				{
 					"id": "azALDevTools.SymbolsTreeProvider",
 					"name": "AL Outline"
+				},
+				{
+					"id": "azALDevTools.DuplicateCodeTreeProvider",
+					"name": "Duplicate Code Search",
+					"when": "false"
 				}
+
 			]
 		},
 		"commands": [
 			{
 				"command": "azALDevTools.viewALApp",
 				"title": "Open in AL Object Browser"
+			},
+			{
+				"category": "AZ AL Dev Tools",
+				"command": "azALDevTools.findCodeDuplicates",
+				"title": "Find duplicate AL code"
 			},
 			{
 				"category": "AZ AL Dev Tools",
@@ -481,9 +490,13 @@
 					"when": "editorLangId == al"
 				},
 				{
+					"command": "azALDevTools.findCodeDuplicates",
+					"when": "false"
+				},
+				{
 					"command": "azALDevTools.showCodeAnalyzers",
 					"when": "azALDevTools.extensionActive"
-				},
+				},				
 				{
 					"command": "azALDevTools.goToDefinitionSymbolTree"
 				},

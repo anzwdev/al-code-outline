@@ -75,6 +75,8 @@ import { ToolsGetDependenciesListResponse } from './symbolsinformation/toolsGetD
 import { ToolsGetPageFieldAvailableToolTipsRequest } from './symbolsinformation/toolsGetPageFieldAvailableToolTipsRequest';
 import { ToolsGetPageFieldAvailableToolTipsResponse } from './symbolsinformation/toolsGetPageFieldAvailableToolTipsResponse';
 import { ToolsConfigurationChangeRequest } from './toolsConfigurationChangeRequest';
+import { ToolsFindDuplicateCodeRequest } from './toolsFindDuplicateCodeRequest';
+import { ToolsFindDuplicateCodeResponse } from './ToolsFindDuplicateCodeResponse';
 
 export class ToolsLangServerClient implements vscode.Disposable {
     _context : vscode.ExtensionContext;
@@ -289,6 +291,10 @@ export class ToolsLangServerClient implements vscode.Disposable {
         catch(e) {
             return undefined;
         }
+    }
+
+    public findDuplicateCode(params: ToolsFindDuplicateCodeRequest) : Promise<ToolsFindDuplicateCodeResponse | undefined> {
+        return this.sendRequest<ToolsFindDuplicateCodeRequest, ToolsFindDuplicateCodeResponse>(params, 'al/findDuplicateCode');
     }
 
     //exit
