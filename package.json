@@ -105,18 +105,28 @@
 				]
 			}
 		],
+		"viewsContainers": {
+			"activitybar": [
+				{
+					"icon": "resources/images/duplicate.svg",
+					"id": "azALDevTools_duplicateSearchView",
+					"title": "Duplicate Code Search"
+				}
+			]
+		},
 		"views": {
 			"explorer": [
 				{
 					"id": "azALDevTools.SymbolsTreeProvider",
 					"name": "AL Outline"
-				},
+				}
+			],
+			"azALDevTools_duplicateSearchView": [
 				{
 					"id": "azALDevTools.DuplicateCodeTreeProvider",
 					"name": "Duplicate Code Search",
-					"when": "false"
+					"when": "azALDevTools.findDuplicateCodeActive"
 				}
-
 			]
 		},
 		"commands": [
@@ -128,6 +138,14 @@
 				"category": "AZ AL Dev Tools",
 				"command": "azALDevTools.findCodeDuplicates",
 				"title": "Find duplicate AL code"
+			},
+			{
+				"command": "azALDevTools.hideCodeDuplicatesSearch",
+				"title": "Hide",
+				"icon": {
+					"light": "resources/images/light/refresh.svg",
+					"dark": "resources/images/dark/refresh.svg"
+				}
 			},
 			{
 				"category": "AZ AL Dev Tools",
@@ -483,6 +501,10 @@
 					"when": "false"
 				},
 				{
+					"command": "azALDevTools.hideCodeDuplicatesSearch",
+					"when": "false"
+				},
+				{
 					"command": "azALDevTools.showDocumentSymbols"
 				},
 				{
@@ -491,7 +513,7 @@
 				},
 				{
 					"command": "azALDevTools.findCodeDuplicates",
-					"when": "false"
+					"when": "azALDevTools.extensionActive"
 				},
 				{
 					"command": "azALDevTools.showCodeAnalyzers",
@@ -778,6 +800,11 @@
 				{
 					"command": "azALDevTools.alOutlineDisableFollowCursor",
 					"when": "view == azALDevTools.SymbolsTreeProvider && azALDevTools:alOutlineFollowCursor"
+				},
+				{
+					"command": "azALDevTools.hideCodeDuplicatesSearch",
+					"when": "view == azALDevTools.DuplicateCodeTreeProvider",
+					"group": "navigation"
 				}
 			],
 			"view/item/context": [

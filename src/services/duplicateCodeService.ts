@@ -41,13 +41,24 @@ export class DuplicateCodeService extends DevToolsExtensionService {
         let response = await this._context.toolsLangServerClient.findDuplicateCode(new ToolsFindDuplicateCodeRequest(3));
         if (!response)
             return;
-        if (response.isError) {
+        if (response.isError) {            
+            vscode.window.showErrorMessage(response.message?response.message:'Unknown error');
             return;
         }
-        if ((!response.duplicates) || (response.duplicates.length == 0))
+        if ((!response.duplicates) || (response.duplicates.length == 0)) {
+            vscode.window.showInformationMessage('No duplicates found');
             return;
+        }
+        vscode.commands.executeCommand('setContext', 'azALDevTools.findDuplicateCodeActive', true);
+        this._treeProvider.setDuplicates(response.duplicates);
 
-        this._treeProvider.setDuplicates(response.duplicates);        
+        let firstDuplicate = this._treeProvider.getFirstDuplicateNode();
+        if (firstDuplicate)
+            this._treeView.reveal(firstDuplicate, {
+                select: true,
+                focus: true,
+                expand: true
+            });
     }
 
     protected async showDuplicateCode(documentRange: DocumentTextRange) {
@@ -63,6 +74,11 @@ export class DuplicateCodeService extends DevToolsExtensionService {
         editor.revealRange(vscodeRange, vscode.TextEditorRevealType.Default);
         editor.selection = new vscode.Selection(vscodeRange.start, vscodeRange.end);
         vscode.commands.executeCommand('workbench.action.focusActiveEditorGroup');
+    }
+
+    protected hideDuplicatedCode() {
+        this._treeProvider.setDuplicates([]);
+        vscode.commands.executeCommand('setContext', 'azALDevTools.findDuplicateCodeActive', false);
     }
 
 }

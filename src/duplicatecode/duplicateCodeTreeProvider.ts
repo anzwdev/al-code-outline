@@ -41,6 +41,7 @@ export class DuplicateCodeTreeProvider implements vscode.TreeDataProvider<Duplic
             for (let i=0; i<info.ranges.length; i++) {
                 let title: string = (info.ranges[i].filePath)?info.ranges[i].filePath!:'file';
                 let codeBlockTree = new DuplicateCodeTreeNode(title, vscode.TreeItemCollapsibleState.Collapsed);
+                codeBlockTree.parent = node;
                 codeBlockTree.documentRange = info.ranges[i];
                 codeBlockTree.command = {
                     title: "Show code",
@@ -52,6 +53,16 @@ export class DuplicateCodeTreeProvider implements vscode.TreeDataProvider<Duplic
             node.childNodes = childNodes;
             return node;
         }
+        return undefined;
+    }
+
+    getParent(element: DuplicateCodeTreeNode): DuplicateCodeTreeNode | undefined {
+        return element.parent;
+    }
+
+    getFirstDuplicateNode() : DuplicateCodeTreeNode | undefined {
+        if ((this._duplicates) && (this._duplicates.length > 0))
+            return this._duplicates[0];
         return undefined;
     }
 }
