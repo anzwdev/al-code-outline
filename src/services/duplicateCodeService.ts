@@ -1,5 +1,6 @@
 import * as vscode from 'vscode';
 import { DevToolsExtensionContext } from "../devToolsExtensionContext";
+import { DuplicateCodeSortMode } from '../duplicatecode/duplicateCodeSortMode';
 import { DuplicateCodeTreeNode } from '../duplicatecode/duplicateCodeTreeNode';
 import { DuplicateCodeTreeProvider } from "../duplicatecode/duplicateCodeTreeProvider";
 import { ToolsFindDuplicateCodeRequest } from '../langserver/toolsFindDuplicateCodeRequest';
@@ -9,10 +10,12 @@ import { DevToolsExtensionService } from "./devToolsExtensionService";
 export class DuplicateCodeService extends DevToolsExtensionService {
     protected _treeProvider: DuplicateCodeTreeProvider;
     protected _treeView: vscode.TreeView<DuplicateCodeTreeNode>;
+    protected _minAllowedNoOfStatements: number;
 
     constructor(newContext: DevToolsExtensionContext) {
         //initialize
         super(newContext);
+        this._minAllowedNoOfStatements = 3;
         this._treeProvider = new DuplicateCodeTreeProvider();
        
         this._context.vscodeExtensionContext.subscriptions.push(
@@ -28,17 +31,56 @@ export class DuplicateCodeService extends DevToolsExtensionService {
     protected registerCommands() {
         this._context.vscodeExtensionContext.subscriptions.push(
             vscode.commands.registerCommand(
-                'azALDevTools.findCodeDuplicates', 
+                'azALDevTools.findDuplicateCode', 
                 () => this.findDuplicates()));
 
         this._context.vscodeExtensionContext.subscriptions.push(
             vscode.commands.registerCommand(
                 'azALDevTools.showDuplicateCode', 
                 (documentRange) => this.showDuplicateCode(documentRange)));
+
+        this._context.vscodeExtensionContext.subscriptions.push(
+            vscode.commands.registerCommand(
+                'azALDevTools.refreshDuplicateCodePanel',
+                () => this.findDuplicates()));
+
+        this._context.vscodeExtensionContext.subscriptions.push(
+            vscode.commands.registerCommand(
+                'azALDevTools.hideDuplicateCodePanel',
+                () => this.hideDuplicateCodePanel()));
+
+        this._context.vscodeExtensionContext.subscriptions.push(
+            vscode.commands.registerCommand(
+                'azALDevTools.sortDuplicatesByNoOfStatements',
+                () => this.sortBy(DuplicateCodeSortMode.noOfStatements)));
+
+        this._context.vscodeExtensionContext.subscriptions.push(
+            vscode.commands.registerCommand(
+                'azALDevTools.sortDuplicatesByType',
+                () => this.sortBy(DuplicateCodeSortMode.codeBlockType)));
+
+        this._context.vscodeExtensionContext.subscriptions.push(
+            vscode.commands.registerCommand(
+                'azALDevTools.sortDuplicatesByNoOfDuplicates',
+                () => this.sortBy(DuplicateCodeSortMode.noOfDuplicates)));
+
+        this._context.vscodeExtensionContext.subscriptions.push(
+            vscode.commands.registerCommand(
+                'azALDevTools.sortDuplicatesByTypeNoOfDuplicates',
+                () => this.sortBy(DuplicateCodeSortMode.codeBlockTypeNoOfDuplicates)));
+                        
+    }
+
+    protected sortBy(sortMode: DuplicateCodeSortMode) {
+        this._treeProvider.sortDuplicates(sortMode, false);
     }
 
     protected async findDuplicates() {
-        let response = await this._context.toolsLangServerClient.findDuplicateCode(new ToolsFindDuplicateCodeRequest(3));
+        let minNoOfStatements = await this.getMinNoOfStatements();
+        if (minNoOfStatements <= 0)
+            return;
+
+        let response = await this._context.toolsLangServerClient.findDuplicateCode(new ToolsFindDuplicateCodeRequest(minNoOfStatements));
         if (!response)
             return;
         if (response.isError) {            
@@ -76,9 +118,46 @@ export class DuplicateCodeService extends DevToolsExtensionService {
         vscode.commands.executeCommand('workbench.action.focusActiveEditorGroup');
     }
 
-    protected hideDuplicatedCode() {
+    protected hideDuplicateCodePanel() {
         this._treeProvider.setDuplicates([]);
         vscode.commands.executeCommand('setContext', 'azALDevTools.findDuplicateCodeActive', false);
+    }
+
+    protected async getMinNoOfStatements(): Promise<number> {
+        let defaultValue = this.getDefaultMinNoOfStatements();
+        let valueString = await vscode.window.showInputBox({
+            prompt: "Min. no of statements",
+            value: defaultValue.toString(),
+            validateInput: (text: string): string | undefined => {
+                if (text) {
+                    let value = Number.parseInt(text);
+                    if ((value) && (value != NaN) && (value >= this._minAllowedNoOfStatements))
+                        return undefined;       
+                }
+                return 'Min. no of statements must be a number greate or equal 3';
+            }
+        });
+
+        if (valueString) {
+            let value = Number.parseInt(valueString);
+            if ((value) && (value != NaN) && (value >= this._minAllowedNoOfStatements)) {
+                this.setDefaultMinNoOfStatements(value);
+                return value;
+            }
+        }
+
+        return 0;
+    }
+
+    protected getDefaultMinNoOfStatements() : number {
+        let value = this._context.vscodeExtensionContext.globalState.get<number>("azALDevTools.duplCode.minNoOfStatements");
+        if ((value) && (value >= this._minAllowedNoOfStatements))
+            return value;
+        return this._minAllowedNoOfStatements;
+    }
+
+    protected setDefaultMinNoOfStatements(value: number) {
+        this._context.vscodeExtensionContext.globalState.update("azALDevTools.duplCode.minNoOfStatements", value);
     }
 
 }

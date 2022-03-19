@@ -2,7 +2,7 @@
 	"name": "al-code-outline",
 	"displayName": "AZ AL Dev Tools/AL Code Outline",
 	"description": "AZ AL Development Tools: AL code outline, object browser, object creators",
-	"version": "3.0.29",
+	"version": "3.0.30",
 	"publisher": "andrzejzwierzchowski",
 	"engines": {
 		"vscode": "^1.47.0"
@@ -108,7 +108,7 @@
 		"viewsContainers": {
 			"activitybar": [
 				{
-					"icon": "resources/images/duplicate.svg",
+					"icon": "resources/images/activity-duplicate.svg",
 					"id": "azALDevTools_duplicateSearchView",
 					"title": "Duplicate Code Search"
 				}
@@ -136,16 +136,34 @@
 			},
 			{
 				"category": "AZ AL Dev Tools",
-				"command": "azALDevTools.findCodeDuplicates",
+				"command": "azALDevTools.findDuplicateCode",
 				"title": "Find duplicate AL code"
 			},
 			{
-				"command": "azALDevTools.hideCodeDuplicatesSearch",
+				"command": "azALDevTools.hideDuplicateCodePanel",
 				"title": "Hide",
-				"icon": {
-					"light": "resources/images/light/refresh.svg",
-					"dark": "resources/images/dark/refresh.svg"
-				}
+				"icon": "$(clear-all)"
+			},
+			{
+				"command": "azALDevTools.refreshDuplicateCodePanel",
+				"title": "Refresh",
+				"icon": "$(refresh)"
+			},
+			{
+				"command": "azALDevTools.sortDuplicatesByNoOfStatements",
+				"title": "Sort by No. of Statements"
+			},
+			{
+				"command": "azALDevTools.sortDuplicatesByType",
+				"title": "Sort by Type and No. of Statements"
+			},
+			{
+				"command": "azALDevTools.sortDuplicatesByNoOfDuplicates",
+				"title": "Sort by No. of Duplicates and No. of Statements"
+			},
+			{
+				"command": "azALDevTools.sortDuplicatesByTypeNoOfDuplicates",
+				"title": "Sort by Type and No. of Duplicates"
 			},
 			{
 				"category": "AZ AL Dev Tools",
@@ -200,10 +218,7 @@
 			{
 				"command": "azALDevTools.refreshOutlineView",
 				"title": "Refresh",
-				"icon": {
-					"light": "resources/images/light/refresh.svg",
-					"dark": "resources/images/dark/refresh.svg"
-				}
+				"icon": "$(refresh)"
 			},
 			{
 				"command": "alOutline.createListPage",
@@ -501,10 +516,30 @@
 					"when": "false"
 				},
 				{
-					"command": "azALDevTools.hideCodeDuplicatesSearch",
+					"command": "azALDevTools.hideDuplicateCodePanel",
 					"when": "false"
 				},
 				{
+					"command": "azALDevTools.refreshDuplicateCodePanel",
+					"when": "false"
+				},
+				{
+					"command": "azALDevTools.sortDuplicatesByNoOfStatements",
+					"when": "false"
+				},
+				{
+					"command": "azALDevTools.sortDuplicatesByType",
+					"when": "false"
+				},
+				{
+					"command": "azALDevTools.sortDuplicatesByNoOfDuplicates",
+					"when": "false"
+				},
+				{
+					"command": "azALDevTools.sortDuplicatesByTypeNoOfDuplicates",
+					"when": "false"
+				},
+					{
 					"command": "azALDevTools.showDocumentSymbols"
 				},
 				{
@@ -512,7 +547,7 @@
 					"when": "editorLangId == al"
 				},
 				{
-					"command": "azALDevTools.findCodeDuplicates",
+					"command": "azALDevTools.findDuplicateCode",
 					"when": "azALDevTools.extensionActive"
 				},
 				{
@@ -802,10 +837,31 @@
 					"when": "view == azALDevTools.SymbolsTreeProvider && azALDevTools:alOutlineFollowCursor"
 				},
 				{
-					"command": "azALDevTools.hideCodeDuplicatesSearch",
+					"command": "azALDevTools.refreshDuplicateCodePanel",
 					"when": "view == azALDevTools.DuplicateCodeTreeProvider",
 					"group": "navigation"
-				}
+				},
+				{
+					"command": "azALDevTools.hideDuplicateCodePanel",
+					"when": "view == azALDevTools.DuplicateCodeTreeProvider",
+					"group": "navigation"
+				},
+				{
+					"command": "azALDevTools.sortDuplicatesByNoOfStatements",
+					"when": "view == azALDevTools.DuplicateCodeTreeProvider"
+				},
+				{
+					"command": "azALDevTools.sortDuplicatesByType",
+					"when": "view == azALDevTools.DuplicateCodeTreeProvider"
+				},
+				{
+					"command": "azALDevTools.sortDuplicatesByNoOfDuplicates",
+					"when": "view == azALDevTools.DuplicateCodeTreeProvider"
+				},
+				{
+					"command": "azALDevTools.sortDuplicatesByTypeNoOfDuplicates",
+					"when": "view == azALDevTools.DuplicateCodeTreeProvider"
+				}	
 			],
 			"view/item/context": [
 				{

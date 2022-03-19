@@ -1,5 +1,8 @@
 # Change Log
 
+## 3.0.30
+ - New "Find duplicate code" command
+
 ## 3.0.29
  - Issue #344 - Fix Identifiers and Keywords fails with the latest release
  - Issue #343 - Sort commands do not work with the latest AL Language
