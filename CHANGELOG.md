@@ -2,6 +2,10 @@
 
 ## 3.0.30
  - New "Find duplicate code" command
+ - Issue #346 - Error when running Code Cleanup - remove With
+
+Thank you
+ - fvet for reportitng issue #346
 
 ## 3.0.29
  - Issue #344 - Fix Identifiers and Keywords fails with the latest release
