@@ -2,9 +2,11 @@
 
 ## 3.0.30
  - New "Find duplicate code" command
+ - Issue #345 - "Add all extension objects permissions" - Skip tables with ObsoleteState = Removed
  - Issue #346 - Error when running Code Cleanup - remove With
 
 Thank you
+ - rvanbekkum for reporting issue #345
  - fvet for reportitng issue #346
 
 ## 3.0.29

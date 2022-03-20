@@ -21,6 +21,7 @@ export class ToolsGetObjectsListRequest extends ToolsSymbolInformationRequest {
     includePermissionSetExtensions : boolean;
     
     includeDependencies : boolean;
+    includeObsolete : boolean;
 
     constructor(newPath: string | undefined) {
         super(newPath, false);
@@ -44,6 +45,7 @@ export class ToolsGetObjectsListRequest extends ToolsSymbolInformationRequest {
         this.includePermissionSetExtensions = false;
 
         this.includeDependencies = false;
+        this.includeObsolete = false;
     }
 
     setIncludeAll() {
