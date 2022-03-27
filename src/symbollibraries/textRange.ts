@@ -1,7 +1,6 @@
 
 import * as vscode from 'vscode';
 import { TextPosition } from "./textPosition";
-import { VersionedTextDocumentIdentifier, DocumentRangeFormattingRequest } from 'vscode-languageclient';
 
 export class TextRange {
     start : TextPosition;
