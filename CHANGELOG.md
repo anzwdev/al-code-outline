@@ -1,5 +1,8 @@
 # Change Log
 
+## 3.0.31
+ - Extension recompiled to work with AL compiler v9
+
 ## 3.0.30
  - New "Find duplicate code" command
  - Issue #345 - "Add all extension objects permissions" - Skip tables with ObsoleteState = Removed
