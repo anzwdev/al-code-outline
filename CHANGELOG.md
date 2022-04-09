@@ -2,9 +2,11 @@
 
 ## 3.0.32
  - Suggestion #347 - Cleanup empty lines/sections
+ - Issue #352 - Sort the Record variables by VarName, not by TableName
 
 Thank you
  - fvet for reportitng suggestion #347
+ - JavierFuentes, rvanbekkum and guidorobben for reporting and discussing issue #352
 
 ## 3.0.31
  - Extension recompiled to work with AL compiler v9

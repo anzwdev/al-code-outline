@@ -295,6 +295,7 @@ This extension contributes the following settings:
   * `removeLocalVariables`: remove local variables
   * `removeLocalMethodParameters`: remove local methods parameters
 * `alOutline.fixCaseRemovesQuotesFromDataTypeIdentifiers`: when set to true, `Fix Identifiers and Keywords Case` commands will remove quotes around idetifiers that use al data types as names
+* `alOutline.variablesSortMode`: allows to select variables sort mode in `Sort variables` commands. There are 2 options available: `fullTypeName` and `mainTypeNameOnly`. First one is the default one and uses full type name including object type if data type is an object (i.e. `Record Item`). Second option uses main type name only and ignores object type names (i.e. `Record` if variable type is `Record Item`).
 
 ## Known Issues
 

@@ -1335,7 +1335,23 @@
 						"default": false,
 						"scope": "resource",
 						"description": "Set to true to remove quotes around identifiers having names of al data types when running 'Fix Identifiers and Keywords Case' commands"
+					},
+					"alOutline.variablesSortMode": {
+						"type": "string",
+						"enum": [
+							"fullTypeName",
+							"mainTypeNameOnly"
+						],
+						"enumDescriptions": [
+							"Sort report DataItem columns",
+							"Format document"
+						],
+						"default": "fullTypeName",
+						"description": "Specifies how variables are sorted by `Sort Variables` commands.",
+						"scope": "resource"						
 					}
+
+
 				}
 			}
 		]
