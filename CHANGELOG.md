@@ -4,11 +4,13 @@
  - Suggestion #347 - Cleanup empty lines/sections
  - Issue #352 - Sort the Record variables by VarName, not by TableName
  - Issue #355 - Go to definition (project file or server definition) does not work if object name contains a slash /
+ - Issue #356 - Find duplicate code only in active workspace folder
 
 Thank you
  - fvet for reportitng suggestion #347
  - JavierFuentes, rvanbekkum and guidorobben for reporting and discussing issue #352
  - rvanbekkum for reporting issue #355
+ - jwikman for reporting issue #356
 
 ## 3.0.31
  - Extension recompiled to work with AL compiler v9

@@ -5,6 +5,7 @@ import { DuplicateCodeTreeNode } from '../duplicatecode/duplicateCodeTreeNode';
 import { DuplicateCodeTreeProvider } from "../duplicatecode/duplicateCodeTreeProvider";
 import { ToolsFindDuplicateCodeRequest } from '../langserver/toolsFindDuplicateCodeRequest';
 import { DocumentTextRange } from '../symbollibraries/documentTextRange';
+import { QuickPickHelper } from '../tools/quickPickHelper';
 import { DevToolsExtensionService } from "./devToolsExtensionService";
 
 export class DuplicateCodeService extends DevToolsExtensionService {
@@ -76,11 +77,16 @@ export class DuplicateCodeService extends DevToolsExtensionService {
     }
 
     protected async findDuplicates() {
+        let selectedFolder = await QuickPickHelper.pickWorkspaceFolder(true);
+        if (!selectedFolder)
+            return;
+        let duplicatesPath : string | undefined = (selectedFolder.folder) ? selectedFolder.folder.uri.fsPath : undefined;
+
         let minNoOfStatements = await this.getMinNoOfStatements();
         if (minNoOfStatements <= 0)
             return;
 
-        let response = await this._context.toolsLangServerClient.findDuplicateCode(new ToolsFindDuplicateCodeRequest(minNoOfStatements));
+        let response = await this._context.toolsLangServerClient.findDuplicateCode(new ToolsFindDuplicateCodeRequest(minNoOfStatements, duplicatesPath));
         if (!response)
             return;
         if (response.isError) {            
@@ -88,6 +94,7 @@ export class DuplicateCodeService extends DevToolsExtensionService {
             return;
         }
         if ((!response.duplicates) || (response.duplicates.length == 0)) {
+            this._treeProvider.setDuplicates([]);
             vscode.window.showInformationMessage('No duplicates found');
             return;
         }
