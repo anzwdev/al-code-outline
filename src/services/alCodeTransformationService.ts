@@ -31,6 +31,8 @@ import { TrimTrailingWhitespaceModifier } from '../alsyntaxmodifiers/trimTrailin
 import { RemoveBeginEndModifier } from '../alsyntaxmodifiers/removeBeginEndModifier';
 import { RefreshToolTipsModifier } from '../alsyntaxmodifiers/refreshToolTipsModifier';
 import { ReuseSingleFieldToolTipModifier } from '../alsyntaxmodifiers/reuseSingleFieldToolTipModifier';
+import { RemoveEmptyLinesModifier } from '../alsyntaxmodifiers/removeEmptyLinesModifier';
+import { RemoveEmptySectionsModifier } from '../alsyntaxmodifiers/removeEmptySectionsModifier';
 
 export class ALCodeTransformationService extends DevToolsExtensionService {
     protected _syntaxFactories: ISyntaxModifierFactoriesCollection;
@@ -71,6 +73,9 @@ export class ALCodeTransformationService extends DevToolsExtensionService {
         this.registerModifierCommands('AddDataClassifications', 'azALDevTools.AddEditorDataClassification', 'azALDevTools.AddProjectDataClassification',() => new DataClassificationModifier(this._context));
         this.registerModifierCommands('RemoveUnusedVariables', 'azALDevTools.RemoveEditorUnusedVariables', 'azALDevTools.RemoveProjectUnusedVariables', () => new RemoveUnusedVariablesModifier(this._context));
         this.registerModifierCommands('RemoveBeginEnd', 'azALDevTools.RemoveEditorBeginEnd', 'azALDevTools.RemoveProjectBeginEnd', () => new RemoveBeginEndModifier(this._context));
+
+        this.registerModifierCommands('RemoveEmptyLines', 'azALDevTools.RemoveEditorEmptyLines', 'azALDevTools.RemoveProjectEmptyLines', () => new RemoveEmptyLinesModifier(this._context));
+        this.registerModifierCommands('RemoveEmptySections', 'azALDevTools.RemoveEditorEmptySections', 'azALDevTools.RemoveProjectEmptySections', () => new RemoveEmptySectionsModifier(this._context));
 
         this.registerModifierCommands('SortPermissions', 'azALDevTools.SortEditorPermissions', 'azALDevTools.SortWorkspacePermissions', () => new SortPermissionsModifier(this._context));
         this.registerModifierCommands('SortPermissionSetList', 'azALDevTools.SortEditorPermissionSetList', 'azALDevTools.SortWorkspacePermissionSetList', () => new SortPermissionSetListModifier(this._context));

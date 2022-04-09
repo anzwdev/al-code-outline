@@ -2,7 +2,7 @@
 	"name": "al-code-outline",
 	"displayName": "AZ AL Dev Tools/AL Code Outline",
 	"description": "AZ AL Development Tools: AL code outline, object browser, object creators",
-	"version": "3.0.31",
+	"version": "3.0.32",
 	"publisher": "andrzejzwierzchowski",
 	"engines": {
 		"vscode": "^1.47.0"
@@ -73,6 +73,10 @@
 		"onCommand:azALDevTools.LockProjectRemovedFieldCaptions",
 		"onCommand:azALDevTools.RemoveEditorBeginEnd",
 		"onCommand:azALDevTools.RemoveProjectBeginEnd",
+		"onCommand:azALDevTools.RemoveEditorEmptyLines",
+		"onCommand:azALDevTools.RemoveProjectEmptyLines",
+		"onCommand:azALDevTools.RemoveEditorEmptySections",
+		"onCommand:azALDevTools.RemoveProjectEmptySections",
 		"onCommand:azALDevTools.SortEditorPermissions", 
 		"onCommand:azALDevTools.SortWorkspacePermissions",
 		"onCommand:azALDevTools.SortEditorPermissionSetList", 
@@ -409,6 +413,26 @@
 			},
 			{
 				"category": "AZ AL Dev Tools",
+				"command": "azALDevTools.RemoveEditorEmptyLines",
+				"title": "Remove Empty Lines from the Active Editor"
+			},
+			{
+				"category": "AZ AL Dev Tools",
+				"command": "azALDevTools.RemoveProjectEmptyLines",
+				"title": "Remove Empty Lines from the Active Project"
+			},
+			{
+				"category": "AZ AL Dev Tools",
+				"command": "azALDevTools.RemoveEditorEmptySections",
+				"title": "Remove Empty Sections from the Active Editor"
+			},
+			{
+				"category": "AZ AL Dev Tools",
+				"command": "azALDevTools.RemoveProjectEmptySections",
+				"title": "Remove Empty Sections from the Active Project"
+			},
+			{
+				"category": "AZ AL Dev Tools",
 				"command": "azALDevTools.SortEditorPermissions", 
 				"title": "Sort Permissions in the Active Editor"
 			},
@@ -740,6 +764,22 @@
 				{
 					"command": "azALDevTools.RemoveProjectBeginEnd",
 					"when": "azALDevTools.extensionActive"
+				},
+				{
+					"command": "azALDevTools.RemoveEditorEmptyLines",
+					"when": "editorLangId == al"
+				},
+				{
+					"command": "azALDevTools.RemoveProjectEmptyLines",
+					"when": "editorLangId == al"
+				},
+				{
+					"command": "azALDevTools.RemoveEditorEmptySections",
+					"when": "editorLangId == al"
+				},
+				{
+					"command": "azALDevTools.RemoveProjectEmptySections",
+					"when": "editorLangId == al"
 				},
 				{
 					"command": "azALDevTools.SortEditorPermissions", 
@@ -1178,6 +1218,8 @@
 								"SortTableFields",
 								"SortVariables",
 								"RemoveBeginEnd",
+								"RemoveEmptyLines", 
+								"RemoveEmptySections",
 								"FormatDocument",
 								"TrimTrailingWhitespace"
 							],

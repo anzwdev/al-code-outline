@@ -1,5 +1,11 @@
 # Change Log
 
+## 3.0.32
+ - Suggestion #347 - Cleanup empty lines/sections
+
+Thank you
+ - fvet for reportitng suggestion #347
+
 ## 3.0.31
  - Extension recompiled to work with AL compiler v9
 
