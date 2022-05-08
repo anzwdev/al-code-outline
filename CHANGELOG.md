@@ -1,5 +1,11 @@
 # Change Log
 
+## 3.0.33
+ - Issue #352 - Sorting settings ignored by OnDocumentSave version of the command
+
+Thank you
+ - JavierFuentes for reporting problem with issue #352
+
 ## 3.0.32
  - Suggestion #347 - Cleanup empty lines/sections
  - Issue #352 - Sort the Record variables by VarName, not by TableName

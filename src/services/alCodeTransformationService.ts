@@ -43,15 +43,15 @@ export class ALCodeTransformationService extends DevToolsExtensionService {
         this._syntaxFactories = {};
 
         //document range commands
-        this.registerDocumentRangeCommand('azALDevTools.sortVariables', 'sortVariables');
-        this.registerDocumentRangeCommand('azALDevTools.sortProcedures', 'sortProcedures');
-        this.registerDocumentRangeCommand('azALDevTools.sortProperties', 'sortProperties');
-        this.registerDocumentRangeCommand('azALDevTools.sortReportColumns', 'sortReportColumns');
-        this.registerDocumentRangeCommand('azALDevTools.sortTableFields', 'sortTableFields');
-        this.registerDocumentRangeCommand('azALDevTools.sortPermissions', 'sortPermissions');
-        this.registerDocumentRangeCommand('azALDevTools.sortPermissionSetList', 'sortPermissionSetList');
-        this.registerDocumentRangeCommand('azALDevTools.addAllObjectsPermissions', 'addAllObjectsPermissions');
-        this.registerDocumentRangeCommand('azALDevTools.removeVariable', 'removeVariable');
+        this.registerDocumentRangeCommand('azALDevTools.sortVariables', () => new SortVariablesModifier(this._context));
+        this.registerDocumentRangeCommand('azALDevTools.sortProcedures', () => new SortProceduresModifier(this._context));
+        this.registerDocumentRangeCommand('azALDevTools.sortProperties', () => new SortPropertiesModifier(this._context));
+        this.registerDocumentRangeCommand('azALDevTools.sortReportColumns', () => new SortReportColumnsModifier(this._context));
+        this.registerDocumentRangeCommand('azALDevTools.sortTableFields', () => new SortTableFieldsModifier(this._context));
+        this.registerDocumentRangeCommand('azALDevTools.sortPermissions', () => new SortPermissionsModifier(this._context));
+        this.registerDocumentRangeCommand('azALDevTools.sortPermissionSetList', () => new SortPermissionSetListModifier(this._context));
+        this.registerDocumentRangeCommand('azALDevTools.addAllObjectsPermissions', () => new WorkspaceCommandSyntaxModifier(this._context, 'addAllObjectsPermissions', 'addAllObjectsPermissions'));
+        this.registerDocumentRangeCommand('azALDevTools.removeVariable', () => new WorkspaceCommandSyntaxModifier(this._context, 'removeVariable', 'removeVariable'));
         this.registerDocumentSymbolCommand('azALDevTools.ReuseToolTipFromOtherPages', () => new ReuseSingleFieldToolTipModifier(this._context));
 
         //onsave command
@@ -150,12 +150,13 @@ export class ALCodeTransformationService extends DevToolsExtensionService {
         );
     }
 
-    protected registerDocumentRangeCommand(name: string, workspaceCommandName: string) {
+    protected registerDocumentRangeCommand(name: string, modifierFactory: () => SyntaxModifier) { //workspaceCommandName: string) {
         this._context.vscodeExtensionContext.subscriptions.push(
             vscode.commands.registerCommand(
                 name,
                 async (document, range) => {
-                    let cmd = new WorkspaceCommandSyntaxModifier(this._context, workspaceCommandName, workspaceCommandName);
+                    //let cmd = new WorkspaceCommandSyntaxModifier(this._context, workspaceCommandName, workspaceCommandName);
+                    let cmd = modifierFactory();
                     await cmd.runForDocument(document, range, false);
                 }
             )

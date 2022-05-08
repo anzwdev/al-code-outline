@@ -11,7 +11,7 @@ export class SortVariablesModifier  extends WorkspaceCommandSyntaxModifier {
     protected getParameters(uri: vscode.Uri): any {
         let parameters = super.getParameters(uri);
         let config = vscode.workspace.getConfiguration('alOutline', uri);
-        parameters.sortMode = config.get<string>('variablesSortMode');
+        parameters.variablesSortMode = config.get<string>('variablesSortMode');
         return parameters;
     }
 
