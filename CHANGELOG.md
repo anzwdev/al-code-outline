@@ -3,10 +3,12 @@
 ## 3.0.33
  - Issue #352 - Sorting settings ignored by OnDocumentSave version of the command
  - Issue #360 - Exclude API pages from "AddToolTips
+ - Issue #361 - Remove unused variables not removing variables for OnAction Trigger
 
 Thank you
  - JavierFuentes for reporting problem with issue #352
  - fvet for reporting problem with issue #360
+ - tscottjendev for reporting problem with issue #361
 
 ## 3.0.32
  - Suggestion #347 - Cleanup empty lines/sections
