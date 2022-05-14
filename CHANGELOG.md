@@ -2,9 +2,11 @@
 
 ## 3.0.33
  - Issue #352 - Sorting settings ignored by OnDocumentSave version of the command
+ - Issue #360 - Exclude API pages from "AddToolTips
 
 Thank you
  - JavierFuentes for reporting problem with issue #352
+ - fvet for reporting problem with issue #360
 
 ## 3.0.32
  - Suggestion #347 - Cleanup empty lines/sections
