@@ -1,6 +1,7 @@
 # Change Log
 
 ## 3.0.34
+ - Issue #365 - Convert Object Ids to Names does not work for profile
  - Issue #368 - "alOutline.codeActionsOnSaveIgnoreFiles" don't avoid automatic variables sorting
  - Issue #369 - New AL File Wizard - UsageCategory 'None' not respected
  - Issue #374 - AL File Wizard - Default settings for API pages:
@@ -10,6 +11,7 @@
  - Issue #376 - Add multiple fields: sort field properties alphabetically
 
 Thank you
+ - pri-kise for reporting issue #365
  - JavierFuentes for reporting issue #368
  - fvet for reporting issues #369, #374
  - NKarolak for reporting issue #376
