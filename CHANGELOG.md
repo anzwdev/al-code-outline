@@ -1,6 +1,7 @@
 # Change Log
 
 ## 3.0.34
+ - Issue #368 - "alOutline.codeActionsOnSaveIgnoreFiles" don't avoid automatic variables sorting
  - Issue #369 - New AL File Wizard - UsageCategory 'None' not respected
  - Issue #374 - AL File Wizard - Default settings for API pages:
    * `alOutline.defaultApiPublisher`: Default Api Publisher value for the page wizard
@@ -9,6 +10,7 @@
  - Issue #376 - Add multiple fields: sort field properties alphabetically
 
 Thank you
+ - JavierFuentes for reporting issue #368
  - fvet for reporting issues #369, #374
  - NKarolak for reporting issue #376
 

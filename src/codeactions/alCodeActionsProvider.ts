@@ -105,11 +105,23 @@ export class ALCodeActionsProvider implements vscode.CodeActionProvider {
 
     public static canRunOnSaveOnFile(configuration: vscode.WorkspaceConfiguration, document: vscode.TextDocument) : boolean {
         let ignorePatterns = configuration.get<string[]>('codeActionsOnSaveIgnoreFiles');
+
+        let wsFolder = vscode.workspace.getWorkspaceFolder(document.uri);
+        if (!wsFolder)
+            return false;        
+
         if ((ignorePatterns) && (ignorePatterns.length > 0)) {
             let selectors = ignorePatterns.map(pattern => {
+                if ((!pattern) || (pattern.startsWith("**")))
+                    return {   
+                        language: 'al',                 
+                        pattern: pattern
+                    };
+                if (pattern.startsWith("./"))
+                    pattern = pattern.substring(2);
                 return {   
                     language: 'al',                 
-                    pattern: pattern
+                    pattern: new vscode.RelativePattern(wsFolder!, pattern)
                 };
             });
 
