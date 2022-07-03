@@ -36,9 +36,9 @@ export class ALPageSyntaxBuilder {
 
         //usage category and application area for list pages
         if (data.pageType === "List") {            
-            if ((data.usageCategory) && (data.usageCategory !== "") && (data.usageCategory !== "None")) {
+            if ((data.usageCategory) && (data.usageCategory !== "")) {
                 //application area requires useage category to be set
-                if ((data.applicationArea) && (data.applicationArea !== ""))
+                if ((data.applicationArea) && (data.applicationArea !== "") && (data.usageCategory !== "None"))
                     writer.addProperty("ApplicationArea", data.applicationArea);
                 writer.addProperty("UsageCategory", data.usageCategory);
             }
