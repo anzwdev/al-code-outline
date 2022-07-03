@@ -274,9 +274,9 @@ export class ALSyntaxWriter {
 
     public writePageField(fieldName : string, fieldCaption: string | undefined, fieldCaptionComment: string | undefined, fieldDescription: string | undefined, createToolTip: boolean, existingToolTips: string[] | undefined) {
         this.writeStartNameSourceBlock("field", this.encodeName(fieldName), 'Rec.' + this.encodeName(fieldName));
+        this.writeApplicationArea();
         if (createToolTip)
             this.writeTooltip(this.fieldToolTip, this.fieldToolTipComment, fieldCaption, fieldCaptionComment, fieldDescription, existingToolTips);
-        this.writeApplicationArea();
         this.writeEndBlock();
     }
 

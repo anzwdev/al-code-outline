@@ -1,5 +1,11 @@
 # Change Log
 
+## 3.0.34
+ - Issue #376 - Add multiple fields: sort field properties alphabetically
+
+Thank you
+ - NKarolak for reporting issue #376
+
 ## 3.0.33
  - Issue #352 - Sorting settings ignored by OnDocumentSave version of the command
  - Issue #360 - Exclude API pages from "AddToolTips
