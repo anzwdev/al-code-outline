@@ -33,6 +33,7 @@ import { RefreshToolTipsModifier } from '../alsyntaxmodifiers/refreshToolTipsMod
 import { ReuseSingleFieldToolTipModifier } from '../alsyntaxmodifiers/reuseSingleFieldToolTipModifier';
 import { RemoveEmptyLinesModifier } from '../alsyntaxmodifiers/removeEmptyLinesModifier';
 import { RemoveEmptySectionsModifier } from '../alsyntaxmodifiers/removeEmptySectionsModifier';
+import { SortCustomizationsModifier } from '../alsyntaxmodifiers/sortCustomizationsModifier';
 
 export class ALCodeTransformationService extends DevToolsExtensionService {
     protected _syntaxFactories: ISyntaxModifierFactoriesCollection;
@@ -50,6 +51,7 @@ export class ALCodeTransformationService extends DevToolsExtensionService {
         this.registerDocumentRangeCommand('azALDevTools.sortTableFields', () => new SortTableFieldsModifier(this._context));
         this.registerDocumentRangeCommand('azALDevTools.sortPermissions', () => new SortPermissionsModifier(this._context));
         this.registerDocumentRangeCommand('azALDevTools.sortPermissionSetList', () => new SortPermissionSetListModifier(this._context));
+        this.registerDocumentRangeCommand('azALDevTools.sortCustomizations', () => new SortCustomizationsModifier(this._context));
         this.registerDocumentRangeCommand('azALDevTools.addAllObjectsPermissions', () => new WorkspaceCommandSyntaxModifier(this._context, 'addAllObjectsPermissions', 'addAllObjectsPermissions'));
         this.registerDocumentRangeCommand('azALDevTools.removeVariable', () => new WorkspaceCommandSyntaxModifier(this._context, 'removeVariable', 'removeVariable'));
         this.registerDocumentSymbolCommand('azALDevTools.ReuseToolTipFromOtherPages', () => new ReuseSingleFieldToolTipModifier(this._context));
@@ -84,6 +86,7 @@ export class ALCodeTransformationService extends DevToolsExtensionService {
         this.registerModifierCommands('SortReportColumns', 'azALDevTools.SortEditorReportColumns', 'azALDevTools.SortWorkspaceReportColumns', () => new SortReportColumnsModifier(this._context));
         this.registerModifierCommands('SortTableFields', 'azALDevTools.SortEditorTableFields', 'azALDevTools.SortWorkspaceTableFields', () => new SortTableFieldsModifier(this._context));
         this.registerModifierCommands('SortVariables', 'azALDevTools.SortEditorVariables', 'azALDevTools.SortWorkspaceVariables', () => new SortVariablesModifier(this._context));
+        this.registerModifierCommands('SortCustomizations', 'azALDevTools.SortEditorCustomizations', 'azALDevTools.SortWorkspaceCustomizations', () => new SortCustomizationsModifier(this._context));
 
         this.registerModifierCommands(undefined, 'azALDevTools.RunEditorCodeCleanup', 'azALDevTools.RunWorkspaceCodeCleanup', () => new BatchSyntaxModifier(this._context));
         this.registerModifiedFilesOnlyCommand('azALDevTools.RunModifiedFilesCodeCleanup', () => new BatchSyntaxModifier(this._context));

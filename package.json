@@ -91,6 +91,8 @@
 		"onCommand:azALDevTools.SortWorkspaceTableFields",
 		"onCommand:azALDevTools.SortEditorVariables", 
 		"onCommand:azALDevTools.SortWorkspaceVariables",
+		"onCommand:azALDevTools.SortEditorCustomizations", 
+		"onCommand:azALDevTools.SortWorkspaceCustomizations",
 		"onCommand:azALDevTools.RunEditorCodeCleanup",
 		"onCommand:azALDevTools.RunWorkspaceCodeCleanup",
 		"onCommand:azALDevTools.RunModifiedFilesCodeCleanup",
@@ -503,7 +505,16 @@
 				"command": "azALDevTools.SortWorkspaceVariables",
 				"title": "Sort Variables in the Active Project"
 			},
-
+			{
+				"category": "AZ AL Dev Tools",
+				"command": "azALDevTools.SortEditorCustomizations",
+				"title": "Sort Customizations Property in the Active Editor"
+			},
+			{
+				"category": "AZ AL Dev Tools",
+				"command": "azALDevTools.SortWorkspaceCustomizations",
+				"title": "Sort Customizations Property in the Active Project"
+			},
 			{
 				"category": "AZ AL Dev Tools",
 				"command": "azALDevTools.RunEditorCodeCleanup",
@@ -835,6 +846,14 @@
 				},
 				{
 					"command": "azALDevTools.SortWorkspaceVariables",
+					"when": "azALDevTools.extensionActive"
+				},
+				{
+					"command": "azALDevTools.SortEditorCustomizations",
+					"when": "editorLangId == al"
+				},
+				{
+					"command": "azALDevTools.SortWorkspaceCustomizations",
 					"when": "azALDevTools.extensionActive"
 				},
 				{
@@ -1191,6 +1210,7 @@
 								"SortVariables",
 								"SortPermissions",
 								"SortPermissionSetList",
+								"SortCustomizations",
 								"FormatDocument"
 							],
 							"enumDescriptions": [
@@ -1200,12 +1220,13 @@
 								"Sort variables",
 								"Sort permissions",
 								"Sort permission sets",
+								"Sort customizations",
 								"Format document"
 							]
 						},
 						"default": [],
 						"uniqueItems": true,
-						"description": "Specifies which code-actions should be applied when a file is saved. Valid values are SortReportColumns, SortProcedures, SortProperties, SortVariables, SortPermissions and SortPermissionSetList",
+						"description": "Specifies which code-actions should be applied when a file is saved. Valid values are SortTableFields, SortReportColumns, SortProcedures, SortProperties, SortVariables, SortPermissions, SortPermissionSetList, SortCustomizations and FormatDocument",
 						"scope": "resource"
 					},
 					"alOutline.codeCleanupActions": {
@@ -1235,6 +1256,7 @@
 								"SortReportColumns",
 								"SortTableFields",
 								"SortVariables",
+								"SortCustomizations",
 								"RemoveBeginEnd",
 								"RemoveEmptyLines", 
 								"RemoveEmptySections",
@@ -1263,6 +1285,7 @@
 								"Sort Report Columns",
 								"Sort Table Fields",
 								"Sort Variables",
+								"Sort Customizations",
 								"Remove Begin..End",
 								"Format Document",
 								"Trim Trailing Whitespace"

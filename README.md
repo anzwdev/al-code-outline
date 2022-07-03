@@ -89,6 +89,7 @@ Extension adds VS Code editor code actions to some of al elements to help develo
   - `Sort variables` available from the first line of any object declaration or from "var" keyword of local or global variables section
   - `Sort permissions` available when cursor is at the first line of Permissions property. It will sort all entries in this property
   - `Sort permission sets` available when cursor is at the first line of IncludedPermissionSets property. It will sort all entries in this property.
+  - `Sort customizations` available when cursor is at the first line of Customizations property. It will sort all entries in this property.
  - Code generation actions
   - `Create interface` action available on the first line of codeunit declaration, it creates a new interface with all public functions from the codeunit
  - `Add all extension objects permissions` available on the first line of Permissions property. It adds all objects from the current extension to this property. If permissions are added to PermissionSet or PermisionSetExtension object, `table`, `tabledata`, `page`, `report`, `xmlport`, `query` and `codeunit` entries will be added. For all other object types, only `tabledata` entries will be created.
@@ -103,7 +104,7 @@ Extension adds VS Code editor code actions to some of al elements to help develo
 
 ![Add multiple fields](resources/screen2-addfieldscodeaction.gif)
 
-Sort procedures, variables, properties and report columns actions can be also run automatically on document save. To turn this functionality on "source.fixAll.al" property of "editor.codeActionsOnSave" must be set to true and "alOutline.codeActionsOnSave" setting should contain list of sorting actions that you want to run. That's how settings should look like to run all these sort actions on save:
+Sort table fields, procedures, variables, properties, report columns. permissions, permission sets and customizations actions can be also run automatically on document save. To turn this functionality on "source.fixAll.al" property of "editor.codeActionsOnSave" must be set to true and "alOutline.codeActionsOnSave" setting should contain list of sorting actions that you want to run. That's how settings should look like to run all these sort actions on save:
 
 ```javascript
 "editor.codeActionsOnSave": {
@@ -160,6 +161,8 @@ Extension adds a few commands that allow to automatically modify al code in the 
 * `Sort Procedures in the Active Project`: sorts procedures in the current project
 * `Sort Properties in the Active Editor`: sorts properties in the current editor
 * `Sort Properties in the Active Project`: sorts procedures in the current project
+* `Sort Customizations Property in the Active Editor`: sorts Customizations property values in the current editor
+* `Sort Customizations Property in the Active Project`: sorts Customizations property values in the current project
 * `Sort Report Columns in the Active Editor`: sorts report columns in the current editor
 * `Sort Report Columns in the Active Project`: sorts report columns in the current project
 * `Sort Table Fields in the Active Editor`: sorts table fields in the current editor
@@ -282,7 +285,7 @@ This extension contributes the following settings:
 * `alOutline.addToolTipsToPageFields`: set to true to add tooltips to page fields when 'Add multiple fields' action is used
 * `alOutline.useTableFieldCaptionsInApiFields`: set to true, to use table field captions in API pages fields like in standard BC APIs v 2.0 (i.e. ```Caption='Customer No.';```), set to false to use camelCase api page field name in api page field caption together with Locked property like in standard BC APIs v 1.0 (i.e. ```Caption='customerNo', Locked = true;```). Default value is true
 * `alOutline.lockRemovedFieldsCaptions`: set to true to lock captions of removed fields when 'Add Table Field Captions' command is run
-* `alOutline.codeCleanupActions`: array of names of actions that will be run by code cleanup commands. These actions are available: RemoveWithStatements, AddApplicationAreas, AddToolTips, RefreshToolTips, AddTableFieldCaptions, "LockRemovedFieldCaptions", AddPageFieldCaptions, AddObjectCaptions, FixKeywordsCase, FixIdentifiersCase, ConvertObjectIdsToNames, AddMissingParentheses, AddDataClassifications, RemoveUnusedVariables, SortPermissions, SortPermissionSetList, SortProcedures, SortProperties, SortReportColumns, SortTableFields, SortVariables, RemoveBeginEnd, RemoveEmptyLines, RemoveEmptySections, FormatDocument, TrimTrailingWhitespace
+* `alOutline.codeCleanupActions`: array of names of actions that will be run by code cleanup commands. These actions are available: RemoveWithStatements, AddApplicationAreas, AddToolTips, RefreshToolTips, AddTableFieldCaptions, "LockRemovedFieldCaptions", AddPageFieldCaptions, AddObjectCaptions, FixKeywordsCase, FixIdentifiersCase, ConvertObjectIdsToNames, AddMissingParentheses, AddDataClassifications, RemoveUnusedVariables, SortPermissions, SortPermissionSetList, SortProcedures, SortProperties, SortReportColumns, SortTableFields, SortVariables, SortCustomizations, RemoveBeginEnd, RemoveEmptyLines, RemoveEmptySections, FormatDocument, TrimTrailingWhitespace
 * `alOutline.doNotReuseToolTipsFromOtherPages`: set to true to disable reusing field tooltips from other pages in the page wizard, 'add multiple fields' page code action and 'add missing tooltips' command
 * `alOutline.reuseToolTipsFromDependencies`: reuse tooltips only defined in these dependencies, if empty, all dependencies will be used. Each entry should be defined as "dependency publisher" + "space" + "-" + "space" + "dependency name". You can also use "*" to use all dependencies. This setting is also used by the Code Cleanup commands
 * `alOutline.defaultDataClassification`: default DataClassification value for Code Cleanup commands
