@@ -6,6 +6,7 @@ import { ALPageWizardData } from "./alPageWizardData";
 import { ALPageWizardPage } from "./alPageWizardPage";
 import { DevToolsExtensionContext } from "../../devToolsExtensionContext";
 import { ALObjectWizardSettings } from "./alObjectWizardSettings";
+import { StringHelper } from '../../tools/stringHelper';
 
 export class ALPageWizard extends ALObjectWizard {
     
@@ -28,6 +29,10 @@ export class ALPageWizard extends ALObjectWizard {
         wizardData.createTooltips = !!config.get<boolean>('addToolTipsToPageFields');
         wizardData.reuseToolTips = !config.get<boolean>('doNotReuseToolTipsFromOtherPages');
         wizardData.toolTipsSource = config.get<string[]>('reuseToolTipsFromDependencies');
+        wizardData.applicationArea = StringHelper.defaultIfEmpty(config.get<string>('defaultAppArea'), wizardData.applicationArea);
+        wizardData.apiPublisher = StringHelper.defaultIfEmpty(config.get<string>('defaultApiPublisher'), wizardData.apiPublisher);
+        wizardData.apiGroup = StringHelper.defaultIfEmpty(config.get<string>('defaultApiGroup'), wizardData.apiGroup);
+        wizardData.apiVersion = StringHelper.defaultIfEmpty(config.get<string>('defaultApiVersion'), wizardData.apiVersion);
 
         let wizardPage : ALPageWizardPage = new ALPageWizardPage(this._toolsExtensionContext, settings, wizardData);
         wizardPage.show();

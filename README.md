@@ -248,6 +248,9 @@ This extension contributes the following settings:
 * `alOutline.autoGenerateFileDirectory`: the default directory to create files in, relative to the root directory (e.g., \"Source\<ObjectType\>\")
 * `alOutline.autoShowFiles`: automatically show any newly created files in the editor
 * `alOutline.defaultAppArea`: default application area for page code generator
+* `alOutline.defaultApiPublisher`: Default Api Publisher value for the page wizard
+* `alOutline.defaultApiGroup`: Default Api Group value for the page wizard
+* `alOutline.defaultApiVersion`: Default Api Version value for the page wizard
 * `alOutline.defaultListUsageCategory`: default usage category for list pages
 * `alOutline.promptForObjectId`: when generating a new object, ask the user to input the object ID.
 * `alOutline.promptForObjectName`: when generating a new object, ask the user to input the object name

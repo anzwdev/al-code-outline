@@ -1037,6 +1037,24 @@
 						"scope": "resource",
 						"description": "Default application area for page code generator and code cleanup commands"
 					},
+					"alOutline.defaultApiPublisher": {
+						"type": "string",
+						"default": "publisherName",
+						"scope": "resource",
+						"description": "Default Api Publisher value for the page wizard"
+					},
+					"alOutline.defaultApiGroup": {
+						"type": "string",
+						"default": "apiGroup",
+						"scope": "resource",
+						"description": "Default Api Group value for the page wizard"
+					},
+					"alOutline.defaultApiVersion": {
+						"type": "string",
+						"default": "v1.0",
+						"scope": "resource",
+						"description": "Default Api Version value for the page wizard"
+					},
 					"alOutline.defaultDataClassification": {
 						"type": "string",
 						"scope": "resource",

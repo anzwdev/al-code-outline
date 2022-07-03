@@ -39,4 +39,10 @@ export class StringHelper {
         return Math.min(len1, len2);
     }
 
+    static defaultIfEmpty(value: string | undefined, defaultValue: string): string {
+        if ((value) && (value !== ""))
+            return value;
+        return defaultValue;
+    }
+
 }
