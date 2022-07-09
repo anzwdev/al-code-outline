@@ -11,6 +11,7 @@
    * `alOutline.defaultApiGroup`: Default Api Group value for the page wizard
    * `alOutline.defaultApiVersion`: Default Api Version value for the page wizard
  - Issue #376 - Add multiple fields: sort field properties alphabetically
+ - Language server dependencies and target .net framework update
 
 Thank you
  - pri-kise for reporting issue #365 and idea #366
