@@ -10,6 +10,7 @@
    * `alOutline.defaultApiPublisher`: Default Api Publisher value for the page wizard
    * `alOutline.defaultApiGroup`: Default Api Group value for the page wizard
    * `alOutline.defaultApiVersion`: Default Api Version value for the page wizard
+ - Issue #375 - Add multiple fields to XMLPort shows already added fields
  - Issue #376 - Add multiple fields: sort field properties alphabetically
  - Language server dependencies and target .net framework update
 
@@ -17,7 +18,7 @@ Thank you
  - pri-kise for reporting issue #365 and idea #366
  - FloOM25, Splace13 and frozenbrain for reporting and helping with issue #372
  - JavierFuentes for reporting issue #368
- - fvet for reporting issues #369, #374
+ - fvet for reporting issues #369, #374, #375
  - NKarolak for reporting issue #376
 
 ## 3.0.33
