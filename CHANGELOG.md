@@ -5,6 +5,7 @@
  - Idea #366 - Sort Page Customizations on Save
  - Issue #368 - "alOutline.codeActionsOnSaveIgnoreFiles" don't avoid automatic variables sorting
  - Issue #369 - New AL File Wizard - UsageCategory 'None' not respected
+ - Issue #372 - Remove 'with' usage does not work if ALPackages folder path has been changed
  - Issue #374 - AL File Wizard - Default settings for API pages:
    * `alOutline.defaultApiPublisher`: Default Api Publisher value for the page wizard
    * `alOutline.defaultApiGroup`: Default Api Group value for the page wizard
@@ -13,6 +14,7 @@
 
 Thank you
  - pri-kise for reporting issue #365 and idea #366
+ - FloOM25, Splace13 and frozenbrain for reporting and helping with issue #372
  - JavierFuentes for reporting issue #368
  - fvet for reporting issues #369, #374
  - NKarolak for reporting issue #376
