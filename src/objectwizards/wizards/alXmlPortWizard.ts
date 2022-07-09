@@ -3,7 +3,6 @@
 import { ALObjectWizard } from "./alObjectWizard";
 import { ALXmlPortWizardData } from './alXmlPortWizardData';
 import { ALXmlPortWizardPage } from './alXmlPortWizardPage';
-import { ALLangServerProxy } from '../../allanguage/alLangServerProxy';
 import { DevToolsExtensionContext } from '../../devToolsExtensionContext';
 import { ALObjectWizardSettings } from "./alObjectWizardSettings";
 

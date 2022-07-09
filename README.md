@@ -89,6 +89,7 @@ Extension adds VS Code editor code actions to some of al elements to help develo
   - `Sort variables` available from the first line of any object declaration or from "var" keyword of local or global variables section
   - `Sort permissions` available when cursor is at the first line of Permissions property. It will sort all entries in this property
   - `Sort permission sets` available when cursor is at the first line of IncludedPermissionSets property. It will sort all entries in this property.
+  - `Sort customizations` available when cursor is at the first line of Customizations property. It will sort all entries in this property.
  - Code generation actions
   - `Create interface` action available on the first line of codeunit declaration, it creates a new interface with all public functions from the codeunit
  - `Add all extension objects permissions` available on the first line of Permissions property. It adds all objects from the current extension to this property. If permissions are added to PermissionSet or PermisionSetExtension object, `table`, `tabledata`, `page`, `report`, `xmlport`, `query` and `codeunit` entries will be added. For all other object types, only `tabledata` entries will be created.
@@ -103,7 +104,7 @@ Extension adds VS Code editor code actions to some of al elements to help develo
 
 ![Add multiple fields](resources/screen2-addfieldscodeaction.gif)
 
-Sort procedures, variables, properties and report columns actions can be also run automatically on document save. To turn this functionality on "source.fixAll.al" property of "editor.codeActionsOnSave" must be set to true and "alOutline.codeActionsOnSave" setting should contain list of sorting actions that you want to run. That's how settings should look like to run all these sort actions on save:
+Sort table fields, procedures, variables, properties, report columns. permissions, permission sets and customizations actions can be also run automatically on document save. To turn this functionality on "source.fixAll.al" property of "editor.codeActionsOnSave" must be set to true and "alOutline.codeActionsOnSave" setting should contain list of sorting actions that you want to run. That's how settings should look like to run all these sort actions on save:
 
 ```javascript
 "editor.codeActionsOnSave": {
@@ -149,12 +150,19 @@ Extension adds a few commands that allow to automatically modify al code in the 
 * `Remove Unused Variables from the Active Project`: removes unused variables from the current project
 * `Remove Begin..End around Single Statements from the Active Editor`: removes begin..end around single statement from the current editor
 * `Remove Begin..End around Single Statements from the Active Project`: removes begin..end around single statement from the current project
+* `Remove Begin..End around Single Statements from the Active Editor`: removes begin..end around single statement from the current editor
+* `Remove Empty Lines from the Active Editor`: removes empty duplicate lines from the current editor
+* `Remove Empty Lines from the Active Project`: removes empty duplicate lines from the current project
+* `Remove Empty Sections from the Active Editor`: removes empty sections from the current editor
+* `Remove Empty Sections from the Active Project`: removes empty sections from the current project
 * `Sort Permissions in the Active Editor`: sorts permissions in the current editor
 * `Sort Permissions in the Active Project`: sorts permissions in the current project
 * `Sort Procedures in the Active Editor`: sorts procedures in the current editor
 * `Sort Procedures in the Active Project`: sorts procedures in the current project
 * `Sort Properties in the Active Editor`: sorts properties in the current editor
 * `Sort Properties in the Active Project`: sorts procedures in the current project
+* `Sort Customizations Property in the Active Editor`: sorts Customizations property values in the current editor
+* `Sort Customizations Property in the Active Project`: sorts Customizations property values in the current project
 * `Sort Report Columns in the Active Editor`: sorts report columns in the current editor
 * `Sort Report Columns in the Active Project`: sorts report columns in the current project
 * `Sort Table Fields in the Active Editor`: sorts table fields in the current editor
@@ -243,6 +251,9 @@ This extension contributes the following settings:
 * `alOutline.autoGenerateFileDirectory`: the default directory to create files in, relative to the root directory (e.g., \"Source\<ObjectType\>\")
 * `alOutline.autoShowFiles`: automatically show any newly created files in the editor
 * `alOutline.defaultAppArea`: default application area for page code generator
+* `alOutline.defaultApiPublisher`: Default Api Publisher value for the page wizard
+* `alOutline.defaultApiGroup`: Default Api Group value for the page wizard
+* `alOutline.defaultApiVersion`: Default Api Version value for the page wizard
 * `alOutline.defaultListUsageCategory`: default usage category for list pages
 * `alOutline.promptForObjectId`: when generating a new object, ask the user to input the object ID.
 * `alOutline.promptForObjectName`: when generating a new object, ask the user to input the object name
@@ -265,8 +276,8 @@ This extension contributes the following settings:
   - SortPermissions,
   - SortPermissionSetList,
   - FormatDocument
-* `codeActionsOnSaveIgnoreFiles`: array of vscode patterns of files that should be ignored when OnSave code actions are run. To make it work, the pattern should always start with '\*\*/', so for all files in folder 'OldFiles' the pattern should be '\*\*/OldFiles/*.al'
-* `alOutline.codeTransformationIgnoreFiles`: : array of vscode patterns of files that should be ignored when code transformation (i.e. code cleanup) commands are run for the whole project or uncommited files. This is standard glob pattern, so it does not have to start with '\*\*/' so to exclude all files from 'OldFiles' subfolder of project root folder './OldFiles/*.al' will be enough.
+* `codeActionsOnSaveIgnoreFiles`: array of vscode patterns of files that should be ignored when OnSave code actions are run. If pattern starts with '**', it will be treated as globPattern, in all other cases it will be treated as relative path in the current workspace folder.
+* `alOutline.codeTransformationIgnoreFiles`: : array of vscode patterns of files that should be ignored when code transformation (i.e. code cleanup) commands are run for the whole project or uncommited files. This is standard glob pattern so to exclude all files from 'OldFiles' subfolder in the root project folder, you should use './OldFiles/*.al'.
 * `alOutline.pageActionToolTip`: tooltip template for page actions. Use %1 as placeholder for action caption or name
 * `alOutline.pageFieldToolTip`: tooltip template for page fields. Use %1 or %Caption% as placeholder for field caption or name and %Caption.Comment% for field caption comment. The default value is "Specifies the value of the %1 field"
 * `alOutline.pageFieldToolTipComment`: tooltip comment template for page fields. Use %1 or %Caption% as placeholder for field caption or name and %Caption.Comment% for field caption comment. The default value is "%Caption.Comment%". If these default values of pageFieldToolTip and pageFieldToolTipComment settings are used then if table field caption is defined as ```Caption = 'Customer No.', Comment = 'Comment Text'``` then created ToolTip will be defined as ```ToolTip = 'Specifies the value of  the Customer No. field', Comment = 'Comment Text'```
@@ -274,7 +285,7 @@ This extension contributes the following settings:
 * `alOutline.addToolTipsToPageFields`: set to true to add tooltips to page fields when 'Add multiple fields' action is used
 * `alOutline.useTableFieldCaptionsInApiFields`: set to true, to use table field captions in API pages fields like in standard BC APIs v 2.0 (i.e. ```Caption='Customer No.';```), set to false to use camelCase api page field name in api page field caption together with Locked property like in standard BC APIs v 1.0 (i.e. ```Caption='customerNo', Locked = true;```). Default value is true
 * `alOutline.lockRemovedFieldsCaptions`: set to true to lock captions of removed fields when 'Add Table Field Captions' command is run
-* `alOutline.codeCleanupActions`: array of names of actions that will be run by code cleanup commands. These actions are available: RemoveWithStatements, AddApplicationAreas, AddToolTips, RefreshToolTips, AddTableFieldCaptions, "LockRemovedFieldCaptions", AddPageFieldCaptions, AddObjectCaptions, FixKeywordsCase, FixIdentifiersCase, ConvertObjectIdsToNames, AddMissingParentheses, AddDataClassifications, RemoveUnusedVariables, SortPermissions, SortPermissionSetList, SortProcedures, SortProperties, SortReportColumns, SortTableFields, SortVariables, RemoveBeginEnd, FormatDocument, TrimTrailingWhitespace
+* `alOutline.codeCleanupActions`: array of names of actions that will be run by code cleanup commands. These actions are available: RemoveWithStatements, AddApplicationAreas, AddToolTips, RefreshToolTips, AddTableFieldCaptions, "LockRemovedFieldCaptions", AddPageFieldCaptions, AddObjectCaptions, FixKeywordsCase, FixIdentifiersCase, ConvertObjectIdsToNames, AddMissingParentheses, AddDataClassifications, RemoveUnusedVariables, SortPermissions, SortPermissionSetList, SortProcedures, SortProperties, SortReportColumns, SortTableFields, SortVariables, SortCustomizations, RemoveBeginEnd, RemoveEmptyLines, RemoveEmptySections, FormatDocument, TrimTrailingWhitespace
 * `alOutline.doNotReuseToolTipsFromOtherPages`: set to true to disable reusing field tooltips from other pages in the page wizard, 'add multiple fields' page code action and 'add missing tooltips' command
 * `alOutline.reuseToolTipsFromDependencies`: reuse tooltips only defined in these dependencies, if empty, all dependencies will be used. Each entry should be defined as "dependency publisher" + "space" + "-" + "space" + "dependency name". You can also use "*" to use all dependencies. This setting is also used by the Code Cleanup commands
 * `alOutline.defaultDataClassification`: default DataClassification value for Code Cleanup commands
@@ -290,6 +301,7 @@ This extension contributes the following settings:
   * `removeLocalVariables`: remove local variables
   * `removeLocalMethodParameters`: remove local methods parameters
 * `alOutline.fixCaseRemovesQuotesFromDataTypeIdentifiers`: when set to true, `Fix Identifiers and Keywords Case` commands will remove quotes around idetifiers that use al data types as names
+* `alOutline.variablesSortMode`: allows to select variables sort mode in `Sort variables` commands. There are 2 options available: `fullTypeName` and `mainTypeNameOnly`. First one is the default one and uses full type name including object type if data type is an object (i.e. `Record Item`). Second option uses main type name only and ignores object type names (i.e. `Record` if variable type is `Record Item`).
 
 ## Known Issues
 

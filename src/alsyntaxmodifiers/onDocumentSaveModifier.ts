@@ -29,9 +29,11 @@ export class OnDocumentSaveModifier extends WorkspaceCommandSyntaxModifier {
     }
 
     protected getParameters(uri: vscode.Uri): any {
+        let config = vscode.workspace.getConfiguration('alOutline', uri);
         return {
             commandsList: this._commandsList,
-            skipFormatting: 'true'
+            skipFormatting: 'true',
+            variablesSortMode: config.get<string>('variablesSortMode')
         }
     }
 

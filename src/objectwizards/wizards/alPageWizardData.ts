@@ -23,8 +23,6 @@ export class ALPageWizardData extends ALTableBasedWizardData {
         super();
         this.pageType = "Card";
         this.fastTabs = "General";
-        //this.appArea = vscode.workspace.getConfiguration('azALDevTools').get('defaultAppArea');
-        //this.usageCategory = vscode.workspace.getConfiguration('azALDevTools').get('defaultListUsageCategory');
         this.applicationArea = "All";
         this.usageCategory = "";
         this.createTooltips = false;

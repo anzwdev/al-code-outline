@@ -1,5 +1,51 @@
 # Change Log
 
+## 3.0.34
+ - Issue #365 - Convert Object Ids to Names does not work for profile
+ - Idea #366 - Sort Page Customizations on Save
+ - Issue #368 - "alOutline.codeActionsOnSaveIgnoreFiles" don't avoid automatic variables sorting
+ - Issue #369 - New AL File Wizard - UsageCategory 'None' not respected
+ - Issue #372 - Remove 'with' usage does not work if ALPackages folder path has been changed
+ - Issue #374 - AL File Wizard - Default settings for API pages:
+   * `alOutline.defaultApiPublisher`: Default Api Publisher value for the page wizard
+   * `alOutline.defaultApiGroup`: Default Api Group value for the page wizard
+   * `alOutline.defaultApiVersion`: Default Api Version value for the page wizard
+ - Issue #375 - Add multiple fields to XMLPort shows already added fields
+ - Issue #376 - Add multiple fields: sort field properties alphabetically
+ - Language server dependencies and target .net framework update
+
+Thank you
+ - pri-kise for reporting issue #365 and idea #366
+ - FloOM25, Splace13 and frozenbrain for reporting and helping with issue #372
+ - JavierFuentes for reporting issue #368
+ - fvet for reporting issues #369, #374, #375
+ - NKarolak for reporting issue #376
+
+## 3.0.33
+ - Issue #352 - Sorting settings ignored by OnDocumentSave version of the command
+ - Issue #360 - Exclude API pages from "AddToolTips
+ - Issue #361 - Remove unused variables not removing variables for OnAction Trigger
+
+Thank you
+ - JavierFuentes for reporting problem with issue #352
+ - fvet for reporting problem with issue #360
+ - tscottjendev for reporting problem with issue #361
+
+## 3.0.32
+ - Suggestion #347 - Cleanup empty lines/sections
+ - Issue #352 - Sort the Record variables by VarName, not by TableName
+ - Issue #355 - Go to definition (project file or server definition) does not work if object name contains a slash /
+ - Issue #356 - Find duplicate code only in active workspace folder
+
+Thank you
+ - fvet for reportitng suggestion #347
+ - JavierFuentes, rvanbekkum and guidorobben for reporting and discussing issue #352
+ - rvanbekkum for reporting issue #355
+ - jwikman for reporting issue #356
+
+## 3.0.31
+ - Extension recompiled to work with AL compiler v9
+
 ## 3.0.30
  - New "Find duplicate code" command
  - Issue #345 - "Add all extension objects permissions" - Skip tables with ObsoleteState = Removed

@@ -354,7 +354,9 @@ export class ALSymbolsBrowser extends BaseWebViewEditor {
                 TextEditorHelper.openEditor(vscode.Uri.parse(AppFileTextContentProvider.scheme + ':' + location.sourcePath), true, preview, position);
                 return true;
             } else if (location.schema == 'al-preview') {
-                let alPreviewUri = vscode.Uri.parse('al-preview://allang/' + workspaceFolderName + '/' + location.sourcePath);
+                let alPreviewUri = vscode.Uri.parse('al-preview://allang/' + workspaceFolderName + '/' + encodeURIComponent(location.sourcePath));
+
+
                 TextEditorHelper.openEditor(alPreviewUri, true, preview, position);
                 return true;
             }

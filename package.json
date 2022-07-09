@@ -2,7 +2,7 @@
 	"name": "al-code-outline",
 	"displayName": "AZ AL Dev Tools/AL Code Outline",
 	"description": "AZ AL Development Tools: AL code outline, object browser, object creators",
-	"version": "3.0.30",
+	"version": "3.0.34",
 	"publisher": "andrzejzwierzchowski",
 	"engines": {
 		"vscode": "^1.47.0"
@@ -73,6 +73,10 @@
 		"onCommand:azALDevTools.LockProjectRemovedFieldCaptions",
 		"onCommand:azALDevTools.RemoveEditorBeginEnd",
 		"onCommand:azALDevTools.RemoveProjectBeginEnd",
+		"onCommand:azALDevTools.RemoveEditorEmptyLines",
+		"onCommand:azALDevTools.RemoveProjectEmptyLines",
+		"onCommand:azALDevTools.RemoveEditorEmptySections",
+		"onCommand:azALDevTools.RemoveProjectEmptySections",
 		"onCommand:azALDevTools.SortEditorPermissions", 
 		"onCommand:azALDevTools.SortWorkspacePermissions",
 		"onCommand:azALDevTools.SortEditorPermissionSetList", 
@@ -87,6 +91,8 @@
 		"onCommand:azALDevTools.SortWorkspaceTableFields",
 		"onCommand:azALDevTools.SortEditorVariables", 
 		"onCommand:azALDevTools.SortWorkspaceVariables",
+		"onCommand:azALDevTools.SortEditorCustomizations", 
+		"onCommand:azALDevTools.SortWorkspaceCustomizations",
 		"onCommand:azALDevTools.RunEditorCodeCleanup",
 		"onCommand:azALDevTools.RunWorkspaceCodeCleanup",
 		"onCommand:azALDevTools.RunModifiedFilesCodeCleanup",
@@ -409,6 +415,26 @@
 			},
 			{
 				"category": "AZ AL Dev Tools",
+				"command": "azALDevTools.RemoveEditorEmptyLines",
+				"title": "Remove Empty Lines from the Active Editor"
+			},
+			{
+				"category": "AZ AL Dev Tools",
+				"command": "azALDevTools.RemoveProjectEmptyLines",
+				"title": "Remove Empty Lines from the Active Project"
+			},
+			{
+				"category": "AZ AL Dev Tools",
+				"command": "azALDevTools.RemoveEditorEmptySections",
+				"title": "Remove Empty Sections from the Active Editor"
+			},
+			{
+				"category": "AZ AL Dev Tools",
+				"command": "azALDevTools.RemoveProjectEmptySections",
+				"title": "Remove Empty Sections from the Active Project"
+			},
+			{
+				"category": "AZ AL Dev Tools",
 				"command": "azALDevTools.SortEditorPermissions", 
 				"title": "Sort Permissions in the Active Editor"
 			},
@@ -479,7 +505,16 @@
 				"command": "azALDevTools.SortWorkspaceVariables",
 				"title": "Sort Variables in the Active Project"
 			},
-
+			{
+				"category": "AZ AL Dev Tools",
+				"command": "azALDevTools.SortEditorCustomizations",
+				"title": "Sort Customizations Property in the Active Editor"
+			},
+			{
+				"category": "AZ AL Dev Tools",
+				"command": "azALDevTools.SortWorkspaceCustomizations",
+				"title": "Sort Customizations Property in the Active Project"
+			},
 			{
 				"category": "AZ AL Dev Tools",
 				"command": "azALDevTools.RunEditorCodeCleanup",
@@ -742,6 +777,22 @@
 					"when": "azALDevTools.extensionActive"
 				},
 				{
+					"command": "azALDevTools.RemoveEditorEmptyLines",
+					"when": "editorLangId == al"
+				},
+				{
+					"command": "azALDevTools.RemoveProjectEmptyLines",
+					"when": "editorLangId == al"
+				},
+				{
+					"command": "azALDevTools.RemoveEditorEmptySections",
+					"when": "editorLangId == al"
+				},
+				{
+					"command": "azALDevTools.RemoveProjectEmptySections",
+					"when": "editorLangId == al"
+				},
+				{
 					"command": "azALDevTools.SortEditorPermissions", 
 					"when": "editorLangId == al"
 				},
@@ -795,6 +846,14 @@
 				},
 				{
 					"command": "azALDevTools.SortWorkspaceVariables",
+					"when": "azALDevTools.extensionActive"
+				},
+				{
+					"command": "azALDevTools.SortEditorCustomizations",
+					"when": "editorLangId == al"
+				},
+				{
+					"command": "azALDevTools.SortWorkspaceCustomizations",
 					"when": "azALDevTools.extensionActive"
 				},
 				{
@@ -997,6 +1056,24 @@
 						"scope": "resource",
 						"description": "Default application area for page code generator and code cleanup commands"
 					},
+					"alOutline.defaultApiPublisher": {
+						"type": "string",
+						"default": "publisherName",
+						"scope": "resource",
+						"description": "Default Api Publisher value for the page wizard"
+					},
+					"alOutline.defaultApiGroup": {
+						"type": "string",
+						"default": "apiGroup",
+						"scope": "resource",
+						"description": "Default Api Group value for the page wizard"
+					},
+					"alOutline.defaultApiVersion": {
+						"type": "string",
+						"default": "v1.0",
+						"scope": "resource",
+						"description": "Default Api Version value for the page wizard"
+					},
 					"alOutline.defaultDataClassification": {
 						"type": "string",
 						"scope": "resource",
@@ -1133,6 +1210,7 @@
 								"SortVariables",
 								"SortPermissions",
 								"SortPermissionSetList",
+								"SortCustomizations",
 								"FormatDocument"
 							],
 							"enumDescriptions": [
@@ -1142,12 +1220,13 @@
 								"Sort variables",
 								"Sort permissions",
 								"Sort permission sets",
+								"Sort customizations",
 								"Format document"
 							]
 						},
 						"default": [],
 						"uniqueItems": true,
-						"description": "Specifies which code-actions should be applied when a file is saved. Valid values are SortReportColumns, SortProcedures, SortProperties, SortVariables, SortPermissions and SortPermissionSetList",
+						"description": "Specifies which code-actions should be applied when a file is saved. Valid values are SortTableFields, SortReportColumns, SortProcedures, SortProperties, SortVariables, SortPermissions, SortPermissionSetList, SortCustomizations and FormatDocument",
 						"scope": "resource"
 					},
 					"alOutline.codeCleanupActions": {
@@ -1177,7 +1256,10 @@
 								"SortReportColumns",
 								"SortTableFields",
 								"SortVariables",
+								"SortCustomizations",
 								"RemoveBeginEnd",
+								"RemoveEmptyLines", 
+								"RemoveEmptySections",
 								"FormatDocument",
 								"TrimTrailingWhitespace"
 							],
@@ -1203,6 +1285,7 @@
 								"Sort Report Columns",
 								"Sort Table Fields",
 								"Sort Variables",
+								"Sort Customizations",
 								"Remove Begin..End",
 								"Format Document",
 								"Trim Trailing Whitespace"
@@ -1293,7 +1376,23 @@
 						"default": false,
 						"scope": "resource",
 						"description": "Set to true to remove quotes around identifiers having names of al data types when running 'Fix Identifiers and Keywords Case' commands"
+					},
+					"alOutline.variablesSortMode": {
+						"type": "string",
+						"enum": [
+							"fullTypeName",
+							"mainTypeNameOnly"
+						],
+						"enumDescriptions": [
+							"Sort report DataItem columns",
+							"Format document"
+						],
+						"default": "fullTypeName",
+						"description": "Specifies how variables are sorted by `Sort Variables` commands.",
+						"scope": "resource"						
 					}
+
+
 				}
 			}
 		]
