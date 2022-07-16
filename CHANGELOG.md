@@ -1,5 +1,8 @@
 # Change Log
 
+## 3.0.35
+ - Remove unused variables command crash bugfix
+
 ## 3.0.34
  - Issue #365 - Convert Object Ids to Names does not work for profile
  - Idea #366 - Sort Page Customizations on Save
