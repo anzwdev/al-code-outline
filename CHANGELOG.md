@@ -2,6 +2,15 @@
 
 ## 3.0.35
  - Remove unused variables command crash bugfix
+ - Bugfix - sometimes "run ... in Active Editor" commands were not working, bug was caused by incorrect case of file names returned by VS Code
+ - Idea #371 - Autofix AA0231 ("Do not use the StrSubstNo or string concatenation as a parameter in the Error method")
+   - New commands:
+     * `Remove StrSubstNo from Error from the Active Editor`: removes StrSubstNo from Error method call from the current editor
+     * `Remove StrSubstNo from Error from the Active Project`: removes StrSubstNo from Error method call from the current project
+   - New parameter value for code cleanup commands: `RemoveStrSubstNoFromError` 
+
+Thank you
+ - jhoek for reporting idea #371
 
 ## 3.0.34
  - Issue #365 - Convert Object Ids to Names does not work for profile

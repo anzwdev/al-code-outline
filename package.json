@@ -77,6 +77,8 @@
 		"onCommand:azALDevTools.RemoveProjectEmptyLines",
 		"onCommand:azALDevTools.RemoveEditorEmptySections",
 		"onCommand:azALDevTools.RemoveProjectEmptySections",
+		"onCommand:azALDevTools.RemoveEditorStrSubstNoFromError",
+		"onCommand:azALDevTools.RemoveProjectStrSubstNoFromError",
 		"onCommand:azALDevTools.SortEditorPermissions", 
 		"onCommand:azALDevTools.SortWorkspacePermissions",
 		"onCommand:azALDevTools.SortEditorPermissionSetList", 
@@ -435,6 +437,16 @@
 			},
 			{
 				"category": "AZ AL Dev Tools",
+				"command": "azALDevTools.RemoveEditorStrSubstNoFromError",
+				"title": "Remove StrSubstNo from Error from the Active Editor"
+			},
+			{
+				"category": "AZ AL Dev Tools",
+				"command": "azALDevTools.RemoveProjectStrSubstNoFromError",
+				"title": "Remove StrSubstNo from Error from the Active Project"
+			},
+			{
+				"category": "AZ AL Dev Tools",
 				"command": "azALDevTools.SortEditorPermissions", 
 				"title": "Sort Permissions in the Active Editor"
 			},
@@ -790,6 +802,14 @@
 				},
 				{
 					"command": "azALDevTools.RemoveProjectEmptySections",
+					"when": "editorLangId == al"
+				},
+				{
+					"command": "azALDevTools.RemoveEditorStrSubstNoFromError",
+					"when": "editorLangId == al"
+				},
+				{
+					"command": "azALDevTools.RemoveProjectStrSubstNoFromError",
 					"when": "editorLangId == al"
 				},
 				{
@@ -1260,6 +1280,7 @@
 								"RemoveBeginEnd",
 								"RemoveEmptyLines", 
 								"RemoveEmptySections",
+								"RemoveStrSubstNoFromError",
 								"FormatDocument",
 								"TrimTrailingWhitespace"
 							],
@@ -1287,6 +1308,8 @@
 								"Sort Variables",
 								"Sort Customizations",
 								"Remove Begin..End",
+								"Remove Empty Lines",
+								"Remove StrSubstNo From Error",
 								"Format Document",
 								"Trim Trailing Whitespace"
 							]
