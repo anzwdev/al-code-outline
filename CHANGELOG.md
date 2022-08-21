@@ -1,5 +1,11 @@
 # Change Log
 
+## 3.0.36
+ - Feature Request #388 - Minimum variable sort mode for AA0021
+
+Thank you
+ - NKarolak for reporting request #388
+
 ## 3.0.35
  - Remove unused variables command crash bugfix
  - Bugfix - sometimes "run ... in Active Editor" commands were not working, bug was caused by incorrect case of file names returned by VS Code
