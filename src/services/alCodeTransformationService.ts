@@ -35,6 +35,7 @@ import { RemoveEmptyLinesModifier } from '../alsyntaxmodifiers/removeEmptyLinesM
 import { RemoveEmptySectionsModifier } from '../alsyntaxmodifiers/removeEmptySectionsModifier';
 import { SortCustomizationsModifier } from '../alsyntaxmodifiers/sortCustomizationsModifier';
 import { RemoveStrSubstNoFromErrorModifier } from '../alsyntaxmodifiers/removeStrSubstNoFromErrorModifier';
+import { RemoveEmptyTriggersModifier } from '../alsyntaxmodifiers/removeEmptyTriggersModifier';
 
 export class ALCodeTransformationService extends DevToolsExtensionService {
     protected _syntaxFactories: ISyntaxModifierFactoriesCollection;
@@ -79,6 +80,7 @@ export class ALCodeTransformationService extends DevToolsExtensionService {
 
         this.registerModifierCommands('RemoveEmptyLines', 'azALDevTools.RemoveEditorEmptyLines', 'azALDevTools.RemoveProjectEmptyLines', () => new RemoveEmptyLinesModifier(this._context));
         this.registerModifierCommands('RemoveEmptySections', 'azALDevTools.RemoveEditorEmptySections', 'azALDevTools.RemoveProjectEmptySections', () => new RemoveEmptySectionsModifier(this._context));
+        this.registerModifierCommands('RemoveEmptyTriggers', 'azALDevTools.RemoveEditorEmptyTriggers', 'azALDevTools.RemoveProjectEmptyTriggers', () => new RemoveEmptyTriggersModifier(this._context));
         this.registerModifierCommands('RemoveStrSubstNoFromError', 'azALDevTools.RemoveEditorStrSubstNoFromError', 'azALDevTools.RemoveProjectStrSubstNoFromError', () => new RemoveStrSubstNoFromErrorModifier(this._context));
 
         this.registerModifierCommands('SortPermissions', 'azALDevTools.SortEditorPermissions', 'azALDevTools.SortWorkspacePermissions', () => new SortPermissionsModifier(this._context));

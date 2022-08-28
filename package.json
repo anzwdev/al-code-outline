@@ -73,6 +73,8 @@
 		"onCommand:azALDevTools.LockProjectRemovedFieldCaptions",
 		"onCommand:azALDevTools.RemoveEditorBeginEnd",
 		"onCommand:azALDevTools.RemoveProjectBeginEnd",
+		"onCommand:azALDevTools.RemoveEditorEmptyTriggers",
+		"onCommand:azALDevTools.RemoveProjectEmptyTriggers",
 		"onCommand:azALDevTools.RemoveEditorEmptyLines",
 		"onCommand:azALDevTools.RemoveProjectEmptyLines",
 		"onCommand:azALDevTools.RemoveEditorEmptySections",
@@ -414,6 +416,16 @@
 				"category": "AZ AL Dev Tools",
 				"command": "azALDevTools.RemoveProjectBeginEnd",
 				"title": "Remove Begin..End around Single Statements from the Active Project"
+			},
+			{
+				"category": "AZ AL Dev Tools",
+				"command": "azALDevTools.RemoveEditorEmptyTriggers",
+				"title": "Remove Empty Triggers from the Active Editor"
+			},
+			{
+				"category": "AZ AL Dev Tools",
+				"command": "azALDevTools.RemoveProjectEmptyTriggers",
+				"title": "Remove Empty Triggers from the Active Project"
 			},
 			{
 				"category": "AZ AL Dev Tools",
@@ -789,6 +801,14 @@
 					"when": "azALDevTools.extensionActive"
 				},
 				{
+					"command": "azALDevTools.RemoveEditorEmptyTriggers",
+					"when": "editorLangId == al"
+				},
+				{
+					"command": "azALDevTools.RemoveProjectEmptyTriggers",
+					"when": "azALDevTools.extensionActive"
+				},
+				{
 					"command": "azALDevTools.RemoveEditorEmptyLines",
 					"when": "editorLangId == al"
 				},
@@ -1130,6 +1150,21 @@
 							}
 						}
 					},
+					"alOutline.defaultRemoveEmptyTriggersSettings": {
+						"type": "object",
+						"description": "Default settings for the RemoveEmptyTriggers command when run by the Code Cleanup",
+						"scope": "resource",
+						"properties": {
+							"removeTriggers": {
+								"type": "boolean",
+								"description": "Remove empty triggers"
+							},
+							"removeSubscribers": {
+								"type": "boolean",
+								"description": "Remove empty event subscribers"
+							}
+						}
+					},
 					"alOutline.defaultRemoveUnusedVariablesSettings": {
 						"type": "object",
 						"description": "Default settings for the RemoveUnusedVariables command when run by the Code Cleanup",
@@ -1278,6 +1313,7 @@
 								"SortVariables",
 								"SortCustomizations",
 								"RemoveBeginEnd",
+								"RemoveEmptyTriggers",
 								"RemoveEmptyLines", 
 								"RemoveEmptySections",
 								"RemoveStrSubstNoFromError",
@@ -1308,6 +1344,7 @@
 								"Sort Variables",
 								"Sort Customizations",
 								"Remove Begin..End",
+								"Remove Empty Triggers",
 								"Remove Empty Lines",
 								"Remove StrSubstNo From Error",
 								"Format Document",
