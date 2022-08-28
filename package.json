@@ -814,7 +814,7 @@
 				},
 				{
 					"command": "azALDevTools.RemoveProjectEmptyLines",
-					"when": "editorLangId == al"
+					"when": "azALDevTools.extensionActive"
 				},
 				{
 					"command": "azALDevTools.RemoveEditorEmptySections",
@@ -822,7 +822,7 @@
 				},
 				{
 					"command": "azALDevTools.RemoveProjectEmptySections",
-					"when": "editorLangId == al"
+					"when": "azALDevTools.extensionActive"
 				},
 				{
 					"command": "azALDevTools.RemoveEditorStrSubstNoFromError",
@@ -830,7 +830,7 @@
 				},
 				{
 					"command": "azALDevTools.RemoveProjectStrSubstNoFromError",
-					"when": "editorLangId == al"
+					"when": "azALDevTools.extensionActive"
 				},
 				{
 					"command": "azALDevTools.SortEditorPermissions", 
