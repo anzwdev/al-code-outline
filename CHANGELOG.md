@@ -6,7 +6,7 @@
 
 Thank you
  - NKarolak for reporting request #388
- - jhoek for reporting request #392
+ - jhoek and DavidFeldhoff for reporting request #392
 
 ## 3.0.35
  - Remove unused variables command crash bugfix

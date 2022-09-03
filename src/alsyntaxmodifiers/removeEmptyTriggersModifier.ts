@@ -11,7 +11,8 @@ export class RemoveEmptyTriggersModifier extends WorkspaceCommandSyntaxModifier 
         super(context, "Remove Empty Triggers", "removeEmptyTriggers");
         this._settings = {
             removeTriggers: true,
-            removeSubscribers: true
+            removeSubscribers: true,
+            ignoreComments: false
         };
     }
 
@@ -32,6 +33,7 @@ export class RemoveEmptyTriggersModifier extends WorkspaceCommandSyntaxModifier 
             src = {};
         dest.removeTriggers = !!src.removeTriggers;
         dest.removeSubscribers = !!src.removeSubscribers;
+        dest.ignoreComments = !!src.ignoreComments;
     }
 
     protected loadDefaultParameters(uri: vscode.Uri | undefined): boolean {
@@ -46,7 +48,8 @@ export class RemoveEmptyTriggersModifier extends WorkspaceCommandSyntaxModifier 
         this.loadState();
         let quickPickItems = [
             new NameValueQuickPickItem('Empty Triggers', 'removeTriggers', !!this._settings.removeTriggers),
-            new NameValueQuickPickItem('Empty Event Subscribers', 'removeSubscribers', !!this._settings.removeSubscribers)
+            new NameValueQuickPickItem('Empty Event Subscribers', 'removeSubscribers', !!this._settings.removeSubscribers),
+            new NameValueQuickPickItem('Ignore comments in method body', 'ignoreComments', !!this._settings.ignoreComments)
         ];
 
         let selectedValues = await vscode.window.showQuickPick(
@@ -75,6 +78,7 @@ export class RemoveEmptyTriggersModifier extends WorkspaceCommandSyntaxModifier 
         let vsctx = this._context.vscodeExtensionContext;
         this._settings.removeTriggers = !!vsctx.globalState.get<boolean>("azALDevTools.remETrig.removeTriggers");
         this._settings.removeSubscribers = !!vsctx.globalState.get<boolean>("azALDevTools.remETrig.removeSubscribers");
+        this._settings.ignoreComments = !!vsctx.globalState.get<boolean>("azALDevTools.remETrig.ignoreComments");
         //set defaults
         if ((!this._settings.removeTriggers) &&
             (!this._settings.removeSubscribers)) {
@@ -88,11 +92,13 @@ export class RemoveEmptyTriggersModifier extends WorkspaceCommandSyntaxModifier 
         let vsctx = this._context.vscodeExtensionContext;
         vsctx.globalState.update("azALDevTools.remETrig.removeTriggers", !!this._settings.removeTriggers);
         vsctx.globalState.update("azALDevTools.remETrig.removeSubscribers", !!this._settings.removeSubscribers);
+        vsctx.globalState.update("azALDevTools.remETrig.ignoreComments", !!this._settings.ignoreComments);
     }
 
     private clearSettings() {
         this._settings.removeTriggers = false;
         this._settings.removeSubscribers = false;
+        this._settings.ignoreComments = false;
     }
 
 }

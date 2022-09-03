@@ -1162,6 +1162,10 @@
 							"removeSubscribers": {
 								"type": "boolean",
 								"description": "Remove empty event subscribers"
+							},
+							"ignoreComments": {
+								"type": "boolean",
+								"description": "Removes trigger or subscriber even if method body contains comments"
 							}
 						}
 					},
