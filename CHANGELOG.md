@@ -1,6 +1,7 @@
 # Change Log
 
 ## 3.0.36
+ - Variable/Parameters names and types completion
  - Feature Request #388 - Minimum variable sort mode for AA0021
  - Feature Request #392 - Code Clean-up: Remove Empty Triggers and Event Subscribers
 

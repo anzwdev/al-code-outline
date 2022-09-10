@@ -17,6 +17,7 @@ This extension was originally named 'AL Code Outline' because it started as AL c
 - Documentation comments support
 - Code analyzers rules viewer
 - Document syntax visualizer
+- Code completion
 
 ### AL objects wizards
 
@@ -199,6 +200,13 @@ These commands are available:
 
 ![Action images](resources/screen2-actionimages.gif)
 
+### Code completion
+
+Extension adds a few additional code completion providers that can be enabled or disabled using `alOutline.completionProviders` setting. These values can be used:
+  * `VariableNamesWithType` - suggests variable names together with data type (i.e. `SalesHeader: Record "Sales Header"`)
+	* `VariableNames` - the same as above but suggests variable names only (i.e. `SalesHeader`), when both entries are selected, `VariableNamesWithType` will be used
+	* `VariableDataTypes` - suggests data types based on variable name (i.e. `Record "Sales Header"` for `SalesHeaderBuffer` variable name)
+
 ### Custom editors
 
 Extension adds new custom editors for app.json, rulesets (*.ruleset.json) and AppSourceCop.json files. These editors are defined as "secondary" which means that developers have to right click on the file in the EXPLORER and choose "Open With..." option. It will display list of available editors for selected file. It is also possible to change default editor on this list.
@@ -314,6 +322,10 @@ This extension contributes the following settings:
   * `mainTypeNameOnly` - uses main type name only and ignores object type names (i.e. `Record` if variable type is `Record Item`), if data type is the same, variables will be sorted by name
   * `fullTypeNameKeepVariableNameOrder` - uses full type name including object type if data type is an object, if data type is the same, variables won't be not sorted
   * `mainTypeNameOnlyKeepVariableNameOrder` - uses main type name only and ignores object type names, if data type is the same, variables won't be not sorted
+* `alOutline.completionProviders`: list of active code completion providers, these values can be used:
+  * `VariableNamesWithType` - suggests variable names together with data type (i.e. `SalesHeader: Record "Sales Header"`)
+	* `VariableNames` - the same as above but suggests variable names only (i.e. `SalesHeader`), when both entries are selected, `VariableNamesWithType` will be used
+	* `VariableDataTypes` - suggests data types based on variable name (i.e. `Record "Sales Header"` for `SalesHeaderBuffer` variable name)
 
 ## Known Issues
 

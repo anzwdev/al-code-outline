@@ -1456,8 +1456,27 @@
 						"default": "fullTypeName",
 						"description": "Specifies how variables are sorted by `Sort Variables` commands.",
 						"scope": "resource"						
+					},
+					"alOutline.completionProviders": {
+						"type": "array",
+						"items": {
+							"type": "string",
+							"enum": [
+								"VariableNamesWithType",
+								"VariableNames",
+								"VariableDataTypes"
+							],
+							"enumDescriptions": [
+								"Variable names with data type",
+								"Variable names only",
+								"Data types based on variable names"
+							]
+						},
+						"default": [],
+						"uniqueItems": true,
+						"description": "Specifies which completion providers should be active. If both VariableNamesWithType and VariableNames are selected, VariableNamesWithType will be used",
+						"scope": "resource"
 					}
-
 
 				}
 			}

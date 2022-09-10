@@ -77,6 +77,8 @@ import { ToolsGetPageFieldAvailableToolTipsResponse } from './symbolsinformation
 import { ToolsConfigurationChangeRequest } from './toolsConfigurationChangeRequest';
 import { ToolsFindDuplicateCodeRequest } from './toolsFindDuplicateCodeRequest';
 import { ToolsFindDuplicateCodeResponse } from './ToolsFindDuplicateCodeResponse';
+import { ToolsCodeCompletionRequest } from './codeCompletion/toolsCodeCompletionRequest';
+import { ToolsCodeCompletionResponse } from './codeCompletion/toolsCodeCompletionResponse';
 
 export class ToolsLangServerClient implements vscode.Disposable {
     _context : vscode.ExtensionContext;
@@ -403,6 +405,11 @@ export class ToolsLangServerClient implements vscode.Disposable {
         if ((response) && (response.id))
             return response.id;
         return 0;
+    }
+
+    //code completion
+    public codeCompletion(params: ToolsCodeCompletionRequest) : Promise<ToolsCodeCompletionResponse | undefined> {
+        return this.sendRequest<ToolsCodeCompletionRequest, ToolsCodeCompletionResponse>(params, 'al/codecompletion');
     }
 
     //language information

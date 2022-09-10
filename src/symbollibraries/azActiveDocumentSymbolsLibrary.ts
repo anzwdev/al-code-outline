@@ -4,7 +4,7 @@ import { DevToolsExtensionContext } from "../devToolsExtensionContext";
 
 export class AZActiveDocumentSymbolsLibrary extends AZDocumentSymbolsLibrary {
     private _autoReload : boolean;
-
+  
     constructor(context : DevToolsExtensionContext) {
         super(context, undefined);
         this._autoReload = true;
@@ -40,12 +40,6 @@ export class AZActiveDocumentSymbolsLibrary extends AZDocumentSymbolsLibrary {
         this._reloadRequired = true;
         if (this._autoReload)
             this.loadAsync(false);
-    }
-
-    public isActiveDocument(document: vscode.TextDocument): boolean {
-        return ((!!vscode.window.activeTextEditor) && 
-            (!!document) && 
-            (vscode.window.activeTextEditor.document.uri.fsPath == document.uri.fsPath));
     }
 
     public initializeContent() {
