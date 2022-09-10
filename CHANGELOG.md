@@ -1,6 +1,7 @@
 # Change Log
 
 ## 3.0.36
+ - Show rules ids dropdown and descriptions on hover when editing rulese files or suppressWarnings property in app.json
  - Variable/Parameters names and types completion
  - Feature Request #388 - Minimum variable sort mode for AA0021
  - Feature Request #392 - Code Clean-up: Remove Empty Triggers and Event Subscribers

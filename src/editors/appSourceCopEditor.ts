@@ -37,6 +37,12 @@ export class AppSourceCopEditor extends JsonFormEditor {
                 "pattern": "(\\d+)\\.(\\d+)\\.(\\d+)\\.(\\d+)"
             },
             {
+                "name": "baselinePackageCachePath",
+                "caption": "Baseline Package Cache Path",
+                "description": "The path to the folder containing the baseline and its dependencies with which you want to compare the current package for breaking changes. By default, the package cache path for the current project is used (see 'al.packageCachePath' setting).",
+                "type": "string"
+            },
+            {
                 "name": "mandatoryAffixes",
                 "caption": "Mandatory Affixes",
                 "type": "list",
@@ -68,6 +74,20 @@ export class AppSourceCopEditor extends JsonFormEditor {
                 "pattern": "(\\d+)\\.(\\d+)"
             },
             {
+                "name": "obsoleteTagVersion",
+                "caption": "Obsolete Tag Version",
+                "type": "string",
+                "description": "Specifies the next Major.Minor version of the extension in the current branch in order to validate the ObsoleteTag values with AS0072. This is only relevant when the default obsoleteTagPattern '(\\d+)\\.(\\d+)' is used.",
+                "pattern": "^(\\d+)\\.(\\d+)$"
+            },
+            {
+                "name": "obsoleteTagAllowedVersions",
+                "caption": "Obsolete Tag Allowed Versions",
+                "type": "string",
+                "description": "A comma-separated list of Major.Minor versions that will be allowed as ObsoleteTag values by AS0072. This is only relevant when the default obsoleteTagPattern '(\\d+)\\.(\\d+)' is used. ",
+                "pattern": "^(\\d+)\\.(\\d+)(,(\\d+)\\.(\\d+))*$"
+            },
+            {
                 "name": "obsoleteTagPattern",
                 "caption": "Obsolete Tag Pattern",
                 "description": "The Obsolete tag pattern to verify with Rule 76. This should be a valid regular expression. By default the pattern \\d+\\.\\d+ is used",
@@ -78,7 +98,15 @@ export class AppSourceCopEditor extends JsonFormEditor {
                 "caption": "Obsolete Tag Pattern Description",
                 "description": "A human-readable description for the ObsoleteTagPattern regular expression. By Default Major.Minor is used",
                 "type": "longstring"
+            },
+            {
+                "name": "obsoleteTagMinAllowedMajorMinor",
+                "caption": "Obsolete Tag Min Allowed Major.Minor",
+                "type": "string",
+                "description": "The minimum version of ObsoleteTag (Major.Minor) allowed during compilation. Referencing an obsolete pending object with an obsolete tag lower than the specified version will trigger the rule AS0105. Note that enabling this setting has a performance impact."
             }
+    
+
         ];
     }
 }

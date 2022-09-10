@@ -115,6 +115,20 @@
 				]
 			}
 		],
+
+
+		"jsonValidation": [
+			{
+				"fileMatch": "app.json",
+				"url": "aloutlinesyntax://json/appJsonSyntax.json"
+			},
+			{
+				"fileMatch": "*.ruleset.json",
+				"url": "aloutlinesyntax://json/ruleSetSyntax.json"
+			}
+		],
+
+
 		"viewsContainers": {
 			"activitybar": [
 				{

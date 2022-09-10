@@ -8,17 +8,16 @@ import { TextEditorHelper } from '../tools/textEditorHelper';
 import { CodeAnalyzerInfo } from './codeAnalyzerInfo';
 import { CARuleInfo } from '../langserver/caRuleInfo';
 import { StringHelper } from '../tools/stringHelper';
+import { CARulesCollection } from './caRulesCollection';
 
 export class CARulesViewer extends BaseWebViewEditor {
     protected _devToolsContext: DevToolsExtensionContext;
-    protected _rules: CARuleInfo[] | undefined;
-    protected _analyzers: CodeAnalyzerInfo[];
+    protected _rulesCollection: CARulesCollection;
 
     constructor(devToolsContext : DevToolsExtensionContext) {
         super(devToolsContext.vscodeExtensionContext, "Code Analyzers");
         this._devToolsContext = devToolsContext;
-        this._analyzers = [];
-        this.loadCodeAnalyzers();
+        this._rulesCollection = new CARulesCollection(devToolsContext);
     }
 
     protected getHtmlContentPath() : string {
@@ -29,74 +28,19 @@ export class CARulesViewer extends BaseWebViewEditor {
         return 'azALDevTools.CARulesViewer';
     }
 
-    protected getAnalyzerInfo(value: string): CodeAnalyzerInfo | undefined {
-        value = value.toLowerCase();
-        for (let i=0; i<this._analyzers.length; i++) {
-            if (this._analyzers[i].value.toLowerCase() == value)
-                return this._analyzers[i];
-        }
-        return undefined;
-    }
-
-    protected addCustomAnalyzer(name: string) {
-        if ((name.startsWith('${analyzerFolder}')) && (this._devToolsContext.alLangProxy.extensionPath)) {
-            let fileName = name.substring('${analyzerFolder}'.length);
-            let fullPath = path.join(this._devToolsContext.alLangProxy.extensionPath, 'bin', 'Analyzers', fileName);
-            if (fs.existsSync(fullPath))
-                this._analyzers.push(new CodeAnalyzerInfo(name, name, true));        
-        }
-    }
-
-    protected loadCodeAnalyzers() {
-        this._analyzers.push(new CodeAnalyzerInfo('${AppSourceCop}', '${AppSourceCop}', true));
-        this._analyzers.push(new CodeAnalyzerInfo('${CodeCop}', '${CodeCop}', true));
-        this._analyzers.push(new CodeAnalyzerInfo('${PerTenantExtensionCop}', '${PerTenantExtensionCop}', true));
-        this._analyzers.push(new CodeAnalyzerInfo('${UICop}', '${UICop}', true));
-        this.addCustomAnalyzer('${analyzerFolder}BusinessCentral.LinterCop.dll');
-        this._analyzers.push(new CodeAnalyzerInfo('Compiler', 'Compiler', true));
-
-        let alConfig = vscode.workspace.getConfiguration('al', undefined);
-        let codeAnalyzersSetting = alConfig.get<string[]|undefined>("codeAnalyzers");
-        if (codeAnalyzersSetting) {
-            for (let i=0; i<codeAnalyzersSetting.length; i++) {
-                let analyzerName = codeAnalyzersSetting[i].trim();
-                if (analyzerName.startsWith('${')) {
-                    let analyzerInfo = this.getAnalyzerInfo(analyzerName);
-                    if (!analyzerInfo)
-                        this._analyzers.push(new CodeAnalyzerInfo(analyzerName, analyzerName, true));
-                } else {
-                    this._analyzers.push(new CodeAnalyzerInfo(path.parse(codeAnalyzersSetting[i]).name,
-                        codeAnalyzersSetting[i], true));
-                }
-            }
-        }
-    }
-
     protected async loadRules() {
-        this._rules = [];
-        for (let analyzerIdx=0; analyzerIdx<this._analyzers.length; analyzerIdx++) {
-            let request: ToolsGetCodeAnalyzersRulesRequest = 
-                new ToolsGetCodeAnalyzersRulesRequest(this._analyzers[analyzerIdx].value);
-            let response = 
-                await this._devToolsContext.toolsLangServerClient.getCodeAnalyzersRules(request);
-            if ((response) && (response.rules)) {
-                for (let ruleIdx = 0; ruleIdx < response.rules.length; ruleIdx++) {
-                    response.rules[ruleIdx].analyzer = this._analyzers[analyzerIdx].label;
-                    this._rules.push(response.rules[ruleIdx]);
-                }
-            }
-        }
+        await this._rulesCollection.loadRules();
 
         this.sendMessage({
             command: 'setRules',
-            data: this._rules});
+            data: this._rulesCollection.rules});
     }
 
     protected async onDocumentLoaded() {            
         //send list of analyzers to the webview
         this.sendMessage({
             command: 'setAnalyzers',
-            data: this._analyzers
+            data: this._rulesCollection.analyzers
         });
         //send analyzers rules to the web view
         await this.loadRules();
@@ -144,9 +88,9 @@ export class CARulesViewer extends BaseWebViewEditor {
     protected copyTable(rulesIndexes: number[]) {
         let eol = StringHelper.getDefaultEndOfLine(undefined);
         let rulesText = 'Id\tTitle\tDefault Severity\tAnalyzer';
-        if (this._rules) {
+        if (this._rulesCollection.rules) {
             for (let i=0; i<rulesIndexes.length; i++) {
-                let rule = this._rules[rulesIndexes[i]];
+                let rule = this._rulesCollection.rules[rulesIndexes[i]];
                 rulesText += (eol + rule.id + '\t' +
                     rule.title + '\t' + 
                     rule.defaultSeverity + '\t' +
@@ -159,9 +103,9 @@ export class CARulesViewer extends BaseWebViewEditor {
     protected getRulesAsString(rulesIndexes: number[], indentText: string) : string {
         let eol = StringHelper.getDefaultEndOfLine(undefined);
         let rules = '';
-        if (this._rules) {
+        if (this._rulesCollection.rules) {
             for (let i=0; i<rulesIndexes.length; i++) {
-                let ruleDef = this._rules[rulesIndexes[i]];
+                let ruleDef = this._rulesCollection.rules[rulesIndexes[i]];
                 if (i > 0)
                     rules += ',';
                 rules += (eol + '// Rule: ' + ruleDef.title);
