@@ -81,6 +81,9 @@ import { ToolsCodeCompletionRequest } from './codeCompletion/toolsCodeCompletion
 import { ToolsCodeCompletionResponse } from './codeCompletion/toolsCodeCompletionResponse';
 import { ToolsGetWarningDirectivesRequest } from './symbolsinformation/toolsGetWarningDirectivesRequest';
 import { ToolsGetWarningDirectivesResponse } from './symbolsinformation/toolsGetWarningDirectivesResponse';
+import { ToolsHoverResponse } from './toolsHoverResponse';
+import { ToolsDocumentPositionRequest } from './ToolsDocumentPositionRequest';
+import { ToolsReferencesResponse } from './toolsReferencesResponse';
 
 export class ToolsLangServerClient implements vscode.Disposable {
     _context : vscode.ExtensionContext;
@@ -413,9 +416,17 @@ export class ToolsLangServerClient implements vscode.Disposable {
         return 0;
     }
 
-    //code completion
+    //code completion and hover
     public codeCompletion(params: ToolsCodeCompletionRequest) : Promise<ToolsCodeCompletionResponse | undefined> {
         return this.sendRequest<ToolsCodeCompletionRequest, ToolsCodeCompletionResponse>(params, 'al/codecompletion');
+    }
+
+    public provideHover(params: ToolsDocumentPositionRequest) : Promise<ToolsHoverResponse | undefined> {
+        return this.sendRequest<ToolsDocumentPositionRequest, ToolsHoverResponse>(params, 'al/hover');
+    }
+
+    public provideReferences(params: ToolsDocumentPositionRequest) : Promise<ToolsReferencesResponse | undefined> {
+        return this.sendRequest<ToolsDocumentPositionRequest, ToolsReferencesResponse>(params, 'al/references');
     }
 
     //language information

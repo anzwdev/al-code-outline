@@ -1,6 +1,7 @@
 # Change Log
 
 ## 3.0.36
+ - Hover and Find References for rule ids in "pragma warning" directives
  - New command "Show warning directives" to browse "pragma warning" directives ordered by rule id
  - Show rules ids dropdown and descriptions on hover when editing rulese files or suppressWarnings property in app.json
  - Variable/Parameters names and types completion
