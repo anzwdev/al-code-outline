@@ -15,6 +15,8 @@ This extension was originally named 'AL Code Outline' because it started as AL c
 - Action images browser
 - Custom editors
 - Documentation comments support
+- Duplicate code search
+- Warning directives panel
 - Code analyzers rules viewer
 - Document syntax visualizer
 - Code completion
@@ -224,6 +226,14 @@ When developer types "///" in a line above a symbol declaration (i.e. variable, 
 Code analyzers rules viewer can be opened by running "AZ AL Dev Tools: Show Code Analyzers Rules" command. It allows to select one of available code analyzers from a dropdown list and then displays all rules implemented by that analyzer in a table view. It is then possible to select some or all of the rules and create new ruleset file or copy them as ruleset rules or a table to the clipboard using context menu.
 
 ![Xml Documentation Comments](resources/screen2-codeanalyzers.png)
+
+### Duplicate code search
+
+Duplicate code search panel can be opened by running "AZ AL Dev Tools: Find duplicate AL code" command. 
+
+### Warning directives panel
+
+Warning directives parel can be opened by running "AZ AL Dev Tools: Show warning directives" command. It shows list of location of "pragma warning" directives grouped by rule id and file.
 
 ### Document syntax visualizer
 

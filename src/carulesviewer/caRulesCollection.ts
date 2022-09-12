@@ -3,7 +3,7 @@ import * as path from 'path';
 import * as fs from 'fs';
 import { DevToolsExtensionContext } from "../devToolsExtensionContext";
 import { CARuleInfo } from "../langserver/caRuleInfo";
-import { CodeAnalyzerInfo } from "./codeAnalyzerInfo";
+import { CodeAnalyzerInfo } from "../codeanalyzers/codeAnalyzerInfo";
 import { ToolsGetCodeAnalyzersRulesRequest } from '../langserver/toolsGetCodeAnalyzersRulesRequest';
 
 export class CARulesCollection {

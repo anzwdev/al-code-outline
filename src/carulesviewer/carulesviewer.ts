@@ -5,7 +5,7 @@ import { BaseWebViewEditor } from "../webviews/baseWebViewEditor";
 import { DevToolsExtensionContext } from "../devToolsExtensionContext";
 import { ToolsGetCodeAnalyzersRulesRequest } from '../langserver/toolsGetCodeAnalyzersRulesRequest';
 import { TextEditorHelper } from '../tools/textEditorHelper';
-import { CodeAnalyzerInfo } from './codeAnalyzerInfo';
+import { CodeAnalyzerInfo } from '../codeanalyzers/codeAnalyzerInfo';
 import { CARuleInfo } from '../langserver/caRuleInfo';
 import { StringHelper } from '../tools/stringHelper';
 import { CARulesCollection } from './caRulesCollection';

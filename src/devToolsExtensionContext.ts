@@ -21,6 +21,7 @@ import { WorkspaceChangeTrackingService } from './services/workspaceChangeTracki
 import { DiagnosticsService } from './services/diagnosticsService';
 import { ALImagesService } from './services/alImagesService';
 import { DuplicateCodeService } from './services/duplicateCodeService';
+import { WarningDirectivesService } from './services/warningDirectivesService';
 
 export class DevToolsExtensionContext implements vscode.Disposable {
     alLangProxy : ALLangServerProxy;    
@@ -41,6 +42,7 @@ export class DevToolsExtensionContext implements vscode.Disposable {
     diagnosticsService: DiagnosticsService;
     alImagesService: ALImagesService;
     duplicateCodeService: DuplicateCodeService;
+    warningDirectivesService: WarningDirectivesService;
 
     constructor(context : vscode.ExtensionContext) {
         this.alLangProxy = new ALLangServerProxy()
@@ -67,6 +69,7 @@ export class DevToolsExtensionContext implements vscode.Disposable {
         this.diagnosticsService = new DiagnosticsService(this);
         this.alImagesService = new ALImagesService(this);
         this.duplicateCodeService = new DuplicateCodeService(this);
+        this.warningDirectivesService = new WarningDirectivesService(this);
     }
 
     getUseSymbolsBrowser() : boolean {

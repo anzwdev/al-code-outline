@@ -17,7 +17,7 @@ export class DuplicateCodeService extends DevToolsExtensionService {
         //initialize
         super(newContext);
         this._minAllowedNoOfStatements = 3;
-        this._treeProvider = new DuplicateCodeTreeProvider();
+        this._treeProvider = new DuplicateCodeTreeProvider(newContext);
        
         this._context.vscodeExtensionContext.subscriptions.push(
             vscode.window.registerTreeDataProvider('azALDevTools.DuplicateCodeTreeProvider', this._treeProvider));

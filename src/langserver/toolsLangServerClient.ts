@@ -79,6 +79,8 @@ import { ToolsFindDuplicateCodeRequest } from './toolsFindDuplicateCodeRequest';
 import { ToolsFindDuplicateCodeResponse } from './ToolsFindDuplicateCodeResponse';
 import { ToolsCodeCompletionRequest } from './codeCompletion/toolsCodeCompletionRequest';
 import { ToolsCodeCompletionResponse } from './codeCompletion/toolsCodeCompletionResponse';
+import { ToolsGetWarningDirectivesRequest } from './symbolsinformation/toolsGetWarningDirectivesRequest';
+import { ToolsGetWarningDirectivesResponse } from './symbolsinformation/toolsGetWarningDirectivesResponse';
 
 export class ToolsLangServerClient implements vscode.Disposable {
     _context : vscode.ExtensionContext;
@@ -396,6 +398,10 @@ export class ToolsLangServerClient implements vscode.Disposable {
 
     public getPageFieldAvailableToolTips(params: ToolsGetPageFieldAvailableToolTipsRequest) : Promise<ToolsGetPageFieldAvailableToolTipsResponse | undefined> {
         return this.sendRequest<ToolsGetPageFieldAvailableToolTipsRequest, ToolsGetPageFieldAvailableToolTipsResponse>(params, 'al/getpagefieldtooltips');
+    }
+
+    public getWarningDirectives(params: ToolsGetWarningDirectivesRequest) : Promise<ToolsGetWarningDirectivesResponse | undefined> {
+        return this.sendRequest<ToolsGetWarningDirectivesRequest, ToolsGetWarningDirectivesResponse>(params, 'al/getwarningdirectives');
     }
 
     //next available object id

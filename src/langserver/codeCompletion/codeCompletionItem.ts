@@ -5,4 +5,6 @@ export class CodeCompletionItem {
     kind?: vscode.CompletionItemKind;
     filterText?: string;
     tags?: vscode.CompletionItemTag[];
+    insertText?: string;
+    detail?: string;
 }

@@ -115,8 +115,6 @@
 				]
 			}
 		],
-
-
 		"jsonValidation": [
 			{
 				"fileMatch": "app.json",
@@ -127,14 +125,17 @@
 				"url": "aloutlinesyntax://json/ruleSetSyntax.json"
 			}
 		],
-
-
 		"viewsContainers": {
 			"activitybar": [
 				{
 					"icon": "resources/images/activity-duplicate.svg",
 					"id": "azALDevTools_duplicateSearchView",
 					"title": "Duplicate Code Search"
+				},
+				{
+					"icon": "resources/images/activity-warningdirectives.svg",
+					"id": "azALDevTools_warningDirectivesView",
+					"title": "Warning Directives"
 				}
 			]
 		},
@@ -151,9 +152,22 @@
 					"name": "Duplicate Code Search",
 					"when": "azALDevTools.findDuplicateCodeActive"
 				}
+			],
+			"azALDevTools_warningDirectivesView": [
+				{
+					"id": "azALDevTools.WarningDirectivesTreeView",
+					"name": "Warning Directives",
+					"when": "azALDevTools.warningDirectivesActive"
+				}
 			]
 		},
 		"commands": [
+			{
+				"category": "AZ AL Dev Tools",
+				"command": "azALDevTools.showWarningDirectives",
+				"title": "Show warning directives"
+			},
+
 			{
 				"command": "azALDevTools.viewALApp",
 				"title": "Open in AL Object Browser"
@@ -162,6 +176,16 @@
 				"category": "AZ AL Dev Tools",
 				"command": "azALDevTools.findDuplicateCode",
 				"title": "Find duplicate AL code"
+			},
+			{
+				"command": "azALDevTools.hideWarningDirectivesPanel",
+				"title": "Hide",
+				"icon": "$(clear-all)"
+			},
+			{
+				"command": "azALDevTools.refreshWarningDirectivesPanel",
+				"title": "Refresh",
+				"icon": "$(refresh)"
 			},
 			{
 				"command": "azALDevTools.hideDuplicateCodePanel",
@@ -589,6 +613,14 @@
 					"when": "false"
 				},
 				{
+					"command": "azALDevTools.hideWarningDirectivesPanel",
+					"when": "false"
+				},
+				{
+					"command": "azALDevTools.refreshWarningDirectivesPanel",
+					"when": "false"
+				},
+				{
 					"command": "azALDevTools.hideDuplicateCodePanel",
 					"when": "false"
 				},
@@ -948,6 +980,16 @@
 				{
 					"command": "azALDevTools.alOutlineDisableFollowCursor",
 					"when": "view == azALDevTools.SymbolsTreeProvider && azALDevTools:alOutlineFollowCursor"
+				},
+				{
+					"command": "azALDevTools.hideWarningDirectivesPanel",
+					"when": "view == azALDevTools.WarningDirectivesTreeView",
+					"group": "navigation"
+				},
+				{
+					"command": "azALDevTools.refreshWarningDirectivesPanel",
+					"when": "view == azALDevTools.WarningDirectivesTreeView",
+					"group": "navigation"
 				},
 				{
 					"command": "azALDevTools.refreshDuplicateCodePanel",

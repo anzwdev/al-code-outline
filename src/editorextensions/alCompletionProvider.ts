@@ -43,6 +43,11 @@ export class ALCompletionProvider implements vscode.CompletionItemProvider {
         item.filterText = source.filterText;
         if (source.tags)
             item.tags = source.tags;
+        if (source.insertText)
+            item.insertText = source.insertText;
+        if (source.detail)
+            item.detail = source.detail;
+
         return item;
     }
     

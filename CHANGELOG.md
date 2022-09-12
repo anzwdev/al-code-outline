@@ -1,6 +1,7 @@
 # Change Log
 
 ## 3.0.36
+ - New command "Show warning directives" to browse "pragma warning" directives ordered by rule id
  - Show rules ids dropdown and descriptions on hover when editing rulese files or suppressWarnings property in app.json
  - Variable/Parameters names and types completion
  - Feature Request #388 - Minimum variable sort mode for AA0021
