@@ -1406,6 +1406,7 @@
 								"Remove Begin..End",
 								"Remove Empty Triggers",
 								"Remove Empty Lines",
+								"Remove Empty Sections",
 								"Remove StrSubstNo From Error",
 								"Format Document",
 								"Trim Trailing Whitespace"
