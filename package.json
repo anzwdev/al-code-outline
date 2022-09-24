@@ -2,7 +2,7 @@
 	"name": "al-code-outline",
 	"displayName": "AZ AL Dev Tools/AL Code Outline",
 	"description": "AZ AL Development Tools: AL code outline, object browser, object creators",
-	"version": "3.0.36",
+	"version": "3.0.37",
 	"publisher": "andrzejzwierzchowski",
 	"engines": {
 		"vscode": "^1.47.0"
@@ -1490,6 +1490,17 @@
 						"scope": "resource",
 						"uniqueItems": true,
 						"description": "Reuse tooltips only defined in these dependencies. If empty, all dependencies will be used. Each entry should be defined as <dependency publisher> + <space> + '-' + <space> + <dependency name>"
+					},
+					"alOutline.additionalMandatoryAffixesPatterns": {
+						"type": "array",
+						"items": {
+							"type": "string"
+						},
+						"default": [],
+						"scope": "resource",
+						"uniqueItems": true,
+						"description": "Additional list of name affixes patterns, '?' can be used for matching any character. These values are used to remove affixes from names in code actions, commands and code completion"
+
 					},
 					"alOutline.fixCaseRemovesQuotesFromDataTypeIdentifiers": {
 						"type": "boolean",

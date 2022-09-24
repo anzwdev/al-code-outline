@@ -1,5 +1,13 @@
 # Change Log
 
+## 3.0.37
+ - Issue #396 - Account for affixes in the variable name-type completion provider(s)
+   - "_" character detection in affixes bugfix
+   - new "alOutline.additionalMandatoryAffixesPatterns" setting - affixes patterns where '?' character can be used as "any character"
+
+Thank you
+ - rvanbekkum and fvet for reporting issue #396
+
 ## 3.0.36
  - Hover and Find References for rule ids in "pragma warning" directives
  - New command "Show warning directives" to browse "pragma warning" directives ordered by rule id

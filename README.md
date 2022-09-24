@@ -336,6 +336,7 @@ This extension contributes the following settings:
   * `VariableNamesWithType` - suggests variable names together with data type (i.e. `SalesHeader: Record "Sales Header"`)
 	* `VariableNames` - the same as above but suggests variable names only (i.e. `SalesHeader`), when both entries are selected, `VariableNamesWithType` will be used
 	* `VariableDataTypes` - suggests data types based on variable name (i.e. `Record "Sales Header"` for `SalesHeaderBuffer` variable name)
+* `alOutline.additionalMandatoryAffixesPatterns`: Additional list of name affixes patterns, '?' can be used for matching any character. These values are used to remove affixes from names in code actions, commands and code completion
 
 ## Known Issues
 

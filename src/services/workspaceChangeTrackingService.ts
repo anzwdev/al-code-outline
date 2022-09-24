@@ -79,7 +79,9 @@ export class WorkspaceChangeTrackingService extends DevToolsExtensionService {
         if ((folders) && (folders.length > 0)) {
             let projectSources : ToolsALProjectSource[] = [];
             for (let i=0; i<folders.length; i++)
-                if ((configChange.affectsConfiguration('al.packageCachePath', folders[i].uri)) || (configChange.affectsConfiguration('al.codeAnalyzers', folders[i].uri)))
+                if ((configChange.affectsConfiguration('al.packageCachePath', folders[i].uri)) || 
+                    (configChange.affectsConfiguration('al.codeAnalyzers', folders[i].uri)) ||
+                    (configChange.affectsConfiguration('alOutline.additionalMandatoryAffixesPatterns', folders[i].uri)))
                     projectSources.push(new ToolsALProjectSource(folders[i].uri));
             if (projectSources.length > 0)
                 this._context.toolsLangServerClient.configurationChange(new ToolsConfigurationChangeRequest(projectSources));
