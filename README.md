@@ -15,8 +15,11 @@ This extension was originally named 'AL Code Outline' because it started as AL c
 - Action images browser
 - Custom editors
 - Documentation comments support
+- Duplicate code search
+- Warning directives panel
 - Code analyzers rules viewer
 - Document syntax visualizer
+- Code completion
 
 ### AL objects wizards
 
@@ -151,10 +154,14 @@ Extension adds a few commands that allow to automatically modify al code in the 
 * `Remove Begin..End around Single Statements from the Active Editor`: removes begin..end around single statement from the current editor
 * `Remove Begin..End around Single Statements from the Active Project`: removes begin..end around single statement from the current project
 * `Remove Begin..End around Single Statements from the Active Editor`: removes begin..end around single statement from the current editor
+* `Remove Empty Triggers from the Active Editor`: removes empty triggers and event subscribers from the current editor
+* `Remove Empty Triggers from the Active Project`: removes empty triggers and event subscribers from the current project
 * `Remove Empty Lines from the Active Editor`: removes empty duplicate lines from the current editor
 * `Remove Empty Lines from the Active Project`: removes empty duplicate lines from the current project
 * `Remove Empty Sections from the Active Editor`: removes empty sections from the current editor
 * `Remove Empty Sections from the Active Project`: removes empty sections from the current project
+* `Remove StrSubstNo from Error from the Active Editor`: removes StrSubstNo from Error method call from the current editor
+* `Remove StrSubstNo from Error from the Active Project`: removes StrSubstNo from Error method call from the current project
 * `Sort Permissions in the Active Editor`: sorts permissions in the current editor
 * `Sort Permissions in the Active Project`: sorts permissions in the current project
 * `Sort Procedures in the Active Editor`: sorts procedures in the current editor
@@ -195,6 +202,13 @@ These commands are available:
 
 ![Action images](resources/screen2-actionimages.gif)
 
+### Code completion
+
+Extension adds a few additional code completion providers that can be enabled or disabled using `alOutline.completionProviders` setting. These values can be used:
+  * `VariableNamesWithType` - suggests variable names together with data type (i.e. `SalesHeader: Record "Sales Header"`)
+	* `VariableNames` - the same as above but suggests variable names only (i.e. `SalesHeader`), when both entries are selected, `VariableNamesWithType` will be used
+	* `VariableDataTypes` - suggests data types based on variable name (i.e. `Record "Sales Header"` for `SalesHeaderBuffer` variable name)
+
 ### Custom editors
 
 Extension adds new custom editors for app.json, rulesets (*.ruleset.json) and AppSourceCop.json files. These editors are defined as "secondary" which means that developers have to right click on the file in the EXPLORER and choose "Open With..." option. It will display list of available editors for selected file. It is also possible to change default editor on this list.
@@ -212,6 +226,14 @@ When developer types "///" in a line above a symbol declaration (i.e. variable, 
 Code analyzers rules viewer can be opened by running "AZ AL Dev Tools: Show Code Analyzers Rules" command. It allows to select one of available code analyzers from a dropdown list and then displays all rules implemented by that analyzer in a table view. It is then possible to select some or all of the rules and create new ruleset file or copy them as ruleset rules or a table to the clipboard using context menu.
 
 ![Xml Documentation Comments](resources/screen2-codeanalyzers.png)
+
+### Duplicate code search
+
+Duplicate code search panel can be opened by running "AZ AL Dev Tools: Find duplicate AL code" command. 
+
+### Warning directives panel
+
+Warning directives parel can be opened by running "AZ AL Dev Tools: Show warning directives" command. It shows list of location of "pragma warning" directives grouped by rule id and file.
 
 ### Document syntax visualizer
 
@@ -285,7 +307,7 @@ This extension contributes the following settings:
 * `alOutline.addToolTipsToPageFields`: set to true to add tooltips to page fields when 'Add multiple fields' action is used
 * `alOutline.useTableFieldCaptionsInApiFields`: set to true, to use table field captions in API pages fields like in standard BC APIs v 2.0 (i.e. ```Caption='Customer No.';```), set to false to use camelCase api page field name in api page field caption together with Locked property like in standard BC APIs v 1.0 (i.e. ```Caption='customerNo', Locked = true;```). Default value is true
 * `alOutline.lockRemovedFieldsCaptions`: set to true to lock captions of removed fields when 'Add Table Field Captions' command is run
-* `alOutline.codeCleanupActions`: array of names of actions that will be run by code cleanup commands. These actions are available: RemoveWithStatements, AddApplicationAreas, AddToolTips, RefreshToolTips, AddTableFieldCaptions, "LockRemovedFieldCaptions", AddPageFieldCaptions, AddObjectCaptions, FixKeywordsCase, FixIdentifiersCase, ConvertObjectIdsToNames, AddMissingParentheses, AddDataClassifications, RemoveUnusedVariables, SortPermissions, SortPermissionSetList, SortProcedures, SortProperties, SortReportColumns, SortTableFields, SortVariables, SortCustomizations, RemoveBeginEnd, RemoveEmptyLines, RemoveEmptySections, FormatDocument, TrimTrailingWhitespace
+* `alOutline.codeCleanupActions`: array of names of actions that will be run by code cleanup commands. These actions are available: RemoveWithStatements, AddApplicationAreas, AddToolTips, RefreshToolTips, AddTableFieldCaptions, "LockRemovedFieldCaptions", AddPageFieldCaptions, AddObjectCaptions, FixKeywordsCase, FixIdentifiersCase, ConvertObjectIdsToNames, AddMissingParentheses, AddDataClassifications, RemoveUnusedVariables, SortPermissions, SortPermissionSetList, SortProcedures, SortProperties, SortReportColumns, SortTableFields, SortVariables, SortCustomizations, RemoveBeginEnd, RemoveEmptyTriggers, RemoveEmptyLines, RemoveEmptySections, RemoveStrSubstNoFromError, FormatDocument, TrimTrailingWhitespace
 * `alOutline.doNotReuseToolTipsFromOtherPages`: set to true to disable reusing field tooltips from other pages in the page wizard, 'add multiple fields' page code action and 'add missing tooltips' command
 * `alOutline.reuseToolTipsFromDependencies`: reuse tooltips only defined in these dependencies, if empty, all dependencies will be used. Each entry should be defined as "dependency publisher" + "space" + "-" + "space" + "dependency name". You can also use "*" to use all dependencies. This setting is also used by the Code Cleanup commands
 * `alOutline.defaultDataClassification`: default DataClassification value for Code Cleanup commands
@@ -300,8 +322,20 @@ This extension contributes the following settings:
   * `removeGlobalVariables`: remove global variables
   * `removeLocalVariables`: remove local variables
   * `removeLocalMethodParameters`: remove local methods parameters
+* `alOutline.defaultRemoveEmptyTriggersSettings`: default settings for the RemoveEmptyTriggers command when run by the Code Cleanup, these properties can be set:
+  * `removeTriggers`: remove empty triggers
+  * `removeSubscribers`: remove empty event subscribers
+  * `ignoreComments`: removes trigger or subscriber even if method body contains comments
 * `alOutline.fixCaseRemovesQuotesFromDataTypeIdentifiers`: when set to true, `Fix Identifiers and Keywords Case` commands will remove quotes around idetifiers that use al data types as names
-* `alOutline.variablesSortMode`: allows to select variables sort mode in `Sort variables` commands. There are 2 options available: `fullTypeName` and `mainTypeNameOnly`. First one is the default one and uses full type name including object type if data type is an object (i.e. `Record Item`). Second option uses main type name only and ignores object type names (i.e. `Record` if variable type is `Record Item`).
+* `alOutline.variablesSortMode`: allows to select variables sort mode in `Sort variables` commands. There are 4 options available: 
+  * `fullTypeName` - this is default value and uses full type name including object type if data type is an object (i.e. `Record Item`), if data type is the same, variables will be sorted by name
+  * `mainTypeNameOnly` - uses main type name only and ignores object type names (i.e. `Record` if variable type is `Record Item`), if data type is the same, variables will be sorted by name
+  * `fullTypeNameKeepVariableNameOrder` - uses full type name including object type if data type is an object, if data type is the same, variables won't be not sorted
+  * `mainTypeNameOnlyKeepVariableNameOrder` - uses main type name only and ignores object type names, if data type is the same, variables won't be not sorted
+* `alOutline.completionProviders`: list of active code completion providers, these values can be used:
+  * `VariableNamesWithType` - suggests variable names together with data type (i.e. `SalesHeader: Record "Sales Header"`)
+	* `VariableNames` - the same as above but suggests variable names only (i.e. `SalesHeader`), when both entries are selected, `VariableNamesWithType` will be used
+	* `VariableDataTypes` - suggests data types based on variable name (i.e. `Record "Sales Header"` for `SalesHeaderBuffer` variable name)
 
 ## Known Issues
 

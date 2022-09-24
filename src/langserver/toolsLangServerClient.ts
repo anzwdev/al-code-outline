@@ -77,6 +77,13 @@ import { ToolsGetPageFieldAvailableToolTipsResponse } from './symbolsinformation
 import { ToolsConfigurationChangeRequest } from './toolsConfigurationChangeRequest';
 import { ToolsFindDuplicateCodeRequest } from './toolsFindDuplicateCodeRequest';
 import { ToolsFindDuplicateCodeResponse } from './ToolsFindDuplicateCodeResponse';
+import { ToolsCodeCompletionRequest } from './codeCompletion/toolsCodeCompletionRequest';
+import { ToolsCodeCompletionResponse } from './codeCompletion/toolsCodeCompletionResponse';
+import { ToolsGetWarningDirectivesRequest } from './symbolsinformation/toolsGetWarningDirectivesRequest';
+import { ToolsGetWarningDirectivesResponse } from './symbolsinformation/toolsGetWarningDirectivesResponse';
+import { ToolsHoverResponse } from './toolsHoverResponse';
+import { ToolsDocumentPositionRequest } from './ToolsDocumentPositionRequest';
+import { ToolsReferencesResponse } from './toolsReferencesResponse';
 
 export class ToolsLangServerClient implements vscode.Disposable {
     _context : vscode.ExtensionContext;
@@ -396,6 +403,10 @@ export class ToolsLangServerClient implements vscode.Disposable {
         return this.sendRequest<ToolsGetPageFieldAvailableToolTipsRequest, ToolsGetPageFieldAvailableToolTipsResponse>(params, 'al/getpagefieldtooltips');
     }
 
+    public getWarningDirectives(params: ToolsGetWarningDirectivesRequest) : Promise<ToolsGetWarningDirectivesResponse | undefined> {
+        return this.sendRequest<ToolsGetWarningDirectivesRequest, ToolsGetWarningDirectivesResponse>(params, 'al/getwarningdirectives');
+    }
+
     //next available object id
     public async getNextObjectId(path: string | undefined, objectType: string) : Promise<number> {
         let response = await this.sendRequest<ToolsGetNextObjectIdRequest, ToolsGetNextObjectIdResponse>(
@@ -403,6 +414,19 @@ export class ToolsLangServerClient implements vscode.Disposable {
         if ((response) && (response.id))
             return response.id;
         return 0;
+    }
+
+    //code completion and hover
+    public codeCompletion(params: ToolsCodeCompletionRequest) : Promise<ToolsCodeCompletionResponse | undefined> {
+        return this.sendRequest<ToolsCodeCompletionRequest, ToolsCodeCompletionResponse>(params, 'al/codecompletion');
+    }
+
+    public provideHover(params: ToolsDocumentPositionRequest) : Promise<ToolsHoverResponse | undefined> {
+        return this.sendRequest<ToolsDocumentPositionRequest, ToolsHoverResponse>(params, 'al/hover');
+    }
+
+    public provideReferences(params: ToolsDocumentPositionRequest) : Promise<ToolsReferencesResponse | undefined> {
+        return this.sendRequest<ToolsDocumentPositionRequest, ToolsReferencesResponse>(params, 'al/references');
     }
 
     //language information

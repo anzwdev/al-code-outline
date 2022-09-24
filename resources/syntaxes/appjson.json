@@ -1,0 +1,30 @@
+{
+    "$id": "AL Language Project File Syntax",
+    "$schema": "http://json-schema.org/draft-07/schema",
+    "description": "schema for an AL Language Project File",
+    "type": "object",
+    "properties": {
+        "suppressWarnings": {
+            "type": "array",
+            "items": {
+                "type": "string",
+                "enum": [
+                    "AA0001",
+                    "AA0002",
+                    "AA0003",
+                    "AA0004",
+                    "AA0005"
+                ],
+                "enumDescriptions": [
+                    "Generate and utilize translation files in XLIFF format.",
+                    "Generate translation entries for captions for all application objects.",
+                    "Exclude the generated translation file from the app.",
+                    "Switch off the option of using implicit withs.",
+                    "Generate translation entries in the template translation file for locked labels."
+                ]
+
+            },
+            "description": "List of warning ids that the compiler should suppress. E.g. AL0604 or AA0215"
+        }
+    }
+}

@@ -4,13 +4,19 @@ import { DuplicateCodeTreeNode } from './duplicateCodeTreeNode';
 import { DuplicateInfo } from './duplicateInfo';
 import { CodeBlockType } from './codeBlockType';
 import { DuplicateCodeSortMode } from './duplicateCodeSortMode';
+import { DevToolsExtensionContext } from '../devToolsExtensionContext';
 
 export class DuplicateCodeTreeProvider implements vscode.TreeDataProvider<DuplicateCodeTreeNode> {
+    private _toolsExtensionContext : DevToolsExtensionContext;
     protected _duplicates: DuplicateCodeTreeNode[] | undefined;
     protected _sortMode: DuplicateCodeSortMode = DuplicateCodeSortMode.noOfStatements;
     private _onDidChangeTreeData: vscode.EventEmitter<DuplicateCodeTreeNode | null> = new vscode.EventEmitter<DuplicateCodeTreeNode | null>();
 	readonly onDidChangeTreeData: vscode.Event<DuplicateCodeTreeNode | null> = this._onDidChangeTreeData.event;
     
+    constructor(context : DevToolsExtensionContext) {
+        this._toolsExtensionContext = context;        
+    }
+
     getTreeItem(element: DuplicateCodeTreeNode): vscode.TreeItem | Thenable<vscode.TreeItem> {
         return element;
     }
@@ -86,6 +92,16 @@ export class DuplicateCodeTreeProvider implements vscode.TreeDataProvider<Duplic
         return 'Code';
     }
 
+    protected getGroupIcon(info: DuplicateInfo): { light: string, dark: string } {
+        switch (info.codeBlockType) {
+            case CodeBlockType.Method:
+                return this.getIcon('tree-method.svg');
+            case CodeBlockType.Trigger:
+                return this.getIcon('tree-trigger.svg');
+        }
+        return this.getIcon('tree-block.svg');
+    }
+
     protected createDuplicateTreeNodes(info: DuplicateInfo): DuplicateCodeTreeNode | undefined {
         if ((info.ranges) && (info.ranges.length > 1)) {
             let groupType = this.getGroupCaption(info);
@@ -99,6 +115,7 @@ export class DuplicateCodeTreeProvider implements vscode.TreeDataProvider<Duplic
 
             let node = new DuplicateCodeTreeNode(groupTitle, vscode.TreeItemCollapsibleState.Collapsed, info.noOfStatements!, info.codeBlockType!);
             node.tooltip = groupTooltip;
+            node.iconPath = this.getGroupIcon(info);
 
             let childNodes: DuplicateCodeTreeNode[] = [];
             for (let i=0; i<info.ranges.length; i++) {
@@ -110,6 +127,8 @@ export class DuplicateCodeTreeProvider implements vscode.TreeDataProvider<Duplic
                 codeBlockTree.documentRange = info.ranges[i];
                 if (info.ranges[i].filePath)
                     codeBlockTree.resourceUri = vscode.Uri.file(filePath);
+                codeBlockTree.iconPath = this.getIcon("tree-file.svg");           
+
                 codeBlockTree.command = {
                     title: "Show code",
                     command: "azALDevTools.showDuplicateCode",
@@ -132,4 +151,12 @@ export class DuplicateCodeTreeProvider implements vscode.TreeDataProvider<Duplic
             return this._duplicates[0];
         return undefined;
     }
+
+    private getIcon(fileName: string) : { light: string, dark: string } {
+        return {
+            light: this._toolsExtensionContext.vscodeExtensionContext.asAbsolutePath(path.join("resources", "images", "light", fileName)),
+            dark: this._toolsExtensionContext.vscodeExtensionContext.asAbsolutePath(path.join("resources", "images", "dark", fileName))
+        };
+    }
+
 }

@@ -2,7 +2,7 @@
 	"name": "al-code-outline",
 	"displayName": "AZ AL Dev Tools/AL Code Outline",
 	"description": "AZ AL Development Tools: AL code outline, object browser, object creators",
-	"version": "3.0.34",
+	"version": "3.0.36",
 	"publisher": "andrzejzwierzchowski",
 	"engines": {
 		"vscode": "^1.47.0"
@@ -73,10 +73,14 @@
 		"onCommand:azALDevTools.LockProjectRemovedFieldCaptions",
 		"onCommand:azALDevTools.RemoveEditorBeginEnd",
 		"onCommand:azALDevTools.RemoveProjectBeginEnd",
+		"onCommand:azALDevTools.RemoveEditorEmptyTriggers",
+		"onCommand:azALDevTools.RemoveProjectEmptyTriggers",
 		"onCommand:azALDevTools.RemoveEditorEmptyLines",
 		"onCommand:azALDevTools.RemoveProjectEmptyLines",
 		"onCommand:azALDevTools.RemoveEditorEmptySections",
 		"onCommand:azALDevTools.RemoveProjectEmptySections",
+		"onCommand:azALDevTools.RemoveEditorStrSubstNoFromError",
+		"onCommand:azALDevTools.RemoveProjectStrSubstNoFromError",
 		"onCommand:azALDevTools.SortEditorPermissions", 
 		"onCommand:azALDevTools.SortWorkspacePermissions",
 		"onCommand:azALDevTools.SortEditorPermissionSetList", 
@@ -111,12 +115,27 @@
 				]
 			}
 		],
+		"jsonValidation": [
+			{
+				"fileMatch": "app.json",
+				"url": "aloutlinesyntax://json/appJsonSyntax.json"
+			},
+			{
+				"fileMatch": "*.ruleset.json",
+				"url": "aloutlinesyntax://json/ruleSetSyntax.json"
+			}
+		],
 		"viewsContainers": {
 			"activitybar": [
 				{
 					"icon": "resources/images/activity-duplicate.svg",
 					"id": "azALDevTools_duplicateSearchView",
 					"title": "Duplicate Code Search"
+				},
+				{
+					"icon": "resources/images/activity-warningdirectives.svg",
+					"id": "azALDevTools_warningDirectivesView",
+					"title": "Warning Directives"
 				}
 			]
 		},
@@ -133,9 +152,22 @@
 					"name": "Duplicate Code Search",
 					"when": "azALDevTools.findDuplicateCodeActive"
 				}
+			],
+			"azALDevTools_warningDirectivesView": [
+				{
+					"id": "azALDevTools.WarningDirectivesTreeView",
+					"name": "Warning Directives",
+					"when": "azALDevTools.warningDirectivesActive"
+				}
 			]
 		},
 		"commands": [
+			{
+				"category": "AZ AL Dev Tools",
+				"command": "azALDevTools.showWarningDirectives",
+				"title": "Show warning directives"
+			},
+
 			{
 				"command": "azALDevTools.viewALApp",
 				"title": "Open in AL Object Browser"
@@ -144,6 +176,16 @@
 				"category": "AZ AL Dev Tools",
 				"command": "azALDevTools.findDuplicateCode",
 				"title": "Find duplicate AL code"
+			},
+			{
+				"command": "azALDevTools.hideWarningDirectivesPanel",
+				"title": "Hide",
+				"icon": "$(clear-all)"
+			},
+			{
+				"command": "azALDevTools.refreshWarningDirectivesPanel",
+				"title": "Refresh",
+				"icon": "$(refresh)"
 			},
 			{
 				"command": "azALDevTools.hideDuplicateCodePanel",
@@ -415,6 +457,16 @@
 			},
 			{
 				"category": "AZ AL Dev Tools",
+				"command": "azALDevTools.RemoveEditorEmptyTriggers",
+				"title": "Remove Empty Triggers from the Active Editor"
+			},
+			{
+				"category": "AZ AL Dev Tools",
+				"command": "azALDevTools.RemoveProjectEmptyTriggers",
+				"title": "Remove Empty Triggers from the Active Project"
+			},
+			{
+				"category": "AZ AL Dev Tools",
 				"command": "azALDevTools.RemoveEditorEmptyLines",
 				"title": "Remove Empty Lines from the Active Editor"
 			},
@@ -432,6 +484,16 @@
 				"category": "AZ AL Dev Tools",
 				"command": "azALDevTools.RemoveProjectEmptySections",
 				"title": "Remove Empty Sections from the Active Project"
+			},
+			{
+				"category": "AZ AL Dev Tools",
+				"command": "azALDevTools.RemoveEditorStrSubstNoFromError",
+				"title": "Remove StrSubstNo from Error from the Active Editor"
+			},
+			{
+				"category": "AZ AL Dev Tools",
+				"command": "azALDevTools.RemoveProjectStrSubstNoFromError",
+				"title": "Remove StrSubstNo from Error from the Active Project"
 			},
 			{
 				"category": "AZ AL Dev Tools",
@@ -548,6 +610,14 @@
 			"commandPalette": [
 				{
 					"command": "azALDevTools.viewALApp",
+					"when": "false"
+				},
+				{
+					"command": "azALDevTools.hideWarningDirectivesPanel",
+					"when": "false"
+				},
+				{
+					"command": "azALDevTools.refreshWarningDirectivesPanel",
 					"when": "false"
 				},
 				{
@@ -777,12 +847,20 @@
 					"when": "azALDevTools.extensionActive"
 				},
 				{
+					"command": "azALDevTools.RemoveEditorEmptyTriggers",
+					"when": "editorLangId == al"
+				},
+				{
+					"command": "azALDevTools.RemoveProjectEmptyTriggers",
+					"when": "azALDevTools.extensionActive"
+				},
+				{
 					"command": "azALDevTools.RemoveEditorEmptyLines",
 					"when": "editorLangId == al"
 				},
 				{
 					"command": "azALDevTools.RemoveProjectEmptyLines",
-					"when": "editorLangId == al"
+					"when": "azALDevTools.extensionActive"
 				},
 				{
 					"command": "azALDevTools.RemoveEditorEmptySections",
@@ -790,7 +868,15 @@
 				},
 				{
 					"command": "azALDevTools.RemoveProjectEmptySections",
+					"when": "azALDevTools.extensionActive"
+				},
+				{
+					"command": "azALDevTools.RemoveEditorStrSubstNoFromError",
 					"when": "editorLangId == al"
+				},
+				{
+					"command": "azALDevTools.RemoveProjectStrSubstNoFromError",
+					"when": "azALDevTools.extensionActive"
 				},
 				{
 					"command": "azALDevTools.SortEditorPermissions", 
@@ -894,6 +980,16 @@
 				{
 					"command": "azALDevTools.alOutlineDisableFollowCursor",
 					"when": "view == azALDevTools.SymbolsTreeProvider && azALDevTools:alOutlineFollowCursor"
+				},
+				{
+					"command": "azALDevTools.hideWarningDirectivesPanel",
+					"when": "view == azALDevTools.WarningDirectivesTreeView",
+					"group": "navigation"
+				},
+				{
+					"command": "azALDevTools.refreshWarningDirectivesPanel",
+					"when": "view == azALDevTools.WarningDirectivesTreeView",
+					"group": "navigation"
 				},
 				{
 					"command": "azALDevTools.refreshDuplicateCodePanel",
@@ -1110,6 +1206,25 @@
 							}
 						}
 					},
+					"alOutline.defaultRemoveEmptyTriggersSettings": {
+						"type": "object",
+						"description": "Default settings for the RemoveEmptyTriggers command when run by the Code Cleanup",
+						"scope": "resource",
+						"properties": {
+							"removeTriggers": {
+								"type": "boolean",
+								"description": "Remove empty triggers"
+							},
+							"removeSubscribers": {
+								"type": "boolean",
+								"description": "Remove empty event subscribers"
+							},
+							"ignoreComments": {
+								"type": "boolean",
+								"description": "Removes trigger or subscriber even if method body contains comments"
+							}
+						}
+					},
 					"alOutline.defaultRemoveUnusedVariablesSettings": {
 						"type": "object",
 						"description": "Default settings for the RemoveUnusedVariables command when run by the Code Cleanup",
@@ -1258,8 +1373,10 @@
 								"SortVariables",
 								"SortCustomizations",
 								"RemoveBeginEnd",
+								"RemoveEmptyTriggers",
 								"RemoveEmptyLines", 
 								"RemoveEmptySections",
+								"RemoveStrSubstNoFromError",
 								"FormatDocument",
 								"TrimTrailingWhitespace"
 							],
@@ -1287,6 +1404,9 @@
 								"Sort Variables",
 								"Sort Customizations",
 								"Remove Begin..End",
+								"Remove Empty Triggers",
+								"Remove Empty Lines",
+								"Remove StrSubstNo From Error",
 								"Format Document",
 								"Trim Trailing Whitespace"
 							]
@@ -1381,7 +1501,9 @@
 						"type": "string",
 						"enum": [
 							"fullTypeName",
-							"mainTypeNameOnly"
+							"mainTypeNameOnly",
+							"fullTypeNameKeepVariableNameOrder",
+							"mainTypeNameOnlyKeepVariableNameOrder"
 						],
 						"enumDescriptions": [
 							"Sort report DataItem columns",
@@ -1390,8 +1512,27 @@
 						"default": "fullTypeName",
 						"description": "Specifies how variables are sorted by `Sort Variables` commands.",
 						"scope": "resource"						
+					},
+					"alOutline.completionProviders": {
+						"type": "array",
+						"items": {
+							"type": "string",
+							"enum": [
+								"VariableNamesWithType",
+								"VariableNames",
+								"VariableDataTypes"
+							],
+							"enumDescriptions": [
+								"Variable names with data type",
+								"Variable names only",
+								"Data types based on variable names"
+							]
+						},
+						"default": [],
+						"uniqueItems": true,
+						"description": "Specifies which completion providers should be active. If both VariableNamesWithType and VariableNames are selected, VariableNamesWithType will be used",
+						"scope": "resource"
 					}
-
 
 				}
 			}

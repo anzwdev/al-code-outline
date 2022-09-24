@@ -167,27 +167,34 @@ export class AppJsonEditor extends JsonFormEditor {
                 "caption": "Runtime",
                 "type": "string",
                 "autocomplete": [
-                    {
-                        value: "5.0",
-                        description: "Business Central 2020 release wave 1"
-                    },
-                    {
-                        value: "4.0",
-                        description: "Business Central 2019 release wave 2"
-                    },
-                    {
-                        value: "3.0",
-                        description: "Business Central Spring '19 Release"
-                    },
-                    {
-                        value: "2.0",
-                        description: "Business Central Fall '18 Release"
-                    },
-                    {
-                        value: "1.0",
-                        description: "Business Central Spring '18 Release"
-                    }
-                ]
+                    { "value": "9.2", "description": "Business Central 2022 release wave 1 update 20.4" },
+                    { "value": "9.1", "description": "Business Central 2022 release wave 1 update 20.1" },
+                    { "value": "9.0", "description": "Business Central 2022 release wave 1" },
+                    { "value": "8.1", "description": "Business Central 2021 release wave 2 update 19.1" },
+                    { "value": "8.0", "description": "Business Central 2021 release wave 2" },
+                    { "value": "7.2", "description": "Business Central 2021 release wave 1 update 18.2" },
+                    { "value": "7.1", "description": "Business Central 2021 release wave 1 update 18.1" },
+                    { "value": "7.0", "description": "Business Central 2021 release wave 1" },
+                    { "value": "6.5", "description": "Business Central 2020 release wave 2 update 17.5" },
+                    { "value": "6.4", "description": "Business Central 2020 release wave 2 update 17.4" },
+                    { "value": "6.3", "description": "Business Central 2020 release wave 2 update 17.3" },
+                    { "value": "6.2", "description": "Business Central 2020 release wave 2 update 17.2" },
+                    { "value": "6.1", "description": "Business Central 2020 release wave 2 update 17.1" },
+                    { "value": "6.0", "description": "Business Central 2020 release wave 2" },
+                    { "value": "5.4", "description": "Business Central 2020 release wave 1 update 16.4" },
+                    { "value": "5.3", "description": "Business Central 2020 release wave 1 update 16.3" },
+                    { "value": "5.2", "description": "Business Central 2020 release wave 1 update 16.2" },
+                    { "value": "5.1", "description": "Business Central 2020 release wave 1 update 16.1" },
+                    { "value": "5.0", "description": "Business Central 2020 release wave 1" },
+                    { "value": "4.4", "description": "Business Central 2019 release wave 2 update 15.4" },
+                    { "value": "4.3", "description": "Business Central 2019 release wave 2 update 15.3" },
+                    { "value": "4.2", "description": "Business Central 2019 release wave 2 update 15.2" },
+                    { "value": "4.1", "description": "Business Central 2019 release wave 2 update 15.1" },
+                    { "value": "4.0", "description": "Business Central 2019 release wave 2" },
+                    { "value": "3.0", "description": "Business Central Spring '19 Release" },
+                    { "value": "2.0", "description": "Business Central Fall '18 Release" },
+                    { "value": "1.0", "description": "Business Central Spring '18 Release" }
+                                    ]
             },
             {
                 "caption": "Dependencies",
@@ -260,6 +267,57 @@ export class AppJsonEditor extends JsonFormEditor {
                 ]
             },
             {
+                "caption": "Compilation",
+                "type": "group"
+
+            },
+            {
+                "name": "preprocessorSymbols",
+                "caption": "Preprocessor Symbols",
+                "type": "list",
+                "description": "Define symbols that can be used in all source files"
+            },
+            {
+                "name": "suppressWarnings",
+                "caption": "Suppress Warnings",
+                "type": "list",
+                "description": "List of warning ids that the compiler should suppress. E.g. AL0604 or AA0215"
+            },
+            {
+                "name": "features",
+                "caption": "Features",
+                "type": "list",
+                "autocomplete": [
+                    {
+                        value: "TranslationFile",
+                        description: "Generate and utilize translation files in xliff format"
+                    },
+                    {
+                        value: "GenerateCaptions",
+                        description: "Generate translation entries for captions for all application objects"
+                    },
+                    {
+                        value: "ExcludeGeneratedTranslations",
+                        description: "Exclude the generated translation file from the app"
+                    },
+                    {
+                        value: "NoImplicitWith",
+                        description: "Switch off the option of using implicit withs."
+                    },
+                    {
+                        value: "GenerateLockedTranslations",
+                        description: "Generate translation entries in the template translation file for locked labels."
+                    }
+                ],
+                "description": "Optional/experimental compiler features can be enabled by specifying them."
+            },
+            {
+                "name": "showMyCode",
+                "caption": "Show My Code",
+                "type": "boolean",
+                "description": "Allows the code to be debugged from other extensions when it has been published. The default setting is false."
+            },
+            {
                 "caption": "Additional",
                 "type": "group"
             },
@@ -317,32 +375,6 @@ export class AppJsonEditor extends JsonFormEditor {
                 ]
             },
             {
-                "name": "features",
-                "caption": "Features",
-                "type": "list",
-                "autocomplete": [
-                    {
-                        value: "TranslationFile",
-                        description: "Generate and utilize translation files in xliff format"
-                    },
-                    {
-                        value: "GenerateCaptions",
-                        description: "Generate translation entries for captions for all application objects"
-                    },
-                    {
-                        value: "ExcludeGeneratedTranslations",
-                        description: "Exclude the generated translation file from the app"
-                    }
-                ],
-                "description": "Optional/experimental compiler features can be enabled by specifying them."
-            },
-            {
-                "name": "showMyCode",
-                "caption": "Show My Code",
-                "type": "boolean",
-                "description": "Allows the code to be debugged from other extensions when it has been published. The default setting is false."
-            },
-            {
                 "name": "contextSensitiveHelpUrl",
                 "caption": "Context Sensitive Help Url",
                 "type": "string",
@@ -367,7 +399,21 @@ export class AppJsonEditor extends JsonFormEditor {
                 "caption": "Application Insights Key",
                 "type": "string",
                 "description": "Partner specific Azure Application Insights Key. Telemetry from this extension will be published to the relevant Azure resource."
-            }];
+            },
+            {
+                "name": "applicationInsightsConnectionString",
+                "caption": "Application Insights Connection String",
+                "type": "string",
+                "description": "Partner specific Azure Application Insights connection string. Telemetry from this extension will be published to the relevant Azure resource."
+            },
+            {
+                "name": "keyVaultUrls",
+                "caption": "Key Vault Urls",
+                "type": "list",
+                "description": "The URLs of up to two Azure Key Vaults in the format https://<keyvaultname>.vault.azure.net. AL code in this extension will be able to read secrets in these key vaults. Specify a second key vault to be resilient in case the first key vault is unavailable."
+            }
+        
+        ];
     }
 
 }

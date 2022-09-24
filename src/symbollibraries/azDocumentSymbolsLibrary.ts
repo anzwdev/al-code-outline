@@ -16,11 +16,13 @@ export class AZDocumentSymbolsLibrary extends AZSymbolsLibrary {
     protected _reloadRequired : boolean;
     protected _context : DevToolsExtensionContext;
     private _document: vscode.TextDocument | undefined;
+    private _documentContent: string | undefined;
 
     constructor(context : DevToolsExtensionContext, docUri : vscode.Uri | undefined, document?: vscode.TextDocument) {
         super();
         this._twoWayTree = true;
         
+        this._documentContent = undefined;
         this._context = context;
         this._docUri = docUri;
         this._document = document;
@@ -29,6 +31,12 @@ export class AZDocumentSymbolsLibrary extends AZSymbolsLibrary {
             this.name = this._docUri.fsPath;
             this.displayName = path.basename(this._docUri.fsPath);
         }
+    }
+
+    public isActiveDocument(document: vscode.TextDocument): boolean {
+        return ((!!vscode.window.activeTextEditor) && 
+            (!!document) && 
+            (vscode.window.activeTextEditor.document.uri.fsPath == document.uri.fsPath));
     }
 
     setDocUri(newUri : vscode.Uri | undefined) {
@@ -61,19 +69,25 @@ export class AZDocumentSymbolsLibrary extends AZSymbolsLibrary {
         //get document symbols
         let document = await this.GetDocumentAsync();
 
+        if ((document) && (document.languageId == "al")) {
+            let source : string = document.getText();
+            this._reloadRequired = (this._reloadRequired) || (!this._documentContent) || (this._documentContent != source);
+            this._documentContent = source;
+        }
+
         if (document) {
             if (document.uri)
                 this._docUri = document.uri;
 
             if (document.languageId == "al") {
                 //al language - use our special language server to parse source code
-                let source : string = document.getText();
         
                 let documentPath : string = "";
                 if ((this._docUri) && (this._docUri.fsPath))
                     documentPath = this._docUri.fsPath;
 
-                let request : ToolsDocumentSymbolsRequest = new ToolsDocumentSymbolsRequest(source, documentPath, true);
+                let active = this.isActiveDocument(document);
+                let request : ToolsDocumentSymbolsRequest = new ToolsDocumentSymbolsRequest(this._documentContent!, documentPath, true, active);
                 let response : ToolsDocumentSymbolsResponse | undefined = await this._context.toolsLangServerClient.getALDocumentSymbols(request);
                 if ((response) && (response.root))
                     newRootSymbol = AZSymbolInformation.fromAny(response.root);

@@ -1,10 +1,7 @@
 import * as vscode from 'vscode';
-import * as path from 'path';
 import { DevToolsExtensionContext } from "../devToolsExtensionContext";
 import { JsonFormEditor } from "./jsonFormEditor";
-import { CARuleInfo } from "../langserver/caRuleInfo";
-import { ToolsGetCodeAnalyzersRulesRequest } from '../langserver/toolsGetCodeAnalyzersRulesRequest';
-import { basename } from 'path';
+import { CARulesCollection } from '../carulesviewer/caRulesCollection';
 
 export class RuleSetEditor extends JsonFormEditor {
     protected _analyzers: string[];
@@ -25,48 +22,24 @@ export class RuleSetEditor extends JsonFormEditor {
         this.loadRules();
     }
 
-    protected loadAnalyzers() {
-        let uri: vscode.Uri | undefined = undefined;
-        if (this.document)
-            uri = this.document.uri;
-        
-        let alConfig = vscode.workspace.getConfiguration('al', uri);
-        let codeAnalyzersSetting = alConfig.get<string[]|undefined>("codeAnalyzers");
-        if (codeAnalyzersSetting) {
-            for (let i=0; i<codeAnalyzersSetting.length; i++) {
-                if (!codeAnalyzersSetting[i].startsWith('${')) {
-                    this._analyzers.push(path.parse(codeAnalyzersSetting[i]).name);
-                }
-            }
-        }
-    }
-
     protected async loadRules() {
         await vscode.window.withProgress({
             location: vscode.ProgressLocation.Notification,
             title: "Loading code analyzers rules"
         }, async (progress) => {
+            let rulesCollection = new CARulesCollection(this._devToolsContext);
+            await rulesCollection.loadRules();
+
             let rules: any[] = [];
 
-            this.loadAnalyzers();
-
-            for (let analyzerIdx=0; analyzerIdx<this._analyzers.length; analyzerIdx++) {
-                let request: ToolsGetCodeAnalyzersRulesRequest = 
-                    new ToolsGetCodeAnalyzersRulesRequest(this._analyzers[analyzerIdx]);
-                let response = 
-                    await this._devToolsContext.toolsLangServerClient.getCodeAnalyzersRules(request);
-                if ((response) && (response.rules)) {
-                    for (let ruleIdx = 0; ruleIdx < response.rules.length; ruleIdx++) {
-                        response.rules[ruleIdx].analyzer = this._analyzers[analyzerIdx];
-                        //this._rules.push(response.rules[ruleIdx]);
-                        if (response.rules[ruleIdx].id)
-                            rules.push({ 
-                                value: response.rules[ruleIdx].id,
-                                description: response.rules[ruleIdx].description
-                            });
-                    }
+            if (rulesCollection.rules)
+                for (let ruleIdx = 0; ruleIdx < rulesCollection.rules.length; ruleIdx++) {
+                    if (rulesCollection.rules[ruleIdx].id)
+                        rules.push({ 
+                            value: rulesCollection.rules[ruleIdx].id,
+                            description: rulesCollection.rules[ruleIdx].description
+                        });
                 }
-            }
 
             if (rules.length > 0) {
                 this.sendMessage({
