@@ -9,12 +9,14 @@
  - Issue #398 - Add semicolon to end of the new completion provider 
    - ";" is added to variables declaration suggestions as it is always required
    - ";" is not added to parameters and return variable declaration suggestions
+ - Issue #399 - ignore duplicates if area is obsolete while using "Find Duplicates" 
 
 Thank you
  - NKarolak for reporting issue #389
  - jhoek for reporting issue #394
  - rvanbekkum and fvet for reporting issue #396
  - nickgoddard777 for reporting issue #398
+ - AndreBreitenbach for reporting issue #399
 
 ## 3.0.36
  - Hover and Find References for rule ids in "pragma warning" directives
