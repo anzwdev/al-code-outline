@@ -36,6 +36,7 @@ import { RemoveEmptySectionsModifier } from '../alsyntaxmodifiers/removeEmptySec
 import { SortCustomizationsModifier } from '../alsyntaxmodifiers/sortCustomizationsModifier';
 import { RemoveStrSubstNoFromErrorModifier } from '../alsyntaxmodifiers/removeStrSubstNoFromErrorModifier';
 import { RemoveEmptyTriggersModifier } from '../alsyntaxmodifiers/removeEmptyTriggersModifier';
+import { MakeFlowFieldsReadOnlyModifier } from '../alsyntaxmodifiers/makeFlowFieldsReadOnlyModifier';
 
 export class ALCodeTransformationService extends DevToolsExtensionService {
     protected _syntaxFactories: ISyntaxModifierFactoriesCollection;
@@ -75,6 +76,7 @@ export class ALCodeTransformationService extends DevToolsExtensionService {
         this.registerModifierCommands('ConvertObjectIdsToNames', 'azALDevTools.ConvertEditorObjectIdsToNames', 'azALDevTools.ConvertProjectObjectIdsToNames', () => new ConvertObjectIdsToNamesModifier(this._context));
         this.registerModifierCommands('AddMissingParentheses', 'azALDevTools.AddMissingEditorParentheses', 'azALDevTools.AddMissingProjectParentheses', () => new AddMissingParenthesesModifier(this._context));       
         this.registerModifierCommands('AddDataClassifications', 'azALDevTools.AddEditorDataClassification', 'azALDevTools.AddProjectDataClassification',() => new DataClassificationModifier(this._context));
+        this.registerModifierCommands('MakeFlowFieldsReadOnly', 'azALDevTools.MakeEditorFlowFieldsReadOnly', 'azALDevTools.MakeProjectFlowFieldsReadOnly', () => new MakeFlowFieldsReadOnlyModifier(this._context));
         this.registerModifierCommands('RemoveUnusedVariables', 'azALDevTools.RemoveEditorUnusedVariables', 'azALDevTools.RemoveProjectUnusedVariables', () => new RemoveUnusedVariablesModifier(this._context));
         this.registerModifierCommands('RemoveBeginEnd', 'azALDevTools.RemoveEditorBeginEnd', 'azALDevTools.RemoveProjectBeginEnd', () => new RemoveBeginEndModifier(this._context));
 

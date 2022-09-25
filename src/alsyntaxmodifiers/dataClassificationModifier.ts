@@ -20,21 +20,21 @@ export class DataClassificationModifier extends WorkspaceCommandSyntaxModifier {
 
     protected async confirmRunForWorkspace(): Promise<boolean> {
         let confirmation = await vscode.window.showInformationMessage(
-            'Do you want to add missing data classification to all files in the current project folder?', 
+            'Do you want to add missing data classification and remove them from flowfields in all files in the current project folder?', 
             'Yes', 'No');
         return (confirmation === 'Yes');
     }
 
     protected getSuccessWorkspaceMessage(response: ToolsWorkspaceCommandResponse): string {
         return NumberHelper.zeroIfNotDef(response.parameters.noOfChanges).toString() +                    
-            ' data classification(s) added to ' +
+            ' data classification(s) added/removed to/from ' +
             NumberHelper.zeroIfNotDef(response.parameters.noOfChangedFiles).toString() +
             ' file(s).';
     }
 
     protected getSuccessDocumentMessage(response: ToolsWorkspaceCommandResponse): string {
         return response.parameters.noOfChanges.toString() + 
-            ' data classification(s) added.';
+            ' data classification(s) added or removed.';
     }
 
     protected loadDefaultParameters(uri: vscode.Uri | undefined): boolean {

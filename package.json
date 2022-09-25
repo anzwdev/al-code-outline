@@ -64,7 +64,11 @@
 		"onCommand:azALDevTools.FixProjectKeywordsCase",
 		"onCommand:azALDevTools.FixEditorKeywordsCase",
 		"onCommand:azALDevTools.FixEditorIdentifiersCase",
-		"onCommand:azALDevTools.FixProjectIdentifiersCase",	
+		"onCommand:azALDevTools.FixProjectIdentifiersCase",
+
+		"onCommand:azALDevTools.MakeEditorFlowFieldsReadOnly",
+		"onCommand:azALDevTools.MakeProjectFlowFieldsReadOnly",
+
 		"onCommand:azALDevTools.ConvertEditorObjectIdsToNames",
 		"onCommand:azALDevTools.ConvertProjectObjectIdsToNames",
 		"onCommand:azALDevTools.AddMissingEditorParentheses",
@@ -414,6 +418,16 @@
 				"category": "AZ AL Dev Tools",
 				"command": "azALDevTools.FixProjectIdentifiersCase",
 				"title": "Fix Identifiers and Keywords Case in the Active Project"
+			},
+			{
+				"category": "AZ AL Dev Tools",
+				"command": "azALDevTools.MakeEditorFlowFieldsReadOnly",
+				"title": "Make FlowFields ReadOnly in the Active Editor"
+			},
+			{
+				"category": "AZ AL Dev Tools",
+				"command": "azALDevTools.MakeProjectFlowFieldsReadOnly",
+				"title": "Make FlowFields ReadOnly in the Active Project"
 			},
 			{
 				"category": "AZ AL Dev Tools",
@@ -812,6 +826,14 @@
 				},
 				{
 					"command": "azALDevTools.FixProjectIdentifiersCase",
+					"when": "azALDevTools.extensionActive"
+				},
+				{
+					"command": "azALDevTools.MakeEditorFlowFieldsReadOnly",
+					"when": "azALDevTools.extensionActive"
+				},
+				{
+					"command": "azALDevTools.MakeProjectFlowFieldsReadOnly",
 					"when": "azALDevTools.extensionActive"
 				},
 				{
@@ -1378,7 +1400,8 @@
 								"RemoveEmptySections",
 								"RemoveStrSubstNoFromError",
 								"FormatDocument",
-								"TrimTrailingWhitespace"
+								"TrimTrailingWhitespace",
+								"MakeFlowFieldsReadOnly"
 							],
 							"enumDescriptions": [
 								"Remove With Statements",
@@ -1409,7 +1432,8 @@
 								"Remove Empty Sections",
 								"Remove StrSubstNo From Error",
 								"Format Document",
-								"Trim Trailing Whitespace"
+								"Trim Trailing Whitespace",
+								"Make FlowFields Read-Only"
 							]
 						},
 						"description": "List of commands run by the Code Cleanup"
