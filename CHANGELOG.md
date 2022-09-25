@@ -6,11 +6,15 @@
  - Issue #396 - Account for affixes in the variable name-type completion provider(s)
    - "_" character detection in affixes bugfix
    - new "alOutline.additionalMandatoryAffixesPatterns" setting - affixes patterns where '?' character can be used as "any character"
+ - Issue #398 - Add semicolon to end of the new completion provider 
+   - ";" is added to variables declaration suggestions as it is always required
+   - ";" is not added to parameters and return variable declaration suggestions
 
 Thank you
  - NKarolak for reporting issue #389
  - jhoek for reporting issue #394
  - rvanbekkum and fvet for reporting issue #396
+ - nickgoddard777 for reporting issue #398
 
 ## 3.0.36
  - Hover and Find References for rule ids in "pragma warning" directives
