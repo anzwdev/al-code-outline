@@ -1,12 +1,14 @@
 # Change Log
 
 ## 3.0.37
+ - Issue #389 - "Add Missing Parentheses": Skip variables with the same name as a record function. 
  - Issue #394 - alOutline.codeCleanupActions: tooltips appear to be "off-by-one"
  - Issue #396 - Account for affixes in the variable name-type completion provider(s)
    - "_" character detection in affixes bugfix
    - new "alOutline.additionalMandatoryAffixesPatterns" setting - affixes patterns where '?' character can be used as "any character"
 
 Thank you
+ - NKarolak for reporting issue #389
  - jhoek for reporting issue #394
  - rvanbekkum and fvet for reporting issue #396
 
