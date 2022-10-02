@@ -2,12 +2,14 @@ import * as vscode from 'vscode';
 import { ALSyntaxHelper } from './alSyntaxHelper';
 import { StringHelper } from '../tools/stringHelper';
 import { NameValue } from '../tools/nameValue';
+import { AppAreaMode } from '../alsyntaxmodifiers/appAreaMode';
 
 export class ALSyntaxWriter {
     private content : string;
     private indentText : string;
     private indentPart : string;  
-    public applicationArea : string;   
+    public applicationArea : string;
+    public applicationAreaMode : AppAreaMode;
     private propertiesCache : NameValue[];
     private fieldToolTip: string;
     private fieldToolTipComment: string;
@@ -22,6 +24,7 @@ export class ALSyntaxWriter {
         this.indentText = "";
         this.indentPart = "    ";
         this.applicationArea = StringHelper.emptyIfNotDef(config.get<string>('defaultAppArea'));
+        this.applicationAreaMode = AppAreaMode.addToAllControls; //do not use settings, runtime version might override these settings
         this.fieldToolTip = StringHelper.emptyIfNotDef(config.get<string>('pageFieldToolTip'));
         this.fieldToolTipComment = StringHelper.emptyIfNotDef(config.get<string>('pageFieldToolTipComment'));
         this.useTableFieldDescriptionAsToolTip = !!config.get<boolean>('useTableFieldDescriptionAsToolTip');
@@ -274,7 +277,8 @@ export class ALSyntaxWriter {
 
     public writePageField(fieldName : string, fieldCaption: string | undefined, fieldCaptionComment: string | undefined, fieldDescription: string | undefined, createToolTip: boolean, existingToolTips: string[] | undefined) {
         this.writeStartNameSourceBlock("field", this.encodeName(fieldName), 'Rec.' + this.encodeName(fieldName));
-        this.writeApplicationArea();
+        if (this.applicationAreaMode == AppAreaMode.addToAllControls)
+            this.writeApplicationArea();
         if (createToolTip)
             this.writeTooltip(this.fieldToolTip, this.fieldToolTipComment, fieldCaption, fieldCaptionComment, fieldDescription, existingToolTips);
         this.writeEndBlock();

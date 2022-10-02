@@ -1,6 +1,8 @@
 import * as vscode from 'vscode';
 import { ALSyntaxHelper } from '../../allanguage/alSyntaxHelper';
 import { ALSyntaxWriter } from "../../allanguage/alSyntaxWriter";
+import { AppAreaMode } from '../../alsyntaxmodifiers/appAreaMode';
+import { DevToolsExtensionContext } from '../../devToolsExtensionContext';
 import { ALPageWizardData } from "../wizards/alPageWizardData";
 
 export class ALPageSyntaxBuilder {
@@ -15,6 +17,7 @@ export class ALPageSyntaxBuilder {
         let writer : ALSyntaxWriter = new ALSyntaxWriter(destUri);
         if (data.applicationArea)
             writer.applicationArea = data.applicationArea;
+        writer.applicationAreaMode = data.applicationAreaMode;
 
         let isApi : boolean = (data.pageType.toLowerCase() === "api");
 
@@ -34,14 +37,33 @@ export class ALPageSyntaxBuilder {
             writer.addProperty("Caption", writer.encodeString(ALSyntaxHelper.removePrefixSuffix(data.objectName, data.projectSettings)));
         }
 
+        let pageAppAreaAdded = false;
+
         //usage category and application area for list pages
         if (data.pageType === "List") {            
             if ((data.usageCategory) && (data.usageCategory !== "")) {
                 //application area requires useage category to be set
-                if ((data.applicationArea) && (data.applicationArea !== "") && (data.usageCategory !== "None"))
+                if ((data.applicationArea) && (data.applicationArea !== "") && (data.usageCategory !== "None")) {
                     writer.addProperty("ApplicationArea", data.applicationArea);
+                    pageAppAreaAdded = true;
+                }
                 writer.addProperty("UsageCategory", data.usageCategory);
             }
+        }
+
+
+        if (!pageAppAreaAdded) 
+            if (data.applicationArea) 
+                if (data.applicationArea !== "") 
+                    if (data.applicationAreaMode == AppAreaMode.inheritFromMainObject) {
+                        let t = 10;
+                    }
+
+
+
+        if ((!pageAppAreaAdded) && (data.applicationArea) && (data.applicationArea !== "") && (data.applicationAreaMode == AppAreaMode.inheritFromMainObject)) {
+            writer.addProperty("ApplicationArea", data.applicationArea);
+            pageAppAreaAdded = true;
         }
 
         writer.writeProperties();
@@ -81,7 +103,7 @@ export class ALPageSyntaxBuilder {
             }       
             writer.writeEndBlock();
         }
-        
+
         writer.writeEndBlock();
         
         writer.writeEndLayout();

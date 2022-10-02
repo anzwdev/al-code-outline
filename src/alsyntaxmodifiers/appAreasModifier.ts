@@ -3,6 +3,7 @@ import { DevToolsExtensionContext } from "../devToolsExtensionContext";
 import { NumberHelper } from '../tools/numberHelper';
 import { ToolsWorkspaceCommandResponse } from '../langserver/toolsWorkspaceCommandResponse';
 import { WorkspaceCommandSyntaxModifier } from './workspaceCommandSyntaxModifier';
+import { AppAreaMode } from './appAreaMode';
 
 export class AppAreasModifier extends WorkspaceCommandSyntaxModifier {
     protected _appArea : string | undefined;
@@ -15,6 +16,7 @@ export class AppAreasModifier extends WorkspaceCommandSyntaxModifier {
     protected getParameters(uri: vscode.Uri): any {
         let parameters = super.getParameters(uri);
         parameters.appArea = this._appArea;
+        parameters.appAreaMode = this._context.alLangProxy.getAppAreaMode(uri);
         return parameters;
     }
 
@@ -38,7 +40,8 @@ export class AppAreasModifier extends WorkspaceCommandSyntaxModifier {
     }
 
     protected loadDefaultParameters(uri: vscode.Uri | undefined): boolean {
-        this._appArea = vscode.workspace.getConfiguration('alOutline', uri).get<string>('defaultAppArea');
+        let settings = vscode.workspace.getConfiguration('alOutline', uri);                
+        this._appArea = settings.get<string>('defaultAppArea');
         return ((!!this._appArea) && (this._appArea != ''));
     }
 

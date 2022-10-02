@@ -7,6 +7,7 @@ import { ALSyntaxHelper } from './alSyntaxHelper';
 import { Version } from '../tools/version';
 import { TextEditorHelper } from '../tools/textEditorHelper';
 import { ObjectCaptionsModifier } from '../alsyntaxmodifiers/objectCaptionsModifier';
+import { AppAreaMode } from '../alsyntaxmodifiers/appAreaMode';
 
 export class ALLangServerProxy {
     private langClient : vscodelangclient.LanguageClient | undefined;
@@ -651,6 +652,28 @@ export class ALLangServerProxy {
         let runtimeVersion = this.getRuntimeVersion(resourceUri);
         let interfacesVersion = Version.create("5.0");
         return runtimeVersion.isGreaterOrEqual(interfacesVersion);
+    }
+
+    supportsAppAreasInheritance(resourceUri: vscode.Uri | undefined): boolean {
+        let runtimeVersion = this.getRuntimeVersion(resourceUri);
+        let inheritAppAreasMinVersion = Version.create("10.0");
+        return runtimeVersion.isGreaterOrEqual(inheritAppAreasMinVersion);
+    }
+
+    getAppAreaMode(resourceUri: vscode.Uri | undefined) : AppAreaMode {
+        if (!this.supportsAppAreasInheritance(resourceUri))
+            return AppAreaMode.addToAllControls;
+
+        let settings = vscode.workspace.getConfiguration('alOutline', resourceUri);
+
+        let appAreaModeValue = settings.get<string>('appAreaMode');
+        if ((appAreaModeValue) && (appAreaModeValue != '')) {
+            let type = (<any>AppAreaMode)[appAreaModeValue];
+            if (type !== undefined)
+                return type;
+        }
+       
+        return AppAreaMode.inheritFromMainObject;
     }
 
 }

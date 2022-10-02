@@ -65,10 +65,8 @@
 		"onCommand:azALDevTools.FixEditorKeywordsCase",
 		"onCommand:azALDevTools.FixEditorIdentifiersCase",
 		"onCommand:azALDevTools.FixProjectIdentifiersCase",
-
 		"onCommand:azALDevTools.MakeEditorFlowFieldsReadOnly",
 		"onCommand:azALDevTools.MakeProjectFlowFieldsReadOnly",
-
 		"onCommand:azALDevTools.ConvertEditorObjectIdsToNames",
 		"onCommand:azALDevTools.ConvertProjectObjectIdsToNames",
 		"onCommand:azALDevTools.AddMissingEditorParentheses",
@@ -81,6 +79,8 @@
 		"onCommand:azALDevTools.RemoveProjectEmptyTriggers",
 		"onCommand:azALDevTools.RemoveEditorEmptyLines",
 		"onCommand:azALDevTools.RemoveProjectEmptyLines",
+		"onCommand:azALDevTools.RemoveEditorRedundantAppAreas",
+		"onCommand:azALDevTools.RemoveProjectRedundantAppAreas",
 		"onCommand:azALDevTools.RemoveEditorEmptySections",
 		"onCommand:azALDevTools.RemoveProjectEmptySections",
 		"onCommand:azALDevTools.RemoveEditorStrSubstNoFromError",
@@ -491,6 +491,16 @@
 			},
 			{
 				"category": "AZ AL Dev Tools",
+				"command": "azALDevTools.RemoveEditorRedundantAppAreas",
+				"title": "Remove Redundant AppAreas from the Active Editor"
+			},
+			{
+				"category": "AZ AL Dev Tools",
+				"command": "azALDevTools.RemoveProjectRedundantAppAreas",
+				"title": "Remove Redundant AppAreas from the Active Project"
+			},
+			{
+				"category": "AZ AL Dev Tools",
 				"command": "azALDevTools.RemoveEditorEmptySections",
 				"title": "Remove Empty Sections from the Active Editor"
 			},
@@ -885,6 +895,14 @@
 					"when": "azALDevTools.extensionActive"
 				},
 				{
+					"command": "azALDevTools.RemoveEditorRedundantAppAreas",
+					"when": "editorLangId == al"
+				},
+				{
+					"command": "azALDevTools.RemoveProjectRedundantAppAreas",
+					"when": "azALDevTools.extensionActive"
+				},
+				{
 					"command": "azALDevTools.RemoveEditorEmptySections",
 					"when": "editorLangId == al"
 				},
@@ -1174,6 +1192,19 @@
 						"scope": "resource",
 						"description": "Default application area for page code generator and code cleanup commands"
 					},
+					"alOutline.appAreaMode": {
+						"type": "string",
+						"default": "inheritFromMainObject",
+						"scope": "resource",
+						"description": "Application area creation mode. They can be added to all controls or default value can be inherited from main object. This settings works for BC21 or newer",
+						"enum": [
+							"inheritFromMainObject", 
+							"addToAllControls"],
+						"enumDescriptions": [
+							"Inherit from the main object",
+							"Add to all controls"
+						]
+					},
 					"alOutline.defaultApiPublisher": {
 						"type": "string",
 						"default": "publisherName",
@@ -1401,7 +1432,8 @@
 								"RemoveStrSubstNoFromError",
 								"FormatDocument",
 								"TrimTrailingWhitespace",
-								"MakeFlowFieldsReadOnly"
+								"MakeFlowFieldsReadOnly",
+								"RemoveRedundantAppAreas"
 							],
 							"enumDescriptions": [
 								"Remove With Statements",
@@ -1433,7 +1465,8 @@
 								"Remove StrSubstNo From Error",
 								"Format Document",
 								"Trim Trailing Whitespace",
-								"Make FlowFields Read-Only"
+								"Make FlowFields Read-Only",
+								"Remove Redundant Application Areas"
 							]
 						},
 						"description": "List of commands run by the Code Cleanup"

@@ -1,6 +1,7 @@
 # Change Log
 
 ## 3.0.37
+ - Suggestion #387 - BC21 - Field ApplicationArea defaults to page value 
  - Issue #389 - "Add Missing Parentheses": Skip variables with the same name as a record function. 
  - Issue #393 - Make FlowFields read-only, remove DataClassification from FlowFields and FlowFilters
    - new editor and project "Make FlowFields Read-Only..." commands
@@ -10,6 +11,7 @@
  - Issue #396 - Account for affixes in the variable name-type completion provider(s)
    - "_" character detection in affixes bugfix
    - new "alOutline.additionalMandatoryAffixesPatterns" setting - affixes patterns where '?' character can be used as "any character"
+ - Issue #397 - RemoveEmptyTriggers conflicts with regions 
  - Issue #398 - Add semicolon to end of the new completion provider 
    - ";" is added to variables declaration suggestions as it is always required
    - ";" is not added to parameters and return variable declaration suggestions
@@ -17,7 +19,7 @@
 
 Thank you
  - NKarolak for reporting issue #389
- - fvet for reporting issue #393
+ - fvet for reporting suggestion #387 and issues #393, #397
  - jhoek for reporting issue #394
  - rvanbekkum and fvet for reporting issue #396
  - nickgoddard777 for reporting issue #398

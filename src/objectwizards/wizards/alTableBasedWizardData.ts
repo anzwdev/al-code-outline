@@ -1,5 +1,6 @@
 'use strict';
 
+import { AppAreaMode } from "../../alsyntaxmodifiers/appAreaMode";
 import { ToolsGetProjectSettingsResponse } from "../../langserver/toolsGetProjectSettingsResponse";
 import { TableFieldInformation } from "../../symbolsinformation/tableFieldInformation";
 
@@ -12,6 +13,7 @@ export class ALTableBasedWizardData {
     selectedFieldList : TableFieldInformation[] | undefined;
     fixedTable : boolean;
     applicationArea : string;
+    applicationAreaMode : AppAreaMode;
     projectSettings: ToolsGetProjectSettingsResponse | undefined;
 
     constructor() {
@@ -23,6 +25,7 @@ export class ALTableBasedWizardData {
         this.selectedFieldList = undefined;
         this.fixedTable = false;
         this.applicationArea = "All";
+        this.applicationAreaMode = AppAreaMode.addToAllControls;
         this.projectSettings = undefined;
     }
 

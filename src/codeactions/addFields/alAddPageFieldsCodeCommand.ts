@@ -8,6 +8,7 @@ import { AZDocumentSymbolsLibrary } from '../../symbollibraries/azDocumentSymbol
 import { ToolsGetPageDetailsRequest } from '../../langserver/symbolsinformation/toolsGetPageDetailsRequest';
 import { TableFieldInformation } from '../../symbolsinformation/tableFieldInformation';
 import { TableFieldsSelector } from './tableFieldsSelector';
+import { AppAreaMode } from '../../alsyntaxmodifiers/appAreaMode';
 
 export class ALAddPageFieldsCodeCommand extends ALBaseAddFieldsCodeCommand {
     constructor(context : DevToolsExtensionContext) {
@@ -81,8 +82,14 @@ export class ALAddPageFieldsCodeCommand extends ALBaseAddFieldsCodeCommand {
         else if (symbol.range)
             indent = symbol.range.start.character + 3;
 
-        //insert fields
+        //insert fields        
         let writer: ALSyntaxWriter = new ALSyntaxWriter(document.uri);
+        writer.applicationAreaMode = AppAreaMode.addToAllControls;
+        if ((pageSymbol.kind == AZSymbolKind.PageObject) && (response.symbol.applicationArea) && (response.symbol.applicationArea != '')) {
+            writer.applicationArea = response.symbol.applicationArea;            
+            writer.applicationAreaMode = this._toolsExtensionContext.alLangProxy.getAppAreaMode(document.uri);
+        }
+
         writer.setIndent(indent);
         for (let i=0; i<selectedFields.length; i++) {
             if (isApiPage)
