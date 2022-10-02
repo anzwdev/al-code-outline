@@ -2,7 +2,7 @@
 	"name": "al-code-outline",
 	"displayName": "AZ AL Dev Tools/AL Code Outline",
 	"description": "AZ AL Development Tools: AL code outline, object browser, object creators",
-	"version": "3.0.36",
+	"version": "3.0.37",
 	"publisher": "andrzejzwierzchowski",
 	"engines": {
 		"vscode": "^1.47.0"
@@ -64,7 +64,9 @@
 		"onCommand:azALDevTools.FixProjectKeywordsCase",
 		"onCommand:azALDevTools.FixEditorKeywordsCase",
 		"onCommand:azALDevTools.FixEditorIdentifiersCase",
-		"onCommand:azALDevTools.FixProjectIdentifiersCase",	
+		"onCommand:azALDevTools.FixProjectIdentifiersCase",
+		"onCommand:azALDevTools.MakeEditorFlowFieldsReadOnly",
+		"onCommand:azALDevTools.MakeProjectFlowFieldsReadOnly",
 		"onCommand:azALDevTools.ConvertEditorObjectIdsToNames",
 		"onCommand:azALDevTools.ConvertProjectObjectIdsToNames",
 		"onCommand:azALDevTools.AddMissingEditorParentheses",
@@ -77,6 +79,8 @@
 		"onCommand:azALDevTools.RemoveProjectEmptyTriggers",
 		"onCommand:azALDevTools.RemoveEditorEmptyLines",
 		"onCommand:azALDevTools.RemoveProjectEmptyLines",
+		"onCommand:azALDevTools.RemoveEditorRedundantAppAreas",
+		"onCommand:azALDevTools.RemoveProjectRedundantAppAreas",
 		"onCommand:azALDevTools.RemoveEditorEmptySections",
 		"onCommand:azALDevTools.RemoveProjectEmptySections",
 		"onCommand:azALDevTools.RemoveEditorStrSubstNoFromError",
@@ -417,6 +421,16 @@
 			},
 			{
 				"category": "AZ AL Dev Tools",
+				"command": "azALDevTools.MakeEditorFlowFieldsReadOnly",
+				"title": "Make FlowFields ReadOnly in the Active Editor"
+			},
+			{
+				"category": "AZ AL Dev Tools",
+				"command": "azALDevTools.MakeProjectFlowFieldsReadOnly",
+				"title": "Make FlowFields ReadOnly in the Active Project"
+			},
+			{
+				"category": "AZ AL Dev Tools",
 				"command": "azALDevTools.ConvertEditorObjectIdsToNames",
 				"title": "Convert Object Ids to Names in the Active Editor"
 			},
@@ -474,6 +488,16 @@
 				"category": "AZ AL Dev Tools",
 				"command": "azALDevTools.RemoveProjectEmptyLines",
 				"title": "Remove Empty Lines from the Active Project"
+			},
+			{
+				"category": "AZ AL Dev Tools",
+				"command": "azALDevTools.RemoveEditorRedundantAppAreas",
+				"title": "Remove Redundant AppAreas from the Active Editor"
+			},
+			{
+				"category": "AZ AL Dev Tools",
+				"command": "azALDevTools.RemoveProjectRedundantAppAreas",
+				"title": "Remove Redundant AppAreas from the Active Project"
 			},
 			{
 				"category": "AZ AL Dev Tools",
@@ -815,6 +839,14 @@
 					"when": "azALDevTools.extensionActive"
 				},
 				{
+					"command": "azALDevTools.MakeEditorFlowFieldsReadOnly",
+					"when": "azALDevTools.extensionActive"
+				},
+				{
+					"command": "azALDevTools.MakeProjectFlowFieldsReadOnly",
+					"when": "azALDevTools.extensionActive"
+				},
+				{
 					"command": "azALDevTools.ConvertEditorObjectIdsToNames",
 					"when": "editorLangId == al"
 				},
@@ -860,6 +892,14 @@
 				},
 				{
 					"command": "azALDevTools.RemoveProjectEmptyLines",
+					"when": "azALDevTools.extensionActive"
+				},
+				{
+					"command": "azALDevTools.RemoveEditorRedundantAppAreas",
+					"when": "editorLangId == al"
+				},
+				{
+					"command": "azALDevTools.RemoveProjectRedundantAppAreas",
 					"when": "azALDevTools.extensionActive"
 				},
 				{
@@ -1152,6 +1192,19 @@
 						"scope": "resource",
 						"description": "Default application area for page code generator and code cleanup commands"
 					},
+					"alOutline.appAreaMode": {
+						"type": "string",
+						"default": "inheritFromMainObject",
+						"scope": "resource",
+						"description": "Application area creation mode. They can be added to all controls or default value can be inherited from main object. This settings works for BC21 or newer",
+						"enum": [
+							"inheritFromMainObject", 
+							"addToAllControls"],
+						"enumDescriptions": [
+							"Inherit from the main object",
+							"Add to all controls"
+						]
+					},
 					"alOutline.defaultApiPublisher": {
 						"type": "string",
 						"default": "publisherName",
@@ -1378,7 +1431,9 @@
 								"RemoveEmptySections",
 								"RemoveStrSubstNoFromError",
 								"FormatDocument",
-								"TrimTrailingWhitespace"
+								"TrimTrailingWhitespace",
+								"MakeFlowFieldsReadOnly",
+								"RemoveRedundantAppAreas"
 							],
 							"enumDescriptions": [
 								"Remove With Statements",
@@ -1406,9 +1461,12 @@
 								"Remove Begin..End",
 								"Remove Empty Triggers",
 								"Remove Empty Lines",
+								"Remove Empty Sections",
 								"Remove StrSubstNo From Error",
 								"Format Document",
-								"Trim Trailing Whitespace"
+								"Trim Trailing Whitespace",
+								"Make FlowFields Read-Only",
+								"Remove Redundant Application Areas"
 							]
 						},
 						"description": "List of commands run by the Code Cleanup"
@@ -1490,6 +1548,17 @@
 						"scope": "resource",
 						"uniqueItems": true,
 						"description": "Reuse tooltips only defined in these dependencies. If empty, all dependencies will be used. Each entry should be defined as <dependency publisher> + <space> + '-' + <space> + <dependency name>"
+					},
+					"alOutline.additionalMandatoryAffixesPatterns": {
+						"type": "array",
+						"items": {
+							"type": "string"
+						},
+						"default": [],
+						"scope": "resource",
+						"uniqueItems": true,
+						"description": "Additional list of name affixes patterns, '?' can be used for matching any character. These values are used to remove affixes from names in code actions, commands and code completion"
+
 					},
 					"alOutline.fixCaseRemovesQuotesFromDataTypeIdentifiers": {
 						"type": "boolean",

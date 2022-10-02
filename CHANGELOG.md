@@ -1,5 +1,30 @@
 # Change Log
 
+## 3.0.37
+ - Suggestion #387 - BC21 - Field ApplicationArea defaults to page value 
+ - Issue #389 - "Add Missing Parentheses": Skip variables with the same name as a record function. 
+ - Issue #393 - Make FlowFields read-only, remove DataClassification from FlowFields and FlowFilters
+   - new editor and project "Make FlowFields Read-Only..." commands
+   - new "MakeFlowFieldsReadOnly" option for Code Clean-up
+   - DataClassification command removes property from FlowField and FlowFilter table fields
+ - Issue #394 - alOutline.codeCleanupActions: tooltips appear to be "off-by-one"
+ - Issue #396 - Account for affixes in the variable name-type completion provider(s)
+   - "_" character detection in affixes bugfix
+   - new "alOutline.additionalMandatoryAffixesPatterns" setting - affixes patterns where '?' character can be used as "any character"
+ - Issue #397 - RemoveEmptyTriggers conflicts with regions 
+ - Issue #398 - Add semicolon to end of the new completion provider 
+   - ";" is added to variables declaration suggestions as it is always required
+   - ";" is not added to parameters and return variable declaration suggestions
+ - Issue #399 - ignore duplicates if area is obsolete while using "Find Duplicates" 
+
+Thank you
+ - NKarolak for reporting issue #389
+ - fvet for reporting suggestion #387 and issues #393, #397
+ - jhoek for reporting issue #394
+ - rvanbekkum and fvet for reporting issue #396
+ - nickgoddard777 for reporting issue #398
+ - AndreBreitenbach for reporting issue #399
+
 ## 3.0.36
  - Hover and Find References for rule ids in "pragma warning" directives
  - New command "Show warning directives" to browse "pragma warning" directives ordered by rule id

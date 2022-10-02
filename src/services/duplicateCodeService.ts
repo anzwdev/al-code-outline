@@ -4,8 +4,10 @@ import { DuplicateCodeSortMode } from '../duplicatecode/duplicateCodeSortMode';
 import { DuplicateCodeTreeNode } from '../duplicatecode/duplicateCodeTreeNode';
 import { DuplicateCodeTreeProvider } from "../duplicatecode/duplicateCodeTreeProvider";
 import { ToolsFindDuplicateCodeRequest } from '../langserver/toolsFindDuplicateCodeRequest';
+import { ALObsoleteState } from '../symbollibraries/alObsoleteState';
 import { DocumentTextRange } from '../symbollibraries/documentTextRange';
 import { QuickPickHelper } from '../tools/quickPickHelper';
+import { TypedQuickPickItem } from '../tools/typedQuickPickItem';
 import { DevToolsExtensionService } from "./devToolsExtensionService";
 
 export class DuplicateCodeService extends DevToolsExtensionService {
@@ -86,7 +88,11 @@ export class DuplicateCodeService extends DevToolsExtensionService {
         if (minNoOfStatements <= 0)
             return;
 
-        let response = await this._context.toolsLangServerClient.findDuplicateCode(new ToolsFindDuplicateCodeRequest(minNoOfStatements, duplicatesPath));
+        let skipObsoleteCodeLevel = await this.getObsoleteStateLevel();
+        if (skipObsoleteCodeLevel === undefined)
+            return;
+
+        let response = await this._context.toolsLangServerClient.findDuplicateCode(new ToolsFindDuplicateCodeRequest(minNoOfStatements, skipObsoleteCodeLevel, duplicatesPath));
         if (!response)
             return;
         if (response.isError) {            
@@ -156,6 +162,27 @@ export class DuplicateCodeService extends DevToolsExtensionService {
         return 0;
     }
 
+    protected async getObsoleteStateLevel() : Promise<ALObsoleteState | undefined> {
+        let defaultValue = this.getDefaultObsoleteState();
+        let obsoleteStatesList = [
+            new TypedQuickPickItem<ALObsoleteState>('None', ALObsoleteState.None, defaultValue == ALObsoleteState.None),
+            new TypedQuickPickItem<ALObsoleteState>('Pending', ALObsoleteState.Pending, defaultValue == ALObsoleteState.Pending),
+            new TypedQuickPickItem<ALObsoleteState>('Removed', ALObsoleteState.Removed, defaultValue == ALObsoleteState.Removed)];
+        
+        //ask for obsolete state level
+        let obsoleteState = await vscode.window.showQuickPick(obsoleteStatesList, {
+            canPickMany: false,                        
+            placeHolder: 'Select obsolete state level to ignore'
+        });
+
+        if (!obsoleteState)
+            return undefined;
+
+        this.setDefaultObsoleteState(obsoleteState.value);
+
+        return obsoleteState.value;
+    }
+
     protected getDefaultMinNoOfStatements() : number {
         let value = this._context.vscodeExtensionContext.globalState.get<number>("azALDevTools.duplCode.minNoOfStatements");
         if ((value) && (value >= this._minAllowedNoOfStatements))
@@ -166,5 +193,17 @@ export class DuplicateCodeService extends DevToolsExtensionService {
     protected setDefaultMinNoOfStatements(value: number) {
         this._context.vscodeExtensionContext.globalState.update("azALDevTools.duplCode.minNoOfStatements", value);
     }
+
+    protected getDefaultObsoleteState() : ALObsoleteState {
+        let value = this._context.vscodeExtensionContext.globalState.get<ALObsoleteState>("azALDevTools.duplCode.obsoleteState");
+        if (value === undefined)
+            return ALObsoleteState.None;
+        return value;        
+    }
+
+    protected setDefaultObsoleteState(value: ALObsoleteState) {
+        this._context.vscodeExtensionContext.globalState.update("azALDevTools.duplCode.obsoleteState", value);
+    }
+
 
 }

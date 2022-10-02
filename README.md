@@ -127,6 +127,8 @@ There are also some additional code actions available for warnings and errors re
 Extension adds a few commands that allow to automatically modify al code in the current editor or in all project files. Currently these commands are available:
 * `Add Application Areas to the Active Editor`: adds missing application areas to all page controls in the current editor
 * `Add Application Areas to the Active Project`: adds missing application areas to all page controls in the current project
+* `Remove Redundant AppAreas from the Active Editor`: requires runtime 10.0 or greater and removes redundant application areas from all page controls in the current editor
+* `Remove Redundant AppAreas from the Active Project`: requires runtime 10.0 or greater and removes redundant application areas from all page controls in the current editor
 * `Add ToolTips to the Active Editor`: adds missing tooltips to all page fields and actions in the current editor
 * `Add ToolTips to the Active Project`: adds missing tooltips to all page fields and actions in the current project
 * `Refresh ToolTips from Dependencies in the Active Editor`: refreshes tooltips from dependencies in all page fields in the current editor
@@ -141,12 +143,14 @@ Extension adds a few commands that allow to automatically modify al code in the 
 * `Add Object Captions to the Active Project`: adds missing captions to all table, page, report, xmlport and query objects in the current project
 * `Remove 'with' usage from the Active Editor`: removes all implicit and explicit 'with' usage from the current editor
 * `Remove 'with' usage from the Active Project`: removes all implicit and explicit 'with' usage from the current project
-* `Add Data Classification to the Active Editor`: adds missing data classification to all table fields in the current editor
-* `Add Data Classification to the Active Project`: adds missing data classification to all table fields in the current project
+* `Add Data Classification to the Active Editor`: adds missing data classification to all 'Normal' and removes it from all other table fields in the current editor
+* `Add Data Classification to the Active Project`: adds missing data classification to all 'Normal' and removes it from all other table fields in the current project
 * `Fix Keywords Case in the Active Editor`: fixes keywords case in the current editor
 * `Fix Keywords Case in the Active Project`: fixes keywords case in the current project
 * `Fix Identifiers and Keywords Case in the Active Editor`: fixes keywords and identifiers case in the current editor. It is much slower than `Fix Keywords Case` commands as it needs to compile whole project first to have full information about all symbols.
 * `Fix Identifiers and Keywords Case in the Active Project`: fixes keywords and identifiers case in the current project. It is much slower than `Fix Keywords Case` commands as it needs to compile whole project first to have full information about all symbols.
+* `Make FlowFields ReadOnly in the Active Editor`: makes all FlowFields without Editable property specified read-only in the active editor
+* `Make FlowFields ReadOnly in the Active Project`: makes all FlowFields without Editable property specified read-only in the active project
 * `Convert Object Ids to Names in the Active Editor`: converts object ids to names in the current editor
 * `Convert Object Ids to Names in the Active Project`: converts object ids to names in the current project
 * `Remove Unused Variables from the Active Editor`: removes unused variables from the current editor
@@ -307,7 +311,7 @@ This extension contributes the following settings:
 * `alOutline.addToolTipsToPageFields`: set to true to add tooltips to page fields when 'Add multiple fields' action is used
 * `alOutline.useTableFieldCaptionsInApiFields`: set to true, to use table field captions in API pages fields like in standard BC APIs v 2.0 (i.e. ```Caption='Customer No.';```), set to false to use camelCase api page field name in api page field caption together with Locked property like in standard BC APIs v 1.0 (i.e. ```Caption='customerNo', Locked = true;```). Default value is true
 * `alOutline.lockRemovedFieldsCaptions`: set to true to lock captions of removed fields when 'Add Table Field Captions' command is run
-* `alOutline.codeCleanupActions`: array of names of actions that will be run by code cleanup commands. These actions are available: RemoveWithStatements, AddApplicationAreas, AddToolTips, RefreshToolTips, AddTableFieldCaptions, "LockRemovedFieldCaptions", AddPageFieldCaptions, AddObjectCaptions, FixKeywordsCase, FixIdentifiersCase, ConvertObjectIdsToNames, AddMissingParentheses, AddDataClassifications, RemoveUnusedVariables, SortPermissions, SortPermissionSetList, SortProcedures, SortProperties, SortReportColumns, SortTableFields, SortVariables, SortCustomizations, RemoveBeginEnd, RemoveEmptyTriggers, RemoveEmptyLines, RemoveEmptySections, RemoveStrSubstNoFromError, FormatDocument, TrimTrailingWhitespace
+* `alOutline.codeCleanupActions`: array of names of actions that will be run by code cleanup commands. These actions are available: RemoveWithStatements, AddApplicationAreas, AddToolTips, RefreshToolTips, AddTableFieldCaptions, "LockRemovedFieldCaptions", AddPageFieldCaptions, AddObjectCaptions, FixKeywordsCase, FixIdentifiersCase, ConvertObjectIdsToNames, AddMissingParentheses, AddDataClassifications, RemoveUnusedVariables, SortPermissions, SortPermissionSetList, SortProcedures, SortProperties, SortReportColumns, SortTableFields, SortVariables, SortCustomizations, RemoveBeginEnd, RemoveEmptyTriggers, RemoveEmptyLines, RemoveEmptySections, RemoveStrSubstNoFromError, FormatDocument, TrimTrailingWhitespace, MakeFlowFieldsReadOnly, RemoveRedundantAppAreas
 * `alOutline.doNotReuseToolTipsFromOtherPages`: set to true to disable reusing field tooltips from other pages in the page wizard, 'add multiple fields' page code action and 'add missing tooltips' command
 * `alOutline.reuseToolTipsFromDependencies`: reuse tooltips only defined in these dependencies, if empty, all dependencies will be used. Each entry should be defined as "dependency publisher" + "space" + "-" + "space" + "dependency name". You can also use "*" to use all dependencies. This setting is also used by the Code Cleanup commands
 * `alOutline.defaultDataClassification`: default DataClassification value for Code Cleanup commands
@@ -336,6 +340,7 @@ This extension contributes the following settings:
   * `VariableNamesWithType` - suggests variable names together with data type (i.e. `SalesHeader: Record "Sales Header"`)
 	* `VariableNames` - the same as above but suggests variable names only (i.e. `SalesHeader`), when both entries are selected, `VariableNamesWithType` will be used
 	* `VariableDataTypes` - suggests data types based on variable name (i.e. `Record "Sales Header"` for `SalesHeaderBuffer` variable name)
+* `alOutline.additionalMandatoryAffixesPatterns`: Additional list of name affixes patterns, '?' can be used for matching any character. These values are used to remove affixes from names in code actions, commands and code completion
 
 ## Known Issues
 

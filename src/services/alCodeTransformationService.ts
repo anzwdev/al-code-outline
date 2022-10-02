@@ -36,6 +36,8 @@ import { RemoveEmptySectionsModifier } from '../alsyntaxmodifiers/removeEmptySec
 import { SortCustomizationsModifier } from '../alsyntaxmodifiers/sortCustomizationsModifier';
 import { RemoveStrSubstNoFromErrorModifier } from '../alsyntaxmodifiers/removeStrSubstNoFromErrorModifier';
 import { RemoveEmptyTriggersModifier } from '../alsyntaxmodifiers/removeEmptyTriggersModifier';
+import { MakeFlowFieldsReadOnlyModifier } from '../alsyntaxmodifiers/makeFlowFieldsReadOnlyModifier';
+import { RemoveRedundantAppAreasModifier } from '../alsyntaxmodifiers/removeRedundantAppAreasModifier';
 
 export class ALCodeTransformationService extends DevToolsExtensionService {
     protected _syntaxFactories: ISyntaxModifierFactoriesCollection;
@@ -75,6 +77,7 @@ export class ALCodeTransformationService extends DevToolsExtensionService {
         this.registerModifierCommands('ConvertObjectIdsToNames', 'azALDevTools.ConvertEditorObjectIdsToNames', 'azALDevTools.ConvertProjectObjectIdsToNames', () => new ConvertObjectIdsToNamesModifier(this._context));
         this.registerModifierCommands('AddMissingParentheses', 'azALDevTools.AddMissingEditorParentheses', 'azALDevTools.AddMissingProjectParentheses', () => new AddMissingParenthesesModifier(this._context));       
         this.registerModifierCommands('AddDataClassifications', 'azALDevTools.AddEditorDataClassification', 'azALDevTools.AddProjectDataClassification',() => new DataClassificationModifier(this._context));
+        this.registerModifierCommands('MakeFlowFieldsReadOnly', 'azALDevTools.MakeEditorFlowFieldsReadOnly', 'azALDevTools.MakeProjectFlowFieldsReadOnly', () => new MakeFlowFieldsReadOnlyModifier(this._context));
         this.registerModifierCommands('RemoveUnusedVariables', 'azALDevTools.RemoveEditorUnusedVariables', 'azALDevTools.RemoveProjectUnusedVariables', () => new RemoveUnusedVariablesModifier(this._context));
         this.registerModifierCommands('RemoveBeginEnd', 'azALDevTools.RemoveEditorBeginEnd', 'azALDevTools.RemoveProjectBeginEnd', () => new RemoveBeginEndModifier(this._context));
 
@@ -82,6 +85,7 @@ export class ALCodeTransformationService extends DevToolsExtensionService {
         this.registerModifierCommands('RemoveEmptySections', 'azALDevTools.RemoveEditorEmptySections', 'azALDevTools.RemoveProjectEmptySections', () => new RemoveEmptySectionsModifier(this._context));
         this.registerModifierCommands('RemoveEmptyTriggers', 'azALDevTools.RemoveEditorEmptyTriggers', 'azALDevTools.RemoveProjectEmptyTriggers', () => new RemoveEmptyTriggersModifier(this._context));
         this.registerModifierCommands('RemoveStrSubstNoFromError', 'azALDevTools.RemoveEditorStrSubstNoFromError', 'azALDevTools.RemoveProjectStrSubstNoFromError', () => new RemoveStrSubstNoFromErrorModifier(this._context));
+        this.registerModifierCommands('RemoveRedundantAppAreas', 'azALDevTools.RemoveEditorRedundantAppAreas', 'azALDevTools.RemoveProjectRedundantAppAreas', () => new RemoveRedundantAppAreasModifier(this._context));
 
         this.registerModifierCommands('SortPermissions', 'azALDevTools.SortEditorPermissions', 'azALDevTools.SortWorkspacePermissions', () => new SortPermissionsModifier(this._context));
         this.registerModifierCommands('SortPermissionSetList', 'azALDevTools.SortEditorPermissionSetList', 'azALDevTools.SortWorkspacePermissionSetList', () => new SortPermissionSetListModifier(this._context));

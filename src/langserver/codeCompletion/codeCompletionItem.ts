@@ -7,4 +7,5 @@ export class CodeCompletionItem {
     tags?: vscode.CompletionItemTag[];
     insertText?: string;
     detail?: string;
+    commitCharacters?: string[];
 }
