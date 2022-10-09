@@ -1,5 +1,8 @@
 # Change Log
 
+## 3.0.38
+ - Extension recompiled to work with BC21
+
 ## 3.0.37
  - Suggestion #387 - BC21 - Field ApplicationArea defaults to page value 
  - Issue #389 - "Add Missing Parentheses": Skip variables with the same name as a record function. 
