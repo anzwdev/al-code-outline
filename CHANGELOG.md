@@ -5,10 +5,12 @@
  - Issue #404 - [Bug] RemoveProjectRedundantAppAreas - Exclude page/report extensions (AS0062 error)
  - Issue #406 - [BUG] Variable completion provider runs in invalid places
    - completion disabled for triggers and event subscribers parameters and return values
+ - Issue #408 - Variable completion suggests non-accessible objects 
 
 Thank you
  - jhoek for reporting issue #402
  - fvet for reporting issues #404 and #406
+ - ajkauffmann for reporting issue #408
 
 ## 3.0.38
  - Extension recompiled to work with BC21
