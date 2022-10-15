@@ -330,6 +330,11 @@ This extension contributes the following settings:
   * `removeTriggers`: remove empty triggers
   * `removeSubscribers`: remove empty event subscribers
   * `ignoreComments`: removes trigger or subscriber even if method body contains comments
+* `alOutline.defaultRemoveEmptySectionsSettings`: default settings for the RemoveEmptySections command when run by the Code Cleanup", these properties can be set:
+  * `removePageFieldGroups`: remove empty page field groups
+  * `removeActionGroups`: remove empty page action groups
+  * `removeActions`: remove empty actions (no properties and no code)
+  * `ignoreComments`: removes sections even if it contains comments inside
 * `alOutline.fixCaseRemovesQuotesFromDataTypeIdentifiers`: when set to true, `Fix Identifiers and Keywords Case` commands will remove quotes around idetifiers that use al data types as names
 * `alOutline.variablesSortMode`: allows to select variables sort mode in `Sort variables` commands. There are 4 options available: 
   * `fullTypeName` - this is default value and uses full type name including object type if data type is an object (i.e. `Record Item`), if data type is the same, variables will be sorted by name

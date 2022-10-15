@@ -1278,6 +1278,35 @@
 							}
 						}
 					},
+					"alOutline.defaultRemoveEmptySectionsSettings": {
+						"type": "object",
+						"description": "Default settings for the RemoveEmptySections command when run by the Code Cleanup",
+						"scope": "resource",
+						"properties": {
+							"removePageFieldGroups": {
+								"type": "boolean",
+								"description": "Remove empty page field groups"
+							},
+							"removeActionGroups": {
+								"type": "boolean",
+								"description": "Remove empty page action groups"
+							},
+							"removeActions": {
+								"type": "boolean",
+								"description": "Remove empty actions (no properties and no code)"
+							},					
+							"ignoreComments": {
+								"type": "boolean",
+								"description": "Removes sections even if it contains comments inside"
+							}
+						},
+						"default": {
+							"removePageFieldGroups": true,
+							"removeActionGroups": true,
+							"removeActions": true,
+							"ignoreComments": false
+						}
+					},
 					"alOutline.defaultRemoveUnusedVariablesSettings": {
 						"type": "object",
 						"description": "Default settings for the RemoveUnusedVariables command when run by the Code Cleanup",

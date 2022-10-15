@@ -1,5 +1,11 @@
 # Change Log
 
+## 3.0.39
+ - Issue #402 - "Remove empty sections" appears to ignore empty actions section in page extensions (and possibly also in pages?)
+
+Thank you
+ - jhoek for reporting issue #402
+
 ## 3.0.38
  - Extension recompiled to work with BC21
 
