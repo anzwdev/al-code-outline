@@ -85,6 +85,7 @@ export class ALAddPageFieldsCodeCommand extends ALBaseAddFieldsCodeCommand {
         //insert fields        
         let writer: ALSyntaxWriter = new ALSyntaxWriter(document.uri);
         writer.applicationAreaMode = AppAreaMode.addToAllControls;
+
         if ((pageSymbol.kind == AZSymbolKind.PageObject) && (response.symbol.applicationArea) && (response.symbol.applicationArea != '')) {
             writer.applicationArea = response.symbol.applicationArea;            
             writer.applicationAreaMode = this._toolsExtensionContext.alLangProxy.getAppAreaMode(document.uri);

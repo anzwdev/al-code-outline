@@ -46,7 +46,7 @@ export class RemoveEmptySectionsModifier extends WorkspaceCommandSyntaxModifier 
             new NameValueQuickPickItem('Empty Page Field Groups', 'removePageFieldGroups', !!this._settings.removePageFieldGroups),
             new NameValueQuickPickItem('Empty Action Groups', 'removeActionGroups', !!this._settings.removeActionGroups),
             new NameValueQuickPickItem('Empty Actions', 'removeActions', !!this._settings.removeActions),
-            new NameValueQuickPickItem('Ignore comments in method body', 'ignoreComments', !!this._settings.ignoreComments)
+            new NameValueQuickPickItem('Ignore comments inside section', 'ignoreComments', !!this._settings.ignoreComments)
         ];
 
         let selectedValues = await vscode.window.showQuickPick(

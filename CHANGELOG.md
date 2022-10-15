@@ -2,12 +2,13 @@
 
 ## 3.0.39
  - Issue #402 - "Remove empty sections" appears to ignore empty actions section in page extensions (and possibly also in pages?)
+ - Issue #404 - [Bug] RemoveProjectRedundantAppAreas - Exclude page/report extensions (AS0062 error)
  - Issue #406 - [BUG] Variable completion provider runs in invalid places
    - completion disabled for triggers and event subscribers parameters and return values
 
 Thank you
  - jhoek for reporting issue #402
- - fvet for reporting issue #406
+ - fvet for reporting issues #404 and #406
 
 ## 3.0.38
  - Extension recompiled to work with BC21
