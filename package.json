@@ -2,7 +2,7 @@
 	"name": "al-code-outline",
 	"displayName": "AZ AL Dev Tools/AL Code Outline",
 	"description": "AZ AL Development Tools: AL code outline, object browser, object creators",
-	"version": "3.0.38",
+	"version": "3.0.39",
 	"publisher": "andrzejzwierzchowski",
 	"engines": {
 		"vscode": "^1.47.0"
@@ -1276,6 +1276,35 @@
 								"type": "boolean",
 								"description": "Removes trigger or subscriber even if method body contains comments"
 							}
+						}
+					},
+					"alOutline.defaultRemoveEmptySectionsSettings": {
+						"type": "object",
+						"description": "Default settings for the RemoveEmptySections command when run by the Code Cleanup",
+						"scope": "resource",
+						"properties": {
+							"removePageFieldGroups": {
+								"type": "boolean",
+								"description": "Remove empty page field groups"
+							},
+							"removeActionGroups": {
+								"type": "boolean",
+								"description": "Remove empty page action groups"
+							},
+							"removeActions": {
+								"type": "boolean",
+								"description": "Remove empty actions (no properties and no code)"
+							},					
+							"ignoreComments": {
+								"type": "boolean",
+								"description": "Removes sections even if it contains comments inside"
+							}
+						},
+						"default": {
+							"removePageFieldGroups": true,
+							"removeActionGroups": true,
+							"removeActions": true,
+							"ignoreComments": false
 						}
 					},
 					"alOutline.defaultRemoveUnusedVariablesSettings": {
