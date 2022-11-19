@@ -2,7 +2,7 @@
 	"name": "al-code-outline",
 	"displayName": "AZ AL Dev Tools/AL Code Outline",
 	"description": "AZ AL Development Tools: AL code outline, object browser, object creators",
-	"version": "3.0.39",
+	"version": "3.0.40",
 	"publisher": "andrzejzwierzchowski",
 	"engines": {
 		"vscode": "^1.47.0"
@@ -1283,10 +1283,6 @@
 						"description": "Default settings for the RemoveEmptySections command when run by the Code Cleanup",
 						"scope": "resource",
 						"properties": {
-							"removePageFieldGroups": {
-								"type": "boolean",
-								"description": "Remove empty page field groups"
-							},
 							"removeActionGroups": {
 								"type": "boolean",
 								"description": "Remove empty page action groups"
@@ -1301,7 +1297,6 @@
 							}
 						},
 						"default": {
-							"removePageFieldGroups": true,
 							"removeActionGroups": true,
 							"removeActions": true,
 							"ignoreComments": false

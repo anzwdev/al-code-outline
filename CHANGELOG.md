@@ -1,5 +1,12 @@
 # Change Log
 
+## 3.0.40
+ - Issue #411 - Cleanup removes instructions from wizard pages
+   - "remove field groups" removed from the functionality
+
+Thank you
+ - dsaveyn for reporting issue #411 
+
 ## 3.0.39
  - Issue #402 - "Remove empty sections" appears to ignore empty actions section in page extensions (and possibly also in pages?)
  - Issue #404 - [Bug] RemoveProjectRedundantAppAreas - Exclude page/report extensions (AS0062 error)

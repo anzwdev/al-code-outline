@@ -331,7 +331,6 @@ This extension contributes the following settings:
   * `removeSubscribers`: remove empty event subscribers
   * `ignoreComments`: removes trigger or subscriber even if method body contains comments
 * `alOutline.defaultRemoveEmptySectionsSettings`: default settings for the RemoveEmptySections command when run by the Code Cleanup", these properties can be set:
-  * `removePageFieldGroups`: remove empty page field groups
   * `removeActionGroups`: remove empty page action groups
   * `removeActions`: remove empty actions (no properties and no code)
   * `ignoreComments`: removes sections even if it contains comments inside
