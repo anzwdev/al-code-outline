@@ -3,9 +3,14 @@
 ## 3.0.40
  - Issue #411 - Cleanup removes instructions from wizard pages
    - "remove field groups" removed from the functionality
+ - Issue #418 - Add Page Controls Captions: Skip for ShowCaption = false
+   - captions are not added is ShowCaption property is false
+   - new "Repeaters" option has been added to the command parameters
+   - if sorting propeties on document save is enabled, modified properties are sorted
 
 Thank you
  - dsaveyn for reporting issue #411 
+ - NKarolak for reporting issue #418
 
 ## 3.0.39
  - Issue #402 - "Remove empty sections" appears to ignore empty actions section in page extensions (and possibly also in pages?)

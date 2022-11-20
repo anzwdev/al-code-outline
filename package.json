@@ -1245,6 +1245,10 @@
 								"type": "boolean",
 								"description": "Set groups captions"
 							},
+							"setRepeatersCaptions": {
+								"type": "boolean",
+								"description": "Set repeaters captions"
+							},
 							"setPartsCaptions": {
 								"type": "boolean",
 								"description": "Set parts captions"

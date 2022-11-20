@@ -319,6 +319,7 @@ This extension contributes the following settings:
   * `setActionsCaptions`: set action captions
   * `setActionGroupsCaptions`: set action groups captions
   * `setGroupsCaptions`: set groups captions
+  * `setRepeatersCaptions`: set repeaters captions
   * `setPartsCaptions`: set parts captions
   * `setFieldsCaptions`: set fields captions
   * `setLabelsCaptions`: set labels captions

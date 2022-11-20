@@ -143,4 +143,14 @@ export class SyntaxModifier {
         this._showProgress = false;
     }
 
+    protected sortPropertiesOnSave(uri: vscode.Uri | undefined) : boolean {
+        let settings = vscode.workspace.getConfiguration('alOutline', uri);                
+        let actionsOnSave = settings.get<string[]>('codeActionsOnSave');
+        if (actionsOnSave)
+            for (let i=0; i<actionsOnSave.length; i++)
+                if (actionsOnSave[i] == 'SortProperties')
+                    return true;
+        return false;
+    }
+
 }
