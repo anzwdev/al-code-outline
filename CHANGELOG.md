@@ -7,10 +7,12 @@
    - captions are not added is ShowCaption property is false
    - new "Repeaters" option has been added to the command parameters
    - if sorting propeties on document save is enabled, modified properties are sorted
+ - Issue #420 - add new command to the "alOutline.codeCleanupActions": "AddEnumValueCaptions"
 
 Thank you
  - dsaveyn for reporting issue #411 
  - NKarolak for reporting issue #418
+ - jhoek for reporting issue #420
 
 ## 3.0.39
  - Issue #402 - "Remove empty sections" appears to ignore empty actions section in page extensions (and possibly also in pages?)

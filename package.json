@@ -54,6 +54,8 @@
 		"onCommand:azALDevTools.AddProjectDataClassification",
 		"onCommand:azALDevTools.AddEditorFieldCaption",
 		"onCommand:azALDevTools.AddProjectFieldCaption",
+		"onCommand:azALDevTools.AddEditorEnumValuesCaption",
+		"onCommand:azALDevTools.AddProjectEnumValuesCaption",
 		"onCommand:azALDevTools.AddEditorPageFieldCaption",
 		"onCommand:azALDevTools.AddProjectPageFieldCaption",
 		"onCommand:azALDevTools.AddEditorObjectCaption",
@@ -348,6 +350,16 @@
 				"category": "AZ AL Dev Tools",
 				"command": "azALDevTools.AddProjectFieldCaption",
 				"title": "Add Table Field Captions to the Active Project"
+			},
+			{
+				"category": "AZ AL Dev Tools",
+				"command": "azALDevTools.AddEditorEnumValuesCaption",
+				"title": "Add Enum Values Captions to the Active Editor"
+			},
+			{
+				"category": "AZ AL Dev Tools",
+				"command": "azALDevTools.AddProjectEnumValuesCaption",
+				"title": "Add Enum Values Captions to the Active Project"
 			},
 			{
 				"category": "AZ AL Dev Tools",
@@ -780,6 +792,14 @@
 				},
 				{
 					"command": "azALDevTools.AddProjectFieldCaption",
+					"when": "azALDevTools.extensionActive"
+				},
+				{
+					"command": "azALDevTools.AddEditorEnumValuesCaption",
+					"when": "editorLangId == al"
+				},
+				{
+					"command": "azALDevTools.AddProjectEnumValuesCaption",
 					"when": "azALDevTools.extensionActive"
 				},
 				{
@@ -1436,6 +1456,7 @@
 								"AddToolTips",
 								"RefreshToolTips",
 								"AddTableFieldCaptions",
+								"AddEnumValuesCaptions",
 								"LockRemovedFieldCaptions",
 								"AddPageFieldCaptions",
 								"AddObjectCaptions",
@@ -1469,6 +1490,7 @@
 								"Add ToolTips",
 								"Refresh ToolTips from Dependencies",
 								"Add Table Field Captions",
+								"Add Enum Values Captions",
 								"Lock Removed Table Field Captions",
 								"Add Page Field Captions",
 								"Add Object Captions",
