@@ -27,6 +27,8 @@ export class ALDocCommentsProvider implements vscode.CompletionItemProvider {
 
                     if ((symbol.kind == AZSymbolKind.MethodDeclaration) ||
                         (symbol.kind == AZSymbolKind.LocalMethodDeclaration) ||
+                        (symbol.kind == AZSymbolKind.ProtectedMethodDeclaration) ||
+                        (symbol.kind == AZSymbolKind.InternalMethodDeclaration) ||
                         (symbol.kind == AZSymbolKind.IntegrationEventDeclaration) ||
                         (symbol.kind == AZSymbolKind.BusinessEventDeclaration)) {
                         //function parameters

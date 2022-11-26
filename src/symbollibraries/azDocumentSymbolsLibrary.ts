@@ -163,7 +163,7 @@ export class AZDocumentSymbolsLibrary extends AZSymbolsLibrary {
             case vscode.SymbolKind.Constructor: return AZSymbolKind.Constructor;
             case vscode.SymbolKind.Enum: return AZSymbolKind.EnumType;
             case vscode.SymbolKind.Interface: return AZSymbolKind.Interface;
-            case vscode.SymbolKind.Function: return AZSymbolKind.LocalMethodDeclaration;
+            case vscode.SymbolKind.Function: return AZSymbolKind.LocalMethodDeclaration;            
             case vscode.SymbolKind.Variable: return AZSymbolKind.VariableDeclaration;
             case vscode.SymbolKind.Constant: return AZSymbolKind.Constant;
             case vscode.SymbolKind.String: return AZSymbolKind.String;

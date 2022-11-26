@@ -9,12 +9,14 @@
    - new "Repeaters" option has been added to the command parameters
    - if sorting propeties on document save is enabled, modified properties are sorted
  - Issue #420 - add new command to the "alOutline.codeCleanupActions": "AddEnumValueCaptions"
+ - Issue #422 - Procedure Sorting Criteria - protected and internal procedures sorting fix
 
 Thank you
  - dsaveyn for reporting issue #411 
  - fvet for reporting issue #416
  - NKarolak for reporting issue #418
  - jhoek for reporting issue #420
+ - ChrisSteuten for reporting issue #422
 
 ## 3.0.39
  - Issue #402 - "Remove empty sections" appears to ignore empty actions section in page extensions (and possibly also in pages?)

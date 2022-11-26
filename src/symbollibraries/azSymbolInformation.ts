@@ -125,6 +125,8 @@ export class AZSymbolInformation {
             (this.kind == AZSymbolKind.StrMenuHandlerDeclaration) ||
             (this.kind == AZSymbolKind.MethodDeclaration) ||
             (this.kind == AZSymbolKind.LocalMethodDeclaration) ||
+            (this.kind == AZSymbolKind.ProtectedMethodDeclaration) ||
+            (this.kind == AZSymbolKind.InternalMethodDeclaration) ||
             (this.kind == AZSymbolKind.EventSubscriberDeclaration) ||
             (this.kind == AZSymbolKind.EventDeclaration) ||
             (this.kind == AZSymbolKind.BusinessEventDeclaration) ||
@@ -223,6 +225,8 @@ export class AZSymbolInformation {
             case AZSymbolKind.Parameter : return 'parameter';
             case AZSymbolKind.MethodDeclaration : return 'method';
             case AZSymbolKind.LocalMethodDeclaration : return 'methodprivate';
+            case AZSymbolKind.ProtectedMethodDeclaration : return 'methodprivate';
+            case AZSymbolKind.InternalMethodDeclaration : return 'methodprivate';
             case AZSymbolKind.TriggerDeclaration : return 'trigger';
             //events
             case AZSymbolKind.IntegrationEventDeclaration: return 'eventpublisher';
