@@ -3,6 +3,7 @@
 ## 3.0.40
  - Issue #411 - Cleanup removes instructions from wizard pages
    - "remove field groups" removed from the functionality
+ - Issue #416 - RemoveProjectRedundantAppAreas - Exclude report requestpages (AS0062 error)
  - Issue #418 - Add Page Controls Captions: Skip for ShowCaption = false
    - captions are not added is ShowCaption property is false
    - new "Repeaters" option has been added to the command parameters
@@ -11,6 +12,7 @@
 
 Thank you
  - dsaveyn for reporting issue #411 
+ - fvet for reporting issue #416
  - NKarolak for reporting issue #418
  - jhoek for reporting issue #420
 
