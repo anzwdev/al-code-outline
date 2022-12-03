@@ -141,6 +141,8 @@ export enum AZSymbolKind {
     RequestPageExtension = 442,
 
     LocalMethodDeclaration = 50001,
+    InternalMethodDeclaration = 50064,
+    ProtectedMethodDeclaration = 50065,
     PrimaryKey = 50002,
     Module = 50003,
 
@@ -214,6 +216,6 @@ export enum AZSymbolKind {
     SyntaxTreeToken = 50057,
     SyntaxTreeTrivia = 50058
 
-    //Next available id 50064
+    //Next available id 50066
 
 }

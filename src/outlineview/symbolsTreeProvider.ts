@@ -45,6 +45,8 @@ export class SymbolsTreeProvider implements vscode.TreeDataProvider<AZSymbolInfo
                 case AZSymbolKind.ParameterList:
                 case AZSymbolKind.TriggerDeclaration:
                 case AZSymbolKind.LocalMethodDeclaration:
+                case AZSymbolKind.ProtectedMethodDeclaration:
+                case AZSymbolKind.InternalMethodDeclaration:
                 case AZSymbolKind.EventDeclaration:
                 case AZSymbolKind.EventTriggerDeclaration:
                 case AZSymbolKind.PageHandlerDeclaration:

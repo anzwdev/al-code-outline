@@ -1,5 +1,23 @@
 # Change Log
 
+## 3.0.40
+ - Issue #411 - Cleanup removes instructions from wizard pages
+   - "remove field groups" removed from the functionality
+ - Issue #416 - RemoveProjectRedundantAppAreas - Exclude report requestpages (AS0062 error)
+ - Issue #418 - Add Page Controls Captions: Skip for ShowCaption = false
+   - captions are not added is ShowCaption property is false
+   - new "Repeaters" option has been added to the command parameters
+   - if sorting propeties on document save is enabled, modified properties are sorted
+ - Issue #420 - add new command to the "alOutline.codeCleanupActions": "AddEnumValueCaptions"
+ - Issue #422 - Procedure Sorting Criteria - protected and internal procedures sorting fix
+
+Thank you
+ - dsaveyn for reporting issue #411 
+ - fvet for reporting issue #416
+ - NKarolak for reporting issue #418
+ - jhoek for reporting issue #420
+ - ChrisSteuten for reporting issue #422
+
 ## 3.0.39
  - Issue #402 - "Remove empty sections" appears to ignore empty actions section in page extensions (and possibly also in pages?)
  - Issue #404 - [Bug] RemoveProjectRedundantAppAreas - Exclude page/report extensions (AS0062 error)

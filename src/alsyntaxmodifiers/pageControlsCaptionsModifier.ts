@@ -13,6 +13,7 @@ export class PageControlsCaptionsModifier extends WorkspaceCommandSyntaxModifier
             setActionsCaptions: false,
             setActionGroupsCaptions: false,
             setGroupsCaptions: false,
+            setRepeatersCaptions: false,
             setPartsCaptions: false,
             setFieldsCaptions: false,
             setLabelsCaptions: false           
@@ -21,7 +22,8 @@ export class PageControlsCaptionsModifier extends WorkspaceCommandSyntaxModifier
 
     protected getParameters(uri: vscode.Uri): any {
         let parameters = super.getParameters(uri);
-        this.copySettings(parameters, this._controlTypes)
+        this.copySettings(parameters, this._controlTypes);
+        parameters.sortProperties = this.sortPropertiesOnSave(uri);
         return parameters;
     }
 
@@ -31,6 +33,7 @@ export class PageControlsCaptionsModifier extends WorkspaceCommandSyntaxModifier
         dest.setActionsCaptions = !!src.setActionsCaptions;
         dest.setActionGroupsCaptions = !!src.setActionGroupsCaptions;
         dest.setGroupsCaptions = !!src.setGroupsCaptions;
+        dest.setRepeatersCaptions = !!src.setRepeatersCaptions;
         dest.setPartsCaptions = !!src.setPartsCaptions;
         dest.setFieldsCaptions = !!src.setFieldsCaptions;
         dest.setLabelsCaptions = !!src.setLabelsCaptions;
@@ -41,6 +44,7 @@ export class PageControlsCaptionsModifier extends WorkspaceCommandSyntaxModifier
             (!value.setActionsCaptions) &&
             (!value.setActionGroupsCaptions) &&
             (!value.setGroupsCaptions) &&
+            (!value.setRepeatersCaptions) &&
             (!value.setPartsCaptions) &&
             (!value.setFieldsCaptions) &&
             (!value.setLabelsCaptions)));
@@ -60,6 +64,7 @@ export class PageControlsCaptionsModifier extends WorkspaceCommandSyntaxModifier
             new NameValueQuickPickItem('Page actions', 'setActionsCaptions', !!this._controlTypes.setActionsCaptions),
             new NameValueQuickPickItem('Page action groups', 'setActionGroupsCaptions', !!this._controlTypes.setActionGroupsCaptions),
             new NameValueQuickPickItem('Page groups', 'setGroupsCaptions', !!this._controlTypes.setGroupsCaptions),
+            new NameValueQuickPickItem('Page repeaters', 'setRepeatersCaptions', !!this._controlTypes.setRepeatersCaptions),
             new NameValueQuickPickItem('Page parts', 'setPartsCaptions', !!this._controlTypes.setPartsCaptions),
             new NameValueQuickPickItem('Page fields', 'setFieldsCaptions', !!this._controlTypes.setFieldsCaptions),
             new NameValueQuickPickItem('Page labels', 'setLabelsCaptions', !!this._controlTypes.setLabelsCaptions)
@@ -91,6 +96,7 @@ export class PageControlsCaptionsModifier extends WorkspaceCommandSyntaxModifier
         this._controlTypes.setActionsCaptions = !!vsctx.globalState.get<boolean>("azALDevTools.setPgCap.setActionsCaptions");
         this._controlTypes.setActionGroupsCaptions = !!vsctx.globalState.get<boolean>("azALDevTools.setPgCap.setActionGroupsCaptions");
         this._controlTypes.setGroupsCaptions = !!vsctx.globalState.get<boolean>("azALDevTools.setPgCap.setGroupsCaptions");
+        this._controlTypes.setRepeatersCaptions = !!vsctx.globalState.get<boolean>("azALDevTools.setPgCap.setRepeatersCaptions");
         this._controlTypes.setPartsCaptions = !!vsctx.globalState.get<boolean>("azALDevTools.setPgCap.setPartsCaptions");
         this._controlTypes.setFieldsCaptions = !!vsctx.globalState.get<boolean>("azALDevTools.setPgCap.setFieldsCaptions");
         this._controlTypes.setLabelsCaptions = !!vsctx.globalState.get<boolean>("azALDevTools.setPgCap.setLabelsCaptions");
@@ -99,6 +105,7 @@ export class PageControlsCaptionsModifier extends WorkspaceCommandSyntaxModifier
             this._controlTypes.setActionsCaptions = true;
             this._controlTypes.setActionGroupsCaptions = true;
             this._controlTypes.setGroupsCaptions = true;
+            this._controlTypes.setRepeatersCaptions = true;
             this._controlTypes.setPartsCaptions = false;
             this._controlTypes.setFieldsCaptions = false;
             this._controlTypes.setLabelsCaptions = false;
@@ -110,6 +117,7 @@ export class PageControlsCaptionsModifier extends WorkspaceCommandSyntaxModifier
         vsctx.globalState.update("azALDevTools.setPgCap.setActionsCaptions", this._controlTypes.setActionsCaptions);
         vsctx.globalState.update("azALDevTools.setPgCap.setActionGroupsCaptions", this._controlTypes.setActionGroupsCaptions);
         vsctx.globalState.update("azALDevTools.setPgCap.setGroupsCaptions", this._controlTypes.setGroupsCaptions);
+        vsctx.globalState.update("azALDevTools.setPgCap.setRepeatersCaptions", this._controlTypes.setRepeatersCaptions);
         vsctx.globalState.update("azALDevTools.setPgCap.setPartsCaptions", this._controlTypes.setPartsCaptions);
         vsctx.globalState.update("azALDevTools.setPgCap.setFieldsCaptions", this._controlTypes.setFieldsCaptions);
         vsctx.globalState.update("azALDevTools.setPgCap.setLabelsCaptions", this._controlTypes.setLabelsCaptions);
@@ -119,6 +127,7 @@ export class PageControlsCaptionsModifier extends WorkspaceCommandSyntaxModifier
         this._controlTypes.setActionsCaptions = false;
         this._controlTypes.setActionGroupsCaptions = false;
         this._controlTypes.setGroupsCaptions = false;
+        this._controlTypes.setRepeatersCaptions = false;
         this._controlTypes.setPartsCaptions = false;
         this._controlTypes.setFieldsCaptions = false;
         this._controlTypes.setLabelsCaptions = false;

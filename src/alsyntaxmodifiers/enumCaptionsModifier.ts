@@ -2,19 +2,15 @@ import * as vscode from 'vscode';
 import { DevToolsExtensionContext } from "../devToolsExtensionContext";
 import { WorkspaceCommandSyntaxModifier } from './workspaceCommandSyntaxModifier';
 
-export class FieldCaptionsModifier extends WorkspaceCommandSyntaxModifier {
+export class EnumCaptionsModifier  extends WorkspaceCommandSyntaxModifier {
     
     constructor(context: DevToolsExtensionContext) {
-        super(context, "Add Table Field Captions", "addFieldCaptions");
+        super(context, "Add Enum Values Captions", "addEnumCaptions");
     }
 
     protected getParameters(uri: vscode.Uri): any {
         let parameters = super.getParameters(uri);
-
-        let lockRemovedFields = !!vscode.workspace.getConfiguration('alOutline').get<boolean>('lockRemovedFieldsCaptions');
-        parameters.lockRemovedFields = lockRemovedFields;
         parameters.sortProperties = this.sortPropertiesOnSave(uri);
-
         return parameters;
     }
 
