@@ -1,5 +1,7 @@
 import * as vscode from 'vscode';
+import { TableFieldClass } from '../../symbolsinformation/tableFieldClass';
 import { TableFieldInformation } from '../../symbolsinformation/tableFieldInformation';
+import { TableFieldInformationHelper } from '../../symbolsinformation/tableFieldInformationHelper';
 
 export class TableFieldQuickPickItem implements vscode.QuickPickItem {
     fieldId: number;
@@ -20,6 +22,7 @@ export class TableFieldQuickPickItem implements vscode.QuickPickItem {
             this.label = newFieldInformation.name;
         else
             this.label = '';
+        this.description = TableFieldInformationHelper.getFieldUIDesc(newFieldInformation);
     }
 
 }

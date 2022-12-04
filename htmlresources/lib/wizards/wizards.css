@@ -142,6 +142,19 @@ header {
 }
 .msellist {
     flex: 1 1 auto;
+    font-family: var(--vscode-font-family);
+    font-weight: normal;
+}
+.msellist:focus option:checked:after {
+    color: var(--vscode-list-activeSelectionForeground) !important;
+}
+.msellist option:checked:after {
+    color: var(--vscode-list-inactiveSelectionForeground);
+}
+.msellist option:after {
+    font-size: 0.8em;
+    color: var(--vscode-descriptionForeground);
+    content: ' ' attr(data-desc);
 }
 .mselcaption {
     flex: 0 0 26px;

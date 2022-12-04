@@ -53,6 +53,14 @@ export class ALPageWizardPage extends ALTableBasedWizardPage {
                 this._pageWizardData.selectedFieldList.push(data.fields[i]);
             }
         }
+
+        this._pageWizardData.selectedFlowFilterList = [];
+        if (data.flowFilters) {
+            for (var i = 0; i<data.flowFilters.length; i++) {
+                this._pageWizardData.selectedFlowFilterList.push(data.flowFilters[i]);
+            }
+        }
+
         //information about fast tabs
         this._pageWizardData.fastTabsData = [];
         if (data.fastTabsData) {

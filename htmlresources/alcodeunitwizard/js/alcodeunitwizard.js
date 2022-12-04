@@ -1,7 +1,7 @@
 class CodeunitWizard extends TableBasedObjectWizard{
 
     constructor() {
-        super(1);
+        super(1, false);
         this._step = 1;
     }
 

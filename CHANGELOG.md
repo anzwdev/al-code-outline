@@ -1,5 +1,12 @@
 # Change Log
 
+## 3.0.41
+ - Issue #421 - FlowFilters aren't added to API Pages
+   - new page wizard step for API pages - flow filters selection
+
+Thank you
+ - pri-kise for reporting issue #421
+
 ## 3.0.40
  - Issue #411 - Cleanup removes instructions from wizard pages
    - "remove field groups" removed from the functionality

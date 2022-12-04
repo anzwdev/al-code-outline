@@ -6,6 +6,7 @@ class FilteredList {
         this._filterValue = undefined;
         this._captionMember = undefined;
         this._sortByMember = undefined;
+        this._descriptionMember = undefined;
 
         if (this._filterId) {
             let filterElement = document.getElementById(this._filterId);
@@ -81,6 +82,13 @@ class FilteredList {
         return value;
     }
 
+    getDataDescription(idx) {
+        let value = this._data[idx];
+        if ((value) && (this._descriptionMember))
+            return value[this._descriptionMember];
+        return undefined;
+    }
+
     getAll() {
         return this._data;
     }
@@ -130,12 +138,15 @@ class FilteredList {
 
     appendEntryHtml(childItems, idx) {
         let caption = this.getDataCaption(idx);
+        let desc = this.getDataDescription(idx);
         if (this.valueInFilter(caption))
-            childItems.appendChild(this.createOption(idx, caption));
+            childItems.appendChild(this.createOption(idx, caption, desc));
     }
 
-    createOption(newValue, newText) {
+    createOption(newValue, newText, newDesc) {
         let element = document.createElement('option');
+        if (newDesc)
+            element.dataset.desc = newDesc;
         element.text = newText;
         element.value = newValue;
         return element;

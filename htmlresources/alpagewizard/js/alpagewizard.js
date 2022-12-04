@@ -1,14 +1,18 @@
 class PageWizard extends TableBasedObjectWizard {
 
     constructor() {
-        super(2);
+        super(2, true);
 
         //initialize steps visibility
         this._step = 1;
         this._activeFastTab = 0;
-        htmlHelper.hideById("wizardstep2");
+        this._selectFlowFilters = false;
 
+        htmlHelper.hideById("wizardstep2");
+        htmlHelper.hideById("wizardstep3");
+       
         this.registerFieldsSelectionEvents();
+        this.registerFlowFiltersSelectionEvents();
 
         document.getElementById('pagetype').addEventListener('change', event => {
             this.onPageTypeChanged();
@@ -16,13 +20,14 @@ class PageWizard extends TableBasedObjectWizard {
         document.getElementById('activefasttab').addEventListener('change', event => {
             this.onActiveFastTabChanged();
         });
-
+       
     }
 
     updateMainButtons() {
+        this._maxStepNo = (this._selectFlowFilters)?3:2;
+
         document.getElementById("prevBtn").disabled = (this._step <= 1);
-        document.getElementById("nextBtn").disabled = (this._step == 2);
-        //document.getElementById("finishBtn").disabled = (this._step < 2);
+        document.getElementById("nextBtn").disabled = (this._step >= this._maxStepNo);
     }
 
     setStep(newStep) {
@@ -34,6 +39,7 @@ class PageWizard extends TableBasedObjectWizard {
 
     setData(data) {
         super.setData(data);
+
         //initialize fields
         document.getElementById("objectid").value = this._data.objectId;
         document.getElementById("objectname").value = this._data.objectName;
@@ -53,8 +59,8 @@ class PageWizard extends TableBasedObjectWizard {
         this.updateControls();
         this.loadTables();
         this.loadFields();
+        this.loadFlowFilters();
     }
-
     
     onFinish() {
         this.collectStepData(true);
@@ -74,6 +80,7 @@ class PageWizard extends TableBasedObjectWizard {
                 usageCategory : this._data.usageCategory,
                 createTooltips : this._data.createTooltips,
                 fields: this._data.selectedFieldList,
+                flowFilters: this._data.selectedFlowFilterList,
                 fastTabsData: this._data.fastTabsData,
                 apiPublisher: this._data.apiPublisher,
                 apiGroup: this._data.apiGroup,
@@ -84,11 +91,11 @@ class PageWizard extends TableBasedObjectWizard {
         });
     }
 
-
     collectStepData(finishSelected) {
         switch (this._step) {
             case 1: this.collectStep1Data(finishSelected);
             case 2: this.collectStep2Data(finishSelected);
+            case 3: this.collectStep3Data(finishSelected);
         }
     }
 
@@ -109,32 +116,45 @@ class PageWizard extends TableBasedObjectWizard {
         this._data.apiVersion = document.getElementById("apiversion").value;
         this._data.entityName = document.getElementById("entityname").value;
         this._data.entitySetName = document.getElementById("entitysetname").value;    
+       
+        let prevSelectFlowFilters = this._selectFlowFilters;
+        this._selectFlowFilters = ((this._data.pageType) && (this._data.pageType == "API"));
 
         if (prevTableName != this._data.selectedTable) {
             htmlHelper.clearChildrenById("srcfields");
             htmlHelper.clearChildrenById("destfields");
+            htmlHelper.clearChildrenById("srcflowfilters");
+            htmlHelper.clearChildrenById("destflowfilters");
             
             //clear selected fields
             if (this._data.selectedFieldList)
                 this._data.selectedFieldList = [];
             if (this._data.fastTabsData)
                 this._data.fastTabsData.forEach(item => {item.fields = []});
+            if (this._data.selectedFlowFilterList)
+                this._data.selectedFlowFilterList = [];
 
             if (!finishSelected)
                 this.sendMessage({
                     command: 'selectTable',
-                    tableName: this._data.selectedTable
-                });    
+                    tableName: this._data.selectedTable,
+                    includeFlowFilters: true
+                });
+        } else if (prevSelectFlowFilters != this._selectFlowFilters) {
+            this.loadFlowFilters();
         }
 
         if ((prevFastTab != this._data.fastTabs) || (!this._data.fastTabsData) || (this._data.fastTabsData.length == 0)) {
             this.rebuildFastTabs();
         }
-
     }
 
     collectStep2Data(finishSelected) {
         this.saveSelectedFields();
+    }
+
+    collectStep3Data(finishSelected) {
+        this.saveSelectedFlowFilters();
     }
 
     onPageTypeChanged() {
@@ -192,6 +212,10 @@ class PageWizard extends TableBasedObjectWizard {
         } else {
             this._data.selectedFieldList = this.getSelectedFields();            
         }
+    }
+
+    saveSelectedFlowFilters() {
+        this._data.selectedFlowFilterList = this.getSelectedFlowFilters();            
     }
 
     restoreSelectedFields() {
