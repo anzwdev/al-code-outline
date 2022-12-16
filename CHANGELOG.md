@@ -1,10 +1,12 @@
 # Change Log
 
 ## 3.0.41
+ - Issue #417 - Add all extension objects permissions quick fix should not add redundant permissions
  - Issue #421 - FlowFilters aren't added to API Pages
    - new page wizard step for API pages - flow filters selection
 
 Thank you
+ - ernestasjuska for reporting issue #417
  - pri-kise for reporting issue #421
 
 ## 3.0.40

@@ -39,6 +39,7 @@ import { RemoveEmptyTriggersModifier } from '../alsyntaxmodifiers/removeEmptyTri
 import { MakeFlowFieldsReadOnlyModifier } from '../alsyntaxmodifiers/makeFlowFieldsReadOnlyModifier';
 import { RemoveRedundantAppAreasModifier } from '../alsyntaxmodifiers/removeRedundantAppAreasModifier';
 import { EnumCaptionsModifier } from '../alsyntaxmodifiers/enumCaptionsModifier';
+import { AddAllObjectsPermissionsModifier } from '../alsyntaxmodifiers/addAllObjectsPermissionsModifier';
 
 export class ALCodeTransformationService extends DevToolsExtensionService {
     protected _syntaxFactories: ISyntaxModifierFactoriesCollection;
@@ -57,7 +58,7 @@ export class ALCodeTransformationService extends DevToolsExtensionService {
         this.registerDocumentRangeCommand('azALDevTools.sortPermissions', () => new SortPermissionsModifier(this._context));
         this.registerDocumentRangeCommand('azALDevTools.sortPermissionSetList', () => new SortPermissionSetListModifier(this._context));
         this.registerDocumentRangeCommand('azALDevTools.sortCustomizations', () => new SortCustomizationsModifier(this._context));
-        this.registerDocumentRangeCommand('azALDevTools.addAllObjectsPermissions', () => new WorkspaceCommandSyntaxModifier(this._context, 'addAllObjectsPermissions', 'addAllObjectsPermissions'));
+        this.registerDocumentRangeCommand('azALDevTools.addAllObjectsPermissions', () => new AddAllObjectsPermissionsModifier(this._context));
         this.registerDocumentRangeCommand('azALDevTools.removeVariable', () => new WorkspaceCommandSyntaxModifier(this._context, 'removeVariable', 'removeVariable'));
         this.registerDocumentSymbolCommand('azALDevTools.ReuseToolTipFromOtherPages', () => new ReuseSingleFieldToolTipModifier(this._context));
 
