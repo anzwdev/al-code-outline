@@ -1,15 +1,19 @@
 # Change Log
 
 ## 3.0.41
+ - Issue #415 - Variable completion
+   - #425 fix should improve suggetsions here, but the real problem is caused by the default vs code `"editor.suggest.matchOnWordStartOnly": true,` setting (ICDimension is treated as single word)
  - Issue #417 - Add all extension objects permissions quick fix should not add redundant permissions
  - Issue #421 - FlowFilters aren't added to API Pages
    - new page wizard step for API pages - flow filters selection
  - Issue #424 - Remove 'with' usage ... does not work with NoImplicitWith compiler flag
+ - Issue #425 - Variable Completion including double quotes
 
 Thank you
  - ernestasjuska for reporting issue #417
  - pri-kise for reporting issue #421
  - M4fin for reporting issue #424
+ - fvet for reporting issues #415 and #425
 
 ## 3.0.40
  - Issue #411 - Cleanup removes instructions from wizard pages
