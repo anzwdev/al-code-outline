@@ -137,6 +137,10 @@ Extension adds a few commands that allow to automatically modify al code in the 
 * `Add Table Field Captions to the Active Project`: adds missing captions to all table fields in the current project
 * `Lock Removed Table Field Captions in the Active Editor`: locks captions of removed table fields in the current editor
 * `Lock Removed Table Field Captions in the Active Project`: locks captions of removed table fields in the current project
+* `Add Table DataCaptionFields to the Active Editor`: adds missing DataCaptionFields property to tables in the active editor
+* `Add Table DataCaptionFields to the Active Project`: adds missing DataCaptionFields property to tables in the current project
+* `Add DropDown Field Groups to the Active Editor`: adds missing DropDown field group to tables in the active editor
+* `Add DropDown Field Groups to the Active Project`: adds missing DropDown field group to tables in the current project
 * `Add Page Controls Captions to the Active Editor`: adds missing captions to page controls in the current editor
 * `Add Page Controls Captions to the Active Project`: adds missing captions to page controls in the current project
 * `Add Object Captions to the Active Editor`: adds missing captions to all table, page, report, xmlport and query objects in the current editor
@@ -346,6 +350,8 @@ This extension contributes the following settings:
 	* `VariableNames` - the same as above but suggests variable names only (i.e. `SalesHeader`), when both entries are selected, `VariableNamesWithType` will be used
 	* `VariableDataTypes` - suggests data types based on variable name (i.e. `Record "Sales Header"` for `SalesHeaderBuffer` variable name)
 * `alOutline.additionalMandatoryAffixesPatterns`: Additional list of name affixes patterns, '?' can be used for matching any character. These values are used to remove affixes from names in code actions, commands and code completion
+* `alOutline.dropDownGroupFieldsNamesPatterns`: array of string patters for table DropDown group fields created by "Add DropDown FieldGroups..." commands, you can use "*" for partial name matching, first found field for each setting entry will be used
+* `alOutline.tableDataCaptionFieldsNamesPatterns`: array of string patters for field names for table DataCaptionFields property created by "Add Table DataCaptionFields..." commands, you can use "*" for partial name matching, first found field for each setting entry will be used
 
 ## Known Issues
 

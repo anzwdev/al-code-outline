@@ -1,6 +1,15 @@
 # Change Log
 
 ## 3.0.41
+ - Issue #414 - Action for adding missing DataCaptionFields property and/of DropDown field group (in Active Editor/Active Project)
+   - new commands:
+     - "Add Table DataCaptionFields to the Active Editor"
+     - "Add Table DataCaptionFields to the Active Project"
+     - "Add DropDown Field Groups to the Active Editor"
+     - "Add DropDown Field Groups to the Active Project"
+   - new settings:
+     - "alOutline.dropDownGroupFieldsNamesPatterns": array of string patters for table DropDown group fields, you can use "*" for partial name matching
+     - "alOutline.tableDataCaptionFieldsNamesPatterns": array of string patters for field names for table DataCaptionFields property, you can use "*" for partial name matching
  - Issue #415 - Variable completion
    - #425 fix should improve suggetsions here, but the real problem is caused by the default vs code `"editor.suggest.matchOnWordStartOnly": true,` setting (ICDimension is treated as single word)
  - Issue #417 - Add all extension objects permissions quick fix should not add redundant permissions
@@ -10,10 +19,11 @@
  - Issue #425 - Variable Completion including double quotes
 
 Thank you
+ - jhoek for reporting issue #414
+ - fvet for reporting issues #415 and #425
  - ernestasjuska for reporting issue #417
  - pri-kise for reporting issue #421
  - M4fin for reporting issue #424
- - fvet for reporting issues #415 and #425
 
 ## 3.0.40
  - Issue #411 - Cleanup removes instructions from wizard pages

@@ -3,7 +3,6 @@ import { DevToolsExtensionContext } from "../devToolsExtensionContext";
 import { NumberHelper } from '../tools/numberHelper';
 import { ToolsWorkspaceCommandResponse } from '../langserver/toolsWorkspaceCommandResponse';
 import { WorkspaceCommandSyntaxModifier } from './workspaceCommandSyntaxModifier';
-import { AppAreaMode } from './appAreaMode';
 
 export class AppAreasModifier extends WorkspaceCommandSyntaxModifier {
     protected _appArea : string | undefined;

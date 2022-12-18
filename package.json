@@ -54,6 +54,10 @@
 		"onCommand:azALDevTools.AddProjectDataClassification",
 		"onCommand:azALDevTools.AddEditorFieldCaption",
 		"onCommand:azALDevTools.AddProjectFieldCaption",
+		"onCommand:azALDevTools.AddEditorTableDataCaptionFields",
+		"onCommand:azALDevTools.AddProjectTableDataCaptionFields",
+		"onCommand:azALDevTools.AddEditorDropDownFieldGroups",
+		"onCommand:azALDevTools.AddProjectDropDownFieldGroups",
 		"onCommand:azALDevTools.AddEditorEnumValuesCaption",
 		"onCommand:azALDevTools.AddProjectEnumValuesCaption",
 		"onCommand:azALDevTools.AddEditorPageFieldCaption",
@@ -360,6 +364,26 @@
 				"category": "AZ AL Dev Tools",
 				"command": "azALDevTools.AddProjectEnumValuesCaption",
 				"title": "Add Enum Values Captions to the Active Project"
+			},
+			{
+				"category": "AZ AL Dev Tools",
+				"command": "azALDevTools.AddEditorTableDataCaptionFields",
+				"title": "Add Table DataCaptionFields to the Active Editor"
+			},
+			{
+				"category": "AZ AL Dev Tools",
+				"command": "azALDevTools.AddProjectTableDataCaptionFields",
+				"title": "Add Table DataCaptionFields to the Active Project"
+			},
+			{
+				"category": "AZ AL Dev Tools",
+				"command": "azALDevTools.AddEditorDropDownFieldGroups",
+				"title": "Add DropDown Field Groups to the Active Editor"
+			},
+			{
+				"category": "AZ AL Dev Tools",
+				"command": "azALDevTools.AddProjectDropDownFieldGroups",
+				"title": "Add DropDown Field Groups to the Active Project"
 			},
 			{
 				"category": "AZ AL Dev Tools",
@@ -800,6 +824,22 @@
 				},
 				{
 					"command": "azALDevTools.AddProjectEnumValuesCaption",
+					"when": "azALDevTools.extensionActive"
+				},
+				{
+					"command": "azALDevTools.AddEditorTableDataCaptionFields",
+					"when": "editorLangId == al"
+				},
+				{
+					"command": "azALDevTools.AddProjectTableDataCaptionFields",
+					"when": "azALDevTools.extensionActive"
+				},
+				{
+					"command": "azALDevTools.AddEditorDropDownFieldGroups",
+					"when": "editorLangId == al"
+				},
+				{
+					"command": "azALDevTools.AddProjectDropDownFieldGroups",
 					"when": "azALDevTools.extensionActive"
 				},
 				{
@@ -1632,6 +1672,28 @@
 						"description": "Specifies how variables are sorted by `Sort Variables` commands.",
 						"scope": "resource"						
 					},
+
+					"alOutline.dropDownGroupFieldsNamesPatterns": {
+						"type": "array",
+						"items": {
+							"type": "string"
+						},
+						"default": ["Name", "Description", "Post Code", "City", "Address", "Address 2"],
+						"scope": "resource",
+						"uniqueItems": true,
+						"description": "Field names patterns for fields in table DropDown field group created by 'Add DropDown Field Groups' commands"
+					},
+					"alOutline.tableDataCaptionFieldsNamesPatterns": {
+						"type": "array",
+						"items": {
+							"type": "string"
+						},
+						"default": ["Name", "Description"],
+						"scope": "resource",
+						"uniqueItems": true,
+						"description": "Field names patterns for fields in table DataCaptionFields property created by 'Add Table DataCaptionFields' commands"
+					},
+
 					"alOutline.completionProviders": {
 						"type": "array",
 						"items": {

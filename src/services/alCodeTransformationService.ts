@@ -40,6 +40,8 @@ import { MakeFlowFieldsReadOnlyModifier } from '../alsyntaxmodifiers/makeFlowFie
 import { RemoveRedundantAppAreasModifier } from '../alsyntaxmodifiers/removeRedundantAppAreasModifier';
 import { EnumCaptionsModifier } from '../alsyntaxmodifiers/enumCaptionsModifier';
 import { AddAllObjectsPermissionsModifier } from '../alsyntaxmodifiers/addAllObjectsPermissionsModifier';
+import { AddTableDataCaptionFieldsModifier } from '../alsyntaxmodifiers/addTableDataCaptionFieldsModifier';
+import { AddDropDownFieldGroupsModifier } from '../alsyntaxmodifiers/AddDropDownFieldGroupsModifier';
 
 export class ALCodeTransformationService extends DevToolsExtensionService {
     protected _syntaxFactories: ISyntaxModifierFactoriesCollection;
@@ -71,6 +73,10 @@ export class ALCodeTransformationService extends DevToolsExtensionService {
         this.registerModifierCommands('AddToolTips', 'azALDevTools.AddEditorToolTip', 'azALDevTools.AddProjectToolTip', () => new ToolTipModifier(this._context));
         this.registerModifierCommands('RefreshToolTips', 'azALDevTools.RefreshEditorToolTips', 'azALDevTools.RefreshProjectToolTips', () => new RefreshToolTipsModifier(this._context));
         this.registerModifierCommands('AddTableFieldCaptions', 'azALDevTools.AddEditorFieldCaption', 'azALDevTools.AddProjectFieldCaption', () => new FieldCaptionsModifier(this._context));
+
+        this.registerModifierCommands('AddTableDataCaptionFields', 'azALDevTools.AddEditorTableDataCaptionFields', 'azALDevTools.AddProjectTableDataCaptionFields', () => new AddTableDataCaptionFieldsModifier(this._context));
+        this.registerModifierCommands('AddDropDownFieldGroups', 'azALDevTools.AddEditorDropDownFieldGroups', 'azALDevTools.AddProjectDropDownFieldGroups', () => new AddDropDownFieldGroupsModifier(this._context));
+
         this.registerModifierCommands('AddEnumValuesCaptions', 'azALDevTools.AddEditorEnumValuesCaption', 'azALDevTools.AddProjectEnumValuesCaption', () => new EnumCaptionsModifier(this._context));
         this.registerModifierCommands('LockRemovedFieldCaptions', 'azALDevTools.LockEditorRemovedFieldCaptions', 'azALDevTools.LockProjectRemovedFieldCaptions', () => new LockRemovedFieldsCaptionsModifier(this._context));
         this.registerModifierCommands('AddPageFieldCaptions', 'azALDevTools.AddEditorPageFieldCaption', 'azALDevTools.AddProjectPageFieldCaption', () => new PageControlsCaptionsModifier(this._context));
