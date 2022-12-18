@@ -96,6 +96,7 @@ Extension adds VS Code editor code actions to some of al elements to help develo
  - Code generation actions
   - `Create interface` action available on the first line of codeunit declaration, it creates a new interface with all public functions from the codeunit
  - `Add all extension objects permissions` available on the first line of Permissions property. It adds all objects from the current extension to this property. If permissions are added to PermissionSet or PermisionSetExtension object, `table`, `tabledata`, `page`, `report`, `xmlport`, `query` and `codeunit` entries will be added. For all other object types, only `tabledata` entries will be created.
+ - `Add permissions to all tables used by this object` action available on the first line of object declaration and permissions property. It scans the object, detects operation types and adds permissions to tabledata of all non-temporary tables used inside.
  - `Reuse tooltip from other pages` action available on the first line of page/page extension field and `ToolTip` property, it allows to select tooltip value from a list of tooltips defined for this table field on other pages in the current project and all dependencies
  - `Add multiple fields` when cursor is at these elements in the editor:
   - "group" and "repeater" on pages

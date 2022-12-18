@@ -42,6 +42,7 @@ import { EnumCaptionsModifier } from '../alsyntaxmodifiers/enumCaptionsModifier'
 import { AddAllObjectsPermissionsModifier } from '../alsyntaxmodifiers/addAllObjectsPermissionsModifier';
 import { AddTableDataCaptionFieldsModifier } from '../alsyntaxmodifiers/addTableDataCaptionFieldsModifier';
 import { AddDropDownFieldGroupsModifier } from '../alsyntaxmodifiers/AddDropDownFieldGroupsModifier';
+import { AddReferencedTablesPermissionsModifier } from '../alsyntaxmodifiers/addReferencedTablesPermissionsModifier';
 
 export class ALCodeTransformationService extends DevToolsExtensionService {
     protected _syntaxFactories: ISyntaxModifierFactoriesCollection;
@@ -61,6 +62,8 @@ export class ALCodeTransformationService extends DevToolsExtensionService {
         this.registerDocumentRangeCommand('azALDevTools.sortPermissionSetList', () => new SortPermissionSetListModifier(this._context));
         this.registerDocumentRangeCommand('azALDevTools.sortCustomizations', () => new SortCustomizationsModifier(this._context));
         this.registerDocumentRangeCommand('azALDevTools.addAllObjectsPermissions', () => new AddAllObjectsPermissionsModifier(this._context));
+        this.registerDocumentRangeCommand('azALDevTools.addReferencedTablesPermissions', () => new AddReferencedTablesPermissionsModifier(this._context));
+
         this.registerDocumentRangeCommand('azALDevTools.removeVariable', () => new WorkspaceCommandSyntaxModifier(this._context, 'removeVariable', 'removeVariable'));
         this.registerDocumentSymbolCommand('azALDevTools.ReuseToolTipFromOtherPages', () => new ReuseSingleFieldToolTipModifier(this._context));
 

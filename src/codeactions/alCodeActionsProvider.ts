@@ -16,7 +16,7 @@ import { ALCodeCopFixAA0137 } from './codeFixes/alCodeCopFixAA0137';
 import { ALCodeCopFixAA0139 } from './codeFixes/alCodeCopFixAA0139';
 import { ALSortTableFieldsCommand } from './sortSymbols/alSortTableFieldsCommand';
 import { ALSortPermissionsCommand } from './sortSymbols/alSortPermissionsCommand';
-import { ALAddAllPermissionsCodeCommand } from './alAddAllPermissionsCodeCommand';
+import { ALAddPermissionsCodeCommand } from './alAddPermissionsCodeCommand';
 import { ALSortPermissionSetListCommand } from './sortSymbols/alSortPermissionSetListCommand';
 import { ALReuseToolTipCodeCommand } from './alReuseToolTipCodeCommand';
 import { ALSortCustomizationsCommand } from './sortSymbols/alSortCustomizationsCommand';
@@ -35,7 +35,7 @@ export class ALCodeActionsProvider implements vscode.CodeActionProvider {
             new ALAddXmlPortFieldsCodeCommand(this._toolsExtensionContext, 'fieldelement', 'Add multiple field elements (AZ AL Dev Tools)'),
             new ALAddXmlPortFieldsCodeCommand(this._toolsExtensionContext, 'fieldattribute', 'Add multiple field attributes (AZ AL Dev Tools)'),
 
-            new ALAddAllPermissionsCodeCommand(this._toolsExtensionContext),
+            new ALAddPermissionsCodeCommand(this._toolsExtensionContext),
             new ALReuseToolTipCodeCommand(this._toolsExtensionContext),
 
             //sorting

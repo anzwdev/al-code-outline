@@ -1,6 +1,8 @@
 # Change Log
 
 ## 3.0.41
+ - Issue #412 - [Request] add permissions to current object
+   - new code action on first line of object definition and permission property: "Add permissions to all tables used by this object (AZ AL Dev Tools)"
  - Issue #414 - Action for adding missing DataCaptionFields property and/of DropDown field group (in Active Editor/Active Project)
    - new commands:
      - "Add Table DataCaptionFields to the Active Editor"
@@ -19,6 +21,7 @@
  - Issue #425 - Variable Completion including double quotes
 
 Thank you
+ - guidorobben for reporting issue #412
  - jhoek for reporting issue #414
  - fvet for reporting issues #415 and #425
  - ernestasjuska for reporting issue #417
