@@ -49,6 +49,7 @@ export class ALCompletionProvider implements vscode.CompletionItemProvider {
             item.detail = source.detail;
         if (source.commitCharacters)
             item.commitCharacters = source.commitCharacters;
+
         return item;
     }
     
