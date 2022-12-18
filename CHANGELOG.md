@@ -1,6 +1,7 @@
 # Change Log
 
 ## 3.0.41
+ - Issue #410 - Search in Object browser should not be case sensitive
  - Issue #412 - [Request] add permissions to current object
    - new code action on first line of object definition and permission property: "Add permissions to all tables used by this object (AZ AL Dev Tools)"
  - Issue #414 - Action for adding missing DataCaptionFields property and/of DropDown field group (in Active Editor/Active Project)
@@ -21,6 +22,7 @@
  - Issue #425 - Variable Completion including double quotes
 
 Thank you
+ - damse60 for reporting issue #410
  - guidorobben for reporting issue #412
  - jhoek for reporting issue #414
  - fvet for reporting issues #415 and #425
