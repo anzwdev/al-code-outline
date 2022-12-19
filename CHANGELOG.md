@@ -1,6 +1,7 @@
 # Change Log
 
 ## 3.0.41
+ - Issue #378 - API Pages : API field name suggestions for 'number' fields (number instead of no)
  - Issue #385 - AL Language Server Crashing - temp-al-proxy.al 
    - all references to code creating that temp file removed
  - Issue #410 - Search in Object browser should not be case sensitive
@@ -24,12 +25,12 @@
  - Issue #425 - Variable Completion including double quotes
 
 Thank you
+ - fvet for reporting issues #378, #415 and #425
+ - pri-kise for reporting issue #385, #421
  - damse60 for reporting issue #410
  - guidorobben for reporting issue #412
  - jhoek for reporting issue #414
- - fvet for reporting issues #415 and #425
  - ernestasjuska for reporting issue #417
- - pri-kise for reporting issue #385, #421
  - M4fin for reporting issue #424
 
 ## 3.0.40

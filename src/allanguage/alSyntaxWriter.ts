@@ -3,6 +3,7 @@ import { ALSyntaxHelper } from './alSyntaxHelper';
 import { StringHelper } from '../tools/stringHelper';
 import { NameValue } from '../tools/nameValue';
 import { AppAreaMode } from '../alsyntaxmodifiers/appAreaMode';
+import { ApiFieldNameConversion } from './apiFieldNameConversion';
 
 export class ALSyntaxWriter {
     private content : string;
@@ -16,6 +17,7 @@ export class ALSyntaxWriter {
     private useTableFieldDescriptionAsToolTip: boolean;
     private noEmptyLinesAtTheEndOfWizardGeneratedFiles: boolean;
     private eol: string;
+    private apiFieldNamesConversion: ApiFieldNameConversion[];
 
     constructor(destUri: vscode.Uri | undefined) {
         let config = vscode.workspace.getConfiguration('alOutline', destUri);
@@ -31,6 +33,22 @@ export class ALSyntaxWriter {
         this.noEmptyLinesAtTheEndOfWizardGeneratedFiles = !!config.get<boolean>('noEmptyLinesAtTheEndOfWizardGeneratedFiles');
         this.propertiesCache = [];        
         this.eol = StringHelper.getDefaultEndOfLine(destUri);
+        this.apiFieldNamesConversion = [];
+
+        this.prepareApiFieldNamesConversions(config.get<any[]>("apiFieldNamesConversion"));
+    }
+
+    private prepareApiFieldNamesConversions(apiConv: any[] | undefined) {
+        if (apiConv)
+            for (let i = 0; i<apiConv.length; i++)
+                if ((apiConv[i].searchRegExp) && (apiConv[i].newValue)) {
+                    try {
+                        let item = new ApiFieldNameConversion(apiConv[i].searchRegExp!, apiConv[i].newValue!);
+                        this.apiFieldNamesConversion.push(item);
+                    }
+                    catch (e) {                        
+                    }
+                }
     }
 
     public toString() : string {
@@ -398,7 +416,19 @@ export class ALSyntaxWriter {
             }
         }
 
+        text = this.convertApiName(text);
+
         return text;
-   }
+    }
+
+    private convertApiName(name: string) {
+        if ((name) && (this.apiFieldNamesConversion))
+            for (let i=0; i<this.apiFieldNamesConversion.length; i++) {
+                let newValue = name.replace(this.apiFieldNamesConversion[i].searchRegExp, this.apiFieldNamesConversion[i].newValue);
+                if (newValue != name)
+                    return newValue;
+            }
+        return name;
+    }
 
 }

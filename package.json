@@ -1265,6 +1265,25 @@
 							"Add to all controls"
 						]
 					},
+					"alOutline.apiFieldNamesConversion": {
+						"type":"array",
+						"items": {
+							"type": "object",
+							"properties": {
+								"searchRegExp": {
+									"type": "string",
+									"description": "Regular expression defining source text that should be replaced"
+								},
+								"newValue": {
+									"type": "string",
+									"description": "New text"
+								}
+							}
+						},
+						"default": [],
+						"description": "List of api field names replacements",
+						"scope": "resource"
+					},
 					"alOutline.defaultApiPublisher": {
 						"type": "string",
 						"default": "publisherName",
