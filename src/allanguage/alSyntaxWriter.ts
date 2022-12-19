@@ -18,6 +18,7 @@ export class ALSyntaxWriter {
     private noEmptyLinesAtTheEndOfWizardGeneratedFiles: boolean;
     private eol: string;
     private apiFieldNamesConversion: ApiFieldNameConversion[];
+    private createApiFieldsCaptions: boolean;
 
     constructor(destUri: vscode.Uri | undefined) {
         let config = vscode.workspace.getConfiguration('alOutline', destUri);
@@ -31,6 +32,7 @@ export class ALSyntaxWriter {
         this.fieldToolTipComment = StringHelper.emptyIfNotDef(config.get<string>('pageFieldToolTipComment'));
         this.useTableFieldDescriptionAsToolTip = !!config.get<boolean>('useTableFieldDescriptionAsToolTip');
         this.noEmptyLinesAtTheEndOfWizardGeneratedFiles = !!config.get<boolean>('noEmptyLinesAtTheEndOfWizardGeneratedFiles');
+        this.createApiFieldsCaptions = !!config.get<boolean>('createApiFieldsCaptions');
         this.propertiesCache = [];        
         this.eol = StringHelper.getDefaultEndOfLine(destUri);
         this.apiFieldNamesConversion = [];
@@ -306,15 +308,17 @@ export class ALSyntaxWriter {
         let name : string = this.createApiName(fieldName);
         this.writeStartNameSourceBlock("field", this.encodeName(name), 'Rec.' + this.encodeName(fieldName));
         
-        if (useTableFieldCaption) {
-            if ((!fieldCaption) || (fieldCaption === ''))
-                fieldCaption = fieldName;
-            if ((fieldCaptionComment) && (fieldCaptionComment !== ''))
-                this.addProperty("Caption", this.encodeString(fieldCaption) + ', Comment = ' + this.encodeString(fieldCaptionComment));
-            else
-                this.addProperty("Caption", this.encodeString(fieldCaption));
-        } else
-            this.addProperty("Caption", this.encodeString(name) + ', Locked = true');
+        if (this.createApiFieldsCaptions) {
+            if (useTableFieldCaption) {
+                if ((!fieldCaption) || (fieldCaption === ''))
+                    fieldCaption = fieldName;
+                if ((fieldCaptionComment) && (fieldCaptionComment !== ''))
+                    this.addProperty("Caption", this.encodeString(fieldCaption) + ', Comment = ' + this.encodeString(fieldCaptionComment));
+                else
+                    this.addProperty("Caption", this.encodeString(fieldCaption));
+            } else
+                this.addProperty("Caption", this.encodeString(name) + ', Locked = true');
+        }
         
         this.writeProperties();
         this.writeEndBlock();

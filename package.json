@@ -1630,6 +1630,12 @@
 						"scope": "resource",
 						"description": "Add tooltips to page fields"
 					},
+ 					"alOutline.createApiFieldsCaptions": {
+						"type": "boolean",
+						"default": true,
+						"scope": "resource",
+						"description": "Set to true to create captions for API pages fields."
+					},
 					"alOutline.useTableFieldCaptionsInApiFields": {
 						"type": "boolean",
 						"default": true,
