@@ -1,6 +1,8 @@
 # Change Log
 
 ## 3.0.41
+ - Issue #385 - AL Language Server Crashing - temp-al-proxy.al 
+   - all references to code creating that temp file removed
  - Issue #410 - Search in Object browser should not be case sensitive
  - Issue #412 - [Request] add permissions to current object
    - new code action on first line of object definition and permission property: "Add permissions to all tables used by this object (AZ AL Dev Tools)"
@@ -27,7 +29,7 @@ Thank you
  - jhoek for reporting issue #414
  - fvet for reporting issues #415 and #425
  - ernestasjuska for reporting issue #417
- - pri-kise for reporting issue #421
+ - pri-kise for reporting issue #385, #421
  - M4fin for reporting issue #424
 
 ## 3.0.40

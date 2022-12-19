@@ -2,7 +2,6 @@ import * as vscode from 'vscode';
 import { ALCodeunitWizardData } from "../wizards/alCodeunitWizardData";
 import { ALSyntaxWriter } from "../../allanguage/alSyntaxWriter";
 import { DevToolsExtensionContext } from "../../devToolsExtensionContext";
-import { ToolsGetInterfaceMethodsListResponse } from '../../langserver/symbolsinformation/toolsGetInterfaceMethodsListResponse';
 import { toolsGetInterfaceMethodsListRequest } from '../../langserver/symbolsinformation/toolsGetInterfaceMethodsListRequest';
 
 export class ALCodeunitSyntaxBuilder {

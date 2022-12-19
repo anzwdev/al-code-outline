@@ -84,6 +84,8 @@ import { ToolsGetWarningDirectivesResponse } from './symbolsinformation/toolsGet
 import { ToolsHoverResponse } from './toolsHoverResponse';
 import { ToolsDocumentPositionRequest } from './ToolsDocumentPositionRequest';
 import { ToolsReferencesResponse } from './toolsReferencesResponse';
+import { toolsGetCodeunitMethodsListRequest } from './symbolsinformation/toolsGetCodeunitMethodsListRequest';
+import { ToolsGetCodeunitMethodsListResponse } from './symbolsinformation/toolsGetCodeunitMethodsListResponse';
 
 export class ToolsLangServerClient implements vscode.Disposable {
     _context : vscode.ExtensionContext;
@@ -334,6 +336,10 @@ export class ToolsLangServerClient implements vscode.Disposable {
     public getCodeunitsList(params: ToolsSymbolInformationRequest) : Promise<ToolsGetCodeunitsListResponse | undefined> {
         return this.sendRequest<ToolsSymbolInformationRequest, ToolsGetCodeunitsListResponse>(params, 'al/getcodeunitslist');
     }
+
+    public getCodeunitMethodsList(params: toolsGetCodeunitMethodsListRequest) : Promise<ToolsGetCodeunitMethodsListResponse | undefined> {
+        return this.sendRequest<toolsGetCodeunitMethodsListRequest, ToolsGetCodeunitMethodsListResponse>(params, 'al/getcodeunitmethodslist');
+    }   
 
     public getEnumsList(params: ToolsSymbolInformationRequest) : Promise<ToolsGetEnumsListResponse | undefined> {
         return this.sendRequest<ToolsSymbolInformationRequest, ToolsGetEnumsListResponse>(params, 'al/getenumslist');

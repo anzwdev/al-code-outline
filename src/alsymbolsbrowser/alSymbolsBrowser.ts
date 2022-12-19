@@ -298,20 +298,7 @@ export class ALSymbolsBrowser extends BaseWebViewEditor {
                 }
             }
 
-            //use Microsoft AL Language Server to open definition
-            let typeName : string | undefined = ALSyntaxHelper.kindToVariableType(alSymbol.kind);
-            if (!typeName) {
-                vscode.window.showErrorMessage('This object type is not supported.');
-                return;    
-            }
-            
-            targetLocation = await this._devToolsContext.alLangProxy.getDefinitionLocation(typeName, alSymbol.name);
-    
-            if (targetLocation) {
-                TextEditorHelper.openEditor(targetLocation.uri, true, preview, targetLocation.range.start);
-            } else {
-                vscode.window.showErrorMessage('Object definition is not available.');
-            }
+            vscode.window.showErrorMessage('Object definition is not available.');
         }
     }
     
