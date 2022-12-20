@@ -2,7 +2,8 @@
 
 ## 3.0.41
 
-alOutline.createApiFieldsCaptions
+ - Issue #363 - XmlPorts - Generate headers 
+   - new `Generate column headers for CSV export` action available on XmlPort header and XmlPort tableelement when XmlPort format is set to "VariableText"
  - Issue #377 - Don't add captions to the API pages fields
    - new `alOutline.createApiFieldsCaptions` setting added
  - Issue #378 - API Pages : API field name suggestions for 'number' fields (number instead of no)
@@ -29,6 +30,7 @@ alOutline.createApiFieldsCaptions
  - Issue #425 - Variable Completion including double quotes
 
 Thank you
+ - 4dimit for reporting issue #363
  - fvet for reporting issues #377, #378, #415 and #425
  - pri-kise for reporting issue #385, #421
  - damse60 for reporting issue #410

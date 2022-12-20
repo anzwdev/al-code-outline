@@ -20,6 +20,7 @@ export class AZSymbolInformation {
     containsDiagnostics: boolean | undefined;
     source: string | undefined;
     extends: string | undefined;
+    format: string | undefined;
     parent: AZSymbolInformation | undefined;
 
     constructor() {
@@ -37,6 +38,7 @@ export class AZSymbolInformation {
         this.contentRange = undefined;
         this.source = undefined;
         this.extends = undefined;
+        this.format = undefined;
         this.parent = undefined;
     }
 
@@ -80,6 +82,8 @@ export class AZSymbolInformation {
             obj.elementsubtype = source.elementsubtype;
         if (source.containsDiagnostics)
             obj.containsDiagnostics = source.containsDiagnostics;
+        if (source.format)
+            obj.format = source.format;
 
         if (source.childSymbols)
             for (let i=0; i<source.childSymbols.length; i++)

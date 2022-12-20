@@ -20,6 +20,7 @@ import { ALAddPermissionsCodeCommand } from './alAddPermissionsCodeCommand';
 import { ALSortPermissionSetListCommand } from './sortSymbols/alSortPermissionSetListCommand';
 import { ALReuseToolTipCodeCommand } from './alReuseToolTipCodeCommand';
 import { ALSortCustomizationsCommand } from './sortSymbols/alSortCustomizationsCommand';
+import { ALXmlPortHeadersCodeCommand } from './alXmlPortHeadersCodeCommand';
 
 export class ALCodeActionsProvider implements vscode.CodeActionProvider {
     protected _toolsExtensionContext : DevToolsExtensionContext;
@@ -37,6 +38,7 @@ export class ALCodeActionsProvider implements vscode.CodeActionProvider {
 
             new ALAddPermissionsCodeCommand(this._toolsExtensionContext),
             new ALReuseToolTipCodeCommand(this._toolsExtensionContext),
+            new ALXmlPortHeadersCodeCommand(this._toolsExtensionContext),
 
             //sorting
             new ALSortTableFieldsCommand(this._toolsExtensionContext),
