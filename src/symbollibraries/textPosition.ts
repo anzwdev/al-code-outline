@@ -30,4 +30,16 @@ export class TextPosition {
         this.character = newCharacter;
     }
 
+    public compare(position: TextPosition) {
+        if (this.line > position.line)
+            return 1;
+        if (this.line < position.line)
+            return -1;
+        if (this.character > position.character)
+            return 1;
+        if (this.character < position.character)
+            return -1;
+        return 0;
+    }
+
 }

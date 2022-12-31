@@ -214,8 +214,9 @@ export enum AZSymbolKind {
     //Syntax tree
     SyntaxTreeNode = 50056,
     SyntaxTreeToken = 50057,
-    SyntaxTreeTrivia = 50058
+    SyntaxTreeTrivia = 50058,
 
-    //Next available id 50066
+    Region = 50066
+    //Next available id 50067
 
 }

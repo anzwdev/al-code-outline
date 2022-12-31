@@ -27,8 +27,8 @@
   <defs
      id="defs8660" />
   <sodipodi:namedview
-     pagecolor="#ffffff"
-     bordercolor="#666666"
+     pagecolor="#000000"
+     bordercolor="#999999"
      borderopacity="1"
      objecttolerance="10"
      gridtolerance="10"
@@ -44,11 +44,11 @@
      inkscape:cy="8"
      inkscape:window-x="0"
      inkscape:window-y="0"
-     inkscape:window-maximized="0"
+     inkscape:window-maximized="1"
      inkscape:current-layer="svg8656" />
   <style
      type="text/css"
-     id="style8650">.icon-canvas-transparent{opacity:0;fill:#F6F6F6;} .icon-vs-out{fill:#F6F6F6;} .icon-vs-bg{fill:#424242;} .icon-vs-fg{fill:#F0EFF1;}</style>
+     id="style8650">.icon-canvas-transparent{opacity:0;fill:#090909;} .icon-vs-out{fill:#090909;} .icon-vs-bg{fill:#bdbdbd;} .icon-vs-fg{fill:#0f0e10;}</style>
   <rect
      class="icon-canvas-transparent"
      width="16"
@@ -58,15 +58,15 @@
      class="icon-vs-out"
      d="M10.061 1h-6.061c-.97 0-2 .701-2 2v7.586l-2 2v.828l2.586 2.586h1.414v-.545c.524.338 1.213.545 2 .545s1.476-.207 2-.545v.545h1.414l1-1h1.586c1.299 0 2-1.03 2-2v-8.444l-3.939-3.556z"
      id="outline"
-     style="fill:#2d2d30;fill-opacity:1" />
+     style="fill:#090909;fill-opacity:1" />
   <path
      class="icon-vs-bg"
      d="M13 5v8s-.035 1-1.035 1h-.551l.586-.586v-7.414h-3v-3h-5v5.586l-1 1v-6.586c0-1 .964-1 .964-1h5.677l3.359 3zm-4 6v1l1 1-1 1v1l2-2-2-2zm-8 2l2 2v-1l-1-1 1-1v-1l-2 2zm7-1.801v2.6c0 .664-.896 1.201-2 1.201s-2-.537-2-1.201v-2.6c0-.662.896-1.199 2-1.199s2 .537 2 1.199zm-.5 0c0-.353-.642-.75-1.5-.75s-1.5.397-1.5.75c0 .356.642.75 1.5.75s1.5-.394 1.5-.75z"
      id="iconBg"
-     style="fill:#c5c5c5;fill-opacity:1" />
+     style="fill:#bdbdbd;fill-opacity:1" />
   <path
      class="icon-vs-fg"
      d="M12 6v6.586l-4-4v.959c-.524-.338-1.213-.545-2-.545s-1.476.207-2 .545v-6.545h5v3h3zm-6 4.449c-.858 0-1.5.397-1.5.75 0 .356.642.75 1.5.75s1.5-.394 1.5-.75c0-.353-.642-.75-1.5-.75z"
      id="iconFg"
-     style="fill:#323232;fill-opacity:1" />
+     style="fill:#090909;fill-opacity:1" />
 </svg>

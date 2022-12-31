@@ -1,0 +1,15 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16">
+  <defs>
+    <style>.canvas{fill: none; opacity: 0;}.light-blue-10{fill: #005dba; opacity: 0.1;}.light-blue{fill: #005dba; opacity: 1;}.light-defaultgrey-10{fill: #212121; opacity: 0.1;}.light-defaultgrey{fill: #212121; opacity: 1;}</style>
+  </defs>
+  <title>IconLightRibbonMenuAction</title>
+  <g id="canvas">
+    <path class="canvas" d="M16,16H0V0H16Z" />
+  </g>
+  <g id="level-1">
+    <path class="light-blue-10" d="M5.5,13.5l-3,2v-4Z" />
+    <path class="light-blue" d="M2.777,15.916,2,15.5v-4l.777-.416,3,2v.832ZM3,12.435v2.13L4.6,13.5ZM1,11v5H0V11Zm7,0v5H7V11Z" />
+    <path class="light-defaultgrey-10" d="M16,4.5v8l-.5.5H9V10H0V4.5L.5,4H3V2.5L3.5,2h5l.5.5V4h6.5Z" />
+    <path class="light-defaultgrey" d="M16,4.5v8l-.5.5H9V12h6V5H8.5L8,4.5V3H4V4.5L3.5,5H1v5H0V4.5L.5,4H3V2.5L3.5,2h5l.5.5V4h6.5ZM3,9H5V7H3Zm8-2V9h2V7ZM9,7H7V9H9Z" />
+  </g>
+</svg>

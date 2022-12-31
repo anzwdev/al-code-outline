@@ -26,27 +26,27 @@
   <defs
      id="defs17156" />
   <sodipodi:namedview
-     pagecolor="#ffffff"
-     bordercolor="#666666"
+     pagecolor="#000000"
+     bordercolor="#999999"
      borderopacity="1"
      objecttolerance="10"
      gridtolerance="10"
      guidetolerance="10"
      inkscape:pageopacity="0"
      inkscape:pageshadow="2"
-     inkscape:window-width="941"
-     inkscape:window-height="594"
+     inkscape:window-width="780"
+     inkscape:window-height="480"
      id="namedview17154"
      showgrid="false"
      inkscape:zoom="14.75"
-     inkscape:cx="9.2039135"
-     inkscape:cy="10.412738"
+     inkscape:cx="8"
+     inkscape:cy="8"
      inkscape:window-x="0"
      inkscape:window-y="0"
      inkscape:window-maximized="0"
      inkscape:current-layer="svg17152" />
   <style
-     id="style17145">.icon-canvas-transparent{opacity:0;fill:#f6f6f6}.icon-vs-out{fill:#f6f6f6}.icon-vs-bg{fill:#424242}.icon-vs-fg{fill:#f0eff1}.icon-vs-blue{fill:#1ba1e2}</style>
+     id="style17145">.icon-canvas-transparent{opacity:0;fill:#090909}.icon-vs-out{fill:#090909}.icon-vs-bg{fill:#bdbdbd}.icon-vs-fg{fill:#0f0e10}.icon-vs-blue{fill:#1da3e4}</style>
   <path
      class="icon-canvas-transparent"
      d="M16 16H0V0h16v16z"
@@ -54,21 +54,18 @@
   <path
      class="icon-vs-out"
      d="M15 0v16H1V0h14z"
-     id="outline"
-     style="fill:#2d2d30;fill-opacity:1" />
+     id="outline" />
   <path
      class="icon-vs-bg"
      d="M2 1v14h12V1H2zm11 13H3V2h10v12zm-1-1H4v-1h8v1zm0-2H4v-1h8v1zm0-2H4V8h8v1z"
-     id="iconBg"
-     style="fill:#c5c5c5;fill-opacity:1" />
+     id="iconBg" />
   <path
      class="icon-vs-fg"
      d="M11 5H5V4h6v1zm2-3v12H3V2h10zm-1 10H4v1h8v-1zm0-2H4v1h8v-1zm0-2H4v1h8V8zm0-5H4v3h8V3z"
-     id="iconFg"
-     style="fill:#2d2d30;fill-opacity:1" />
+     id="iconFg" />
   <path
      class="icon-vs-blue"
      d="M12 3H4v3h8V3zm-1 2H5V4h6v1z"
      id="colorImportance"
-     style="fill:#75beff;fill-opacity:1" />
+     style="fill:#63b6ff;fill-opacity:1" />
 </svg>

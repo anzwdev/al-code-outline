@@ -144,7 +144,7 @@ export class DuplicateCodeService extends DevToolsExtensionService {
             validateInput: (text: string): string | undefined => {
                 if (text) {
                     let value = Number.parseInt(text);
-                    if ((value) && (value != NaN) && (value >= this._minAllowedNoOfStatements))
+                    if ((value) && (!Number.isNaN(value)) && (value >= this._minAllowedNoOfStatements))
                         return undefined;       
                 }
                 return 'Min. no of statements must be a number greate or equal 3';
@@ -153,7 +153,7 @@ export class DuplicateCodeService extends DevToolsExtensionService {
 
         if (valueString) {
             let value = Number.parseInt(valueString);
-            if ((value) && (value != NaN) && (value >= this._minAllowedNoOfStatements)) {
+            if ((value) && (!Number.isNaN(value)) && (value >= this._minAllowedNoOfStatements)) {
                 this.setDefaultMinNoOfStatements(value);
                 return value;
             }

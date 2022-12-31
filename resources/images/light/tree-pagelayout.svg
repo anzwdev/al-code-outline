@@ -1,0 +1,18 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16">
+  <defs>
+    <style>.canvas{fill: none; opacity: 0;}.light-defaultgrey-10{fill: #212121; opacity: 0.1;}.light-defaultgrey{fill: #212121; opacity: 1;}.cls-1{opacity:0.75;}</style>
+  </defs>
+  <title>IconLightPageLayout</title>
+  <g id="canvas">
+    <path class="canvas" d="M16,16H0V0H16Z" />
+  </g>
+  <g id="level-1">
+    <g class="cls-1">
+      <path class="light-defaultgrey-10" d="M14,2.5v12l-.5.5H1.5L1,14.5V2.5L1.5,2h12Z" />
+      <path class="light-defaultgrey" d="M11,3V2h1V3ZM10,3V2H9V3ZM8,3V2H7V3ZM6,3V2H5V3ZM4,3V2H3V3Zm8,12V14H11v1Zm-2,0V14H9v1ZM8,15V14H7v1ZM6,15V14H5v1ZM4,15V14H3v1Zm9-1v1h.5l.5-.5V14ZM2,14H1v.5l.5.5H2ZM14,4H13V5h1Zm0,2H13V7h1Zm0,2H13V9h1Zm0,2H13v1h1Zm0,2H13v1h1ZM2,4H1V5H2ZM2,6H1V7H2ZM2,8H1V9H2Zm0,2H1v1H2Zm0,2H1v1H2ZM13,3h1V2.5L13.5,2H13ZM2,3V2H1.5L1,2.5V3Z" />
+    </g>
+    <path class="light-defaultgrey-10" d="M6.5,7.5h-2v-2h2Z" />
+    <path class="light-defaultgrey" d="M11,6H8V5h3Zm0,1H8V8h3Zm0,2H4v1h7Zm0,2H4v1h7Z" />
+    <path class="light-defaultgrey" d="M6.5,5h-2L4,5.5v2l.5.5h2L7,7.5v-2ZM6,7H5V6H6Z" />
+  </g>
+</svg>

@@ -39,6 +39,13 @@
 		"onCommand:azALDevTools.showAllProjectSymbols",
 		"onCommand:azALDevTools.showProjectSymbolsWithoutDep",
 		"onCommand:azALDevTools.refreshOutlineView",
+		"onCommand:azALDevTools.alOutlineCollapseAll",
+		"onCommand:azALDevTools.sortOutlineViewByPosition",
+		"onCommand:azALDevTools.sortOutlineViewByName",
+		"onCommand:azALDevTools.sortOutlineViewByCategory",
+		"onCommandazALDevTools.sortOutlineViewByPositionNoAction",
+		"onCommandazALDevTools.sortOutlineViewByNameNoAction",
+		"onCommandazALDevTools.sortOutlineViewByCategoryNoAction",
 		"onCommand:azALDevTools.newALFile",
 		"onCommand:azALDevTools.showDocumentSymbols",
 		"onCommand:azALDevTools.goToDefinitionSymbolTree",
@@ -277,6 +284,43 @@
 				"command": "azALDevTools.refreshOutlineView",
 				"title": "Refresh",
 				"icon": "$(refresh)"
+			},
+			{
+				"command": "azALDevTools.alOutlineCollapseAll",
+				"title": "Collapse All",
+				"icon": "$(collapse-all)"
+			},
+			{
+				"command":"azALDevTools.sortOutlineViewByPosition",
+				"title": "Sort By: Position"
+			},
+			{
+				"command":"azALDevTools.sortOutlineViewByName",
+				"title": "Sort By: Name"
+			},
+			{
+				"command":"azALDevTools.sortOutlineViewByCategory",
+				"title": "Sort By: Category"
+			},
+			{
+				"command":"azALDevTools.sortOutlineViewByPositionNoAction",
+				"title": "✓ Sort By: Position"
+			},
+			{
+				"command":"azALDevTools.sortOutlineViewByNameNoAction",
+				"title": "✓ Sort By: Name"
+			},
+			{
+				"command":"azALDevTools.sortOutlineViewByCategoryNoAction",
+				"title": "✓ Sort By: Category"
+			},
+			{
+				"command": "azALDevTools.alOutlineEnableFollowCursor",
+				"title": "Follow Cursor"
+			},
+			{
+				"command": "azALDevTools.alOutlineDisableFollowCursor",
+				"title": "✓ Follow Cursor"
 			},
 			{
 				"command": "alOutline.createListPage",
@@ -653,14 +697,6 @@
 				"title": "Run Code Cleanup on Uncommited Files in the Active Project"
 			},
 			{
-				"command": "azALDevTools.alOutlineEnableFollowCursor",
-				"title": "Enable 'Follow Cursor'"
-			},
-			{
-				"command": "azALDevTools.alOutlineDisableFollowCursor",
-				"title": "Disable 'Follow Cursor'"
-			},
-			{
 				"category": "AZ AL Dev Tools",
 				"command": "azALDevTools.showExtensionLog",
 				"title": "Open AZ AL Dev Tools log file"
@@ -748,6 +784,34 @@
 				},
 				{
 					"command": "azALDevTools.refreshOutlineView",
+					"when": "false"					
+				},
+				{
+					"command": "azALDevTools.alOutlineCollapseAll",
+					"when": "false"
+				},
+				{
+					"command":"azALDevTools.sortOutlineViewByPosition",
+					"when": "false"
+				},
+				{
+					"command":"azALDevTools.sortOutlineViewByName",
+					"when": "false"
+				},
+				{
+					"command":"azALDevTools.sortOutlineViewByCategory",
+					"when": "false"
+				},
+				{
+					"command":"azALDevTools.sortOutlineViewByPositionNoAction",
+					"when": "false"
+				},
+				{
+					"command":"azALDevTools.sortOutlineViewByNameNoAction",
+					"when": "false"
+				},
+				{
+					"command":"azALDevTools.sortOutlineViewByCategoryNoAction",
 					"when": "false"
 				},
 				{
@@ -1071,15 +1135,52 @@
 				{
 					"command": "azALDevTools.refreshOutlineView",
 					"when": "view == azALDevTools.SymbolsTreeProvider",
-					"group": "navigation"
+					"group": "navigation@1"
+				},
+				{
+					"command": "azALDevTools.alOutlineCollapseAll",
+					"when": "view == azALDevTools.SymbolsTreeProvider",
+					"group": "navigation@2"
 				},
 				{
 					"command": "azALDevTools.alOutlineEnableFollowCursor",
-					"when": "view == azALDevTools.SymbolsTreeProvider && !azALDevTools:alOutlineFollowCursor"
+					"when": "view == azALDevTools.SymbolsTreeProvider && !azALDevTools:alOutlineFollowCursor",
+					"group": "1-actions"
 				},
 				{
 					"command": "azALDevTools.alOutlineDisableFollowCursor",
-					"when": "view == azALDevTools.SymbolsTreeProvider && azALDevTools:alOutlineFollowCursor"
+					"when": "view == azALDevTools.SymbolsTreeProvider && azALDevTools:alOutlineFollowCursor",
+					"group": "1-actions"
+				},				
+				{
+					"command":"azALDevTools.sortOutlineViewByPosition",
+					"when": "view == azALDevTools.SymbolsTreeProvider && azALDevTools:alOutlineSortMode != position",
+					"group": "z-commands@1"
+				},
+				{
+					"command":"azALDevTools.sortOutlineViewByPositionNoAction",
+					"when": "view == azALDevTools.SymbolsTreeProvider && azALDevTools:alOutlineSortMode == position",
+					"group": "z-commands@1"
+				},
+				{
+					"command":"azALDevTools.sortOutlineViewByName",
+					"when": "view == azALDevTools.SymbolsTreeProvider && azALDevTools:alOutlineSortMode != name",
+					"group": "z-commands@2"
+				},
+				{
+					"command":"azALDevTools.sortOutlineViewByNameNoAction",
+					"when": "view == azALDevTools.SymbolsTreeProvider && azALDevTools:alOutlineSortMode == name",
+					"group": "z-commands@2"
+				},
+				{
+					"command":"azALDevTools.sortOutlineViewByCategory",
+					"when": "view == azALDevTools.SymbolsTreeProvider && azALDevTools:alOutlineSortMode != category",
+					"group": "z-commands@3"
+				},
+				{
+					"command":"azALDevTools.sortOutlineViewByCategoryNoAction",
+					"when": "view == azALDevTools.SymbolsTreeProvider && azALDevTools:alOutlineSortMode == category",
+					"group": "z-commands@3"
 				},
 				{
 					"command": "azALDevTools.hideWarningDirectivesPanel",

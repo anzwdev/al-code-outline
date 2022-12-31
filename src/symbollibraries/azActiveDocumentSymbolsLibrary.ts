@@ -29,9 +29,9 @@ export class AZActiveDocumentSymbolsLibrary extends AZDocumentSymbolsLibrary {
 
     protected onActiveDocumentChanged() {
         if (vscode.window.activeTextEditor)
-            this.setDocUri(vscode.window.activeTextEditor.document.uri);
+            this.setUri(vscode.window.activeTextEditor.document.uri);
         else
-            this.setDocUri(undefined);
+            this.setUri(undefined);
         if (this._autoReload)
             this.loadAsync(false);
     }

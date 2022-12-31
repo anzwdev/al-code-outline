@@ -1,24 +1,45 @@
 import * as vscode from 'vscode';
-import * as path from 'path';
 import { DevToolsExtensionContext } from '../devToolsExtensionContext';
-import { AZSymbolKind } from '../symbollibraries/azSymbolKind';
 import { AZSymbolsLibrary } from '../symbollibraries/azSymbolsLibrary';
-import { AZSymbolInformation } from '../symbollibraries/azSymbolInformation';
+import { ALOutlineTreeItem } from './alOutlineTreeNode';
+import { ALOutlineSortMode } from './alOutlineSortMode';
+import { ALOutlineTreeState } from './alOutlineTreeState';
+import { ALOutlineTreeDocumentState } from './alOutlineTreeDocumentState';
 
-export class SymbolsTreeProvider implements vscode.TreeDataProvider<AZSymbolInformation> {
+export class SymbolsTreeProvider implements vscode.TreeDataProvider<ALOutlineTreeItem> {
     protected _toolsExtensionContext : DevToolsExtensionContext;
-    protected _treeRoot : AZSymbolInformation | undefined;
+    protected _treeRoot : ALOutlineTreeItem | undefined;
+    protected _sortMode : ALOutlineSortMode;
+    protected _state: ALOutlineTreeState;
+    protected _currDocState: ALOutlineTreeDocumentState | undefined;
 
-	private _onDidChangeTreeData: vscode.EventEmitter<AZSymbolInformation | null> = new vscode.EventEmitter<AZSymbolInformation | null>();
-	readonly onDidChangeTreeData: vscode.Event<AZSymbolInformation | null> = this._onDidChangeTreeData.event;
+	private _onDidChangeTreeData: vscode.EventEmitter<ALOutlineTreeItem | null> = new vscode.EventEmitter<ALOutlineTreeItem | null>();
+	readonly onDidChangeTreeData: vscode.Event<ALOutlineTreeItem | null> = this._onDidChangeTreeData.event;
 
     constructor(context : DevToolsExtensionContext) {
+        this._state = new ALOutlineTreeState();
+        this._currDocState = undefined;
+        this._sortMode = ALOutlineSortMode.position;
         this._toolsExtensionContext = context;        
         this._toolsExtensionContext.activeDocumentSymbols.onSymbolsChanged(symbolsLib => this.onSymbolsChanged(symbolsLib));
+        this.updateSortModeState();
     }
 
     protected onSymbolsChanged(library : AZSymbolsLibrary) {
-        this._treeRoot = library.rootSymbol;        
+        if (this._treeRoot)
+            this._treeRoot.saveState(this._currDocState!);
+
+        if (library.rootSymbol) {
+            let u = library.getUri();
+
+            this._currDocState = this._state.getDocumentState(library.getSourceId());
+            this._treeRoot = new ALOutlineTreeItem(library.rootSymbol, this._toolsExtensionContext.vscodeExtensionContext, undefined, this._currDocState, this._currDocState.getId(), 0);
+            this._treeRoot.sort(this._sortMode);
+        } else {
+            this._treeRoot = undefined;
+            this._currDocState = undefined;
+        }
+
         if (this._onDidChangeTreeData)
             this._onDidChangeTreeData.fire(null);
     }
@@ -27,95 +48,55 @@ export class SymbolsTreeProvider implements vscode.TreeDataProvider<AZSymbolInfo
         this._toolsExtensionContext.activeDocumentSymbols.loadAsync(true);
     }
 
-    protected getSymbolIcon(symbol : AZSymbolInformation) : any {
-        let icon = "tree-" + symbol.icon + ".svg";
-        
-        return {
-            light: this._toolsExtensionContext.vscodeExtensionContext.asAbsolutePath(path.join("resources", "images", "light", icon)),
-            dark: this._toolsExtensionContext.vscodeExtensionContext.asAbsolutePath(path.join("resources", "images", "dark", icon))
-        }
-
-    }
-
-    protected getNodeCollapsibleState(element: AZSymbolInformation) {
-        if ((element.childSymbols) && (element.childSymbols.length > 0)) {
-            switch (element.kind) {
-                //AL Symbols
-                case AZSymbolKind.MethodDeclaration:
-                case AZSymbolKind.ParameterList:
-                case AZSymbolKind.TriggerDeclaration:
-                case AZSymbolKind.LocalMethodDeclaration:
-                case AZSymbolKind.ProtectedMethodDeclaration:
-                case AZSymbolKind.InternalMethodDeclaration:
-                case AZSymbolKind.EventDeclaration:
-                case AZSymbolKind.EventTriggerDeclaration:
-                case AZSymbolKind.PageHandlerDeclaration:
-                case AZSymbolKind.ReportHandlerDeclaration:
-                case AZSymbolKind.ConfirmHandlerDeclaration:
-                case AZSymbolKind.MessageHandlerDeclaration:
-                case AZSymbolKind.StrMenuHandlerDeclaration:
-                case AZSymbolKind.HyperlinkHandlerDeclaration:
-                case AZSymbolKind.ModalPageHandlerDeclaration:
-                case AZSymbolKind.FilterPageHandlerDeclaration:
-                case AZSymbolKind.RequestPageHandlerDeclaration:
-                case AZSymbolKind.SessionSettingsHandlerDeclaration:
-                case AZSymbolKind.SendNotificationHandlerDeclaration:
-                case AZSymbolKind.TestDeclaration:
-                case AZSymbolKind.Field:
-                case AZSymbolKind.PageField:
-                case AZSymbolKind.PageAction:
-                case AZSymbolKind.PropertyList:
-                //Other Symbols
-                case AZSymbolKind.Class:
-                case AZSymbolKind.Field:
-                    return vscode.TreeItemCollapsibleState.Collapsed;
-                default: 
-                    return vscode.TreeItemCollapsibleState.Expanded;
-            }
-        } else
-            return vscode.TreeItemCollapsibleState.None;
+    public collapseAll() {
+        vscode.commands.executeCommand('workbench.actions.treeView.azALDevTools.SymbolsTreeProvider.collapseAll');
     }
 
     //#region TreeDataProvider implementation
 
-    getTreeItem(element: AZSymbolInformation): vscode.TreeItem | Thenable<vscode.TreeItem> {
-        let treeItem = new vscode.TreeItem(element.fullName);
-        treeItem.iconPath = this.getSymbolIcon(element);
-        treeItem.collapsibleState = this.getNodeCollapsibleState(element);
-        
-        //node command
-        if (element.selectionRange) 
-            treeItem.command = {
-                command: 'azALDevTools.selectDocumentText',
-                title: '',
-                arguments: [
-                    element.selectionRange
-                ]
-            };
-        //node context
-        treeItem.contextValue = AZSymbolKind[element.kind];
-
-        return treeItem;
+    getTreeItem(element: ALOutlineTreeItem): vscode.TreeItem | Thenable<vscode.TreeItem> {
+        return element;
     }
     
-    async getChildren(element?: AZSymbolInformation): Promise<AZSymbolInformation[]> {
-        if ((element) && (element.childSymbols))
-            return element.childSymbols;
-        if ((!element) && (this._treeRoot) && (this._treeRoot.childSymbols))
-            return this._treeRoot.childSymbols;
+    async getChildren(element?: ALOutlineTreeItem): Promise<ALOutlineTreeItem[]> {
+        if ((element) && (element.childNodes))
+            return element.childNodes;
+        if ((!element) && (this._treeRoot) && (this._treeRoot.childNodes))
+            return this._treeRoot.childNodes;
         return [];
     }
 
-    getParent(element: AZSymbolInformation): AZSymbolInformation | undefined {
+    getParent(element: ALOutlineTreeItem): ALOutlineTreeItem | undefined {
         return element.parent;
     }
 
     //#endregion
 
-    getSymbolAtPosition(position: vscode.Position): AZSymbolInformation | undefined {
+    getNodeAtPosition(position: vscode.Position): ALOutlineTreeItem | undefined {
         if (this._treeRoot)
-            return this._treeRoot.findSymbolAtPosition(position, false);
+            return this._treeRoot.findNodeAtPosition(position, false);
         return undefined;
+    }
+
+    setSortMode(mode: ALOutlineSortMode) {
+        if (this._sortMode != mode) {
+            this._sortMode = mode;
+            if (this._treeRoot) {
+                this._treeRoot.sort(this._sortMode);
+                if (this._onDidChangeTreeData)
+                    this._onDidChangeTreeData.fire(null);
+            }
+        }
+        this.updateSortModeState();
+    }
+
+    private updateSortModeState() {
+        let state = ALOutlineSortMode[this._sortMode];
+        vscode.commands.executeCommand('setContext', 'azALDevTools:alOutlineSortMode', state);
+    }
+
+    private saveState() {
+        
     }
 
 }

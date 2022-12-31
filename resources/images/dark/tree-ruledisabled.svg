@@ -1,6 +1,6 @@
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16">
   <defs>
-    <style>.canvas{fill: none; opacity: 0;}.light-defaultgrey-10{fill: #dedede; opacity: 0.1;}.light-defaultgrey{fill: #dedede; opacity: 1;}.light-red{fill: #c50b17; opacity: 1;}.white{fill: #000000; opacity: 1;}.cls-1{opacity:0.75;}</style>
+    <style>.canvas{fill: none; opacity: 0;}.light-defaultgrey-10{fill: #dedede; opacity: 0.1;}.light-defaultgrey{fill: #dedede; opacity: 1;}.light-red{fill: #f43a46; opacity: 1;}.white{fill: #000000; opacity: 1;}.cls-1{opacity:0.75;}</style>
   </defs>
   <title>IconLightRuleError</title>
   <g id="canvas" class="canvas">

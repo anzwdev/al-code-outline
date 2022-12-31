@@ -3,6 +3,7 @@ import { ALInterfaceWizardData } from "../wizards/alInterfaceWizardData";
 import { ALSyntaxWriter } from "../../allanguage/alSyntaxWriter";
 import { DevToolsExtensionContext } from "../../devToolsExtensionContext";
 import { toolsGetCodeunitMethodsListRequest } from '../../langserver/symbolsinformation/toolsGetCodeunitMethodsListRequest';
+import { AZSymbolAccessModifier } from '../../symbollibraries/azSymbolAccessModifier';
 
 export class ALInterfaceSyntaxBuilder {
     protected _toolsExtensionContext : DevToolsExtensionContext;
@@ -25,7 +26,7 @@ export class ALInterfaceSyntaxBuilder {
 
             if ((methodsResponse) && (methodsResponse.symbols) && (methodsResponse.symbols.length > 0)) {
                 for (let i=0; i<methodsResponse.symbols.length; i++) {
-                    if ((methodsResponse.symbols[i].header) && ((!methodsResponse.symbols[i].accessModifier) || (methodsResponse.symbols[i].accessModifier == "")))
+                    if ((methodsResponse.symbols[i].header) && ((!methodsResponse.symbols[i].accessModifier) || (methodsResponse.symbols[i].accessModifier == AZSymbolAccessModifier.Public)))
                         writer.writeLine(methodsResponse.symbols[i].header! + ";");
                 }        
                 writer.writeLine("");

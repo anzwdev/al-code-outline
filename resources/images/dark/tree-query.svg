@@ -22,8 +22,8 @@
          rdf:about=""><dc:format>image/svg+xml</dc:format><dc:type
            rdf:resource="http://purl.org/dc/dcmitype/StillImage" /></cc:Work></rdf:RDF></metadata><defs
      id="defs18510" /><sodipodi:namedview
-     pagecolor="#ffffff"
-     bordercolor="#666666"
+     pagecolor="#000000"
+     bordercolor="#999999"
      borderopacity="1"
      objecttolerance="10"
      gridtolerance="10"
@@ -35,19 +35,19 @@
      id="namedview18508"
      showgrid="false"
      inkscape:zoom="14.75"
-     inkscape:cx="8.2226295"
-     inkscape:cy="8.7313082"
+     inkscape:cx="8"
+     inkscape:cy="8"
      inkscape:window-x="0"
      inkscape:window-y="0"
      inkscape:window-maximized="0"
      inkscape:current-layer="svg18506" /><style
      type="text/css"
      id="style18489">
-	.icon_x002D_canvas_x002D_transparent{opacity:0;fill:#F6F6F6;}
-	.icon_x002D_vs_x002D_out{fill:#F6F6F6;}
-	.icon_x002D_vs_x002D_bg{fill:#424242;}
-	.icon_x002D_vs_x002D_fg{fill:#F0EFF1;}
-	.icon_x002D_vs_x002D_blue{fill:#1BA1E2;}
+	.icon_x002D_canvas_x002D_transparent{opacity:0;fill:#090909;}
+	.icon_x002D_vs_x002D_out{fill:#090909;}
+	.icon_x002D_vs_x002D_bg{fill:#bdbdbd;}
+	.icon_x002D_vs_x002D_fg{fill:#0f0e10;}
+	.icon_x002D_vs_x002D_blue{fill:#1da3e4;}
 </style><g
      id="canvas"><path
        class="icon_x002D_canvas_x002D_transparent"
@@ -56,20 +56,17 @@
      id="outline"><path
        class="icon_x002D_vs_x002D_out"
        d="M13,1h-1v2.014c-1.499-1.43-6.457-1.305-8,0.004V1H3L1,3.586V8h0.676   C1.253,8.413,1,8.926,1,9.5v3C1,13.926,2.505,15,4.5,15S8,13.926,8,12.5V14h7V3.586L13,1z"
-       id="path18494"
-       style="fill:#2d2d30;fill-opacity:1" /></g><g
+       id="path18494" /></g><g
      id="iconBg"><path
        class="icon_x002D_vs_x002D_bg"
        d="M9,13h5V8H9V13z M10,9h3v1h-3V9z M10,11h3v1h-3V11z M14,4v2v1h-1h-2l-1-1h2.472   c-1.01-1.219-2.529-2-4.232-2H7.761C6.058,4,4.538,4.781,3.528,6H6L5,7H3H2V6V4l1-1v2.085C4.187,3.804,5.88,3,7.761,3H8v0.01   c2,0.039,3.843,0.826,5,2.075V3L14,4z"
-       id="path18497"
-       style="fill:#c5c5c5;fill-opacity:1" /></g><g
+       id="path18497" /></g><g
      id="iconFg"><path
        class="icon_x002D_vs_x002D_fg"
        d="M13,9v1h-3V9H13z M10,12h3v-1h-3V12z M4.5,8.575c-1.084,0-1.925,0.497-1.925,0.925   s0.841,0.925,1.925,0.925S6.425,9.928,6.425,9.5S5.584,8.575,4.5,8.575z"
-       id="path18500"
-       style="fill:#2d2d30;fill-opacity:1" /></g><g
+       id="path18500" /></g><g
      id="colorImportance"><path
        class="icon_x002D_vs_x002D_blue"
        d="M4.5,8C3.119,8,2,8.672,2,9.5v3C2,13.328,3.119,14,4.5,14S7,13.328,7,12.5v-3   C7,8.672,5.881,8,4.5,8z M4.5,10.425c-1.084,0-1.925-0.497-1.925-0.925S3.416,8.575,4.5,8.575S6.425,9.072,6.425,9.5   S5.584,10.425,4.5,10.425z"
        id="path18503"
-       style="fill:#75beff;fill-opacity:1" /></g></svg>
+       style="fill:#63b6ff;fill-opacity:1" /></g></svg>
