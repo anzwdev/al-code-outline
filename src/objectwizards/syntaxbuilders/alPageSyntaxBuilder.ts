@@ -51,16 +51,6 @@ export class ALPageSyntaxBuilder {
             }
         }
 
-
-        if (!pageAppAreaAdded) 
-            if (data.applicationArea) 
-                if (data.applicationArea !== "") 
-                    if (data.applicationAreaMode == AppAreaMode.inheritFromMainObject) {
-                        let t = 10;
-                    }
-
-
-
         if ((!pageAppAreaAdded) && (data.applicationArea) && (data.applicationArea !== "") && (data.applicationAreaMode == AppAreaMode.inheritFromMainObject)) {
             writer.addProperty("ApplicationArea", data.applicationArea);
             pageAppAreaAdded = true;
@@ -100,7 +90,13 @@ export class ALPageSyntaxBuilder {
                             data.selectedFieldList[i].captionLabel?.comment, data.selectedFieldList[i].description, 
                             data.createTooltips, data.selectedFieldList[i].toolTips);
                 }
-            }       
+            }
+
+            if ((isApi) && (data.selectedFlowFilterList))
+                for (let i=0; i<data.selectedFlowFilterList.length; i++)
+                    writer.writeApiPageField(data.selectedFlowFilterList[i].name!, data.selectedFlowFilterList[i].caption,
+                        data.selectedFlowFilterList[i].captionLabel?.comment, useTableFieldCaptionsInApi);
+
             writer.writeEndBlock();
         }
 

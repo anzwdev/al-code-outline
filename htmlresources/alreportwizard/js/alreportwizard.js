@@ -1,7 +1,7 @@
 class ReportWizard extends TableBasedObjectWizard {
 
     constructor() {
-        super(2);
+        super(2, false);
 
         this.registerFieldsSelectionEvents();
 

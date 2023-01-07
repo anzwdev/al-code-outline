@@ -11,6 +11,7 @@ export class AZSymbolsLibrary {
     rootSymbol : AZSymbolInformation | undefined;
     showObjectIds : boolean;
     protected _twoWayTree: boolean;
+    protected _sourceId: string | undefined;
 
     private _onSymbolsChanged: vscode.EventEmitter<AZSymbolsLibrary> = new vscode.EventEmitter<AZSymbolsLibrary>();
 	readonly onSymbolsChanged: vscode.Event<AZSymbolsLibrary> = this._onSymbolsChanged.event;
@@ -21,6 +22,7 @@ export class AZSymbolsLibrary {
         this.name = '';
         this.rootSymbol = undefined;
         this._twoWayTree = false;
+        this._sourceId = undefined;
     }
 
     async loadAsync(forceReload : boolean) : Promise<boolean> {
@@ -44,8 +46,9 @@ export class AZSymbolsLibrary {
             this._onSymbolsChanged.fire(this);
     }
 
-    public setRootSymbol(symbol : AZSymbolInformation | undefined) {
+    public setRootSymbol(symbol : AZSymbolInformation | undefined, sourceId: string | undefined) {
         this.rootSymbol = symbol;
+        this._sourceId = sourceId;
         if (this._onSymbolsChanged)
             this._onSymbolsChanged.fire(this);
     }
@@ -241,6 +244,15 @@ export class AZSymbolsLibrary {
 
     public getUri(): vscode.Uri | undefined {
         return undefined;
+    }
+
+    public getSourceId(): string {
+        let uri = this.getUri();
+        if (uri)
+            return uri.toString();
+        if (this._sourceId)
+            return this._sourceId;
+        return 'undefined';
     }
 
 } 

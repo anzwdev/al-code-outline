@@ -10,7 +10,9 @@ export class ALTableBasedWizardData {
     tableList : string[] | undefined;
     selectedTable : string;
     fieldList : TableFieldInformation[] | undefined;
+    flowFiltersList : TableFieldInformation[] | undefined;
     selectedFieldList : TableFieldInformation[] | undefined;
+    selectedFlowFilterList : TableFieldInformation[] | undefined;
     fixedTable : boolean;
     applicationArea : string;
     applicationAreaMode : AppAreaMode;
@@ -21,8 +23,8 @@ export class ALTableBasedWizardData {
         this.objectName = "";
         this.tableList = undefined;
         this.selectedTable = "";
-        this.fieldList = undefined;
-        this.selectedFieldList = undefined;
+        this.fieldList = undefined;        
+        this.selectedFieldList = undefined;        
         this.fixedTable = false;
         this.applicationArea = "All";
         this.applicationAreaMode = AppAreaMode.addToAllControls;

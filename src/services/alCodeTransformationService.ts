@@ -39,6 +39,11 @@ import { RemoveEmptyTriggersModifier } from '../alsyntaxmodifiers/removeEmptyTri
 import { MakeFlowFieldsReadOnlyModifier } from '../alsyntaxmodifiers/makeFlowFieldsReadOnlyModifier';
 import { RemoveRedundantAppAreasModifier } from '../alsyntaxmodifiers/removeRedundantAppAreasModifier';
 import { EnumCaptionsModifier } from '../alsyntaxmodifiers/enumCaptionsModifier';
+import { AddAllObjectsPermissionsModifier } from '../alsyntaxmodifiers/addAllObjectsPermissionsModifier';
+import { AddTableDataCaptionFieldsModifier } from '../alsyntaxmodifiers/addTableDataCaptionFieldsModifier';
+import { AddDropDownFieldGroupsModifier } from '../alsyntaxmodifiers/AddDropDownFieldGroupsModifier';
+import { AddReferencedTablesPermissionsModifier } from '../alsyntaxmodifiers/addReferencedTablesPermissionsModifier';
+import { GenerateCSVXmlPortHeadersModifier } from '../alsyntaxmodifiers/generateCSVXmlPortHeadersModifier';
 
 export class ALCodeTransformationService extends DevToolsExtensionService {
     protected _syntaxFactories: ISyntaxModifierFactoriesCollection;
@@ -57,7 +62,11 @@ export class ALCodeTransformationService extends DevToolsExtensionService {
         this.registerDocumentRangeCommand('azALDevTools.sortPermissions', () => new SortPermissionsModifier(this._context));
         this.registerDocumentRangeCommand('azALDevTools.sortPermissionSetList', () => new SortPermissionSetListModifier(this._context));
         this.registerDocumentRangeCommand('azALDevTools.sortCustomizations', () => new SortCustomizationsModifier(this._context));
-        this.registerDocumentRangeCommand('azALDevTools.addAllObjectsPermissions', () => new WorkspaceCommandSyntaxModifier(this._context, 'addAllObjectsPermissions', 'addAllObjectsPermissions'));
+        this.registerDocumentRangeCommand('azALDevTools.addAllObjectsPermissions', () => new AddAllObjectsPermissionsModifier(this._context));
+        this.registerDocumentRangeCommand('azALDevTools.addReferencedTablesPermissions', () => new AddReferencedTablesPermissionsModifier(this._context));
+        this.registerDocumentRangeCommand('azALDevTools.generateCSVXmlPortHeaders', () => new GenerateCSVXmlPortHeadersModifier(this._context));
+        
+
         this.registerDocumentRangeCommand('azALDevTools.removeVariable', () => new WorkspaceCommandSyntaxModifier(this._context, 'removeVariable', 'removeVariable'));
         this.registerDocumentSymbolCommand('azALDevTools.ReuseToolTipFromOtherPages', () => new ReuseSingleFieldToolTipModifier(this._context));
 
@@ -70,6 +79,10 @@ export class ALCodeTransformationService extends DevToolsExtensionService {
         this.registerModifierCommands('AddToolTips', 'azALDevTools.AddEditorToolTip', 'azALDevTools.AddProjectToolTip', () => new ToolTipModifier(this._context));
         this.registerModifierCommands('RefreshToolTips', 'azALDevTools.RefreshEditorToolTips', 'azALDevTools.RefreshProjectToolTips', () => new RefreshToolTipsModifier(this._context));
         this.registerModifierCommands('AddTableFieldCaptions', 'azALDevTools.AddEditorFieldCaption', 'azALDevTools.AddProjectFieldCaption', () => new FieldCaptionsModifier(this._context));
+
+        this.registerModifierCommands('AddTableDataCaptionFields', 'azALDevTools.AddEditorTableDataCaptionFields', 'azALDevTools.AddProjectTableDataCaptionFields', () => new AddTableDataCaptionFieldsModifier(this._context));
+        this.registerModifierCommands('AddDropDownFieldGroups', 'azALDevTools.AddEditorDropDownFieldGroups', 'azALDevTools.AddProjectDropDownFieldGroups', () => new AddDropDownFieldGroupsModifier(this._context));
+
         this.registerModifierCommands('AddEnumValuesCaptions', 'azALDevTools.AddEditorEnumValuesCaption', 'azALDevTools.AddProjectEnumValuesCaption', () => new EnumCaptionsModifier(this._context));
         this.registerModifierCommands('LockRemovedFieldCaptions', 'azALDevTools.LockEditorRemovedFieldCaptions', 'azALDevTools.LockProjectRemovedFieldCaptions', () => new LockRemovedFieldsCaptionsModifier(this._context));
         this.registerModifierCommands('AddPageFieldCaptions', 'azALDevTools.AddEditorPageFieldCaption', 'azALDevTools.AddProjectPageFieldCaption', () => new PageControlsCaptionsModifier(this._context));

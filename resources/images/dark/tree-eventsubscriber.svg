@@ -26,8 +26,8 @@
   <defs
      id="defs15872" />
   <sodipodi:namedview
-     pagecolor="#ffffff"
-     bordercolor="#666666"
+     pagecolor="#000000"
+     bordercolor="#999999"
      borderopacity="1"
      objecttolerance="10"
      gridtolerance="10"
@@ -38,15 +38,15 @@
      inkscape:window-height="603"
      id="namedview15870"
      showgrid="false"
-     inkscape:zoom="20.85965"
-     inkscape:cx="0.81493548"
-     inkscape:cy="4.2561281"
+     inkscape:zoom="3.6875"
+     inkscape:cx="-5.6141288"
+     inkscape:cy="-26.244969"
      inkscape:window-x="0"
      inkscape:window-y="0"
      inkscape:window-maximized="0"
      inkscape:current-layer="svg15868" />
   <style
-     id="style15853">.st0{opacity:0}.st0,.st1{fill:#f6f6f6}.st2{fill:#424242}.st3{fill:#f0eff1}</style>
+     id="style15853">.st0{opacity:0}.st0,.st1{fill:#090909}.st2{fill:#bdbdbd}.st3{fill:#0f0e10}</style>
   <g
      id="outline">
     <path
@@ -56,8 +56,7 @@
     <path
        class="st1"
        d="M12 7V6H7.414L12 1.414V0H4.382L0 8.764V10h3.371L1 14.766V16h2.414L5 14.414V16h11V7z"
-       id="path15857"
-       style="fill:#2d2d30;fill-opacity:1" />
+       id="path15857" />
   </g>
   <g
      id="icon_x5F_bg">
@@ -65,21 +64,20 @@
        class="st2"
        d="M5 1L1 9h3.985L2 15h1l2-2V7l6-6z"
        id="path15860"
-       style="fill:#e8ab53;fill-opacity:1" />
+       style="fill:#e5a03d;fill-opacity:1" />
     <path
        class="st2"
        d="M6 8v7h9V8H6zm8 6H7V9h7v5z"
        id="path15862"
-       style="fill:#e8ab53;fill-opacity:1" />
+       style="fill:#e5a03d;fill-opacity:1" />
     <path
        class="st2"
        d="M8 10h1v1H8zM8 12h1v1H8zM10 10h3v1h-3zM10 12h3v1h-3z"
        id="path15864"
-       style="fill:#e8ab53;fill-opacity:1" />
+       style="fill:#e5a03d;fill-opacity:1" />
   </g>
   <path
      class="st3"
      d="M7 9v5h7V9H7zm2 4H8v-1h1v1zm0-2H8v-1h1v1zm4 2h-3v-1h3v1zm0-2h-3v-1h3v1z"
-     id="icon_x5F_fg"
-     style="fill:#2d2d30;fill-opacity:1" />
+     id="icon_x5F_fg" />
 </svg>

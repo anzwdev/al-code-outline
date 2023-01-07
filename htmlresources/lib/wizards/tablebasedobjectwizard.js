@@ -1,14 +1,18 @@
 class TableBasedObjectWizard {
 
-    constructor(maxStepNo) {        
+    constructor(maxStepNo, flowFiltersSupported) {
+        this._maxStepNo = maxStepNo;
+        this._flowFiltersSupported = !!flowFiltersSupported;
+
         this._srcFields = new FilteredList('srcfieldsfilter', 'srcfields');
         this._destFields = new FilteredList('destfieldsfilter', 'destfields');
-        this._maxStepNo = maxStepNo;
+        this.initFieldsSelProp(this._srcFields, this._destFields);
 
-        this._srcFields._captionMember = 'name';
-        this._srcFields._sortByMember = 'name';
-
-        this._destFields._captionMember = 'name';
+        if (this._flowFiltersSupported) {
+            this._srcFlowFilters = new FilteredList('srcflowfiltersfilter', 'srcflowfilters');
+            this._destFlowFilters = new FilteredList('destflowfiltersfilter', 'destflowfilters');
+            this.initFieldsSelProp(this._srcFlowFilters, this._destFlowFilters);
+        }
 
         //initialize properties
         this._vscode = acquireVsCodeApi();
@@ -57,24 +61,53 @@ class TableBasedObjectWizard {
         });   
     }
 
+    initFieldsSelProp(srcFlds, destFlds) {
+        srcFlds._captionMember = 'name';
+        srcFlds._sortByMember = 'name';
+        srcFlds._descriptionMember = 'uiDesc';
+        destFlds._captionMember = 'name';
+        destFlds._descriptionMember = 'uiDesc';
+    }
+
     registerFieldsSelectionEvents() {
         document.getElementById('mselright').addEventListener('click', event => {
-            this.onMoveFieldsRight();
+            this.onMoveFieldsRight(this._srcFields, this._destFields);
         });
         document.getElementById('mselallright').addEventListener('click', event => {
-            this.onMoveAllRight();
+            this.onMoveAllRight(this._srcFields, this._destFields);
         });      
         document.getElementById('mselallleft').addEventListener('click', event => {
-            this.onMoveAllLeft();
+            this.onMoveAllLeft(this._srcFields, this._destFields);
         });
         document.getElementById('mselleft').addEventListener('click', event => {
-            this.onMoveFieldsLeft();
+            this.onMoveFieldsLeft(this._srcFields, this._destFields);
         });      
         document.getElementById('srcfields').addEventListener('dblclick', event => {
-            this.onMoveFieldsRight();
+            this.onMoveFieldsRight(this._srcFields, this._destFields);
         });
         document.getElementById('destfields').addEventListener('dblclick', event => {
-            this.onMoveFieldsLeft();
+            this.onMoveFieldsLeft(this._srcFields, this._destFields);
+        });
+    }
+
+    registerFlowFiltersSelectionEvents() {
+        document.getElementById('mffselright').addEventListener('click', event => {
+            this.onMoveFieldsRight(this._srcFlowFilters, this._destFlowFilters);
+        });
+        document.getElementById('mffselallright').addEventListener('click', event => {
+            this.onMoveAllRight(this._srcFlowFilters, this._destFlowFilters);
+        });      
+        document.getElementById('mffselallleft').addEventListener('click', event => {
+            this.onMoveAllLeft(this._srcFlowFilters, this._destFlowFilters);
+        });
+        document.getElementById('mffselleft').addEventListener('click', event => {
+            this.onMoveFieldsLeft(this._srcFlowFilters, this._destFlowFilters);
+        });      
+        document.getElementById('srcflowfilters').addEventListener('dblclick', event => {
+            this.onMoveFieldsRight(this._srcFlowFilters, this._destFlowFilters);
+        });
+        document.getElementById('destflowfilters').addEventListener('dblclick', event => {
+            this.onMoveFieldsLeft(this._srcFlowFilters, this._destFlowFilters);
         });
     }
 
@@ -103,6 +136,15 @@ class TableBasedObjectWizard {
     loadFields() {
         this._srcFields.setData(this._data.fieldList);
         this._destFields.clear();
+    }
+
+    loadFlowFilters() {
+        if (this._flowFiltersSupported) {
+            if (!this._data.flowFilterList)
+                this._data.flowFilterList = [];
+            this._srcFlowFilters.setData(this._data.flowFilterList);
+            this._destFlowFilters.clear();
+        }
     }
 
     loadFieldsAdv(selFlds) {
@@ -159,8 +201,12 @@ class TableBasedObjectWizard {
     setFields(data) {
         if (!this._data)
             this._data = {};
-        this._data.fieldList = data;
+
+        this._data.fieldList = data.fieldList;
+        this._data.flowFilterList = data.flowFilterList;
+
         this.loadFields();
+        this.loadFlowFilters();
     }
 
     setTables(data) {
@@ -170,28 +216,36 @@ class TableBasedObjectWizard {
         this.loadTables();
     }
 
-    onMoveFieldsRight() {
-        this._destFields.add(this._srcFields.removeSelected());
+    onMoveFieldsRight(srcFlds, destFlds) {
+        destFlds.add(srcFlds.removeSelected());
     }
 
-    onMoveFieldsLeft() {
-        this._srcFields.add(this._destFields.removeSelected());
+    onMoveFieldsLeft(srcFlds, destFlds) {
+        srcFlds.add(destFlds.removeSelected());
     }
 
-    onMoveAllRight() {
-        this._destFields.add(this._srcFields.removeFiltered());
+    onMoveAllRight(srcFlds, destFlds) {
+        destFlds.add(srcFlds.removeFiltered());
     }
 
-    onMoveAllLeft() {
-        this._srcFields.add(this._destFields.removeFiltered());
+    onMoveAllLeft(srcFlds, destFlds) {
+        srcFlds.add(destFlds.removeFiltered());
     }
 
     getSelectedFields() {
         return this._destFields.getAll();
-    }
+    }    
 
     setSelectedFields(list) {
         this._destFields.setData(list);
+    }
+
+    getSelectedFlowFilters() {
+        return this._destFlowFilters.getAll();
+    }
+
+    setSelectedFlowFilters(list) {
+        this._destFlowFilters.setData(list);
     }
 
     onFinish() {
@@ -236,9 +290,6 @@ class TableBasedObjectWizard {
 
     sortSrcFieldsBy(name) {
         let dispField = 'name';
-        //let dispField = name;
-        //if (name == 'id')
-        //    dispField = 'idname';
         this._srcFields.sortBy(name, dispField);
         document.getElementById('srcfldsortid').className = (name == 'id')?"mselcaptb mseltbbtnsel":"mselcaptb mseltbbtn";
         document.getElementById('srcfldsortname').className = (name == 'name')?"mselcaptb mseltbbtnsel":"mselcaptb mseltbbtn";

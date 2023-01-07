@@ -16,10 +16,11 @@ import { ALCodeCopFixAA0137 } from './codeFixes/alCodeCopFixAA0137';
 import { ALCodeCopFixAA0139 } from './codeFixes/alCodeCopFixAA0139';
 import { ALSortTableFieldsCommand } from './sortSymbols/alSortTableFieldsCommand';
 import { ALSortPermissionsCommand } from './sortSymbols/alSortPermissionsCommand';
-import { ALAddAllPermissionsCodeCommand } from './alAddAllPermissionsCodeCommand';
+import { ALAddPermissionsCodeCommand } from './alAddPermissionsCodeCommand';
 import { ALSortPermissionSetListCommand } from './sortSymbols/alSortPermissionSetListCommand';
 import { ALReuseToolTipCodeCommand } from './alReuseToolTipCodeCommand';
 import { ALSortCustomizationsCommand } from './sortSymbols/alSortCustomizationsCommand';
+import { ALXmlPortHeadersCodeCommand } from './alXmlPortHeadersCodeCommand';
 
 export class ALCodeActionsProvider implements vscode.CodeActionProvider {
     protected _toolsExtensionContext : DevToolsExtensionContext;
@@ -35,8 +36,9 @@ export class ALCodeActionsProvider implements vscode.CodeActionProvider {
             new ALAddXmlPortFieldsCodeCommand(this._toolsExtensionContext, 'fieldelement', 'Add multiple field elements (AZ AL Dev Tools)'),
             new ALAddXmlPortFieldsCodeCommand(this._toolsExtensionContext, 'fieldattribute', 'Add multiple field attributes (AZ AL Dev Tools)'),
 
-            new ALAddAllPermissionsCodeCommand(this._toolsExtensionContext),
+            new ALAddPermissionsCodeCommand(this._toolsExtensionContext),
             new ALReuseToolTipCodeCommand(this._toolsExtensionContext),
+            new ALXmlPortHeadersCodeCommand(this._toolsExtensionContext),
 
             //sorting
             new ALSortTableFieldsCommand(this._toolsExtensionContext),
@@ -135,7 +137,7 @@ export class ALCodeActionsProvider implements vscode.CodeActionProvider {
     }
 
     protected async getDocumentSymbolsAsync(document: vscode.TextDocument): Promise<AZDocumentSymbolsLibrary> {
-        let docUri = this._toolsExtensionContext.activeDocumentSymbols.getDocUri();
+        let docUri = this._toolsExtensionContext.activeDocumentSymbols.getUri();
         
         if ((docUri) && (docUri.fsPath == document.uri.fsPath))
             return this._toolsExtensionContext.activeDocumentSymbols;

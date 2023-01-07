@@ -183,6 +183,45 @@
 
             </div>
 
+            <div id="wizardstep3" class="wizard">
+
+                <div class="formline">
+                    <div class="formheader">Please select FlowFilters.</div>
+                </div>
+
+                <div class="multiselect">
+                    <div class="multiselsrc" id="srcflowfiltersdiv">
+                        
+                        <div class="mselcaptionadv" id="srcflowfilterscapt">
+                            <div class="mselcapmain">Available FlowFilters:</div>
+                            <div class="mselcaptb">Sort by:</div>
+                            <button id="srcflowfltsortname" class="mselcaptb mseltbbtn">Name</button>
+                            <button id="srcflowfltsortid" class="mselcaptb mseltbbtn">Id</button>
+                        </div>
+
+                        <input class="mselfilter" id="srcflowfiltersfilter" type="text" placeholder="Enter fields filter...">
+                        <select class="msellist" id="srcflowfilters" multiple="multiple"></select>
+                    </div>
+
+                    <div class="multiselbtns">
+                        <div><button class="mselbtn" id="mffselright">&gt;</button></div>
+                        <div><button class="mselbtn" id="mffselallright">&gt;&gt;</button></div>
+                        <div><button class="mselbtn" id="mffselallleft">&lt;&lt;</button></div>
+                        <div><button class="mselbtn" id="mffselleft">&lt;</button></div>
+                    </div>
+
+                    <div class="multiseldest" id="destflowfiltersdiv">
+                        <div class="mselcaption" id="destflowfilterscapt">Selected FlowFilters:</div>
+                        <input class="mselfilter" id="destflowfiltersfilter" type="text" placeholder="Enter fields filter...">
+                        <select class="msellist" id="destflowfilters" multiple="multiple">
+                        </select>
+                    </div>
+
+                </div>
+
+            </div>
+
+
             <div id="footer" class="footer">
                 <button id="prevBtn" class="button">Previous</button>
                 <button id="nextBtn" class="button">Next</button>

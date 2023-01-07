@@ -6,7 +6,6 @@ import * as vscodelangclient from 'vscode-languageclient';
 import { ALSyntaxHelper } from './alSyntaxHelper';
 import { Version } from '../tools/version';
 import { TextEditorHelper } from '../tools/textEditorHelper';
-import { ObjectCaptionsModifier } from '../alsyntaxmodifiers/objectCaptionsModifier';
 import { AppAreaMode } from '../alsyntaxmodifiers/appAreaMode';
 
 export class ALLangServerProxy {
@@ -139,6 +138,9 @@ export class ALLangServerProxy {
         return vscode.workspace.workspaceFolders[0].uri.fsPath;
     }
 
+    /**
+     * @deprecated This method should not be used. Please use methods ToolsLangServerClient class if possible. For missing functionality create an issue on GitHub.
+     */
     async getCompletionForSourceCode(resourceUri: vscode.Uri | undefined, progressMessage : string, sourceCode : string, posLine : number, posColumn : number, 
         lastSourceLine : number, lastSourceColumn : number) : Promise<vscode.CompletionList | undefined> {
         
@@ -346,6 +348,9 @@ export class ALLangServerProxy {
         return [];
     }
 
+    /**
+     * @deprecated This method should not be used. Please use getInterfacesMethodsList or getCodeunitMethodsList method from ToolsLangServerClient class
+     */
     async getObjectMethods(resourceUri: vscode.Uri | undefined, objectType: string, objectName: string) : Promise<string[] | undefined> {
         if ((!objectName) || (objectName == ""))
             return undefined;
@@ -446,6 +451,9 @@ export class ALLangServerProxy {
         return undefined;
     }
 
+    /**
+     * @deprecated This method should not be used. Please use getProjectSymbolLocation method from ToolsLangServerClient class
+     */    
     async getDefinitionLocation(objectType : string, objectName : string) : Promise<vscode.Location | undefined> {
         return await vscode.window.withProgress<vscode.Location | undefined>({
             location: vscode.ProgressLocation.Notification,

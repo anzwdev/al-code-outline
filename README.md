@@ -96,6 +96,7 @@ Extension adds VS Code editor code actions to some of al elements to help develo
  - Code generation actions
   - `Create interface` action available on the first line of codeunit declaration, it creates a new interface with all public functions from the codeunit
  - `Add all extension objects permissions` available on the first line of Permissions property. It adds all objects from the current extension to this property. If permissions are added to PermissionSet or PermisionSetExtension object, `table`, `tabledata`, `page`, `report`, `xmlport`, `query` and `codeunit` entries will be added. For all other object types, only `tabledata` entries will be created.
+ - `Add permissions to all tables used by this object` action available on the first line of object declaration and permissions property. It scans the object, detects operation types and adds permissions to tabledata of all non-temporary tables used inside.
  - `Reuse tooltip from other pages` action available on the first line of page/page extension field and `ToolTip` property, it allows to select tooltip value from a list of tooltips defined for this table field on other pages in the current project and all dependencies
  - `Add multiple fields` when cursor is at these elements in the editor:
   - "group" and "repeater" on pages
@@ -104,6 +105,7 @@ Extension adds VS Code editor code actions to some of al elements to help develo
   - "dataitem" on queries
   There are also `Add multiple field elements` and `Add multiple field attributes` actions available at "tableelement", "fieldelement" and "fieldattribute" elements on xml ports.
   Fields can be added is selection or alphabetic order, it can be controlled using "alOutline.fieldsSelectionOrder" setting. Default value is "selection order".
+ - `Generate column headers for CSV export` action available on XmlPort header and XmlPort tableelement when XmlPort format is set to "VariableText". It adds a new tableelement with column headers for each tableelement in the XmlPort.
 
 ![Add multiple fields](resources/screen2-addfieldscodeaction.gif)
 
@@ -137,6 +139,10 @@ Extension adds a few commands that allow to automatically modify al code in the 
 * `Add Table Field Captions to the Active Project`: adds missing captions to all table fields in the current project
 * `Lock Removed Table Field Captions in the Active Editor`: locks captions of removed table fields in the current editor
 * `Lock Removed Table Field Captions in the Active Project`: locks captions of removed table fields in the current project
+* `Add Table DataCaptionFields to the Active Editor`: adds missing DataCaptionFields property to tables in the active editor
+* `Add Table DataCaptionFields to the Active Project`: adds missing DataCaptionFields property to tables in the current project
+* `Add DropDown Field Groups to the Active Editor`: adds missing DropDown field group to tables in the active editor
+* `Add DropDown Field Groups to the Active Project`: adds missing DropDown field group to tables in the current project
 * `Add Page Controls Captions to the Active Editor`: adds missing captions to page controls in the current editor
 * `Add Page Controls Captions to the Active Project`: adds missing captions to page controls in the current project
 * `Add Object Captions to the Active Editor`: adds missing captions to all table, page, report, xmlport and query objects in the current editor
@@ -309,7 +315,11 @@ This extension contributes the following settings:
 * `alOutline.pageFieldToolTipComment`: tooltip comment template for page fields. Use %1 or %Caption% as placeholder for field caption or name and %Caption.Comment% for field caption comment. The default value is "%Caption.Comment%". If these default values of pageFieldToolTip and pageFieldToolTipComment settings are used then if table field caption is defined as ```Caption = 'Customer No.', Comment = 'Comment Text'``` then created ToolTip will be defined as ```ToolTip = 'Specifies the value of  the Customer No. field', Comment = 'Comment Text'```
 * `alOutline.useTableFieldDescriptionAsToolTip`: If set to true, table field description will be used as tooltip by commands adding missing captions to pages and page wizard
 * `alOutline.addToolTipsToPageFields`: set to true to add tooltips to page fields when 'Add multiple fields' action is used
+* `alOutline.createApiFieldsCaptions`: set to true to add Captions to fields added to the API pages
 * `alOutline.useTableFieldCaptionsInApiFields`: set to true, to use table field captions in API pages fields like in standard BC APIs v 2.0 (i.e. ```Caption='Customer No.';```), set to false to use camelCase api page field name in api page field caption together with Locked property like in standard BC APIs v 1.0 (i.e. ```Caption='customerNo', Locked = true;```). Default value is true
+* `alOutline.apiFieldNamesConversion`: array of regular expression replacements used to replace parts of api pages field names. Each entry in this array is an object with 2 properties:
+  * `searchRegExp`: string containing regular expression defining text that should be replaced
+  * `newValue`: new value
 * `alOutline.lockRemovedFieldsCaptions`: set to true to lock captions of removed fields when 'Add Table Field Captions' command is run
 * `alOutline.codeCleanupActions`: array of names of actions that will be run by code cleanup commands. These actions are available: RemoveWithStatements, AddApplicationAreas, AddToolTips, RefreshToolTips, AddTableFieldCaptions, AddEnumValuesCaptions, LockRemovedFieldCaptions, AddPageFieldCaptions, AddObjectCaptions, FixKeywordsCase, FixIdentifiersCase, ConvertObjectIdsToNames, AddMissingParentheses, AddDataClassifications, RemoveUnusedVariables, SortPermissions, SortPermissionSetList, SortProcedures, SortProperties, SortReportColumns, SortTableFields, SortVariables, SortCustomizations, RemoveBeginEnd, RemoveEmptyTriggers, RemoveEmptyLines, RemoveEmptySections, RemoveStrSubstNoFromError, FormatDocument, TrimTrailingWhitespace, MakeFlowFieldsReadOnly, RemoveRedundantAppAreas
 * `alOutline.doNotReuseToolTipsFromOtherPages`: set to true to disable reusing field tooltips from other pages in the page wizard, 'add multiple fields' page code action and 'add missing tooltips' command
@@ -346,6 +356,8 @@ This extension contributes the following settings:
 	* `VariableNames` - the same as above but suggests variable names only (i.e. `SalesHeader`), when both entries are selected, `VariableNamesWithType` will be used
 	* `VariableDataTypes` - suggests data types based on variable name (i.e. `Record "Sales Header"` for `SalesHeaderBuffer` variable name)
 * `alOutline.additionalMandatoryAffixesPatterns`: Additional list of name affixes patterns, '?' can be used for matching any character. These values are used to remove affixes from names in code actions, commands and code completion
+* `alOutline.dropDownGroupFieldsNamesPatterns`: array of string patters for table DropDown group fields created by "Add DropDown FieldGroups..." commands, you can use "*" for partial name matching, first found field for each setting entry will be used
+* `alOutline.tableDataCaptionFieldsNamesPatterns`: array of string patters for field names for table DataCaptionFields property created by "Add Table DataCaptionFields..." commands, you can use "*" for partial name matching, first found field for each setting entry will be used
 
 ## Known Issues
 

@@ -13,7 +13,6 @@ import { ALSymbolsBasedXmlPortWizard } from '../objectwizards/symbolwizards/alSy
 import { ALSymbolsBasedPageExtWizard } from '../objectwizards/symbolwizards/alSymbolsBasedPageExtWizard';
 import { ALSymbolsBasedReportExtWizard } from '../objectwizards/symbolwizards/alSymbolsBasedReportExtWizard';
 import { ALSymbolsBasedTableExtWizard } from '../objectwizards/symbolwizards/alSymbolsBasedTableExtWizard';
-import { ALSyntaxHelper } from '../allanguage/alSyntaxHelper';
 import { SymbolsTreeView } from '../symbolstreeview/symbolsTreeView';
 import { TextEditorHelper } from '../tools/textEditorHelper';
 import { StringHelper } from '../tools/stringHelper';
@@ -298,20 +297,7 @@ export class ALSymbolsBrowser extends BaseWebViewEditor {
                 }
             }
 
-            //use Microsoft AL Language Server to open definition
-            let typeName : string | undefined = ALSyntaxHelper.kindToVariableType(alSymbol.kind);
-            if (!typeName) {
-                vscode.window.showErrorMessage('This object type is not supported.');
-                return;    
-            }
-            
-            targetLocation = await this._devToolsContext.alLangProxy.getDefinitionLocation(typeName, alSymbol.name);
-    
-            if (targetLocation) {
-                TextEditorHelper.openEditor(targetLocation.uri, true, preview, targetLocation.range.start);
-            } else {
-                vscode.window.showErrorMessage('Object definition is not available.');
-            }
+            vscode.window.showErrorMessage('Object definition is not available.');
         }
     }
     
@@ -378,14 +364,17 @@ export class ALSymbolsBrowser extends BaseWebViewEditor {
     }
 
     protected async updatePivotObjCommand(symbolPath: number[] | undefined) {
+        let sourceId = this._library.getSourceId();
         let rootSymbol : AZSymbolInformation = AZSymbolInformation.create(AZSymbolKind.Document, 'Symbol');
         if ((symbolPath) && (symbolPath.length > 0)) {
             let pathList: number[][] = [symbolPath];
             let symbolList : AZSymbolInformation[] | undefined = await this._library.getSymbolsListByPathAsync(pathList, AZSymbolKind.AnyALObject);
-            if ((symbolList) && (symbolList.length > 0))        
+            if ((symbolList) && (symbolList.length > 0)) {
                 rootSymbol.addChildItem(symbolList[0]);
-        }
-        this._devToolsContext.activeDocumentSymbols.setRootSymbol(rootSymbol);
+                sourceId = sourceId + '_' + symbolList[0].kind.toString() + '_' + symbolList[0].name;
+            }
+        }       
+        this._devToolsContext.activeDocumentSymbols.setRootSymbol(rootSymbol, sourceId);
     }
 
 

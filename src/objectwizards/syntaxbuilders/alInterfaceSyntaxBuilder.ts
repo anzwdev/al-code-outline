@@ -2,6 +2,8 @@ import * as vscode from 'vscode';
 import { ALInterfaceWizardData } from "../wizards/alInterfaceWizardData";
 import { ALSyntaxWriter } from "../../allanguage/alSyntaxWriter";
 import { DevToolsExtensionContext } from "../../devToolsExtensionContext";
+import { toolsGetCodeunitMethodsListRequest } from '../../langserver/symbolsinformation/toolsGetCodeunitMethodsListRequest';
+import { AZSymbolAccessModifier } from '../../symbollibraries/azSymbolAccessModifier';
 
 export class ALInterfaceSyntaxBuilder {
     protected _toolsExtensionContext : DevToolsExtensionContext;
@@ -19,20 +21,16 @@ export class ALInterfaceSyntaxBuilder {
         writer.writeLine("");
 
         if ((data.baseCodeunitName) && (data.baseCodeunitName != '')) {
-            let methodHeaders: string[] | undefined = await this._toolsExtensionContext.alLangProxy.getObjectMethods(destUri,
-                'codeunit', data.baseCodeunitName);
+            let methodsResponse = await this._toolsExtensionContext.toolsLangServerClient.getCodeunitMethodsList(
+                new toolsGetCodeunitMethodsListRequest(destUri?.fsPath, data.baseCodeunitName));
 
-            if ((methodHeaders) && (methodHeaders.length > 0)) {
-                for (let i=0; i<methodHeaders.length; i++) {
-                    if (!methodHeaders[i].startsWith("procedure Run(")) { //skip codeunit.Run function
-                        let method = methodHeaders[i].replace(/,/g, ";");
-                        if (!method.endsWith(";"))
-                            method = method + ';';
-                        writer.writeLine(method);
-                    }
-                }
+            if ((methodsResponse) && (methodsResponse.symbols) && (methodsResponse.symbols.length > 0)) {
+                for (let i=0; i<methodsResponse.symbols.length; i++) {
+                    if ((methodsResponse.symbols[i].header) && ((!methodsResponse.symbols[i].accessModifier) || (methodsResponse.symbols[i].accessModifier == AZSymbolAccessModifier.Public)))
+                        writer.writeLine(methodsResponse.symbols[i].header! + ";");
+                }        
                 writer.writeLine("");
-            }
+            }           
         }
 
         //finish object

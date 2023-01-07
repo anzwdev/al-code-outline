@@ -1,7 +1,7 @@
 class TableExtWizard extends TableBasedObjectWizard {
 
     constructor() {
-        super(1);
+        super(1, false);
 
         this._fieldsgrid = new TableFieldsGridView(false);
 

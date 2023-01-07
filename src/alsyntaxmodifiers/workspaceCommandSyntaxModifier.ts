@@ -87,4 +87,12 @@ export class WorkspaceCommandSyntaxModifier extends SyntaxModifier {
         return 'Command completed';        
     }
 
+    protected addStringArrayToParameters(parameters: any, parameterPrefix: string, values: string[] | undefined) {
+        if (values)
+            for (let i=0; i<values.length; i++) {
+                let name = parameterPrefix + i.toString();
+                parameters[name] = values[i];
+            }
+    }
+
 }

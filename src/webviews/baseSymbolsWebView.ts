@@ -22,13 +22,16 @@ export class BaseSymbolsWebView extends DocToolsWebView {
     }
 
     setSymbols(rootSymbol: AZSymbolInformation | undefined, rootSymbolName: string | undefined) {
+        let sourceId = '';
         if ((rootSymbol) && (this._copySymbols)) {
             this._rootSymbol = rootSymbol.createCopy(true);
             if (rootSymbolName)
                 this._rootSymbol.fullName = rootSymbolName;
         } else
             this._rootSymbol = rootSymbol;
-        this._sourceSymbolsLibrary.setRootSymbol(rootSymbol);
+        if (this._rootSymbol)
+            sourceId = this._rootSymbol.name;
+        this._sourceSymbolsLibrary.setRootSymbol(rootSymbol, sourceId);
         this.updateView();
     }
     

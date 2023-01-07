@@ -37,6 +37,9 @@ function compileFilter(type, expression) {
         compileFilter.parser = compileFilter.intFilterParser;
     }
     else if (type == 'text') {
+        if ((expression) && (!expression.startsWith('@')))
+            expression = '@' + expression;
+
         if (!compileFilter.textFilterParser) {
             compileFilter.textFilterParser = textFilterParser();
         }

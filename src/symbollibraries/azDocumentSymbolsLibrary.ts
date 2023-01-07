@@ -39,9 +39,13 @@ export class AZDocumentSymbolsLibrary extends AZSymbolsLibrary {
             (vscode.window.activeTextEditor.document.uri.fsPath == document.uri.fsPath));
     }
 
-    setDocUri(newUri : vscode.Uri | undefined) {
+    setUri(newUri : vscode.Uri | undefined) {
         this._docUri = newUri;
         this._reloadRequired = true;
+    }
+
+    getUri() : vscode.Uri | undefined {
+        return this._docUri;
     }
 
     getDocUri() : vscode.Uri | undefined {

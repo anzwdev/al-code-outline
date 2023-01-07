@@ -1,0 +1,15 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16">
+  <defs>
+    <style>.canvas{fill: none; opacity: 0;}.light-defaultgrey-10{fill: #212121; opacity: 0.1;}.light-defaultgrey{fill: #212121; opacity: 1;}.light-yellow-10{fill: #996f00; opacity: 0.1;}.light-yellow{fill: #996f00; opacity: 1;}</style>
+  </defs>
+  <title>IconLightEventShortcut</title>
+  <g id="canvas" class="canvas">
+    <path class="canvas" d="M16,16H0V0H16Z" />
+  </g>
+  <g id="level-1">
+    <path class="light-defaultgrey-10" d="M15.5,8.5v7h-7v-7Z" />
+    <path class="light-defaultgrey" d="M15.5,8h-7L8,8.5v7l.5.5h7l.5-.5v-7ZM15,15H9V9h6Zm-1-4.5V14H13V11.707l-2.646,2.647-.708-.708L12.293,11H10V10h3.5Z" />
+    <path class="light-yellow-10" d="M7,11,3.5,14.5H2l3.5-6H2l4-7h5.387L7,6.5h4.5L11,7H8.086L7,8.086Z" />
+    <path class="light-yellow" d="M7,11.707,3.854,14.854,3.5,15H2l-.432-.752L4.63,9H2l-.434-.748,4-7L6,1h5.388l.375.83L8.1,6h3.4l.354.854L11.707,7H7l-.376-.83L10.284,2H6.29L2.862,8H5.5l.432.752L2.871,14h.422L7,10.293Z" />
+  </g>
+</svg>

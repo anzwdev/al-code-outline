@@ -6,11 +6,13 @@ import { ALSymbolsBasedReportWizard } from '../objectwizards/symbolwizards/alSym
 import { ALSymbolsBasedXmlPortWizard } from '../objectwizards/symbolwizards/alSymbolsBasedXmlPortWizard';
 import { ALSymbolsBasedQueryWizard } from '../objectwizards/symbolwizards/alSymbolsBasedQueryWizard';
 import { AZSymbolInformation } from '../symbollibraries/azSymbolInformation';
+import { ALOutlineTreeItem } from '../outlineview/alOutlineTreeNode';
+import { ALOutlineSortMode } from '../outlineview/alOutlineSortMode';
 
 export class ALOutlineService {
     context: DevToolsExtensionContext;
     symbolsTreeProvider: SymbolsTreeProvider;
-    treeView: vscode.TreeView<AZSymbolInformation>;
+    treeView: vscode.TreeView<ALOutlineTreeItem>;
     protected _selectionChange: boolean;
     protected _selectionChangedHandler: vscode.Disposable | undefined;
     protected _followCursor: boolean;
@@ -26,10 +28,10 @@ export class ALOutlineService {
         this.symbolsTreeProvider = new SymbolsTreeProvider(this.context);
         this.context.vscodeExtensionContext.subscriptions.push(
             vscode.window.registerTreeDataProvider('azALDevTools.SymbolsTreeProvider', this.symbolsTreeProvider));
-        this.treeView = vscode.window.createTreeView<AZSymbolInformation>('azALDevTools.SymbolsTreeProvider', { 
+        this.treeView = vscode.window.createTreeView<ALOutlineTreeItem>('azALDevTools.SymbolsTreeProvider', { 
             treeDataProvider: this.symbolsTreeProvider
         });
-            
+
         //register commands
         this.registerCommands();
 
@@ -38,6 +40,15 @@ export class ALOutlineService {
     }
 
     protected registerCommands() {
+        this.context.vscodeExtensionContext.subscriptions.push(
+            this.treeView.onDidCollapseElement((e) => {
+                e.element.collapsibleState = vscode.TreeItemCollapsibleState.Collapsed;
+            }));
+        this.context.vscodeExtensionContext.subscriptions.push(
+            this.treeView.onDidExpandElement((e) => {
+                e.element.collapsibleState = vscode.TreeItemCollapsibleState.Expanded;
+            }));
+
         this.context.vscodeExtensionContext.subscriptions.push(
             vscode.commands.registerCommand(
                 'azALDevTools.alOutlineEnableFollowCursor', 
@@ -52,6 +63,11 @@ export class ALOutlineService {
             vscode.commands.registerCommand(
                 'azALDevTools.refreshOutlineView', 
                 () => this.symbolsTreeProvider.refresh()));
+
+        this.context.vscodeExtensionContext.subscriptions.push(
+            vscode.commands.registerCommand(
+                'azALDevTools.alOutlineCollapseAll', 
+                () => this.symbolsTreeProvider.collapseAll()));
     
         //al symbols commands
         this.context.vscodeExtensionContext.subscriptions.push(
@@ -59,52 +75,52 @@ export class ALOutlineService {
             'alOutline.createCardPage', 
             offset => {
                 let builder = new ALSymbolsBasedPageWizard(this.context);
-                builder.showPageWizard(offset, 'Card');
+                builder.showPageWizard(offset.symbol, 'Card');
             }));
         this.context.vscodeExtensionContext.subscriptions.push(
             vscode.commands.registerCommand(
                 'alOutline.createListPage', 
                 offset => {
                     let builder = new ALSymbolsBasedPageWizard(this.context);
-                    builder.showPageWizard(offset, 'List');
+                    builder.showPageWizard(offset.symbol, 'List');
             }));
         this.context.vscodeExtensionContext.subscriptions.push(
             vscode.commands.registerCommand(
                 'alOutline.createReport', 
                 offset => {
                     let builder = new ALSymbolsBasedReportWizard(this.context);
-                    builder.showReportWizard(offset);
+                    builder.showReportWizard(offset.symbol);
             }));
         this.context.vscodeExtensionContext.subscriptions.push(
             vscode.commands.registerCommand(
                 'alOutline.createXmlPort', 
                 offset => {
                     let builder = new ALSymbolsBasedXmlPortWizard(this.context);
-                    builder.showXmlPortWizard(offset);
+                    builder.showXmlPortWizard(offset.symbol);
             }));
         this.context.vscodeExtensionContext.subscriptions.push(
             vscode.commands.registerCommand(
                 'alOutline.createQuery', 
                 offset => {
                     let builder = new ALSymbolsBasedQueryWizard(this.context);
-                    builder.showQueryWizard(offset);
+                    builder.showQueryWizard(offset.symbol);
             }));
         this.context.vscodeExtensionContext.subscriptions.push(
             vscode.commands.registerCommand(
                 'alOutline.runPage', offset => {
-                this.context.objectRunner.runSymbolAsync(offset);
+                this.context.objectRunner.runSymbolAsync(offset.symbol);
             }));
         this.context.vscodeExtensionContext.subscriptions.push(
             vscode.commands.registerCommand(
                 'alOutline.runTable', 
                 offset => {
-                    this.context.objectRunner.runSymbolAsync(offset);
+                    this.context.objectRunner.runSymbolAsync(offset.symbol);
             }));
         this.context.vscodeExtensionContext.subscriptions.push(
             vscode.commands.registerCommand(
                 'alOutline.runReport', 
                 offset => {
-                    this.context.objectRunner.runSymbolAsync(offset);
+                    this.context.objectRunner.runSymbolAsync(offset.symbol);
             }));
         this.context.vscodeExtensionContext.subscriptions.push(
             vscode.commands.registerCommand(
@@ -119,7 +135,40 @@ export class ALOutlineService {
                         vscode.commands.executeCommand('workbench.action.focusActiveEditorGroup');            
                     }
             }));
-            
+
+        this.context.vscodeExtensionContext.subscriptions.push(
+            vscode.commands.registerCommand(
+                'azALDevTools.sortOutlineViewByPosition',
+                () => {
+                    this.symbolsTreeProvider.setSortMode(ALOutlineSortMode.position)
+                }));
+
+        this.context.vscodeExtensionContext.subscriptions.push(
+            vscode.commands.registerCommand(
+                'azALDevTools.sortOutlineViewByPositionNoAction', () => {}));
+
+        this.context.vscodeExtensionContext.subscriptions.push(
+            vscode.commands.registerCommand(
+            'azALDevTools.sortOutlineViewByName',
+            () => {
+                this.symbolsTreeProvider.setSortMode(ALOutlineSortMode.name)
+            }));
+
+        this.context.vscodeExtensionContext.subscriptions.push(
+            vscode.commands.registerCommand(
+                'azALDevTools.sortOutlineViewByNameNoAction', () => { }));
+
+        this.context.vscodeExtensionContext.subscriptions.push(
+            vscode.commands.registerCommand(
+                'azALDevTools.sortOutlineViewByCategory',
+                () => {
+                    this.symbolsTreeProvider.setSortMode(ALOutlineSortMode.category)
+                }));
+
+        this.context.vscodeExtensionContext.subscriptions.push(
+            vscode.commands.registerCommand(
+                'azALDevTools.sortOutlineViewByCategoryNoAction', () => { }));
+
     }
 
     setFollowCursor(value: boolean) {
@@ -139,7 +188,7 @@ export class ALOutlineService {
 
     private async onTextEditorSelectionChanged(e: vscode.TextEditorSelectionChangeEvent) {
         if ((this.treeView.visible) && (e.selections.length > 0)) {
-            let symbol = this.symbolsTreeProvider.getSymbolAtPosition(e.selections[0].active);
+            let symbol = this.symbolsTreeProvider.getNodeAtPosition(e.selections[0].active);
             if (symbol) {
                 this._selectionChange = true;
                 await this.treeView.reveal(symbol, {

@@ -1,5 +1,55 @@
 # Change Log
 
+## 3.0.41
+ - Issue #6 - AL Outline panel - sort symbols by position, name and type
+ - Issue #327 - Use different icons in AL Outline panel
+ - Issue #328 - Improvements in AL Outline panel
+   - collapse all
+   - region support
+   - saving tree state
+   - more symbols collapsed by default
+ - Issue #363 - XmlPorts - Generate headers 
+   - new `Generate column headers for CSV export` action available on XmlPort header and XmlPort tableelement when XmlPort format is set to "VariableText"
+ - Issue #377 - Don't add captions to the API pages fields
+   - new `alOutline.createApiFieldsCaptions` setting added
+ - Issue #378 - API Pages : API field name suggestions for 'number' fields (number instead of no)
+ - Issue #380 - AL Outline panel support Region Directive in AL (New Feature Request) 
+ - Issue #385 - AL Language Server Crashing - temp-al-proxy.al 
+   - all references to code creating that temp file removed
+ - Issue #410 - Search in Object browser should not be case sensitive
+ - Issue #412 - [Request] add permissions to current object
+   - new code action on first line of object definition and permission property: "Add permissions to all tables used by this object (AZ AL Dev Tools)"
+ - Issue #414 - Action for adding missing DataCaptionFields property and/of DropDown field group (in Active Editor/Active Project)
+   - new commands:
+     - "Add Table DataCaptionFields to the Active Editor"
+     - "Add Table DataCaptionFields to the Active Project"
+     - "Add DropDown Field Groups to the Active Editor"
+     - "Add DropDown Field Groups to the Active Project"
+   - new settings:
+     - "alOutline.dropDownGroupFieldsNamesPatterns": array of string patters for table DropDown group fields, you can use "*" for partial name matching
+     - "alOutline.tableDataCaptionFieldsNamesPatterns": array of string patters for field names for table DataCaptionFields property, you can use "*" for partial name matching
+ - Issue #415 - Variable completion
+   - #425 fix should improve suggetsions here, but the real problem is caused by the default vs code `"editor.suggest.matchOnWordStartOnly": true,` setting (ICDimension is treated as single word)
+ - Issue #417 - Add all extension objects permissions quick fix should not add redundant permissions
+ - Issue #421 - FlowFilters aren't added to API Pages
+   - new page wizard step for API pages - flow filters selection
+ - Issue #424 - Remove 'with' usage ... does not work with NoImplicitWith compiler flag
+ - Issue #425 - Variable Completion including double quotes
+
+Thank you
+ - GreatScott000 for reporting issue #6
+ - JavierFuentes for reporting issue #327 and #328
+ - NKarolak for issue #328 ideas
+ - 4dimit for reporting issue #363
+ - fvet for reporting issues #377, #378, #415 and #425
+ - louagej for reporting issue #380
+ - pri-kise for reporting issue #385, #421
+ - damse60 for reporting issue #410
+ - guidorobben for reporting issue #412
+ - jhoek for reporting issue #414
+ - ernestasjuska for reporting issue #417
+ - M4fin for reporting issue #424
+
 ## 3.0.40
  - Issue #411 - Cleanup removes instructions from wizard pages
    - "remove field groups" removed from the functionality

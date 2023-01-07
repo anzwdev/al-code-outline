@@ -1,4 +1,5 @@
 import * as vscode from 'vscode';
+import { AZSymbolAccessModifier } from './azSymbolAccessModifier';
 import { AZSymbolKind } from "./azSymbolKind";
 import { TextRange } from "./textRange";
 
@@ -20,6 +21,8 @@ export class AZSymbolInformation {
     containsDiagnostics: boolean | undefined;
     source: string | undefined;
     extends: string | undefined;
+    format: string | undefined;
+    access: AZSymbolAccessModifier | undefined;
     parent: AZSymbolInformation | undefined;
 
     constructor() {
@@ -37,7 +40,9 @@ export class AZSymbolInformation {
         this.contentRange = undefined;
         this.source = undefined;
         this.extends = undefined;
+        this.format = undefined;
         this.parent = undefined;
+        this.access = undefined;
     }
 
     public static create(newKind : AZSymbolKind, newName : string) {
@@ -80,6 +85,10 @@ export class AZSymbolInformation {
             obj.elementsubtype = source.elementsubtype;
         if (source.containsDiagnostics)
             obj.containsDiagnostics = source.containsDiagnostics;
+        if (source.format)
+            obj.format = source.format;
+        if (source.access !== undefined)
+            obj.access = source.access;
 
         if (source.childSymbols)
             for (let i=0; i<source.childSymbols.length; i++)
@@ -219,18 +228,34 @@ export class AZSymbolInformation {
 
             case AZSymbolKind.Interface: return 'interface';
             case AZSymbolKind.Property : return 'property';
-            case AZSymbolKind.VariableDeclaration : return 'variable';
-            case AZSymbolKind.VariableDeclarationName : return 'variable';
+            case AZSymbolKind.VariableDeclaration : 
+                if (this.access === AZSymbolAccessModifier.Protected)
+                    return 'variableprotected';
+                return 'variable';
+            case AZSymbolKind.VariableDeclarationName : 
+                if (this.access === AZSymbolAccessModifier.Protected)
+                    return 'variableprotected';
+                return 'variable';
             case AZSymbolKind.Constant : return 'constant';
             case AZSymbolKind.Parameter : return 'parameter';
-            case AZSymbolKind.MethodDeclaration : return 'method';
+            case AZSymbolKind.VarSection: return 'variablelist';
+            case AZSymbolKind.GlobalVarSection: 
+                if (this.access === AZSymbolAccessModifier.Protected)
+                    return 'variablelistprotected';
+                return 'variablelist';
+            case AZSymbolKind.MethodDeclaration : return 'method';            
             case AZSymbolKind.LocalMethodDeclaration : return 'methodprivate';
-            case AZSymbolKind.ProtectedMethodDeclaration : return 'methodprivate';
-            case AZSymbolKind.InternalMethodDeclaration : return 'methodprivate';
+            case AZSymbolKind.ProtectedMethodDeclaration : return 'methodprotected';
+            case AZSymbolKind.InternalMethodDeclaration : return 'methodinternal';
             case AZSymbolKind.TriggerDeclaration : return 'trigger';
+            case AZSymbolKind.Region: return 'region';
+
+            case AZSymbolKind.ParameterList: return 'parameterlist';
+            case AZSymbolKind.PropertyList: return 'propertieslist';
+
             //events
-            case AZSymbolKind.IntegrationEventDeclaration: return 'eventpublisher';
-            case AZSymbolKind.BusinessEventDeclaration: return 'eventpublisher';
+            case AZSymbolKind.IntegrationEventDeclaration: return 'integrationevent';
+            case AZSymbolKind.BusinessEventDeclaration: return 'businessevent';
             case AZSymbolKind.EventSubscriberDeclaration: return 'eventsubscriber';
             //tests
             case AZSymbolKind.TestDeclaration: return 'test';
@@ -263,6 +288,9 @@ export class AZSymbolInformation {
             case AZSymbolKind.PagePart: return 'pagepart';
             case AZSymbolKind.PageChartPart: return 'chartpart';
             case AZSymbolKind.PageSystemPart: return 'systempart';
+            case AZSymbolKind.PageLayout: return 'pagelayout';
+            case AZSymbolKind.PageActionList: return 'pageactions';
+            case AZSymbolKind.PageLabel: return 'label';
             
             case AZSymbolKind.PageActionGroup: return 'group';
             case AZSymbolKind.PageActionArea: return 'group';
@@ -275,7 +303,7 @@ export class AZSymbolInformation {
             case AZSymbolKind.PageField: return 'field';
             case AZSymbolKind.FieldModification: return 'field';
 
-            case AZSymbolKind.EventDeclaration: return 'trigger';
+            case AZSymbolKind.EventDeclaration: return 'event';
             case AZSymbolKind.EventTriggerDeclaration: return 'trigger';
 
             case AZSymbolKind.XmlPortSchema: return 'codeunit';
@@ -300,17 +328,12 @@ export class AZSymbolInformation {
             case AZSymbolKind.QueryColumn: return 'field';
             case AZSymbolKind.QueryFilter: return 'parameter';
 
-            //groups
-            case AZSymbolKind.PageLayout:
-            case AZSymbolKind.VarSection:
-            case AZSymbolKind.GlobalVarSection:
-            case AZSymbolKind.ParameterList:
+            //groups                       
             case AZSymbolKind.KeyList:
             case AZSymbolKind.FieldList:
             case AZSymbolKind.FieldGroupList:
             case AZSymbolKind.FieldExtensionList:
             case AZSymbolKind.PageViewList:
-            case AZSymbolKind.PageActionList:
             case AZSymbolKind.GroupActionList:
             case AZSymbolKind.PageExtensionViewList:
             case AZSymbolKind.PageExtensionActionList:
