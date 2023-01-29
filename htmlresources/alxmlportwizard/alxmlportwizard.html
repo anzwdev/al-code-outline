@@ -5,6 +5,7 @@
         <script src="##EXTENSIONPATH##/htmlresources/lib/helpers/htmlhelper.js"></script>
         <script src="##EXTENSIONPATH##/htmlresources/lib/autocomplete/autocomplete.js"></script>
         <script src="##EXTENSIONPATH##/htmlresources/lib/filteredlist/filteredlist.js"></script>
+        <script src="##EXTENSIONPATH##/htmlresources/lib/wizards/baseobjectwizard.js"></script>
         <script src="##EXTENSIONPATH##/htmlresources/lib/wizards/tablebasedobjectwizard.js"></script>
         <script src="##EXTENSIONPATH##/htmlresources/alxmlportwizard/js/alxmlportwizard.js"></script>
         <link rel="stylesheet" type="text/css" href="##EXTENSIONPATH##/htmlresources/lib/autocomplete/autocomplete.css">
@@ -22,6 +23,14 @@
                     <div class="formheader">Please enter xml port properties.</div>
                 </div>
                         
+                <div id="idproviderline" class="formline">
+                    <div class="formcaption">Object Id Provider:</div>
+                    <div class="formfield">
+                        <select id="idprovider" class="fixedopt">
+                        </select>
+                    </div>
+                </div>
+
                 <div class="formline">
                     <div class="formcaption">Object Id:</div>
                     <div class="formfield">

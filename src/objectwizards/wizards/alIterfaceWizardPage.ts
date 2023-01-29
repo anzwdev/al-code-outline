@@ -11,7 +11,7 @@ export class ALInterfaceWizardPage extends ProjectItemWizardPage {
     protected _wizardData : ALInterfaceWizardData;
 
     constructor(toolsExtensionContext : DevToolsExtensionContext, settings: ALObjectWizardSettings, data : ALInterfaceWizardData) {
-        super(toolsExtensionContext, "AL Interface Wizard", settings);
+        super(toolsExtensionContext, "AL Interface Wizard", settings, data);
         this._wizardData = data;
     }
 

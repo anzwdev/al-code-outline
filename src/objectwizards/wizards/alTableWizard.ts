@@ -19,10 +19,8 @@ export class ALTableWizard extends ALObjectWizard {
     }
 
     protected async runAsync(settings: ALObjectWizardSettings) {
-        let objectId : number = await this._toolsExtensionContext.toolsLangServerClient.getNextObjectId(settings.getDestDirectoryPath(), "table");
-
         let wizardData : ALTableWizardData = new ALTableWizardData();
-        wizardData.objectId = objectId.toString();
+        this.initObjectIdFields(wizardData, settings, "table");
         wizardData.objectName = '';
         let wizardPage : ALTableWizardPage = new ALTableWizardPage(this._toolsExtensionContext, settings, wizardData);
         wizardPage.show();

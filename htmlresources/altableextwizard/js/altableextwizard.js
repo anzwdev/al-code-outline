@@ -17,9 +17,6 @@ class TableExtWizard extends TableBasedObjectWizard {
 
             item.id = newId.toString();
         };
-
-        htmlHelper.hideById("prevBtn");
-        htmlHelper.hideById("nextBtn");
     }
 
     onMessage(message) {    
@@ -60,13 +57,7 @@ class TableExtWizard extends TableBasedObjectWizard {
         this._fieldsgrid.setAutocomplete('dataType', types);
     }
 
-    onFinish() {
-        this.collectStepData(true);
-
-        if (!this.canFinish()) {
-            return;
-        }
-            
+    sendFinishMessage() {
         this.sendMessage({
             command: "finishClick",
             data: {

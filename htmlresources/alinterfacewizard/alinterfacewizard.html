@@ -4,6 +4,8 @@
         <meta http-equiv="Content-Security-Policy" content="default-src 'none'; img-src ##CSPSOURCE## https: data:; script-src ##CSPSOURCE## 'unsafe-eval'; style-src ##CSPSOURCE##; font-src ##CSPSOURCE##;" />
         <script src="##EXTENSIONPATH##/htmlresources/lib/autocomplete/autocomplete.js"></script>
         <script src="##EXTENSIONPATH##/htmlresources/lib/filteredlist/filteredlist.js"></script>
+        <script src="##EXTENSIONPATH##/htmlresources/lib/helpers/htmlhelper.js"></script>
+        <script src="##EXTENSIONPATH##/htmlresources/lib/wizards/baseobjectwizard.js"></script>
         <script src="##EXTENSIONPATH##/htmlresources/lib/wizards/tablebasedobjectwizard.js"></script>
         <script src="##EXTENSIONPATH##/htmlresources/alinterfacewizard/js/alinterfacewizard.js"></script>
         <link rel="stylesheet" type="text/css" href="##EXTENSIONPATH##/htmlresources/lib/autocomplete/autocomplete.css">
@@ -41,6 +43,8 @@
             </div>
 
             <div id="footer" class="footer">
+                <button id="prevBtn" class="button">Previous</button>
+                <button id="nextBtn" class="button">Next</button>
                 <button id="finishBtn" class="button">Finish</button>
                 <button id="cancelBtn" class="button">Cancel</button>
             </div>

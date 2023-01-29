@@ -1,9 +1,7 @@
-class TableWizard {
+class TableWizard extends BaseObjectWizard {
 
     constructor() {
-        //initialize properties
-        this._step = 1;
-        this._vscode = acquireVsCodeApi();
+        super(1);
 
         //initialize controls
         this._fieldsgrid = new TableFieldsGridView(true);
@@ -22,25 +20,6 @@ class TableWizard {
 
             item.id = newId.toString();
         };
-
-        this.initNameLenUpdate();
-
-        // Handle messages sent from the extension to the webview
-        window.addEventListener('message', event => {
-            this.onMessage(event.data);
-        });
-
-        document.getElementById('finishBtn').addEventListener('click', event => {
-            this.onFinish();
-        });
-
-        document.getElementById('cancelBtn').addEventListener('click', event => {
-            this.onCancel();
-        });      
-
-        this.sendMessage({
-            command: 'documentLoaded'
-        });
     }
 
     getId(data, idx) {
@@ -57,24 +36,21 @@ class TableWizard {
             case 'setData':
                 this.setData(message.data);
                 break;
-            case 'setTypes':
-                this.setTypes(message.data);
+            default:
+                super.onMessage(message);
                 break;
         }
     }
 
-    sendMessage(data) {
-        this._vscode.postMessage(data);    
-    }
-
     setData(data) {
-        this._data = data;        
+        super.setData(data);
        
         if (this._data) {
             //initialize inputs
             document.getElementById("objectid").value = this._data.objectId;
             document.getElementById("objectname").value = this._data.objectName;
             document.getElementById("datapercompany").checked = this._data.dataPerCompany;
+
             //initialize fields list
             if (this._data.fields)
                 this._fieldsgrid.setData(this._data.fields);
@@ -88,12 +64,7 @@ class TableWizard {
         this._fieldsgrid.setAutocomplete('dataType', types);
     }
 
-    onFinish() {
-        this.collectStepData(true);
-
-        if (!this.canFinish())
-            return;
-            
+    sendFinishMessage() {
         this.sendMessage({
             command: "finishClick",
             data: {
@@ -105,45 +76,12 @@ class TableWizard {
         });
     }
 
-    onCancel() {
-        this.sendMessage({
-            command : "cancelClick"
-        })
-    }
-
     collectStepData(finishSelected) {
         this._data.objectId = document.getElementById("objectid").value;
         this._data.objectName = document.getElementById("objectname").value;
         this._data.dataPerCompany = document.getElementById("datapercompany").checked;
         this._data.fields = this._fieldsgrid.getData();
     }
-
-    canFinish() {
-        if ((!this._data.objectName) || (this._data.objectName == '')) {
-            this.sendMessage({
-                command: 'showError',
-                message: 'Please enter object name.'
-            });
-            return false;
-        }
-        return true;
-    }
-
-    initNameLenUpdate() {
-        this._ctName = document.getElementById('objectname');
-        this._ctNameLen = document.getElementById('objectnamelen');
-        if ((this._ctName) && (this._ctNameLen)) {
-            this.updateNameLen();
-            this._ctName.addEventListener('input', event => {
-                this.updateNameLen();
-            });   
-        }
-    }
-
-    updateNameLen() {
-        this._ctNameLen.innerText = this._ctName.value.length.toString();
-    }
-
 }
 
 var wizard;

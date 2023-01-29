@@ -42,6 +42,8 @@ export class ALQueryWizardPage extends ALTableBasedWizardPage {
             }
         }
 
+        await this.finishObjectIdReservation(this._queryWizardData);
+
         //load project settings from the language server
         this._queryWizardData.projectSettings = await this.getProjectSettings();
 

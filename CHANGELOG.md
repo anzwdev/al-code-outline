@@ -1,5 +1,9 @@
 # Change Log
 
+## 3.0.42
+ - Issue #276 - AL Object ID Ninja integration
+   - New `alOutline.idReservationProvider` setting with these values available: LocalFiles, ALObjectIdNinja
+
 ## 3.0.41
  - Issue #6 - AL Outline panel - sort symbols by position, name and type
  - Issue #327 - Use different icons in AL Outline panel
@@ -13,6 +17,7 @@
  - Issue #377 - Don't add captions to the API pages fields
    - new `alOutline.createApiFieldsCaptions` setting added
  - Issue #378 - API Pages : API field name suggestions for 'number' fields (number instead of no)
+   - new `alOutline.apiFieldNamesConversion` setting
  - Issue #380 - AL Outline panel support Region Directive in AL (New Feature Request) 
  - Issue #385 - AL Language Server Crashing - temp-al-proxy.al 
    - all references to code creating that temp file removed
@@ -29,7 +34,7 @@
      - "alOutline.dropDownGroupFieldsNamesPatterns": array of string patters for table DropDown group fields, you can use "*" for partial name matching
      - "alOutline.tableDataCaptionFieldsNamesPatterns": array of string patters for field names for table DataCaptionFields property, you can use "*" for partial name matching
  - Issue #415 - Variable completion
-   - #425 fix should improve suggetsions here, but the real problem is caused by the default vs code `"editor.suggest.matchOnWordStartOnly": true,` setting (ICDimension is treated as single word)
+   - #425 fix should improve suggestions here, but the real problem is caused by the default `"editor.suggest.matchOnWordStartOnly": true,` VS Code setting (ICDimension is treated as single word)
  - Issue #417 - Add all extension objects permissions quick fix should not add redundant permissions
  - Issue #421 - FlowFilters aren't added to API Pages
    - new page wizard step for API pages - flow filters selection

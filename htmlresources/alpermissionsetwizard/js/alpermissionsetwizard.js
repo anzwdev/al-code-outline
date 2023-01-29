@@ -37,11 +37,6 @@ class PermissionSetWizard extends BaseObjectWizard {
         }
     }
 
-    onFinish() {
-        if (super.onFinish())
-            this.sendFinishMessage();
-    }
-
     sendFinishMessage() {
         this.sendMessage({
             command: "finishClick",
@@ -75,7 +70,6 @@ class PermissionSetWizard extends BaseObjectWizard {
     collectStep2Data(finishSelected) {
         this._data.selectedPermissionSetList = this._destPermSets.getAll();
     }
-
 
     setPermissionSets(permissionSets) {
         if (!this._data)
@@ -128,21 +122,6 @@ class PermissionSetWizard extends BaseObjectWizard {
 
     getSelectedPermissionSets() {
         return this._destPermSets.getAll();
-    }
-
-    initCaptionLenUpdate() {
-        this._ctCaption = document.getElementById('objectcaption');
-        this._ctCaptionLen = document.getElementById('objectcaptionlen');
-        if ((this._ctCaption) && (this._ctCaptionLen)) {
-            this.updateCaptionLen();
-            this._ctCaption.addEventListener('input', event => {
-                this.updateCaptionLen();
-            });   
-        }
-    }
-
-    updateCaptionLen() {
-        this._ctCaptionLen.innerText = this._ctCaption.value.length.toString();
     }
 
 }

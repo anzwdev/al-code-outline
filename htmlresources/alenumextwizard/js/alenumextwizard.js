@@ -1,48 +1,22 @@
-class EnumExtWizard {
+class EnumExtWizard extends BaseObjectWizard {
 
     constructor() {
-        //initialize properties
-        this._step = 1;
-        this._vscode = acquireVsCodeApi();
-
-        this.initNameLenUpdate();
-        
-        // Handle messages sent from the extension to the webview
-        window.addEventListener('message', event => {
-            this.onMessage(event.data);
-        });
-
-        document.getElementById('finishBtn').addEventListener('click', event => {
-            this.onFinish();
-        });
-
-        document.getElementById('cancelBtn').addEventListener('click', event => {
-            this.onCancel();
-        });
-
-        this.sendMessage({
-            command: 'documentLoaded'
-        });
-        
+        super(1);
     }
 
-    onMessage(message) {     
+    onMessage(message) {
+        super.onMessage(message);
+
         switch (message.command) {
-            case 'setData':
-                this.setData(message.data);
-                break;
             case 'setEnums':
                 this.setEnums(message.data);
                 break;
         }
     }
 
-    sendMessage(data) {
-        this._vscode.postMessage(data);    
-    }
-
     setData(data) {
-        this._data = data;
+        super.setData(data);
+
         //initialize fields
         document.getElementById("objectid").value = this._data.objectId;
         document.getElementById("objectname").value = this._data.objectName;
@@ -101,13 +75,7 @@ class EnumExtWizard {
 		})
     }
 
-
-    onFinish() {
-        this.collectStepData(true);
-
-        if (!this.canFinish())
-            return;
-            
+    sendFinishMessage() {
         this.sendMessage({
             command: "finishClick",
             data: {
@@ -121,12 +89,6 @@ class EnumExtWizard {
         });
     }
 
-    onCancel() {
-        this.sendMessage({
-            command : "cancelClick"
-        })
-    }
-
     collectStepData(finishSelected) {
         this._data.objectId = document.getElementById("objectid").value;
         this._data.objectName = document.getElementById("objectname").value;
@@ -135,33 +97,6 @@ class EnumExtWizard {
         this._data.valueList = document.getElementById("valuelist").value;
         this._data.captionList = document.getElementById("captionlist").value;
     }
-
-    canFinish() {
-        if ((!this._data.objectName) || (this._data.objectName == '')) {
-            this.sendMessage({
-                command: 'showError',
-                message: 'Please enter object name.'
-            });
-            return false;
-        }
-        return true;
-    }
-
-    initNameLenUpdate() {
-        this._ctName = document.getElementById('objectname');
-        this._ctNameLen = document.getElementById('objectnamelen');
-        if ((this._ctName) && (this._ctNameLen)) {
-            this.updateNameLen();
-            this._ctName.addEventListener('input', event => {
-                this.updateNameLen();
-            });   
-        }
-    }
-
-    updateNameLen() {
-        this._ctNameLen.innerText = this._ctName.value.length.toString();
-    }
-
 }
 
 var wizard;

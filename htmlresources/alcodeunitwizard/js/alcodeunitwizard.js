@@ -5,15 +5,6 @@ class CodeunitWizard extends TableBasedObjectWizard{
         this._step = 1;
     }
 
-    updateMainButtons() {
-        document.getElementById("prevBtn").disabled = true;
-        document.getElementById("nextBtn").disabled = true;
-    }
-
-    updateControls() {
-        this.updateMainButtons();
-    }
-
     onMessage(message) {     
         super.onMessage(message);
 
@@ -32,7 +23,8 @@ class CodeunitWizard extends TableBasedObjectWizard{
     }
 
     setData(data) {
-        this._data = data;
+        super.setData(data);
+
         //initialize fields
         document.getElementById("objectid").value = this._data.objectId;
         document.getElementById("objectname").value = this._data.objectName;
@@ -92,12 +84,7 @@ class CodeunitWizard extends TableBasedObjectWizard{
 		})
     }
    
-    onFinish() {
-        this.collectStepData(true);
-
-        if (!this.canFinish())
-            return;
-            
+    sendFinishMessage() {
         this.sendMessage({
             command: "finishClick",
             data: {
@@ -109,28 +96,11 @@ class CodeunitWizard extends TableBasedObjectWizard{
         });
     }
 
-    onCancel() {
-        this.sendMessage({
-            command : "cancelClick"
-        })
-    }
-
     collectStepData(finishSelected) {
         this._data.objectId = document.getElementById("objectid").value;
         this._data.objectName = document.getElementById("objectname").value;
         this._data.selectedTable = document.getElementById("srctable").value;
         this._data.interfaceName = document.getElementById("interfaceName").value;
-    }
-
-    canFinish() {
-        if ((!this._data.objectName) || (this._data.objectName == '')) {
-            this.sendMessage({
-                command: 'showError',
-                message: 'Please enter object name.'
-            });
-            return false;
-        }
-        return true;
     }
 
 }

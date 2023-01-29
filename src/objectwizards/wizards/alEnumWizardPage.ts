@@ -11,7 +11,7 @@ export class ALEnumWizardPage extends ProjectItemWizardPage {
     private _enumWizardData : ALEnumWizardData;
     
     constructor(toolsExtensionContext : DevToolsExtensionContext, settings: ALObjectWizardSettings, data : ALEnumWizardData) {
-        super(toolsExtensionContext, "AL Enum Wizard", settings);
+        super(toolsExtensionContext, "AL Enum Wizard", settings, data);
         this._enumWizardData = data;
     }
 
@@ -40,6 +40,8 @@ export class ALEnumWizardPage extends ProjectItemWizardPage {
         this._enumWizardData.captionList = data.captionList;
         this._enumWizardData.extensible = data.extensible;
     
+        await this.finishObjectIdReservation(this._enumWizardData);
+
         //build new object
         var builder : ALEnumSyntaxBuilder = new ALEnumSyntaxBuilder();
         var source = builder.buildFromEnumWizardData(this._settings.getDestDirectoryUri(), this._enumWizardData);

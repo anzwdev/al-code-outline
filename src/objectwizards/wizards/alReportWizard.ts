@@ -19,10 +19,8 @@ export class ALReportWizard extends ALObjectWizard {
     }
 
     protected async runAsync(settings: ALObjectWizardSettings) {
-        let objectId : number = await this._toolsExtensionContext.toolsLangServerClient.getNextObjectId(settings.getDestDirectoryPath(), "Report");
-
         let wizardData : ALReportWizardData = new ALReportWizardData();
-        wizardData.objectId = objectId.toString();
+        this.initObjectIdFields(wizardData, settings, "Report");
         wizardData.objectName = '';
         
         //build relative path

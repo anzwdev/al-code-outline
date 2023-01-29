@@ -1,62 +1,27 @@
-class PageExtWizard {
+class PageExtWizard extends BaseObjectWizard {
 
     constructor() {
-        this._step = 1;
-        this._vscode = acquireVsCodeApi();
-
-        this.initNameLenUpdate();
-        
-        // Handle messages sent from the extension to the webview
-        window.addEventListener('message', event => {
-            this.onMessage(event.data);
-        });
-
-        document.getElementById('finishBtn').addEventListener('click', event => {
-            this.onFinish();
-        });
-
-        document.getElementById('cancelBtn').addEventListener('click', event => {
-            this.onCancel();
-        });      
-
-        this.sendMessage({
-            command: 'documentLoaded'
-        });
+        super(1);
     }
 
-    updateMainButtons() {
-        document.getElementById("prevBtn").disabled = true;
-        document.getElementById("nextBtn").disabled = true;
-    }
+    onMessage(message) {
+        super.onMessage(message);
 
-    updateControls() {
-        this.updateMainButtons();
-    }
-
-    onMessage(message) {     
         switch (message.command) {
-            case 'setData':
-                this.setData(message.data);
-                break;
             case 'setPages':
                 this.setPages(message.data);
                 break;
         }
     }
 
-    sendMessage(data) {
-        this._vscode.postMessage(data);    
-    }
-
     setData(data) {
-        this._data = data;        
+        super.setData(data);
        
         if (this._data) {
             //initialize inputs
             document.getElementById("objectid").value = this._data.objectId;
             document.getElementById("objectname").value = this._data.objectName;
             document.getElementById("basepage").value = this._data.basePage;
-            
             this.updateControls();
         }
 
@@ -112,13 +77,7 @@ class PageExtWizard {
 		});
     }
    
-    onFinish() {
-        this.collectStepData(true);
-
-        if (!this.canFinish()) {
-            return;
-        }
-            
+    sendFinishMessage() {
         this.sendMessage({
             command: "finishClick",
             data: {
@@ -129,12 +88,6 @@ class PageExtWizard {
         });
     }
 
-    onCancel() {
-        this.sendMessage({
-            command : "cancelClick"
-        });
-    }
-
     collectStepData(finishSelected) {
         this._data.objectId = document.getElementById("objectid").value;
         this._data.objectName = document.getElementById("objectname").value;
@@ -142,13 +95,8 @@ class PageExtWizard {
     }
 
     canFinish() {
-        if ((!this._data.objectName) || (this._data.objectName == '')) {
-            this.sendMessage({
-                command: 'showError',
-                message: 'Please enter object name.'
-            });
+        if (!super.canFinish())
             return false;
-        }
 
         if ((!this._data.basePage) || (this._data.basePage == '')) {
             this.sendMessage({
@@ -160,20 +108,6 @@ class PageExtWizard {
         return true;
     }
 
-    initNameLenUpdate() {
-        this._ctName = document.getElementById('objectname');
-        this._ctNameLen = document.getElementById('objectnamelen');
-        if ((this._ctName) && (this._ctNameLen)) {
-            this.updateNameLen();
-            this._ctName.addEventListener('input', event => {
-                this.updateNameLen();
-            });   
-        }
-    }
-
-    updateNameLen() {
-        this._ctNameLen.innerText = this._ctName.value.length.toString();
-    }
 }
 
 var wizard;

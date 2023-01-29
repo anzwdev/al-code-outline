@@ -29,8 +29,10 @@ export class ALSymbolsBasedWizard {
 
     protected async getObjectId(destPath: string | undefined, objectType: string, promptText: string, defaultObjectId: number) : Promise<number> {
         let uri: vscode.Uri | undefined;
-        
-        let objectId: number = await this._toolsExtensionContext.toolsLangServerClient.getNextObjectId(destPath, objectType);
+        if (destPath)
+            uri = vscode.Uri.file(destPath);
+
+        let objectId: number = await this._toolsExtensionContext.idReservationService.suggestObjectId(undefined, uri, objectType);
         if (objectId == 0)
             objectId = defaultObjectId;
 

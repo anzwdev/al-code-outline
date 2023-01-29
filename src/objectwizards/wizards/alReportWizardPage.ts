@@ -37,6 +37,8 @@ export class ALReportWizardPage extends ALTableBasedWizardPage {
             }
         }
 
+        await this.finishObjectIdReservation(this._reportWizardData);
+
         //load project settings from the language server
         this._reportWizardData.projectSettings = await this.getProjectSettings();
 

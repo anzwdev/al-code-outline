@@ -19,10 +19,8 @@ export class ALQueryWizard extends ALObjectWizard {
     }
 
     protected async runAsync(settings: ALObjectWizardSettings) {
-        let objectId : number = await this._toolsExtensionContext.toolsLangServerClient.getNextObjectId(settings.getDestDirectoryPath(), "Query");
-        
         let wizardData : ALQueryWizardData = new ALQueryWizardData();
-        wizardData.objectId = objectId.toString();
+        this.initObjectIdFields(wizardData, settings, "Query");
         wizardData.objectName = '';
         let wizardPage : ALQueryWizardPage = new ALQueryWizardPage(this._toolsExtensionContext, settings, wizardData);
         wizardPage.show();

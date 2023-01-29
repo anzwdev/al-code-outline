@@ -1,14 +1,14 @@
+import { ALObjectWizardData } from "./alObjectWizardData";
 import { ALReportExtWizardDataItemData } from "./alReportExtWizardDataItemData";
 
-export class ALReportExtWizardData {
-    objectId : string;
+export class ALReportExtWizardData extends ALObjectWizardData {
     objectName : string;
     reportList : string[] | undefined;
     baseReport: string;
     dataItems: ALReportExtWizardDataItemData[] | undefined;
 
     constructor() {
-        this.objectId = '';
+        super();
         this.objectName = '';
         this.reportList = undefined;
         this.baseReport = "";

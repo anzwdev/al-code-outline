@@ -3,9 +3,9 @@
 import { AppAreaMode } from "../../alsyntaxmodifiers/appAreaMode";
 import { ToolsGetProjectSettingsResponse } from "../../langserver/toolsGetProjectSettingsResponse";
 import { TableFieldInformation } from "../../symbolsinformation/tableFieldInformation";
+import { ALObjectWizardData } from "./alObjectWizardData";
 
-export class ALTableBasedWizardData {
-    objectId : string;
+export class ALTableBasedWizardData extends ALObjectWizardData {
     objectName : string;
     tableList : string[] | undefined;
     selectedTable : string;
@@ -19,7 +19,7 @@ export class ALTableBasedWizardData {
     projectSettings: ToolsGetProjectSettingsResponse | undefined;
 
     constructor() {
-        this.objectId = "";
+        super();
         this.objectName = "";
         this.tableList = undefined;
         this.selectedTable = "";

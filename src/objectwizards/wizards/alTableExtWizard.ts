@@ -19,10 +19,8 @@ export class ALTableExtWizard extends ALObjectWizard {
     }
 
     protected async runAsync(settings: ALObjectWizardSettings) {
-        let objectId : number = await this._toolsExtensionContext.toolsLangServerClient.getNextObjectId(settings.getDestDirectoryPath(), "tableextension");
-
         let wizardData : ALTableExtWizardData = new ALTableExtWizardData();
-        wizardData.objectId = objectId.toString();
+        this.initObjectIdFields(wizardData, settings, "tableextension");
         wizardData.objectName = '';
         wizardData.selectedTable = '';
         wizardData.idRangeStart = 

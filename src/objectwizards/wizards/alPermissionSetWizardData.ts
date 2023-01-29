@@ -1,8 +1,8 @@
 import { ToolsGetProjectSettingsResponse } from "../../langserver/toolsGetProjectSettingsResponse";
 import { ObjectInformation } from "../../symbolsinformation/objectInformation";
+import { ALObjectWizardData } from "./alObjectWizardData";
 
-export class ALPermissionSetWizardData {
-    objectId : string;
+export class ALPermissionSetWizardData extends ALObjectWizardData {
     objectName: string;
     objectCaption: string;
     inclAllObjects: boolean;
@@ -13,7 +13,7 @@ export class ALPermissionSetWizardData {
     selectedObjectsList: ObjectInformation[] | undefined;
 
     constructor() {
-        this.objectId = '';
+        super();
         this.objectName = '';
         this.objectCaption = '';
         this.inclAllObjects = true;

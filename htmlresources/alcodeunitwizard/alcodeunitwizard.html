@@ -4,6 +4,8 @@
         <meta http-equiv="Content-Security-Policy" content="default-src 'none'; img-src ##CSPSOURCE## https: data:; script-src ##CSPSOURCE## 'unsafe-eval'; style-src ##CSPSOURCE##; font-src ##CSPSOURCE##;" />
         <script src="##EXTENSIONPATH##/htmlresources/lib/autocomplete/autocomplete.js"></script>
         <script src="##EXTENSIONPATH##/htmlresources/lib/filteredlist/filteredlist.js"></script>
+        <script src="##EXTENSIONPATH##/htmlresources/lib/helpers/htmlhelper.js"></script>
+        <script src="##EXTENSIONPATH##/htmlresources/lib/wizards/baseobjectwizard.js"></script>
         <script src="##EXTENSIONPATH##/htmlresources/lib/wizards/tablebasedobjectwizard.js"></script>
         <script src="##EXTENSIONPATH##/htmlresources/alcodeunitwizard/js/alcodeunitwizard.js"></script>
         <link rel="stylesheet" type="text/css" href="##EXTENSIONPATH##/htmlresources/lib/autocomplete/autocomplete.css">
@@ -21,6 +23,14 @@
                     <div class="formheader">Please enter codeunit properties.</div>
                 </div>
                         
+                <div id="idproviderline" class="formline">
+                    <div class="formcaption">Object Id Provider:</div>
+                    <div class="formfield">
+                        <select id="idprovider" class="fixedopt">
+                        </select>
+                    </div>
+                </div>
+
                 <div class="formline">
                     <div class="formcaption">Object Id:</div>
                     <div class="formfield">

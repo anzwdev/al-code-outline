@@ -11,7 +11,7 @@ export class ALPageExtWizardPage extends ProjectItemWizardPage {
     protected _pageExtWizardData : ALPageExtWizardData;
 
     constructor(toolsExtensionContext : DevToolsExtensionContext, settings: ALObjectWizardSettings, data : ALPageExtWizardData) {
-        super(toolsExtensionContext, "AL Page Extension Wizard", settings);
+        super(toolsExtensionContext, "AL Page Extension Wizard", settings, data);
         this._pageExtWizardData = data;
     }
 
@@ -53,6 +53,8 @@ export class ALPageExtWizardPage extends ProjectItemWizardPage {
         this._pageExtWizardData.objectName = data.objectName;
         this._pageExtWizardData.basePage = data.basePage;
         
+        await this.finishObjectIdReservation(this._pageExtWizardData);
+
         //build new object
         let builder : ALPageExtSyntaxBuilder = new ALPageExtSyntaxBuilder();
         let source = await builder.buildFromPageExtWizardData(this._settings.getDestDirectoryUri(),

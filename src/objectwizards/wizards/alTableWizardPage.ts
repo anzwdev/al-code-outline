@@ -12,7 +12,7 @@ export class ALTableWizardPage extends ProjectItemWizardPage {
     private _tableWizardData : ALTableWizardData;
     
     constructor(toolsExtensionContext : DevToolsExtensionContext, settings: ALObjectWizardSettings, data : ALTableWizardData) {
-        super(toolsExtensionContext, "AL Table Wizard", settings);
+        super(toolsExtensionContext, "AL Table Wizard", settings, data);
         this._tableWizardData = data;
     }
 
@@ -44,6 +44,8 @@ export class ALTableWizardPage extends ProjectItemWizardPage {
     
         //load project settings from the language server
         this._tableWizardData.projectSettings = await this.getProjectSettings();
+
+        await this.finishObjectIdReservation(this._tableWizardData);
 
         //build new object
         var builder : ALTableSyntaxBuilder = new ALTableSyntaxBuilder();

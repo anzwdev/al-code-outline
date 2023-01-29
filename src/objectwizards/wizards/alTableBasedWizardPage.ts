@@ -15,7 +15,7 @@ export class ALTableBasedWizardPage extends ProjectItemWizardPage {
     protected _toolTipsSourceDependencies : string[] | undefined;
 
     constructor(toolsExtensionContext : DevToolsExtensionContext, title : string, settings: ALObjectWizardSettings, data : ALTableBasedWizardData) {
-        super(toolsExtensionContext, title, settings);
+        super(toolsExtensionContext, title, settings, data);
         this._tableWizardData = data;
         this._includeToolTips = false;
         this._includeFlowFilters = false;

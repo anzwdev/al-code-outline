@@ -2,7 +2,7 @@
 	"name": "al-code-outline",
 	"displayName": "AZ AL Dev Tools/AL Code Outline",
 	"description": "AZ AL Development Tools: AL code outline, object browser, object creators",
-	"version": "3.0.41",
+	"version": "3.0.42",
 	"publisher": "andrzejzwierzchowski",
 	"engines": {
 		"vscode": "^1.47.0"
@@ -1839,8 +1839,21 @@
 						"uniqueItems": true,
 						"description": "Specifies which completion providers should be active. If both VariableNamesWithType and VariableNames are selected, VariableNamesWithType will be used",
 						"scope": "resource"
+					},
+					"alOutline.idReservationProvider": {
+						"type": "string",
+						"default": "",
+						"scope": "resource",
+						"description": "Object ID reservation provider used by object wizards",
+						"enum": [
+							"LocalFiles",
+							"ALObjectIdNinja"
+						],
+						"enumDescriptions": [
+							"Next available ID in local files",
+							"AL Object ID Ninja"
+						]
 					}
-
 				}
 			}
 		]

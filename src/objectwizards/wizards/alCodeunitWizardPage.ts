@@ -43,6 +43,8 @@ export class ALCodeunitWizardPage extends ALTableBasedWizardPage {
         this._codeunitWizardData.selectedTable = data.selectedTable;
         this._codeunitWizardData.interfaceName = data.interfaceName;
         
+        await this.finishObjectIdReservation(this._codeunitWizardData);
+
         //build new object
         let builder : ALCodeunitSyntaxBuilder = new ALCodeunitSyntaxBuilder(this._toolsExtensionContext);
         let source = await builder.buildFromCodeunitWizardDataAsync(this._settings.getDestDirectoryUri(),

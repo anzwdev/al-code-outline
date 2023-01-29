@@ -1,11 +1,12 @@
-export class ALPageExtWizardData {
-    objectId : string;
+import { ALObjectWizardData } from "./alObjectWizardData";
+
+export class ALPageExtWizardData extends ALObjectWizardData {
     objectName : string;
     pageList : string[] | undefined;
     basePage: string;
 
     constructor() {
-        this.objectId = '';
+        super();
         this.objectName = '';
         this.pageList = undefined;
         this.basePage = "";

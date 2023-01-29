@@ -14,7 +14,7 @@ export class ALPermissionSetWizardPage extends ProjectItemWizardPage {
     constructor(toolsExtensionContext : DevToolsExtensionContext, title: string | undefined, settings: ALObjectWizardSettings, data : ALPermissionSetWizardData) {
         if (!title)
             title = "AL Permission Set Wizard";
-        super(toolsExtensionContext, title, settings);
+        super(toolsExtensionContext, title, settings, data);
         this._permissionSetWizardData = data;
     }
 
@@ -51,6 +51,8 @@ export class ALPermissionSetWizardPage extends ProjectItemWizardPage {
     
         //load project settings from the language server
         this._permissionSetWizardData.projectSettings = await this.getProjectSettings();
+
+        await this.finishObjectIdReservation(this._permissionSetWizardData);
 
         //get all extension objects
         if (this._permissionSetWizardData.inclAllObjects) {

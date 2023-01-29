@@ -31,6 +31,8 @@ export class ALTableExtWizardPage extends ALTableBasedWizardPage {
         this._tableExtWizardData.fields = WizardTableFieldHelper.validateFields(data.fields);
         this._tableExtWizardData.selectedTable = data.selectedTable;
     
+        await this.finishObjectIdReservation(this._tableExtWizardData);
+
         //build new object
         var builder : ALTableExtSyntaxBuilder = new ALTableExtSyntaxBuilder();
         var source = builder.buildFromTableExtWizardData(this._settings.getDestDirectoryUri(), this._tableExtWizardData);

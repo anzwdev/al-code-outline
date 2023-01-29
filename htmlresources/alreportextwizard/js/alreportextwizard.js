@@ -107,11 +107,6 @@ class ReportExtWizard extends BaseObjectWizard {
 		});
     }
 
-    onFinish() {
-        if (super.onFinish())
-            this.sendFinishMessage();
-    }
-
     sendFinishMessage() {
         let dataItems = [];
         if ((this._data.report) && (this._data.report.dataItems)) {

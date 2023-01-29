@@ -8,24 +8,6 @@ class QueryWizard extends TableBasedObjectWizard {
         document.getElementById('querytype').addEventListener('change', event => {
             this.onQueryTypeChanged();
         });
-
-        //initialize steps visibility
-        this._step = 1;
-        htmlHelper.hideById("wizardstep2");
-
-    }
-
-    updateMainButtons() {
-        document.getElementById("prevBtn").disabled = (this._step <= 1);
-        document.getElementById("nextBtn").disabled = (this._step == 2);
-        //document.getElementById("finishBtn").disabled = (this._step < 2);
-    }
-
-    setStep(newStep) {
-        htmlHelper.hideById("wizardstep" + this._step.toString());        
-        this._step = newStep;
-        htmlHelper.showById("wizardstep" + this._step.toString());
-        this.updateMainButtons();
     }
 
     setData(data) {
@@ -46,12 +28,7 @@ class QueryWizard extends TableBasedObjectWizard {
         this.loadFields();
     }
    
-    onFinish() {
-        this.collectStepData(true);
-
-        if (!this.canFinish())
-            return;
-            
+    sendFinishMessage() {
         this.sendMessage({
             command: "finishClick",
             data: {
@@ -110,6 +87,8 @@ class QueryWizard extends TableBasedObjectWizard {
     }
 
     updateControls() {
+        super.updateControls();
+
         if (this._data.queryType == "API") {
             htmlHelper.showById("apipublisherline");
             htmlHelper.showById("apigroupline");
@@ -123,9 +102,7 @@ class QueryWizard extends TableBasedObjectWizard {
             htmlHelper.hideById("entitynameline");
             htmlHelper.hideById("entitysetnameline");
         }
-        this.updateMainButtons();
     }
-
 }
 
 var wizard;

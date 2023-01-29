@@ -1,5 +1,3 @@
-'use strict';
-
 import * as vscode from 'vscode';
 import * as path from 'path';
 import { BaseWebViewEditor } from '../../webviews/baseWebViewEditor';
@@ -10,15 +8,18 @@ import { CRSALLangExtHelper } from '../../crsAlLangExtHelper';
 import { FileBuilder } from '../fileBuilder';
 import { ToolsGetProjectSettingsRequest } from '../../langserver/toolsGetProjectSettingsRequest';
 import { ToolsGetProjectSettingsResponse } from '../../langserver/toolsGetProjectSettingsResponse';
+import { ALObjectWizardData } from './alObjectWizardData';
 
 export class ProjectItemWizardPage extends BaseWebViewEditor {
     protected _toolsExtensionContext : DevToolsExtensionContext;
     protected _settings: ALObjectWizardSettings;
+    private _objectWizardData: ALObjectWizardData;
 
-    constructor(toolsExtensionContext : DevToolsExtensionContext, title : string, settings: ALObjectWizardSettings) {
+    constructor(toolsExtensionContext : DevToolsExtensionContext, title : string, settings: ALObjectWizardSettings, data: ALObjectWizardData) {
         super(toolsExtensionContext.vscodeExtensionContext, title);
         this._toolsExtensionContext = toolsExtensionContext;
         this._settings = settings;
+        this._objectWizardData = data;
     }
 
     protected processWebViewMessage(message : any) : boolean {
@@ -26,6 +27,9 @@ export class ProjectItemWizardPage extends BaseWebViewEditor {
             return true;
 
         switch (message.command) {
+            case 'idProviderChanged':
+                this.onIdProviderChanged(message.data);
+                return true;
             case 'finishClick':
                 this.onFinish(message.data);
                 return true;
@@ -39,6 +43,34 @@ export class ProjectItemWizardPage extends BaseWebViewEditor {
 
     protected async finishWizard(data : any) : Promise<boolean> {
         return false;
+    }
+
+    protected async onIdProviderChanged(data: any) {
+        if ((data) && (data.idResProviderName)) {
+            this._objectWizardData.idResProviderName = data.idResProviderName;
+            let objectId = await this._toolsExtensionContext.idReservationService.suggestObjectId(
+                this._objectWizardData.idResProviderName, this._objectWizardData.uri, this._objectWizardData.idResObjectType);
+            if (objectId) {
+                this._objectWizardData.objectId = objectId.toString();
+                this.sendMessage({
+                    command : 'setIdProvider',
+                    data : {
+                        idResProviderName: this._objectWizardData.idResProviderName,
+                        objectId: this._objectWizardData.objectId
+                    }
+                });
+            }
+        }
+    }
+
+    protected async finishObjectIdReservation(data: ALObjectWizardData) {
+        let objectId: number | undefined = Number.parseInt(data.objectId);
+        if (!Number.isNaN(objectId)) {
+            objectId = await this._toolsExtensionContext.idReservationService.reserveObjectId(
+                data.idResProviderName, data.uri, data.idResObjectType, objectId);
+            if (objectId)
+                data.objectId = objectId.toString();
+        }
     }
 
     protected async onFinish(data : any) {

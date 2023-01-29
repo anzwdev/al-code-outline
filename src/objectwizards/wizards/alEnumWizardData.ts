@@ -1,14 +1,13 @@
-'use strict';
+import { ALObjectWizardData } from "./alObjectWizardData";
 
-export class ALEnumWizardData {
-    objectId : string;
+export class ALEnumWizardData extends ALObjectWizardData {
     objectName : string;
     valueList : string;
     captionList : string;
     extensible : boolean;
     
     constructor() {
-        this.objectId = "";
+        super();
         this.objectName = "";
         this.valueList = "";
         this.captionList = "";

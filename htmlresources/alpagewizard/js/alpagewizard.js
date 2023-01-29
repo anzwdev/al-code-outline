@@ -4,13 +4,9 @@ class PageWizard extends TableBasedObjectWizard {
         super(2, true);
 
         //initialize steps visibility
-        this._step = 1;
         this._activeFastTab = 0;
         this._selectFlowFilters = false;
-
-        htmlHelper.hideById("wizardstep2");
-        htmlHelper.hideById("wizardstep3");
-       
+      
         this.registerFieldsSelectionEvents();
         this.registerFlowFiltersSelectionEvents();
 
@@ -25,16 +21,7 @@ class PageWizard extends TableBasedObjectWizard {
 
     updateMainButtons() {
         this._maxStepNo = (this._selectFlowFilters)?3:2;
-
-        document.getElementById("prevBtn").disabled = (this._step <= 1);
-        document.getElementById("nextBtn").disabled = (this._step >= this._maxStepNo);
-    }
-
-    setStep(newStep) {
-        htmlHelper.hideById("wizardstep" + this._step.toString());        
-        this._step = newStep;
-        htmlHelper.showById("wizardstep" + this._step.toString());
-        this.updateMainButtons();
+        super.updateMainButtons();
     }
 
     setData(data) {
@@ -62,12 +49,7 @@ class PageWizard extends TableBasedObjectWizard {
         this.loadFlowFilters();
     }
     
-    onFinish() {
-        this.collectStepData(true);
-
-        if (!this.canFinish())
-            return;
-            
+    sendFinishMessage() {
         this.sendMessage({
             command: "finishClick",
             data: {
@@ -166,6 +148,8 @@ class PageWizard extends TableBasedObjectWizard {
     }
 
     updateControls() {
+        super.updateControls();
+
         if (this.hasFastTabs())
             htmlHelper.showById("fasttabsline");
         else
@@ -191,7 +175,6 @@ class PageWizard extends TableBasedObjectWizard {
             htmlHelper.hideById("entitysetnameline");
             htmlHelper.showById("createtooltipsline");
         }
-        this.updateMainButtons();
     }
 
     hasFastTabs() {

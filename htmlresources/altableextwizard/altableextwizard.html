@@ -7,6 +7,7 @@
         <script src="##EXTENSIONPATH##/htmlresources/lib/azgridview/azgridview.js"></script>
         <script src="##EXTENSIONPATH##/htmlresources/lib/azgridview/tablefieldsgridview.js"></script>
         <script src="##EXTENSIONPATH##/htmlresources/lib/filteredlist/filteredlist.js"></script>
+        <script src="##EXTENSIONPATH##/htmlresources/lib/wizards/baseobjectwizard.js"></script>
         <script src="##EXTENSIONPATH##/htmlresources/lib/wizards/tablebasedobjectwizard.js"></script>
         <script src="##EXTENSIONPATH##/htmlresources/altableextwizard/js/altableextwizard.js"></script>
         <link rel="stylesheet" type="text/css" href="##EXTENSIONPATH##/htmlresources/lib/autocomplete/autocomplete.css">
@@ -26,6 +27,14 @@
                     <div class="formheader">Please enter table extension properties.</div>
                 </div>
                         
+                <div id="idproviderline" class="formline">
+                    <div class="formcaption">Object Id Provider:</div>
+                    <div class="formfield">
+                        <select id="idprovider" class="fixedopt">
+                        </select>
+                    </div>
+                </div>
+
                 <div class="formline">
                     <div class="formcaption">Object Id:</div>
                     <div class="formfield">

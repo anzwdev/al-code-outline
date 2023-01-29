@@ -36,8 +36,10 @@ export class ALXmlPortWizardPage extends ALTableBasedWizardPage {
             }
         }
 
+        await this.finishObjectIdReservation(this._xmlPortWizardData);
+
         //load project settings from the language server
-        this._xmlPortWizardData.projectSettings = await this.getProjectSettings();
+        this._xmlPortWizardData.projectSettings = await this.getProjectSettings();        
 
         //build new object
         var builder : ALXmlPortSyntaxBuilder = new ALXmlPortSyntaxBuilder();

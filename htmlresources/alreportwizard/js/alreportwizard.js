@@ -4,28 +4,11 @@ class ReportWizard extends TableBasedObjectWizard {
         super(2, false);
 
         this.registerFieldsSelectionEvents();
-
-        //initialize steps visibility
-        this._step = 1;
-        htmlHelper.hideById("wizardstep2");
-
-    }
-
-    updateMainButtons() {
-        document.getElementById("prevBtn").disabled = (this._step <= 1);
-        document.getElementById("nextBtn").disabled = (this._step == 2);
-        //document.getElementById("finishBtn").disabled", (this._step < 2);
-    }
-
-    setStep(newStep) {
-        htmlHelper.hideById("wizardstep" + this._step.toString());        
-        this._step = newStep;
-        htmlHelper.showById("wizardstep" + this._step.toString());
-        this.updateMainButtons();        
     }
 
     setData(data) {
         super.setData(data);
+
         //initialize fields
         document.getElementById("objectid").value = this._data.objectId;
         document.getElementById("objectname").value = this._data.objectName;
@@ -37,12 +20,7 @@ class ReportWizard extends TableBasedObjectWizard {
         this.loadFields();
     }
 
-    onFinish() {
-        this.collectStepData();
-
-        if (!this.canFinish())
-            return;
-            
+    sendFinishMessage() {
         this.sendMessage({
             command: "finishClick",
             data: {

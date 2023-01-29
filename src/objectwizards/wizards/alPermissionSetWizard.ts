@@ -15,10 +15,8 @@ export class ALPermissionSetWizard extends ALObjectWizard {
     }
 
     protected async runAsync(settings: ALObjectWizardSettings) {
-        let objectId : number = await this._toolsExtensionContext.toolsLangServerClient.getNextObjectId(settings.getDestDirectoryPath(), "permissionset");
-
         let wizardData : ALPermissionSetWizardData = new ALPermissionSetWizardData();
-        wizardData.objectId = objectId.toString();
+        this.initObjectIdFields(wizardData, settings, "permissionset");
         wizardData.objectName = '';
         let wizardPage : ALPermissionSetWizardPage = new ALPermissionSetWizardPage(this._toolsExtensionContext, undefined, settings, wizardData);
         wizardPage.show();

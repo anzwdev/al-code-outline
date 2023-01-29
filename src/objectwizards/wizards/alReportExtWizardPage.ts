@@ -13,7 +13,7 @@ export class ALReportExtWizardPage extends ProjectItemWizardPage {
     protected _reportExtWizardData : ALReportExtWizardData;
 
     constructor(toolsExtensionContext : DevToolsExtensionContext, settings: ALObjectWizardSettings, data : ALReportExtWizardData) {
-        super(toolsExtensionContext, "AL Report Extension Wizard", settings);
+        super(toolsExtensionContext, "AL Report Extension Wizard", settings, data);
         this._reportExtWizardData = data;
     }
 
@@ -74,6 +74,8 @@ export class ALReportExtWizardPage extends ProjectItemWizardPage {
                 this._reportExtWizardData.dataItems.push(this.anyToDataItem(data.dataItems[i]));
             }
         }
+
+        await this.finishObjectIdReservation(this._reportExtWizardData);
 
         //build new object
         let builder : ALReportExtSyntaxBuilder = new ALReportExtSyntaxBuilder();

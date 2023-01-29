@@ -1,7 +1,8 @@
-class TableBasedObjectWizard {
+class TableBasedObjectWizard extends BaseObjectWizard {
 
     constructor(maxStepNo, flowFiltersSupported) {
-        this._maxStepNo = maxStepNo;
+        super(maxStepNo);
+
         this._flowFiltersSupported = !!flowFiltersSupported;
 
         this._srcFields = new FilteredList('srcfieldsfilter', 'srcfields');
@@ -14,38 +15,12 @@ class TableBasedObjectWizard {
             this.initFieldsSelProp(this._srcFlowFilters, this._destFlowFilters);
         }
 
-        //initialize properties
-        this._vscode = acquireVsCodeApi();
-
         let fldSortName = document.getElementById('srcfldsortname');
         let fldSortId = document.getElementById('srcfldsortid');
 
         if (fldSortName)
             fldSortName.className = "mselcaptb mseltbbtnsel";
         
-        this.initNameLenUpdate();
-
-        // Handle messages sent from the extension to the webview
-        window.addEventListener('message', event => {
-            this.onMessage(event.data);
-        });
-
-        document.getElementById('prevBtn').addEventListener('click', event => {
-            this.onPrev();
-        });
-
-        document.getElementById('nextBtn').addEventListener('click', event => {
-            this.onNext();
-        });
-
-        document.getElementById('finishBtn').addEventListener('click', event => {
-            this.onFinish();
-        });
-
-        document.getElementById('cancelBtn').addEventListener('click', event => {
-            this.onCancel();
-        });      
-
         if (fldSortId)
             fldSortId.addEventListener('click', event => {
                 this.sortSrcFieldsBy("id");
@@ -53,12 +28,7 @@ class TableBasedObjectWizard {
         if (fldSortName)
             fldSortName.addEventListener('click', event => {
                 this.sortSrcFieldsBy("name");
-            });
-
-
-        this.sendMessage({
-            command: 'documentLoaded'
-        });   
+            });            
     }
 
     initFieldsSelProp(srcFlds, destFlds) {
@@ -112,10 +82,9 @@ class TableBasedObjectWizard {
     }
 
     onMessage(message) {     
+        super.onMessage(message);
+
         switch (message.command) {
-            case 'setData':
-                this.setData(message.data);
-                break;
             case 'setTables':
                 this.setTables(message.data);
                 break;
@@ -123,14 +92,6 @@ class TableBasedObjectWizard {
                 this.setFields(message.data);
                 break;
         }
-    }
-
-    sendMessage(data) {
-        this._vscode.postMessage(data);
-    }
-
-    setData(data) {   
-        this._data = data;
     }
 
     loadFields() {
@@ -248,66 +209,11 @@ class TableBasedObjectWizard {
         this._destFlowFilters.setData(list);
     }
 
-    onFinish() {
-    }
-
-    onCancel() {
-        this.sendMessage({
-            command : "cancelClick"
-        })
-    }
-
-    onPrev() {
-        if (this._step > 1) {
-            this.collectStepData(false);
-            this.setStep(this._step - 1);
-        }
-    }
-
-    onNext() {
-        if (this._step < this._maxStepNo) {
-            this.collectStepData(false);
-            this.setStep(this._step + 1);
-        }
-    }
-
-    collectStepData(finishSelected) {
-    }
-
-    setStep(newStep) {
-    }
-
-    canFinish() {
-        if ((!this._data.objectName) || (this._data.objectName == '')) {
-            this.sendMessage({
-                command: 'showError',
-                message: 'Please enter object name.'
-            });
-            return false;
-        }
-        return true;
-    }
-
     sortSrcFieldsBy(name) {
         let dispField = 'name';
         this._srcFields.sortBy(name, dispField);
         document.getElementById('srcfldsortid').className = (name == 'id')?"mselcaptb mseltbbtnsel":"mselcaptb mseltbbtn";
         document.getElementById('srcfldsortname').className = (name == 'name')?"mselcaptb mseltbbtnsel":"mselcaptb mseltbbtn";
     }
-
-    initNameLenUpdate() {
-        this._ctName = document.getElementById('objectname');
-        this._ctNameLen = document.getElementById('objectnamelen');
-        if ((this._ctName) && (this._ctNameLen)) {
-            this.updateNameLen();
-            this._ctName.addEventListener('input', event => {
-                this.updateNameLen();
-            });   
-        }
-    }
-
-    updateNameLen() {
-        this._ctNameLen.innerText = this._ctName.value.length.toString();
-    }  
 
 }

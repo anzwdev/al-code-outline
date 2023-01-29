@@ -12,7 +12,7 @@ export class ALEnumExtWizardPage extends ProjectItemWizardPage {
     private _enumExtWizardData : ALEnumExtWizardData;
     
     constructor(toolsExtensionContext : DevToolsExtensionContext, settings: ALObjectWizardSettings, data : ALEnumExtWizardData) {
-        super(toolsExtensionContext, "AL Enum Extension Wizard", settings);
+        super(toolsExtensionContext, "AL Enum Extension Wizard", settings, data);
         this._enumExtWizardData = data;
     }
 
@@ -66,6 +66,8 @@ export class ALEnumExtWizardPage extends ProjectItemWizardPage {
             this._enumExtWizardData.firstValueId = 0;
         else
             this._enumExtWizardData.firstValueId = firstValueId;
+
+        await this.finishObjectIdReservation(this._enumExtWizardData);
 
         //build new object
         let builder : ALEnumExtSyntaxBuilder = new ALEnumExtSyntaxBuilder();
