@@ -1782,6 +1782,12 @@
 						"scope": "resource",
 						"description": "Set to true to remove quotes around identifiers having names of al data types when running 'Fix Identifiers and Keywords Case' commands"
 					},
+					"alOutline.fixCaseRemovesQuotesFromNonDataTypeIdentifiers": {
+						"type": "boolean",
+						"default": true,
+						"scope": "resource",
+						"description": "Set to true to remove quotes around identifiers having names that are not al data types when running 'Fix Identifiers and Keywords Case' commands"
+					},
 					"alOutline.variablesSortMode": {
 						"type": "string",
 						"enum": [

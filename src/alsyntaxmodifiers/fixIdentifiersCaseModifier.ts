@@ -12,8 +12,8 @@ export class FixIdentifiersCaseModifier extends WorkspaceCommandSyntaxModifier {
         let parameters = super.getParameters(uri);
         let config = vscode.workspace.getConfiguration('alOutline', uri);
         parameters.removeQuotesFromDataTypeIdentifiers = !!config.get<boolean>('fixCaseRemovesQuotesFromDataTypeIdentifiers');
+        parameters.removeQuotesFromNonDataTypeIdentifiers = !!config.get<boolean>('fixCaseRemovesQuotesFromNonDataTypeIdentifiers');
         return parameters;
     }
-
 
 }
