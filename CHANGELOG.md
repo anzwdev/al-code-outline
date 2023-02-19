@@ -5,10 +5,11 @@
    - New `alOutline.idReservationProvider` setting with these values available: LocalFiles, ALObjectIdNinja
  - Issue #302 - It is now possible to enable or disable removing quotes around identifiers that don't look like al data types by using `alOutline.fixCaseRemovesQuotesFromNonDataTypeIdentifiers` setting. Default value is true which means that quotes are removed.
  - Issue #434 - Page layout group(general) has no caption
+ - Issue #436 - comment= is not fixed when running "Fix identifiers"
 
 Thank you
  - JavierFuentes for asking to leave quotes in issue #302
- - guidorobben for reporting issue #434
+ - guidorobben for reporting issues #434 and #436
 
 ## 3.0.41
  - Issue #6 - AL Outline panel - sort symbols by position, name and type
