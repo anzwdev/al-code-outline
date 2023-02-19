@@ -2,7 +2,6 @@ import * as vscode from 'vscode';
 import { ALSyntaxHelper } from '../../allanguage/alSyntaxHelper';
 import { ALSyntaxWriter } from "../../allanguage/alSyntaxWriter";
 import { AppAreaMode } from '../../alsyntaxmodifiers/appAreaMode';
-import { DevToolsExtensionContext } from '../../devToolsExtensionContext';
 import { ALPageWizardData } from "../wizards/alPageWizardData";
 
 export class ALPageSyntaxBuilder {
@@ -68,6 +67,9 @@ export class ALPageSyntaxBuilder {
                 for (let tabIdx = 0; tabIdx < data.fastTabsData.length; tabIdx++) {
                     let fastTab = data.fastTabsData[tabIdx];
                     writer.writeStartGroup("group", fastTab.name);
+                    writer.writeProperty("Caption", writer.encodeString(fastTab.name));
+                    writer.writeLine("");
+
                     if (fastTab.fields) {
                         for (let fldIdx = 0; fldIdx < fastTab.fields.length; fldIdx++) {
                             writer.writePageField(fastTab.fields[fldIdx].name!, fastTab.fields[fldIdx].caption,
