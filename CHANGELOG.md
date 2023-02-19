@@ -7,11 +7,13 @@
  - Issue #431 - app.json encoded with "UTF-8 with BOM" fails
  - Issue #434 - Page layout group(general) has no caption
  - Issue #436 - comment= is not fixed when running "Fix identifiers"
+ - Issue #439 - Completion provider for "var" function parameter?
 
 Thank you
  - JavierFuentes for asking to leave quotes in issue #302
  - jwikman for reporting issue #431
  - guidorobben for reporting issues #434 and #436
+ - fvet for reporting issue #439
 
 ## 3.0.41
  - Issue #6 - AL Outline panel - sort symbols by position, name and type
