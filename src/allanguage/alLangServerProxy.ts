@@ -614,6 +614,12 @@ export class ALLangServerProxy {
             try {
                 let fs = require('fs');
                 let content = fs.readFileSync(appFilePath, 'utf8');
+                
+                //remove BOM from UTF-8
+                if ((content) && (content.length > 0) && (content.charCodeAt(0) === 0xFEFF)) {
+                    content = content.substr(1);
+                }
+
                 return JSON.parse(content);
             }
             catch (e) {
