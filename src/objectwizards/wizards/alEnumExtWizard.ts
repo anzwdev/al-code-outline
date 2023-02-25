@@ -20,6 +20,7 @@ export class ALEnumExtWizard extends ALObjectWizard {
         this.initObjectIdFields(wizardData, settings, "enumextension");
         wizardData.objectName = '';
         wizardData.firstValueId = this._toolsExtensionContext.alLangProxy.getIdRangeStart(settings.getDestDirectoryUri());
+        this.onBeforeCreateWizardPage(wizardData);
         let wizardPage : ALEnumExtWizardPage = new ALEnumExtWizardPage(this._toolsExtensionContext, settings, wizardData);
         wizardPage.show();
     }

@@ -7,6 +7,7 @@ export class ALObjectWizard {
     detail: string;
     label: string;
     protected _toolsExtensionContext : DevToolsExtensionContext;
+    onBeforeCreateWizardPage: (wizardData: ALObjectWizardData) => void = () => {};
     
     constructor(newToolsExtensionContext : DevToolsExtensionContext, newLabel: string, newDescription : string, newDetails: string) {
         this._toolsExtensionContext = newToolsExtensionContext;

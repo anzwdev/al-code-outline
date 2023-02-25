@@ -20,6 +20,7 @@ export class ALPageExtWizard extends ALObjectWizard {
         this.initObjectIdFields(wizardData, settings, "pageextension");
         wizardData.objectName = '';
         wizardData.basePage = '';
+        this.onBeforeCreateWizardPage(wizardData);
         let wizardPage : ALPageExtWizardPage = new ALPageExtWizardPage(this._toolsExtensionContext, settings, wizardData);
         wizardPage.show();
     }

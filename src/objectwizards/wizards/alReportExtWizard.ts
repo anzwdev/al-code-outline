@@ -20,6 +20,7 @@ export class ALReportExtWizard extends ALObjectWizard {
         this.initObjectIdFields(wizardData, settings, "reportextension");
         wizardData.objectName = '';
         wizardData.baseReport = '';
+        this.onBeforeCreateWizardPage(wizardData);
         let wizardPage : ALReportExtWizardPage = new ALReportExtWizardPage(this._toolsExtensionContext, settings, wizardData);
         wizardPage.show();
     }

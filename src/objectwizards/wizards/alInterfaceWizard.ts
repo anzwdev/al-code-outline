@@ -18,6 +18,7 @@ export class ALInterfaceWizard extends ALObjectWizard {
     protected async runAsync(settings: ALObjectWizardSettings) {
         let wizardData : ALInterfaceWizardData = new ALInterfaceWizardData();
         wizardData.objectName = '';//settings.getInputNameVariable();
+        this.onBeforeCreateWizardPage(wizardData);
         let wizardPage : ALInterfaceWizardPage = new ALInterfaceWizardPage(this._toolsExtensionContext, settings, wizardData);
         wizardPage.show();
     }

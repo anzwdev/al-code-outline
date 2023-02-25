@@ -33,6 +33,7 @@ export class ALPageWizard extends ALObjectWizard {
         wizardData.apiGroup = StringHelper.defaultIfEmpty(config.get<string>('defaultApiGroup'), wizardData.apiGroup);
         wizardData.apiVersion = StringHelper.defaultIfEmpty(config.get<string>('defaultApiVersion'), wizardData.apiVersion);
 
+        this.onBeforeCreateWizardPage(wizardData);
         let wizardPage : ALPageWizardPage = new ALPageWizardPage(this._toolsExtensionContext, settings, wizardData);
         wizardPage.show();
     }

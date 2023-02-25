@@ -21,6 +21,7 @@ export class ALEnumWizard extends ALObjectWizard {
         let wizardData : ALEnumWizardData = new ALEnumWizardData();
         this.initObjectIdFields(wizardData, settings, "enum");
         wizardData.objectName = '';
+        this.onBeforeCreateWizardPage(wizardData);
         let wizardPage : ALEnumWizardPage = new ALEnumWizardPage(this._toolsExtensionContext, settings, wizardData);
         wizardPage.show();
     }

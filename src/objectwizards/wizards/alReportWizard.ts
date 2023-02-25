@@ -26,6 +26,7 @@ export class ALReportWizard extends ALObjectWizard {
         //build relative path
         wizardData.rdlcLayout = '';
 
+        this.onBeforeCreateWizardPage(wizardData);
         let wizardPage : ALReportWizardPage = new ALReportWizardPage(this._toolsExtensionContext, settings, wizardData);
         wizardPage.show();
     }

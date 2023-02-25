@@ -19,6 +19,7 @@ export class ALCodeunitWizard extends ALObjectWizard {
         let wizardData : ALCodeunitWizardData = new ALCodeunitWizardData();
         this.initObjectIdFields(wizardData, settings, "Codeunit");
         wizardData.objectName = '';//settings.getInputNameVariable();
+        this.onBeforeCreateWizardPage(wizardData);
         let wizardPage : ALCodeunitWizardPage = new ALCodeunitWizardPage(this._toolsExtensionContext, settings, wizardData);
         wizardPage.show();
     }

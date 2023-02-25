@@ -8,6 +8,7 @@
  - Issue #434 - Page layout group(general) has no caption
  - Issue #436 - comment= is not fixed when running "Fix identifiers"
  - Issue #439 - Completion provider for "var" function parameter?
+ - Add possibility to modify wizardData from other extensions before calling and showing the wizard.
 
 Thank you
  - JavierFuentes for asking to leave quotes in issue #302

@@ -18,6 +18,7 @@ export class ALPermissionSetWizard extends ALObjectWizard {
         let wizardData : ALPermissionSetWizardData = new ALPermissionSetWizardData();
         this.initObjectIdFields(wizardData, settings, "permissionset");
         wizardData.objectName = '';
+        this.onBeforeCreateWizardPage(wizardData);
         let wizardPage : ALPermissionSetWizardPage = new ALPermissionSetWizardPage(this._toolsExtensionContext, undefined, settings, wizardData);
         wizardPage.show();
     }

@@ -22,6 +22,7 @@ export class ALQueryWizard extends ALObjectWizard {
         let wizardData : ALQueryWizardData = new ALQueryWizardData();
         this.initObjectIdFields(wizardData, settings, "Query");
         wizardData.objectName = '';
+        this.onBeforeCreateWizardPage(wizardData);
         let wizardPage : ALQueryWizardPage = new ALQueryWizardPage(this._toolsExtensionContext, settings, wizardData);
         wizardPage.show();
     }

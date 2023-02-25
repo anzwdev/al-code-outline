@@ -25,6 +25,7 @@ export class ALTableExtWizard extends ALObjectWizard {
         wizardData.selectedTable = '';
         wizardData.idRangeStart = 
             this._toolsExtensionContext.alLangProxy.getIdRangeStart(settings.getDestDirectoryUri());
+        this.onBeforeCreateWizardPage(wizardData);
         let wizardPage : ALTableExtWizardPage = new ALTableExtWizardPage(this._toolsExtensionContext, settings, wizardData);
         wizardPage.show();
     }
