@@ -1,0 +1,147 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta http-equiv="Content-Security-Policy" content="default-src 'none'; img-src ##CSPSOURCE## https: data:; script-src ##CSPSOURCE## 'unsafe-eval'; style-src ##CSPSOURCE##; font-src ##CSPSOURCE##;" />
+        <script src="##EXTENSIONPATH##/htmlresources/lib/helpers/htmlhelper.js"></script>
+        <script src="##EXTENSIONPATH##/htmlresources/lib/autocomplete/autocomplete.js"></script>
+        <script src="##EXTENSIONPATH##/htmlresources/lib/filteredlist/filteredlist.js"></script>
+        <script src="##EXTENSIONPATH##/htmlresources/lib/wizards/baseobjectwizard.js"></script>
+        <script src="##EXTENSIONPATH##/htmlresources/lib/wizards/tablebasedobjectwizard.js"></script>
+        <script src="##EXTENSIONPATH##/htmlresources/alquerywizard/js/alquerywizard.js"></script>
+        <link rel="stylesheet" type="text/css" href="##EXTENSIONPATH##/htmlresources/lib/autocomplete/autocomplete.css">
+        <link rel="stylesheet" type="text/css" href="##EXTENSIONPATH##/htmlresources/lib/wizards/wizards.css">
+    </head>
+    <body>
+        <div id="main" class="main">
+            <div id="header" class="header">
+                <div class="title">New Query Wizard</div>
+            </div>
+
+            <div id="wizardstep1" class="wizard">
+
+                <div class="formline">
+                    <div class="formheader">Please enter query properties.</div>
+                </div>
+                        
+                <div id="idproviderline" class="formline">
+                    <div class="formcaption">Object Id Provider:</div>
+                    <div class="formfield">
+                        <select id="idprovider" class="fixedopt">
+                        </select>
+                    </div>
+                </div>
+
+                <div class="formline">
+                    <div class="formcaption">Object Id:</div>
+                    <div class="formfield">
+                        <input type="text" id="objectid" name="objectid" class="fixedtext">
+                    </div>
+                </div>
+        
+                <div class="formline">
+                    <div class="formcaption">Object Name:</div>
+                    <div class="formfield">
+                        <div class="fulltextcont">
+                            <input type="text" id="objectname" name="objectname" maxlength="30">
+                            <span class="inputadd" id="objectnamelen">0</span>
+                        </div>
+                    </div>
+                </div>
+    
+                <div class="formline">
+                    <div class="formcaption">Source Table Name:</div>
+                    <div class="formfield">
+                        <input type="text" id="srctable" name="srctable" class="fulltext" />
+                    </div>
+                </div>
+
+                <div class="formline">
+                    <div class="formcaption">Query Type:</div>
+                    <div class="formfield">
+                        <select id="querytype" class="fixedopt">
+                            <option value="Normal">Normal</option>
+                            <option value="API">API</option>
+                        </select>
+                    </div>
+                </div>
+
+                <div id="apipublisherline" class="formline">
+                    <div class="formcaption">API Publisher:</div>
+                    <div class="formfield">
+                        <input type="text" id="apipublisher" name="apipublisher" class="fulltext">
+                    </div>
+                </div>
+                <div id="apigroupline" class="formline">
+                    <div class="formcaption">API Group:</div>
+                    <div class="formfield">
+                        <input type="text" id="apigroup" name="apigroup" class="fulltext">
+                    </div>
+                </div>
+                <div id="apiversionline" class="formline">
+                    <div class="formcaption">API Version:</div>
+                    <div class="formfield">
+                        <input type="text" id="apiversion" name="apiversion" class="fulltext">
+                    </div>
+                </div>
+                <div id="entitynameline" class="formline">
+                    <div class="formcaption">Entity Name:</div>
+                    <div class="formfield">
+                        <input type="text" id="entityname" name="entityname" class="fulltext">
+                    </div>
+                </div>
+                <div id="entitysetnameline" class="formline">
+                    <div class="formcaption">EntitySet Name:</div>
+                    <div class="formfield">
+                        <input type="text" id="entitysetname" name="entitysetname" class="fulltext">
+                    </div>
+                </div>
+
+
+            </div>
+
+            <div id="wizardstep2" class="wizard">
+
+                <div class="formline">
+                    <div class="formheader">Please select query fields.</div>
+                </div>
+        
+                <div class="multiselect">
+                    <div class="multiselsrc">
+                        <div class="mselcaptionadv" id="srcfieldscapt">
+                            <div class="mselcapmain">Available Fields:</div>
+                            <div class="mselcaptb">Sort by:</div>
+                            <button id="srcfldsortname" class="mselcaptb mseltbbtn">Name</button>
+                            <button id="srcfldsortid" class="mselcaptb mseltbbtn">Id</button>
+                        </div>
+                        <input class="mselfilter" id="srcfieldsfilter" type="text" placeholder="Enter fields filter...">
+                        <select class="msellist" id="srcfields" multiple="multiple"></select>
+                    </div>
+
+                    <div class="multiselbtns">
+                        <div><button class="mselbtn" id="mselright">&gt;</button></div>
+                        <div><button class="mselbtn" id="mselallright">&gt;&gt;</button></div>
+                        <div><button class="mselbtn" id="mselallleft">&lt;&lt;</button></div>
+                        <div><button class="mselbtn" id="mselleft">&lt;</button></div>
+                    </div>
+
+                    <div class="multiseldest">
+                        <div class="mselcaption">Selected Fields:</div>
+                        <input class="mselfilter" id="destfieldsfilter" type="text" placeholder="Enter fields filter...">
+                        <select class="msellist" id="destfields" multiple="multiple">
+                        </select>
+                    </div>
+
+                </div>
+
+            </div>
+
+            <div id="footer" class="footer">
+                <button id="prevBtn" class="button">Previous</button>
+                <button id="nextBtn" class="button">Next</button>
+                <button id="finishBtn" class="button">Finish</button>
+                <button id="cancelBtn" class="button">Cancel</button>
+            </div>
+        </div>
+
+    </body>
+</html>

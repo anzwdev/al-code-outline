@@ -1,0 +1,1894 @@
+{
+	"name": "al-code-outline",
+	"displayName": "AZ AL Dev Tools/AL Code Outline",
+	"description": "AZ AL Development Tools: AL code outline, object browser, object creators",
+	"version": "3.0.42",
+	"publisher": "andrzejzwierzchowski",
+	"engines": {
+		"vscode": "^1.47.0"
+	},
+	"author": {
+		"name": "Andrzej Zwierzchowski",
+		"url": "https://anzwdev.wordpress.com/"
+	},
+	"repository": {
+		"url": "https://github.com/anzwdev/al-code-outline"
+	},
+	"license": "MIT",
+	"categories": [
+		"Other"
+	],
+	"keywords": [
+		"al"
+	],
+	"capabilities": {
+		"untrustedWorkspaces": {
+			"supported": true
+		}
+	},
+	"activationEvents": [
+		"onLanguage:al",
+		"onLanguage:alapp",
+		"workspaceContains:app.json",
+		"onView:azALDevTools.SymbolsTreeProvider",
+		"onCommand:azALDevTools.viewALApp",
+		"onCommand:azALDevTools.viewActionImages",
+		"onCommand:azALDevTools.viewCueGroupActionImages",
+		"onCommand:azALDevTools.viewCueGroupFieldsImages",
+		"onCommand:azALDevTools.viewRoleCenterActionImages",
+		"onCommand:azALDevTools.showAllProjectSymbols",
+		"onCommand:azALDevTools.showProjectSymbolsWithoutDep",
+		"onCommand:azALDevTools.refreshOutlineView",
+		"onCommand:azALDevTools.alOutlineCollapseAll",
+		"onCommand:azALDevTools.sortOutlineViewByPosition",
+		"onCommand:azALDevTools.sortOutlineViewByName",
+		"onCommand:azALDevTools.sortOutlineViewByCategory",
+		"onCommandazALDevTools.sortOutlineViewByPositionNoAction",
+		"onCommandazALDevTools.sortOutlineViewByNameNoAction",
+		"onCommandazALDevTools.sortOutlineViewByCategoryNoAction",
+		"onCommand:azALDevTools.newALFile",
+		"onCommand:azALDevTools.showDocumentSymbols",
+		"onCommand:azALDevTools.goToDefinitionSymbolTree",
+		"onCommand:azALDevTools.showSyntaxTree",
+		"onCommand:azALDevTools.showCodeAnalyzers",
+		"onCommand:azALDevTools.AddEditorApplicationAreas",
+		"onCommand:azALDevTools.AddProjectApplicationAreas",
+		"onCommand:azALDevTools.AddEditorToolTip",
+		"onCommand:azALDevTools.AddProjectToolTip",
+		"onCommand:azALDevTools.RefreshEditorToolTips", 
+		"onCommand:azALDevTools.RefreshProjectToolTips",
+		"onCommand:azALDevTools.AddEditorDataClassification",
+		"onCommand:azALDevTools.AddProjectDataClassification",
+		"onCommand:azALDevTools.AddEditorFieldCaption",
+		"onCommand:azALDevTools.AddProjectFieldCaption",
+		"onCommand:azALDevTools.AddEditorTableDataCaptionFields",
+		"onCommand:azALDevTools.AddProjectTableDataCaptionFields",
+		"onCommand:azALDevTools.AddEditorDropDownFieldGroups",
+		"onCommand:azALDevTools.AddProjectDropDownFieldGroups",
+		"onCommand:azALDevTools.AddEditorEnumValuesCaption",
+		"onCommand:azALDevTools.AddProjectEnumValuesCaption",
+		"onCommand:azALDevTools.AddEditorPageFieldCaption",
+		"onCommand:azALDevTools.AddProjectPageFieldCaption",
+		"onCommand:azALDevTools.AddEditorObjectCaption",
+		"onCommand:azALDevTools.AddProjectObjectCaption",
+		"onCommand:azALDevTools.fixDocumentOnSave",
+		"onCommand:azALDevTools.RemoveProjectWithStatements",
+		"onCommand:azALDevTools.RemoveEditorWithStatements",
+		"onCommand:azALDevTools.FixProjectKeywordsCase",
+		"onCommand:azALDevTools.FixEditorKeywordsCase",
+		"onCommand:azALDevTools.FixEditorIdentifiersCase",
+		"onCommand:azALDevTools.FixProjectIdentifiersCase",
+		"onCommand:azALDevTools.MakeEditorFlowFieldsReadOnly",
+		"onCommand:azALDevTools.MakeProjectFlowFieldsReadOnly",
+		"onCommand:azALDevTools.ConvertEditorObjectIdsToNames",
+		"onCommand:azALDevTools.ConvertProjectObjectIdsToNames",
+		"onCommand:azALDevTools.AddMissingEditorParentheses",
+		"onCommand:azALDevTools.AddMissingProjectParentheses",
+		"onCommand:azALDevTools.LockEditorRemovedFieldCaptions",
+		"onCommand:azALDevTools.LockProjectRemovedFieldCaptions",
+		"onCommand:azALDevTools.RemoveEditorBeginEnd",
+		"onCommand:azALDevTools.RemoveProjectBeginEnd",
+		"onCommand:azALDevTools.RemoveEditorEmptyTriggers",
+		"onCommand:azALDevTools.RemoveProjectEmptyTriggers",
+		"onCommand:azALDevTools.RemoveEditorEmptyLines",
+		"onCommand:azALDevTools.RemoveProjectEmptyLines",
+		"onCommand:azALDevTools.RemoveEditorRedundantAppAreas",
+		"onCommand:azALDevTools.RemoveProjectRedundantAppAreas",
+		"onCommand:azALDevTools.RemoveEditorEmptySections",
+		"onCommand:azALDevTools.RemoveProjectEmptySections",
+		"onCommand:azALDevTools.RemoveEditorStrSubstNoFromError",
+		"onCommand:azALDevTools.RemoveProjectStrSubstNoFromError",
+		"onCommand:azALDevTools.SortEditorPermissions", 
+		"onCommand:azALDevTools.SortWorkspacePermissions",
+		"onCommand:azALDevTools.SortEditorPermissionSetList", 
+		"onCommand:azALDevTools.SortWorkspacePermissionSetList",
+		"onCommand:azALDevTools.SortEditorProcedures", 
+		"onCommand:azALDevTools.SortWorkspaceProcedures",
+		"onCommand:azALDevTools.SortEditorProperties", 
+		"onCommand:azALDevTools.SortWorkspaceProperties",
+		"onCommand:azALDevTools.SortEditorReportColumns",
+		"onCommand:azALDevTools.SortWorkspaceReportColumns",
+		"onCommand:azALDevTools.SortEditorTableFields", 
+		"onCommand:azALDevTools.SortWorkspaceTableFields",
+		"onCommand:azALDevTools.SortEditorVariables", 
+		"onCommand:azALDevTools.SortWorkspaceVariables",
+		"onCommand:azALDevTools.SortEditorCustomizations", 
+		"onCommand:azALDevTools.SortWorkspaceCustomizations",
+		"onCommand:azALDevTools.RunEditorCodeCleanup",
+		"onCommand:azALDevTools.RunWorkspaceCodeCleanup",
+		"onCommand:azALDevTools.RunModifiedFilesCodeCleanup",
+		"onCommand:azALDevTools.showExtensionLog",
+		"onCustomEditor:azALDevTools.jsonEditor",
+		"onCustomEditor:azALDevTools.appPackageEditor"
+	],
+	"main": "./out/extension.js",
+	"icon": "resources/alcodeoutline.png",
+	"contributes": {
+		"languages": [
+			{
+				"id": "alapp",
+				"extensions": [
+					".app"
+				]
+			}
+		],
+		"jsonValidation": [
+			{
+				"fileMatch": "app.json",
+				"url": "aloutlinesyntax://json/appJsonSyntax.json"
+			},
+			{
+				"fileMatch": "*.ruleset.json",
+				"url": "aloutlinesyntax://json/ruleSetSyntax.json"
+			}
+		],
+		"viewsContainers": {
+			"activitybar": [
+				{
+					"icon": "resources/images/activity-duplicate.svg",
+					"id": "azALDevTools_duplicateSearchView",
+					"title": "Duplicate Code Search"
+				},
+				{
+					"icon": "resources/images/activity-warningdirectives.svg",
+					"id": "azALDevTools_warningDirectivesView",
+					"title": "Warning Directives"
+				}
+			]
+		},
+		"views": {
+			"explorer": [
+				{
+					"id": "azALDevTools.SymbolsTreeProvider",
+					"name": "AL Outline"
+				}
+			],
+			"azALDevTools_duplicateSearchView": [
+				{
+					"id": "azALDevTools.DuplicateCodeTreeProvider",
+					"name": "Duplicate Code Search",
+					"when": "azALDevTools.findDuplicateCodeActive"
+				}
+			],
+			"azALDevTools_warningDirectivesView": [
+				{
+					"id": "azALDevTools.WarningDirectivesTreeView",
+					"name": "Warning Directives",
+					"when": "azALDevTools.warningDirectivesActive"
+				}
+			]
+		},
+		"commands": [
+			{
+				"category": "AZ AL Dev Tools",
+				"command": "azALDevTools.showWarningDirectives",
+				"title": "Show warning directives"
+			},
+
+			{
+				"command": "azALDevTools.viewALApp",
+				"title": "Open in AL Object Browser"
+			},
+			{
+				"category": "AZ AL Dev Tools",
+				"command": "azALDevTools.findDuplicateCode",
+				"title": "Find duplicate AL code"
+			},
+			{
+				"command": "azALDevTools.hideWarningDirectivesPanel",
+				"title": "Hide",
+				"icon": "$(clear-all)"
+			},
+			{
+				"command": "azALDevTools.refreshWarningDirectivesPanel",
+				"title": "Refresh",
+				"icon": "$(refresh)"
+			},
+			{
+				"command": "azALDevTools.hideDuplicateCodePanel",
+				"title": "Hide",
+				"icon": "$(clear-all)"
+			},
+			{
+				"command": "azALDevTools.refreshDuplicateCodePanel",
+				"title": "Refresh",
+				"icon": "$(refresh)"
+			},
+			{
+				"command": "azALDevTools.sortDuplicatesByNoOfStatements",
+				"title": "Sort by No. of Statements"
+			},
+			{
+				"command": "azALDevTools.sortDuplicatesByType",
+				"title": "Sort by Type and No. of Statements"
+			},
+			{
+				"command": "azALDevTools.sortDuplicatesByNoOfDuplicates",
+				"title": "Sort by No. of Duplicates and No. of Statements"
+			},
+			{
+				"command": "azALDevTools.sortDuplicatesByTypeNoOfDuplicates",
+				"title": "Sort by Type and No. of Duplicates"
+			},
+			{
+				"category": "AZ AL Dev Tools",
+				"command": "azALDevTools.showDocumentSymbols",
+				"title": "Show Document Symbols Tree"
+			},
+			{
+				"category": "AZ AL Dev Tools",
+				"command": "azALDevTools.showSyntaxTree",
+				"title": "Open Document Syntax Visualizer"
+			},
+			{
+				"category": "AZ AL Dev Tools",
+				"command": "azALDevTools.showCodeAnalyzers",
+				"title": "Show Code Analyzers Rules"
+			},
+			{
+				"category": "AZ AL Dev Tools",
+				"command": "azALDevTools.goToDefinitionSymbolTree",
+				"title": "Show Definition in the Symbols Tree"
+			},
+			{
+				"category": "AZ AL Dev Tools",
+				"command": "azALDevTools.viewActionImages",
+				"title": "Show Action Images"
+			},
+			{
+				"category": "AZ AL Dev Tools",
+				"command": "azALDevTools.viewCueGroupActionImages",
+				"title": "Show CueGroup Action Images"
+			},
+			{
+				"category": "AZ AL Dev Tools",
+				"command": "azALDevTools.viewCueGroupFieldsImages",
+				"title": "Show CueGroup Fields Images"
+			},
+			{
+				"category": "AZ AL Dev Tools",
+				"command": "azALDevTools.viewRoleCenterActionImages",
+				"title": "Show Role Center Action Images"
+			},
+			{
+				"category": "AZ AL Dev Tools",
+				"command": "azALDevTools.showAllProjectSymbols",
+				"title": "Show All Project Symbols"
+			},
+			{
+				"category": "AZ AL Dev Tools",
+				"command": "azALDevTools.showProjectSymbolsWithoutDep",
+				"title": "Show Project Symbols without Dependencies"
+			},
+			{
+				"command": "azALDevTools.refreshOutlineView",
+				"title": "Refresh",
+				"icon": "$(refresh)"
+			},
+			{
+				"command": "azALDevTools.alOutlineCollapseAll",
+				"title": "Collapse All",
+				"icon": "$(collapse-all)"
+			},
+			{
+				"command":"azALDevTools.sortOutlineViewByPosition",
+				"title": "Sort By: Position"
+			},
+			{
+				"command":"azALDevTools.sortOutlineViewByName",
+				"title": "Sort By: Name"
+			},
+			{
+				"command":"azALDevTools.sortOutlineViewByCategory",
+				"title": "Sort By: Category"
+			},
+			{
+				"command":"azALDevTools.sortOutlineViewByPositionNoAction",
+				"title": "✓ Sort By: Position"
+			},
+			{
+				"command":"azALDevTools.sortOutlineViewByNameNoAction",
+				"title": "✓ Sort By: Name"
+			},
+			{
+				"command":"azALDevTools.sortOutlineViewByCategoryNoAction",
+				"title": "✓ Sort By: Category"
+			},
+			{
+				"command": "azALDevTools.alOutlineEnableFollowCursor",
+				"title": "Follow Cursor"
+			},
+			{
+				"command": "azALDevTools.alOutlineDisableFollowCursor",
+				"title": "✓ Follow Cursor"
+			},
+			{
+				"command": "alOutline.createListPage",
+				"title": "Create List Page"
+			},
+			{
+				"command": "alOutline.createCardPage",
+				"title": "Create Card Page"
+			},
+			{
+				"command": "alOutline.createReport",
+				"title": "Create Report"
+			},
+			{
+				"command": "alOutline.createXmlPort",
+				"title": "Create XmlPort"
+			},
+			{
+				"command": "alOutline.createQuery",
+				"title": "Create Query"
+			},
+			{
+				"command": "alOutline.runPage",
+				"title": "Run in Web Client"
+			},
+			{
+				"command": "alOutline.runReport",
+				"title": "Run in Web Client"
+			},
+			{
+				"command": "alOutline.runTable",
+				"title": "Run in Web Client"
+			},
+			{
+				"category": "AZ AL Dev Tools",
+				"command": "azALDevTools.newALFile",
+				"title": "New AL File Wizard (AZ AL Dev Tools)"
+			},
+			{
+				"category": "AZ AL Dev Tools",
+				"command": "azALDevTools.AddEditorApplicationAreas",
+				"title": "Add Application Areas to the Active Editor"
+			},
+			{
+				"category": "AZ AL Dev Tools",
+				"command": "azALDevTools.AddProjectApplicationAreas",
+				"title": "Add Application Areas to the Active Project"
+			},
+			{
+				"category": "AZ AL Dev Tools",
+				"command": "azALDevTools.AddEditorToolTip",
+				"title": "Add ToolTips to the Active Editor"
+			},
+			{
+				"category": "AZ AL Dev Tools",
+				"command": "azALDevTools.AddProjectToolTip",
+				"title": "Add ToolTips to the Active Project"
+			},
+			{
+				"category": "AZ AL Dev Tools",
+				"command": "azALDevTools.RefreshEditorToolTips",
+				"title": "Refresh ToolTips from Dependencies in the Active Editor"
+			},
+			{
+				"category": "AZ AL Dev Tools",
+				"command": "azALDevTools.RefreshProjectToolTips",
+				"title": "Refresh ToolTips from Dependencies in the Active Project"
+			},
+			{
+				"category": "AZ AL Dev Tools",
+				"command": "azALDevTools.AddEditorFieldCaption",
+				"title": "Add Table Field Captions to the Active Editor"
+			},
+			{
+				"category": "AZ AL Dev Tools",
+				"command": "azALDevTools.AddProjectFieldCaption",
+				"title": "Add Table Field Captions to the Active Project"
+			},
+			{
+				"category": "AZ AL Dev Tools",
+				"command": "azALDevTools.AddEditorEnumValuesCaption",
+				"title": "Add Enum Values Captions to the Active Editor"
+			},
+			{
+				"category": "AZ AL Dev Tools",
+				"command": "azALDevTools.AddProjectEnumValuesCaption",
+				"title": "Add Enum Values Captions to the Active Project"
+			},
+			{
+				"category": "AZ AL Dev Tools",
+				"command": "azALDevTools.AddEditorTableDataCaptionFields",
+				"title": "Add Table DataCaptionFields to the Active Editor"
+			},
+			{
+				"category": "AZ AL Dev Tools",
+				"command": "azALDevTools.AddProjectTableDataCaptionFields",
+				"title": "Add Table DataCaptionFields to the Active Project"
+			},
+			{
+				"category": "AZ AL Dev Tools",
+				"command": "azALDevTools.AddEditorDropDownFieldGroups",
+				"title": "Add DropDown Field Groups to the Active Editor"
+			},
+			{
+				"category": "AZ AL Dev Tools",
+				"command": "azALDevTools.AddProjectDropDownFieldGroups",
+				"title": "Add DropDown Field Groups to the Active Project"
+			},
+			{
+				"category": "AZ AL Dev Tools",
+				"command": "azALDevTools.LockEditorRemovedFieldCaptions",
+				"title": "Lock Removed Table Field Captions in the Active Editor"
+			},
+			{
+				"category": "AZ AL Dev Tools",
+				"command": "azALDevTools.LockProjectRemovedFieldCaptions",
+				"title": "Lock Removed Table Field Captions in the Active Project"
+			},
+			{
+				"category": "AZ AL Dev Tools",
+				"command": "azALDevTools.AddEditorPageFieldCaption",
+				"title": "Add Page Controls Captions to the Active Editor"
+			},
+			{
+				"category": "AZ AL Dev Tools",
+				"command": "azALDevTools.AddProjectPageFieldCaption",
+				"title": "Add Page Controls Captions to the Active Project"
+			},
+			{
+				"category": "AZ AL Dev Tools",
+				"command": "azALDevTools.AddEditorObjectCaption",
+				"title": "Add Object Captions to the Active Editor"
+			},
+			{
+				"category": "AZ AL Dev Tools",
+				"command": "azALDevTools.AddProjectObjectCaption",
+				"title": "Add Object Captions to the Active Project"
+			},
+			{
+				"category": "AZ AL Dev Tools",
+				"command": "azALDevTools.AddEditorDataClassification",
+				"title": "Add Data Classification to the Active Editor"
+			},
+			{
+				"category": "AZ AL Dev Tools",
+				"command": "azALDevTools.AddProjectDataClassification",
+				"title": "Add Data Classification to the Active Project"
+			},
+			{
+				"category": "AZ AL Dev Tools",
+				"command": "azALDevTools.RemoveEditorWithStatements",
+				"title": "Remove 'with' usage from the Active Editor"
+			},
+			{
+				"category": "AZ AL Dev Tools",
+				"command": "azALDevTools.RemoveProjectWithStatements",
+				"title": "Remove 'with' usage from the Active Project"
+			},
+			{
+				"category": "AZ AL Dev Tools",
+				"command": "azALDevTools.FixEditorKeywordsCase",
+				"title": "Fix Keywords Case in the Active Editor"
+			},
+			{
+				"category": "AZ AL Dev Tools",
+				"command": "azALDevTools.FixProjectKeywordsCase",
+				"title": "Fix Keywords Case in the Active Project"
+			},
+			{
+				"category": "AZ AL Dev Tools",
+				"command": "azALDevTools.FixEditorIdentifiersCase",
+				"title": "Fix Identifiers and Keywords Case in the Active Editor"
+			},
+			{
+				"category": "AZ AL Dev Tools",
+				"command": "azALDevTools.FixProjectIdentifiersCase",
+				"title": "Fix Identifiers and Keywords Case in the Active Project"
+			},
+			{
+				"category": "AZ AL Dev Tools",
+				"command": "azALDevTools.MakeEditorFlowFieldsReadOnly",
+				"title": "Make FlowFields ReadOnly in the Active Editor"
+			},
+			{
+				"category": "AZ AL Dev Tools",
+				"command": "azALDevTools.MakeProjectFlowFieldsReadOnly",
+				"title": "Make FlowFields ReadOnly in the Active Project"
+			},
+			{
+				"category": "AZ AL Dev Tools",
+				"command": "azALDevTools.ConvertEditorObjectIdsToNames",
+				"title": "Convert Object Ids to Names in the Active Editor"
+			},
+			{
+				"category": "AZ AL Dev Tools",
+				"command": "azALDevTools.ConvertProjectObjectIdsToNames",
+				"title": "Convert Object Ids to Names in the Active Project"
+			},
+			{
+				"category": "AZ AL Dev Tools",
+				"command": "azALDevTools.AddMissingEditorParentheses",
+				"title": "Add Missing Parentheses to the Active Editor"
+			},
+			{
+				"category": "AZ AL Dev Tools",
+				"command": "azALDevTools.AddMissingProjectParentheses",
+				"title": "Add Missing Parentheses to the Active Project"
+			},
+			{
+				"category": "AZ AL Dev Tools",
+				"command": "azALDevTools.RemoveEditorUnusedVariables",
+				"title": "Remove Unused Variables from the Active Editor"
+			},
+			{
+				"category": "AZ AL Dev Tools",
+				"command": "azALDevTools.RemoveProjectUnusedVariables",
+				"title": "Remove Unused Variables from the Active Project"
+			},
+			{
+				"category": "AZ AL Dev Tools",
+				"command": "azALDevTools.RemoveEditorBeginEnd",
+				"title": "Remove Begin..End around Single Statements from the Active Editor"
+			},
+			{
+				"category": "AZ AL Dev Tools",
+				"command": "azALDevTools.RemoveProjectBeginEnd",
+				"title": "Remove Begin..End around Single Statements from the Active Project"
+			},
+			{
+				"category": "AZ AL Dev Tools",
+				"command": "azALDevTools.RemoveEditorEmptyTriggers",
+				"title": "Remove Empty Triggers from the Active Editor"
+			},
+			{
+				"category": "AZ AL Dev Tools",
+				"command": "azALDevTools.RemoveProjectEmptyTriggers",
+				"title": "Remove Empty Triggers from the Active Project"
+			},
+			{
+				"category": "AZ AL Dev Tools",
+				"command": "azALDevTools.RemoveEditorEmptyLines",
+				"title": "Remove Empty Lines from the Active Editor"
+			},
+			{
+				"category": "AZ AL Dev Tools",
+				"command": "azALDevTools.RemoveProjectEmptyLines",
+				"title": "Remove Empty Lines from the Active Project"
+			},
+			{
+				"category": "AZ AL Dev Tools",
+				"command": "azALDevTools.RemoveEditorRedundantAppAreas",
+				"title": "Remove Redundant AppAreas from the Active Editor"
+			},
+			{
+				"category": "AZ AL Dev Tools",
+				"command": "azALDevTools.RemoveProjectRedundantAppAreas",
+				"title": "Remove Redundant AppAreas from the Active Project"
+			},
+			{
+				"category": "AZ AL Dev Tools",
+				"command": "azALDevTools.RemoveEditorEmptySections",
+				"title": "Remove Empty Sections from the Active Editor"
+			},
+			{
+				"category": "AZ AL Dev Tools",
+				"command": "azALDevTools.RemoveProjectEmptySections",
+				"title": "Remove Empty Sections from the Active Project"
+			},
+			{
+				"category": "AZ AL Dev Tools",
+				"command": "azALDevTools.RemoveEditorStrSubstNoFromError",
+				"title": "Remove StrSubstNo from Error from the Active Editor"
+			},
+			{
+				"category": "AZ AL Dev Tools",
+				"command": "azALDevTools.RemoveProjectStrSubstNoFromError",
+				"title": "Remove StrSubstNo from Error from the Active Project"
+			},
+			{
+				"category": "AZ AL Dev Tools",
+				"command": "azALDevTools.SortEditorPermissions", 
+				"title": "Sort Permissions in the Active Editor"
+			},
+			{
+				"category": "AZ AL Dev Tools",
+				"command": "azALDevTools.SortWorkspacePermissions",
+				"title": "Sort Permissions in the Active Project"
+			},
+
+			{
+				"category": "AZ AL Dev Tools",
+				"command": "azALDevTools.SortEditorPermissionSetList", 
+				"title": "Sort Included PermissionSets in the Active Editor"
+			},
+			{
+				"category": "AZ AL Dev Tools",
+				"command": "azALDevTools.SortWorkspacePermissionSetList",
+				"title": "Sort Included PermissionSets in the Active Project"
+			},
+
+			{
+				"category": "AZ AL Dev Tools",
+				"command": "azALDevTools.SortEditorProcedures", 
+				"title": "Sort Procedures in the Active Editor"
+			},
+			{
+				"category": "AZ AL Dev Tools",
+				"command": "azALDevTools.SortWorkspaceProcedures",
+				"title": "Sort Procedures in the Active Project"
+			},
+			{
+				"category": "AZ AL Dev Tools",
+				"command": "azALDevTools.SortEditorProperties", 
+				"title": "Sort Properties in the Active Editor"
+			},
+			{
+				"category": "AZ AL Dev Tools",
+				"command": "azALDevTools.SortWorkspaceProperties",
+				"title": "Sort Properties in the Active Project"
+			},
+			{
+				"category": "AZ AL Dev Tools",
+				"command": "azALDevTools.SortEditorReportColumns",
+				"title": "Sort Report Columns in the Active Editor"
+			},
+			{
+				"category": "AZ AL Dev Tools",
+				"command": "azALDevTools.SortWorkspaceReportColumns",
+				"title": "Sort Report Columns in the Active Project"
+			},
+			{
+				"category": "AZ AL Dev Tools",
+				"command": "azALDevTools.SortEditorTableFields", 
+				"title": "Sort Table Fields in the Active Editor"
+			},
+			{
+				"category": "AZ AL Dev Tools",
+				"command": "azALDevTools.SortWorkspaceTableFields",
+				"title": "Sort Table Fields in the Active Project"
+			},
+			{
+				"category": "AZ AL Dev Tools",
+				"command": "azALDevTools.SortEditorVariables",
+				"title": "Sort Variables in the Active Editor"
+			},
+			{
+				"category": "AZ AL Dev Tools",
+				"command": "azALDevTools.SortWorkspaceVariables",
+				"title": "Sort Variables in the Active Project"
+			},
+			{
+				"category": "AZ AL Dev Tools",
+				"command": "azALDevTools.SortEditorCustomizations",
+				"title": "Sort Customizations Property in the Active Editor"
+			},
+			{
+				"category": "AZ AL Dev Tools",
+				"command": "azALDevTools.SortWorkspaceCustomizations",
+				"title": "Sort Customizations Property in the Active Project"
+			},
+			{
+				"category": "AZ AL Dev Tools",
+				"command": "azALDevTools.RunEditorCodeCleanup",
+				"title": "Run Code Cleanup on the Active Editor"
+			},
+			{
+				"category": "AZ AL Dev Tools",
+				"command": "azALDevTools.RunWorkspaceCodeCleanup",
+				"title": "Run Code Cleanup on the Active Project"
+			},
+			{
+				"category": "AZ AL Dev Tools",
+				"command": "azALDevTools.RunModifiedFilesCodeCleanup",
+				"title": "Run Code Cleanup on Uncommited Files in the Active Project"
+			},
+			{
+				"category": "AZ AL Dev Tools",
+				"command": "azALDevTools.showExtensionLog",
+				"title": "Open AZ AL Dev Tools log file"
+			}
+		],
+		"menus": {
+			"commandPalette": [
+				{
+					"command": "azALDevTools.viewALApp",
+					"when": "false"
+				},
+				{
+					"command": "azALDevTools.hideWarningDirectivesPanel",
+					"when": "false"
+				},
+				{
+					"command": "azALDevTools.refreshWarningDirectivesPanel",
+					"when": "false"
+				},
+				{
+					"command": "azALDevTools.hideDuplicateCodePanel",
+					"when": "false"
+				},
+				{
+					"command": "azALDevTools.refreshDuplicateCodePanel",
+					"when": "false"
+				},
+				{
+					"command": "azALDevTools.sortDuplicatesByNoOfStatements",
+					"when": "false"
+				},
+				{
+					"command": "azALDevTools.sortDuplicatesByType",
+					"when": "false"
+				},
+				{
+					"command": "azALDevTools.sortDuplicatesByNoOfDuplicates",
+					"when": "false"
+				},
+				{
+					"command": "azALDevTools.sortDuplicatesByTypeNoOfDuplicates",
+					"when": "false"
+				},
+					{
+					"command": "azALDevTools.showDocumentSymbols"
+				},
+				{
+					"command": "azALDevTools.showSyntaxTree",
+					"when": "editorLangId == al"
+				},
+				{
+					"command": "azALDevTools.findDuplicateCode",
+					"when": "azALDevTools.extensionActive"
+				},
+				{
+					"command": "azALDevTools.showCodeAnalyzers",
+					"when": "azALDevTools.extensionActive"
+				},				
+				{
+					"command": "azALDevTools.goToDefinitionSymbolTree"
+				},
+				{
+					"command": "azALDevTools.viewActionImages",
+					"when": "azALDevTools.extensionActive"
+				},
+				{
+					"command": "azALDevTools.viewCueGroupActionImages",
+					"when": "azALDevTools.extensionActive"
+				},
+				{
+					"command": "azALDevTools.viewCueGroupFieldsImages",
+					"when": "azALDevTools.extensionActive"
+				},
+				{
+					"command": "azALDevTools.viewRoleCenterActionImages",
+					"when": "azALDevTools.extensionActive"
+				},
+				{
+					"command": "azALDevTools.showAllProjectSymbols",
+					"when": "azALDevTools.extensionActive"
+				},
+				{
+					"command": "azALDevTools.showProjectSymbolsWithoutDep",
+					"when": "azALDevTools.extensionActive"
+				},
+				{
+					"command": "azALDevTools.refreshOutlineView",
+					"when": "false"					
+				},
+				{
+					"command": "azALDevTools.alOutlineCollapseAll",
+					"when": "false"
+				},
+				{
+					"command":"azALDevTools.sortOutlineViewByPosition",
+					"when": "false"
+				},
+				{
+					"command":"azALDevTools.sortOutlineViewByName",
+					"when": "false"
+				},
+				{
+					"command":"azALDevTools.sortOutlineViewByCategory",
+					"when": "false"
+				},
+				{
+					"command":"azALDevTools.sortOutlineViewByPositionNoAction",
+					"when": "false"
+				},
+				{
+					"command":"azALDevTools.sortOutlineViewByNameNoAction",
+					"when": "false"
+				},
+				{
+					"command":"azALDevTools.sortOutlineViewByCategoryNoAction",
+					"when": "false"
+				},
+				{
+					"command": "alOutline.createListPage",
+					"when": "false"
+				},
+				{
+					"command": "alOutline.createCardPage",
+					"when": "false"
+				},
+				{
+					"command": "alOutline.createReport",
+					"when": "false"
+				},
+				{
+					"command": "alOutline.createXmlPort",
+					"when": "false"
+				},
+				{
+					"command": "alOutline.createQuery",
+					"when": "false"
+				},
+				{
+					"command": "alOutline.runPage",
+					"when": "false"
+				},
+				{
+					"command": "alOutline.runReport",
+					"when": "false"
+				},
+				{
+					"command": "alOutline.runTable",
+					"when": "false"
+				},
+				{
+					"command": "azALDevTools.newALFile",
+					"when": "azALDevTools.extensionActive"
+				},
+				{
+					"command": "azALDevTools.AddEditorApplicationAreas",
+					"when": "editorLangId == al"
+				},
+				{
+					"command": "azALDevTools.AddProjectApplicationAreas",
+					"when": "azALDevTools.extensionActive"
+				},
+				{
+					"command": "azALDevTools.AddEditorToolTip",
+					"when": "editorLangId == al"
+				},
+				{
+					"command": "azALDevTools.AddProjectToolTip",
+					"when": "azALDevTools.extensionActive"
+				},
+				{
+					"command": "azALDevTools.RefreshEditorToolTips",
+					"when": "editorLangId == al"
+				},
+				{
+					"command": "azALDevTools.RefreshProjectToolTips",
+					"when": "azALDevTools.extensionActive"
+				},
+				{
+					"command": "azALDevTools.AddEditorFieldCaption",
+					"when": "editorLangId == al"
+				},
+				{
+					"command": "azALDevTools.AddProjectFieldCaption",
+					"when": "azALDevTools.extensionActive"
+				},
+				{
+					"command": "azALDevTools.AddEditorEnumValuesCaption",
+					"when": "editorLangId == al"
+				},
+				{
+					"command": "azALDevTools.AddProjectEnumValuesCaption",
+					"when": "azALDevTools.extensionActive"
+				},
+				{
+					"command": "azALDevTools.AddEditorTableDataCaptionFields",
+					"when": "editorLangId == al"
+				},
+				{
+					"command": "azALDevTools.AddProjectTableDataCaptionFields",
+					"when": "azALDevTools.extensionActive"
+				},
+				{
+					"command": "azALDevTools.AddEditorDropDownFieldGroups",
+					"when": "editorLangId == al"
+				},
+				{
+					"command": "azALDevTools.AddProjectDropDownFieldGroups",
+					"when": "azALDevTools.extensionActive"
+				},
+				{
+					"command": "azALDevTools.LockEditorRemovedFieldCaptions",
+					"when": "editorLangId == al"
+				},
+				{
+					"command": "azALDevTools.LockProjectRemovedFieldCaptions",
+					"when": "azALDevTools.extensionActive"
+				},
+				{
+					"command": "azALDevTools.AddEditorPageFieldCaption",
+					"when": "editorLangId == al"
+				},
+				{
+					"command": "azALDevTools.AddProjectPageFieldCaption",
+					"when": "azALDevTools.extensionActive"
+				},
+				{
+					"command": "azALDevTools.AddEditorObjectCaption",
+					"when": "editorLangId == al"
+				},
+				{
+					"command": "azALDevTools.AddProjectObjectCaption",
+					"when": "azALDevTools.extensionActive"
+				},
+				{
+					"command": "azALDevTools.AddEditorDataClassification",
+					"when": "editorLangId == al"
+				},
+				{
+					"command": "azALDevTools.AddProjectDataClassification",
+					"when": "azALDevTools.extensionActive"
+				},
+				{
+					"command": "azALDevTools.RemoveEditorWithStatements",
+					"when": "editorLangId == al"
+				},
+				{
+					"command": "azALDevTools.RemoveProjectWithStatements",
+					"when": "azALDevTools.extensionActive"
+				},
+				{
+					"command": "azALDevTools.FixEditorKeywordsCase",
+					"when": "editorLangId == al"
+				},
+				{
+					"command": "azALDevTools.FixProjectKeywordsCase",
+					"when": "azALDevTools.extensionActive"
+				},
+				{
+					"command": "azALDevTools.FixEditorIdentifiersCase",
+					"when": "editorLangId == al"
+				},
+				{
+					"command": "azALDevTools.FixProjectIdentifiersCase",
+					"when": "azALDevTools.extensionActive"
+				},
+				{
+					"command": "azALDevTools.MakeEditorFlowFieldsReadOnly",
+					"when": "azALDevTools.extensionActive"
+				},
+				{
+					"command": "azALDevTools.MakeProjectFlowFieldsReadOnly",
+					"when": "azALDevTools.extensionActive"
+				},
+				{
+					"command": "azALDevTools.ConvertEditorObjectIdsToNames",
+					"when": "editorLangId == al"
+				},
+				{
+					"command": "azALDevTools.ConvertProjectObjectIdsToNames",
+					"when": "azALDevTools.extensionActive"
+				},
+				{
+					"command": "azALDevTools.AddMissingEditorParentheses",
+					"when": "editorLangId == al"
+				},
+				{
+					"command": "azALDevTools.AddMissingProjectParentheses",
+					"when": "azALDevTools.extensionActive"
+				},
+				{
+					"command": "azALDevTools.RemoveEditorUnusedVariables",
+					"when": "editorLangId == al"
+				},
+				{
+					"command": "azALDevTools.RemoveProjectUnusedVariables",
+					"when": "azALDevTools.extensionActive"
+				},
+				{
+					"command": "azALDevTools.RemoveEditorBeginEnd",
+					"when": "editorLangId == al"
+				},
+				{
+					"command": "azALDevTools.RemoveProjectBeginEnd",
+					"when": "azALDevTools.extensionActive"
+				},
+				{
+					"command": "azALDevTools.RemoveEditorEmptyTriggers",
+					"when": "editorLangId == al"
+				},
+				{
+					"command": "azALDevTools.RemoveProjectEmptyTriggers",
+					"when": "azALDevTools.extensionActive"
+				},
+				{
+					"command": "azALDevTools.RemoveEditorEmptyLines",
+					"when": "editorLangId == al"
+				},
+				{
+					"command": "azALDevTools.RemoveProjectEmptyLines",
+					"when": "azALDevTools.extensionActive"
+				},
+				{
+					"command": "azALDevTools.RemoveEditorRedundantAppAreas",
+					"when": "editorLangId == al"
+				},
+				{
+					"command": "azALDevTools.RemoveProjectRedundantAppAreas",
+					"when": "azALDevTools.extensionActive"
+				},
+				{
+					"command": "azALDevTools.RemoveEditorEmptySections",
+					"when": "editorLangId == al"
+				},
+				{
+					"command": "azALDevTools.RemoveProjectEmptySections",
+					"when": "azALDevTools.extensionActive"
+				},
+				{
+					"command": "azALDevTools.RemoveEditorStrSubstNoFromError",
+					"when": "editorLangId == al"
+				},
+				{
+					"command": "azALDevTools.RemoveProjectStrSubstNoFromError",
+					"when": "azALDevTools.extensionActive"
+				},
+				{
+					"command": "azALDevTools.SortEditorPermissions", 
+					"when": "editorLangId == al"
+				},
+				{
+					"command": "azALDevTools.SortWorkspacePermissions",
+					"when": "azALDevTools.extensionActive"
+				},
+				{
+					"command": "azALDevTools.SortEditorPermissionSetList", 
+					"when": "editorLangId == al"
+				},
+				{
+					"command": "azALDevTools.SortWorkspacePermissionSetList",
+					"when": "azALDevTools.extensionActive"
+				},
+				{
+					"command": "azALDevTools.SortEditorProcedures", 
+					"when": "editorLangId == al"
+				},
+				{
+					"command": "azALDevTools.SortWorkspaceProcedures",
+					"when": "azALDevTools.extensionActive"
+				},
+				{
+					"command": "azALDevTools.SortEditorProperties", 
+					"when": "editorLangId == al"
+				},
+				{
+					"command": "azALDevTools.SortWorkspaceProperties",
+					"when": "azALDevTools.extensionActive"
+				},
+				{
+					"command": "azALDevTools.SortEditorReportColumns",
+					"when": "editorLangId == al"
+				},
+				{
+					"command": "azALDevTools.SortWorkspaceReportColumns",
+					"when": "azALDevTools.extensionActive"
+				},
+				{
+					"command": "azALDevTools.SortEditorTableFields", 
+					"when": "editorLangId == al"
+				},
+				{
+					"command": "azALDevTools.SortWorkspaceTableFields",
+					"when": "azALDevTools.extensionActive"
+				},
+				{
+					"command": "azALDevTools.SortEditorVariables",
+					"when": "editorLangId == al"
+				},
+				{
+					"command": "azALDevTools.SortWorkspaceVariables",
+					"when": "azALDevTools.extensionActive"
+				},
+				{
+					"command": "azALDevTools.SortEditorCustomizations",
+					"when": "editorLangId == al"
+				},
+				{
+					"command": "azALDevTools.SortWorkspaceCustomizations",
+					"when": "azALDevTools.extensionActive"
+				},
+				{
+					"command": "azALDevTools.RunEditorCodeCleanup",
+					"when": "editorLangId == al"
+				},
+				{
+					"command": "azALDevTools.RunWorkspaceCodeCleanup",
+					"when": "azALDevTools.extensionActive"
+				},
+				{
+					"command": "azALDevTools.RunModifiedFilesCodeCleanup",
+					"when": "azALDevTools.extensionActive"
+				},
+				{
+					"command": "azALDevTools.alOutlineEnableFollowCursor",
+					"when": "false"
+				},
+				{
+					"command": "azALDevTools.alOutlineDisableFollowCursor",
+					"when": "false"
+				},
+				{
+					"command": "azALDevTools.showExtensionLog",
+					"when": "azALDevTools.extensionActive"
+				}
+			],
+			"view/title": [
+				{
+					"command": "azALDevTools.refreshOutlineView",
+					"when": "view == azALDevTools.SymbolsTreeProvider",
+					"group": "navigation@1"
+				},
+				{
+					"command": "azALDevTools.alOutlineCollapseAll",
+					"when": "view == azALDevTools.SymbolsTreeProvider",
+					"group": "navigation@2"
+				},
+				{
+					"command": "azALDevTools.alOutlineEnableFollowCursor",
+					"when": "view == azALDevTools.SymbolsTreeProvider && !azALDevTools:alOutlineFollowCursor",
+					"group": "1-actions"
+				},
+				{
+					"command": "azALDevTools.alOutlineDisableFollowCursor",
+					"when": "view == azALDevTools.SymbolsTreeProvider && azALDevTools:alOutlineFollowCursor",
+					"group": "1-actions"
+				},				
+				{
+					"command":"azALDevTools.sortOutlineViewByPosition",
+					"when": "view == azALDevTools.SymbolsTreeProvider && azALDevTools:alOutlineSortMode != position",
+					"group": "z-commands@1"
+				},
+				{
+					"command":"azALDevTools.sortOutlineViewByPositionNoAction",
+					"when": "view == azALDevTools.SymbolsTreeProvider && azALDevTools:alOutlineSortMode == position",
+					"group": "z-commands@1"
+				},
+				{
+					"command":"azALDevTools.sortOutlineViewByName",
+					"when": "view == azALDevTools.SymbolsTreeProvider && azALDevTools:alOutlineSortMode != name",
+					"group": "z-commands@2"
+				},
+				{
+					"command":"azALDevTools.sortOutlineViewByNameNoAction",
+					"when": "view == azALDevTools.SymbolsTreeProvider && azALDevTools:alOutlineSortMode == name",
+					"group": "z-commands@2"
+				},
+				{
+					"command":"azALDevTools.sortOutlineViewByCategory",
+					"when": "view == azALDevTools.SymbolsTreeProvider && azALDevTools:alOutlineSortMode != category",
+					"group": "z-commands@3"
+				},
+				{
+					"command":"azALDevTools.sortOutlineViewByCategoryNoAction",
+					"when": "view == azALDevTools.SymbolsTreeProvider && azALDevTools:alOutlineSortMode == category",
+					"group": "z-commands@3"
+				},
+				{
+					"command": "azALDevTools.hideWarningDirectivesPanel",
+					"when": "view == azALDevTools.WarningDirectivesTreeView",
+					"group": "navigation"
+				},
+				{
+					"command": "azALDevTools.refreshWarningDirectivesPanel",
+					"when": "view == azALDevTools.WarningDirectivesTreeView",
+					"group": "navigation"
+				},
+				{
+					"command": "azALDevTools.refreshDuplicateCodePanel",
+					"when": "view == azALDevTools.DuplicateCodeTreeProvider",
+					"group": "navigation"
+				},
+				{
+					"command": "azALDevTools.hideDuplicateCodePanel",
+					"when": "view == azALDevTools.DuplicateCodeTreeProvider",
+					"group": "navigation"
+				},
+				{
+					"command": "azALDevTools.sortDuplicatesByNoOfStatements",
+					"when": "view == azALDevTools.DuplicateCodeTreeProvider"
+				},
+				{
+					"command": "azALDevTools.sortDuplicatesByType",
+					"when": "view == azALDevTools.DuplicateCodeTreeProvider"
+				},
+				{
+					"command": "azALDevTools.sortDuplicatesByNoOfDuplicates",
+					"when": "view == azALDevTools.DuplicateCodeTreeProvider"
+				},
+				{
+					"command": "azALDevTools.sortDuplicatesByTypeNoOfDuplicates",
+					"when": "view == azALDevTools.DuplicateCodeTreeProvider"
+				}	
+			],
+			"view/item/context": [
+				{
+					"command": "alOutline.runPage",
+					"when": "view == azALDevTools.SymbolsTreeProvider && viewItem == PageObject"
+				},
+				{
+					"command": "alOutline.runReport",
+					"when": "view == azALDevTools.SymbolsTreeProvider && viewItem == ReportObject"
+				},
+				{
+					"command": "alOutline.runTable",
+					"when": "view == azALDevTools.SymbolsTreeProvider && viewItem == TableObject"
+				},
+				{
+					"command": "alOutline.createCardPage",
+					"when": "view == azALDevTools.SymbolsTreeProvider && viewItem == TableObject"
+				},
+				{
+					"command": "alOutline.createListPage",
+					"when": "view == azALDevTools.SymbolsTreeProvider && viewItem == TableObject"
+				},
+				{
+					"command": "alOutline.createReport",
+					"when": "view == azALDevTools.SymbolsTreeProvider && viewItem == TableObject"
+				},
+				{
+					"command": "alOutline.createXmlPort",
+					"when": "view == azALDevTools.SymbolsTreeProvider && viewItem == TableObject"
+				},
+				{
+					"command": "alOutline.createQuery",
+					"when": "view == azALDevTools.SymbolsTreeProvider && viewItem == TableObject"
+				}
+			],
+			"explorer/context": [
+				{
+					"command": "azALDevTools.viewALApp",
+					"group": "navigation",
+					"when": "resourceLangId == alapp"
+				},
+				{
+					"command": "azALDevTools.newALFile",
+					"group": "navigation",
+					"when": "azALDevTools.extensionActive"
+				}
+			],
+			"editor/title": [
+				{
+					"command": "azALDevTools.showDocumentSymbols"
+				}
+			],
+			"editor/context": [
+				{
+					"command": "azALDevTools.goToDefinitionSymbolTree",
+					"when": "resourceLangId == al",
+					"group": "navigation"
+				}
+			]
+		},
+		"customEditors": [
+			{
+				"viewType": "azALDevTools.jsonEditor",
+				"displayName": "Visual Editor",
+				"priority": "option",
+				"selector": [
+					{
+						"filenamePattern": "app.json"
+					},
+					{
+						"filenamePattern": "*.ruleset.json"
+					},
+					{
+						"filenamePattern": "ruleset.json"
+					},
+					{
+						"filenamePattern": "AppSourceCop.json"
+					}
+				]
+			},
+			{
+				"viewType": "azALDevTools.appPackageEditor",
+				"displayName": "AL App Viewer",
+				"priority": "default",
+				"selector": [
+					{
+						"filenamePattern": "*.app"
+					}
+				]
+			}
+		],
+		"configuration": [
+			{
+				"title": "AZ AL Dev Tools/AL Code Outline",
+				"properties": {
+					"alOutline.docCommentsType": {
+						"type": "string",
+						"default": "xml",
+						"enum": [
+							"none",
+							"xml"
+						],
+						"scope": "resource",
+						"description": "Documentation comments type"
+					},
+					"alOutline.autoGenerateFiles": {
+						"type": "boolean",
+						"default": false,
+						"scope": "resource",
+						"description": "Automatically generate files for newly created objects."
+					},
+					"alOutline.autoGenerateFileDirectory": {
+						"type": "string",
+						"default": "",
+						"scope": "resource",
+						"description": "The default directory to create files in, relative to the root directory (e.g., \"Source\\<ObjectType>\")."
+					},
+					"alOutline.autoShowFiles": {
+						"type": "boolean",
+						"default": true,
+						"scope": "resource",
+						"description": "Automatically show any newly created files in the editor."
+					},
+					"alOutline.addDataItemToReportColumnName": {
+						"type": "boolean",
+						"default": false,
+						"scope": "resource",
+						"description": "Include data item name in the name of the report column"
+					},
+					"alOutline.defaultAppArea": {
+						"type": "string",
+						"default": "All",
+						"scope": "resource",
+						"description": "Default application area for page code generator and code cleanup commands"
+					},
+					"alOutline.appAreaMode": {
+						"type": "string",
+						"default": "inheritFromMainObject",
+						"scope": "resource",
+						"description": "Application area creation mode. They can be added to all controls or default value can be inherited from main object. This settings works for BC21 or newer",
+						"enum": [
+							"inheritFromMainObject", 
+							"addToAllControls"],
+						"enumDescriptions": [
+							"Inherit from the main object",
+							"Add to all controls"
+						]
+					},
+					"alOutline.apiFieldNamesConversion": {
+						"type":"array",
+						"items": {
+							"type": "object",
+							"properties": {
+								"searchRegExp": {
+									"type": "string",
+									"description": "Regular expression defining source text that should be replaced"
+								},
+								"newValue": {
+									"type": "string",
+									"description": "New text"
+								}
+							}
+						},
+						"default": [],
+						"description": "List of api field names replacements",
+						"scope": "resource"
+					},
+					"alOutline.defaultApiPublisher": {
+						"type": "string",
+						"default": "publisherName",
+						"scope": "resource",
+						"description": "Default Api Publisher value for the page wizard"
+					},
+					"alOutline.defaultApiGroup": {
+						"type": "string",
+						"default": "apiGroup",
+						"scope": "resource",
+						"description": "Default Api Group value for the page wizard"
+					},
+					"alOutline.defaultApiVersion": {
+						"type": "string",
+						"default": "v1.0",
+						"scope": "resource",
+						"description": "Default Api Version value for the page wizard"
+					},
+					"alOutline.defaultDataClassification": {
+						"type": "string",
+						"scope": "resource",
+						"description": "Default data classification for code cleanup commands"
+					},
+					"alOutline.defaultAddPageFieldCaptionsSettings": {
+						"type": "object",
+						"description": "Default settings for the AddPageFieldCaption command when run by the Code Cleanup",
+						"scope": "resource",
+						"properties": {
+							"setActionsCaptions": {
+								"type": "boolean",
+								"description": "Set action captions"
+							},
+							"setActionGroupsCaptions": {
+								"type": "boolean",
+								"description": "Set action groups captions"
+							},
+							"setGroupsCaptions": {
+								"type": "boolean",
+								"description": "Set groups captions"
+							},
+							"setRepeatersCaptions": {
+								"type": "boolean",
+								"description": "Set repeaters captions"
+							},
+							"setPartsCaptions": {
+								"type": "boolean",
+								"description": "Set parts captions"
+							},
+							"setFieldsCaptions": {
+								"type": "boolean",
+								"description": "Set fields captions"
+							},
+							"setLabelsCaptions": {
+								"type": "boolean",
+								"description": "Set labels captions"
+							}
+						}
+					},
+					"alOutline.defaultRemoveEmptyTriggersSettings": {
+						"type": "object",
+						"description": "Default settings for the RemoveEmptyTriggers command when run by the Code Cleanup",
+						"scope": "resource",
+						"properties": {
+							"removeTriggers": {
+								"type": "boolean",
+								"description": "Remove empty triggers"
+							},
+							"removeSubscribers": {
+								"type": "boolean",
+								"description": "Remove empty event subscribers"
+							},
+							"ignoreComments": {
+								"type": "boolean",
+								"description": "Removes trigger or subscriber even if method body contains comments"
+							}
+						}
+					},
+					"alOutline.defaultRemoveEmptySectionsSettings": {
+						"type": "object",
+						"description": "Default settings for the RemoveEmptySections command when run by the Code Cleanup",
+						"scope": "resource",
+						"properties": {
+							"removeActionGroups": {
+								"type": "boolean",
+								"description": "Remove empty page action groups"
+							},
+							"removeActions": {
+								"type": "boolean",
+								"description": "Remove empty actions (no properties and no code)"
+							},					
+							"ignoreComments": {
+								"type": "boolean",
+								"description": "Removes sections even if it contains comments inside"
+							}
+						},
+						"default": {
+							"removeActionGroups": true,
+							"removeActions": true,
+							"ignoreComments": false
+						}
+					},
+					"alOutline.defaultRemoveUnusedVariablesSettings": {
+						"type": "object",
+						"description": "Default settings for the RemoveUnusedVariables command when run by the Code Cleanup",
+						"scope": "resource",
+						"properties": {
+							"removeGlobalVariables": {
+								"type": "boolean",
+								"description": "Remove global variables"
+							},
+							"removeLocalVariables": {
+								"type": "boolean",
+								"description": "Remove local variables"
+							},
+							"removeLocalMethodParameters": {
+								"type": "boolean",
+								"description": "Remove local methods parameters"
+							}
+						}
+					},
+					"alOutline.defaultListUsageCategory": {
+						"type": "string",
+						"default": "Lists",
+						"scope": "resource",
+						"description": "Default usage category for list pages"
+					},
+					"alOutline.promptForObjectId": {
+						"type": "boolean",
+						"default": true,
+						"scope": "resource",
+						"description": "When generating a new object, ask the user to input the object ID."
+					},
+					"alOutline.promptForObjectName": {
+						"type": "boolean",
+						"default": true,
+						"scope": "resource",
+						"description": "When generating a new object, ask the user to input the object name."
+					},
+					"alOutline.promptForFilePath": {
+						"type": "boolean",
+						"default": false,
+						"scope": "resource",
+						"description": "When generating a new file, ask the user to specify a path relative to the root of the project-folder."
+					},
+					"alOutline.stripNonAlphanumericCharactersFromObjectNames": {
+						"type": "boolean",
+						"default": false,
+						"scope": "resource",
+						"description": "Always strip non-alphanumeric characters from generated object names."
+					},
+					"alOutline.webClientPort": {
+						"type": "number",
+						"default": "0",
+						"scope": "resource",
+						"description": "Web Client port. Enter 0 to use default http/https port number."
+					},
+					"alOutline.openDefinitionInNewTab": {
+						"type": "boolean",
+						"default": false,
+						"scope": "resource",
+						"description": "Always open objects definitions in a new tab."
+					},
+					"alOutline.fieldsSelectionOrder": {
+						"type": "string",
+						"default": "selection order",
+						"scope": "resource",
+						"enum": [
+							"alphabetic",
+							"selection order"
+						]
+					},
+					"alOutline.noEmptyLinesAtTheEndOfWizardGeneratedFiles": {
+						"type": "boolean",
+						"default": false,
+						"scope": "resource",
+						"description": "Don't create empty lines at the end of files created by wizards."
+					},
+					"alOutline.enableCodeCopFixes": {
+						"type": "boolean",
+						"default": false,
+						"scope": "resource",
+						"description": "Enable code actions fixing CodeCop warnings (AA0008 - missing parentheses, AA0137 - unused variable, AA0139 - possible text overflow)"
+					},
+					"alOutline.fixCodeCopMissingParenthesesOnSave": {
+						"type": "boolean",
+						"default": false,
+						"scope": "resource",
+						"description": "Fix Code Cop 'Missing Parentheses' warning on save when 'editor.codeActionsOnSave' setting contains 'source.fixAll' value"
+					},
+					"alOutline.codeActionsOnSave": {
+						"type": "array",
+						"items": {
+							"type": "string",
+							"enum": [
+								"SortTableFields",
+								"SortReportColumns",
+								"SortProperties",
+								"SortProcedures",
+								"SortVariables",
+								"SortPermissions",
+								"SortPermissionSetList",
+								"SortCustomizations",
+								"FormatDocument"
+							],
+							"enumDescriptions": [
+								"Sort report DataItem columns",
+								"Sort properties",
+								"Sort procedures",
+								"Sort variables",
+								"Sort permissions",
+								"Sort permission sets",
+								"Sort customizations",
+								"Format document"
+							]
+						},
+						"default": [],
+						"uniqueItems": true,
+						"description": "Specifies which code-actions should be applied when a file is saved. Valid values are SortTableFields, SortReportColumns, SortProcedures, SortProperties, SortVariables, SortPermissions, SortPermissionSetList, SortCustomizations and FormatDocument",
+						"scope": "resource"
+					},
+					"alOutline.codeCleanupActions": {
+						"type": "array",
+						"scope": "resource",
+						"items": {
+							"type": "string",
+							"enum": [
+								"RemoveWithStatements",
+								"AddApplicationAreas",
+								"AddToolTips",
+								"RefreshToolTips",
+								"AddTableFieldCaptions",
+								"AddEnumValuesCaptions",
+								"LockRemovedFieldCaptions",
+								"AddPageFieldCaptions",
+								"AddObjectCaptions",
+								"FixKeywordsCase",
+								"FixIdentifiersCase",
+								"ConvertObjectIdsToNames",
+								"AddMissingParentheses",
+								"AddDataClassifications",
+								"RemoveUnusedVariables",
+								"SortPermissions",
+								"SortPermissionSetList",
+								"SortProcedures",
+								"SortProperties",
+								"SortReportColumns",
+								"SortTableFields",
+								"SortVariables",
+								"SortCustomizations",
+								"RemoveBeginEnd",
+								"RemoveEmptyTriggers",
+								"RemoveEmptyLines", 
+								"RemoveEmptySections",
+								"RemoveStrSubstNoFromError",
+								"FormatDocument",
+								"TrimTrailingWhitespace",
+								"MakeFlowFieldsReadOnly",
+								"RemoveRedundantAppAreas"
+							],
+							"enumDescriptions": [
+								"Remove With Statements",
+								"Add Application Areas",
+								"Add ToolTips",
+								"Refresh ToolTips from Dependencies",
+								"Add Table Field Captions",
+								"Add Enum Values Captions",
+								"Lock Removed Table Field Captions",
+								"Add Page Field Captions",
+								"Add Object Captions",
+								"Fix Keywords Case",
+								"Fix Identifiers Case",
+								"Convert Object Ids to Names",
+								"Add Missing Parentheses",
+								"Add DataClassifications",
+								"Remove Unused Variables",
+								"Sort Permissions",
+								"Sort PermissionSet List",
+								"Sort Procedures",
+								"Sort Properties",
+								"Sort Report Columns",
+								"Sort Table Fields",
+								"Sort Variables",
+								"Sort Customizations",
+								"Remove Begin..End",
+								"Remove Empty Triggers",
+								"Remove Empty Lines",
+								"Remove Empty Sections",
+								"Remove StrSubstNo From Error",
+								"Format Document",
+								"Trim Trailing Whitespace",
+								"Make FlowFields Read-Only",
+								"Remove Redundant Application Areas"
+							]
+						},
+						"description": "List of commands run by the Code Cleanup"
+					},
+					"alOutline.codeActionsOnSaveIgnoreFiles": {
+						"type": "array",
+						"items": {
+							"type": "string"
+						},
+						"default": [],
+						"uniqueItems": true,
+						"description": "Specifies which files should be ignored by code actions run when document is saved",
+						"scope": "resource"
+					},
+					"alOutline.codeTransformationIgnoreFiles": {
+						"type": "array",
+						"items": {
+							"type": "string"
+						},
+						"default": [],
+						"uniqueItems": true,
+						"description": "Specifies which files should be ignored by code transformation commands when run for project or uncommited files",
+						"scope": "resource"
+					},
+					"alOutline.pageActionToolTip": {
+						"type": "string",
+						"default": "Executes the %1 action.",
+						"scope": "resource",
+						"description": "The default tooltip template for page actions. Use %1 as placeholder for action caption or name."
+					},
+					"alOutline.pageFieldToolTip": {
+						"type": "string",
+						"default": "Specifies the value of the %1 field.",
+						"scope": "resource",
+						"description": "The default tooltip template for page fields. Use %1 or %Caption% as placeholder for field caption or name, %Caption.Comment% as placeholder for field caption comment"
+					},
+					"alOutline.pageFieldToolTipComment": {
+						"type": "string",
+						"default": "%Caption.Comment%",
+						"scope": "resource",
+						"description": "The default tooltip comment template for page fields. Use %Caption% as placeholder for field caption or name, %Caption.Comment% as placeholder for field caption comment"
+					},
+					"alOutline.useTableFieldDescriptionAsToolTip": {
+						"type": "boolean",
+						"default": false,
+						"scope": "resource",
+						"description": "Use table field description as page field tooltip"
+					},
+					"alOutline.addToolTipsToPageFields": {
+						"type": "boolean",
+						"default": true,
+						"scope": "resource",
+						"description": "Add tooltips to page fields"
+					},
+ 					"alOutline.createApiFieldsCaptions": {
+						"type": "boolean",
+						"default": true,
+						"scope": "resource",
+						"description": "Set to true to create captions for API pages fields."
+					},
+					"alOutline.useTableFieldCaptionsInApiFields": {
+						"type": "boolean",
+						"default": true,
+						"scope": "resource",
+						"description": "Set to true to use table field captions in API pages fields. Set to false, to use camelCase api field names in api field captions"
+					},
+					"alOutline.lockRemovedFieldsCaptions": {
+						"type": "boolean",
+						"default": false,
+						"scope": "resource",
+						"description": "Set to true to lock captions of removed fields when 'Add Table Field Captions' command is run"
+					},
+					"alOutline.doNotReuseToolTipsFromOtherPages": {
+						"type": "boolean",
+						"default": false,
+						"scope": "resource",
+						"description": "Set to true to disable reusing field tooltips from other pages in the page wizard, 'add multiple fields' page code action and 'add missing tooltips' command"
+					},
+					"alOutline.reuseToolTipsFromDependencies": {
+						"type": "array",
+						"items": {
+							"type": "string"
+						},
+						"default": [],
+						"scope": "resource",
+						"uniqueItems": true,
+						"description": "Reuse tooltips only defined in these dependencies. If empty, all dependencies will be used. Each entry should be defined as <dependency publisher> + <space> + '-' + <space> + <dependency name>"
+					},
+					"alOutline.additionalMandatoryAffixesPatterns": {
+						"type": "array",
+						"items": {
+							"type": "string"
+						},
+						"default": [],
+						"scope": "resource",
+						"uniqueItems": true,
+						"description": "Additional list of name affixes patterns, '?' can be used for matching any character. These values are used to remove affixes from names in code actions, commands and code completion"
+
+					},
+					"alOutline.fixCaseRemovesQuotesFromDataTypeIdentifiers": {
+						"type": "boolean",
+						"default": false,
+						"scope": "resource",
+						"description": "Set to true to remove quotes around identifiers having names of al data types when running 'Fix Identifiers and Keywords Case' commands"
+					},
+					"alOutline.fixCaseRemovesQuotesFromNonDataTypeIdentifiers": {
+						"type": "boolean",
+						"default": true,
+						"scope": "resource",
+						"description": "Set to true to remove quotes around identifiers having names that are not al data types when running 'Fix Identifiers and Keywords Case' commands"
+					},
+					"alOutline.variablesSortMode": {
+						"type": "string",
+						"enum": [
+							"fullTypeName",
+							"mainTypeNameOnly",
+							"fullTypeNameKeepVariableNameOrder",
+							"mainTypeNameOnlyKeepVariableNameOrder"
+						],
+						"enumDescriptions": [
+							"Sort report DataItem columns",
+							"Format document"
+						],
+						"default": "fullTypeName",
+						"description": "Specifies how variables are sorted by `Sort Variables` commands.",
+						"scope": "resource"						
+					},
+
+					"alOutline.dropDownGroupFieldsNamesPatterns": {
+						"type": "array",
+						"items": {
+							"type": "string"
+						},
+						"default": ["Name", "Description", "Post Code", "City", "Address", "Address 2"],
+						"scope": "resource",
+						"uniqueItems": true,
+						"description": "Field names patterns for fields in table DropDown field group created by 'Add DropDown Field Groups' commands"
+					},
+					"alOutline.tableDataCaptionFieldsNamesPatterns": {
+						"type": "array",
+						"items": {
+							"type": "string"
+						},
+						"default": ["Name", "Description"],
+						"scope": "resource",
+						"uniqueItems": true,
+						"description": "Field names patterns for fields in table DataCaptionFields property created by 'Add Table DataCaptionFields' commands"
+					},
+
+					"alOutline.completionProviders": {
+						"type": "array",
+						"items": {
+							"type": "string",
+							"enum": [
+								"VariableNamesWithType",
+								"VariableNames",
+								"VariableDataTypes"
+							],
+							"enumDescriptions": [
+								"Variable names with data type",
+								"Variable names only",
+								"Data types based on variable names"
+							]
+						},
+						"default": [],
+						"uniqueItems": true,
+						"description": "Specifies which completion providers should be active. If both VariableNamesWithType and VariableNames are selected, VariableNamesWithType will be used",
+						"scope": "resource"
+					},
+					"alOutline.idReservationProvider": {
+						"type": "string",
+						"default": "",
+						"scope": "resource",
+						"description": "Object ID reservation provider used by object wizards",
+						"enum": [
+							"LocalFiles",
+							"ALObjectIdNinja"
+						],
+						"enumDescriptions": [
+							"Next available ID in local files",
+							"AL Object ID Ninja"
+						]
+					}
+				}
+			}
+		]
+	},
+	"extensionDependencies": [
+		"waldo.crs-al-language-extension"
+	],
+	"scripts": {
+		"vscode:prepublish": "npm run compile",
+		"compile": "tsc -p ./",
+		"lint": "eslint src --ext ts",
+		"watch": "tsc -watch -p ./",
+		"pretest": "npm run compile && npm run lint",
+		"test": "node ./out/test/runTest.js"
+	},
+	"devDependencies": {
+		"@types/vscode": "^1.47.0",
+		"@types/glob": "^7.1.1",
+		"@types/mocha": "^7.0.2",
+		"@types/node": "^13.11.0",
+		"eslint": "^6.8.0",
+		"@typescript-eslint/parser": "^2.26.0",
+		"@typescript-eslint/eslint-plugin": "^2.26.0",
+		"glob": "^7.1.6",
+		"mocha": "^7.1.1",
+		"typescript": "^3.8.3",
+		"vscode-test": "^1.3.0"
+	},
+	"dependencies": {
+		"vscode-languageclient": "^6.1.3"
+	}
+}

@@ -1,5 +1,28 @@
 # Change Log
 
+## 3.0.42
+ - Issue #276 - AL Object ID Ninja integration
+   - New `alOutline.idReservationProvider` setting with these values available: LocalFiles, ALObjectIdNinja
+ - Issue #302 - It is now possible to enable or disable removing quotes around identifiers that don't look like al data types by using `alOutline.fixCaseRemovesQuotesFromNonDataTypeIdentifiers` setting. Default value is true which means that quotes are removed.
+ - Issue #431 - app.json encoded with "UTF-8 with BOM" fails
+ - Issue #434 - Page layout group(general) has no caption
+ - Issue #436 - comment= is not fixed when running "Fix identifiers"
+ - Issue #439 - Completion provider for "var" function parameter?
+ - Repository structure changed
+   - vscode extension typescript project moved to vscode-extension subfolder
+   - dotnet language server project moved from separate repository tp language-server subfolder
+   - devops workflow building extension added
+   - build.ps1 script added - it is used by the workflow, so might not work when run manually
+ - PullRequest 446 - Add possibility to modify wizardData from other extensions before calling and showing the wizard.
+
+Thank you
+ - JavierFuentes for asking to leave quotes in issue #302
+ - jwikman for reporting issue #431
+ - guidorobben for reporting issues #434 and #436
+ - fvet for reporting issue #439
+
+ - DavidFeldhoff for PullRequest 446
+
 ## 3.0.41
  - Issue #6 - AL Outline panel - sort symbols by position, name and type
  - Issue #327 - Use different icons in AL Outline panel
@@ -13,6 +36,7 @@
  - Issue #377 - Don't add captions to the API pages fields
    - new `alOutline.createApiFieldsCaptions` setting added
  - Issue #378 - API Pages : API field name suggestions for 'number' fields (number instead of no)
+   - new `alOutline.apiFieldNamesConversion` setting
  - Issue #380 - AL Outline panel support Region Directive in AL (New Feature Request) 
  - Issue #385 - AL Language Server Crashing - temp-al-proxy.al 
    - all references to code creating that temp file removed
@@ -29,7 +53,7 @@
      - "alOutline.dropDownGroupFieldsNamesPatterns": array of string patters for table DropDown group fields, you can use "*" for partial name matching
      - "alOutline.tableDataCaptionFieldsNamesPatterns": array of string patters for field names for table DataCaptionFields property, you can use "*" for partial name matching
  - Issue #415 - Variable completion
-   - #425 fix should improve suggetsions here, but the real problem is caused by the default vs code `"editor.suggest.matchOnWordStartOnly": true,` setting (ICDimension is treated as single word)
+   - #425 fix should improve suggestions here, but the real problem is caused by the default `"editor.suggest.matchOnWordStartOnly": true,` VS Code setting (ICDimension is treated as single word)
  - Issue #417 - Add all extension objects permissions quick fix should not add redundant permissions
  - Issue #421 - FlowFilters aren't added to API Pages
    - new page wizard step for API pages - flow filters selection

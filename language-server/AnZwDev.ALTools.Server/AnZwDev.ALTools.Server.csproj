@@ -1,0 +1,26 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>netstandard2.0</TargetFramework>
+  </PropertyGroup>
+
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
+    <DefineConstants>TRACE;BC</DefineConstants>
+  </PropertyGroup>
+
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|AnyCPU'">
+    <DefineConstants>TRACE;BC</DefineConstants>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Newtonsoft.Json" Version="13.0.1" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\AnZwDev.ALTools\AnZwDev.ALTools.csproj" />
+    <ProjectReference Include="..\AnZwDev.VSCodeLangServer\AnZwDev.VSCodeLangServer.csproj" />
+  </ItemGroup>
+
+  <Import Project="..\Shared.AnZwDev.ALTools.Server\Shared.AnZwDev.ALTools.Server.projitems" Label="Shared" />
+
+</Project>
