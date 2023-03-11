@@ -2,7 +2,7 @@ name: build-extension
 run-name: Build Extension
 on:
   push:
-    branches: [ main ]
+    branches: [ main, master ]
 
 jobs:
   build:
