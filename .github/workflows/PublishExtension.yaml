@@ -1,5 +1,5 @@
-name: build-extension
-run-name: Build Extension
+name: Publish Extension
+run-name: Publish Extension
 on:
   workflow_dispatch:
 jobs:

@@ -1,8 +1,7 @@
-name: build-extension
+name: Build Extension
 run-name: Build Extension
 on:
-  push:
-    branches: [ main, master ]
+  workflow_dispatch:
 
 jobs:
   build:
