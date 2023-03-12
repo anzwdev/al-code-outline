@@ -197,4 +197,6 @@ $msBuildPath = &"${env:ProgramFiles(x86)}\Microsoft Visual Studio\Installer\vswh
 # Build vscode extension
 cd "..\vscode-extension"
 vsce package
+cd ".."
+
 
