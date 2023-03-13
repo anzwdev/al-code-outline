@@ -1,0 +1,14 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16">
+  <defs>
+    <style>.canvas{fill: none; opacity: 0;}.light-defaultgrey{fill: #212121; opacity: 1;}</style>
+  </defs>
+  <title>IconLightLabel</title>
+  <g id="canvas">
+    <path class="canvas" d="M16,16H0V0H16Z" />
+    <path class="canvas" d="M16,16H0V0H16Z" />
+    <path class="canvas" d="M16,16H0V0H16Z" />
+  </g>
+  <g id="level-1">
+    <path class="light-defaultgrey" d="M6.069,9.48H9.881L10.834,12H12L8.539,3.009H7.448L4,12H5.172ZM7.818,4.7a3.316,3.316,0,0,0,.144-.6h.025a3.655,3.655,0,0,0,.138.6L9.536,8.533H6.42Z" />
+  </g>
+</svg>

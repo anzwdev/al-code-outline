@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<svg
+   xmlns:dc="http://purl.org/dc/elements/1.1/"
+   xmlns:cc="http://creativecommons.org/ns#"
+   xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+   xmlns:svg="http://www.w3.org/2000/svg"
+   xmlns="http://www.w3.org/2000/svg"
+   xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
+   xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
+   width="16"
+   height="16"
+   version="1.1"
+   id="svg13587"
+   sodipodi:docname="tree-controladdin.svg"
+   inkscape:version="0.92.2 (5c3e80d, 2017-08-06)">
+  <metadata
+     id="metadata13593">
+    <rdf:RDF>
+      <cc:Work
+         rdf:about="">
+        <dc:format>image/svg+xml</dc:format>
+        <dc:type
+           rdf:resource="http://purl.org/dc/dcmitype/StillImage" />
+      </cc:Work>
+    </rdf:RDF>
+  </metadata>
+  <defs
+     id="defs13591" />
+  <sodipodi:namedview
+     pagecolor="#000000"
+     bordercolor="#999999"
+     borderopacity="1"
+     objecttolerance="10"
+     gridtolerance="10"
+     guidetolerance="10"
+     inkscape:pageopacity="0"
+     inkscape:pageshadow="2"
+     inkscape:window-width="780"
+     inkscape:window-height="480"
+     id="namedview13589"
+     showgrid="false"
+     inkscape:zoom="14.75"
+     inkscape:cx="8"
+     inkscape:cy="8"
+     inkscape:window-x="1038"
+     inkscape:window-y="48"
+     inkscape:window-maximized="0"
+     inkscape:current-layer="svg13587" />
+  <style
+     type="text/css"
+     id="style13581">.icon-canvas-transparent{opacity:0;fill:#090909;} .icon-vs-out{fill:#090909;} .icon-vs-bg{fill:#bdbdbd;} .icon-vs-fg{fill:#0f0e10;}</style>
+  <path
+     class="icon-canvas-transparent"
+     d="M16 16h-16v-16h16v16z"
+     id="canvas" />
+  <path
+     class="icon-vs-out"
+     d="M16 0v15h-15v-9h6v-6h9z"
+     id="outline" />
+  <path
+     class="icon-vs-bg"
+     d="M8 1v6h-6v7h13v-13h-7zm0 12h-5v-5h5v5zm6 0h-5v-5h5v5zm0-6h-5v-5h5v5z"
+     id="iconBg"
+     style="fill:#63b6ff;fill-opacity:1" />
+  <path
+     class="icon-vs-fg"
+     d="M8 13h-5v-5h5v5zm6-5h-5v5h5v-5zm0-6h-5v5h5v-5z"
+     id="iconFg" />
+</svg>

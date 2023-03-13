@@ -1,0 +1,83 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<svg
+   xmlns:dc="http://purl.org/dc/elements/1.1/"
+   xmlns:cc="http://creativecommons.org/ns#"
+   xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+   xmlns:svg="http://www.w3.org/2000/svg"
+   xmlns="http://www.w3.org/2000/svg"
+   xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
+   xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
+   viewBox="0 0 16 16"
+   version="1.1"
+   id="svg17774"
+   sodipodi:docname="tree-pagepersonalization.svg"
+   inkscape:version="0.92.2 (5c3e80d, 2017-08-06)">
+  <metadata
+     id="metadata17780">
+    <rdf:RDF>
+      <cc:Work
+         rdf:about="">
+        <dc:format>image/svg+xml</dc:format>
+        <dc:type
+           rdf:resource="http://purl.org/dc/dcmitype/StillImage" />
+      </cc:Work>
+    </rdf:RDF>
+  </metadata>
+  <defs
+     id="defs17778" />
+  <sodipodi:namedview
+     pagecolor="#000000"
+     bordercolor="#999999"
+     borderopacity="1"
+     objecttolerance="10"
+     gridtolerance="10"
+     guidetolerance="10"
+     inkscape:pageopacity="0"
+     inkscape:pageshadow="2"
+     inkscape:window-width="780"
+     inkscape:window-height="480"
+     id="namedview17776"
+     showgrid="false"
+     inkscape:zoom="14.75"
+     inkscape:cx="8"
+     inkscape:cy="8"
+     inkscape:window-x="0"
+     inkscape:window-y="0"
+     inkscape:window-maximized="0"
+     inkscape:current-layer="svg17774" />
+  <style
+     id="style17759">.st0{opacity:0}.st0,.st1{fill:#090909}.st2{fill:#bdbdbd}.st3{fill:#28bdff}</style>
+  <g
+     id="outline">
+    <path
+       class="st0"
+       d="M0 0h16v16H0z"
+       id="path17761" />
+    <path
+       class="st1"
+       d="M14 7v9H2v-.586l-2-2v-.828l2-2V7h3.5C4.661 6.266 4 5.202 4 4a4 4 0 0 1 8 0c0 1.201-.661 2.266-1.5 3H14z"
+       id="path17763" />
+  </g>
+  <g
+     id="icon_x5F_bg">
+    <path
+       class="st2"
+       d="M3 15v-1l-1-1 1-1v-1l-2 2zM6 8H3v2h4.333zM10 8l-1.333 2h.747L12 12.586v.828L10.414 15H13V8z"
+       id="path17766" />
+    <path
+       class="st2"
+       d="M9 15l2-2-2-2v1l1 1-1 1z"
+       id="path17768" />
+    <circle
+       class="st2"
+       cx="8"
+       cy="4"
+       r="3"
+       id="circle17770" />
+  </g>
+  <path
+     class="st3"
+     d="M4 11h4v4H4z"
+     id="color_x5F_decoration"
+     style="fill:#63b6ff;fill-opacity:1" />
+</svg>

@@ -197,9 +197,7 @@ $msBuildPath = &"${env:ProgramFiles(x86)}\Microsoft Visual Studio\Installer\vswh
 # Update readme and changelog
 cd ".."
 Copy-Item -Path ".\CHANGELOG.md" -Destination ".\vscode-extension\CHANGELOG.md" -Force
-$readmeContent = Get-Content -Path ".\README.md"
-$readmeContent = $readmeContent.Replace("(vscode-extension/resources/", "(resources/")
-Set-Content -Path ".\vscode-extension\README.md" -Value $readmeContent -Force
+Copy-Item -Path ".\README.md" -Destination ".\vscode-extension\README.md" -Force
 
 # Build vscode extension
 cd "vscode-extension"
