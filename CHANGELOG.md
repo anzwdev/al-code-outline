@@ -1,8 +1,14 @@
 # Change Log
 
+## 3.0.43
+ - Issue #451 - README and CHANGELOG disappeared from VS Marketplace
+ - Information about AL Object ID Ninja integration removed from the changelog as it is still work in progress
+
+Thank you
+ - rvanbekkum for reporting issue #451
+ - fvet for checking changelog
+
 ## 3.0.42
- - Issue #276 - AL Object ID Ninja integration
-   - New `alOutline.idReservationProvider` setting with these values available: LocalFiles, ALObjectIdNinja
  - Issue #302 - It is now possible to enable or disable removing quotes around identifiers that don't look like al data types by using `alOutline.fixCaseRemovesQuotesFromNonDataTypeIdentifiers` setting. Default value is true which means that quotes are removed.
  - Issue #431 - app.json encoded with "UTF-8 with BOM" fails
  - Issue #434 - Page layout group(general) has no caption

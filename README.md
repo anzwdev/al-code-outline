@@ -37,7 +37,7 @@ Extensions add new "New AL File Wizard" item to EXPLORER context menu. It allows
    - PermissionSet Wizard
    - PermissionSetExtension Wizard
 
- ![Page Wizard](resources/screen2-pagewizard.gif)
+ ![Page Wizard](vscode-extension/resources/screen2-pagewizard.gif)
 
 ### Symbols browser
 
@@ -50,11 +50,11 @@ Symbols browser can display symbols from:
  - current project symbols with all dependencies defined in app.json by running "AZ AL Dev Tools: Show All Project Symbols" from the "Command Palette"
  - current project symbols without dependencies by running "AZ AL Dev Tools: Show Project Symbols without Dependencies" from the "Command Palette"
 
-![*.app symbols browser (list)](resources/screen2-symbolsbrowserlist.png)
+![*.app symbols browser (list)](vscode-extension/resources/screen2-symbolsbrowserlist.png)
 
-![*.app symbols browser (tree)](resources/screen2-symbolsbrowsertree.png)
+![*.app symbols browser (tree)](vscode-extension/resources/screen2-symbolsbrowsertree.png)
 
-![Project symbols browser](resources/screen2-projectsymbolstree.png)
+![Project symbols browser](vscode-extension/resources/screen2-projectsymbolstree.png)
 
 ### AL symbols outline panel
 
@@ -62,9 +62,9 @@ Symbols browser can display symbols from:
 
 It also supports other document types, so it can be used instead of standard outline view if AL project contains other files (i.e. javascript or css control add-ins files).
 
-![AL outline panel](resources/screen2-outline.png)
+![AL outline panel](vscode-extension/resources/screen2-outline.png)
 
-![AL outline panel context menu](resources/screen2-outlinemenu.png)
+![AL outline panel context menu](vscode-extension/resources/screen2-outlinemenu.png)
 
 ### Symbols tree view
 
@@ -73,7 +73,7 @@ This view shows symbols tree looking similar to content of "AL symbols outline p
 - "Show Document Symbols Tree" command from "Command Palette" when there is an acive text editor with AL file
 - Editor context menu by selecting "Show Definition in the Symbols Tree" menu item
 
-![Symbols tree view](resources/screen2-symbolstree1.gif)
+![Symbols tree view](vscode-extension/resources/screen2-symbolstree1.gif)
 
 ### AL code generators
 
@@ -107,7 +107,7 @@ Extension adds VS Code editor code actions to some of al elements to help develo
   Fields can be added is selection or alphabetic order, it can be controlled using "alOutline.fieldsSelectionOrder" setting. Default value is "selection order".
  - `Generate column headers for CSV export` action available on XmlPort header and XmlPort tableelement when XmlPort format is set to "VariableText". It adds a new tableelement with column headers for each tableelement in the XmlPort.
 
-![Add multiple fields](resources/screen2-addfieldscodeaction.gif)
+![Add multiple fields](vscode-extension/resources/screen2-addfieldscodeaction.gif)
 
 Sort table fields, procedures, variables, properties, report columns. permissions, permission sets and customizations actions can be also run automatically on document save. To turn this functionality on "source.fixAll.al" property of "editor.codeActionsOnSave" must be set to true and "alOutline.codeActionsOnSave" setting should contain list of sorting actions that you want to run. That's how settings should look like to run all these sort actions on save:
 
@@ -196,7 +196,7 @@ Default application area and templates for field and action tooltips can be spec
 
 List of actions run by code cleanup commands can be specified in `alOutline.codeCleanupActions` setting.
 
-![Action images](resources/screen2-addtooltips.gif)
+![Action images](vscode-extension/resources/screen2-addtooltips.gif)
 
 ### Action images browser
 
@@ -210,7 +210,7 @@ These commands are available:
    - "AZ AL Dev Tools: Show CueGroup Fields Images" - "Copy as action" and "Copy as promoted action" context menu items are not available in this case
    - "AZ AL Dev Tools: Show RoleCenter Action Images"
 
-![Action images](resources/screen2-actionimages.gif)
+![Action images](vscode-extension/resources/screen2-actionimages.gif)
 
 ### Code completion
 
@@ -223,19 +223,19 @@ Extension adds a few additional code completion providers that can be enabled or
 
 Extension adds new custom editors for app.json, rulesets (*.ruleset.json) and AppSourceCop.json files. These editors are defined as "secondary" which means that developers have to right click on the file in the EXPLORER and choose "Open With..." option. It will display list of available editors for selected file. It is also possible to change default editor on this list.
 
-![Action images](resources/screen2-customeditor.gif)
+![Action images](vscode-extension/resources/screen2-customeditor.gif)
 
 ### Documentation comments support
 
 When developer types "///" in a line above a symbol declaration (i.e. variable, procedure, field), extension can add "Xml Documentation Comments" to the list of available completion items. When it is selected, xml documentation snippet will be inserted into the code editor. If symbol below cursor is a procedure declaration, inserted snippet will contail all procedure parameters. This functionality can be turned off and on by changing "alOutline.docCommentsType" setting to "none" or "xml".
 
-![Xml Documentation Comments](resources/screen2-xmldoccomments.gif)
+![Xml Documentation Comments](vscode-extension/resources/screen2-xmldoccomments.gif)
 
 ### Code analyzers rules viewer
 
 Code analyzers rules viewer can be opened by running "AZ AL Dev Tools: Show Code Analyzers Rules" command. It allows to select one of available code analyzers from a dropdown list and then displays all rules implemented by that analyzer in a table view. It is then possible to select some or all of the rules and create new ruleset file or copy them as ruleset rules or a table to the clipboard using context menu.
 
-![Xml Documentation Comments](resources/screen2-codeanalyzers.png)
+![Xml Documentation Comments](vscode-extension/resources/screen2-codeanalyzers.png)
 
 ### Duplicate code search
 
@@ -249,7 +249,7 @@ Warning directives parel can be opened by running "AZ AL Dev Tools: Show warning
 
 Document syntax visualizer shows syntax tree created by the AL compiler for the current document. It can be opened by running "AZ AL Dev Tools: Open Document Syntax Visualizer" command. The main purpose of this functionality is to help developers create their own al code analyzers. More information how to create analyzer can be found on my blog here: https://anzwdev.wordpress.com/2019/11/09/custom-al-code-analyzers/
 
-![Document Syntax Visualizer](resources/screen2-syntaxtree.png)
+![Document Syntax Visualizer](vscode-extension/resources/screen2-syntaxtree.png)
 
 ## Contributors
 
