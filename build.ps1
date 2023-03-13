@@ -194,8 +194,15 @@ dotnet publish ".\AZALDevToolsServer.NetCore\AZALDevToolsServer.NetCore.csproj" 
 $msBuildPath = &"${env:ProgramFiles(x86)}\Microsoft Visual Studio\Installer\vswhere.exe" -latest -prerelease -products * -requires Microsoft.Component.MSBuild -find MSBuild\**\Bin\MSBuild.exe
 & $msBuildPath ".\AZALDevToolsServer.NetFrameworkNav2018\AZALDevToolsServer.NetFrameworkNav2018.csproj" -p:Configuration=Release -p:OutputPath="..\..\vscode-extension\bin\netframeworknav2018"
 
+# Update readme and changelog
+cd ".."
+Copy-Item -Path ".\CHANGELOG.md" -Destination ".\vscode-extension\CHANGELOG.md" -Force
+$readmeContent = Get-Content -Path ".\README.md"
+$readmeContent = $readmeContent.Replace("(vscode-extension/resources/", "(resources/")
+Set-Content -Path ".\vscode-extension\README.md" -Value $readmeContent -Force
+
 # Build vscode extension
-cd "..\vscode-extension"
+cd "vscode-extension"
 vsce package
 cd ".."
 
