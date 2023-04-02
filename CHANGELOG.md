@@ -1,5 +1,12 @@
 # Change Log
 
+## 3.0.44
+ - Issue #276 - AL Object ID Ninja integration
+   - New `alOutline.idReservationProvider` setting with these values available: LocalFiles, ALObjectIdNinja
+
+Thank you
+ - vjekob for accepting "AL Object ID Ninja" external API pull request
+
 ## 3.0.43
  - Issue #451 - README and CHANGELOG disappeared from VS Marketplace
  - Information about AL Object ID Ninja integration removed from the changelog as it is still work in progress

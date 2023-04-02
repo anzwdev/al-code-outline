@@ -1,4 +1,5 @@
 ﻿using AnZwDev.ALTools.ALSymbols;
+using AnZwDev.ALTools.Extensions;
 using Microsoft.Dynamics.Nav.CodeAnalysis;
 using Microsoft.Dynamics.Nav.CodeAnalysis.Syntax;
 using System;
@@ -7,7 +8,6 @@ using System.Text;
 
 namespace AnZwDev.ALTools.CodeTransformations
 {
-    /*
     public class RemoveRedundantDataClassificationSyntaxRewriter : ALSyntaxRewriter
     {
 
@@ -30,11 +30,11 @@ namespace AnZwDev.ALTools.CodeTransformations
             if ((node != null) && (String.IsNullOrWhiteSpace(_tableDataClassification)) && (!String.IsNullOrWhiteSpace(_fieldsDataClassification)) && (_fieldsDataClassificationCheckState == ValueCheckState.Equal))
             {
                 NoOfChanges++;
-                node = node.AddPropertyListProperties(this.CreateApplicationAreaProperty(node, _pageMembersAppArea));
-                _pageAppArea = _pageMembersAppArea;
+                node = node.AddPropertyListProperties(this.CreateDataClassificationProperty(node, _fieldsDataClassification));
+                _tableDataClassification = _fieldsDataClassification;
 
                 //run processing again to remove redundant data classification
-                var newNode = base.VisitTable(node);
+                newNode = base.VisitTable(node);
             }
 
             ClearProcessingVariables();
@@ -66,6 +66,31 @@ namespace AnZwDev.ALTools.CodeTransformations
             return null;
         }
 
+        protected PropertySyntax CreateDataClassificationProperty(SyntaxNode node, string value)
+        {
+            //calculate indent
+            int indentLength = 4;
+            string indent;
+            SyntaxTriviaList leadingTrivia = node.GetLeadingTrivia();
+            if (leadingTrivia != null)
+            {
+                indent = leadingTrivia.ToString();
+                int newLinePos = indent.LastIndexOf("/n");
+                if (newLinePos >= 0)
+                    indent = indent.Substring(newLinePos + 1);
+                indentLength += indent.Length;
+            }
+            indent = "".PadLeft(indentLength);
+
+            SyntaxTriviaList leadingTriviaList = SyntaxFactory.ParseLeadingTrivia(indent, 0);
+            SyntaxTriviaList trailingTriviaList = SyntaxFactory.ParseTrailingTrivia("\r\n", 0);
+
+            return SyntaxFactory.Property(
+                "DataClassification",
+                SyntaxFactory.EnumPropertyValue(SyntaxFactory.IdentifierName(value)))
+                .WithLeadingTrivia(leadingTriviaList)
+                .WithTrailingTrivia(trailingTriviaList);
+        }
+
     }
-    */
 }
