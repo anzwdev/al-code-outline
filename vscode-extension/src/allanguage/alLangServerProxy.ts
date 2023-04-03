@@ -91,6 +91,17 @@ export class ALLangServerProxy {
         if (!resourceUri)
             resourceUri = vscode.Uri.file(workspacePath);            
         let alConfig = vscode.workspace.getConfiguration('al', resourceUri);
+
+        let alPackages: string | string[] | undefined = alConfig.get("packageCachePath");
+        if (alPackages) {
+            if (typeof(alPackages) != 'string') {
+                if (alPackages.length > 0)
+                    alPackages = alPackages[0];
+                else
+                    alPackages = undefined;
+            }
+        }
+
         return {
             workspacePath: workspacePath,
             alResourceConfigurationSettings: {
@@ -98,7 +109,7 @@ export class ALLangServerProxy {
                 codeAnalyzers: alConfig.get("codeAnalyzers"),
                 enableCodeAnalysis: alConfig.get("enableCodeAnalysis"),
                 backgroundCodeAnalysis: alConfig.get("backgroundCodeAnalysis"),
-                packageCachePath: alConfig.get("packageCachePath"),
+                packageCachePath: alPackages,
                 ruleSetPath: alConfig.get("ruleSetPath"),
                 enableCodeActions: alConfig.get("enableCodeActions"),
                 incrementalBuild: alConfig.get("incrementalBuild"),

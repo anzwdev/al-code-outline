@@ -3,9 +3,12 @@
 ## 3.0.44
  - Issue #276 - AL Object ID Ninja integration
    - New `alOutline.idReservationProvider` setting with these values available: LocalFiles, ALObjectIdNinja
+ - Issues #461 and #462 - Extension not working with AL Language Extenstion v11
+   - al.packageCachePath setting is an array of strings now
 
 Thank you
  - vjekob for accepting "AL Object ID Ninja" external API pull request
+ - guidorobben and Arthi-Dev for reporting problems with the latest AL compiler
 
 ## 3.0.43
  - Issue #451 - README and CHANGELOG disappeared from VS Marketplace
