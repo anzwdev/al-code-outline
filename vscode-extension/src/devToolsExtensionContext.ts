@@ -51,7 +51,7 @@ export class DevToolsExtensionContext implements vscode.Disposable {
     idReservationService: IdReservationService;
 
     constructor(context : vscode.ExtensionContext) {
-        this.alLangProxy = new ALLangServerProxy()
+        this.alLangProxy = new ALLangServerProxy();
         this.vscodeExtensionContext = context;
 
         let alExtensionPath : string = "";

@@ -63,6 +63,7 @@ namespace AnZwDev.ALTools.WorkspaceCommands
             this.RegisterCommand(new AddReferencedTablesPermissionsWorkspaceCommand(this.ALDevToolsServer));
             this.RegisterCommand(new GenerateCSVXmlPortHeadersWorkspaceCommand(this.ALDevToolsServer));
 #endif
+            this.RegisterCommand(new RemoveRedundantDataClassificationWorkspaceCommand(this.ALDevToolsServer));
 
             this.RegisterCommand(new RemoveVariableWorkspaceCommand(this.ALDevToolsServer));
             this.RegisterCommand(new ConvertObjectIdsToNamesWorkspaceCommand(this.ALDevToolsServer));

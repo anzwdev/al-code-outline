@@ -10,6 +10,8 @@ namespace AnZwDev.ALTools.CodeTransformations
     public class DataClassificationSyntaxRewriter : ALSyntaxRewriter
     {
 
+        private string _tableDataClassification = null;
+
         public string DataClassification { get; set; }
 
         public DataClassificationSyntaxRewriter()
@@ -18,22 +20,24 @@ namespace AnZwDev.ALTools.CodeTransformations
         }
 
         public override SyntaxNode VisitTable(TableSyntax node)
-        {
+        {            
             PropertySyntax propertySyntax = node.GetProperty("DataClassification");
             if (propertySyntax == null)
             {
                 NoOfChanges++;
                 node = node.AddPropertyListProperties(
                     this.CreateDataClassificationProperty(node));
+                _tableDataClassification = DataClassification;
             }
             else
             {
-                string valueText = propertySyntax.Value.ToString();
-                if ((String.IsNullOrWhiteSpace(valueText)) ||
-                    (valueText.Equals("ToBeClassified", StringComparison.CurrentCultureIgnoreCase)))
+                _tableDataClassification = propertySyntax.Value.ToString();
+                if ((String.IsNullOrWhiteSpace(_tableDataClassification)) ||
+                    (_tableDataClassification.Equals("ToBeClassified", StringComparison.CurrentCultureIgnoreCase)))
                 {
                     NoOfChanges++;
                     node = node.ReplaceNode(propertySyntax, this.CreateDataClassificationProperty(node));
+                    _tableDataClassification = DataClassification;
                 }
             }
 
@@ -48,9 +52,12 @@ namespace AnZwDev.ALTools.CodeTransformations
                 PropertySyntax propertySyntax = node.GetProperty("DataClassification");
                 if (propertySyntax == null)
                 {
-                    NoOfChanges++;
-                    return node.AddPropertyListProperties(
-                        this.CreateDataClassificationProperty(node));
+                    if (String.IsNullOrWhiteSpace(_tableDataClassification))
+                    {
+                        NoOfChanges++;
+                        return node.AddPropertyListProperties(
+                            this.CreateDataClassificationProperty(node));
+                    }
                 }
                 else
                 {
@@ -59,7 +66,13 @@ namespace AnZwDev.ALTools.CodeTransformations
                         (valueText.Equals("ToBeClassified", StringComparison.CurrentCultureIgnoreCase)))
                     {
                         NoOfChanges++;
-                        return node.ReplaceNode(propertySyntax, this.CreateDataClassificationProperty(node));
+
+                        if ((!String.IsNullOrWhiteSpace(_tableDataClassification)) && (_tableDataClassification.Equals(DataClassification, StringComparison.CurrentCultureIgnoreCase)))
+                            return node.WithPropertyList(
+                                node.PropertyList.WithProperties(
+                                    node.PropertyList.Properties.Remove(propertySyntax)));
+                        else
+                            return node.ReplaceNode(propertySyntax, this.CreateDataClassificationProperty(node));
                     }
                 }
             } 

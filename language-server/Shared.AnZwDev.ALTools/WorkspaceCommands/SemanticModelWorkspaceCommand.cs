@@ -78,8 +78,11 @@ namespace AnZwDev.ALTools.WorkspaceCommands
                 null, syntaxTrees,
                 compilationOptions);
 
+            List<string> packageCachePathList = new List<string>();
+            packageCachePathList.Add(Path.Combine(projectPath, alPackagesPath));
+
             LocalCacheSymbolReferenceLoader referenceLoader =
-                this.SafeCreateLocalCacheSymbolReferenceLoader(Path.Combine(projectPath, alPackagesPath));
+                this.SafeCreateLocalCacheSymbolReferenceLoader(packageCachePathList);
             
             compilation = compilation
                 .WithReferenceLoader(referenceLoader)
@@ -100,7 +103,7 @@ namespace AnZwDev.ALTools.WorkspaceCommands
                 compilerFeatures: GetCompilerFeatures(manifest));
         }
 
-        protected LocalCacheSymbolReferenceLoader SafeCreateLocalCacheSymbolReferenceLoader(string packagesCachePath)
+        protected LocalCacheSymbolReferenceLoader SafeCreateLocalCacheSymbolReferenceLoader(IEnumerable<string> packagesCachePath)
         {
             //return new LocalCacheSymbolReferenceLoader(packagesCachePath);
             Type type = typeof(LocalCacheSymbolReferenceLoader);
