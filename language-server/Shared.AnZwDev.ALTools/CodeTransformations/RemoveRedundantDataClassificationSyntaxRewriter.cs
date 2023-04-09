@@ -12,9 +12,6 @@ namespace AnZwDev.ALTools.CodeTransformations
     {
 
         private string _tableDataClassification = null;
-        private string _fieldsDataClassification = null;
-        private ValueCheckState _fieldsDataClassificationCheckState = ValueCheckState.NotChecked;
-        private bool _tableProcessingActive = false;
 
         public RemoveRedundantDataClassificationSyntaxRewriter()
         {
@@ -22,40 +19,57 @@ namespace AnZwDev.ALTools.CodeTransformations
 
         public override SyntaxNode VisitTable(TableSyntax node)
         {
-            InitProcessingVariables(node);
-
-            var newNode = base.VisitTable(node);
-            node = newNode as TableSyntax;
-
-            if ((node != null) && (String.IsNullOrWhiteSpace(_tableDataClassification)) && (!String.IsNullOrWhiteSpace(_fieldsDataClassification)) && (_fieldsDataClassificationCheckState == ValueCheckState.Equal))
-            {
-                NoOfChanges++;
-                node = node.AddPropertyListProperties(this.CreateDataClassificationProperty(node, _fieldsDataClassification));
-                _tableDataClassification = _fieldsDataClassification;
-
-                //run processing again to remove redundant data classification
-                newNode = base.VisitTable(node);
-            }
-
-            ClearProcessingVariables();
-
-            return newNode;
-        }
-
-        private void InitProcessingVariables(SyntaxNode node)
-        {
             _tableDataClassification = GetDataClassificationValue(node);
-            _fieldsDataClassification = null;
-            _fieldsDataClassificationCheckState = ValueCheckState.NotChecked;
-            _tableProcessingActive = true;
+            if (String.IsNullOrEmpty(_tableDataClassification))
+            {
+                var fieldsDataClassification = GetFieldsDataClassificationValue(node.Fields?.Fields);
+                if (!String.IsNullOrEmpty(fieldsDataClassification))
+                {
+                    NoOfChanges++;
+                    node = node.AddPropertyListProperties(
+                        this.CreateDataClassificationProperty(node, fieldsDataClassification));
+                    _tableDataClassification = fieldsDataClassification;
+                }
+            }
+            return base.VisitTable(node);
         }
 
-        private void ClearProcessingVariables()
+        public override SyntaxNode VisitField(FieldSyntax node)
         {
-            _tableDataClassification = null;
-            _fieldsDataClassification = null;
-            _fieldsDataClassificationCheckState = ValueCheckState.NotChecked;
-            _tableProcessingActive = false;
+            PropertySyntax propertySyntax = node.GetProperty("DataClassification");
+            if (propertySyntax != null)
+            {
+                string valueText = propertySyntax.Value.ToString();
+                if ((!String.IsNullOrWhiteSpace(valueText)) && (!String.IsNullOrWhiteSpace(_tableDataClassification)) && (_tableDataClassification.Equals(valueText, StringComparison.CurrentCultureIgnoreCase)))
+                {
+                    NoOfChanges++;
+                    return node.WithPropertyList(
+                        node.PropertyList.WithProperties(
+                            node.PropertyList.Properties.Remove(propertySyntax)));
+                }
+            }
+            return base.VisitField(node);
+        }
+
+        protected string GetFieldsDataClassificationValue(IEnumerable<FieldSyntax> fields)
+        {
+            if (fields == null)
+                return null;
+
+            string foundDataClassification = null;
+            foreach (var field in fields)
+            {
+                var fieldDataClassification = GetDataClassificationValue(field);
+                
+                if (String.IsNullOrWhiteSpace(fieldDataClassification))
+                    return null;
+
+                if ((foundDataClassification != null) && (!foundDataClassification.Equals(fieldDataClassification, StringComparison.CurrentCultureIgnoreCase)))
+                    return null;
+
+                foundDataClassification = fieldDataClassification;
+            }
+            return foundDataClassification;
         }
 
         protected string GetDataClassificationValue(SyntaxNode node)

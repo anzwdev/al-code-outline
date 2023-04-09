@@ -44,6 +44,7 @@ import { AddTableDataCaptionFieldsModifier } from '../alsyntaxmodifiers/addTable
 import { AddDropDownFieldGroupsModifier } from '../alsyntaxmodifiers/AddDropDownFieldGroupsModifier';
 import { AddReferencedTablesPermissionsModifier } from '../alsyntaxmodifiers/addReferencedTablesPermissionsModifier';
 import { GenerateCSVXmlPortHeadersModifier } from '../alsyntaxmodifiers/generateCSVXmlPortHeadersModifier';
+import { RemoveRedundantDataClassificationModifier } from '../alsyntaxmodifiers/removeRedundantDataClassificationModifier';
 
 export class ALCodeTransformationService extends DevToolsExtensionService {
     protected _syntaxFactories: ISyntaxModifierFactoriesCollection;
@@ -101,6 +102,7 @@ export class ALCodeTransformationService extends DevToolsExtensionService {
         this.registerModifierCommands('RemoveEmptyTriggers', 'azALDevTools.RemoveEditorEmptyTriggers', 'azALDevTools.RemoveProjectEmptyTriggers', () => new RemoveEmptyTriggersModifier(this._context));
         this.registerModifierCommands('RemoveStrSubstNoFromError', 'azALDevTools.RemoveEditorStrSubstNoFromError', 'azALDevTools.RemoveProjectStrSubstNoFromError', () => new RemoveStrSubstNoFromErrorModifier(this._context));
         this.registerModifierCommands('RemoveRedundantAppAreas', 'azALDevTools.RemoveEditorRedundantAppAreas', 'azALDevTools.RemoveProjectRedundantAppAreas', () => new RemoveRedundantAppAreasModifier(this._context));
+        this.registerModifierCommands('RemoveRedundantDataClassification', 'azALDevTools.RemoveEditorRedundantDataClassification', 'azALDevTools.RemoveProjectRedundantDataClassification', () => new RemoveRedundantDataClassificationModifier(this._context));
 
         this.registerModifierCommands('SortPermissions', 'azALDevTools.SortEditorPermissions', 'azALDevTools.SortWorkspacePermissions', () => new SortPermissionsModifier(this._context));
         this.registerModifierCommands('SortPermissionSetList', 'azALDevTools.SortEditorPermissionSetList', 'azALDevTools.SortWorkspacePermissionSetList', () => new SortPermissionSetListModifier(this._context));

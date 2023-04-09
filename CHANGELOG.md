@@ -1,5 +1,11 @@
 # Change Log
 
+## 3.0.45
+ - Issue #432 - Remove redundant DataClassification
+
+Thank you
+ - jwikman for suggestion #432
+
 ## 3.0.44
  - Issue #276 - AL Object ID Ninja integration
    - New `alOutline.idReservationProvider` setting with these values available: LocalFiles, ALObjectIdNinja
