@@ -4,11 +4,13 @@
  - Issue #432 - Remove redundant DataClassification
  - Issue #443 - codeCleanupAction AddApplicationAreas adds Application Area to API Pages
  - Issues #455 and #464 - Unable to resolve resource, Unable to load schema from 'aloutlinesyntax://json/appJsonSyntax.json'
+ - Issue #460 - Please, don't Remove Empty Lines before table-fields { ... } block (add data classification command)
 
 Thank you
  - jwikman for suggestion #432
  - ChrisBlankDe for reporting issue #443
  - zhaoyun247, salgiza, tscottjendev and TheDenSter for reporting issues #455 and #464
+ - JavierFuentes for reporting issue #460
 
 ## 3.0.44
  - Issue #276 - AL Object ID Ninja integration

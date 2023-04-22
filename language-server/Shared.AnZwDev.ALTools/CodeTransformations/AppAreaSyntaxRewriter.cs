@@ -11,13 +11,16 @@ namespace AnZwDev.ALTools.CodeTransformations
     public class AppAreaSyntaxRewriter : ALSyntaxRewriter
     {
 
+        public bool SortProperties { get; set; }
         public string ApplicationAreaName { get; set; } = null;
         public AppAreaMode ApplicationAreaMode { get; set; } = AppAreaMode.addToAllControls;
         private bool _childControlsCanInheritAppAreas = false;
         private bool _appAreasNotSupported = false;
+        private SortPropertiesSyntaxRewriter _sortPropertiesSyntaxRewriter;
 
         public AppAreaSyntaxRewriter()
         {
+            _sortPropertiesSyntaxRewriter = new SortPropertiesSyntaxRewriter();
         }
 
         protected override SyntaxNode AfterVisitNode(SyntaxNode node)
@@ -54,6 +57,8 @@ namespace AnZwDev.ALTools.CodeTransformations
             {
                 NoOfChanges++;
                 node = node.AddPropertyListProperties(this.CreateApplicationAreaProperty(node));
+                if (SortProperties)
+                    node = node.WithPropertyList(_sortPropertiesSyntaxRewriter.SortPropertyList(node.PropertyList, out _));
             }
 
             _childControlsCanInheritAppAreas = true;
@@ -81,6 +86,8 @@ namespace AnZwDev.ALTools.CodeTransformations
             {
                 NoOfChanges++;
                 node = node.AddPropertyListProperties(this.CreateApplicationAreaProperty(node));
+                if (SortProperties)
+                    node = node.WithPropertyList(_sortPropertiesSyntaxRewriter.SortPropertyList(node.PropertyList, out _));
             }
 
             //!!! Do not inherit application areas on report request pages
@@ -96,7 +103,10 @@ namespace AnZwDev.ALTools.CodeTransformations
             if ((InheritApplicationArea(node)) || (this.HasApplicationArea(node)) || (_appAreasNotSupported))
                 return base.VisitPageLabel(node);
             this.NoOfChanges++;
-            return node.AddPropertyListProperties(this.CreateApplicationAreaProperty(node));
+            node = node.AddPropertyListProperties(this.CreateApplicationAreaProperty(node));
+            if (SortProperties)
+                node = node.WithPropertyList(_sortPropertiesSyntaxRewriter.SortPropertyList(node.PropertyList, out _));
+            return node;
         }
 
         public override SyntaxNode VisitPageField(PageFieldSyntax node)
@@ -104,7 +114,10 @@ namespace AnZwDev.ALTools.CodeTransformations
             if ((InheritApplicationArea(node)) || (this.HasApplicationArea(node)) || (_appAreasNotSupported))
                 return base.VisitPageField(node);
             this.NoOfChanges++;
-            return node.AddPropertyListProperties(this.CreateApplicationAreaProperty(node));
+            node = node.AddPropertyListProperties(this.CreateApplicationAreaProperty(node));
+            if (SortProperties)
+                node = node.WithPropertyList(_sortPropertiesSyntaxRewriter.SortPropertyList(node.PropertyList, out _));
+            return node;
         }
 
         public override SyntaxNode VisitPageUserControl(PageUserControlSyntax node)
@@ -112,7 +125,10 @@ namespace AnZwDev.ALTools.CodeTransformations
             if ((InheritApplicationArea(node)) || (this.HasApplicationArea(node)) || (_appAreasNotSupported))
                 return base.VisitPageUserControl(node);
             this.NoOfChanges++;
-            return node.AddPropertyListProperties(this.CreateApplicationAreaProperty(node));
+            node = node.AddPropertyListProperties(this.CreateApplicationAreaProperty(node));
+            if (SortProperties)
+                node = node.WithPropertyList(_sortPropertiesSyntaxRewriter.SortPropertyList(node.PropertyList, out _));
+            return node;
         }
 
         public override SyntaxNode VisitPagePart(PagePartSyntax node)
@@ -120,7 +136,10 @@ namespace AnZwDev.ALTools.CodeTransformations
             if ((InheritApplicationArea(node)) || (this.HasApplicationArea(node)) || (_appAreasNotSupported))
                 return base.VisitPagePart(node);
             this.NoOfChanges++;
-            return node.AddPropertyListProperties(this.CreateApplicationAreaProperty(node));
+            node = node.AddPropertyListProperties(this.CreateApplicationAreaProperty(node));
+            if (SortProperties)
+                node = node.WithPropertyList(_sortPropertiesSyntaxRewriter.SortPropertyList(node.PropertyList, out _));
+            return node;
         }
 
         public override SyntaxNode VisitPageSystemPart(PageSystemPartSyntax node)
@@ -128,7 +147,10 @@ namespace AnZwDev.ALTools.CodeTransformations
             if ((InheritApplicationArea(node)) || (this.HasApplicationArea(node)) || (_appAreasNotSupported))
                 return base.VisitPageSystemPart(node);
             this.NoOfChanges++;
-            return node.AddPropertyListProperties(this.CreateApplicationAreaProperty(node));
+            node = node.AddPropertyListProperties(this.CreateApplicationAreaProperty(node));
+            if (SortProperties)
+                node = node.WithPropertyList(_sortPropertiesSyntaxRewriter.SortPropertyList(node.PropertyList, out _));
+            return node;
         }
 
 #if BC
@@ -137,7 +159,10 @@ namespace AnZwDev.ALTools.CodeTransformations
             if ((InheritApplicationArea(node)) || (this.HasApplicationArea(node)) || (_appAreasNotSupported))
                 return base.VisitPageChartPart(node);
             this.NoOfChanges++;
-            return node.AddPropertyListProperties(this.CreateApplicationAreaProperty(node));
+            node = node.AddPropertyListProperties(this.CreateApplicationAreaProperty(node));
+            if (SortProperties)
+                node = node.WithPropertyList(_sortPropertiesSyntaxRewriter.SortPropertyList(node.PropertyList, out _));
+            return node;
         }
 #endif
 
@@ -146,7 +171,10 @@ namespace AnZwDev.ALTools.CodeTransformations
             if ((InheritApplicationArea(node)) || (this.HasApplicationArea(node)) || (_appAreasNotSupported))
                 return base.VisitPageAction(node);
             this.NoOfChanges++;
-            return node.AddPropertyListProperties(this.CreateApplicationAreaProperty(node));
+            node = node.AddPropertyListProperties(this.CreateApplicationAreaProperty(node));
+            if (SortProperties)
+                node = node.WithPropertyList(_sortPropertiesSyntaxRewriter.SortPropertyList(node.PropertyList, out _));
+            return node;
         }
 
         protected bool HasApplicationArea(SyntaxNode node)

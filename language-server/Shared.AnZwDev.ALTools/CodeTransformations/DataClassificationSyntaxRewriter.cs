@@ -11,12 +11,16 @@ namespace AnZwDev.ALTools.CodeTransformations
     {
 
         private string _tableDataClassification = null;
+        public bool SortProperties { get; set; }
+
+        private SortPropertiesSyntaxRewriter _sortPropertiesSyntaxRewriter;
 
         public string DataClassification { get; set; }
 
         public DataClassificationSyntaxRewriter()
         {
             this.DataClassification = null;
+            _sortPropertiesSyntaxRewriter = new SortPropertiesSyntaxRewriter();
         }
 
         public override SyntaxNode VisitTable(TableSyntax node)
@@ -27,6 +31,8 @@ namespace AnZwDev.ALTools.CodeTransformations
                 NoOfChanges++;
                 node = node.AddPropertyListProperties(
                     this.CreateDataClassificationProperty(node));
+                if (SortProperties)
+                    node = node.WithPropertyList(_sortPropertiesSyntaxRewriter.SortPropertyList(node.PropertyList, out _));
                 _tableDataClassification = DataClassification;
             }
             else
@@ -55,8 +61,11 @@ namespace AnZwDev.ALTools.CodeTransformations
                     if (String.IsNullOrWhiteSpace(_tableDataClassification))
                     {
                         NoOfChanges++;
-                        return node.AddPropertyListProperties(
+                        node = node.AddPropertyListProperties(
                             this.CreateDataClassificationProperty(node));
+                        if (SortProperties)
+                            node = node.WithPropertyList(_sortPropertiesSyntaxRewriter.SortPropertyList(node.PropertyList, out _));
+                        return node;
                     }
                 }
                 else
@@ -96,13 +105,11 @@ namespace AnZwDev.ALTools.CodeTransformations
                 "DataClassification",
                 SyntaxFactory.EnumPropertyValue(SyntaxFactory.IdentifierName(this.DataClassification)));
 
-            /*
             SyntaxTriviaList leadingTriviaList = node.CreateChildNodeIdentTrivia();
             SyntaxTriviaList trailingTriviaList = SyntaxFactory.ParseTrailingTrivia("\r\n", 0);
             propertySyntax = propertySyntax
                 .WithLeadingTrivia(leadingTriviaList)
                 .WithTrailingTrivia(trailingTriviaList);
-            */
 
             return propertySyntax;
 

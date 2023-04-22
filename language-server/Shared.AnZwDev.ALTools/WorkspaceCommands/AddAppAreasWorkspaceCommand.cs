@@ -11,6 +11,7 @@ namespace AnZwDev.ALTools.WorkspaceCommands
     public class AddAppAreasWorkspaceCommand: SyntaxRewriterWorkspaceCommand<AppAreaSyntaxRewriter>
     {
 
+        public static string SortPropertiesParameterName = "sortProperties";
         public static string AppAreaParameterName = "appArea";
         public static string AppAreaModeParameterName = "appAreaMode";
 
@@ -27,6 +28,7 @@ namespace AnZwDev.ALTools.WorkspaceCommands
                 this.SyntaxRewriter.ApplicationAreaName = "All";
             if (parameters.ContainsKey(AppAreaModeParameterName))
                 this.SyntaxRewriter.ApplicationAreaMode = parameters[AppAreaModeParameterName].ToEnum<AppAreaMode>();
+            this.SyntaxRewriter.SortProperties = parameters.GetBoolValue(SortPropertiesParameterName);
         }
 
     }
