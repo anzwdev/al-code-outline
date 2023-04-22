@@ -14,6 +14,7 @@ namespace AnZwDev.ALTools.CodeTransformations
         public string ApplicationAreaName { get; set; } = null;
         public AppAreaMode ApplicationAreaMode { get; set; } = AppAreaMode.addToAllControls;
         private bool _childControlsCanInheritAppAreas = false;
+        private bool _appAreasNotSupported = false;
 
         public AppAreaSyntaxRewriter()
         {
@@ -28,6 +29,15 @@ namespace AnZwDev.ALTools.CodeTransformations
 
         public override SyntaxNode VisitPage(PageSyntax node)
         {
+            string pageType = ALSyntaxHelper.DecodeName(node.GetProperty("PageType")?.Value?.ToString());
+            if ((pageType != null) && (pageType.Equals("API", StringComparison.CurrentCultureIgnoreCase)))
+            {
+                _appAreasNotSupported = true;
+                var processedNode = base.VisitPage(node);
+                _appAreasNotSupported = false;
+                return processedNode;
+            }
+
             PropertySyntax usageCategoryProperty = node.GetProperty("UsageCategory");
             bool hasUsageCategory = ((usageCategoryProperty != null) && (usageCategoryProperty.Value != null));
             if (hasUsageCategory)
@@ -83,7 +93,7 @@ namespace AnZwDev.ALTools.CodeTransformations
 
         public override SyntaxNode VisitPageLabel(PageLabelSyntax node)
         {
-            if ((InheritApplicationArea(node)) || (this.HasApplicationArea(node)))
+            if ((InheritApplicationArea(node)) || (this.HasApplicationArea(node)) || (_appAreasNotSupported))
                 return base.VisitPageLabel(node);
             this.NoOfChanges++;
             return node.AddPropertyListProperties(this.CreateApplicationAreaProperty(node));
@@ -91,7 +101,7 @@ namespace AnZwDev.ALTools.CodeTransformations
 
         public override SyntaxNode VisitPageField(PageFieldSyntax node)
         {
-            if ((InheritApplicationArea(node)) || (this.HasApplicationArea(node)))
+            if ((InheritApplicationArea(node)) || (this.HasApplicationArea(node)) || (_appAreasNotSupported))
                 return base.VisitPageField(node);
             this.NoOfChanges++;
             return node.AddPropertyListProperties(this.CreateApplicationAreaProperty(node));
@@ -99,7 +109,7 @@ namespace AnZwDev.ALTools.CodeTransformations
 
         public override SyntaxNode VisitPageUserControl(PageUserControlSyntax node)
         {
-            if ((InheritApplicationArea(node)) || (this.HasApplicationArea(node)))
+            if ((InheritApplicationArea(node)) || (this.HasApplicationArea(node)) || (_appAreasNotSupported))
                 return base.VisitPageUserControl(node);
             this.NoOfChanges++;
             return node.AddPropertyListProperties(this.CreateApplicationAreaProperty(node));
@@ -107,7 +117,7 @@ namespace AnZwDev.ALTools.CodeTransformations
 
         public override SyntaxNode VisitPagePart(PagePartSyntax node)
         {
-            if ((InheritApplicationArea(node)) || (this.HasApplicationArea(node)))
+            if ((InheritApplicationArea(node)) || (this.HasApplicationArea(node)) || (_appAreasNotSupported))
                 return base.VisitPagePart(node);
             this.NoOfChanges++;
             return node.AddPropertyListProperties(this.CreateApplicationAreaProperty(node));
@@ -115,7 +125,7 @@ namespace AnZwDev.ALTools.CodeTransformations
 
         public override SyntaxNode VisitPageSystemPart(PageSystemPartSyntax node)
         {
-            if ((InheritApplicationArea(node)) || (this.HasApplicationArea(node)))
+            if ((InheritApplicationArea(node)) || (this.HasApplicationArea(node)) || (_appAreasNotSupported))
                 return base.VisitPageSystemPart(node);
             this.NoOfChanges++;
             return node.AddPropertyListProperties(this.CreateApplicationAreaProperty(node));
@@ -124,7 +134,7 @@ namespace AnZwDev.ALTools.CodeTransformations
 #if BC
         public override SyntaxNode VisitPageChartPart(PageChartPartSyntax node)
         {
-            if ((InheritApplicationArea(node)) || (this.HasApplicationArea(node)))
+            if ((InheritApplicationArea(node)) || (this.HasApplicationArea(node)) || (_appAreasNotSupported))
                 return base.VisitPageChartPart(node);
             this.NoOfChanges++;
             return node.AddPropertyListProperties(this.CreateApplicationAreaProperty(node));
@@ -133,7 +143,7 @@ namespace AnZwDev.ALTools.CodeTransformations
 
         public override SyntaxNode VisitPageAction(PageActionSyntax node)
         {
-            if ((InheritApplicationArea(node)) || (this.HasApplicationArea(node)))
+            if ((InheritApplicationArea(node)) || (this.HasApplicationArea(node)) || (_appAreasNotSupported))
                 return base.VisitPageAction(node);
             this.NoOfChanges++;
             return node.AddPropertyListProperties(this.CreateApplicationAreaProperty(node));
