@@ -27,6 +27,7 @@
 		}
 	},
 	"activationEvents": [
+		"onFileSystem:aloutlinesyntax",
 		"onLanguage:al",
 		"onLanguage:alapp",
 		"workspaceContains:app.json",

@@ -2,9 +2,11 @@
 
 ## 3.0.45
  - Issue #432 - Remove redundant DataClassification
+ - Issues #455 and #464 - Unable to resolve resource, Unable to load schema from 'aloutlinesyntax://json/appJsonSyntax.json'
 
 Thank you
  - jwikman for suggestion #432
+ - zhaoyun247, salgiza, tscottjendev and TheDenSter for reporting issues #455 and #464
 
 ## 3.0.44
  - Issue #276 - AL Object ID Ninja integration
