@@ -24,7 +24,6 @@ export class ALCompletionService extends DevToolsExtensionService {
         //json files completion implemented by providing additional file schemas
         let syntaxProvider = new SyntaxFilesContentProvider(this._context);
         this._context.vscodeExtensionContext.subscriptions.push(
-                vscode.workspace.registerTextDocumentContentProvider(syntaxProvider.scheme, syntaxProvider));
-
+            vscode.workspace.registerTextDocumentContentProvider(syntaxProvider.scheme, syntaxProvider));
     }
 }

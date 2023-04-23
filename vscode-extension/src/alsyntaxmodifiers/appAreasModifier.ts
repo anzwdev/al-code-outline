@@ -16,6 +16,7 @@ export class AppAreasModifier extends WorkspaceCommandSyntaxModifier {
         let parameters = super.getParameters(uri);
         parameters.appArea = this._appArea;
         parameters.appAreaMode = this._context.alLangProxy.getAppAreaMode(uri);
+        parameters.sortProperties = this.sortPropertiesOnSave(uri);
         return parameters;
     }
 

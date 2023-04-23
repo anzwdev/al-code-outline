@@ -15,6 +15,7 @@ export class DataClassificationModifier extends WorkspaceCommandSyntaxModifier {
     protected getParameters(uri: vscode.Uri): any {
         let parameters = super.getParameters(uri);
         parameters.dataClassification = this._dataClassification;
+        parameters.sortProperties = this.sortPropertiesOnSave(uri);
         return parameters;
     }
 

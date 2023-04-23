@@ -1,5 +1,6 @@
 ﻿using AnZwDev.ALTools.ALSymbols;
 using AnZwDev.ALTools.CodeTransformations;
+using AnZwDev.ALTools.Extensions;
 using Microsoft.Dynamics.Nav.CodeAnalysis;
 using System;
 using System.Collections.Generic;
@@ -9,6 +10,7 @@ namespace AnZwDev.ALTools.WorkspaceCommands
 {
     public class AddDataClassificationWorkspaceCommand : SyntaxRewriterWorkspaceCommand<DataClassificationSyntaxRewriter>
     {
+        public static string SortPropertiesParameterName = "sortProperties";
         public static string DataClassificationParameterName = "dataClassification";
         
         public AddDataClassificationWorkspaceCommand(ALDevToolsServer alDevToolsServer) : base(alDevToolsServer, "addDataClassification")
@@ -22,6 +24,7 @@ namespace AnZwDev.ALTools.WorkspaceCommands
                 this.SyntaxRewriter.DataClassification = parameters[DataClassificationParameterName];
             if (String.IsNullOrWhiteSpace(this.SyntaxRewriter.DataClassification))
                 this.SyntaxRewriter.DataClassification = "CustomerContent";
+            this.SyntaxRewriter.SortProperties = parameters.GetBoolValue(SortPropertiesParameterName);
         }
 
     }

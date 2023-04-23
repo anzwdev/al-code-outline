@@ -2,7 +2,7 @@
 	"name": "al-code-outline",
 	"displayName": "AZ AL Dev Tools/AL Code Outline",
 	"description": "AZ AL Development Tools: AL code outline, object browser, object creators",
-	"version": "3.0.44",
+	"version": "3.0.45",
 	"publisher": "andrzejzwierzchowski",
 	"engines": {
 		"vscode": "^1.47.0"
@@ -27,6 +27,7 @@
 		}
 	},
 	"activationEvents": [
+		"onFileSystem:aloutlinesyntax",
 		"onLanguage:al",
 		"onLanguage:alapp",
 		"workspaceContains:app.json",
@@ -581,6 +582,16 @@
 			},
 			{
 				"category": "AZ AL Dev Tools",
+				"command": "azALDevTools.RemoveEditorRedundantDataClassification",
+				"title": "Remove Redundant DataClassification from the Active Editor"
+			},
+			{
+				"category": "AZ AL Dev Tools",
+				"command": "azALDevTools.RemoveProjectRedundantDataClassification",
+				"title": "Remove Redundant DataClassification from the Active Project"
+			},
+			{
+				"category": "AZ AL Dev Tools",
 				"command": "azALDevTools.RemoveEditorEmptySections",
 				"title": "Remove Empty Sections from the Active Editor"
 			},
@@ -1024,6 +1035,14 @@
 				},
 				{
 					"command": "azALDevTools.RemoveProjectRedundantAppAreas",
+					"when": "azALDevTools.extensionActive"
+				},
+				{
+					"command": "azALDevTools.RemoveEditorRedundantDataClassification",
+					"when": "editorLangId == al"
+				},
+				{
+					"command": "azALDevTools.RemoveProjectRedundantDataClassification",
 					"when": "azALDevTools.extensionActive"
 				},
 				{
@@ -1642,7 +1661,8 @@
 								"FormatDocument",
 								"TrimTrailingWhitespace",
 								"MakeFlowFieldsReadOnly",
-								"RemoveRedundantAppAreas"
+								"RemoveRedundantAppAreas",
+								"RemoveRedundantDataClassification"
 							],
 							"enumDescriptions": [
 								"Remove With Statements",
@@ -1676,7 +1696,8 @@
 								"Format Document",
 								"Trim Trailing Whitespace",
 								"Make FlowFields Read-Only",
-								"Remove Redundant Application Areas"
+								"Remove Redundant Application Areas",
+								"Remove Redundant DataClassification"
 							]
 						},
 						"description": "List of commands run by the Code Cleanup"
