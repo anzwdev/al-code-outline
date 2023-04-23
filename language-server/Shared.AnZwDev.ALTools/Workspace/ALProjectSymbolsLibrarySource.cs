@@ -66,26 +66,28 @@ namespace AnZwDev.ALTools.Workspace
             if ((projectSource) && (location.schema == ALSymbolSourceLocationSchema.ALApp) && (alAppObject.GetALSymbolKind().ServerDefinitionAvailable()))
             {
                 //for old version of Business Central and NAV 2018 objects can be modified and defined in C/AL, so we have to download source from the server
-#if BC
-                bool serverSideSymbols = (
-                    (this.Project.Properties.Runtime == null) ||
-                    (this.Project.Properties.Runtime.Parts == null) ||
-                    (this.Project.Properties.Runtime.Parts.Length == 0) ||
-                    (this.Project.Properties.Runtime.Parts[0] <= 4));
-#else
-                bool serverSideSymbols = true;
-#endif
 
-                if (serverSideSymbols)
-                {
-                    location.schema = ALSymbolSourceLocationSchema.Server;
-                    location.sourcePath = alAppObject.Name;
-                }
-                else
-                {
+// server side schema no longer supported
+// # if BC
+//                bool serverSideSymbols = (
+//                    (this.Project.Properties.Runtime == null) ||
+//                    (this.Project.Properties.Runtime.Parts == null) ||
+//                    (this.Project.Properties.Runtime.Parts.Length == 0) ||
+//                    (this.Project.Properties.Runtime.Parts[0] <= 4));
+// # else
+//                bool serverSideSymbols = true;
+// # endif
+//
+//                if (serverSideSymbols)
+//                {
+//                    location.schema = ALSymbolSourceLocationSchema.Server;
+//                    location.sourcePath = alAppObject.Name;
+//                }
+//                else
+//                {
                     location.schema = ALSymbolSourceLocationSchema.ALPreview;
                     location.sourcePath = alAppObject.GetALSymbolKind().ToObjectTypeName() + "/" + alAppObject.Id.ToString() + "/" + System.Net.WebUtility.UrlEncode(alAppObject.Name) + ".dal";
-                }
+//                }
             }
         }
 
