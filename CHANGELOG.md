@@ -1,5 +1,11 @@
 # Change Log
 
+## 3.0.46
+ - Issue #276 - AL Object ID Ninja wizards integration not always works
+
+Thank you
+ - SBiernat for reporting problem with task #276
+
 ## 3.0.45
  - Issue #432 - Remove redundant DataClassification
  - Issue #443 - codeCleanupAction AddApplicationAreas adds Application Area to API Pages

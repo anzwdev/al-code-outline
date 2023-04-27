@@ -19,7 +19,7 @@ export class ALEnumWizard extends ALObjectWizard {
 
     protected async runAsync(settings: ALObjectWizardSettings) {
         let wizardData : ALEnumWizardData = new ALEnumWizardData();
-        this.initObjectIdFields(wizardData, settings, "enum");
+        await this.initObjectIdFieldsAsync(wizardData, settings, "enum");
         wizardData.objectName = '';
         this.onInitWizardData(wizardData);
         let wizardPage : ALEnumWizardPage = new ALEnumWizardPage(this._toolsExtensionContext, settings, wizardData);

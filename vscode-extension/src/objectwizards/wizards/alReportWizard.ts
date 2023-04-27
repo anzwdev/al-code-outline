@@ -20,7 +20,7 @@ export class ALReportWizard extends ALObjectWizard {
 
     protected async runAsync(settings: ALObjectWizardSettings) {
         let wizardData : ALReportWizardData = new ALReportWizardData();
-        this.initObjectIdFields(wizardData, settings, "Report");
+        await this.initObjectIdFieldsAsync(wizardData, settings, "Report");
         wizardData.objectName = '';
         
         //build relative path

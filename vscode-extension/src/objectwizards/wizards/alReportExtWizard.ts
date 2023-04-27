@@ -17,7 +17,7 @@ export class ALReportExtWizard extends ALObjectWizard {
 
     protected async runAsync(settings: ALObjectWizardSettings) {
         let wizardData : ALReportExtWizardData = new ALReportExtWizardData();
-        this.initObjectIdFields(wizardData, settings, "reportextension");
+        await this.initObjectIdFieldsAsync(wizardData, settings, "reportextension");
         wizardData.objectName = '';
         wizardData.baseReport = '';
         this.onInitWizardData(wizardData);

@@ -20,7 +20,7 @@ export class ALTableExtWizard extends ALObjectWizard {
 
     protected async runAsync(settings: ALObjectWizardSettings) {
         let wizardData : ALTableExtWizardData = new ALTableExtWizardData();
-        this.initObjectIdFields(wizardData, settings, "tableextension");
+        await this.initObjectIdFieldsAsync(wizardData, settings, "tableextension");
         wizardData.objectName = '';
         wizardData.selectedTable = '';
         wizardData.idRangeStart = 

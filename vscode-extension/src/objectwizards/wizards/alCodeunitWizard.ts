@@ -17,7 +17,7 @@ export class ALCodeunitWizard extends ALObjectWizard {
 
     protected async runAsync(settings: ALObjectWizardSettings) {
         let wizardData : ALCodeunitWizardData = new ALCodeunitWizardData();
-        this.initObjectIdFields(wizardData, settings, "Codeunit");
+        await this.initObjectIdFieldsAsync(wizardData, settings, "Codeunit");
         wizardData.objectName = '';//settings.getInputNameVariable();
         this.onInitWizardData(wizardData);
         let wizardPage : ALCodeunitWizardPage = new ALCodeunitWizardPage(this._toolsExtensionContext, settings, wizardData);

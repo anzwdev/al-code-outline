@@ -19,7 +19,7 @@ export class ALXmlPortWizard extends ALObjectWizard {
 
     protected async runAsync(settings: ALObjectWizardSettings) {
         let wizardData : ALXmlPortWizardData = new ALXmlPortWizardData();
-        this.initObjectIdFields(wizardData, settings, "XmlPort");
+        await this.initObjectIdFieldsAsync(wizardData, settings, "XmlPort");
         wizardData.objectName = '';
         this.onInitWizardData(wizardData);
         let wizardPage : ALXmlPortWizardPage = new ALXmlPortWizardPage(this._toolsExtensionContext, settings, wizardData);
