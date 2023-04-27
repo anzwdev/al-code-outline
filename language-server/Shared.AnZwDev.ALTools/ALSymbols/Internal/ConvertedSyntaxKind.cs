@@ -2374,7 +2374,20 @@ namespace AnZwDev.ALTools.ALSymbols.Internal
         BadDirectiveTrivia = 526,
         PragmaWarningDirectiveTrivia = 527,
         PragmaImplicitWithDirectiveTrivia = 528,
-        BadPragmaDirectiveTrivia = 529
-
+        BadPragmaDirectiveTrivia = 529,
+        ActionRefKeyword = 530,
+        ActionsV2Keyword = 531,
+        CustomActionKeyword = 532,
+        IdentifierAttributeArgument = 533,
+        IdentifierOrLiteralOrOptionAccessExpression = 534,
+        InherentEntitlementsPropertyValue = 535,
+        InherentPermissionsPropertyValue = 536,
+        LayoutKeyword = 537,
+        PageActionRef = 538,
+        PageCustomAction = 539,
+        PragmaActionsV2DirectiveTrivia = 540,
+        RenderingKeyword = 541,
+        ReportLayout = 542,
+        ReportRenderingSection = 543
     }
 }
