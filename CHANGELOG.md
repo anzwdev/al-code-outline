@@ -3,10 +3,12 @@
 ## 3.0.46
  - Issue #276 - AL Object ID Ninja wizards integration not always works
  - Issue #467 - AddMissingParentheses adds parentheses to function references in event subscribers (AL Runtime 11.x)
+ - Issue #432 - Remove Redundant DataClassification removes it from table extension fields
 
 Thank you
  - SBiernat for reporting problem with task #276
- - fvet for reporting issue #467
+ - jwikman for reporting problems with task #432
+ - fvet for reporting issue #467 
 
 ## 3.0.45
  - Issue #432 - Remove redundant DataClassification
