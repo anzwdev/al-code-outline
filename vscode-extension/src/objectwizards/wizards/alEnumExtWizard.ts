@@ -17,7 +17,7 @@ export class ALEnumExtWizard extends ALObjectWizard {
 
     protected async runAsync(settings: ALObjectWizardSettings) {
         let wizardData : ALEnumExtWizardData = new ALEnumExtWizardData();
-        this.initObjectIdFields(wizardData, settings, "enumextension");
+        await this.initObjectIdFieldsAsync(wizardData, settings, "enumextension");
         wizardData.objectName = '';
         wizardData.firstValueId = this._toolsExtensionContext.alLangProxy.getIdRangeStart(settings.getDestDirectoryUri());
         this.onInitWizardData(wizardData);

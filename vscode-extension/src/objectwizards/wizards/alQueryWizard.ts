@@ -20,7 +20,7 @@ export class ALQueryWizard extends ALObjectWizard {
 
     protected async runAsync(settings: ALObjectWizardSettings) {
         let wizardData : ALQueryWizardData = new ALQueryWizardData();
-        this.initObjectIdFields(wizardData, settings, "Query");
+        await this.initObjectIdFieldsAsync(wizardData, settings, "Query");
         wizardData.objectName = '';
         this.onInitWizardData(wizardData);
         let wizardPage : ALQueryWizardPage = new ALQueryWizardPage(this._toolsExtensionContext, settings, wizardData);

@@ -46,8 +46,15 @@ namespace AnZwDev.ALTools.CodeTransformations
                     _tableDataClassification = DataClassification;
                 }
             }
+            var tableNode = base.VisitTable(node);
+            _tableDataClassification = null;
+            return tableNode;
+        }
 
-            return base.VisitTable(node);
+        public override SyntaxNode VisitTableExtension(TableExtensionSyntax node)
+        {
+            _tableDataClassification = null;
+            return base.VisitTableExtension(node);
         }
 
         public override SyntaxNode VisitField(FieldSyntax node)

@@ -2,7 +2,7 @@
 	"name": "al-code-outline",
 	"displayName": "AZ AL Dev Tools/AL Code Outline",
 	"description": "AZ AL Development Tools: AL code outline, object browser, object creators",
-	"version": "3.0.45",
+	"version": "3.0.46",
 	"publisher": "andrzejzwierzchowski",
 	"engines": {
 		"vscode": "^1.47.0"
@@ -1818,14 +1818,105 @@
 							"mainTypeNameOnlyKeepVariableNameOrder"
 						],
 						"enumDescriptions": [
-							"Sort report DataItem columns",
-							"Format document"
+							"Full type name",
+							"Main type name only",
+							"Full type name, keep variable name order",
+							"Main type name only, keep variable name order"
 						],
 						"default": "fullTypeName",
 						"description": "Specifies how variables are sorted by `Sort Variables` commands.",
 						"scope": "resource"						
 					},
-
+					"alOutline.triggersSortMode": {
+						"type": "string",
+						"enum": [
+							"None",
+							"Name",
+							"NaturalOrder"
+						],
+						"enumDescriptions": [
+							"None",
+							"Name",
+							"Natural order"
+						],
+						"default": "None",
+						"description": "Specifies how triggers are sorted by `Sort Procedures` commands.",
+						"scope": "resource"
+					},
+					"alOutline.triggersNaturalOrder": {
+						"type":"array",
+						"items": {
+							"type": "object",
+							"properties": {
+								"parent": {
+									"type": "string",
+									"description": "Type of syntax node containing triggers",
+									"enum": [
+										"Table",
+										"TableExtension",
+										"Page",
+										"PageExtension",
+										"RequestPage",
+										"RequestPageExtension",
+										"Report",
+										"ReportExtension",
+										"XmlPort",
+										"Codeunit",
+										"Query",
+										"Field",
+										"FieldExtension",
+										"PageField",
+										"PageFieldExtension",
+										"Action",
+										"ActionExtension",
+										"ReportDataItem",
+										"ReportExtensionDataSetModify",
+										"XmlPortTableElement",
+										"XmlPortFieldElement",
+										"XmlPortTextElement",
+										"XmlPortFieldAttribute",
+										"XmlPortTextAttribute"
+									],
+									"enumDescriptions": [
+										"Table",
+										"Table Extension",
+										"Page",
+										"Page Extension",
+										"Request Page",
+										"Request Page Extension",
+										"Report",
+										"Report Extension",
+										"XmlPort",
+										"Codeunit",
+										"Query",
+										"Field",
+										"Field Extension",
+										"Page Field",
+										"Page Field Extension",
+										"Action",
+										"Action Extension",
+										"Report DataItem",
+										"Report Extension DataSet Modify",
+										"XmlPort Table Element",
+										"XmlPort Field Element",
+										"XmlPort Text Element",
+										"XmlPort Field Attribute",
+										"XmlPort Text Attribute"
+									]
+								},
+								"order": {
+									"type": "array",
+									"items": {
+										"type": "string"
+									},
+									"description": "List of trigger names in desired order"
+								}
+							}
+						},
+						"default": [],
+						"description": "Specifies natural order of triggers for `Sort Procedures` commands.",
+						"scope": "resource"
+					},
 					"alOutline.dropDownGroupFieldsNamesPatterns": {
 						"type": "array",
 						"items": {

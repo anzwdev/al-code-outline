@@ -19,7 +19,7 @@ export class ALObjectWizard {
     run(settings: ALObjectWizardSettings) {
     }
 
-    async initObjectIdFields(data: ALObjectWizardData, settings: ALObjectWizardSettings, type: string) {
+    async initObjectIdFieldsAsync(data: ALObjectWizardData, settings: ALObjectWizardSettings, type: string) {
         let uri = settings.getDestDirectoryUri();
         let idProviders = this._toolsExtensionContext.idReservationService.getReservationProviders(uri); 
         let idProviderName = ((idProviders) && (idProviders.length === 1))? idProviders[0] : this._toolsExtensionContext.idReservationService.getDefaultProviderName();

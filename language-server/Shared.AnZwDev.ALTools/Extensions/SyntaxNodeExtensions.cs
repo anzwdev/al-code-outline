@@ -175,6 +175,22 @@ namespace AnZwDev.ALTools.Extensions
             return false;
         }
 
+        internal static bool HasParents(this SyntaxNode node, params ConvertedSyntaxKind[] parentNodeKind)
+        {
+            int nodeKindIndex = 0;
+            while (node != null)
+            {
+                if (node.Kind.ConvertToLocalType() == parentNodeKind[nodeKindIndex])
+                {
+                    nodeKindIndex++;
+                    if (nodeKindIndex >= parentNodeKind.Length)
+                        return true;
+                }
+                node = node.Parent;
+            }
+            return false;
+        }
+
         internal static SyntaxNode FindParentByKind(this SyntaxNode node, params ConvertedSyntaxKind[] parentNodeKind)
         {
             while (node != null)

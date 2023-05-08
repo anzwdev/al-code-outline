@@ -1,5 +1,7 @@
-﻿using System;
+﻿using Microsoft.Dynamics.Nav.CodeAnalysis.Packaging;
+using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Text;
 
 namespace AnZwDev.ALTools.ALSymbolReferences.Serialization
@@ -13,6 +15,7 @@ namespace AnZwDev.ALTools.ALSymbolReferences.Serialization
             package.App = NavAppManifestNavxPackageConverter.CreateNavxApp(navAppManifest);
 #if BC
             package.ResourceExposurePolicy = NavAppManifestNavxPackageConverter.CreateNavxResourceExposurePolicy(navAppManifest.ResourceExposurePolicy);
+            package.InternalsVisibleTo = CreateInternalsVisibleTo(navAppManifest.InternalsVisibleTo);
 #endif
             List<NavxDependency> dependencies = new List<NavxDependency>();
             foreach (Microsoft.Dynamics.Nav.CodeAnalysis.Packaging.NavAppDependency navAppDependency in navAppManifest.Dependencies)
@@ -20,7 +23,25 @@ namespace AnZwDev.ALTools.ALSymbolReferences.Serialization
                 dependencies.Add(NavAppManifestNavxPackageConverter.CreateNavxDependency(navAppDependency));
             }
             package.Dependencies = dependencies.ToArray();
+
             return package;
+        }
+
+        private static NavxModuleReference[] CreateInternalsVisibleTo(IEnumerable<NavAppDependency> navAppInternalsVisibleTo)
+        {
+            if (navAppInternalsVisibleTo == null)
+                return null;
+            List<NavxModuleReference> internalsVisibleTo = new List<NavxModuleReference>();
+            foreach (var navAppInternal in navAppInternalsVisibleTo)
+            {
+                internalsVisibleTo.Add(new NavxModuleReference()
+                {
+                    Id = navAppInternal.AppId.ToString("D").ToLower(),
+                    Name = navAppInternal.Name,
+                    Publisher = navAppInternal.Publisher,
+                });
+            }
+            return internalsVisibleTo.ToArray();
         }
 
         private static Core.VersionNumber CreateVersion(System.Version version)

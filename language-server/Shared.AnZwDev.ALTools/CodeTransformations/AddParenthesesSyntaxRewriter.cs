@@ -53,48 +53,53 @@ namespace AnZwDev.ALTools.CodeTransformations
             if (node.Parent is AssignmentStatementSyntax assignmentNode)
                 isAssignmentTarget = (assignmentNode.Target == node);
 
+
+
             if (!isAssignmentTarget)
             {
-                IOperation o = this.SemanticModel.GetOperation(node);
-                if (this.SemanticModel.GetOperation(node) is IInvocationExpression operation)
+                if (!node.HasParents(ConvertedSyntaxKind.IdentifierAttributeArgument, ConvertedSyntaxKind.MemberAttribute))
                 {
-                    if (operation.Arguments.Length == 0)
+                    IOperation o = this.SemanticModel.GetOperation(node);
+                    if (this.SemanticModel.GetOperation(node) is IInvocationExpression operation)
                     {
-                        SymbolInfo symbolInfo = this.SemanticModel.GetSymbolInfo(node);
-                        bool invalidSymbol = false;
-                        if ((symbolInfo != null) && (symbolInfo.Symbol != null))
+                        if (operation.Arguments.Length == 0)
                         {
-                            ConvertedSymbolKind symbolKind = symbolInfo.Symbol.Kind.ConvertToLocalType();
-                            invalidSymbol = (symbolKind != ConvertedSymbolKind.Method);
-                        }
-
-                        if (!invalidSymbol)
-                        {
-                            IMethodSymbol targetMethod = operation.TargetMethod;
-                            ConvertedMethodKind targetMethodKind = (targetMethod == null) ? ConvertedMethodKind.Method : targetMethod.MethodKind.ConvertToLocalType();
-                            bool isBuiltInProperty = false;
-                            if ((targetMethodKind == ConvertedMethodKind.BuiltInMethod) && (targetMethod is IBuiltInMethodTypeSymbol builtInMethodTypeSymbol))
-                                isBuiltInProperty = builtInMethodTypeSymbol.IsProperty;
-
-                            bool skipProcessing =
-                                (targetMethod != null) &&
-                                (
-                                    (targetMethodKind == ConvertedMethodKind.Property) ||
-                                    (isBuiltInProperty)
-                                );
-
-                            if (!skipProcessing)
+                            SymbolInfo symbolInfo = this.SemanticModel.GetSymbolInfo(node);
+                            bool invalidSymbol = false;
+                            if ((symbolInfo != null) && (symbolInfo.Symbol != null))
                             {
-                                SyntaxToken lastToken = operation.Syntax.GetLastToken();
-                                bool hasCloseParenToken = ((lastToken != null) && (lastToken.Kind.ConvertToLocalType() == ConvertedSyntaxKind.CloseParenToken));
+                                ConvertedSymbolKind symbolKind = symbolInfo.Symbol.Kind.ConvertToLocalType();
+                                invalidSymbol = (symbolKind != ConvertedSymbolKind.Method);
+                            }
 
-                                if (!hasCloseParenToken)
+                            if (!invalidSymbol)
+                            {
+                                IMethodSymbol targetMethod = operation.TargetMethod;
+                                ConvertedMethodKind targetMethodKind = (targetMethod == null) ? ConvertedMethodKind.Method : targetMethod.MethodKind.ConvertToLocalType();
+                                bool isBuiltInProperty = false;
+                                if ((targetMethodKind == ConvertedMethodKind.BuiltInMethod) && (targetMethod is IBuiltInMethodTypeSymbol builtInMethodTypeSymbol))
+                                    isBuiltInProperty = builtInMethodTypeSymbol.IsProperty;
+
+                                bool skipProcessing =
+                                    (targetMethod != null) &&
+                                    (
+                                        (targetMethodKind == ConvertedMethodKind.Property) ||
+                                        (isBuiltInProperty)
+                                    );
+
+                                if (!skipProcessing)
                                 {
-                                    SyntaxNode operationNode = operation.Syntax;
-                                    if (operationNode == node)
+                                    SyntaxToken lastToken = operation.Syntax.GetLastToken();
+                                    bool hasCloseParenToken = ((lastToken != null) && (lastToken.Kind.ConvertToLocalType() == ConvertedSyntaxKind.CloseParenToken));
+
+                                    if (!hasCloseParenToken)
                                     {
-                                        this.NoOfChanges++;
-                                        return (SyntaxFactory.InvocationExpression(node).WithTriviaFrom(node), true);
+                                        SyntaxNode operationNode = operation.Syntax;
+                                        if (operationNode == node)
+                                        {
+                                            this.NoOfChanges++;
+                                            return (SyntaxFactory.InvocationExpression(node).WithTriviaFrom(node), true);
+                                        }
                                     }
                                 }
                             }

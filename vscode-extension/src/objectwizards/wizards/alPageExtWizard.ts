@@ -17,7 +17,7 @@ export class ALPageExtWizard extends ALObjectWizard {
 
     protected async runAsync(settings: ALObjectWizardSettings) {
         let wizardData : ALPageExtWizardData = new ALPageExtWizardData();
-        this.initObjectIdFields(wizardData, settings, "pageextension");
+        await this.initObjectIdFieldsAsync(wizardData, settings, "pageextension");
         wizardData.objectName = '';
         wizardData.basePage = '';
         this.onInitWizardData(wizardData);
