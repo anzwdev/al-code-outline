@@ -3,14 +3,15 @@
 ## 3.0.46
  - Issue #276 - AL Object ID Ninja wizards integration not always works
  - Issue #432 - Remove Redundant DataClassification removes it from table extension fields
+ - Issue #444 - Completion provider seems to ignore 'internal' objects
  - Issue #465 - Order triggers according to their natural order
  - Issue #467 - AddMissingParentheses adds parentheses to function references in event subscribers (AL Runtime 11.x)
 
 Thank you
  - SBiernat for reporting problem with task #276
  - jwikman for reporting problems with task #432
+ - fvet for reporting issues #444 and #467
  - jhoek for reporting issue #465
- - fvet for reporting issue #467
 
 ## 3.0.45
  - Issue #432 - Remove redundant DataClassification

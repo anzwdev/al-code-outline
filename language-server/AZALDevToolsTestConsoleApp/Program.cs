@@ -124,7 +124,10 @@ namespace AZALDevToolsTestConsoleApp
 
             ALProject project = host.ALDevToolsServer.Workspace.Projects[0];
 
-            
+            var allObj = project.AllSymbols.Tables.GetObjects().ToList();
+
+
+
             PageInformationProvider pageInformationProvider = new PageInformationProvider();
             List<string> toolTipsList = pageInformationProvider.GetPageFieldAvailableToolTips(project, "Page", "MyTestPage", "", "Rec.\"No.\"");
 
