@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Newtonsoft.Json;
+using System;
 using System.Collections.Generic;
 using System.Text;
 
@@ -20,6 +21,32 @@ namespace AnZwDev.ALTools.Extensions
             if (String.IsNullOrWhiteSpace(value))
                 return defaultValue;
             return ((value.ToLower() == "true") || (value == "1"));
+        }
+
+        public static T GetJsonValue<T>(this Dictionary<string, string> dictionary, string key, T defaultValue = null) where T : class
+        {
+            string value = dictionary.GetStringValue(key);
+            if (!String.IsNullOrWhiteSpace(value))
+            {
+                try
+                {
+                    return JsonConvert.DeserializeObject<T>(value);
+                }
+                catch (Exception) { }
+            }
+            return defaultValue;            
+        }
+
+        public static T GetEnumValue<T>(this Dictionary<string, string> dictionary, string key, T defaultValue) where T : struct
+        {
+            string value = dictionary.GetStringValue(key);
+            if (!String.IsNullOrWhiteSpace(value))
+            {
+                T enumValue;
+                if (Enum.TryParse<T>(value, true, out enumValue))
+                    return enumValue;
+            }
+            return defaultValue;
         }
 
         public static List<string> GetStringListValue(this Dictionary<string, string> dictionary, string keyPrefix)

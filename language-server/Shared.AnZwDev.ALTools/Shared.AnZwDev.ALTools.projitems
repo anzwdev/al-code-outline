@@ -207,6 +207,10 @@
     <Compile Include="$(MSBuildThisFileDirectory)CodeTransformations\RemoveEmptyTriggersSyntaxRewriter.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)CodeTransformations\RemoveEventPublishersSyntaxRewriter.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)CodeTransformations\RemoveRedundantDataClassificationSyntaxRewriter.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)CodeTransformations\SortProceduresTriggerSortMode.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)CodeTransformations\TriggersOrder.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)CodeTransformations\TriggersOrderCollection.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)WorkspaceCommands\Parameters\TriggersOrderParameter.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)WorkspaceCommands\RemoveRedundantDataClassificationWorkspaceCommand.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)CodeTransformations\RemoveStrSubstNoFromErrorSyntaxRewriter.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)CodeTransformations\RemoveUnusedVariablesSyntaxRewriter.cs" />

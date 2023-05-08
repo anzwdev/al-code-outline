@@ -11,12 +11,12 @@ using System.Text;
 
 namespace AnZwDev.ALTools.CodeTransformations
 {
-    public class SortProceduresSyntaxRewriter: ALSyntaxRewriter
+    internal class SortProceduresSyntaxRewriter : ALSyntaxRewriter
     {
 
         #region Member sort info
 
-        protected class MethodSortInfo<T> where T: SyntaxNode
+        protected class MethodSortInfo<T> where T : SyntaxNode
         {
             public string Name { get; set; }
             public ALSymbolKind Kind { get; set; }
@@ -68,7 +68,7 @@ namespace AnZwDev.ALTools.CodeTransformations
             public static List<MethodSortInfo<T>> FromSyntaxList(SyntaxList<T> nodeList)
             {
                 List<MethodSortInfo<T>> list = new List<MethodSortInfo<T>>();
-                for (int i=0; i<nodeList.Count; i++)
+                for (int i = 0; i < nodeList.Count; i++)
                 {
                     list.Add(new MethodSortInfo<T>(nodeList[i], i));
                 }
@@ -89,7 +89,7 @@ namespace AnZwDev.ALTools.CodeTransformations
             public static SyntaxList<T> ToSyntaxList(List<MethodSortInfo<T>> sortInfoList)
             {
                 List<T> nodeList = new List<T>();
-                for (int i=0; i<sortInfoList.Count; i++)
+                for (int i = 0; i < sortInfoList.Count; i++)
                 {
                     nodeList.Add(sortInfoList[i].Node);
                 }
@@ -108,18 +108,26 @@ namespace AnZwDev.ALTools.CodeTransformations
 
         }
 
-#endregion
+        #endregion
 
-#region Method info comparer
+        #region Method info comparer
 
-        protected class MethodSortInfoComparer<T> : IComparer<MethodSortInfo<T>> where T: SyntaxNode
-        {
-            protected static Dictionary<ALSymbolKind, int> _typePriority;
-            protected static IComparer<string> _stringComparer = new SyntaxNodeNameComparer();
-            protected static int UndefinedPriority = -1;
+        protected class MethodSortInfoComparer<T> : IComparer<MethodSortInfo<T>> where T : SyntaxNode
+        {            
+            private static Dictionary<ALSymbolKind, int> _typePriority;
+            private static IComparer<string> _stringComparer = new SyntaxNodeNameComparer();
+            private static int UndefinedPriority = -1;
 
-            public MethodSortInfoComparer()
+
+            private TriggersOrderCollection _triggerNaturalOrder;
+            private ConvertedSyntaxKind _parentKind;
+            public SortProceduresTriggerSortMode TriggerSortMode { get; set; }
+
+            public MethodSortInfoComparer(SortProceduresTriggerSortMode triggerSortMode, TriggersOrderCollection triggersNaturalOrder, ConvertedSyntaxKind parentKind)
             {
+                TriggerSortMode = triggerSortMode;
+                _parentKind = parentKind;
+                _triggerNaturalOrder = triggersNaturalOrder;
                 InitTypePriority();
             }
 
@@ -128,6 +136,7 @@ namespace AnZwDev.ALTools.CodeTransformations
                 if (_typePriority == null)
                 {
                     ALSymbolKind[] types = {
+                        ALSymbolKind.TriggerDeclaration,
                         ALSymbolKind.TestDeclaration,
                         ALSymbolKind.ConfirmHandlerDeclaration,
                         ALSymbolKind.FilterPageHandlerDeclaration,
@@ -160,18 +169,32 @@ namespace AnZwDev.ALTools.CodeTransformations
 
             protected int GetTypePriority(ALSymbolKind kind)
             {
+                if ((kind == ALSymbolKind.TriggerDeclaration) && (TriggerSortMode == SortProceduresTriggerSortMode.None))
+                    return UndefinedPriority;
                 if (_typePriority.ContainsKey(kind))
                     return _typePriority[kind];
                 return UndefinedPriority;
             }
 
+            private int CompareTriggers(MethodSortInfo<T> x, MethodSortInfo<T> y)
+            {
+                if (_triggerNaturalOrder.TryCompare(_parentKind, x.Name, y.Name, out int result))
+                    return result;
+                return x.Index - y.Index;
+            }
+
             public int Compare(MethodSortInfo<T> x, MethodSortInfo<T> y)
             {
+                //sort triggers
+                if ((x.Kind == ALSymbolKind.TriggerDeclaration) && (y.Kind == ALSymbolKind.TriggerDeclaration) && (TriggerSortMode == SortProceduresTriggerSortMode.NaturalOrder))
+                    return CompareTriggers(x, y);
+
                 //check type
                 int xTypePriority = this.GetTypePriority(x.Kind);
                 int yTypePriority = this.GetTypePriority(y.Kind);
                 if (xTypePriority != yTypePriority)
                     return xTypePriority - yTypePriority;
+
                 //for known types check name
                 if (yTypePriority != UndefinedPriority)
                 {
@@ -179,13 +202,16 @@ namespace AnZwDev.ALTools.CodeTransformations
                     if (val != 0)
                         return val;
                 }
+
                 //check old index
                 return x.Index - y.Index;
             }
         }
 
+        #endregion
 
-#endregion
+        public SortProceduresTriggerSortMode TriggerSortMode { get; set; } = SortProceduresTriggerSortMode.None;
+        internal TriggersOrderCollection TriggersOrder { get; } = new TriggersOrderCollection();
 
         public SortProceduresSyntaxRewriter()
         {
@@ -196,56 +222,56 @@ namespace AnZwDev.ALTools.CodeTransformations
         public override SyntaxNode VisitTable(TableSyntax node)
         {
             if ((this.NodeInSpan(node)) && (node.Members != null) && (node.Members.Count > 0) && (!node.ContainsDiagnostics))
-                node = node.WithMembers(this.Sort(node.Members));
+                node = node.WithMembers(this.Sort(node, node.Members));
             return base.VisitTable(node);
         }
 
         public override SyntaxNode VisitPage(PageSyntax node)
         {
             if ((this.NodeInSpan(node)) && (node.Members != null) && (node.Members.Count > 0) && (!node.ContainsDiagnostics))
-                node = node.WithMembers(this.Sort(node.Members));
+                node = node.WithMembers(this.Sort(node, node.Members));
             return base.VisitPage(node);
         }
 
         public override SyntaxNode VisitReport(ReportSyntax node)
         {
             if ((this.NodeInSpan(node)) && (node.Members != null) && (node.Members.Count > 0) && (!node.ContainsDiagnostics))
-                node = node.WithMembers(this.Sort(node.Members));
+                node = node.WithMembers(this.Sort(node, node.Members));
             return base.VisitReport(node);
         }
 
         public override SyntaxNode VisitXmlPort(XmlPortSyntax node)
         {
             if ((this.NodeInSpan(node)) && (node.Members != null) && (node.Members.Count > 0) && (!node.ContainsDiagnostics))
-                node = node.WithMembers(this.Sort(node.Members));
+                node = node.WithMembers(this.Sort(node, node.Members));
             return base.VisitXmlPort(node);
         }
 
         public override SyntaxNode VisitCodeunit(CodeunitSyntax node)
         {
             if ((this.NodeInSpan(node)) && (node.Members != null) && (node.Members.Count > 0) && (!node.ContainsDiagnostics))
-                node = node.WithMembers(this.Sort(node.Members));
+                node = node.WithMembers(this.Sort(node, node.Members));
             return base.VisitCodeunit(node);
         }
 
         public override SyntaxNode VisitQuery(QuerySyntax node)
         {
             if ((this.NodeInSpan(node)) && (node.Members != null) && (node.Members.Count > 0) && (!node.ContainsDiagnostics))
-                node = node.WithMembers(this.Sort(node.Members));
+                node = node.WithMembers(this.Sort(node, node.Members));
             return base.VisitQuery(node);
         }
 
         public override SyntaxNode VisitTableExtension(TableExtensionSyntax node)
         {
             if ((this.NodeInSpan(node)) && (node.Members != null) && (node.Members.Count > 0) && (!node.ContainsDiagnostics))
-                node = node.WithMembers(this.Sort(node.Members));
+                node = node.WithMembers(this.Sort(node, node.Members));
             return base.VisitTableExtension(node);
         }
 
         public override SyntaxNode VisitPageExtension(PageExtensionSyntax node)
         {
             if ((this.NodeInSpan(node)) && (node.Members != null) && (node.Members.Count > 0) && (!node.ContainsDiagnostics))
-                node = node.WithMembers(this.Sort(node.Members));
+                node = node.WithMembers(this.Sort(node, node.Members));
             return base.VisitPageExtension(node);
         }
 
@@ -253,7 +279,7 @@ namespace AnZwDev.ALTools.CodeTransformations
         public override SyntaxNode VisitInterface(InterfaceSyntax node)
         {
             if ((this.NodeInSpan(node)) && (node.Members != null) && (node.Members.Count > 0) && (!node.ContainsDiagnostics))
-                node = node.WithMembers(this.Sort(node.Members));
+                node = node.WithMembers(this.Sort(node, node.Members));
             return base.VisitInterface(node);
         }
 #endif
@@ -261,80 +287,140 @@ namespace AnZwDev.ALTools.CodeTransformations
         public override SyntaxNode VisitPageCustomization(PageCustomizationSyntax node)
         {
             if ((this.NodeInSpan(node)) && (node.Members != null) && (node.Members.Count > 0) && (!node.ContainsDiagnostics))
-                node = node.WithMembers(this.Sort(node.Members));
+                node = node.WithMembers(this.Sort(node, node.Members));
             return base.VisitPageCustomization(node);
         }
 
         public override SyntaxNode VisitProfile(ProfileSyntax node)
         {
             if ((this.NodeInSpan(node)) && (node.Members != null) && (node.Members.Count > 0) && (!node.ContainsDiagnostics))
-                node = node.WithMembers(this.Sort(node.Members));
+                node = node.WithMembers(this.Sort(node, node.Members));
             return base.VisitProfile(node);
         }
 
+        public override SyntaxNode VisitRequestPage(RequestPageSyntax node)
+        {
+            if ((this.NodeInSpan(node)) && (node.Members != null) && (node.Members.Count > 0) && (!node.ContainsDiagnostics))
+                node = node.WithMembers(this.Sort(node, node.Members));
+            return base.VisitRequestPage(node);
+        }
+
+#if BC
+        public override SyntaxNode VisitRequestPageExtension(RequestPageExtensionSyntax node)
+        {
+            if ((this.NodeInSpan(node)) && (node.Members != null) && (node.Members.Count > 0) && (!node.ContainsDiagnostics))
+                node = node.WithMembers(this.Sort(node, node.Members));
+            return base.VisitRequestPageExtension(node);
+        }
+
+        public override SyntaxNode VisitReportExtension(ReportExtensionSyntax node)
+        {
+            if ((this.NodeInSpan(node)) && (node.Members != null) && (node.Members.Count > 0) && (!node.ContainsDiagnostics))
+                node = node.WithMembers(this.Sort(node, node.Members));
+            return base.VisitReportExtension(node);
+        }
+#endif
+
 #endregion
 
-#region Visit nodes with triggers
+        #region Visit nodes with triggers
 
         public override SyntaxNode VisitField(FieldSyntax node)
         {
             if ((this.NodeInSpan(node)) && (node.Triggers != null) && (node.Triggers.Count > 0) && (!node.ContainsDiagnostics))
-                node = node.WithTriggers(this.Sort(node.Triggers));
+                node = node.WithTriggers(this.Sort(node, node.Triggers));
             return base.VisitField(node);
         }
 
         public override SyntaxNode VisitPageField(PageFieldSyntax node)
         {
             if ((this.NodeInSpan(node)) && (node.Triggers != null) && (node.Triggers.Count > 0) && (!node.ContainsDiagnostics))
-                node = node.WithTriggers(this.Sort(node.Triggers));
+                node = node.WithTriggers(this.Sort(node, node.Triggers));
             return base.VisitPageField(node);
         }
 
         public override SyntaxNode VisitPageAction(PageActionSyntax node)
         {
             if ((this.NodeInSpan(node)) && (node.Triggers != null) && (node.Triggers.Count > 0) && (!node.ContainsDiagnostics))
-                node = node.WithTriggers(this.Sort(node.Triggers));
+                node = node.WithTriggers(this.Sort(node, node.Triggers));
             return base.VisitPageAction(node);
         }
 
         public override SyntaxNode VisitXmlPortFieldAttribute(XmlPortFieldAttributeSyntax node)
         {
             if ((this.NodeInSpan(node)) && (node.Triggers != null) && (node.Triggers.Count > 0) && (!node.ContainsDiagnostics))
-                node = node.WithTriggers(this.Sort(node.Triggers));
+                node = node.WithTriggers(this.Sort(node, node.Triggers));
             return base.VisitXmlPortFieldAttribute(node);
         }
 
         public override SyntaxNode VisitXmlPortFieldElement(XmlPortFieldElementSyntax node)
         {
             if ((this.NodeInSpan(node)) && (node.Triggers != null) && (node.Triggers.Count > 0) && (!node.ContainsDiagnostics))
-                node = node.WithTriggers(this.Sort(node.Triggers));
+                node = node.WithTriggers(this.Sort(node, node.Triggers));
             return base.VisitXmlPortFieldElement(node);
         }
 
         public override SyntaxNode VisitXmlPortTableElement(XmlPortTableElementSyntax node)
         {
             if ((this.NodeInSpan(node)) && (node.Triggers != null) && (node.Triggers.Count > 0) && (!node.ContainsDiagnostics))
-                node = node.WithTriggers(this.Sort(node.Triggers));
+                node = node.WithTriggers(this.Sort(node, node.Triggers));
             return base.VisitXmlPortTableElement(node);
         }
 
         public override SyntaxNode VisitXmlPortTextAttribute(XmlPortTextAttributeSyntax node)
         {
             if ((this.NodeInSpan(node)) && (node.Triggers != null) && (node.Triggers.Count > 0) && (!node.ContainsDiagnostics))
-                node = node.WithTriggers(this.Sort(node.Triggers));
+                node = node.WithTriggers(this.Sort(node, node.Triggers));
             return base.VisitXmlPortTextAttribute(node);
         }
 
         public override SyntaxNode VisitXmlPortTextElement(XmlPortTextElementSyntax node)
         {
             if ((this.NodeInSpan(node)) && (node.Triggers != null) && (node.Triggers.Count > 0) && (!node.ContainsDiagnostics))
-                node = node.WithTriggers(this.Sort(node.Triggers));
+                node = node.WithTriggers(this.Sort(node, node.Triggers));
             return base.VisitXmlPortTextElement(node);
         }
 
+        public override SyntaxNode VisitControlModifyChange(ControlModifyChangeSyntax node)
+        {
+            if ((this.NodeInSpan(node)) && (node.Triggers != null) && (node.Triggers.Count > 0) && (!node.ContainsDiagnostics))
+                node = node.WithTriggers(this.Sort(node, node.Triggers));
+            return base.VisitControlModifyChange(node);
+        }
+
+        public override SyntaxNode VisitActionModifyChange(ActionModifyChangeSyntax node)
+        {
+            if ((this.NodeInSpan(node)) && (node.Triggers != null) && (node.Triggers.Count > 0) && (!node.ContainsDiagnostics))
+                node = node.WithTriggers(this.Sort(node, node.Triggers));
+            return base.VisitActionModifyChange(node);
+        }
+
+        public override SyntaxNode VisitFieldModification(FieldModificationSyntax node)
+        {
+            if ((this.NodeInSpan(node)) && (node.Triggers != null) && (node.Triggers.Count > 0) && (!node.ContainsDiagnostics))
+                node = node.WithTriggers(this.Sort(node, node.Triggers));
+            return base.VisitFieldModification(node);
+        }
+
+        public override SyntaxNode VisitReportDataItem(ReportDataItemSyntax node)
+        {
+            if ((this.NodeInSpan(node)) && (node.Triggers != null) && (node.Triggers.Count > 0) && (!node.ContainsDiagnostics))
+                node = node.WithTriggers(this.Sort(node, node.Triggers));
+            return base.VisitReportDataItem(node);
+        }
+
+#if BC
+        public override SyntaxNode VisitReportExtensionDataSetModify(ReportExtensionDataSetModifySyntax node)
+        {
+            if ((this.NodeInSpan(node)) && (node.Triggers != null) && (node.Triggers.Count > 0) && (!node.ContainsDiagnostics))
+                node = node.WithTriggers(this.Sort(node, node.Triggers));
+            return base.VisitReportExtensionDataSetModify(node);
+        }
+#endif
+
 #endregion
-        
-        private SyntaxList<T> Sort<T>(SyntaxList<T> members) where T: SyntaxNode
+
+        private SyntaxList<T> Sort<T>(SyntaxNode parent, SyntaxList<T> members) where T: SyntaxNode
         {
             if (members.Count <= 1)
                 return members;
@@ -347,7 +433,7 @@ namespace AnZwDev.ALTools.CodeTransformations
             if (nodesGroupsTree.Root == null)
                 return members;
 
-            MethodSortInfoComparer<T> comparer = new MethodSortInfoComparer<T>();
+            MethodSortInfoComparer<T> comparer = new MethodSortInfoComparer<T>(TriggerSortMode, TriggersOrder, parent.Kind.ConvertToLocalType());
 
             //does not have any child groups
             if (!nodesGroupsTree.Root.HasChildGroups)
