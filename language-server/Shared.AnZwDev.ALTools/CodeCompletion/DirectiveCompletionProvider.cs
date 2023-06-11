@@ -18,7 +18,7 @@ namespace AnZwDev.ALTools.CodeCompletion
         {
         }
 
-        public override void CollectCompletionItems(ALProject project, SyntaxTree syntaxTree, SyntaxNode syntaxNode, int position, List<CodeCompletionItem> completionItems)
+        public override void CollectCompletionItems(ALProject project, SyntaxTree syntaxTree, SyntaxNode syntaxNode, int position, CodeCompletionParameters parameters, List<CodeCompletionItem> completionItems)
         {
             var directiveSyntax = syntaxTree.GetRoot()?
                 .GetFirstDirective(p => (p.FullSpan.Start <= position) && (p.FullSpan.End >= position));

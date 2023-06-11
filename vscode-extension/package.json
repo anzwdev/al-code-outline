@@ -2,7 +2,7 @@
 	"name": "al-code-outline",
 	"displayName": "AZ AL Dev Tools/AL Code Outline",
 	"description": "AZ AL Development Tools: AL code outline, object browser, object creators",
-	"version": "3.0.46",
+	"version": "3.0.47",
 	"publisher": "andrzejzwierzchowski",
 	"engines": {
 		"vscode": "^1.47.0"
@@ -1937,7 +1937,12 @@
 						"uniqueItems": true,
 						"description": "Field names patterns for fields in table DataCaptionFields property created by 'Add Table DataCaptionFields' commands"
 					},
-
+					"alOutline.keepVariableNamesCompletionAffixes": {
+						"type": "boolean",
+						"default": false,
+						"description": "Set to true to keep affixes in variable names suggested by completion providers",
+						"scope": "resource"
+					},
 					"alOutline.completionProviders": {
 						"type": "array",
 						"items": {

@@ -31,6 +31,7 @@ namespace AnZwDev.ALTools.Server.Handlers
                     parameters.path,
                     parameters.position,
                     parameters.providers,
+                    parameters.parameters,
                     response.completionItems);
             }
             catch (Exception e)

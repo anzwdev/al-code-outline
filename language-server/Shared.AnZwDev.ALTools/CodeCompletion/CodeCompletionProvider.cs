@@ -20,7 +20,7 @@ namespace AnZwDev.ALTools.CodeCompletion
             Server = server;
         }
 
-        public virtual void CollectCompletionItems(ALProject project, SyntaxTree syntaxTree, SyntaxNode syntaxNode, int position, List<CodeCompletionItem> completionItems)
+        public virtual void CollectCompletionItems(ALProject project, SyntaxTree syntaxTree, SyntaxNode syntaxNode, int position, CodeCompletionParameters parameters, List<CodeCompletionItem> completionItems)
         {
         }
 

@@ -1,5 +1,12 @@
 # Change Log
 
+## 3.0.47
+ - Issue #472 - CodeCompletion - Do not Ignore Prefix in variable names
+   - new alOutline.keepVariableNamesCompletionAffixes setting added
+
+Thank you
+ - Thyme1 for reporting issue #472
+
 ## 3.0.46
  - Issue #276 - AL Object ID Ninja wizards integration not always works
  - Issue #432 - Remove Redundant DataClassification removes it from table extension fields

@@ -155,6 +155,7 @@
     <Compile Include="$(MSBuildThisFileDirectory)ALSymbols\SymbolReaders\ALSymbolInfoSyntaxTreeReader.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)ALSymbols\SymbolReaders\ALSyntaxTreeSymbolsReader.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)ALToolsConst.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)CodeCompletion\CodeCompletionParameters.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)CodeTransformations\AddReferencedTablesPermissionsSyntaxRewriter.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)CodeTransformations\AddTableDataCaptionFieldsRewriter.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)CodeTransformations\AddDropDownFieldGroupsRewriter.cs" />

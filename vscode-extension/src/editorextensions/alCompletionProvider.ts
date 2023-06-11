@@ -18,13 +18,15 @@ export class ALCompletionProvider implements vscode.CompletionItemProvider {
         if (document.uri?.fsPath) {
             let configuration = vscode.workspace.getConfiguration('alOutline', document.uri);
             let completionProviders = configuration.get<string[]>('completionProviders');
+            let keepVariableNamesAffixes = !!configuration.get<boolean>('keepVariableNamesCompletionAffixes');
 
             if ((completionProviders) && (completionProviders.length > 0)) {
                 await this._context.activeDocumentSymbols.loadAsync(false);
 
                 let textPosition = new TextPosition();
                 textPosition.set(position.line, position.character);
-                let request = new ToolsCodeCompletionRequest(textPosition, document.uri.fsPath, completionProviders);
+                let request = new ToolsCodeCompletionRequest(textPosition, document.uri.fsPath, completionProviders, { 
+                    keepVariableNamesAffixes: keepVariableNamesAffixes });
                 let response = await this._context.toolsLangServerClient.codeCompletion(request);
                 
                 if ((response) && (response.completionItems)) {
