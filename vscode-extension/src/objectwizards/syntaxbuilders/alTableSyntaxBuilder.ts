@@ -13,7 +13,11 @@ export class ALTableSyntaxBuilder {
 
         writer.writeStartObject("table", data.objectId, data.objectName);
         writer.addProperty("Caption", writer.encodeString(ALSyntaxHelper.removePrefixSuffix(data.objectName, data.projectSettings)));
-        writer.addProperty("DataClassification", "ToBeClassified");
+
+        if (data.dataClassification)
+            writer.addProperty("DataClassification", data.dataClassification);
+        else
+            writer.addProperty("DataClassification", "ToBeClassified");
         if (!data.dataPerCompany)
             writer.addProperty("DataPerCompany", "false");
         writer.writeProperties();
@@ -24,7 +28,7 @@ export class ALTableSyntaxBuilder {
 
         for (let i=0; i<data.fields.length; i++) {
             writer.writeTableField(data.fields[i].id, data.fields[i].name, data.fields[i].type, data.fields[i].length,
-                data.fields[i].dataClassification);
+                data.fields[i].dataClassification, data.dataClassification);
         }
 
         writer.writeEndFields();

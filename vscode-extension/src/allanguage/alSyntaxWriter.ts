@@ -273,7 +273,7 @@ export class ALSyntaxWriter {
             this.encodeName(source));        
     }
 
-    public writeTableField(fieldId: string, fieldName: string, fieldDataType: string, fieldLength: string, dataClassification: string) {
+    public writeTableField(fieldId: string, fieldName: string, fieldDataType: string, fieldLength: string, dataClassification: string | undefined, tableDataClassification: string | undefined) {
         let dataType = fieldDataType.toLowerCase();
         if ((fieldLength) && ((dataType == 'text') || (dataType == 'code')))
             fieldDataType = fieldDataType + '[' + fieldLength + ']';
@@ -288,10 +288,17 @@ export class ALSyntaxWriter {
         this.writeLine("field(" + fieldId + "; " + ALSyntaxHelper.toNameText(fieldName) + "; " + fieldDataType + ")");
         this.writeStartBlock();
         this.writeProperty('Caption', ALSyntaxHelper.toStringText(fieldName));
+
+        
+        if (tableDataClassification) {
+            if ((dataClassification) && (dataClassification === tableDataClassification))
+                dataClassification = undefined;
+        } else if (!dataClassification)
+            dataClassification = 'ToBeClassified';
+
         if (dataClassification)
             this.writeProperty("DataClassification", dataClassification);
-        else
-            this.writeProperty("DataClassification", "ToBeClassified");
+            
         this.writeEndBlock();
     }
 

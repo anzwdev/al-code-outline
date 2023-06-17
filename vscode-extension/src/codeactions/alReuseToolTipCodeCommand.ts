@@ -41,12 +41,11 @@ export class ALReuseToolTipCodeCommand extends ALCodeAction {
                         command: "azALDevTools.ReuseToolTipFromOtherPages",
                         title: "Reuse tooltip from other pages",
                         arguments: [document, symbol]
-                    }
+                    };
                     actions.push(action);
                 }
 
             }
         }
     }
-
 }

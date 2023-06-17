@@ -1,10 +1,12 @@
 # Change Log
 
 ## 3.0.47
+ - Issue #470 - Add "DataClassification" as table property to the "New Table Wizard"
  - Issue #472 - CodeCompletion - Do not Ignore Prefix in variable names
    - new alOutline.keepVariableNamesCompletionAffixes setting added
 
 Thank you
+ - rvanbekkum for reporting issue #470
  - Thyme1 for reporting issue #472
 
 ## 3.0.46
