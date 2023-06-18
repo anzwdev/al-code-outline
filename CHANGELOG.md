@@ -4,10 +4,12 @@
  - Issue #470 - Add "DataClassification" as table property to the "New Table Wizard"
  - Issue #472 - CodeCompletion - Do not Ignore Prefix in variable names
    - new alOutline.keepVariableNamesCompletionAffixes setting added
+ - Issue #474 - Remove with usage on codeunits with TableNo
 
 Thank you
  - rvanbekkum for reporting issue #470
  - Thyme1 for reporting issue #472
+ - smartinez-io for reprting issue #474
 
 ## 3.0.46
  - Issue #276 - AL Object ID Ninja wizards integration not always works
