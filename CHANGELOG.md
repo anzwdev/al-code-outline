@@ -6,6 +6,7 @@
    - new alOutline.keepVariableNamesCompletionAffixes setting added
  - Issue #473 - When reusing tooltip from another page, include the tooltip comment
  - Issue #474 - Remove with usage on codeunits with TableNo
+ - Linux version
 
 Thank you
  - rvanbekkum for reporting issue #470
