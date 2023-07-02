@@ -39,6 +39,7 @@ export class ALTableWizardPage extends ProjectItemWizardPage {
         //build parameters
         this._tableWizardData.objectId = data.objectId;
         this._tableWizardData.objectName = data.objectName;
+        this._tableWizardData.dataClassification = data.dataClassification;
         this._tableWizardData.dataPerCompany = !!data.dataPerCompany;
         this._tableWizardData.fields = WizardTableFieldHelper.validateFields(data.fields);
     

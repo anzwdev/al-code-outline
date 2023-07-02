@@ -1,5 +1,19 @@
 # Change Log
 
+## 3.0.47
+ - Issue #470 - Add "DataClassification" as table property to the "New Table Wizard"
+ - Issue #472 - CodeCompletion - Do not Ignore Prefix in variable names
+   - new alOutline.keepVariableNamesCompletionAffixes setting added
+ - Issue #473 - When reusing tooltip from another page, include the tooltip comment
+ - Issue #474 - Remove with usage on codeunits with TableNo
+ - Linux version
+
+Thank you
+ - rvanbekkum for reporting issue #470
+ - Thyme1 for reporting issue #472
+ - jhoek for reporting issue #473
+ - smartinez-io for reprting issue #474
+
 ## 3.0.46
  - Issue #276 - AL Object ID Ninja wizards integration not always works
  - Issue #432 - Remove Redundant DataClassification removes it from table extension fields

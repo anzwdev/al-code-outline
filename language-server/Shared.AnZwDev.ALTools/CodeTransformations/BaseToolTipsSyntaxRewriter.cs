@@ -1,5 +1,6 @@
 ﻿using AnZwDev.ALTools.CodeAnalysis;
 using AnZwDev.ALTools.Extensions;
+using AnZwDev.ALTools.Workspace.SymbolsInformation;
 using Microsoft.Dynamics.Nav.CodeAnalysis;
 using Microsoft.Dynamics.Nav.CodeAnalysis.Syntax;
 using System;
@@ -15,12 +16,17 @@ namespace AnZwDev.ALTools.CodeTransformations
         {
         }
 
-        protected PageFieldSyntax SetPageFieldToolTip(PageFieldSyntax node, string newToolTip)
+        protected PageFieldSyntax SetPageFieldToolTip(PageFieldSyntax node, LabelInformation newToolTip)
+        {
+            return SetPageFieldToolTip(node, newToolTip.Value, newToolTip.Comment);
+        }
+
+        protected PageFieldSyntax SetPageFieldToolTip(PageFieldSyntax node, string newToolTip, string newToolTipComment)
         {
             PropertySyntax propertySyntax = node.GetProperty("ToolTip");
             if (propertySyntax == null)
             {
-                var newPropertySyntax = SyntaxFactoryHelper.ToolTipProperty(newToolTip, "", false);
+                var newPropertySyntax = SyntaxFactoryHelper.ToolTipProperty(newToolTip, newToolTipComment, false);
 
                 /*
                 SyntaxTriviaList leadingTriviaList = node.CreateChildNodeIdentTrivia();
@@ -39,21 +45,13 @@ namespace AnZwDev.ALTools.CodeTransformations
                     validValue = ((labelValue.Value?.LabelText?.Value.Value?.ToString()) != newToolTip);
                 if (validValue)
                 {
-                    PropertySyntax newPropertySyntax = SyntaxFactoryHelper.ToolTipProperty(newToolTip, "", false)
+                    PropertySyntax newPropertySyntax = SyntaxFactoryHelper.ToolTipProperty(newToolTip, newToolTipComment, false)
                         .WithTriviaFrom(propertySyntax);
                     return node.ReplaceNode(propertySyntax, newPropertySyntax);
                 }
             }
             return null;
         }
-
-        protected PropertySyntax CreateToolTipProperty(string toolTipValue, SyntaxTriviaList leadingTriviaList, SyntaxTriviaList trailingTriviaList)
-        {
-            return SyntaxFactoryHelper.ToolTipProperty(toolTipValue, "", false)
-                .WithLeadingTrivia(leadingTriviaList)
-                .WithTrailingTrivia(trailingTriviaList);
-        }
-
 
     }
 }

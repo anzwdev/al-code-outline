@@ -19,7 +19,7 @@ namespace AnZwDev.ALTools.CodeTransformations
         public string PageActionTooltip { get; set; }
         public bool UseFieldDescription { get; set; }
         
-        public Dictionary<string, Dictionary<string, List<string>>> ToolTipsCache { get; set; }
+        public Dictionary<string, Dictionary<string, List<LabelInformation>>> ToolTipsCache { get; set; }
 
         public ToolTipSyntaxRewriter()
         {
@@ -44,21 +44,21 @@ namespace AnZwDev.ALTools.CodeTransformations
             this.NoOfChanges++;
 
             //try to find source field caption
-            string forceToolTipValue = null;
+            LabelInformation forceToolTipValue = null;
             TableFieldCaptionInfo captionInfo = this.GetFieldCaption(node);
             if (this.UseFieldDescription)
-                forceToolTipValue = captionInfo.Description;
+                forceToolTipValue = new LabelInformation("ToolTip", captionInfo.Description);
             else if ((this.ToolTipsCache != null) && (!String.IsNullOrWhiteSpace(this.TableName)) && (!String.IsNullOrWhiteSpace(captionInfo.FieldName)))
             {
                 //find first tooltip from other pages
                 string tableNameKey = this.TableName.ToLower();
                 if (this.ToolTipsCache.ContainsKey(tableNameKey))
                 {
-                    Dictionary<string, List<string>> tableToolTipsCache = this.ToolTipsCache[tableNameKey];
+                    var tableToolTipsCache = this.ToolTipsCache[tableNameKey];
                     string fieldNameKey = captionInfo.FieldName.ToLower();
                     if (tableToolTipsCache.ContainsKey(fieldNameKey))
                     {
-                        List<string> fieldToolTipsCache = tableToolTipsCache[fieldNameKey];
+                        var fieldToolTipsCache = tableToolTipsCache[fieldNameKey];
                         if (fieldToolTipsCache.Count > 0)
                             forceToolTipValue = fieldToolTipsCache[0];
                     }
@@ -76,12 +76,12 @@ namespace AnZwDev.ALTools.CodeTransformations
             return node.AddPropertyListProperties(this.CreateToolTipProperty(node));
         }
 
-        protected PropertySyntax CreateToolTipProperty(SyntaxNode node, string caption = null, string comment = null, string forceToolTipValue = null)
+        protected PropertySyntax CreateToolTipProperty(SyntaxNode node, string caption = null, string comment = null, LabelInformation forceToolTipValue = null)
         {
             string toolTipValue = "";
             string toolTipComment = "";
 
-            if (String.IsNullOrWhiteSpace(forceToolTipValue))
+            if (String.IsNullOrWhiteSpace(forceToolTipValue?.Value))
             {
                 //get caption from control caption
                 LabelInformation controlCaptionInformation = node.GetCaptionPropertyInformation();
@@ -114,7 +114,8 @@ namespace AnZwDev.ALTools.CodeTransformations
             }
             else
             {
-                toolTipValue = forceToolTipValue;
+                toolTipValue = forceToolTipValue.Value;
+                toolTipComment = forceToolTipValue.Comment;
             }
 
             var propertySyntax = SyntaxFactoryHelper.ToolTipProperty(toolTipValue, toolTipComment, false);

@@ -31,13 +31,13 @@ namespace AnZwDev.ALTools.CodeCompletion
             _completionProviders.Add(provider.Name, provider);
         }
 
-        public void CollectCompletionItems(ALWorkspace workspace, string filePath, Position linePosition, List<string> providers, List<CodeCompletionItem> completionItems)
+        public void CollectCompletionItems(ALWorkspace workspace, string filePath, Position linePosition, List<string> providers, CodeCompletionParameters parameters, List<CodeCompletionItem> completionItems)
         {
             if ((workspace.ActiveDocument.Project != null) && (workspace.ActiveDocument.SyntaxTree != null))
-                CollectCompletionItems(workspace.ActiveDocument.Project, workspace.ActiveDocument.SyntaxTree, linePosition, providers, completionItems);
+                CollectCompletionItems(workspace.ActiveDocument.Project, workspace.ActiveDocument.SyntaxTree, linePosition, providers, parameters, completionItems);
         }
 
-        private void CollectCompletionItems(ALProject project, SyntaxTree syntaxTree, Position linePosition, List<string> providers, List<CodeCompletionItem> completionItems)
+        private void CollectCompletionItems(ALProject project, SyntaxTree syntaxTree, Position linePosition, List<string> providers, CodeCompletionParameters parameters, List<CodeCompletionItem> completionItems)
         {
             if ((providers != null) && (providers.Count > 0))
             {
@@ -54,7 +54,7 @@ namespace AnZwDev.ALTools.CodeCompletion
                         {
                             var provider = _completionProviders[providerName];
                             if (provider.CanBeUsed(providersNamesSet))
-                                provider.CollectCompletionItems(project, syntaxTree, syntaxNode, position, completionItems);
+                                provider.CollectCompletionItems(project, syntaxTree, syntaxNode, position, parameters, completionItems);
                         }
                     }
                 }

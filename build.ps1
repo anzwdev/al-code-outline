@@ -190,6 +190,10 @@ dotnet publish ".\AZALDevToolsServer.NetCore\AZALDevToolsServer.NetCore.csproj" 
 Write-Host "Building MacOS .net core language server"
 dotnet publish ".\AZALDevToolsServer.NetCore\AZALDevToolsServer.NetCore.csproj" -r osx-x64 -f net6.0 -o "..\vscode-extension\bin\netcore\darwin" --self-contained true --configuration Release
 
+# Linux - .net core
+Write-Host "Building Linux .net core language server"
+dotnet publish ".\AZALDevToolsServer.NetCore\AZALDevToolsServer.NetCore.csproj" -r linux-x64 -f net6.0 -o "..\vscode-extension\bin\netcore\linux" --self-contained false --configuration Release
+
 # Windows - .net framework for Nav2018 extension development
 $msBuildPath = &"${env:ProgramFiles(x86)}\Microsoft Visual Studio\Installer\vswhere.exe" -latest -prerelease -products * -requires Microsoft.Component.MSBuild -find MSBuild\**\Bin\MSBuild.exe
 & $msBuildPath ".\AZALDevToolsServer.NetFrameworkNav2018\AZALDevToolsServer.NetFrameworkNav2018.csproj" -p:Configuration=Release -p:OutputPath="..\..\vscode-extension\bin\netframeworknav2018"

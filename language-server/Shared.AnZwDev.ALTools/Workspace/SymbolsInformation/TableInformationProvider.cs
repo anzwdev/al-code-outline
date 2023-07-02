@@ -168,11 +168,11 @@ namespace AnZwDev.ALTools.Workspace.SymbolsInformation
             {
                 PageInformationProvider pageInformationProvider = new PageInformationProvider();
                 string[] tables = { tableName };
-                Dictionary<string, Dictionary<string, List<string>>> toolTips = pageInformationProvider.CollectTableFieldsToolTips(project, tables, toolTipsSourceDependencies);
+                Dictionary<string, Dictionary<string, List<LabelInformation>>> toolTips = pageInformationProvider.CollectTableFieldsToolTips(project, tables, toolTipsSourceDependencies);
                 string tableKey = tableName.ToLower();
                 if (toolTips.ContainsKey(tableKey))
                 {
-                    Dictionary<string, List<string>> fieldsToolTips = toolTips[tableKey];
+                    Dictionary<string, List<LabelInformation>> fieldsToolTips = toolTips[tableKey];
                     for (int i = 0; i < fields.Count; i++)
                     {
                         string fieldKey = fields[i].Name?.ToLower();

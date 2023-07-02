@@ -10,13 +10,18 @@ namespace AnZwDev.ALTools.Workspace.SymbolsInformation
     public class LabelInformation
     {
 
-        [JsonProperty("value")]
+        [JsonProperty("value", NullValueHandling = NullValueHandling.Ignore)]
         public string Value { get; set; }
 
-        [JsonProperty("comment")]
+        [JsonProperty("comment", NullValueHandling = NullValueHandling.Ignore)]
         public string Comment { get; set; }
 
         private string _propertyName;
+
+        public LabelInformation()
+        {
+        }
+
         public LabelInformation(string propertyName)
         {
             this._propertyName = propertyName;

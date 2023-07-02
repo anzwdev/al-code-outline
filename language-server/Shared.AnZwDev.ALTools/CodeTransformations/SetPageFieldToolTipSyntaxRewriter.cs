@@ -12,6 +12,7 @@ namespace AnZwDev.ALTools.CodeTransformations
     {
 
         public string ToolTip { get; set; }
+        public string Comment { get; set; }
 
         public SetPageFieldToolTipSyntaxRewriter()
         {
@@ -21,7 +22,7 @@ namespace AnZwDev.ALTools.CodeTransformations
         {
             if ((!node.ContainsDiagnostics) && (!String.IsNullOrWhiteSpace(this.ToolTip)) && (this.Span != null) && (node.Span.IntersectsWith(this.Span)))
             {
-                PageFieldSyntax newNode = this.SetPageFieldToolTip(node, this.ToolTip);
+                PageFieldSyntax newNode = this.SetPageFieldToolTip(node, this.ToolTip, this.Comment);
                 if (newNode != null)
                 {
                     NoOfChanges++;

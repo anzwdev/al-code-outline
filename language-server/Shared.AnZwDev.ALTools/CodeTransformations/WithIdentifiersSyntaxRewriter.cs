@@ -5,6 +5,7 @@ using Microsoft.Dynamics.Nav.CodeAnalysis.Syntax;
 using System;
 using System.Collections.Generic;
 using System.Text;
+using System.Xml.Linq;
 
 namespace AnZwDev.ALTools.CodeTransformations
 {
@@ -74,17 +75,35 @@ namespace AnZwDev.ALTools.CodeTransformations
                                 node.WithoutTrivia()).WithTriviaFrom(node);
                         }
 
-                        //global variable reference?
-                        else if ((operationInstance.Kind.ConvertToLocalType() == ConvertedOperationKind.GlobalReferenceExpression) &&
-                            (node.Parent.Kind.ConvertToLocalType() != ConvertedSyntaxKind.MemberAccessExpression))
+                        //global or local variable reference?
+                        else
                         {
-                            IGlobalReferenceExpression globalRef = (IGlobalReferenceExpression)operationInstance;
-                            string name = globalRef.GlobalVariable.Name.ToString();
-
-                            this.NoOfChanges++;
-                            return SyntaxFactory.MemberAccessExpression(
-                                SyntaxFactory.IdentifierName(name),
-                                node.WithoutTrivia()).WithTriviaFrom(node);
+                            var operationInstanceKind = operationInstance.Kind.ConvertToLocalType();
+                            switch (operationInstanceKind)
+                            {
+                                case ConvertedOperationKind.GlobalReferenceExpression:
+                                    if (node.Parent.Kind.ConvertToLocalType() != ConvertedSyntaxKind.MemberAccessExpression)
+                                    {
+                                        var globalRef = (IGlobalReferenceExpression)operationInstance;
+                                        var globalRefName = globalRef.GlobalVariable.Name.ToString();
+                                        this.NoOfChanges++;
+                                        return SyntaxFactory.MemberAccessExpression(
+                                            SyntaxFactory.IdentifierName(globalRefName),
+                                            node.WithoutTrivia()).WithTriviaFrom(node);
+                                    }
+                                    break;
+                                case ConvertedOperationKind.LocalReferenceExpression:
+                                    if (node.Parent.Kind.ConvertToLocalType() != ConvertedSyntaxKind.MemberAccessExpression)
+                                    {
+                                        var localRef = (ILocalReferenceExpression)operationInstance;
+                                        var localRefName = localRef.LocalVariable.Name.ToString();
+                                        this.NoOfChanges++;
+                                        return SyntaxFactory.MemberAccessExpression(
+                                            SyntaxFactory.IdentifierName(localRefName),
+                                            node.WithoutTrivia()).WithTriviaFrom(node);
+                                    }
+                                    break;
+                            }
                         }
                     }
                 }

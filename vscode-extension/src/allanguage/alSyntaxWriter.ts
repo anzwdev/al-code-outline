@@ -4,6 +4,7 @@ import { StringHelper } from '../tools/stringHelper';
 import { NameValue } from '../tools/nameValue';
 import { AppAreaMode } from '../alsyntaxmodifiers/appAreaMode';
 import { ApiFieldNameConversion } from './apiFieldNameConversion';
+import { LabelInformation } from '../symbolsinformation/labelInformation';
 
 export class ALSyntaxWriter {
     private content : string;
@@ -273,7 +274,7 @@ export class ALSyntaxWriter {
             this.encodeName(source));        
     }
 
-    public writeTableField(fieldId: string, fieldName: string, fieldDataType: string, fieldLength: string, dataClassification: string) {
+    public writeTableField(fieldId: string, fieldName: string, fieldDataType: string, fieldLength: string, dataClassification: string | undefined, tableDataClassification: string | undefined) {
         let dataType = fieldDataType.toLowerCase();
         if ((fieldLength) && ((dataType == 'text') || (dataType == 'code')))
             fieldDataType = fieldDataType + '[' + fieldLength + ']';
@@ -288,14 +289,21 @@ export class ALSyntaxWriter {
         this.writeLine("field(" + fieldId + "; " + ALSyntaxHelper.toNameText(fieldName) + "; " + fieldDataType + ")");
         this.writeStartBlock();
         this.writeProperty('Caption', ALSyntaxHelper.toStringText(fieldName));
+
+        
+        if (tableDataClassification) {
+            if ((dataClassification) && (dataClassification === tableDataClassification))
+                dataClassification = undefined;
+        } else if (!dataClassification)
+            dataClassification = 'ToBeClassified';
+
         if (dataClassification)
             this.writeProperty("DataClassification", dataClassification);
-        else
-            this.writeProperty("DataClassification", "ToBeClassified");
+            
         this.writeEndBlock();
     }
 
-    public writePageField(fieldName : string, fieldCaption: string | undefined, fieldCaptionComment: string | undefined, fieldDescription: string | undefined, createToolTip: boolean, existingToolTips: string[] | undefined) {
+    public writePageField(fieldName : string, fieldCaption: string | undefined, fieldCaptionComment: string | undefined, fieldDescription: string | undefined, createToolTip: boolean, existingToolTips: LabelInformation[] | undefined) {
         this.writeStartNameSourceBlock("field", this.encodeName(fieldName), 'Rec.' + this.encodeName(fieldName));
         if (this.applicationAreaMode == AppAreaMode.addToAllControls)
             this.writeApplicationArea();
@@ -329,13 +337,16 @@ export class ALSyntaxWriter {
             this.writeProperty("ApplicationArea", this.applicationArea);
     }
 
-    public writeTooltip(captionTemplate: string, commentTemplate: string, value: string | undefined, comment: string | undefined, fieldDescription: string | undefined, existingToolTips: string[] | undefined) {
+    public writeTooltip(captionTemplate: string, commentTemplate: string, value: string | undefined, comment: string | undefined, fieldDescription: string | undefined, existingToolTips: LabelInformation[] | undefined) {
         let textValue: string | undefined = undefined;
 
         if ((this.useTableFieldDescriptionAsToolTip) && (fieldDescription) && (fieldDescription != ""))
             textValue = this.encodeString(fieldDescription);
-        else if ((existingToolTips) && (existingToolTips.length > 0) && (existingToolTips[0]) && (existingToolTips[0] != ""))
-            textValue = this.encodeString(existingToolTips[0]);
+        else if ((existingToolTips) && (existingToolTips.length > 0) && (existingToolTips[0].value) && (existingToolTips[0].value !== "")) {
+            textValue = this.encodeString(existingToolTips[0].value);
+            if ((existingToolTips[0].comment) && (existingToolTips[0].comment !== ""))
+                textValue = textValue + ", Comment = " + this.encodeString(existingToolTips[0].comment);
+        }
         else if ((captionTemplate) && (captionTemplate != "") && (value) && (value != "")) {
             textValue = this.applyCaptionTemplate(captionTemplate, value, comment);
             let commentValue = this.applyCaptionTemplate(commentTemplate, value, comment);

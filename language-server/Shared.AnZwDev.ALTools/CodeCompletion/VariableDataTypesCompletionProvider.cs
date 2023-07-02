@@ -20,7 +20,7 @@ namespace AnZwDev.ALTools.CodeCompletion
         {
         }
 
-        public override void CollectCompletionItems(ALProject project, SyntaxTree syntaxTree, SyntaxNode syntaxNode, int position, List<CodeCompletionItem> completionItems)
+        public override void CollectCompletionItems(ALProject project, SyntaxTree syntaxTree, SyntaxNode syntaxNode, int position, CodeCompletionParameters parameters, List<CodeCompletionItem> completionItems)
         {
             var declaration = GetDeclaration(syntaxNode, position);
             if (declaration == null)

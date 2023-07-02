@@ -4,12 +4,12 @@ using System.Text;
 
 namespace AnZwDev.ALTools.Workspace.SymbolsInformation.Internal
 {
-    internal class IntPageControlWithPropertyValue
+    internal class IntPageControlWithLabelPropertyValue
     {
 
         public string ControlName { get; set; }
         public string ControlSource { get; set; }
-        public string PropertyValue { get; set; }
+        public LabelInformation PropertyValue { get; set; }
 
     }
 }

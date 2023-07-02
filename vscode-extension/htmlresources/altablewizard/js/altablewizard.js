@@ -49,6 +49,7 @@ class TableWizard extends BaseObjectWizard {
             //initialize inputs
             document.getElementById("objectid").value = this._data.objectId;
             document.getElementById("objectname").value = this._data.objectName;
+            document.getElementById("dataclassification").value = this._data.dataClassification;
             document.getElementById("datapercompany").checked = this._data.dataPerCompany;
 
             //initialize fields list
@@ -70,6 +71,7 @@ class TableWizard extends BaseObjectWizard {
             data: {
                 objectId : this._data.objectId,
                 objectName : this._data.objectName,
+                dataClassification : this._data.dataClassification,
                 dataPerCompany : this._data.dataPerCompany,
                 fields: this._data.fields
             }
@@ -79,6 +81,7 @@ class TableWizard extends BaseObjectWizard {
     collectStepData(finishSelected) {
         this._data.objectId = document.getElementById("objectid").value;
         this._data.objectName = document.getElementById("objectname").value;
+        this._data.dataClassification = document.getElementById("dataclassification").value;
         this._data.dataPerCompany = document.getElementById("datapercompany").checked;
         this._data.fields = this._fieldsgrid.getData();
     }

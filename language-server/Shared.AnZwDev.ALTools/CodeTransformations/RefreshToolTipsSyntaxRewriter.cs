@@ -1,5 +1,6 @@
 ﻿using AnZwDev.ALTools.CodeAnalysis;
 using AnZwDev.ALTools.Extensions;
+using AnZwDev.ALTools.Workspace.SymbolsInformation;
 using Microsoft.Dynamics.Nav.CodeAnalysis;
 using Microsoft.Dynamics.Nav.CodeAnalysis.Syntax;
 using System;
@@ -11,7 +12,7 @@ namespace AnZwDev.ALTools.CodeTransformations
     public class RefreshToolTipsSyntaxRewriter : BaseToolTipsSyntaxRewriter
     {
 
-        public Dictionary<string, Dictionary<string, List<string>>> ToolTipsCache { get; set; }
+        public Dictionary<string, Dictionary<string, List<LabelInformation>>> ToolTipsCache { get; set; }
 
         public RefreshToolTipsSyntaxRewriter()
         {
@@ -32,14 +33,14 @@ namespace AnZwDev.ALTools.CodeTransformations
                 string tableNameKey = this.TableName.ToLower();
                 if (this.ToolTipsCache.ContainsKey(tableNameKey))
                 {
-                    Dictionary<string, List<string>> tableToolTipsCache = this.ToolTipsCache[tableNameKey];
+                    Dictionary<string, List<LabelInformation>> tableToolTipsCache = this.ToolTipsCache[tableNameKey];
                     string fieldNameKey = captionInfo.FieldName.ToLower();
                     if (tableToolTipsCache.ContainsKey(fieldNameKey))
                     {
-                        List<string> fieldToolTipsCache = tableToolTipsCache[fieldNameKey];
-                        if ((fieldToolTipsCache.Count > 0) && (!String.IsNullOrWhiteSpace(fieldToolTipsCache[0])))
+                        List<LabelInformation> fieldToolTipsCache = tableToolTipsCache[fieldNameKey];
+                        if ((fieldToolTipsCache.Count > 0) && (!String.IsNullOrWhiteSpace(fieldToolTipsCache[0].Value)))
                         {
-                            string newToolTip = fieldToolTipsCache[0];
+                            var newToolTip = fieldToolTipsCache[0];
 
                             PageFieldSyntax newNode = this.SetPageFieldToolTip(node, newToolTip);
                             if (newNode != null)
