@@ -366,9 +366,10 @@
     <Compile Include="$(MSBuildThisFileDirectory)Workspace\SymbolsInformation\EnumInformationProvider.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Workspace\SymbolsInformation\InterfaceInformation.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Workspace\SymbolsInformation\InterfaceInformationProvider.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)Workspace\SymbolsInformation\Internal\IntPageControlWithPropertyValue.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)Workspace\SymbolsInformation\Internal\IntPageWithControlsWithPropertyValue.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Workspace\SymbolsInformation\Internal\IntPageControlWithLabelPropertyValue.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Workspace\SymbolsInformation\Internal\IntPageWithControlsWithLabelPropertyValue.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Workspace\SymbolsInformation\LabelInformation.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Workspace\SymbolsInformation\LabelInformationList_Extensions.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Workspace\SymbolsInformation\MethodInformation.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Workspace\SymbolsInformation\ObjectIdInformationProvider.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Workspace\SymbolsInformation\ObjectIdRangeIdInformationCollection.cs" />

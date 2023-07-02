@@ -11,6 +11,7 @@ namespace AnZwDev.ALTools.WorkspaceCommands
     public class SetPageFieldToolTipWorkspaceCommand : SyntaxRewriterWorkspaceCommand<SetPageFieldToolTipSyntaxRewriter>
     {
         public static string ToolTipParameterName = "toolTip";
+        public static string CommentParameterName = "comment";
 
         public SetPageFieldToolTipWorkspaceCommand(ALDevToolsServer alDevToolsServer) : base(alDevToolsServer, "setPageFieldToolTip")
         {
@@ -20,6 +21,7 @@ namespace AnZwDev.ALTools.WorkspaceCommands
         {
             base.SetParameters(sourceCode, projectPath, filePath, span, parameters);
             this.SyntaxRewriter.ToolTip = parameters.GetStringValue(ToolTipParameterName);
+            this.SyntaxRewriter.Comment = parameters.GetStringValue(CommentParameterName);
         }
 
     }

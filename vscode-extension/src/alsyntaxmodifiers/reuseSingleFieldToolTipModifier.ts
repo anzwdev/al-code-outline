@@ -1,14 +1,15 @@
-import { execFileSync } from 'child_process';
 import * as vscode from 'vscode';
 import { DevToolsExtensionContext } from "../devToolsExtensionContext";
 import { ToolsGetPageFieldAvailableToolTipsRequest } from '../langserver/symbolsinformation/toolsGetPageFieldAvailableToolTipsRequest';
 import { AZSymbolInformation } from '../symbollibraries/azSymbolInformation';
 import { AZSymbolKind } from '../symbollibraries/azSymbolKind';
 import { WorkspaceCommandSyntaxModifier } from "./workspaceCommandSyntaxModifier";
+import { LabelInformation } from '../symbolsinformation/labelInformation';
+import { TemplateQuickPickItem } from '../tools/templateQuickPickItem';
 
 export class ReuseSingleFieldToolTipModifier extends WorkspaceCommandSyntaxModifier {
-    private _toolTip: string | undefined;
-    private _availableToolTips: string[] | undefined;
+    private _toolTip: LabelInformation | undefined;
+    private _availableToolTips: LabelInformation[] | undefined;
 
     constructor(context: DevToolsExtensionContext) {
         super(context, "Reuse Field ToolTip from other Pages", "setPageFieldToolTip");
@@ -62,19 +63,24 @@ export class ReuseSingleFieldToolTipModifier extends WorkspaceCommandSyntaxModif
 
     protected getParameters(uri: vscode.Uri): any {
         let parameters = super.getParameters(uri);
-        parameters.toolTip = this._toolTip;
+        if (this._toolTip) {
+            parameters.toolTip = this._toolTip.value;
+            parameters.comment = this._toolTip.comment;
+        }
         return parameters;
     }
 
     async askForParameters(uri: vscode.Uri | undefined): Promise<boolean> {
         //ask for Application Area Type
-        this._toolTip = await vscode.window.showQuickPick(this._availableToolTips!, {
+        let quickPickItems = this._availableToolTips!.map(x => new TemplateQuickPickItem<LabelInformation>(x.value!, x, false));
+        let selectedToolTip : TemplateQuickPickItem<LabelInformation> | undefined = await vscode.window.showQuickPick(quickPickItems, {
             canPickMany: false,
             placeHolder: 'Select tooltip for this field'
         });    
 
-        return ((!!this._toolTip) && (this._toolTip != ''));
-    }
+        this._toolTip = selectedToolTip?.value;
 
+        return ((!!this._toolTip) && (this._toolTip.value !== ''));
+    }
 
 }

@@ -130,7 +130,7 @@ namespace AZALDevToolsTestConsoleApp
 
 
             PageInformationProvider pageInformationProvider = new PageInformationProvider();
-            List<string> toolTipsList = pageInformationProvider.GetPageFieldAvailableToolTips(project, "Page", "MyTestPage", "", "Rec.\"No.\"");
+            var toolTipsList = pageInformationProvider.GetPageFieldAvailableToolTips(project, "Page", "MyTestPage", "", "Rec.\"No.\"");
 
             PageInformation pageInformation = pageInformationProvider.GetPageDetails(project, "wqefewf", true, true, true, null);
 

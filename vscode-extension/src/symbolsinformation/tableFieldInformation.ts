@@ -9,6 +9,6 @@ export class TableFieldInformation extends SymbolWithIdInformation {
     state: TableFieldState | undefined;
     captionLabel: LabelInformation | undefined;
     description: string | undefined;
-    toolTips: string[] | undefined;
+    toolTips: LabelInformation[] | undefined;
     uiDesc: string | undefined;
 }

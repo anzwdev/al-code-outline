@@ -1,3 +1,5 @@
+import { LabelInformation } from "../../symbolsinformation/labelInformation";
+
 export class ToolsGetPageFieldAvailableToolTipsResponse {
-    toolTips: string[] | undefined;
+    toolTips: LabelInformation[] | undefined;
 }

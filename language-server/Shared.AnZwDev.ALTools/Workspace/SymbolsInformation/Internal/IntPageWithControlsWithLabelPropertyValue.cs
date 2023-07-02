@@ -5,18 +5,18 @@ using System.Text;
 
 namespace AnZwDev.ALTools.Workspace.SymbolsInformation.Internal
 {
-    internal class IntPageWithControlsWithPropertyValue
+    internal class IntPageWithControlsWithLabelPropertyValue
     {
 
         public string Name { get; set; }
         public string SourceTable { get; set; }
         public string PropertyName { get; }
-        public Dictionary<string, IntPageControlWithPropertyValue> Controls { get; }
+        public Dictionary<string, IntPageControlWithLabelPropertyValue> Controls { get; }
 
-        public IntPageWithControlsWithPropertyValue(ALAppPage alAppPage, string propertyName)
+        public IntPageWithControlsWithLabelPropertyValue(ALAppPage alAppPage, string propertyName)
         {
             //get page properties
-            this.Controls = new Dictionary<string, IntPageControlWithPropertyValue>();
+            this.Controls = new Dictionary<string, IntPageControlWithLabelPropertyValue>();
             this.Name = alAppPage.Name;
             this.PropertyName = propertyName;
             if (alAppPage.Properties != null)
@@ -42,19 +42,26 @@ namespace AnZwDev.ALTools.Workspace.SymbolsInformation.Internal
                 string key = alAppControl.Name?.ToLower();
                 if (key != null)
                 {
+                    LabelInformation labelInformation = null;
+                    ALAppProperty property = alAppControl.Properties?.GetProperty(this.PropertyName);
+                    if (property != null)
+                    {
+                        labelInformation = new LabelInformation(PropertyName, property.Value);
+                        labelInformation.Update(alAppControl.Properties);
+                    }
+
                     if (this.Controls.ContainsKey(key))
                     {
-                        ALAppProperty property = alAppControl.Properties?.GetProperty(this.PropertyName);
-                        if ((property != null) && (property.Value != null))
-                            this.Controls[key].PropertyValue = property.Value;
+                        if ((labelInformation != null) && (labelInformation.Value != null))
+                            this.Controls[key].PropertyValue = labelInformation;
                     }
                     else
                     {
-                        this.Controls.Add(key, new IntPageControlWithPropertyValue()
+                        this.Controls.Add(key, new IntPageControlWithLabelPropertyValue()
                         {
                             ControlName = alAppControl.Name,
                             ControlSource = expression,
-                            PropertyValue = alAppControl.Properties?.GetProperty(this.PropertyName)?.Value
+                            PropertyValue = labelInformation
                         });
                     }
                 }

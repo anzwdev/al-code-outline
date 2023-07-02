@@ -203,7 +203,7 @@ namespace AnZwDev.ALTools.Workspace.SymbolsInformation
 
         #region Tooltips information
 
-        public List<string> GetPageFieldAvailableToolTips(ALProject project, string objectType, string objectName, string sourceTable, string fieldExpression)
+        public List<LabelInformation> GetPageFieldAvailableToolTips(ALProject project, string objectType, string objectName, string sourceTable, string fieldExpression)
         {
             if ((String.IsNullOrWhiteSpace(objectType)) || (String.IsNullOrWhiteSpace(objectName)) || (String.IsNullOrWhiteSpace(fieldExpression)))
                 return null;
@@ -232,23 +232,23 @@ namespace AnZwDev.ALTools.Workspace.SymbolsInformation
             string[] tableNames = { sourceTable };
             string tableKey = sourceTable.ToLower();
             string fieldKey = fieldName.ToLower();
-            Dictionary<string, Dictionary<string, List<string>>> allToolTips = this.CollectTableFieldsToolTips(project, tableNames, null);
+            Dictionary<string, Dictionary<string, List<LabelInformation>>> allToolTips = this.CollectTableFieldsToolTips(project, tableNames, null);
             if ((allToolTips.ContainsKey(tableKey)) && (allToolTips[tableKey].ContainsKey(fieldKey)))
                 return allToolTips[tableKey][fieldKey];
 
             return null;
         }
 
-        public Dictionary<string, Dictionary<string, List<string>>> CollectProjectTableFieldsToolTips(ALProject project, IEnumerable<string> dependenciesList)
+        public Dictionary<string, Dictionary<string, List<LabelInformation>>> CollectProjectTableFieldsToolTips(ALProject project, IEnumerable<string> dependenciesList)
         {
             return this.CollectTableFieldsToolTips(project, GetProjectTablesList(project), dependenciesList);
         }
 
-        public Dictionary<string, Dictionary<string, List<string>>> CollectTableFieldsToolTips(ALProject project, IEnumerable<string> tableNamesList, IEnumerable<string> dependenciesList)
+        public Dictionary<string, Dictionary<string, List<LabelInformation>>> CollectTableFieldsToolTips(ALProject project, IEnumerable<string> tableNamesList, IEnumerable<string> dependenciesList)
         {
             HashSet<string> dependenciesHashSet = ((dependenciesList != null) && (!dependenciesList.Contains("*")))? dependenciesList.ToHashSet(true) : null;
             HashSet<string> tableNamesHashSet = tableNamesList.ToLowerCaseHashSet();
-            Dictionary<string, IntPageWithControlsWithPropertyValue> pagesCacheDictionary = new Dictionary<string, IntPageWithControlsWithPropertyValue>();
+            Dictionary<string, IntPageWithControlsWithLabelPropertyValue> pagesCacheDictionary = new Dictionary<string, IntPageWithControlsWithLabelPropertyValue>();
 
             //collect pages with controls
             IEnumerable<ALAppPage> alAppPagesCollection = this.GetALAppObjectsCollection(project).GetObjects(dependenciesHashSet);
@@ -257,7 +257,7 @@ namespace AnZwDev.ALTools.Workspace.SymbolsInformation
                 string tableName = alAppPage.GetSourceTable()?.ToLower();
                 string pageName = alAppPage.Name?.ToLower();
                 if ((!String.IsNullOrWhiteSpace(tableName)) && (tableNamesHashSet.Contains(tableName)) && (!String.IsNullOrWhiteSpace(pageName)) && (!pagesCacheDictionary.ContainsKey(pageName)))
-                    pagesCacheDictionary.Add(pageName, new IntPageWithControlsWithPropertyValue(alAppPage, "ToolTip"));
+                    pagesCacheDictionary.Add(pageName, new IntPageWithControlsWithLabelPropertyValue(alAppPage, "ToolTip"));
             }
 
             //apply extensions
@@ -270,15 +270,15 @@ namespace AnZwDev.ALTools.Workspace.SymbolsInformation
             }
 
             //collect property values
-            Dictionary<string, Dictionary<string, List<string>>> tablesPropertyValuesDictionary = new Dictionary<string, Dictionary<string, List<string>>>();
-            foreach (IntPageWithControlsWithPropertyValue pageCache in pagesCacheDictionary.Values)
+            Dictionary<string, Dictionary<string, List<LabelInformation>>> tablesPropertyValuesDictionary = new Dictionary<string, Dictionary<string, List<LabelInformation>>>();
+            foreach (IntPageWithControlsWithLabelPropertyValue pageCache in pagesCacheDictionary.Values)
             {
                 string tableName = pageCache.SourceTable.ToLower();
-                Dictionary<string, List<string>> tableFieldsProperties = tablesPropertyValuesDictionary.FindOrCreate(tableName);
+                Dictionary<string, List<LabelInformation>> tableFieldsProperties = tablesPropertyValuesDictionary.FindOrCreate(tableName);
                 //add fields
-                foreach (IntPageControlWithPropertyValue controlCache in pageCache.Controls.Values)
+                foreach (IntPageControlWithLabelPropertyValue controlCache in pageCache.Controls.Values)
                 {
-                    if (!String.IsNullOrWhiteSpace(controlCache.PropertyValue))
+                    if (!String.IsNullOrWhiteSpace(controlCache.PropertyValue?.Value))
                     {
                         //get field name
                         string fieldName = null;
@@ -288,8 +288,8 @@ namespace AnZwDev.ALTools.Workspace.SymbolsInformation
                         if (!String.IsNullOrWhiteSpace(fieldName))
                         {
                             fieldName = fieldName.ToLower();
-                            List<string> propertyValues = tableFieldsProperties.FindOrCreate(fieldName);
-                            if (!propertyValues.Contains(controlCache.PropertyValue))
+                            List<LabelInformation> propertyValues = tableFieldsProperties.FindOrCreate(fieldName);
+                            if (!propertyValues.ContainsValue(controlCache.PropertyValue.Value))
                                 propertyValues.Add(controlCache.PropertyValue);
                         }
                     }

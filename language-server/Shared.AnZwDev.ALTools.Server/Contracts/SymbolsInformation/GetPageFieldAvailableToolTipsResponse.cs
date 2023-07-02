@@ -1,4 +1,5 @@
-﻿using System;
+﻿using AnZwDev.ALTools.Workspace.SymbolsInformation;
+using System;
 using System.Collections.Generic;
 using System.Text;
 
@@ -6,6 +7,6 @@ namespace AnZwDev.ALTools.Server.Contracts.SymbolsInformation
 {
     public class GetPageFieldAvailableToolTipsResponse
     {
-        public List<string> toolTips { get; set; }
+        public List<LabelInformation> toolTips { get; set; }
     }
 }
