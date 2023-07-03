@@ -126,12 +126,11 @@ export class ToolsLangServerClient implements vscode.Disposable {
             } else {                
                 langServerPath = this._context.asAbsolutePath("bin/netcore/" + platform + "/AZALDevToolsServer.NetCore");
                 this.errorLogUri = vscode.Uri.file(this._context.asAbsolutePath("bin/netcore/" + platform + "/log.txt"));
-                if (platform == "darwin") {
+                if ((platform === "darwin") || (platform === "linux")) {
                     let fs = require('fs');
                     fs.chmodSync(langServerPath, 0o755);
                 }
             }
-
 
             //start child process
             this._childProcess = cp.spawn(langServerPath, [this._alExtensionPath]);
