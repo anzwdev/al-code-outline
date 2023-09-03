@@ -1,4 +1,6 @@
-﻿using AnZwDev.ALTools.ALSymbols.Internal;
+﻿using AnZwDev.ALTools.ALLanguageInformation;
+using AnZwDev.ALTools.ALSymbols;
+using AnZwDev.ALTools.ALSymbols.Internal;
 using AnZwDev.ALTools.Extensions;
 using Microsoft.Dynamics.Nav.CodeAnalysis;
 using Microsoft.Dynamics.Nav.CodeAnalysis.Syntax;
@@ -13,6 +15,19 @@ namespace AnZwDev.ALTools.CodeTransformations
 
         public KeywordCaseSyntaxRewriter()
         {
+        }
+
+        public override SyntaxNode VisitEnumPropertyValue(EnumPropertyValueSyntax node)
+        {
+            var value = ALSyntaxHelper.DecodeName(node.Value.ToString());
+            string newValue = EnumPropertyValueCaseInformation.Values.FixCase(value);
+            if (value != newValue)
+            {
+                this.NoOfChanges++;
+                node = node.WithValue(SyntaxFactory.IdentifierName(newValue));
+            }
+
+            return base.VisitEnumPropertyValue(node);
         }
 
         public override SyntaxNode VisitPropertyName(PropertyNameSyntax node)

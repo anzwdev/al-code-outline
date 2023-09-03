@@ -1,5 +1,11 @@
 # Change Log
 
+## 3.0.48
+ - Issue #483 - Fix identifiers and Case does not fix internal
+
+Thank you
+ - guidorobben for reporting issue #483
+
 ## 3.0.47
  - Issue #470 - Add "DataClassification" as table property to the "New Table Wizard"
  - Issue #472 - CodeCompletion - Do not Ignore Prefix in variable names
