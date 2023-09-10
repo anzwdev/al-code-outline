@@ -2,6 +2,7 @@
 
 ## 3.0.48
  - Issue #483 - Fix identifiers and Case does not fix internal
+ - Conditional directives parser and editor decorations
 
 Thank you
  - guidorobben for reporting issue #483
