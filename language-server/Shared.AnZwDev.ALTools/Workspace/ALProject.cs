@@ -9,9 +9,10 @@ using AnZwDev.ALTools.Core;
 using AnZwDev.ALTools.ALSymbols;
 using AnZwDev.ALTools.Extensions;
 using AnZwDev.ALTools.ALSymbolReferences;
-using Microsoft.Dynamics.Nav.CodeAnalysis.Syntax;
 using AnZwDev.ALTools.CodeAnalysis;
 using AnZwDev.ALTools.ALSymbolReferences.MergedReferences;
+using Microsoft.Dynamics.Nav.CodeAnalysis.Syntax;
+using Microsoft.Dynamics.Nav.CodeAnalysis;
 
 namespace AnZwDev.ALTools.Workspace
 {
@@ -532,6 +533,21 @@ namespace AnZwDev.ALTools.Workspace
                 this.Symbols.Version = (this.Properties.Version != null)?this.Properties.Version.Version:"";
             }
         }
+
+#if BC
+        public ParseOptions GetSyntaxTreeParseOptions()
+        {
+            List<string> preprocessorSymbols = Properties.PreprocessorSymbols;
+            Version runtimeVersion = RuntimeVersion.CurrentRelease;
+
+            if (Properties.Runtime.Parts.Length == 2)
+                runtimeVersion = new Version(Properties.Runtime.Parts[0], Properties.Runtime.Parts[1]);
+            else if (Properties.Runtime.Parts.Length == 1)
+                runtimeVersion = new Version(Properties.Runtime.Parts[0], 0);
+
+            return new ParseOptions(runtimeVersion, preprocessorSymbols);
+        }
+#endif
 
     }
 }

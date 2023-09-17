@@ -1,5 +1,6 @@
 ﻿using AnZwDev.ALTools.ALSymbols.SymbolReaders;
 using AnZwDev.ALTools.Logging;
+using AnZwDev.ALTools.Workspace;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -25,14 +26,14 @@ namespace AnZwDev.ALTools.ALSymbols
             this.OpenCount = 0;
         }
 
-        public void Load(string content)
+        public void Load(string content, ALProject project)
         {
             try
             {
                 if (String.IsNullOrWhiteSpace(content))
-                    this.RootSymbolWithProperties = this.SyntaxTreeReader.ProcessSourceFile(this.Path);
+                    this.RootSymbolWithProperties = this.SyntaxTreeReader.ProcessSourceFile(this.Path, project);
                 else
-                    this.RootSymbolWithProperties = this.SyntaxTreeReader.ProcessSourceCode(content);
+                    this.RootSymbolWithProperties = this.SyntaxTreeReader.ProcessSourceCode(content, project);
             }
             catch (Exception e)
             {

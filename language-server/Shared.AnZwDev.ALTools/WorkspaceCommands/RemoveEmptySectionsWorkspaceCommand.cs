@@ -1,6 +1,7 @@
 ﻿using AnZwDev.ALTools.ALSymbols;
 using AnZwDev.ALTools.CodeTransformations;
 using AnZwDev.ALTools.Extensions;
+using AnZwDev.ALTools.Workspace;
 using Microsoft.Dynamics.Nav.CodeAnalysis;
 using System;
 using System.Collections.Generic;
@@ -20,9 +21,9 @@ namespace AnZwDev.ALTools.WorkspaceCommands
         {
         }
 
-        protected override void SetParameters(string sourceCode, string projectPath, string filePath, TextSpan span, Dictionary<string, string> parameters)
+        protected override void SetParameters(string sourceCode, ALProject project, string filePath, TextSpan span, Dictionary<string, string> parameters)
         {
-            base.SetParameters(sourceCode, projectPath, filePath, span, parameters);
+            base.SetParameters(sourceCode, project, filePath, span, parameters);
             //this.SyntaxRewriter.RemovePageFieldGroups = parameters.GetBoolValue(RemovePageFieldGroupsParameterName);
             this.SyntaxRewriter.RemovePageFieldGroups = false;
             this.SyntaxRewriter.RemoveActionGroups = parameters.GetBoolValue(RemoveActionGroupsParameterName);

@@ -1,5 +1,6 @@
 ﻿using AnZwDev.ALTools.ALSymbols;
 using AnZwDev.ALTools.CodeTransformations;
+using AnZwDev.ALTools.Workspace;
 using Microsoft.Dynamics.Nav.CodeAnalysis;
 using Microsoft.Dynamics.Nav.CodeAnalysis.Syntax;
 using System;
@@ -18,31 +19,31 @@ namespace AnZwDev.ALTools.WorkspaceCommands
             this.SyntaxRewriter = new T();
         }
 
-        public override WorkspaceCommandResult Run(string sourceCode, string projectPath, string filePath, Range range, Dictionary<string, string> parameters, List<string> excludeFiles)
+        public override WorkspaceCommandResult Run(string sourceCode, ALProject project, string filePath, Range range, Dictionary<string, string> parameters, List<string> excludeFiles)
         {
             this.SyntaxRewriter.TotalNoOfChanges = 0;
             this.SyntaxRewriter.NoOfChangedFiles = 0;
             this.SyntaxRewriter.NoOfChanges = 0;
 
-            WorkspaceCommandResult result = base.Run(sourceCode, projectPath, filePath, range, parameters, excludeFiles);
+            WorkspaceCommandResult result = base.Run(sourceCode, project, filePath, range, parameters, excludeFiles);
 
             result.SetParameter(NoOfChangesParameterName, this.SyntaxRewriter.TotalNoOfChanges.ToString());
             result.SetParameter(NoOfChangedFilesParameterName, this.SyntaxRewriter.NoOfChangedFiles.ToString());
             return result;
         }
 
-        public override SyntaxNode ProcessSyntaxNode(SyntaxNode node, string sourceCode, string projectPath, string filePath, TextSpan span, Dictionary<string, string> parameters)
+        public override SyntaxNode ProcessSyntaxNode(SyntaxNode node, string sourceCode, ALProject project, string filePath, TextSpan span, Dictionary<string, string> parameters)
         {
-            this.SetParameters(sourceCode, projectPath, filePath, span, parameters);
+            this.SetParameters(sourceCode, project, filePath, span, parameters);
             node = this.SyntaxRewriter.ProcessNode(node);
-            node = base.ProcessSyntaxNode(node, sourceCode, projectPath, filePath, span, parameters);
+            node = base.ProcessSyntaxNode(node, sourceCode, project, filePath, span, parameters);
             this.ClearParameters();
             return node;
         }
 
-        protected virtual void SetParameters(string sourceCode, string projectPath, string filePath, TextSpan span, Dictionary<string, string> parameters)
+        protected virtual void SetParameters(string sourceCode, ALProject project, string filePath, TextSpan span, Dictionary<string, string> parameters)
         {
-            this.SyntaxRewriter.Project = this.ALDevToolsServer.Workspace.FindProject(projectPath, true);
+            this.SyntaxRewriter.Project = project;
             this.SyntaxRewriter.Span = span;
         }
 

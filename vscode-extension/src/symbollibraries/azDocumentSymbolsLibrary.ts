@@ -87,11 +87,17 @@ export class AZDocumentSymbolsLibrary extends AZSymbolsLibrary {
                 //al language - use our special language server to parse source code
         
                 let documentPath : string = "";
-                if ((this._docUri) && (this._docUri.fsPath))
+                let projectPath : string | undefined = undefined;
+                if ((this._docUri) && (this._docUri.fsPath)) {
                     documentPath = this._docUri.fsPath;
+                    let workspaceFolder = vscode.workspace.getWorkspaceFolder(document.uri);
+                    if (workspaceFolder) {
+                        projectPath = workspaceFolder.uri.fsPath;
+                    }
+                }               
 
                 let active = this.isActiveDocument(document);
-                let request : ToolsDocumentSymbolsRequest = new ToolsDocumentSymbolsRequest(this._documentContent!, documentPath, true, active);
+                let request : ToolsDocumentSymbolsRequest = new ToolsDocumentSymbolsRequest(this._documentContent!, documentPath, projectPath, true, active);
                 let response : ToolsDocumentSymbolsResponse | undefined = await this._context.toolsLangServerClient.getALDocumentSymbols(request);
                 if ((response) && (response.root))
                     newRootSymbol = AZSymbolInformation.fromAny(response.root);

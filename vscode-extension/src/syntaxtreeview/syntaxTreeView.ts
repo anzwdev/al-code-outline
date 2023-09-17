@@ -35,15 +35,19 @@ export class SyntaxTreeView extends BaseSymbolsWebView {
     }
 
     protected async loadSymbols() {
-        if (!this._documentUri)
+        if (!this._documentUri) {
             return;
+        }
         let editor = TextEditorHelper.findDocumentEditor(this._documentUri);
         let source: string = '';
+        let projectPath: string | undefined = undefined;
 
-        if (editor)
-            source = editor.document.getText();       
+        if (editor) {
+            source = editor.document.getText();
+            projectPath = editor.document.uri.fsPath;
+        }
 
-        let request: ToolsGetSyntaxTreeRequest = new ToolsGetSyntaxTreeRequest(source, this._documentUri.fsPath, this._firstLoad);
+        let request: ToolsGetSyntaxTreeRequest = new ToolsGetSyntaxTreeRequest(source, this._documentUri.fsPath, projectPath, this._firstLoad);
         this._firstLoad = false;
         let response = await this._devToolsContext.toolsLangServerClient.getSyntaxTree(request);
         if ((response) && (response.root)) {

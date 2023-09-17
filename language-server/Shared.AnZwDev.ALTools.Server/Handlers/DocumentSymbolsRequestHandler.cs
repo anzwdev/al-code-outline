@@ -10,6 +10,7 @@ using AnZwDev.VSCodeLangServer.Protocol.MessageProtocol;
 using AnZwDev.ALTools.Server.Contracts;
 using AnZwDev.VSCodeLangServer.Utility;
 using AnZwDev.VSCodeLangServer.Protocol.Server;
+using AnZwDev.ALTools.Workspace;
 
 namespace AnZwDev.ALTools.Server.Handlers
 {
@@ -26,14 +27,16 @@ namespace AnZwDev.ALTools.Server.Handlers
             DocumentSymbolsResponse response = new DocumentSymbolsResponse();
             try
             {
+                ALProject project = Server.Workspace.FindProject(parameters.projectPath, true);
+
                 ALSymbolInfoSyntaxTreeReader symbolTreeBuilder = new ALSymbolInfoSyntaxTreeReader(
                     parameters.includeProperties);
                 if (String.IsNullOrWhiteSpace(parameters.source))
-                    response.root = symbolTreeBuilder.ProcessSourceFile(parameters.path);
+                    response.root = symbolTreeBuilder.ProcessSourceFile(parameters.path, project);
                 else
                 {
                     response.root = symbolTreeBuilder.ProcessSourceCodeAndUpdateActiveDocument(
-                        parameters.path, parameters.source, Server.Workspace, parameters.isActiveDocument);
+                        parameters.path, parameters.source, Server.Workspace, project, parameters.isActiveDocument);
                 }
             }
             catch (Exception e)

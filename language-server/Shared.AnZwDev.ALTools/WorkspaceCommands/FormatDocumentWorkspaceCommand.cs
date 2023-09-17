@@ -1,4 +1,5 @@
 ﻿using AnZwDev.ALTools.ALSymbols;
+using AnZwDev.ALTools.Workspace;
 using Microsoft.Dynamics.Nav.CodeAnalysis;
 using System;
 using System.Collections.Generic;
@@ -13,15 +14,15 @@ namespace AnZwDev.ALTools.WorkspaceCommands
         {
         }
 
-        public override WorkspaceCommandResult Run(string sourceCode, string projectPath, string filePath, Range range, Dictionary<string, string> parameters, List<string> excludeFiles)
+        public override WorkspaceCommandResult Run(string sourceCode, ALProject project, string filePath, Range range, Dictionary<string, string> parameters, List<string> excludeFiles)
         {
-            WorkspaceCommandResult result = base.Run(sourceCode, projectPath, filePath, range, parameters, excludeFiles);
+            WorkspaceCommandResult result = base.Run(sourceCode, project, filePath, range, parameters, excludeFiles);
             result.SetParameter(NoOfChangesParameterName, "");
             result.SetParameter(NoOfChangedFilesParameterName, "");
             return result;
         }
 
-        public override SyntaxNode ProcessSyntaxNode(SyntaxNode node, string sourceCode, string projectPath, string filePath, TextSpan span, Dictionary<string, string> parameters)
+        public override SyntaxNode ProcessSyntaxNode(SyntaxNode node, string sourceCode, ALProject project, string filePath, TextSpan span, Dictionary<string, string> parameters)
         {
             return FormatSyntaxNode(node);
         }

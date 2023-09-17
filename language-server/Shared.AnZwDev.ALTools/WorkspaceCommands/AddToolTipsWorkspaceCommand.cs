@@ -24,9 +24,9 @@ namespace AnZwDev.ALTools.WorkspaceCommands
         {
         }
 
-        protected override void SetParameters(string sourceCode, string projectPath, string filePath, TextSpan span, Dictionary<string, string> parameters)
+        protected override void SetParameters(string sourceCode, ALProject project, string filePath, TextSpan span, Dictionary<string, string> parameters)
         {
-            base.SetParameters(sourceCode, projectPath, filePath, span, parameters);
+            base.SetParameters(sourceCode, project, filePath, span, parameters);
             this.SyntaxRewriter.PageFieldTooltip = parameters.GetStringValue(FieldTooltipParameterName);
             this.SyntaxRewriter.PageActionTooltip = parameters.GetStringValue(ActionTooltipParameterName);
             this.SyntaxRewriter.PageFieldTooltipComment = parameters.GetStringValue(FieldTooltipCommentParameterName);

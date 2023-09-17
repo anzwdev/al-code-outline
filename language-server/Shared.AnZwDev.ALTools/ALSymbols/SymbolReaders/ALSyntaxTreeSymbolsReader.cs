@@ -1,5 +1,6 @@
 ﻿using AnZwDev.ALTools.Extensions;
 using AnZwDev.ALTools.Logging;
+using AnZwDev.ALTools.Workspace;
 using Microsoft.Dynamics.Nav.CodeAnalysis;
 using Microsoft.Dynamics.Nav.CodeAnalysis.Syntax;
 using System;
@@ -17,7 +18,7 @@ namespace AnZwDev.ALTools.ALSymbols.SymbolReaders
         {
         }
 
-        public ALSyntaxTreeSymbol ProcessSourceFile(string path)
+        public ALSyntaxTreeSymbol ProcessSourceFile(string path, ALProject project)
         {
             string sourceCode;
             try
@@ -27,7 +28,7 @@ namespace AnZwDev.ALTools.ALSymbols.SymbolReaders
                 reader.Close();
                 reader.Dispose();
 
-                return ProcessSourceCode(sourceCode);
+                return ProcessSourceCode(sourceCode, project);
             }
             catch (Exception e)
             {
@@ -38,9 +39,9 @@ namespace AnZwDev.ALTools.ALSymbols.SymbolReaders
 
 
 
-        public ALSyntaxTreeSymbol ProcessSourceCode(string source)
+        public ALSyntaxTreeSymbol ProcessSourceCode(string source, ALProject project)
         {
-            SyntaxTree syntaxTree = SyntaxTreeExtensions.SafeParseObjectText(source);
+            SyntaxTree syntaxTree = SyntaxTreeExtensions.SafeParseObjectText(source, project);
 
             if (syntaxTree != null)
             {
