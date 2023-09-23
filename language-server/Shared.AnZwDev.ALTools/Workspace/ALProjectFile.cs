@@ -132,7 +132,12 @@ namespace AnZwDev.ALTools.Workspace
             this.IsDirty = true;
             if (content == null)
                 content = this.ReadAllText();
+#if BC
+            _syntaxTree = SyntaxTree.ParseObjectText(content, null, null, Project.GetSyntaxTreeParseOptions());
+#else
             _syntaxTree = SyntaxTree.ParseObjectText(content);
+#endif
+
             this.CompileSymbolReferences(false);
 
             if (returnSymbols)

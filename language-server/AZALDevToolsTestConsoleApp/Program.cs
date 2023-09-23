@@ -45,8 +45,6 @@ namespace AZALDevToolsTestConsoleApp
 
             //string filePath = "C:\\Projects\\Sandboxes\\al-test-projects\\small\\Pag50000.MySmallTableList.al";
             string filePath = "C:\\Projects\\Sandboxes\\al-test-projects\\BC184TestProject\\Pag50100.MyPageEvS.al";
-            ALSymbolInfoSyntaxTreeReader syntaxTreeReader = new(true);
-            ALSymbol symbols = syntaxTreeReader.ProcessSourceFile(filePath);
 
             //test project
             ALProjectSource[] projects =
@@ -74,13 +72,15 @@ namespace AZALDevToolsTestConsoleApp
             //filePath = "C:\\Projects\\Sandboxes\\al-test-projects\\BC184TestProject\\MyTable.al";
             //filePath = "C:\\Projects\\Sandboxes\\al-test-projects\\BC184TestProject\\PageEmptySectionsTest.al";
             //filePath = "C:\\Projects\\Sandboxes\\al-test-projects\\BC184TestProject\\WithTestsCU.al";
-            filePath = "C:\\Projects\\Sandboxes\\al-test-projects\\BC184TestProject\\CUWithTest.al";
+            //filePath = "C:\\Projects\\Sandboxes\\al-test-projects\\BC184TestProject\\CUWithTest.al";
             //filePath = "C:\\Projects\\Sandboxes\\al-test-projects\\BC184TestProject\\CSVXmlPort.al";
 
             //filePath = "C:\\Projects\\Sandboxes\\al-test-projects\\BC184TestProject\\Pag50105.MyItem3.al";
 
             //filePath = "C:\\Projects\\Sandboxes\\al-test-projects\\BC184TestProject\\Tab50100.T1.al";
             //filePath = "C:\\Projects\\Sandboxes\\al-test-projects\\BC184TestProject\\Cod50100.MyNewcodeunit.al";
+            //filePath = "C:\\Projects\\Sandboxes\\al-test-projects\\BC184TestProject\\Cod50112.rgrg.al";
+            filePath = "C:\\Projects\\Sandboxes\\al-test-projects\\BC184TestProject\\Cod50105.UnusedVariablesTest.al";
 
             string content = FileUtils.SafeReadAllText(filePath);
             Dictionary<string, string> pm = new();
@@ -90,21 +90,26 @@ namespace AZALDevToolsTestConsoleApp
 
             pm.Add("removeGlobalVariables", "true");
             pm.Add("removeLocalVariables", "true");
-            pm.Add("removeLocalMethodParameters", "false");
+            pm.Add("removeLocalMethodParameters", "true");
 
             pm.Add("triggersSortMode", "NaturalOrder");
             pm.Add("triggersNaturalOrder", "[]");
+
+            ALProject project = host.ALDevToolsServer.Workspace.Projects[0];
+
+            ALSymbolInfoSyntaxTreeReader syntaxTreeReader = new(true);
+            ALSymbol symbols = syntaxTreeReader.ProcessSourceFile(filePath, project);
 
             //pm.Add("dependencyName0", "Microsoft - System");
             //pm.Add("dependencyName1", "Microsoft - Application");
             //pm.Add("dependencyName2", "Microsoft - System Application");
             //pm.Add("dependencyName3", "Microsoft - Base Application");
 
-            WorkspaceCommandResult o = host.ALDevToolsServer.WorkspaceCommandsManager.RunCommand("removeWith", content, projects[0].folderPath, filePath, null, pm, null);
+            //WorkspaceCommandResult o = host.ALDevToolsServer.WorkspaceCommandsManager.RunCommand("removeWith", content, projects[0].folderPath, filePath, null, pm, null);
             //WorkspaceCommandResult o = host.ALDevToolsServer.WorkspaceCommandsManager.RunCommand("addAllObjectsPermissions", content, projectPath, null, pm);
             //WorkspaceCommandResult o = host.ALDevToolsServer.WorkspaceCommandsManager.RunCommand("fixIdentifiersCase", content, projects[0].folderPath, filePath, null, pm, null);
 
-            //WorkspaceCommandResult o = host.ALDevToolsServer.WorkspaceCommandsManager.RunCommand("removeUnusedVariables", content, projects[0].folderPath, filePath, null, pm, null);
+            WorkspaceCommandResult o = host.ALDevToolsServer.WorkspaceCommandsManager.RunCommand("removeUnusedVariables", content, projects[0].folderPath, filePath, null, pm, null);
             //WorkspaceCommandResult o = host.ALDevToolsServer.WorkspaceCommandsManager.RunCommand("convertObjectIdsToNames", content, projects[0], null, pm);
             //WorkspaceCommandResult o = host.ALDevToolsServer.WorkspaceCommandsManager.RunCommand("addParentheses", content, projects[0].folderPath, filePath, null, pm, null);
             //WorkspaceCommandResult o = host.ALDevToolsServer.WorkspaceCommandsManager.RunCommand("sortVariables", content, projects[0].folderPath, filePath, null, pm, null);
@@ -123,7 +128,9 @@ namespace AZALDevToolsTestConsoleApp
             //WorkspaceCommandResult o = host.ALDevToolsServer.WorkspaceCommandsManager.RunCommand("removeRedundantDataClassification", content, projects[0].folderPath, filePath, null, pm, null);
             //WorkspaceCommandResult o = host.ALDevToolsServer.WorkspaceCommandsManager.RunCommand("sortProcedures", content, projects[0].folderPath, filePath, null, pm, null);
 
-            ALProject project = host.ALDevToolsServer.Workspace.Projects[0];
+            //WorkspaceCommandResult o = host.ALDevToolsServer.WorkspaceCommandsManager.RunCommand("fixIdentifiersCase", content, projects[0].folderPath, filePath, null, pm, null);
+
+
 
             var allObj = project.AllSymbols.Tables.GetObjects().ToList();
 

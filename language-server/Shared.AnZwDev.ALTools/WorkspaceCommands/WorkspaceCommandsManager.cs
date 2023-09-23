@@ -1,4 +1,5 @@
 ﻿using AnZwDev.ALTools.ALSymbols;
+using AnZwDev.ALTools.Workspace;
 using System;
 using System.Collections.Generic;
 using System.Text;
@@ -86,11 +87,15 @@ namespace AnZwDev.ALTools.WorkspaceCommands
         {
             if (_commands.ContainsKey(commandName))
             {
+                ALProject project = ALDevToolsServer.Workspace.FindProject(projectPath);
+                if (project == null)
+                    project = ALDevToolsServer.Workspace.FindProject(filePath);
+
                 WorkspaceCommand command = _commands[commandName];
-                (WorkspaceCommandResult errorResult, bool canRun) = command.CanRun(sourceCode, projectPath, filePath, range, parameters, excludeFiles);
+                (WorkspaceCommandResult errorResult, bool canRun) = command.CanRun(sourceCode, project, filePath, range, parameters, excludeFiles);
                 if (!canRun)
                     return errorResult;
-                return _commands[commandName].Run(sourceCode, projectPath, filePath, range, parameters, excludeFiles);
+                return _commands[commandName].Run(sourceCode, project, filePath, range, parameters, excludeFiles);
             }
             else
                 throw new Exception($"Workspace command {commandName} not found.");

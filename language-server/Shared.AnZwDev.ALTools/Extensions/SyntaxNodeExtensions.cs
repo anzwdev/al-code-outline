@@ -191,6 +191,63 @@ namespace AnZwDev.ALTools.Extensions
             return false;
         }
 
+#if BC
+        internal static void CollectDirectiveTrivias(this SyntaxNode node, List<SyntaxTrivia> targetCollection)
+        {
+            node.CollectLeadingDirectiveTrivias(targetCollection);
+            node.CollectTrailingDirectiveTrivias(targetCollection);
+        }
+
+        internal static void CollectLeadingDirectiveTrivias(this SyntaxNode node, List<SyntaxTrivia> targetCollection)
+        {
+            targetCollection.AddRange(node.GetLeadingTrivia().Where(p => (p.IsDirective)));      
+        }
+
+        internal static void CollectTrailingDirectiveTrivias(this SyntaxNode node, List<SyntaxTrivia> targetCollection)
+        {
+            targetCollection.AddRange(node.GetTrailingTrivia().Where(p => (p.IsDirective)));
+        }
+#endif
+
+        internal static T WithLeadingLeadingTrivia<T>(this T node, List<SyntaxTrivia> targetCollection) where T : SyntaxNode
+        {
+            if (targetCollection.Count == 0)
+                return node;
+
+            IEnumerable<SyntaxTrivia> newList = targetCollection;
+            var existingTrivia = node.GetLeadingTrivia();
+            if ((existingTrivia != null) && (existingTrivia.Count > 0))
+                newList = targetCollection.MergeWith(existingTrivia);
+                            
+            return node.WithLeadingTrivia(SyntaxFactory.TriviaList(newList));
+        }
+
+        internal static T WithLeadingTrailingTrivia<T>(this T node, List<SyntaxTrivia> targetCollection) where T : SyntaxNode
+        {
+            if (targetCollection.Count == 0)
+                return node;
+
+            IEnumerable<SyntaxTrivia> newList = targetCollection;
+            var existingTrivia = node.GetTrailingTrivia();
+            if ((existingTrivia != null) && (existingTrivia.Count > 0))
+                newList = targetCollection.MergeWith(existingTrivia);
+
+            return node.WithTrailingTrivia(SyntaxFactory.TriviaList(newList));
+        }
+
+        internal static T WithTrailingTrailingTrivia<T>(this T node, List<SyntaxTrivia> targetCollection) where T : SyntaxNode
+        {
+            if (targetCollection.Count == 0)
+                return node;
+
+            IEnumerable<SyntaxTrivia> newList = targetCollection;
+            var existingTrivia = node.GetTrailingTrivia();
+            if ((existingTrivia != null) && (existingTrivia.Count > 0))
+                newList = existingTrivia.MergeWith(targetCollection);
+
+            return node.WithTrailingTrivia(SyntaxFactory.TriviaList(newList));
+        }
+
         internal static SyntaxNode FindParentByKind(this SyntaxNode node, params ConvertedSyntaxKind[] parentNodeKind)
         {
             while (node != null)

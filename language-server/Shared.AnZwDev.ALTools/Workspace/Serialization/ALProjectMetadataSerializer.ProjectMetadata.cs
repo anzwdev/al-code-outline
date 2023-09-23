@@ -50,6 +50,12 @@ namespace AnZwDev.ALTools.Workspace.Serialization
             [JsonProperty("internalsVisibleTo")]
             public ProjectDependencyMetadata[] InternalsVisibleTo { get; set; }
 
+            [JsonProperty("suppressWarnings")]
+            public List<string> SuppressWarnings { get; set; }
+
+            [JsonProperty("preprocessorSymbols")]
+            public List<string> PreprocessorSymbols { get; set; }
+
             #endregion
 
             #region Initialization
@@ -103,6 +109,8 @@ namespace AnZwDev.ALTools.Workspace.Serialization
                 targetProperties.Publisher = this.Publisher;
                 targetProperties.Version = new Core.VersionNumber(this.Version);
                 targetProperties.Runtime = new Core.VersionNumber(this.Runtime);
+                targetProperties.SuppressWarnings = this.SuppressWarnings;
+                targetProperties.PreprocessorSymbols = this.PreprocessorSymbols;
             }
 
             private void CopyIdRanges(ALProjectProperties targetProperties)

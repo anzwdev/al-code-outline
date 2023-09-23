@@ -26,11 +26,11 @@ namespace AnZwDev.ALTools.ALSymbols.SymbolReaders
 
         #region Main processing
 
-        public ALSymbol ProcessSourceFile(string path)
+        public ALSymbol ProcessSourceFile(string path, ALProject project)
         {
             try
             {
-                return ProcessSourceCode(System.IO.File.ReadAllText(path));
+                return ProcessSourceCode(System.IO.File.ReadAllText(path), project);
             }
             catch (Exception e)
             {
@@ -39,17 +39,17 @@ namespace AnZwDev.ALTools.ALSymbols.SymbolReaders
             }
         }
 
-        public ALSymbol ProcessSourceCodeAndUpdateActiveDocument(string path, string source, ALWorkspace workspace, bool updateActiveDocument)
+        public ALSymbol ProcessSourceCodeAndUpdateActiveDocument(string path, string source, ALWorkspace workspace, ALProject project, bool updateActiveDocument)
         {
-            SyntaxTree syntaxTree = SyntaxTreeExtensions.SafeParseObjectText(source);
+            SyntaxTree syntaxTree = SyntaxTreeExtensions.SafeParseObjectText(source, project);
             if (updateActiveDocument)
                 workspace.ActiveDocument.Update(path, syntaxTree);
             return ProcessSyntaxTree(syntaxTree);
         }
 
-        private ALSymbol ProcessSourceCode(string source)
+        private ALSymbol ProcessSourceCode(string source, ALProject project)
         {
-            SyntaxTree syntaxTree = SyntaxTreeExtensions.SafeParseObjectText(source);
+            SyntaxTree syntaxTree = SyntaxTreeExtensions.SafeParseObjectText(source, project);
             return ProcessSyntaxTree(syntaxTree);
         }
 

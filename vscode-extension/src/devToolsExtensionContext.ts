@@ -25,6 +25,7 @@ import { WarningDirectivesService } from './services/warningDirectivesService';
 import { HoverService } from './services/hoverService';
 import { ReferencesService } from './services/referencesService';
 import { IdReservationService } from './services/idReservationService';
+import { ALDecorationService } from './services/alDecorationService';
 
 export class DevToolsExtensionContext implements vscode.Disposable {
     alLangProxy : ALLangServerProxy;    
@@ -49,6 +50,7 @@ export class DevToolsExtensionContext implements vscode.Disposable {
     hoverService: HoverService;
     referencesService: ReferencesService;
     idReservationService: IdReservationService;
+    alDecorationService: ALDecorationService;
 
     constructor(context : vscode.ExtensionContext) {
         this.alLangProxy = new ALLangServerProxy();
@@ -79,6 +81,7 @@ export class DevToolsExtensionContext implements vscode.Disposable {
         this.hoverService = new HoverService(this);
         this.referencesService = new ReferencesService(this);
         this.idReservationService = new IdReservationService(this);
+        this.alDecorationService = new ALDecorationService(this);
     }
 
     getUseSymbolsBrowser() : boolean {

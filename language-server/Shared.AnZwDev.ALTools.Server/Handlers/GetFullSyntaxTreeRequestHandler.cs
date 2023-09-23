@@ -8,6 +8,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using AnZwDev.ALTools.Workspace;
 
 namespace AnZwDev.ALTools.Server.Handlers
 {
@@ -21,8 +22,9 @@ namespace AnZwDev.ALTools.Server.Handlers
 #pragma warning disable 1998
         protected override async Task<GetFullSyntaxTreeResponse> HandleMessage(GetFullSyntaxTreeRequest parameters, RequestContext<GetFullSyntaxTreeResponse> context)
         {
+            ALProject project = Server.Workspace.FindProject(parameters.projectPath, true);
             ALFullSyntaxTree syntaxTree = new ALFullSyntaxTree();
-            syntaxTree.Load(parameters.source, parameters.path);
+            syntaxTree.Load(parameters.source, parameters.path, project);
 
             GetFullSyntaxTreeResponse response = new GetFullSyntaxTreeResponse
             {

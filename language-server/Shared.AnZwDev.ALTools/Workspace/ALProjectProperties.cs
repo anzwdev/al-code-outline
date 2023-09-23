@@ -17,6 +17,8 @@ namespace AnZwDev.ALTools.Workspace
         public string Publisher { get; set; }
         public VersionNumber Version { get; set; }
         public VersionNumber Runtime { get; set; }
+        public List<string> SuppressWarnings { get; set; }
+        public List<string> PreprocessorSymbols { get; set; }
         public List<ALProjectIdRange> Ranges { get; set; }
         public List<ALProjectReference> InternalsVisibleTo { get; set; }
 

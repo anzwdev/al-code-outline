@@ -1,6 +1,7 @@
 ﻿using AnZwDev.ALTools.ALSymbols;
 using AnZwDev.ALTools.Extensions;
 using AnZwDev.ALTools.Logging;
+using AnZwDev.ALTools.Workspace;
 using Microsoft.Dynamics.Nav.CodeAnalysis;
 using Microsoft.Dynamics.Nav.CodeAnalysis.Syntax;
 using Microsoft.Dynamics.Nav.CodeAnalysis.Text;
@@ -16,13 +17,19 @@ namespace AnZwDev.ALTools.WorkspaceCommands
         {
         }
 
-        protected override (string, bool, string) ProcessSourceCode(string sourceCode, string projectPath, string filePath, Range range, Dictionary<string, string> parameters)
+        protected override (string, bool, string) ProcessSourceCode(string sourceCode, ALProject project, string filePath, Range range, Dictionary<string, string> parameters)
         {
             try
             {
+                //find project
+
                 //parse source code
                 SourceText sourceText = SourceText.From(sourceCode);
-                SyntaxTree syntaxTree = SyntaxTree.ParseObjectText(sourceText);
+#if BC
+                SyntaxTree syntaxTree = SyntaxTree.ParseObjectText(sourceText, null, project.GetSyntaxTreeParseOptions());
+#else
+                SyntaxTree syntaxTree = SyntaxTree.ParseObjectText(sourceText, null);
+#endif
 
                 //convert range to TextSpan
                 TextSpan span = new TextSpan(0, 0);
@@ -33,7 +40,7 @@ namespace AnZwDev.ALTools.WorkspaceCommands
                 }
 
                 //fix nodes
-                SyntaxNode node = this.ProcessSyntaxNode(syntaxTree.GetRoot(), sourceCode, projectPath, filePath, span, parameters);
+                SyntaxNode node = this.ProcessSyntaxNode(syntaxTree.GetRoot(), sourceCode, project, filePath, span, parameters);
 
                 //return new source code
                 if (node == null)
@@ -74,7 +81,7 @@ namespace AnZwDev.ALTools.WorkspaceCommands
         }
         */
 
-        public virtual SyntaxNode ProcessSyntaxNode(SyntaxNode node, string sourceCode, string projectPath, string filePath, TextSpan span, Dictionary<string, string> parameters)
+        public virtual SyntaxNode ProcessSyntaxNode(SyntaxNode node, string sourceCode, ALProject project, string filePath, TextSpan span, Dictionary<string, string> parameters)
         {
             bool skipFormatting = ((parameters != null) && (parameters.ContainsKey("skipFormatting")) && (parameters["skipFormatting"] == "true"));
             if (!skipFormatting)

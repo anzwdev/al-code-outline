@@ -1,5 +1,6 @@
 ﻿using AnZwDev.ALTools.ALSymbols;
 using AnZwDev.ALTools.SourceControl;
+using AnZwDev.ALTools.Workspace;
 using Microsoft.Dynamics.Nav.CodeAnalysis;
 #if BC
 using Microsoft.Dynamics.Nav.CodeAnalysis.Workspaces.Formatting;
@@ -30,14 +31,14 @@ namespace AnZwDev.ALTools.WorkspaceCommands
             this.ModifiedFilesNamesHashSet = null;
         }
 
-        public virtual (WorkspaceCommandResult, bool) CanRun(string sourceCode, string projectPath, string filePath, Range range, Dictionary<string, string> parameters, List<string> excludeFiles)
+        public virtual (WorkspaceCommandResult, bool) CanRun(string sourceCode, ALProject alProject, string filePath, Range range, Dictionary<string, string> parameters, List<string> excludeFiles)
         {
             bool modifiedFilesOnly = this.GetModifiedFilesOnlyValue(parameters);
             if (modifiedFilesOnly)
             {
                 try
                 {
-                    this.ModifiedFilesNamesList = GitClient.GetModifiedFiles(projectPath, ".al");
+                    this.ModifiedFilesNamesList = GitClient.GetModifiedFiles(alProject.RootPath, ".al");
                     this.ModifiedFilesNamesHashSet = new HashSet<string>();
                     foreach (string name in this.ModifiedFilesNamesList)
                         this.ModifiedFilesNamesHashSet.Add(name);
@@ -58,7 +59,7 @@ namespace AnZwDev.ALTools.WorkspaceCommands
             return (null, true);
         }
 
-        public virtual WorkspaceCommandResult Run(string sourceCode, string projectPath, string filePath, Range range, Dictionary<string, string> parameters, List<string> excludeFiles)
+        public virtual WorkspaceCommandResult Run(string sourceCode, ALProject alProject, string filePath, Range range, Dictionary<string, string> parameters, List<string> excludeFiles)
         {
             return WorkspaceCommandResult.Empty;
         }

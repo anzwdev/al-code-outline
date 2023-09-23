@@ -1,4 +1,5 @@
 ﻿using AnZwDev.ALTools.ALSymbols;
+using AnZwDev.ALTools.Workspace;
 using Microsoft.Dynamics.Nav.CodeAnalysis;
 using Microsoft.Dynamics.Nav.CodeAnalysis.Syntax;
 using Microsoft.Dynamics.Nav.CodeAnalysis.Text;
@@ -12,13 +13,13 @@ namespace AnZwDev.ALTools.Extensions
     public static class SyntaxTreeExtensions
     {
 
-        public static SyntaxTree SafeParseObjectText(string source)
+        public static SyntaxTree SafeParseObjectText(string source, ALProject project)
         {
             SyntaxTree syntaxTree;
 
             try
             {
-                syntaxTree = ParseObjectText(source);
+                syntaxTree = ParseObjectText(source, project);
             }
             catch (MissingMethodException)
             {
@@ -28,9 +29,13 @@ namespace AnZwDev.ALTools.Extensions
             return syntaxTree;
         }
 
-        private static SyntaxTree ParseObjectText(string source)
+        private static SyntaxTree ParseObjectText(string source, ALProject project)
         {
+#if BC
+            return SyntaxTree.ParseObjectText(source, null, null, project?.GetSyntaxTreeParseOptions());
+#else
             return SyntaxTree.ParseObjectText(source);
+#endif
         }
 
         private static SyntaxTree ParseObjectTextNav2018(string source)

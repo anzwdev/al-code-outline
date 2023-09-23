@@ -1,4 +1,5 @@
 ﻿using AnZwDev.ALTools.ALSymbols.SymbolReaders;
+using AnZwDev.ALTools.Workspace;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -16,13 +17,13 @@ namespace AnZwDev.ALTools.ALSymbols
         {
         }
 
-        public void Load(string source, string filePath)
+        public void Load(string source, string filePath, ALProject project)
         {
             ALFullSyntaxTreeReader reader = new ALFullSyntaxTreeReader();
             if (!String.IsNullOrEmpty(source))
-                this.Root = reader.ProcessSourceCode(source);
+                this.Root = reader.ProcessSourceCode(source, project);
             else
-                this.Root = reader.ProcessSourceFile(filePath);
+                this.Root = reader.ProcessSourceFile(filePath, project);
         }
 
 

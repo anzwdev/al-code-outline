@@ -1,5 +1,6 @@
 ﻿using AnZwDev.ALTools.CodeTransformations;
 using AnZwDev.ALTools.Extensions;
+using AnZwDev.ALTools.Workspace;
 using AnZwDev.ALTools.WorkspaceCommands.Parameters;
 using Microsoft.Dynamics.Nav.CodeAnalysis;
 using System;
@@ -18,9 +19,9 @@ namespace AnZwDev.ALTools.WorkspaceCommands
         {
         }
 
-        protected override void SetParameters(string sourceCode, string projectPath, string filePath, TextSpan span, Dictionary<string, string> parameters)
+        protected override void SetParameters(string sourceCode, ALProject project, string filePath, TextSpan span, Dictionary<string, string> parameters)
         {
-            base.SetParameters(sourceCode, projectPath, filePath, span, parameters);
+            base.SetParameters(sourceCode, project, filePath, span, parameters);
 
             if (parameters.ContainsKey(TriggersSortModeParameterName))
                 this.SyntaxRewriter.TriggerSortMode = parameters.GetEnumValue(TriggersSortModeParameterName, SortProceduresTriggerSortMode.None);

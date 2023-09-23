@@ -1,5 +1,6 @@
 ﻿using AnZwDev.ALTools.ALSymbols;
 using AnZwDev.ALTools.Core;
+using AnZwDev.ALTools.Extensions;
 using AnZwDev.ALTools.Logging;
 using AnZwDev.ALTools.SourceControl;
 using AnZwDev.ALTools.Workspace;
@@ -25,18 +26,17 @@ namespace AnZwDev.ALTools.WorkspaceCommands
         {
         }
 
-        public override WorkspaceCommandResult Run(string sourceCode, string projectPath, string filePath, Range range, Dictionary<string, string> parameters, List<string> excludeFiles)
+        public override WorkspaceCommandResult Run(string sourceCode, ALProject project, string filePath, Range range, Dictionary<string, string> parameters, List<string> excludeFiles)
         {
             SyntaxTree sourceSyntaxTree = null;
             string newSourceCode = null;
             bool success = true;
             string errorMessage = null;
+            ParseOptions parseOptions = project.GetSyntaxTreeParseOptions();
 
             //load project and single file
             List<SyntaxTree> syntaxTrees = new List<SyntaxTree>();
-            ALProject project = this.ALDevToolsServer.Workspace.FindProject(projectPath, true);
-            Compilation compilation = this.LoadProject(projectPath, syntaxTrees, sourceCode, filePath, project.PackageCachePath, out sourceSyntaxTree);
-            
+            Compilation compilation = this.LoadProject(project.RootPath, parseOptions, syntaxTrees, sourceCode, filePath, project.PackageCachePath, out sourceSyntaxTree);
 
             if (!String.IsNullOrWhiteSpace(filePath))
             {
@@ -57,11 +57,11 @@ namespace AnZwDev.ALTools.WorkspaceCommands
 
     #region Project loading
 
-        protected Compilation LoadProject(string projectPath, List<SyntaxTree> syntaxTrees, string sourceCode, string sourcePath, string alPackagesPath, out SyntaxTree sourceSyntaxTree)
+        protected Compilation LoadProject(string projectPath, ParseOptions parseOptions, List<SyntaxTree> syntaxTrees, string sourceCode, string sourcePath, string alPackagesPath, out SyntaxTree sourceSyntaxTree)
         {
             //load all syntax trees
             syntaxTrees.Clear();
-            this.LoadProjectALFiles(projectPath, syntaxTrees, sourceCode, sourcePath, out sourceSyntaxTree);
+            this.LoadProjectALFiles(projectPath, parseOptions, syntaxTrees, sourceCode, sourcePath, out sourceSyntaxTree);
 
             List<Diagnostic> diagnostics = new List<Diagnostic>();
 
@@ -118,11 +118,8 @@ namespace AnZwDev.ALTools.WorkspaceCommands
             return (LocalCacheSymbolReferenceLoader)constructors[0].Invoke(parametersValues);
         }
 
-        protected void LoadProjectALFiles(string projectPath, List<SyntaxTree> syntaxTrees, string sourceCode, string sourcePath, out SyntaxTree sourceSyntaxTree)
+        protected void LoadProjectALFiles(string projectPath, ParseOptions parseOptions, List<SyntaxTree> syntaxTrees, string sourceCode, string sourcePath, out SyntaxTree sourceSyntaxTree)
         {
-
-
-
             bool useSource = (!String.IsNullOrWhiteSpace(sourcePath));
             if (useSource)
                 sourcePath = Path.GetFullPath(sourcePath);
@@ -137,7 +134,7 @@ namespace AnZwDev.ALTools.WorkspaceCommands
                     content = sourceCode;
                 else
                     content = FileUtils.SafeReadAllText(filePaths[i]);
-                SyntaxTree syntaxTree = SyntaxTree.ParseObjectText(content, filePaths[i]);
+                SyntaxTree syntaxTree = SyntaxTree.ParseObjectText(content, filePaths[i], null, parseOptions);
                 syntaxTrees.Add(syntaxTree);
 
                 if (sourceFile)

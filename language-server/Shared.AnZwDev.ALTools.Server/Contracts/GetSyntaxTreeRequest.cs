@@ -10,6 +10,7 @@ namespace AnZwDev.ALTools.Server.Contracts
     {
         public string source { get; set; }
         public string path { get; set; }
+        public string projectPath { get; set; }
         public bool open { get; set; }
     }
 }

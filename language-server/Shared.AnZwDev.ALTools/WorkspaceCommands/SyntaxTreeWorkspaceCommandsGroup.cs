@@ -1,4 +1,5 @@
 ﻿using AnZwDev.ALTools.ALSymbols;
+using AnZwDev.ALTools.Workspace;
 using Microsoft.Dynamics.Nav.CodeAnalysis;
 using Microsoft.Dynamics.Nav.CodeAnalysis.Syntax;
 using System;
@@ -24,7 +25,7 @@ namespace AnZwDev.ALTools.WorkspaceCommands
             return command;
         }
 
-        public override SyntaxNode ProcessSyntaxNode(SyntaxNode node, string sourceCode, string projectPath, string filePath, TextSpan span, Dictionary<string, string> parameters)
+        public override SyntaxNode ProcessSyntaxNode(SyntaxNode node, string sourceCode, ALProject project, string filePath, TextSpan span, Dictionary<string, string> parameters)
         {
             string commandsParameterValue = parameters["commandsList"];
             char[] sep = { ',' };
@@ -32,9 +33,9 @@ namespace AnZwDev.ALTools.WorkspaceCommands
             for (int i=0;i<commandsList.Length; i++)
             {
                 if (this._commands.ContainsKey(commandsList[i]))
-                    node = this._commands[commandsList[i]].ProcessSyntaxNode(node, sourceCode, projectPath, filePath, span, parameters);
+                    node = this._commands[commandsList[i]].ProcessSyntaxNode(node, sourceCode, project, filePath, span, parameters);
             }
-            return base.ProcessSyntaxNode(node, sourceCode, projectPath, filePath, span, parameters);
+            return base.ProcessSyntaxNode(node, sourceCode, project, filePath, span, parameters);
         }
 
     }

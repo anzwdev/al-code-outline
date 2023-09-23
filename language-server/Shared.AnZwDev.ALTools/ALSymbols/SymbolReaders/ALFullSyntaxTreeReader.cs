@@ -1,5 +1,6 @@
 ﻿using AnZwDev.ALTools.Extensions;
 using AnZwDev.ALTools.Logging;
+using AnZwDev.ALTools.Workspace;
 using Microsoft.Dynamics.Nav.CodeAnalysis;
 using Microsoft.Dynamics.Nav.CodeAnalysis.Syntax;
 using Microsoft.Dynamics.Nav.CodeAnalysis.Text;
@@ -22,7 +23,7 @@ namespace AnZwDev.ALTools.ALSymbols.SymbolReaders
 
         #region Main processing methods
 
-        public ALFullSyntaxTreeNode ProcessSourceFile(string fileName)
+        public ALFullSyntaxTreeNode ProcessSourceFile(string fileName, ALProject project)
         {
             string sourceCode;
             try
@@ -32,7 +33,7 @@ namespace AnZwDev.ALTools.ALSymbols.SymbolReaders
                 reader.Close();
                 reader.Dispose();
 
-                return ProcessSourceCode(sourceCode);
+                return ProcessSourceCode(sourceCode, project);
             }
             catch (Exception e)
             {
@@ -42,11 +43,11 @@ namespace AnZwDev.ALTools.ALSymbols.SymbolReaders
 
         }
 
-        public ALFullSyntaxTreeNode ProcessSourceCode(string source)
+        public ALFullSyntaxTreeNode ProcessSourceCode(string source, ALProject project)
         {
             try
             {
-                SyntaxTree sourceTree = SyntaxTreeExtensions.SafeParseObjectText(source);
+                SyntaxTree sourceTree = SyntaxTreeExtensions.SafeParseObjectText(source, project);
                 return ProcessSyntaxTree(sourceTree);
             }
             catch (Exception e)

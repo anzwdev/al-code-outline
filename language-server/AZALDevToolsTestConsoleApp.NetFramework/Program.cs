@@ -31,18 +31,12 @@ namespace AZALDevToolsTestConsoleApp.NetFramework
             ALDevToolsServer alDevToolsServer = new ALDevToolsServer(extensionPath);
 
             //string filePath = "C:\\Projects\\Sandboxes\\al-test-projects\\small\\Pag50000.MySmallTableList.al";
-            string filePath = "C:\\Projects\\Sandboxes\\al-test-projects\\SmallBC16\\MyPage.al";
-            ALSymbolInfoSyntaxTreeReader syntaxTreeReader = new ALSymbolInfoSyntaxTreeReader(true);
-            ALSymbol symbols = syntaxTreeReader.ProcessSourceFile(filePath);
-
-            ALFullSyntaxTree syntaxTree = new ALFullSyntaxTree();
-            syntaxTree.Load("", filePath);
 
             CodeAnalyzersLibrariesCollection caLibCol = new CodeAnalyzersLibrariesCollection(alDevToolsServer);
             CodeAnalyzersLibrary caLib = caLibCol.GetCodeAnalyzersLibrary("${CodeCop}");
 
             
-            filePath = "C:\\Projects\\Sandboxes\\al-test-projects\\SmallBC18\\Pag50104.MyPrefixMyPageCard.al";
+            string filePath = "C:\\Projects\\Sandboxes\\al-test-projects\\SmallBC18\\Pag50104.MyPrefixMyPageCard.al";
             string content = FileUtils.SafeReadAllText(filePath);
             Dictionary<string, string> pm = new Dictionary<string, string>();
             pm.Add("sourceFilePath", filePath);
@@ -63,8 +57,17 @@ namespace AZALDevToolsTestConsoleApp.NetFramework
 
             ALProject project = workspace.Projects[0];
 
+            filePath = "C:\\Projects\\Sandboxes\\al-test-projects\\SmallBC16\\MyPage.al";
+            ALSymbolInfoSyntaxTreeReader syntaxTreeReader = new ALSymbolInfoSyntaxTreeReader(true);
+            ALSymbol symbols = syntaxTreeReader.ProcessSourceFile(filePath, project);
+
+            ALFullSyntaxTree syntaxTree = new ALFullSyntaxTree();
+            syntaxTree.Load("", filePath, project);
+
             PageInformationProvider pageInformationProvider = new PageInformationProvider();
             PageInformation pageInformation = pageInformationProvider.GetPageDetails(project, "MyPageCard", true, true, true, null);
+
+
 
             /*
             XmlPortInformationProvider xmlPortInformationProvider = new XmlPortInformationProvider();

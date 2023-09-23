@@ -19,6 +19,12 @@ namespace AnZwDev.ALTools.ALLanguageInformation
             _values.Add(value.ToLower(), value);
         }
 
+        public void AddRange(params string[] values)
+        {
+            for (int i = 0; i < values.Length; i++)
+                Add(values[i]);
+        }
+
         public bool TryFixCase(ref string value)
         {
             if (value != null)

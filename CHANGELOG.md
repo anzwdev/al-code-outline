@@ -1,5 +1,14 @@
 # Change Log
 
+## 3.0.48
+ - Issue #482 - Code cleanup removes compiler directives partly
+ - Issue #483 - Fix identifiers and Case does not fix internal
+ - Conditional directives parser and editor decorations
+
+Thank you
+ - NKarolak and fvet for reporting issue #482
+ - guidorobben for reporting issue #483
+
 ## 3.0.47
  - Issue #470 - Add "DataClassification" as table property to the "New Table Wizard"
  - Issue #472 - CodeCompletion - Do not Ignore Prefix in variable names
