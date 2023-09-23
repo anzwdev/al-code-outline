@@ -209,7 +209,7 @@ namespace AnZwDev.ALTools.Extensions
         }
 #endif
 
-        internal static SyntaxNode WithLeadingLeadingTrivia(this SyntaxNode node, List<SyntaxTrivia> targetCollection)
+        internal static T WithLeadingLeadingTrivia<T>(this T node, List<SyntaxTrivia> targetCollection) where T : SyntaxNode
         {
             if (targetCollection.Count == 0)
                 return node;
@@ -222,7 +222,20 @@ namespace AnZwDev.ALTools.Extensions
             return node.WithLeadingTrivia(SyntaxFactory.TriviaList(newList));
         }
 
-        internal static SyntaxNode WithTrailingTrailingTrivia(this SyntaxNode node, List<SyntaxTrivia> targetCollection)
+        internal static T WithLeadingTrailingTrivia<T>(this T node, List<SyntaxTrivia> targetCollection) where T : SyntaxNode
+        {
+            if (targetCollection.Count == 0)
+                return node;
+
+            IEnumerable<SyntaxTrivia> newList = targetCollection;
+            var existingTrivia = node.GetTrailingTrivia();
+            if ((existingTrivia != null) && (existingTrivia.Count > 0))
+                newList = targetCollection.MergeWith(existingTrivia);
+
+            return node.WithTrailingTrivia(SyntaxFactory.TriviaList(newList));
+        }
+
+        internal static T WithTrailingTrailingTrivia<T>(this T node, List<SyntaxTrivia> targetCollection) where T : SyntaxNode
         {
             if (targetCollection.Count == 0)
                 return node;

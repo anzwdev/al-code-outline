@@ -128,8 +128,12 @@ namespace AnZwDev.ALTools.CodeTransformations
                         if ((triggerDeclaration.Variables != null) && (triggerDeclaration.Variables.Variables != null))
                         {
                             this.NoOfChanges += deleteVariables.Count;
-                            VarSectionSyntax varSectionSyntax = this.RemoveVarSectionVariables(triggerDeclaration.Variables, deleteVariableNames);
+                            (var varSectionSyntax, var collectedDirectives) = this.RemoveVarSectionVariables(triggerDeclaration.Variables, deleteVariableNames);
                             triggerDeclaration = triggerDeclaration.WithVariables(varSectionSyntax);
+
+                            if ((collectedDirectives.Count > 0) && (triggerDeclaration.Body != null))
+                                triggerDeclaration = triggerDeclaration.WithBody(
+                                    triggerDeclaration.Body.WithLeadingLeadingTrivia(collectedDirectives));
 
                             return (triggerDeclaration, true);
                         }
@@ -142,6 +146,9 @@ namespace AnZwDev.ALTools.CodeTransformations
 
         protected (MethodDeclarationSyntax, bool) RemoveUnusedLocalVariablesFromMethod(MethodDeclarationSyntax methodDeclaration)
         {
+            var origParameterList = methodDeclaration.ParameterList;
+            var origVariablesList = methodDeclaration.Variables;
+
             string returnValueName = null;
             SymbolInfo info = this.SemanticModel.GetSymbolInfo(methodDeclaration);
             IMethodSymbol symbol = SemanticModel.GetDeclaredSymbol(methodDeclaration) as IMethodSymbol;
@@ -153,8 +160,8 @@ namespace AnZwDev.ALTools.CodeTransformations
                     (!symbol.IsEventSubscriber() &&
                     (!symbol.IsEvent) &&
                     (symbol.Parameters != null) &&
-                    (methodDeclaration.ParameterList != null) &&
-                    (methodDeclaration.ParameterList.Parameters != null));
+                    (origParameterList != null) &&
+                    (origParameterList.Parameters != null));
 
                 //collect local variables                
                 Dictionary<string, ISymbol> deleteVariables = new Dictionary<string, ISymbol>();
@@ -204,10 +211,15 @@ namespace AnZwDev.ALTools.CodeTransformations
 
                     if (this.RemoveLocalVariables)
                     {
-                        if ((methodDeclaration.Variables != null) && (methodDeclaration.Variables.Variables != null))
+                        if ((origVariablesList != null) && (origVariablesList.Variables != null))
                         {
-                            VarSectionSyntax varSectionSyntax = this.RemoveVarSectionVariables(methodDeclaration.Variables, deleteVariableNames);
+                            (var varSectionSyntax, var collectedDirectives) = this.RemoveVarSectionVariables(origVariablesList, deleteVariableNames);
                             methodDeclaration = methodDeclaration.WithVariables(varSectionSyntax);
+
+                            if ((collectedDirectives.Count > 0) && (methodDeclaration.Body != null))
+                                methodDeclaration = methodDeclaration.WithBody(
+                                    methodDeclaration.Body.WithLeadingLeadingTrivia(collectedDirectives));
+
                             updated = true;
                         }
 
@@ -222,11 +234,16 @@ namespace AnZwDev.ALTools.CodeTransformations
                     //remove parameters
                     if (removeMethodParameters)
                     {
-                        (SeparatedSyntaxList<ParameterSyntax> newParametersSyntax, bool parametersUpdated) = this.RemoveParametersVariables(methodDeclaration.ParameterList.Parameters, deleteVariableNames);
+                        (var newParametersSyntax, var collectedDirectives, var parametersUpdated) = this.RemoveParametersVariables(origParameterList.Parameters, deleteVariableNames);
                         if (parametersUpdated)
                         {
-                            methodDeclaration = methodDeclaration.WithParameterList(
-                                methodDeclaration.ParameterList.WithParameters(newParametersSyntax));
+                            var newParameterList = methodDeclaration.ParameterList.WithParameters(newParametersSyntax);
+                            if ((collectedDirectives.Count > 0) && (newParameterList.CloseParenthesisToken != null) && (newParameterList.CloseParenthesisToken.Kind.ConvertToLocalType() != ConvertedSyntaxKind.None))
+                                newParameterList = newParameterList.WithCloseParenthesisToken(
+                                    newParameterList.CloseParenthesisToken.WithLeadingLeadingTrivia(collectedDirectives));
+
+                            methodDeclaration = methodDeclaration.WithParameterList(newParameterList);
+
                             updated = true;
                         }
                     }
@@ -289,7 +306,7 @@ namespace AnZwDev.ALTools.CodeTransformations
 
         #region Remove variables from method parameters list
 
-        protected (SeparatedSyntaxList<ParameterSyntax>, bool) RemoveParametersVariables(SeparatedSyntaxList<ParameterSyntax> parametersListSyntax, HashSet<string> deleteVariables)
+        protected (SeparatedSyntaxList<ParameterSyntax>, List<SyntaxTrivia>, bool) RemoveParametersVariables(SeparatedSyntaxList<ParameterSyntax> parametersListSyntax, HashSet<string> deleteVariables)
         {
             bool updated = false;
             List<SyntaxTrivia> collectedDirectives = new List<SyntaxTrivia>();
@@ -312,7 +329,7 @@ namespace AnZwDev.ALTools.CodeTransformations
                 {
                     if (collectedDirectives.Count > 0)
                     {
-                        var updatedParameterSyntax = (ParameterSyntax)parameterSyntax.WithLeadingLeadingTrivia(collectedDirectives);
+                        var updatedParameterSyntax = parameterSyntax.WithLeadingLeadingTrivia(collectedDirectives);
                         newParametersListSyntax = newParametersListSyntax.Replace(parameterSyntax, updatedParameterSyntax);
                         collectedDirectives.Clear();
                     }
@@ -323,11 +340,12 @@ namespace AnZwDev.ALTools.CodeTransformations
             if ((collectedDirectives.Count > 0) && (newParametersListSyntax.Count > 0))
             {
                 var parameterSyntax = newParametersListSyntax[newParametersListSyntax.Count - 1];
-                var updatedParameterSyntax = (ParameterSyntax)parameterSyntax.WithTrailingTrailingTrivia(collectedDirectives);
+                var updatedParameterSyntax = parameterSyntax.WithTrailingTrailingTrivia(collectedDirectives);
                 newParametersListSyntax = newParametersListSyntax.Replace(parameterSyntax, updatedParameterSyntax);
+                collectedDirectives.Clear();
             }
 
-            return (newParametersListSyntax, updated);
+            return (newParametersListSyntax, collectedDirectives, updated);
         }
 
         #endregion
@@ -336,21 +354,32 @@ namespace AnZwDev.ALTools.CodeTransformations
 
         protected GlobalVarSectionSyntax RemoveGlobalVarSectionVariables(GlobalVarSectionSyntax node, HashSet<string> deleteVariables)
         {
-            SyntaxList<VariableDeclarationBaseSyntax>? newVariablesSyntax = this.RemoveVarSectionVariables(node.Variables, deleteVariables);
+            (var newVariablesSyntax, var collectedDirectives)  = this.RemoveVarSectionVariables(node.Variables, deleteVariables);
+
             if (newVariablesSyntax == null)
-                return null;
+            {
+                if (collectedDirectives.Count == 0)
+                    return null;
+                newVariablesSyntax = SyntaxFactory.List(new List<VariableDeclarationBaseSyntax>());
+            }
+
+            node = node.WithVariables(newVariablesSyntax.Value);
+
+            if (collectedDirectives.Count > 0)
+                node = node.WithLeadingTrailingTrivia(collectedDirectives);
+
             return node.WithVariables(newVariablesSyntax.Value);
         }
 
-        protected VarSectionSyntax RemoveVarSectionVariables(VarSectionSyntax node, HashSet<string> deleteVariables)
+        protected (VarSectionSyntax, List<SyntaxTrivia>) RemoveVarSectionVariables(VarSectionSyntax node, HashSet<string> deleteVariables)
         {
-            SyntaxList<VariableDeclarationBaseSyntax>? newVariablesSyntax = this.RemoveVarSectionVariables(node.Variables, deleteVariables);
+            (var newVariablesSyntax, var collectedDirectives) = this.RemoveVarSectionVariables(node.Variables, deleteVariables);
             if (newVariablesSyntax == null)
-                return null;
-            return node.WithVariables(newVariablesSyntax.Value);
+                return (null, collectedDirectives);
+            return (node.WithVariables(newVariablesSyntax.Value), collectedDirectives);
         }
 
-        protected SyntaxList<VariableDeclarationBaseSyntax>? RemoveVarSectionVariables(SyntaxList<VariableDeclarationBaseSyntax> variablesSyntax, HashSet<string> deleteVariables)
+        protected (SyntaxList<VariableDeclarationBaseSyntax>?, List<SyntaxTrivia>) RemoveVarSectionVariables(SyntaxList<VariableDeclarationBaseSyntax> variablesSyntax, HashSet<string> deleteVariables)
         {
             List<SyntaxTrivia> collectedDirectives = new List<SyntaxTrivia>();
             List<VariableDeclarationBaseSyntax> keepVariables = new List<VariableDeclarationBaseSyntax>();
@@ -371,7 +400,7 @@ namespace AnZwDev.ALTools.CodeTransformations
                             variableSyntax.CollectDirectiveTrivias(collectedDirectives);
                         else
                         {
-                            var newVariableSyntax = (VariableDeclarationBaseSyntax)variableSyntax.WithLeadingLeadingTrivia(collectedDirectives);
+                            var newVariableSyntax = variableSyntax.WithLeadingLeadingTrivia(collectedDirectives);
                             collectedDirectives.Clear();
                             keepVariables.Add(newVariableSyntax);
                         }
@@ -380,18 +409,15 @@ namespace AnZwDev.ALTools.CodeTransformations
             }
 
             if (keepVariables.Count == 0)
-                return null;
+                return (null, collectedDirectives);
 
             if (collectedDirectives.Count > 0)
-                keepVariables[keepVariables.Count - 1] = (VariableDeclarationBaseSyntax)keepVariables[keepVariables.Count - 1].WithTrailingTrailingTrivia(collectedDirectives);
+            {
+                keepVariables[keepVariables.Count - 1] = keepVariables[keepVariables.Count - 1].WithTrailingTrailingTrivia(collectedDirectives);
+                collectedDirectives.Clear();
+            }
 
-            return SyntaxFactory.List(keepVariables);
-        }
-
-
-        protected void CollectDirectivesAndRegions(List<SyntaxTrivia> collectedDirectives, SyntaxNode node)
-        {
-
+            return (SyntaxFactory.List(keepVariables), collectedDirectives);
         }
 
         protected VariableListDeclarationSyntax RemoveVariableListVariables(VariableListDeclarationSyntax variableList, HashSet<string> deleteVariables)

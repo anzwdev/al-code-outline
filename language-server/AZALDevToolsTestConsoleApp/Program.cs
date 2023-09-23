@@ -90,7 +90,7 @@ namespace AZALDevToolsTestConsoleApp
 
             pm.Add("removeGlobalVariables", "true");
             pm.Add("removeLocalVariables", "true");
-            pm.Add("removeLocalMethodParameters", "false");
+            pm.Add("removeLocalMethodParameters", "true");
 
             pm.Add("triggersSortMode", "NaturalOrder");
             pm.Add("triggersNaturalOrder", "[]");
