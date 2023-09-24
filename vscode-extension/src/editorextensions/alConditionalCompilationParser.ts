@@ -31,18 +31,32 @@ export class ALConditionalCompilationParser {
                 if (word === "#if") {
                     let newSection: ALConditionalCompilationSection = new ALConditionalCompilationSection(active, i);
                     newSection.enabled = this.parseCondition(wordReader, directives);
+                    newSection.levelEnabled = newSection.enabled;
                     if (active) {
                         active.childSections.push(newSection);
                     } else {
                         sections.push(newSection);
                     }
                     active = newSection;
-
+                } else if (word === "#elif") {
+                    if (active) {
+                        active.end = i;
+                        let newSection: ALConditionalCompilationSection = new ALConditionalCompilationSection(active.parent, i);
+                        newSection.enabled = (!active.levelEnabled) && (this.parseCondition(wordReader, directives));
+                        newSection.levelEnabled = active.levelEnabled || newSection.enabled;
+                        if (active.parent) {
+                            active.parent.childSections.push(newSection);
+                        } else {
+                            sections.push(newSection);
+                        }
+                        active = newSection;
+                    }
                 } else if (word === "#else") {
                     if (active) {
                         active.end = i;
                         let newSection: ALConditionalCompilationSection = new ALConditionalCompilationSection(active.parent, i);
-                        newSection.enabled = !active.enabled;
+                        newSection.enabled = !active.levelEnabled;
+                        newSection.levelEnabled = true;
                         if (active.parent) {
                             active.parent.childSections.push(newSection);
                         } else {
