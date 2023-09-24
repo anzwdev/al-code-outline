@@ -1,5 +1,8 @@
 # Change Log
 
+## 3.0.49
+ - Conditional directives parser elif support bugfix
+
 ## 3.0.48
  - Issue #482 - Code cleanup removes compiler directives partly
  - Issue #483 - Fix identifiers and Case does not fix internal
