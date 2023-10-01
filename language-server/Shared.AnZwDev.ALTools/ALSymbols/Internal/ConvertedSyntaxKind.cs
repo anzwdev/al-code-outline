@@ -2388,6 +2388,12 @@ namespace AnZwDev.ALTools.ALSymbols.Internal
         PragmaActionsV2DirectiveTrivia = 540,
         RenderingKeyword = 541,
         ReportLayout = 542,
-        ReportRenderingSection = 543
+        ReportRenderingSection = 543,
+
+        CommaSeparatedObjectNameReferencesPropertyValue = 544,
+        NamespaceDeclaration = 545,
+        NamespaceKeyword = 546,
+        UsingDirective = 547,
+        UsingKeyword = 548
     }
 }

@@ -18,6 +18,7 @@ namespace AnZwDev.ALTools.ALSymbolReferences
         public string Publisher { get; set; }
         public string Version { get; set; }
 
+        public List<ALAppNamespace> Namespaces { get; set; }
         public ALAppObjectsCollection<ALAppTable> Tables { get; set; }
         public ALAppObjectsCollection<ALAppPage> Pages { get; set; }
         public ALAppObjectsCollection<ALAppReport> Reports { get; set; }

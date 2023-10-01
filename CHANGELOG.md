@@ -1,5 +1,8 @@
 # Change Log
 
+## 3.0.50
+ - Extension recompiled for BC23
+
 ## 3.0.49
  - Conditional directives parser elif support bugfix
 

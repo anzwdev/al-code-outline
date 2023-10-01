@@ -31,7 +31,7 @@ namespace AnZwDev.ALTools.CodeTransformations
                         LiteralAttributeArgumentSyntax objectNameOrIdArgument = arguments[1] as LiteralAttributeArgumentSyntax;
                         if ((objectTypeArgument != null) && (objectNameOrIdArgument != null))
                         {
-                            string objectType = objectTypeArgument?.OptionAccess?.Name?.Identifier.ValueText;
+                            string objectType = ALSyntaxHelper.DecodeName(objectTypeArgument?.OptionAccess?.Name?.ToString());
                             string prevValue = objectNameOrIdArgument.ToString();
                             string newValue = prevValue;
                             if (Int32.TryParse(prevValue, out int intValue))
