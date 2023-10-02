@@ -7,6 +7,7 @@ using System.Threading.Tasks;
 using AnZwDev.ALTools.ALSymbols;
 using AnZwDev.ALTools.ALSymbolReferences.Serialization;
 using AnZwDev.ALTools.ALSymbolReferences.Compiler;
+using System.Xml.Linq;
 
 namespace AnZwDev.ALTools.ALSymbolReferences
 {
@@ -18,6 +19,7 @@ namespace AnZwDev.ALTools.ALSymbolReferences
         public string Publisher { get; set; }
         public string Version { get; set; }
 
+        public List<ALAppNamespace> Namespaces { get; set; }
         public ALAppObjectsCollection<ALAppTable> Tables { get; set; }
         public ALAppObjectsCollection<ALAppPage> Pages { get; set; }
         public ALAppObjectsCollection<ALAppReport> Reports { get; set; }
@@ -591,13 +593,20 @@ namespace AnZwDev.ALTools.ALSymbolReferences
                 return true;
 
             //check InternalsVisibleTo setting
-
-
-
             return false;
-
         }
 
+        public void OnAfterDeserialized()
+        {
+            ProcessNamespaces();
+        }
+
+        private void ProcessNamespaces()
+        {
+            if (Namespaces != null)
+                for (int i = 0; i < Namespaces.Count; i++)
+                    Namespaces[i].Process(this, null);
+        }
 
     }
 }

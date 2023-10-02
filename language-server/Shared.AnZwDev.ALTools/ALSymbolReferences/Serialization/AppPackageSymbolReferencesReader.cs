@@ -54,7 +54,10 @@ namespace AnZwDev.ALTools.ALSymbolReferences.Serialization
             packageStream.Dispose();
 
             if (symbolReference != null)
+            {
                 symbolReference.ReferenceSourceFileName = path;
+                symbolReference.OnAfterDeserialized();
+            }
 
             return symbolReference;
         }
