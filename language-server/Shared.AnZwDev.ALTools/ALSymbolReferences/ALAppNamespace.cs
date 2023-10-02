@@ -8,6 +8,7 @@ namespace AnZwDev.ALTools.ALSymbolReferences
     {
 
         public string Name { get; set; }
+        public string FullName { get; set; }
 
         public List<ALAppNamespace> Namespaces { get; set; }
         public ALAppObjectsCollection<ALAppTable> Tables { get; set; }
@@ -29,6 +30,61 @@ namespace AnZwDev.ALTools.ALSymbolReferences
         public ALAppObjectsCollection<ALAppPermissionSet> PermissionSets { get; set; }
         public ALAppObjectsCollection<ALAppPermissionSetExtension> PermissionSetExtensions { get; set; }
 
+
+        public void Process(ALAppSymbolReference symbolReference, string parentNamespace)
+        {
+            if (String.IsNullOrEmpty(parentNamespace))
+                FullName = Name;
+            else
+                FullName = parentNamespace + "." + Name;
+
+            ProcessObjectsCollection(symbolReference);
+            ProcessChildNamespaces(symbolReference);
+        }
+
+        private void ProcessObjectsCollection(ALAppSymbolReference symbolReference)
+        {
+            symbolReference.Tables = ProcessObjectsCollection(symbolReference.Tables, Tables);
+            symbolReference.Pages = ProcessObjectsCollection(symbolReference.Pages, Pages);
+            symbolReference.Reports = ProcessObjectsCollection(symbolReference.Reports, Reports);
+            symbolReference.XmlPorts = ProcessObjectsCollection(symbolReference.XmlPorts, XmlPorts);
+            symbolReference.Queries = ProcessObjectsCollection(symbolReference.Queries, Queries);
+            symbolReference.Codeunits = ProcessObjectsCollection(symbolReference.Codeunits, Codeunits);
+            symbolReference.ControlAddIns = ProcessObjectsCollection(symbolReference.ControlAddIns, ControlAddIns);
+            symbolReference.PageExtensions = ProcessObjectsCollection(symbolReference.PageExtensions, PageExtensions);
+            symbolReference.TableExtensions = ProcessObjectsCollection(symbolReference.TableExtensions, TableExtensions);
+            symbolReference.Profiles = ProcessObjectsCollection(symbolReference.Profiles, Profiles);
+            symbolReference.PageCustomizations = ProcessObjectsCollection(symbolReference.PageCustomizations, PageCustomizations);
+            symbolReference.DotNetPackages = ProcessObjectsCollection(symbolReference.DotNetPackages, DotNetPackages);
+            symbolReference.EnumTypes = ProcessObjectsCollection(symbolReference.EnumTypes, EnumTypes);
+            symbolReference.EnumExtensionTypes = ProcessObjectsCollection(symbolReference.EnumExtensionTypes, EnumExtensionTypes);
+            symbolReference.Interfaces = ProcessObjectsCollection(symbolReference.Interfaces, Interfaces);
+            symbolReference.ReportExtensions = ProcessObjectsCollection(symbolReference.ReportExtensions, ReportExtensions);
+            symbolReference.PermissionSets = ProcessObjectsCollection(symbolReference.PermissionSets, PermissionSets);
+            symbolReference.PermissionSetExtensions = ProcessObjectsCollection(symbolReference.PermissionSetExtensions, PermissionSetExtensions);
+        }
+
+        private void ProcessChildNamespaces(ALAppSymbolReference symbolReference)
+        {
+            if (Namespaces != null)
+                for (int i = 0; i < Namespaces.Count; i++)
+                    Namespaces[i].Process(symbolReference, FullName);
+        }
+
+        private ALAppObjectsCollection<T> ProcessObjectsCollection<T>(ALAppObjectsCollection<T> allObjectsCollection, ALAppObjectsCollection<T> namespaceObjectsCollection) where T : ALAppObject
+        {
+            if ((namespaceObjectsCollection != null) && (namespaceObjectsCollection.Count > 0))
+            {
+                if (allObjectsCollection == null)
+                    allObjectsCollection = new ALAppObjectsCollection<T>();
+
+                for (int i = 0; i < namespaceObjectsCollection.Count; i++)
+                    namespaceObjectsCollection[i].Namespace = FullName;
+                allObjectsCollection.AddRange(namespaceObjectsCollection);
+            }
+
+            return allObjectsCollection;
+        }
 
     }
 }
