@@ -22,7 +22,7 @@ namespace AnZwDev.ALTools.Server.Handlers
 #pragma warning disable 1998
         protected override async Task<GetFullSyntaxTreeResponse> HandleMessage(GetFullSyntaxTreeRequest parameters, RequestContext<GetFullSyntaxTreeResponse> context)
         {
-            ALProject project = Server.Workspace.FindProject(parameters.projectPath, true);
+            ALProject project = Server.Workspace.FindProject(parameters.path, parameters.projectPath, true);
             ALFullSyntaxTree syntaxTree = new ALFullSyntaxTree();
             syntaxTree.Load(parameters.source, parameters.path, project);
 

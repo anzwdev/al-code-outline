@@ -1,5 +1,11 @@
 # Change Log
 
+## 3.0.51
+ - Issue #492 - FindProject method crashes sometimes if multi-folder workspace contains non-al project
+
+Thank you
+ - DavidFeldhoff for reporting and helping investigate issue #492
+
 ## 3.0.50
  - Extension recompiled for BC23
 

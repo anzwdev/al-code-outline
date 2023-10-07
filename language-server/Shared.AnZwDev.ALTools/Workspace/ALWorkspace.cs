@@ -145,6 +145,11 @@ namespace AnZwDev.ALTools.Workspace
             return this.FindProject(path, false);
         }
 
+        public ALProject FindProject(string filePath, string projectPath, bool selectFirstIfNotFound)
+        {
+            return FindProject(String.IsNullOrWhiteSpace(filePath) ? projectPath : filePath, selectFirstIfNotFound);
+        }
+
         public ALProject FindProject(string path, bool selectFirstIfNotFound)
         {
             if (!String.IsNullOrWhiteSpace(path))
@@ -156,8 +161,10 @@ namespace AnZwDev.ALTools.Workspace
                         return this.Projects[i];
                 }
             }
-            if ((selectFirstIfNotFound) && (this.Projects.Count > 0))
-                return this.Projects[0];
+            if (selectFirstIfNotFound)
+                for (int i=0; i<Projects.Count; i++)
+                    if (Projects[i].IsALProject())
+                        return Projects[i];
             return null;
         }
 
