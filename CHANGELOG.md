@@ -1,11 +1,13 @@
 # Change Log
 
 ## 3.0.51
+ - Issue #491 - Variable sorting with "ReportFormat"
  - Issue #492 - FindProject method crashes sometimes if multi-folder workspace contains non-al project
  - Issue #493 - Command to collapse empty brackets into a single line
 
 Thank you
  - DavidFeldhoff for reporting and helping investigate issue #492
+ - ChrisBlankDe for reporting issue #491
 
 ## 3.0.50
  - Extension recompiled for BC23

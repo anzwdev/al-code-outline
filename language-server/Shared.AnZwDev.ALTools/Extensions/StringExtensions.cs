@@ -1,5 +1,6 @@
 ﻿using AnZwDev.ALTools.Core;
 using Microsoft.Dynamics.Nav.CodeAnalysis.Syntax;
+using Microsoft.Dynamics.Nav.CodeAnalysis.Utilities;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -344,6 +345,15 @@ namespace AnZwDev.ALTools.Extensions
             if (Enum.TryParse<T>(value, true, out T result))
                 return result;
             return default(T);
+        }
+
+        public static string FirstWord(this string text)
+        {
+            if (text != null)
+                for (int i = 0; i < text.Length; i++)
+                    if (!text[i].IsAlphanumericOrUnderscore())
+                        return text.Substring(0, i);
+            return text;
         }
 
     }
