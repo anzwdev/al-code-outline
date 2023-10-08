@@ -215,6 +215,7 @@
     <Compile Include="$(MSBuildThisFileDirectory)CodeTransformations\SortProceduresTriggerSortMode.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)CodeTransformations\TriggersOrder.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)CodeTransformations\TriggersOrderCollection.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)WorkspaceCommands\CollapseEmptyBracketsWorkspaceCommand.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)WorkspaceCommands\Parameters\TriggersOrderParameter.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)WorkspaceCommands\RemoveRedundantDataClassificationWorkspaceCommand.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)CodeTransformations\RemoveStrSubstNoFromErrorSyntaxRewriter.cs" />

@@ -2,6 +2,7 @@
 
 ## 3.0.51
  - Issue #492 - FindProject method crashes sometimes if multi-folder workspace contains non-al project
+ - Issue #493 - Command to collapse empty brackets into a single line
 
 Thank you
  - DavidFeldhoff for reporting and helping investigate issue #492
