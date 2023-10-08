@@ -41,7 +41,7 @@ export class ALPermissionSetSyntaxBuilder {
         if ((list) && (list.length > 0)) {
             writer.writeStartProperty("Permissions");
             for (let i=0; i<list.length; i++) {
-                this.writeObjectPermission(writer, list[i], (i == (list.length - 1)));
+                this.writeObjectPermission(writer, list[i], (i === (list.length - 1)));
             }
         }
     }

@@ -7,6 +7,7 @@ import { ALPermissionSetSyntaxBuilder } from '../syntaxbuilders/alPermissionSetS
 import { ALObjectWizardSettings } from "./alObjectWizardSettings";
 import { ALPermissionSetWizardData } from "./alPermissionSetWizardData";
 import { ProjectItemWizardPage } from "./projectItemWizardPage";
+import { ObjectInformation } from '../../symbolsinformation/objectInformation';
 
 export class ALPermissionSetWizardPage extends ProjectItemWizardPage {
     private _permissionSetWizardData : ALPermissionSetWizardData;
@@ -59,9 +60,20 @@ export class ALPermissionSetWizardPage extends ProjectItemWizardPage {
             let getObjectsRequest = new ToolsGetObjectsListRequest(this._settings.getDestDirectoryPath());
             getObjectsRequest.setIncludeObjectsWithPermissions();
             let getObjectsResponse = await this._toolsExtensionContext.toolsLangServerClient.getObjectsList(getObjectsRequest);
-            if ((getObjectsResponse) && (getObjectsResponse.symbols))
-                this._permissionSetWizardData.selectedObjectsList = getObjectsResponse.symbols;
+            if ((getObjectsResponse) && (getObjectsResponse.symbols)) {
+                this._permissionSetWizardData.selectedObjectsList = this.removeObjectsWithFullInherentPermissions(getObjectsResponse.symbols);
+            }
         }
+    }
+
+    protected removeObjectsWithFullInherentPermissions(allObjects: ObjectInformation[]): ObjectInformation[] {
+        let objects : ObjectInformation[] = [];
+        for (let i=0; i<allObjects.length; i++) {
+            if (!allObjects[i].fullInherentPermissions) {
+                objects.push(allObjects[i]);
+            }
+        }
+        return objects;
     }
 
     protected runBuilder() {

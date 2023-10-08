@@ -351,9 +351,18 @@ namespace AnZwDev.ALTools.Extensions
         {
             if (text != null)
                 for (int i = 0; i < text.Length; i++)
-                    if (!text[i].IsAlphanumericOrUnderscore())
+                    if (!IsValidWordChatacter(text[i]))
                         return text.Substring(0, i);
             return text;
+        }
+
+        private static bool IsValidWordChatacter(char c)
+        {
+            return
+                ((c >= 'A') && (c <= 'Z')) ||
+                ((c >= 'a') && (c <= 'z')) ||
+                ((c >= '0') && (c <= '9')) ||
+                (c == '_');
         }
 
     }

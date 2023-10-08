@@ -19,6 +19,7 @@ namespace AnZwDev.ALTools.CodeTransformations
 
         public bool ExcludePermissionsFromIncludedPermissionSets { get; set; } = true;
         public bool ExcludePermissionsFromExcludedPermissionSets { get; set; } = true;
+        public bool IncludeObjectsWithFullInherentPermissions { get; set; } = false;
 
         public AddObjectsPermissionsSyntaxRewriter()
         {
@@ -206,12 +207,15 @@ namespace AnZwDev.ALTools.CodeTransformations
             List<PermissionSyntax> permissionsList = new List<PermissionSyntax>();
             foreach (ObjectInformation objectInformation in objectsList)
             {
-                //for permission sets all object types are allowed, for all other types only tabledata can be used
-                if (isPermissionSet)
-                    this.AddPermission(existingPermissions, permissionsList, objectInformation.Type, objectInformation.Name, equalsToken, executePermissions, leadingTriviaList, spaceTriviaList);
+                if ((this.IncludeObjectsWithFullInherentPermissions) || (!objectInformation.FullInherentPermissions))
+                {
+                    //for permission sets all object types are allowed, for all other types only tabledata can be used
+                    if (isPermissionSet)
+                        this.AddPermission(existingPermissions, permissionsList, objectInformation.Type, objectInformation.Name, equalsToken, executePermissions, leadingTriviaList, spaceTriviaList);
 
-                if ((objectInformation.Type != null) && (objectInformation.Type.Equals("table", StringComparison.CurrentCultureIgnoreCase)))
-                    this.AddPermission(existingPermissions, permissionsList, "tabledata", objectInformation.Name, equalsToken, tableDataPermissions, leadingTriviaList, spaceTriviaList);
+                    if ((objectInformation.Type != null) && (objectInformation.Type.Equals("table", StringComparison.CurrentCultureIgnoreCase)))
+                        this.AddPermission(existingPermissions, permissionsList, "tabledata", objectInformation.Name, equalsToken, tableDataPermissions, leadingTriviaList, spaceTriviaList);
+                }
             }
 
             permissionsList.Sort(new PermissionComparer());

@@ -12,6 +12,12 @@ namespace AnZwDev.ALTools.Workspace.SymbolsInformation
         [JsonProperty("type")]
         public string Type { get; set; }
 
+        [JsonProperty("inherentPermissions", NullValueHandling = NullValueHandling.Ignore)]
+        public string InherentPermissions { get; set; }
+
+        [JsonProperty("fullInherentPermissions")]
+        public bool FullInherentPermissions { get; set; }
+
         public ObjectInformation()
         {
         }
@@ -19,6 +25,8 @@ namespace AnZwDev.ALTools.Workspace.SymbolsInformation
         public ObjectInformation(ALAppObject alAppObject) : base(alAppObject)
         {
             this.Type = alAppObject.GetALSymbolKind().ToObjectTypeName();
+            this.InherentPermissions = alAppObject.GetInherentPermissions();
+            this.FullInherentPermissions = alAppObject.HasFullInherentPermissions();
         }
 
     }
