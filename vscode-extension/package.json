@@ -416,6 +416,16 @@
 			},
 			{
 				"category": "AZ AL Dev Tools",
+				"command": "azALDevTools.EditorOneStatementPerLine",
+				"title": "One Statement Per Line in the Active Editor"
+			},
+			{
+				"category": "AZ AL Dev Tools",
+				"command": "azALDevTools.ProjectOneStatementPerLine",
+				"title": "One Statement Per Line in the Active Project"
+			},
+			{
+				"category": "AZ AL Dev Tools",
 				"command": "azALDevTools.MakeEditorFlowFieldsReadOnly",
 				"title": "Make FlowFields ReadOnly in the Active Editor"
 			},
@@ -897,6 +907,14 @@
 				},
 				{
 					"command": "azALDevTools.FixProjectIdentifiersCase",
+					"when": "azALDevTools.extensionActive"
+				},
+				{
+					"command": "azALDevTools.EditorOneStatementPerLine",
+					"when": "editorLangId == al"
+				},
+				{
+					"command": "azALDevTools.ProjectOneStatementPerLine",
 					"when": "azALDevTools.extensionActive"
 				},
 				{
@@ -1540,6 +1558,7 @@
 								"SortPermissions",
 								"SortPermissionSetList",
 								"SortCustomizations",
+								"OneStatementPerLine",
 								"FormatDocument"
 							],
 							"enumDescriptions": [
@@ -1550,6 +1569,7 @@
 								"Sort permissions",
 								"Sort permission sets",
 								"Sort customizations",
+								"One statement per line",
 								"Format document"
 							]
 						},
@@ -1597,7 +1617,8 @@
 								"MakeFlowFieldsReadOnly",
 								"RemoveRedundantAppAreas",
 								"RemoveRedundantDataClassification",
-								"CollapseEmptyBrackets"
+								"CollapseEmptyBrackets",
+								"OneStatementPerLine"
 							],
 							"enumDescriptions": [
 								"Remove With Statements",
@@ -1633,7 +1654,8 @@
 								"Make FlowFields Read-Only",
 								"Remove Redundant Application Areas",
 								"Remove Redundant DataClassification",
-								"Collapse Empty Brackets"
+								"Collapse Empty Brackets",
+								"One Statement Per Line"
 							]
 						},
 						"description": "List of commands run by the Code Cleanup"

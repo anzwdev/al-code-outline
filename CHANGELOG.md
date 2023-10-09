@@ -1,12 +1,14 @@
 # Change Log
 
 ## 3.0.51
+ - Issue #453 - New code cleanup action - One Statement Per Line
  - Issue #476 - Skip objects with full direct InherentPermissions (QuickFix "Add all application objects permissions")
  - Issue #491 - Variable sorting with "ReportFormat"
  - Issue #492 - FindProject method crashes sometimes if multi-folder workspace contains non-al project
  - Issue #493 - Command to collapse empty brackets into a single line
 
 Thank you
+ - fvet for reporting idea #453
  - ernestasjuska for reporting issue #476
  - ChrisBlankDe for reporting issue #491
  - DavidFeldhoff for reporting and helping investigate issue #492

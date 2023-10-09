@@ -46,6 +46,7 @@ import { AddReferencedTablesPermissionsModifier } from '../alsyntaxmodifiers/add
 import { GenerateCSVXmlPortHeadersModifier } from '../alsyntaxmodifiers/generateCSVXmlPortHeadersModifier';
 import { RemoveRedundantDataClassificationModifier } from '../alsyntaxmodifiers/removeRedundantDataClassificationModifier';
 import { CollapseEmptyBracketsModifier } from '../alsyntaxmodifiers/collapseEmptyBracketsModifier';
+import { OneStatementPerLineModifier } from '../alsyntaxmodifiers/oneStatementPerLineModifier';
 
 export class ALCodeTransformationService extends DevToolsExtensionService {
     protected _syntaxFactories: ISyntaxModifierFactoriesCollection;
@@ -98,6 +99,7 @@ export class ALCodeTransformationService extends DevToolsExtensionService {
         this.registerModifierCommands('RemoveUnusedVariables', 'azALDevTools.RemoveEditorUnusedVariables', 'azALDevTools.RemoveProjectUnusedVariables', () => new RemoveUnusedVariablesModifier(this._context));
         this.registerModifierCommands('RemoveBeginEnd', 'azALDevTools.RemoveEditorBeginEnd', 'azALDevTools.RemoveProjectBeginEnd', () => new RemoveBeginEndModifier(this._context));
         this.registerModifierCommands('CollapseEmptyBrackets', 'azALDevTools.CollapseEditorEmptyBrackets', 'azALDevTools.CollapseProjectEmptyBrackets', () => new CollapseEmptyBracketsModifier(this._context));
+        this.registerModifierCommands('OneStatementPerLine', 'azALDevTools.EditorOneStatementPerLine', 'azALDevTools.ProjectOneStatementPerLine', () => new OneStatementPerLineModifier(this._context));
 
         this.registerModifierCommands('RemoveEmptyLines', 'azALDevTools.RemoveEditorEmptyLines', 'azALDevTools.RemoveProjectEmptyLines', () => new RemoveEmptyLinesModifier(this._context));
         this.registerModifierCommands('RemoveEmptySections', 'azALDevTools.RemoveEditorEmptySections', 'azALDevTools.RemoveProjectEmptySections', () => new RemoveEmptySectionsModifier(this._context));

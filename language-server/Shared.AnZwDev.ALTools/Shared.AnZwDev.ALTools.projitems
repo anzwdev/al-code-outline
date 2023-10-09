@@ -212,9 +212,11 @@
     <Compile Include="$(MSBuildThisFileDirectory)CodeTransformations\RemoveEmptyTriggersSyntaxRewriter.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)CodeTransformations\RemoveEventPublishersSyntaxRewriter.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)CodeTransformations\RemoveRedundantDataClassificationSyntaxRewriter.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)CodeTransformations\OneStatementPerLineSyntaxRewriter.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)CodeTransformations\SortProceduresTriggerSortMode.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)CodeTransformations\TriggersOrder.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)CodeTransformations\TriggersOrderCollection.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Extensions\ListExtensions.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)WorkspaceCommands\CollapseEmptyBracketsWorkspaceCommand.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)WorkspaceCommands\Parameters\TriggersOrderParameter.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)WorkspaceCommands\RemoveRedundantDataClassificationWorkspaceCommand.cs" />
@@ -323,6 +325,7 @@
     <Compile Include="$(MSBuildThisFileDirectory)WorkspaceCommands\SemanticModelSyntaxRewriterWorkspaceCommand.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)WorkspaceCommands\SemanticModelWorkspaceCommand.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)WorkspaceCommands\SetPageFieldToolTipWorkspaceCommand.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)WorkspaceCommands\OneStatementPerLineWorkspaceCommand.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)WorkspaceCommands\SortCustomizationsWorkspaceCommand.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)WorkspaceCommands\SortPermissionSetListWorkspaceCommand.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)WorkspaceCommands\SortPermissionsWorkspaceCommand.cs" />
