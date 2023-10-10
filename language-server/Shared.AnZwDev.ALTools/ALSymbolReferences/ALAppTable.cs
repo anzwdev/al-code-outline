@@ -39,5 +39,16 @@ namespace AnZwDev.ALTools.ALSymbolReferences
             return null;
         }
 
+        public override bool HasFullInherentPermissions()
+        {
+            var permissions = GetInherentPermissions();
+            return (permissions != null) &&
+                (permissions.IndexOf("R") >= 0) &&
+                (permissions.IndexOf("M") >= 0) &&
+                (permissions.IndexOf("I") >= 0) &&
+                (permissions.IndexOf("D") >= 0) &&
+                (permissions.IndexOf("X") >= 0);
+        }
+
     }
 }

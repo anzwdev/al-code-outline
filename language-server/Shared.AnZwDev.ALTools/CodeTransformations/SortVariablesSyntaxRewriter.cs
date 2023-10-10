@@ -33,8 +33,26 @@ namespace AnZwDev.ALTools.CodeTransformations
 
         protected class VariableComparer : IComparer<VariableDeclarationBaseSyntax>
         {
-            protected static string[] _typePriority = {"record ", "report", "codeunit", "xmlport", "page", "query", "notification",
-                    "bigtext", "dateformula", "recordid", "recordref", "fieldref", "filterpagebuilder" };
+            //protected static string[] _typePriority = {"record", "report", "codeunit", "xmlport", "page", "query", "notification",
+            //        "bigtext", "dateformula", "recordid", "recordref", "fieldref", "filterpagebuilder" };
+
+            protected static Dictionary<string, int> _typePriority = new Dictionary<string, int>()
+            {
+                { "record", 0 },
+                { "report", 1 },
+                { "codeunit", 2 },
+                { "xmlport", 3 },
+                { "page", 4 },
+                { "query", 5 },
+                { "notification", 6 },
+                { "bigtext", 7 },
+                { "dateformula", 8 },
+                { "recordid", 9 },
+                { "recordref", 10 },
+                { "fieldref", 11 },
+                { "filterpagebuilder", 12 }
+            };
+
             protected static IComparer<string> _stringComparer = new SyntaxNodeNameComparer();
             protected Dictionary<string, int> OriginalOrder { get; private set; }
             public VariablesSortMode SortMode { get; set; }
@@ -47,12 +65,10 @@ namespace AnZwDev.ALTools.CodeTransformations
 
             protected int GetDataTypePriority(string dataTypeName)
             {
-                for (int i=0; i<_typePriority.Length; i++)
-                {
-                    if (dataTypeName.StartsWith(_typePriority[i]))
-                        return i;
-                }
-                return _typePriority.Length;
+                dataTypeName = dataTypeName.FirstWord();
+                if (_typePriority.ContainsKey(dataTypeName))
+                    return _typePriority[dataTypeName];
+                return _typePriority.Count;
             }
 
             protected string GetDataTypeName(VariableDeclarationBaseSyntax node)

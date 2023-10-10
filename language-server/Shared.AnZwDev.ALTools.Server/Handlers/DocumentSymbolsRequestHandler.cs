@@ -27,7 +27,7 @@ namespace AnZwDev.ALTools.Server.Handlers
             DocumentSymbolsResponse response = new DocumentSymbolsResponse();
             try
             {
-                ALProject project = Server.Workspace.FindProject(parameters.projectPath, true);
+                ALProject project = Server.Workspace.FindProject(parameters.path, parameters.projectPath, true);
 
                 ALSymbolInfoSyntaxTreeReader symbolTreeBuilder = new ALSymbolInfoSyntaxTreeReader(
                     parameters.includeProperties);

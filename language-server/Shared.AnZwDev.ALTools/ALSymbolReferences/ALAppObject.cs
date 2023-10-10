@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Runtime.CompilerServices;
 using System.Text;
 using System.Threading.Tasks;
 using AnZwDev.ALTools.ALSymbols;
@@ -67,6 +68,18 @@ namespace AnZwDev.ALTools.ALSymbolReferences
             }
             return false;
         }
+
+        public string GetInherentPermissions()
+        {
+            return Properties?.GetValue("InherentPermissions");
+        }
+
+        public virtual bool HasFullInherentPermissions()
+        {
+            var permissions = GetInherentPermissions();
+            return (permissions != null) && (permissions.IndexOf("X") >= 0);
+        }
+
 
     }
 }

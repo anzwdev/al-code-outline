@@ -2,7 +2,7 @@
 	"name": "al-code-outline",
 	"displayName": "AZ AL Dev Tools/AL Code Outline",
 	"description": "AZ AL Development Tools: AL code outline, object browser, object creators",
-	"version": "3.0.50",
+	"version": "3.0.51",
 	"publisher": "andrzejzwierzchowski",
 	"engines": {
 		"vscode": "^1.47.0"
@@ -31,96 +31,10 @@
 		"onLanguage:al",
 		"onLanguage:alapp",
 		"workspaceContains:app.json",
-		"onView:azALDevTools.SymbolsTreeProvider",
-		"onCommand:azALDevTools.viewALApp",
-		"onCommand:azALDevTools.viewActionImages",
-		"onCommand:azALDevTools.viewCueGroupActionImages",
-		"onCommand:azALDevTools.viewCueGroupFieldsImages",
-		"onCommand:azALDevTools.viewRoleCenterActionImages",
-		"onCommand:azALDevTools.showAllProjectSymbols",
-		"onCommand:azALDevTools.showProjectSymbolsWithoutDep",
-		"onCommand:azALDevTools.refreshOutlineView",
-		"onCommand:azALDevTools.alOutlineCollapseAll",
-		"onCommand:azALDevTools.sortOutlineViewByPosition",
-		"onCommand:azALDevTools.sortOutlineViewByName",
-		"onCommand:azALDevTools.sortOutlineViewByCategory",
 		"onCommandazALDevTools.sortOutlineViewByPositionNoAction",
 		"onCommandazALDevTools.sortOutlineViewByNameNoAction",
 		"onCommandazALDevTools.sortOutlineViewByCategoryNoAction",
-		"onCommand:azALDevTools.newALFile",
-		"onCommand:azALDevTools.showDocumentSymbols",
-		"onCommand:azALDevTools.goToDefinitionSymbolTree",
-		"onCommand:azALDevTools.showSyntaxTree",
-		"onCommand:azALDevTools.showCodeAnalyzers",
-		"onCommand:azALDevTools.AddEditorApplicationAreas",
-		"onCommand:azALDevTools.AddProjectApplicationAreas",
-		"onCommand:azALDevTools.AddEditorToolTip",
-		"onCommand:azALDevTools.AddProjectToolTip",
-		"onCommand:azALDevTools.RefreshEditorToolTips", 
-		"onCommand:azALDevTools.RefreshProjectToolTips",
-		"onCommand:azALDevTools.AddEditorDataClassification",
-		"onCommand:azALDevTools.AddProjectDataClassification",
-		"onCommand:azALDevTools.AddEditorFieldCaption",
-		"onCommand:azALDevTools.AddProjectFieldCaption",
-		"onCommand:azALDevTools.AddEditorTableDataCaptionFields",
-		"onCommand:azALDevTools.AddProjectTableDataCaptionFields",
-		"onCommand:azALDevTools.AddEditorDropDownFieldGroups",
-		"onCommand:azALDevTools.AddProjectDropDownFieldGroups",
-		"onCommand:azALDevTools.AddEditorEnumValuesCaption",
-		"onCommand:azALDevTools.AddProjectEnumValuesCaption",
-		"onCommand:azALDevTools.AddEditorPageFieldCaption",
-		"onCommand:azALDevTools.AddProjectPageFieldCaption",
-		"onCommand:azALDevTools.AddEditorObjectCaption",
-		"onCommand:azALDevTools.AddProjectObjectCaption",
-		"onCommand:azALDevTools.fixDocumentOnSave",
-		"onCommand:azALDevTools.RemoveProjectWithStatements",
-		"onCommand:azALDevTools.RemoveEditorWithStatements",
-		"onCommand:azALDevTools.FixProjectKeywordsCase",
-		"onCommand:azALDevTools.FixEditorKeywordsCase",
-		"onCommand:azALDevTools.FixEditorIdentifiersCase",
-		"onCommand:azALDevTools.FixProjectIdentifiersCase",
-		"onCommand:azALDevTools.MakeEditorFlowFieldsReadOnly",
-		"onCommand:azALDevTools.MakeProjectFlowFieldsReadOnly",
-		"onCommand:azALDevTools.ConvertEditorObjectIdsToNames",
-		"onCommand:azALDevTools.ConvertProjectObjectIdsToNames",
-		"onCommand:azALDevTools.AddMissingEditorParentheses",
-		"onCommand:azALDevTools.AddMissingProjectParentheses",
-		"onCommand:azALDevTools.LockEditorRemovedFieldCaptions",
-		"onCommand:azALDevTools.LockProjectRemovedFieldCaptions",
-		"onCommand:azALDevTools.RemoveEditorBeginEnd",
-		"onCommand:azALDevTools.RemoveProjectBeginEnd",
-		"onCommand:azALDevTools.RemoveEditorEmptyTriggers",
-		"onCommand:azALDevTools.RemoveProjectEmptyTriggers",
-		"onCommand:azALDevTools.RemoveEditorEmptyLines",
-		"onCommand:azALDevTools.RemoveProjectEmptyLines",
-		"onCommand:azALDevTools.RemoveEditorRedundantAppAreas",
-		"onCommand:azALDevTools.RemoveProjectRedundantAppAreas",
-		"onCommand:azALDevTools.RemoveEditorEmptySections",
-		"onCommand:azALDevTools.RemoveProjectEmptySections",
-		"onCommand:azALDevTools.RemoveEditorStrSubstNoFromError",
-		"onCommand:azALDevTools.RemoveProjectStrSubstNoFromError",
-		"onCommand:azALDevTools.SortEditorPermissions", 
-		"onCommand:azALDevTools.SortWorkspacePermissions",
-		"onCommand:azALDevTools.SortEditorPermissionSetList", 
-		"onCommand:azALDevTools.SortWorkspacePermissionSetList",
-		"onCommand:azALDevTools.SortEditorProcedures", 
-		"onCommand:azALDevTools.SortWorkspaceProcedures",
-		"onCommand:azALDevTools.SortEditorProperties", 
-		"onCommand:azALDevTools.SortWorkspaceProperties",
-		"onCommand:azALDevTools.SortEditorReportColumns",
-		"onCommand:azALDevTools.SortWorkspaceReportColumns",
-		"onCommand:azALDevTools.SortEditorTableFields", 
-		"onCommand:azALDevTools.SortWorkspaceTableFields",
-		"onCommand:azALDevTools.SortEditorVariables", 
-		"onCommand:azALDevTools.SortWorkspaceVariables",
-		"onCommand:azALDevTools.SortEditorCustomizations", 
-		"onCommand:azALDevTools.SortWorkspaceCustomizations",
-		"onCommand:azALDevTools.RunEditorCodeCleanup",
-		"onCommand:azALDevTools.RunWorkspaceCodeCleanup",
-		"onCommand:azALDevTools.RunModifiedFilesCodeCleanup",
-		"onCommand:azALDevTools.showExtensionLog",
-		"onCustomEditor:azALDevTools.jsonEditor",
-		"onCustomEditor:azALDevTools.appPackageEditor"
+		"onCommand:azALDevTools.fixDocumentOnSave"
 	],
 	"main": "./out/extension.js",
 	"icon": "resources/alcodeoutline.png",
@@ -502,6 +416,16 @@
 			},
 			{
 				"category": "AZ AL Dev Tools",
+				"command": "azALDevTools.EditorOneStatementPerLine",
+				"title": "One Statement Per Line in the Active Editor"
+			},
+			{
+				"category": "AZ AL Dev Tools",
+				"command": "azALDevTools.ProjectOneStatementPerLine",
+				"title": "One Statement Per Line in the Active Project"
+			},
+			{
+				"category": "AZ AL Dev Tools",
 				"command": "azALDevTools.MakeEditorFlowFieldsReadOnly",
 				"title": "Make FlowFields ReadOnly in the Active Editor"
 			},
@@ -510,6 +434,18 @@
 				"command": "azALDevTools.MakeProjectFlowFieldsReadOnly",
 				"title": "Make FlowFields ReadOnly in the Active Project"
 			},
+
+			{
+				"category": "AZ AL Dev Tools",
+				"command": "azALDevTools.CollapseEditorEmptyBrackets",
+				"title": "Collapse Empty Brackets in the Active Editor"
+			},
+			{
+				"category": "AZ AL Dev Tools",
+				"command": "azALDevTools.CollapseProjectEmptyBrackets",
+				"title": "Collapse Empty Brackets in the Active Project"
+			},
+
 			{
 				"category": "AZ AL Dev Tools",
 				"command": "azALDevTools.ConvertEditorObjectIdsToNames",
@@ -974,11 +910,27 @@
 					"when": "azALDevTools.extensionActive"
 				},
 				{
-					"command": "azALDevTools.MakeEditorFlowFieldsReadOnly",
+					"command": "azALDevTools.EditorOneStatementPerLine",
+					"when": "editorLangId == al"
+				},
+				{
+					"command": "azALDevTools.ProjectOneStatementPerLine",
 					"when": "azALDevTools.extensionActive"
 				},
 				{
+					"command": "azALDevTools.MakeEditorFlowFieldsReadOnly",
+					"when": "editorLangId == al"
+				},
+				{
 					"command": "azALDevTools.MakeProjectFlowFieldsReadOnly",
+					"when": "azALDevTools.extensionActive"
+				},
+				{
+					"command": "azALDevTools.CollapseEditorEmptyBrackets",
+					"when": "editorLangId == al"
+				},
+				{
+					"command": "azALDevTools.CollapseProjectEmptyBrackets",
 					"when": "azALDevTools.extensionActive"
 				},
 				{
@@ -1606,6 +1558,7 @@
 								"SortPermissions",
 								"SortPermissionSetList",
 								"SortCustomizations",
+								"OneStatementPerLine",
 								"FormatDocument"
 							],
 							"enumDescriptions": [
@@ -1616,6 +1569,7 @@
 								"Sort permissions",
 								"Sort permission sets",
 								"Sort customizations",
+								"One statement per line",
 								"Format document"
 							]
 						},
@@ -1662,7 +1616,9 @@
 								"TrimTrailingWhitespace",
 								"MakeFlowFieldsReadOnly",
 								"RemoveRedundantAppAreas",
-								"RemoveRedundantDataClassification"
+								"RemoveRedundantDataClassification",
+								"CollapseEmptyBrackets",
+								"OneStatementPerLine"
 							],
 							"enumDescriptions": [
 								"Remove With Statements",
@@ -1697,7 +1653,9 @@
 								"Trim Trailing Whitespace",
 								"Make FlowFields Read-Only",
 								"Remove Redundant Application Areas",
-								"Remove Redundant DataClassification"
+								"Remove Redundant DataClassification",
+								"Collapse Empty Brackets",
+								"One Statement Per Line"
 							]
 						},
 						"description": "List of commands run by the Code Cleanup"
