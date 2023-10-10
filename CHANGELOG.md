@@ -12,6 +12,7 @@ Thank you
  - ernestasjuska for reporting issue #476
  - ChrisBlankDe for reporting issue #491
  - DavidFeldhoff for reporting and helping investigate issue #492
+ - Nicholas Jackson for the Twitter idea #493 and Tine Staric and Krzysztof Bialowas for making sure that I've received it
 
 ## 3.0.50
  - Extension recompiled for BC23
