@@ -137,7 +137,7 @@ namespace AnZwDev.ALTools.CodeTransformations
             if (node.ElseStatement != null)
             {
                 //add missing new line between if statement and else keyword
-                if ((!node.Statement.GetTrailingTrivia().HasNewLine()) && (!node.ElseKeywordToken.LeadingTrivia.HasNewLine()))
+                if ((!node.Statement.GetTrailingTrivia().HasNewLine()) && (!node.ElseKeywordToken.LeadingTrivia.HasNewLine()) && (node.Statement != null) && (!(node.Statement is BlockSyntax)))
                 {
                     node = node.WithElseKeywordToken(
                         node.ElseKeywordToken.WithLeadingTrivia(

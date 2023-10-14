@@ -1,5 +1,13 @@
 # Change Log
 
+## 3.0.52
+ - Issue #453 - One Statement Per Line bugfix - line break inside "else begin"
+ - Issue #493 - Command to collapse empty brackets into a single line - project processing bugfix
+
+Thank you
+ - NKarolak for finding buig in the issue #453
+ - rvanbekkum for finding bug in the issue #493
+
 ## 3.0.51
  - Issue #453 - New code cleanup action - One Statement Per Line
  - Issue #476 - Skip objects with full direct InherentPermissions (QuickFix "Add all application objects permissions")

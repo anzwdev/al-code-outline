@@ -18,9 +18,25 @@ namespace AnZwDev.ALTools.WorkspaceCommands
             SingleLineComment
         }
 
+        private int _noOfChangedFiles = 0;
+        private int _totalNoOfChanges = 0;
+
         public CollapseEmptyBracketsWorkspaceCommand(ALDevToolsServer alDevToolsServer) : base(alDevToolsServer, "collapseEmptyBrackets")
         {
         }
+
+        public override WorkspaceCommandResult Run(string sourceCode, ALProject project, string filePath, Range range, Dictionary<string, string> parameters, List<string> excludeFiles)
+        {
+            this._totalNoOfChanges = 0;
+            this._noOfChangedFiles = 0;
+
+            WorkspaceCommandResult result = base.Run(sourceCode, project, filePath, range, parameters, excludeFiles);
+
+            result.SetParameter(NoOfChangesParameterName, this._totalNoOfChanges.ToString());
+            result.SetParameter(NoOfChangedFilesParameterName, this._noOfChangedFiles.ToString());
+            return result;
+        }
+
 
         protected override (string, bool, string) ProcessSourceCode(string sourceCode, ALProject project, string filePath, Range range, Dictionary<string, string> parameters)
         {
@@ -29,6 +45,7 @@ namespace AnZwDev.ALTools.WorkspaceCommands
             var lastValidPreBracketPos = -1;
             var builder = new StringBuilder();
             var lastPartEndPos = -1;
+            var noOfChanges = 0;
 
             var pos = 0;
             while (pos < sourceCode.Length)
@@ -110,6 +127,7 @@ namespace AnZwDev.ALTools.WorkspaceCommands
                                 builder.Append(part);
                                 builder.Append(" { }");
                                 lastPartEndPos = pos;
+                                noOfChanges++;
                             }
                             openBracketPos = -1;
                             lastValidPreBracketPos = -1;
@@ -151,6 +169,10 @@ namespace AnZwDev.ALTools.WorkspaceCommands
                     builder.Append(sourceCode.Substring(lastPartEndPos + 1));
                 sourceCode = builder.ToString();
             }
+
+            _totalNoOfChanges += noOfChanges;
+            if (noOfChanges > 0)
+                _noOfChangedFiles++;
 
             return (sourceCode, true, null);
         }
