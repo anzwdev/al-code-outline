@@ -3,10 +3,12 @@
 ## 3.0.52
  - Issue #453 - One Statement Per Line bugfix - line break inside "else begin"
  - Issue #493 - Command to collapse empty brackets into a single line - project processing bugfix
+ - Issue #495 - Trim Spaces In Enum Captions/Values
 
 Thank you
  - NKarolak for finding buig in the issue #453
  - rvanbekkum for finding bug in the issue #493
+ - mjmatthiesen for reporting issue #495
 
 ## 3.0.51
  - Issue #453 - New code cleanup action - One Statement Per Line
