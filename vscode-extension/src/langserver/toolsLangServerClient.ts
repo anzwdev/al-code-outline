@@ -76,13 +76,13 @@ import { ToolsGetPageFieldAvailableToolTipsRequest } from './symbolsinformation/
 import { ToolsGetPageFieldAvailableToolTipsResponse } from './symbolsinformation/toolsGetPageFieldAvailableToolTipsResponse';
 import { ToolsConfigurationChangeRequest } from './toolsConfigurationChangeRequest';
 import { ToolsFindDuplicateCodeRequest } from './toolsFindDuplicateCodeRequest';
-import { ToolsFindDuplicateCodeResponse } from './ToolsFindDuplicateCodeResponse';
+import { ToolsFindDuplicateCodeResponse } from './toolsFindDuplicateCodeResponse';
 import { ToolsCodeCompletionRequest } from './codeCompletion/toolsCodeCompletionRequest';
 import { ToolsCodeCompletionResponse } from './codeCompletion/toolsCodeCompletionResponse';
 import { ToolsGetWarningDirectivesRequest } from './symbolsinformation/toolsGetWarningDirectivesRequest';
 import { ToolsGetWarningDirectivesResponse } from './symbolsinformation/toolsGetWarningDirectivesResponse';
 import { ToolsHoverResponse } from './toolsHoverResponse';
-import { ToolsDocumentPositionRequest } from './ToolsDocumentPositionRequest';
+import { ToolsDocumentPositionRequest } from './toolsDocumentPositionRequest';
 import { ToolsReferencesResponse } from './toolsReferencesResponse';
 import { toolsGetCodeunitMethodsListRequest } from './symbolsinformation/toolsGetCodeunitMethodsListRequest';
 import { ToolsGetCodeunitMethodsListResponse } from './symbolsinformation/toolsGetCodeunitMethodsListResponse';
@@ -256,6 +256,20 @@ export class ToolsLangServerClient implements vscode.Disposable {
         catch (e) {
         }
     }
+
+    //syntax tree
+    public getRawSyntaxTree(params: ToolsGetSyntaxTreeRequest) : Promise<ToolsGetSyntaxTreeResponse|undefined> {
+        return this.sendRequest<ToolsGetSyntaxTreeRequest, ToolsGetSyntaxTreeResponse>(params, 'al/getrawsyntaxtree');
+    }
+
+    public getRawSyntaxTreeSymbol(params: ToolsGetSyntaxTreeSymbolsRequest) : Promise<ToolsGetSyntaxTreeSymbolResponse|undefined> {
+        return this.sendRequest<ToolsGetSyntaxTreeSymbolsRequest, ToolsGetSyntaxTreeSymbolResponse>(params, 'al/getrawsyntaxtreesymbol');
+    }
+
+    public closeRawSyntaxTree(params: ToolsCloseSyntaxTreeRequest) {
+        this.sendNotification(params, 'al/closerawsyntaxtree');
+    }
+    
 
     public async getFullSyntaxTree(params: ToolsGetFullSyntaxTreeRequest, restoreParent: boolean) : Promise<ToolsGetFullSyntaxTreeResponse|undefined> {
         try {

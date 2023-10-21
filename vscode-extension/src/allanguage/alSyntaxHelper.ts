@@ -209,4 +209,42 @@ export class ALSyntaxHelper {
         return undefined;
     }
 
+    static splitNamesList(valueList: string | undefined): string[] {
+        let values : string[] = [];
+
+        if ((valueList) && (valueList.length > 0)) {            
+            let startPos = 0;
+            let inName = false;
+
+            for (let pos = 0; pos < valueList.length; pos++) {
+                switch (valueList[pos]) {
+                    case ',':
+                        if (!inName) {
+                            let valueString = valueList.substring(startPos, pos);
+                            if ((values.length > 0) || (valueString !== " "))  {
+                                valueString = ALSyntaxHelper.fromNameText(valueString.trim());
+                            }
+                            values.push(valueString);
+                            startPos = pos + 1;
+                        }
+                        break;
+                    case '"':
+                        inName = !inName;
+                        break;
+                }
+            }
+
+            if (startPos < valueList.length) {
+                let valueString = valueList.substring(startPos, valueList.length);
+                if ((values.length > 0) || (valueString !== " "))  {
+                    valueString = ALSyntaxHelper.fromNameText(valueString.trim());
+                }
+                values.push(valueString);
+            }
+        }
+
+        return values;
+    }
+
+
 }

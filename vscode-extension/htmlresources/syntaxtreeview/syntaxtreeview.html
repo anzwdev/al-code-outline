@@ -9,6 +9,7 @@
         <script src="##EXTENSIONPATH##/htmlresources/lib/split/split.min.js"></script>
         <script src="##EXTENSIONPATH##/htmlresources/alsymbolsbrowser/js/alsymbolkind.js"></script>
         <script src="##EXTENSIONPATH##/htmlresources/lib/symbolstreecontrol/symbolstreecontrol.js"></script>
+        <script src="##EXTENSIONPATH##/htmlresources/lib/helpers/htmlhelper.js"></script>
         <script src="##EXTENSIONPATH##/htmlresources/lib/azgridview/azgridview.js"></script>
         <script src="##EXTENSIONPATH##/htmlresources/syntaxtreeview/js/syntaxtreeview.js"></script>
         <script src="##EXTENSIONPATH##/htmlresources/syntaxtreeview/js/startup.js"></script>
@@ -23,8 +24,10 @@
     <body>
         <div class="headpanel">
             <div class="hptbar">
-                <div class="hptitle">Syntax Tree</div>
-                <button id="syncbtn" class="hpbtn btnico-sync"></button>
+                <div id="hptitle" class="hptitle">Syntax Tree</div>
+                <button id="treeviewbtn" class="hpbtn btnico-treeview" title="Switch to child nodes tree view"></button>
+                <button id="classviewbtn" class="hpbtn btnico-class" title="Switch to class tree view"></button>
+                <button id="syncbtn" class="hpbtn btnico-sync" title="Select node at cursor"></button>
             </div>
         </div>
         <div id="symbols" tabindex="1" class="symbolscont">Loading syntax tree, please wait...</div>

@@ -7,13 +7,17 @@ import { TextEditorHelper } from '../tools/textEditorHelper';
 import { ToolsGetSyntaxTreeSymbolsRequest } from '../langserver/toolsGetSyntaxTreeSymbolRequest';
 import { ToolsCloseSyntaxTreeRequest } from '../langserver/toolsCloseSyntaxTreeRequest';
 import { BaseSymbolsWebView } from '../webviews/baseSymbolsWebView';
+import { SyntaxTreeViewMode } from './syntaxTreeViewMode';
+import { ToolsGetSyntaxTreeResponse } from '../langserver/toolsGetSyntaxTreeResponse';
 
 export class SyntaxTreeView extends BaseSymbolsWebView {
     protected _firstLoad: boolean;
+    protected _viewMode: SyntaxTreeViewMode;
 
     constructor(devToolsContext : DevToolsExtensionContext, documentUri: vscode.Uri | undefined) {        
         super(devToolsContext, undefined, documentUri);
         this._firstLoad = true;
+        this._viewMode = SyntaxTreeViewMode.ClassView;
 
         this._disposables.push(vscode.workspace.onDidChangeTextDocument(e => {
             if ((e.document) && (this._documentUri) && 
@@ -34,6 +38,15 @@ export class SyntaxTreeView extends BaseSymbolsWebView {
         return 'azALDevTools.SyntaxTreeView';
     }
 
+    protected sendSetDataMessage() {
+        this.sendMessage({
+            command: 'setData',
+            data: this._rootSymbol,
+            viewMode: this._viewMode,
+            selected: this._selectedSymbolPath
+        });
+    }
+
     protected async loadSymbols() {
         if (!this._documentUri) {
             return;
@@ -49,7 +62,16 @@ export class SyntaxTreeView extends BaseSymbolsWebView {
 
         let request: ToolsGetSyntaxTreeRequest = new ToolsGetSyntaxTreeRequest(source, this._documentUri.fsPath, projectPath, this._firstLoad);
         this._firstLoad = false;
-        let response = await this._devToolsContext.toolsLangServerClient.getSyntaxTree(request);
+        let response: ToolsGetSyntaxTreeResponse | undefined = undefined;
+        switch (this._viewMode) {
+            case SyntaxTreeViewMode.TreeView:
+                response = await this._devToolsContext.toolsLangServerClient.getSyntaxTree(request);
+                break;
+            case SyntaxTreeViewMode.ClassView:
+                response = await this._devToolsContext.toolsLangServerClient.getRawSyntaxTree(request);
+                break;
+        }
+        
         if ((response) && (response.root)) {
             let rootSymbol = AZSymbolInformation.fromAny(response.root);
             rootSymbol.updateTree(true, false);            
@@ -63,7 +85,7 @@ export class SyntaxTreeView extends BaseSymbolsWebView {
             return;
 
         let request: ToolsGetSyntaxTreeSymbolsRequest = new ToolsGetSyntaxTreeSymbolsRequest(this._documentUri.fsPath, symbolPath);
-        let response = await this._devToolsContext.toolsLangServerClient.getSyntaxTreeSymbol(request);
+        let response = await this._devToolsContext.toolsLangServerClient.getRawSyntaxTreeSymbol(request);
         if (response) {
             this.setSymbolInfo(response.symbol);
             if (response.symbol) {
@@ -92,7 +114,35 @@ export class SyntaxTreeView extends BaseSymbolsWebView {
         super.onPanelClosed();
         if (this._documentUri) {
             let request: ToolsCloseSyntaxTreeRequest = new ToolsCloseSyntaxTreeRequest(this._documentUri.fsPath);
-            this._devToolsContext.toolsLangServerClient.closeSyntaxTree(request);   
+            this._devToolsContext.toolsLangServerClient.closeRawSyntaxTree(request);   
         }
     }
+
+    protected processWebViewMessage(message : any) : boolean {
+        if (super.processWebViewMessage(message)) {
+            return true;        
+        }
+
+        if (message) {
+            switch (message.command) {
+                case 'treeview':
+                    this.setView(SyntaxTreeViewMode.TreeView);
+                    return true;
+                case 'classview':
+                    this.setView(SyntaxTreeViewMode.ClassView);
+                    return true;
+                }
+        }
+
+        return false;
+    }
+
+    protected setView(newViewMode: SyntaxTreeViewMode) {
+        if (this._viewMode !== newViewMode) {
+            this._viewMode = newViewMode;
+            this.loadSymbols();
+        }
+    }
+
+
 }

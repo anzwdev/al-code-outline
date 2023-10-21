@@ -40,7 +40,7 @@ button:hover {
     justify-content: stretch;
 }
 .headpanel .hptbar .hpbtn {
-    flex: 0 0 18px;
+    flex: 0 0 24px;
     height: 18px;
     background-position: center center;
     background-size: 16px;
@@ -64,9 +64,27 @@ button:hover {
 .vscode-dark .btnico-sync, .vscode-high-contrast .btnico-sync {
     background-image: url(../../../resources/images/dark/sync.svg);
 }
+.vscode-dark .btnico-class, .vscode-high-contrast .btnico-class {
+    background-image: url(../../../resources/images/dark/btn-class.svg);
+}
+.vscode-dark .btnico-treeview, .vscode-high-contrast .btnico-treeview {
+    background-image: url(../../../resources/images/dark/btn-treeview.svg);
+}
 .vscode-light .btnico-refresh {
     background-image: url(../../../resources/images/light/refresh.svg);
 }
 .vscode-light .btnico-sync {
     background-image: url(../../../resources/images/light/sync.svg);
+}
+.vscode-light .btnico-class {
+    background-image: url(../../../resources/images/light/btn-class.svg);
+}
+.vscode-light .btnico-treeview {
+    background-image: url(../../../resources/images/light/btn-treeview.svg);
+}
+.hpbtn:hover, .htbtn-selected:hover {
+    background-color: var(--vscode-toolbar-hoverBackground) !important;
+}
+.htbtn-selected {
+    background-color: var(--vscode-toolbar-activeBackground) !important;
 }

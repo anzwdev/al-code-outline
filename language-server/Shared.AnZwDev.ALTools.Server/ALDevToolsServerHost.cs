@@ -46,10 +46,15 @@ namespace AnZwDev.ALTools.Server
 
             this.Dispatcher.RegisterRequestHandler(new GetALAppContentRequestHandler(this.ALDevToolsServer, this));
 
-            //syntax tree analyzer
+            //obsolete syntax tree analyzer for other vs code extensions
             this.Dispatcher.RegisterRequestHandler(new GetSyntaxTreeRequestHandler(this.ALDevToolsServer, this));
             this.Dispatcher.RegisterRequestHandler(new GetSyntaxTreeSymbolRequestHandler(this.ALDevToolsServer, this));
             this.Dispatcher.RegisterNotificationHandler(new CloseSyntaxTreeNotificationHandler(this.ALDevToolsServer, this));
+
+            //syntax tree analyzer
+            this.Dispatcher.RegisterRequestHandler(new GetRawSyntaxTreeRequestHandler(this.ALDevToolsServer, this));
+            this.Dispatcher.RegisterRequestHandler(new GetRawSyntaxTreeSymbolRequestHandler(this.ALDevToolsServer, this));
+            this.Dispatcher.RegisterNotificationHandler(new CloseRawSyntaxTreeNotificationHandler(this.ALDevToolsServer, this));
 
             this.Dispatcher.RegisterRequestHandler(new GetFullSyntaxTreeRequestHandler(this.ALDevToolsServer, this));
 

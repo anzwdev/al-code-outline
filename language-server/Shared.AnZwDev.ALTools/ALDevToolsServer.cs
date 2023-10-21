@@ -1,4 +1,5 @@
 ﻿using AnZwDev.ALTools.ALSymbols;
+using AnZwDev.ALTools.ALSymbols.SymbolReaders;
 using AnZwDev.ALTools.CodeAnalysis;
 using AnZwDev.ALTools.Workspace;
 using AnZwDev.ALTools.WorkspaceCommands;
@@ -19,6 +20,7 @@ namespace AnZwDev.ALTools
         public string ExtensionBinPath { get; }
         public ALSymbolLibrariesCollection SymbolsLibraries { get; }
         public ALSyntaxTreesCollection SyntaxTrees { get; }
+        public ALSyntaxTreesCollection RawSyntaxTrees { get; }
         public CodeAnalyzersLibrariesCollection CodeAnalyzersLibraries { get; set; }
         public WorkspaceCommandsManager WorkspaceCommandsManager { get; }
         public ALWorkspace Workspace { get; }
@@ -32,7 +34,8 @@ namespace AnZwDev.ALTools
 
             this.ExtensionBinPath = Path.Combine(extensionPath, "bin");
             this.SymbolsLibraries = new ALSymbolLibrariesCollection();
-            this.SyntaxTrees = new ALSyntaxTreesCollection();
+            this.SyntaxTrees = new ALSyntaxTreesCollection(new ALSyntaxTreeSymbolsReader());
+            this.RawSyntaxTrees = new ALSyntaxTreesCollection(new ALRawSyntaxTreeSymbolsReader());
             this.CodeAnalyzersLibraries = new CodeAnalyzersLibrariesCollection(this);
             this.WorkspaceCommandsManager = new WorkspaceCommandsManager(this);
             this.Workspace = new ALWorkspace();

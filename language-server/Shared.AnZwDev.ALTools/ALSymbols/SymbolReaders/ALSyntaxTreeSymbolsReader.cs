@@ -11,35 +11,14 @@ using System.Threading.Tasks;
 
 namespace AnZwDev.ALTools.ALSymbols.SymbolReaders
 {
-    public class ALSyntaxTreeSymbolsReader
+    public class ALSyntaxTreeSymbolsReader : ALBaseSyntaxTreeSymbolsReader
     {
 
         public ALSyntaxTreeSymbolsReader()
         {
         }
 
-        public ALSyntaxTreeSymbol ProcessSourceFile(string path, ALProject project)
-        {
-            string sourceCode;
-            try
-            {
-                System.IO.StreamReader reader = new System.IO.StreamReader(path);
-                sourceCode = reader.ReadToEnd();
-                reader.Close();
-                reader.Dispose();
-
-                return ProcessSourceCode(sourceCode, project);
-            }
-            catch (Exception e)
-            {
-                MessageLog.LogError(e);
-                return new ALSyntaxTreeSymbol(ALSymbolKind.Undefined, "LangServer Error: " + e.Message);
-            }
-        }
-
-
-
-        public ALSyntaxTreeSymbol ProcessSourceCode(string source, ALProject project)
+        public override ALSyntaxTreeSymbol ProcessSourceCode(string source, ALProject project)
         {
             SyntaxTree syntaxTree = SyntaxTreeExtensions.SafeParseObjectText(source, project);
 
@@ -83,7 +62,6 @@ namespace AnZwDev.ALTools.ALSymbols.SymbolReaders
 
             return symbolInfo;
         }
-
 
     }
 }
