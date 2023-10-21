@@ -123,6 +123,7 @@
     <Compile Include="$(MSBuildThisFileDirectory)Handlers\ChangeTracking\FileSystemFileCreateNotificationHandler.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Handlers\ChangeTracking\FileSystemFileDeleteNotificationHandler.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Handlers\ChangeTracking\WorkspaceFoldersChangeNotificationHandler.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Handlers\CloseRawSyntaxTreeNotificationHandler.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Handlers\CloseSymbolsLibraryNotificationHandler.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Handlers\CloseSyntaxTreeNotificationHandler.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Handlers\CodeCompletionRequestHandler.cs" />
@@ -135,6 +136,8 @@
     <Compile Include="$(MSBuildThisFileDirectory)Handlers\GetLibrarySymbolLocationRequestHandler.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Handlers\GetProjectSettingsRequestHandler.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Handlers\GetProjectSymbolLocationRequestHandler.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Handlers\GetRawSyntaxTreeRequestHandler.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Handlers\GetRawSyntaxTreeSymbolRequestHandler.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Handlers\GetSyntaxTreeRequestHandler.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Handlers\GetSyntaxTreeSymbolRequestHandler.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Handlers\HoverRequestHandler.cs" />

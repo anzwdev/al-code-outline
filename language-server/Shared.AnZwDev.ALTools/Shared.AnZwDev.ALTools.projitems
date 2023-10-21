@@ -130,6 +130,7 @@
     <Compile Include="$(MSBuildThisFileDirectory)ALSymbols\ALSymbolKind.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)ALSymbols\ALSymbolKindExtension.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)ALSymbols\ALSymbolLibrariesCollection.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)ALSymbols\ALSymbolPositionComparer.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)ALSymbols\ALSymbolsLibrary.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)ALSymbols\ALSymbolsLibrarySource.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)ALSymbols\ALSymbolSourceLocation.cs" />
@@ -138,6 +139,10 @@
     <Compile Include="$(MSBuildThisFileDirectory)ALSymbols\ALSyntaxTree.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)ALSymbols\ALSyntaxTreesCollection.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)ALSymbols\ALSyntaxTreeSymbol.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)ALSymbols\PositionComparer.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)ALSymbols\RangeComparer.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)ALSymbols\SymbolReaders\ALBaseSyntaxTreeSymbolsReader.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)ALSymbols\SymbolReaders\ALRawSyntaxTreeSymbolsReader.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)ALSymbols\DocumentRange.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)ALSymbols\Internal\ConvertedActionKind.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)ALSymbols\Internal\ConvertedChangeKind.cs" />

@@ -38,13 +38,17 @@ export class BaseSymbolsWebView extends DocToolsWebView {
     protected updateView() {
         if (!this._loaded)
             return;
+        this.sendSetDataMessage();
+        if (this._rootSymbol)
+            this._selectedSymbolPath = undefined;
+    }
+
+    protected sendSetDataMessage() {
         this.sendMessage({
             command: 'setData',
             data: this._rootSymbol,
             selected: this._selectedSymbolPath
         });
-        if (this._rootSymbol)
-            this._selectedSymbolPath = undefined;
     }
 
     protected async onDocumentLoaded() {

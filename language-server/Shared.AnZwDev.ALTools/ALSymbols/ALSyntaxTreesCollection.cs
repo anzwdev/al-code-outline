@@ -11,12 +11,12 @@ namespace AnZwDev.ALTools.ALSymbols
     {
 
         public Dictionary<string, ALSyntaxTree> SyntaxTrees { get; }
-        protected ALSyntaxTreeSymbolsReader SyntaxTreeReader { get; }
+        protected ALBaseSyntaxTreeSymbolsReader SyntaxTreeReader { get; }
 
-        public ALSyntaxTreesCollection()
+        public ALSyntaxTreesCollection(ALBaseSyntaxTreeSymbolsReader syntaxTreeReader)
         {
             this.SyntaxTrees = new Dictionary<string, ALSyntaxTree>();
-            this.SyntaxTreeReader = new ALSyntaxTreeSymbolsReader();
+            this.SyntaxTreeReader = syntaxTreeReader;
         }
 
         public bool Close(string filePath)

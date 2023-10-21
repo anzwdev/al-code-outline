@@ -1,3 +1,9 @@
+const SyntaxTreeViewViewMode = {
+    TreeView: 0,
+    ClassView: 1,
+    Undefined: -1
+};
+
 class SyntaxTreeView {
     constructor() {
         this._vscode = acquireVsCodeApi();
@@ -7,6 +13,8 @@ class SyntaxTreeView {
             {name:'name', caption:'Name', style: 'width:45%;'},
             {name:'value', caption:'Value', style: 'width:55%' }
         ]);
+
+        this.updateViewMode(SyntaxTreeViewViewMode.Undefined);
 
         this._symTree = new SymbolsTreeControl('symbols', undefined, false);
         this._symTree.sortNodes = false;
@@ -47,6 +55,18 @@ class SyntaxTreeView {
             });   
         });
 
+        document.getElementById('treeviewbtn').addEventListener('click', event => {
+            this.sendMessage({
+                command: 'treeview'
+            });   
+        });
+
+        document.getElementById('classviewbtn').addEventListener('click', event => {
+            this.sendMessage({
+                command: 'classview'
+            });   
+        });
+
         //initialize splitter
         Split(['#symbols', '#proppanel'], {
             minSize: 0,
@@ -68,6 +88,7 @@ class SyntaxTreeView {
         switch (message.command) {
             case 'setData':
                 this.setData(message.data);
+                this.updateViewMode(message.viewMode);                
                 if (message.selected)
                     this._symTree.selectNodeByPath(message.selected);               
                 break;
@@ -107,6 +128,25 @@ class SyntaxTreeView {
             command: 'symbolselected',
             path: this._symTree.getNodePath(node)
         });
+    }
+
+    updateViewMode(newMode) {
+        this._viewMode = newMode;
+        htmlHelper.setVisibilityById("treeviewbtn", this._viewMode !== SyntaxTreeViewViewMode.TreeView);
+        htmlHelper.setVisibilityById("classviewbtn", this._viewMode !== SyntaxTreeViewViewMode.ClassView);
+        document.getElementById("hptitle").innerText = this.getPanelCaption();
+    }
+
+    getPanelCaption() {
+        const mainTitlePart = "Syntax Tree";
+        switch (this._viewMode) {
+            case SyntaxTreeViewViewMode.TreeView:
+                return mainTitlePart + " (Tree View)";
+            case SyntaxTreeViewViewMode.ClassView:
+                return mainTitlePart + " (Class View)";
+            default:
+                return mainTitlePart;
+        }
     }
 
 }

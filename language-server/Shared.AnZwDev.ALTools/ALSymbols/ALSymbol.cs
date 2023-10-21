@@ -179,5 +179,11 @@ namespace AnZwDev.ALTools.ALSymbols
             return false;
         }
 
+        public void Sort(IComparer<ALSymbol> comparer)
+        {
+            if (childSymbols != null)
+                childSymbols.Sort(comparer);
+        }
+
     }
 }

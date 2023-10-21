@@ -1,0 +1,18 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16">
+  <defs>
+    <style>.canvas{fill: none; opacity: 0;}.light-defaultgrey{fill: #C5C5C5; opacity: 1;}.light-defaultgrey-10{fill: #C5C5C5; opacity: 0.1;}</style>
+  </defs>
+  <title>IconLightTreeView</title>
+  <g id="canvas">
+    <path class="canvas" d="M16,16H0V0H16Z" />
+  </g>
+  <g id="level-1">
+    <path class="light-defaultgrey" d="M12,4H5V3h7Zm2,4H7V9h7Zm0,5H7v1h7Z" />
+    <path class="light-defaultgrey-10" d="M3.5,4.5h-2v-2h2Z" />
+    <path class="light-defaultgrey" d="M3.5,5h-2L1,4.5v-2L1.5,2h2l.5.5v2ZM2,4H3V3H2Z" />
+    <path class="light-defaultgrey-10" d="M5.5,9.5h-2v-2h2Z" />
+    <path class="light-defaultgrey" d="M5.5,10h-2L3,9.5v-2L3.5,7h2l.5.5v2ZM4,9H5V8H4Z" />
+    <path class="light-defaultgrey-10" d="M5.5,14.5h-2v-2h2Z" />
+    <path class="light-defaultgrey" d="M5.5,15h-2L3,14.5v-2l.5-.5h2l.5.5v2ZM4,14H5V13H4Z" />
+  </g>
+</svg>

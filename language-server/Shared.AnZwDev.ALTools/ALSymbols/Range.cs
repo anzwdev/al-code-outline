@@ -51,5 +51,27 @@ namespace AnZwDev.ALTools.ALSymbols
             return $"{start.line}_{start.character}_{end.line}_{end.character}";
         }
 
+        public void Add(Range range)
+        {
+            if (range.start != null)
+            {
+                if (start == null)
+                    start = new Position(range.start.line, range.start.character);
+                else if (start.IsGreater(range.start))
+                    start.Set(range.start);
+            }
+            
+            if (range.end != null)
+            {
+                if (end == null)
+                    end = new Position(range.end.line, range.end.character);
+                else if (end.IsLower(range.end))
+                    end.Set(range.end);
+
+            }
+
+            UpdateStatus();
+        }
+
     }
 }

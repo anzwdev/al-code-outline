@@ -17,9 +17,9 @@ namespace AnZwDev.ALTools.ALSymbols
         public ALSymbol RootSymbol { get; set; }
         public int OpenCount { get; set; }
 
-        protected ALSyntaxTreeSymbolsReader SyntaxTreeReader { get; set; }
+        protected ALBaseSyntaxTreeSymbolsReader SyntaxTreeReader { get; set; }
 
-        public ALSyntaxTree(string filePath, ALSyntaxTreeSymbolsReader syntaxTreeReader)
+        public ALSyntaxTree(string filePath, ALBaseSyntaxTreeSymbolsReader syntaxTreeReader)
         {
             this.Path = filePath;
             this.SyntaxTreeReader = syntaxTreeReader;

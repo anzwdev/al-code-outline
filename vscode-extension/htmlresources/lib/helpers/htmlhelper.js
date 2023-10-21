@@ -33,6 +33,13 @@ var htmlHelper = {
     showById : function(id) {
         htmlHelper.show(document.getElementById(id));
     },
+    setVisibilityById : function(id, visible) {
+        if (visible) {
+            htmlHelper.showById(id);
+        } else {
+            htmlHelper.hideById(id);
+        }
+    },
     clearChildren : function(element) {
         if (element) {
             while (element.firstChild) {

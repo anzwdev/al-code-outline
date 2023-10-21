@@ -65,9 +65,7 @@ namespace AnZwDev.ALTools.ALSymbols
                     }
                 }
             }
-
         }
-
 
     }
 }
