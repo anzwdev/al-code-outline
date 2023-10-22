@@ -99,7 +99,7 @@ namespace AnZwDev.ALTools.CodeTransformations
                 }
 
                 //add missing new line between until and last statement
-                if ((!statements[statements.Count - 1].GetTrailingTrivia().HasNewLine()) && (!node.UntilKeywordToken.TrailingTrivia.HasNewLine()))
+                if ((!statements[statements.Count - 1].GetTrailingTrivia().HasNewLine()) && (!node.UntilKeywordToken.LeadingTrivia.HasNewLine()))
                 {
                     modified = true;
                     NoOfChanges++;

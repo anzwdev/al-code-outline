@@ -109,7 +109,6 @@ namespace AnZwDev.ALTools.Extensions
             return false;
         }
 
-
         public static bool ContainsDirectives(this IEnumerable<SyntaxTrivia> triviaList)
         {
             if (triviaList == null)

@@ -1,5 +1,11 @@
 # Change Log
 
+## 3.0.53
+ - Issue #453 - One Statement Per Line bugfix - incorrect line break before "until"
+
+Thank you
+ - fvet for finding bug in the issue #453
+
 ## 3.0.52
  - Issue #440 - [Suggestion] Syntax tokens in the Document Syntax Visualizer 
  - Issue #453 - One Statement Per Line bugfix - line break inside "else begin"
