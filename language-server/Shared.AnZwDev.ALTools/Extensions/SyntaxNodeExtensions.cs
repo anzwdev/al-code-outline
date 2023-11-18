@@ -397,6 +397,17 @@ namespace AnZwDev.ALTools.Extensions
             return null;
         }
 
+        public static bool IsObsoletePendingOrRemoved(this SyntaxNode node)
+        {
+#if BC
+            var property = node.GetIdentifierPropertyValue("ObsoleteState");
+            return (!String.IsNullOrWhiteSpace(property)) &&
+                ((property.Equals("Pending", StringComparison.CurrentCultureIgnoreCase)) || (property.Equals("Removed", StringComparison.CurrentCultureIgnoreCase)));
+#else
+            return false;
+#endif
+        }
+
         #region Nav2018 helpers
 
 #if NAV2018

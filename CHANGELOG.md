@@ -1,5 +1,11 @@
 # Change Log
 
+## 3.0.54
+ - Issue #504 - Empty section is removed
+
+Thank you
+ - fvet for reporting issue #504
+
 ## 3.0.53
  - Issue #453 - One Statement Per Line bugfix - incorrect line break before "until"
 

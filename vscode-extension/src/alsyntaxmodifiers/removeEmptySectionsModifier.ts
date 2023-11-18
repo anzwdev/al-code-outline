@@ -12,7 +12,8 @@ export class RemoveEmptySectionsModifier extends WorkspaceCommandSyntaxModifier 
         this._settings = {
             removeActionGroups: true,
             removeActions: true,
-            ignoreComments: false
+            ignoreComments: false,
+            includeObsolete: false
         };
     }
 
@@ -23,17 +24,20 @@ export class RemoveEmptySectionsModifier extends WorkspaceCommandSyntaxModifier 
     }
 
     protected copySettings(dest: any, src: any) {
-        if (!src)
+        if (!src) {
             src = {};
+        }
         dest.removeActionGroups = !!src.removeActionGroups;
         dest.removeActions = !!src.removeActions;
         dest.ignoreComments = !!src.ignoreComments;
+        dest.includeObsolete = !!src.includeObsolete;
     }
 
     protected loadDefaultParameters(uri: vscode.Uri | undefined): boolean {
         let defaultParameters = vscode.workspace.getConfiguration('alOutline', uri).get<IRemoveEmptySectionsSettings>('defaultRemoveEmptySectionsSettings');
-        if (!defaultParameters)
+        if (!defaultParameters) {
             return false;
+        }
         this.copySettings(this._settings, defaultParameters);
         return true;
     }
@@ -43,14 +47,16 @@ export class RemoveEmptySectionsModifier extends WorkspaceCommandSyntaxModifier 
         let quickPickItems = [
             new NameValueQuickPickItem('Empty Action Groups', 'removeActionGroups', !!this._settings.removeActionGroups),
             new NameValueQuickPickItem('Empty Actions', 'removeActions', !!this._settings.removeActions),
-            new NameValueQuickPickItem('Ignore comments inside section', 'ignoreComments', !!this._settings.ignoreComments)
+            new NameValueQuickPickItem('Ignore comments inside section', 'ignoreComments', !!this._settings.ignoreComments),
+            new NameValueQuickPickItem('Include obsolete elements', 'includeObsolete', !!this._settings.includeObsolete)
         ];
 
         let selectedValues = await vscode.window.showQuickPick(
             quickPickItems, { canPickMany: true, placeHolder: 'Select elements to remove' });
 
-        if (!selectedValues)
+        if (!selectedValues) {
             return false;
+        }
 
         this.clearSettings();
         let data: any = {};
@@ -71,12 +77,14 @@ export class RemoveEmptySectionsModifier extends WorkspaceCommandSyntaxModifier 
         this._settings.removeActionGroups = this.getBoolSetting(vsctx, "azALDevTools.remESectionsremoveActionGroups", !!this._settings.removeActionGroups);
         this._settings.removeActions = this.getBoolSetting(vsctx, "azALDevTools.remESectionsremoveActions", !!this._settings.removeActions);
         this._settings.ignoreComments = this.getBoolSetting(vsctx, "azALDevTools.remESectionsignoreComments", !!this._settings.ignoreComments);
+        this._settings.includeObsolete = this.getBoolSetting(vsctx, "azALDevTools.remESectionsincludeObsolete", !!this._settings.includeObsolete);
     }
 
     private getBoolSetting(vsctx: vscode.ExtensionContext, name: string, defVal: boolean): boolean {
         let val = vsctx.globalState.get<boolean>(name);
-        if (val === undefined)
+        if (val === undefined) {
             return defVal;
+        }
         return !!val;
     }
 
@@ -85,12 +93,14 @@ export class RemoveEmptySectionsModifier extends WorkspaceCommandSyntaxModifier 
         vsctx.globalState.update("azALDevTools.remESectionsremoveActionGroups", !!this._settings.removeActionGroups);
         vsctx.globalState.update("azALDevTools.remESectionsremoveActions", !!this._settings.removeActions);
         vsctx.globalState.update("azALDevTools.remESectionsignoreComments", !!this._settings.ignoreComments);
+        vsctx.globalState.update("azALDevTools.remESectionsincludeObsolete", !!this._settings.includeObsolete);
     }
 
     private clearSettings() {
         this._settings.removeActionGroups = false;
         this._settings.removeActions = false;
         this._settings.ignoreComments = false;
+        this._settings.includeObsolete = false;
     }
 
 }
