@@ -95,5 +95,29 @@ namespace AnZwDev.ALTools.Extensions
                 lineSpan.EndLinePosition.Line, lineSpan.EndLinePosition.Character);
         }
 
+        public static SyntaxNode FindNodeByPositionInFullSpan(this SyntaxTree syntaxTree, Position position)
+        {
+            return FindNodeByPositionInFullSpan(syntaxTree, syntaxTree.GetRoot(), position);
+        }
+
+        private static SyntaxNode FindNodeByPositionInFullSpan(SyntaxTree syntaxTree, SyntaxNode node, Position position)
+        {
+            var lineSpan = syntaxTree.GetLineSpan(node.FullSpan);
+
+            if ((position.IsGreaterOrEqual(lineSpan.StartLinePosition)) && (position.IsLower(lineSpan.EndLinePosition)))
+            {
+                var childNodes = node.ChildNodes();
+                if (childNodes != null)
+                    foreach (var childNode in childNodes)
+                    {
+                        var nodeAtPosition = FindNodeByPositionInFullSpan(syntaxTree, childNode, position);
+                        if (nodeAtPosition != null)
+                            return nodeAtPosition;
+                    }
+                return node;
+            }
+            return null;
+        }
+
     }
 }

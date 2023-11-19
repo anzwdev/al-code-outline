@@ -44,12 +44,14 @@ namespace AZALDevToolsTestConsoleApp
 
 
             //string filePath = "C:\\Projects\\Sandboxes\\al-test-projects\\small\\Pag50000.MySmallTableList.al";
-            string filePath = "C:\\Projects\\Sandboxes\\al-test-projects\\BC184TestProject\\Pag50100.MyPageEvS.al";
+            //string filePath = "C:\\Projects\\Sandboxes\\al-test-projects\\BC184TestProject\\Pag50100.MyPageEvS.al";
+            string filePath = "C:\\Projects\\Sandboxes\\al-test-projects\\SmallBC23\\PTEMagic.Codeunit.al";
 
             //test project
             ALProjectSource[] projects =
             {
-                new ALProjectSource("C:\\Projects\\Sandboxes\\al-test-projects\\BC184TestProject", null, null, null)
+                //new ALProjectSource("C:\\Projects\\Sandboxes\\al-test-projects\\BC184TestProject", null, null, null)
+                new ALProjectSource("C:\\Projects\\Sandboxes\\al-test-projects\\SmallBC23", null, null, null)
                 //"C:\\Projects\\Sandboxes\\al-test-projects\\SmallBC18"                
             };
             host.ALDevToolsServer.Workspace.LoadProjects(projects);
@@ -80,9 +82,11 @@ namespace AZALDevToolsTestConsoleApp
             //filePath = "C:\\Projects\\Sandboxes\\al-test-projects\\BC184TestProject\\Tab50100.T1.al";
             //filePath = "C:\\Projects\\Sandboxes\\al-test-projects\\BC184TestProject\\Cod50100.MyNewcodeunit.al";
             //filePath = "C:\\Projects\\Sandboxes\\al-test-projects\\BC184TestProject\\Cod50112.rgrg.al";
-            filePath = "C:\\Projects\\Sandboxes\\al-test-projects\\BC184TestProject\\Cod50105.UnusedVariablesTest.al";
+            //filePath = "C:\\Projects\\Sandboxes\\al-test-projects\\BC184TestProject\\Cod50105.UnusedVariablesTest.al";
 
-            filePath = "C:\\Projects\\Sandboxes\\al-test-projects\\BC184TestProject\\StatementsTest.al";
+            //filePath = "C:\\Projects\\Sandboxes\\al-test-projects\\BC184TestProject\\StatementsTest.al";
+
+            filePath = "C:\\Projects\\Sandboxes\\al-test-projects\\SmallBC23\\PTEMagic.Codeunit.al";
 
             string content = FileUtils.SafeReadAllText(filePath);
             Dictionary<string, string> pm = new();
@@ -130,8 +134,8 @@ namespace AZALDevToolsTestConsoleApp
             //WorkspaceCommandResult o = host.ALDevToolsServer.WorkspaceCommandsManager.RunCommand("removeRedundantDataClassification", content, projects[0].folderPath, filePath, null, pm, null);
             //WorkspaceCommandResult o = host.ALDevToolsServer.WorkspaceCommandsManager.RunCommand("sortProcedures", content, projects[0].folderPath, filePath, null, pm, null);
             //WorkspaceCommandResult o = host.ALDevToolsServer.WorkspaceCommandsManager.RunCommand("fixIdentifiersCase", content, projects[0].folderPath, filePath, null, pm, null);
-            WorkspaceCommandResult o = host.ALDevToolsServer.WorkspaceCommandsManager.RunCommand("oneStatementPerLine", content, projects[0].folderPath, filePath, null, pm, null);
-
+            //WorkspaceCommandResult o = host.ALDevToolsServer.WorkspaceCommandsManager.RunCommand("oneStatementPerLine", content, projects[0].folderPath, filePath, null, pm, null);
+            WorkspaceCommandResult o = host.ALDevToolsServer.WorkspaceCommandsManager.RunCommand("addMissingCaseLines", content, projects[0].folderPath, filePath, null, pm, null);
 
 
             var allObj = project.AllSymbols.Tables.GetObjects().ToList();

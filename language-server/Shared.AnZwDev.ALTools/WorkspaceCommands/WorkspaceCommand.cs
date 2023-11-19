@@ -2,6 +2,7 @@
 using AnZwDev.ALTools.SourceControl;
 using AnZwDev.ALTools.Workspace;
 using Microsoft.Dynamics.Nav.CodeAnalysis;
+using Microsoft.Dynamics.Nav.CodeAnalysis.Syntax;
 #if BC
 using Microsoft.Dynamics.Nav.CodeAnalysis.Workspaces.Formatting;
 #endif
@@ -103,6 +104,10 @@ namespace AnZwDev.ALTools.WorkspaceCommands
                 (parameters.ContainsKey("modifiedFilesOnly")) &&
                 (parameters["modifiedFilesOnly"] != null) &&
                 (parameters["modifiedFilesOnly"].Equals("true", StringComparison.CurrentCultureIgnoreCase)));
+        }
+
+        public virtual void CollectCodeActions(SyntaxTree syntaxTree, SyntaxNode node, Range range, List<WorkspaceCommandCodeAction> actions)
+        {
         }
 
     }

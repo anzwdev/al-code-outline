@@ -165,6 +165,7 @@
     <Compile Include="$(MSBuildThisFileDirectory)CaseInformationCollectionsDisctionary.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)CodeAnalysis\SyntaxTreeDirectivesParser.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)CodeCompletion\CodeCompletionParameters.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)CodeTransformations\AddMissingCaseLinesSyntaxRewriter.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)CodeTransformations\AddReferencedTablesPermissionsSyntaxRewriter.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)CodeTransformations\AddTableDataCaptionFieldsRewriter.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)CodeTransformations\AddDropDownFieldGroupsRewriter.cs" />
@@ -222,6 +223,9 @@
     <Compile Include="$(MSBuildThisFileDirectory)CodeTransformations\TriggersOrder.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)CodeTransformations\TriggersOrderCollection.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Extensions\ListExtensions.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)SyntaxHelpers\EnumCaseHelper.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)SyntaxHelpers\ExpressionFactory.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)WorkspaceCommands\AddMissingCaseLinesWorkspaceCommand.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)WorkspaceCommands\CollapseEmptyBracketsWorkspaceCommand.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)WorkspaceCommands\Parameters\TriggersOrderParameter.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)WorkspaceCommands\RemoveRedundantDataClassificationWorkspaceCommand.cs" />
@@ -345,6 +349,7 @@
     <Compile Include="$(MSBuildThisFileDirectory)WorkspaceCommands\SyntaxTreeWorkspaceCommandsGroup.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)WorkspaceCommands\TrimTrailingWhitespaceWorkspaceCommand.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)WorkspaceCommands\WorkspaceCommand.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)WorkspaceCommands\WorkspaceCommandCodeAction.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)WorkspaceCommands\WorkspaceCommandResult.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)WorkspaceCommands\WorkspaceCommandsManager.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Workspace\ALProject.cs" />

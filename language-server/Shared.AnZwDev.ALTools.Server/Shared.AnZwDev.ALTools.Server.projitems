@@ -22,6 +22,8 @@
     <Compile Include="$(MSBuildThisFileDirectory)Contracts\ChangeTracking\DocumentContentChangeRequest.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Contracts\CodeCompletionRequest.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Contracts\CodeCompletionResponse.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Contracts\CollectWorkspaceCommandCodeActionsRequest.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Contracts\CollectWorkspaceCommandCodeActionsResponse.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Contracts\DocumentPositionRequest.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Contracts\DocumentSymbolsRequest.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Contracts\DocumentSymbolsResponse.cs" />
@@ -127,6 +129,7 @@
     <Compile Include="$(MSBuildThisFileDirectory)Handlers\CloseSymbolsLibraryNotificationHandler.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Handlers\CloseSyntaxTreeNotificationHandler.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Handlers\CodeCompletionRequestHandler.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Handlers\CollectWorkspaceCommandCodeActionsRequestHandler.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Handlers\DocumentSymbolsRequestHandler.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Handlers\ExitNotificationHandler.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Handlers\FindDuplicateCodeRequestHandler.cs" />

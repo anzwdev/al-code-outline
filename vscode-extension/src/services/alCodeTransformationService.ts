@@ -68,7 +68,6 @@ export class ALCodeTransformationService extends DevToolsExtensionService {
         this.registerDocumentRangeCommand('azALDevTools.addAllObjectsPermissions', () => new AddAllObjectsPermissionsModifier(this._context));
         this.registerDocumentRangeCommand('azALDevTools.addReferencedTablesPermissions', () => new AddReferencedTablesPermissionsModifier(this._context));
         this.registerDocumentRangeCommand('azALDevTools.generateCSVXmlPortHeaders', () => new GenerateCSVXmlPortHeadersModifier(this._context));
-        
 
         this.registerDocumentRangeCommand('azALDevTools.removeVariable', () => new WorkspaceCommandSyntaxModifier(this._context, 'removeVariable', 'removeVariable'));
         this.registerDocumentSymbolCommand('azALDevTools.ReuseToolTipFromOtherPages', () => new ReuseSingleFieldToolTipModifier(this._context));

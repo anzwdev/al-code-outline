@@ -22,19 +22,21 @@ export class WorkspaceCommandSyntaxModifier extends SyntaxModifier {
         if (response) {
             if ((response.error) && (response.errorMessage)) {
                 let errorMessage = response.errorMessage;
-                if (response.parameters)
+                if (response.parameters) {
                     errorMessage = NumberHelper.zeroIfNotDef(response.parameters.noOfChangedFiles).toString() + " file(s) modified. " + errorMessage;
+                }
                 return {
                     success: false,
                     message: errorMessage,
                     source: undefined
                 };
-            } else
+            } else {
                 return {
                     success: true,
                     message: this.getSuccessWorkspaceMessage(response),
                     source: undefined
-                }
+                };
+            }
         }
         return undefined;
     }
@@ -45,19 +47,21 @@ export class WorkspaceCommandSyntaxModifier extends SyntaxModifier {
 
         if (response) {
 
-            if (response.error)
+            if (response.error) {
                 return {
                     success: false,
                     message: response.errorMessage,
                     source: undefined
                 };
+            }
 
-            if ((response.source) && (response.source != text))
+            if ((response.source) && (response.source !== text)) {
                 return {
                     success: true,
                     message: this.getSuccessDocumentMessage(response),
                     source: response.source
                 };
+            }
         }
 
         return {

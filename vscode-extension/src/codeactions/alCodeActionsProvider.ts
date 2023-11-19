@@ -21,6 +21,11 @@ import { ALSortPermissionSetListCommand } from './sortSymbols/alSortPermissionSe
 import { ALReuseToolTipCodeCommand } from './alReuseToolTipCodeCommand';
 import { ALSortCustomizationsCommand } from './sortSymbols/alSortCustomizationsCommand';
 import { ALXmlPortHeadersCodeCommand } from './alXmlPortHeadersCodeCommand';
+import { ToolsCollectWorkspaceCodeActionsRequest } from '../langserver/toolsCollectWorkspaceCodeActionsRequest';
+import { TextRange } from '../symbollibraries/textRange';
+import { ToolsWorkspaceCommandRequest } from '../langserver/toolsWorkspaceCommandRequest';
+import { ToolsWorkspaceCommandResponse } from '../langserver/toolsWorkspaceCommandResponse';
+import { error } from 'console';
 
 export class ALCodeActionsProvider implements vscode.CodeActionProvider {
     protected _toolsExtensionContext : DevToolsExtensionContext;
@@ -56,6 +61,8 @@ export class ALCodeActionsProvider implements vscode.CodeActionProvider {
             new ALCodeCopFixAA0008(this._toolsExtensionContext),
             new ALCodeCopFixAA0137(this._toolsExtensionContext),
             new ALCodeCopFixAA0139(this._toolsExtensionContext)];
+
+        this.registerVSCodeCommands();
     }
 
     provideCodeActions(document: vscode.TextDocument, range: vscode.Range | vscode.Selection, context: vscode.CodeActionContext, token: vscode.CancellationToken): vscode.ProviderResult<(vscode.Command | vscode.CodeAction)[]> {
@@ -101,6 +108,37 @@ export class ALCodeActionsProvider implements vscode.CodeActionProvider {
                     ]
                 };
                 actions.push(action);
+            }
+        }
+
+        //collect workspace code actions
+        let workspaceFolder = vscode.workspace.getWorkspaceFolder(document.uri);
+        let workspaceCommandRange = TextRange.fromAny(range);
+
+        if (workspaceFolder) {
+            let workspaceActionsRequest = new ToolsCollectWorkspaceCodeActionsRequest(
+                document.getText(),
+                workspaceFolder.uri.fsPath,
+                document.uri.fsPath,
+                workspaceCommandRange
+            );
+            let workspaceActionsResponse = await this._toolsExtensionContext.toolsLangServerClient.collectWorkspaceCodeActions(workspaceActionsRequest);
+            if ((workspaceActionsResponse) && (workspaceActionsResponse.codeActions)) {
+                for (let i=0; i<workspaceActionsResponse.codeActions.length; i++) {
+                    let workspaceAction = workspaceActionsResponse.codeActions[i];
+                    if ((workspaceAction.commandName) && (workspaceAction.description)) {
+
+                        let description = workspaceAction.description + " (AZ AL Dev Tools)";
+                        let allObjectsAction = new vscode.CodeAction(description, vscode.CodeActionKind.QuickFix);
+                        allObjectsAction.command = {
+                            command: "azALDevTools.runWorkspaceCodeAction",
+                            title: description,
+                            arguments: [workspaceAction.commandName, document, workspaceCommandRange, workspaceAction.range]
+                        };
+                        actions.push(allObjectsAction);
+
+                    }
+                }
             }
         }
 
@@ -150,6 +188,62 @@ export class ALCodeActionsProvider implements vscode.CodeActionProvider {
         await library.loadAsync(false);
 
         return library;
+    }
+
+    private registerVSCodeCommands() {
+        this._toolsExtensionContext.vscodeExtensionContext.subscriptions.push(
+            vscode.commands.registerCommand(
+                "azALDevTools.runWorkspaceCodeAction",
+                async (commandName, document, documentRange, commandRange) => {
+                    try {
+
+                        if (!commandName) {
+                            commandName = documentRange;
+                        }
+
+                        //run workspace command with progress
+                        let workspaceFolder = vscode.workspace.getWorkspaceFolder(document.uri);
+                        let request = new ToolsWorkspaceCommandRequest(commandName, document.getText(), workspaceFolder!.uri.fsPath, document.uri.fsPath, commandRange, {}, undefined);
+                        
+                        let response = await vscode.window.withProgress<ToolsWorkspaceCommandResponse | undefined>({
+                            location: vscode.ProgressLocation.Notification,
+                            title: "Runnung workspace code action"
+                        }, async (progress) => {
+                            return await this._toolsExtensionContext.toolsLangServerClient.workspaceCommand(request);
+                        });                    
+                    
+                        //process result
+                        if (response) {
+                            if (response.error) {
+                                
+                                let errorMessage = response.errorMessage;
+                                if (!errorMessage) {
+                                    errorMessage = "Unknown error";
+                                }
+                                vscode.window.showErrorMessage(errorMessage);
+
+                            } else if (response.source) {
+
+                                let text = response.source;
+                                const edit = new vscode.WorkspaceEdit();
+                                var firstLine = document.lineAt(0);
+                                var lastLine = document.lineAt(document.lineCount - 1);
+                                var textRange = new vscode.Range(0,
+                                    firstLine.range.start.character,
+                                    document.lineCount - 1,
+                                    lastLine.range.end.character);
+                                edit.replace(document.uri, textRange, text);
+                                await vscode.workspace.applyEdit(edit);
+                            }
+                        }
+                    }
+                    catch (e) {
+                        vscode.window.showErrorMessage("Unknown error");
+                    }
+                }
+            )
+        );
+
     }
 
 }

@@ -86,6 +86,8 @@ import { ToolsDocumentPositionRequest } from './toolsDocumentPositionRequest';
 import { ToolsReferencesResponse } from './toolsReferencesResponse';
 import { toolsGetCodeunitMethodsListRequest } from './symbolsinformation/toolsGetCodeunitMethodsListRequest';
 import { ToolsGetCodeunitMethodsListResponse } from './symbolsinformation/toolsGetCodeunitMethodsListResponse';
+import { ToolsCollectWorkspaceCodeActionsRequest } from './toolsCollectWorkspaceCodeActionsRequest';
+import { ToolsCollectWorkspaceCodeActionsResponse } from './toolsCollectWorkspaceCodeActionsResponse';
 
 export class ToolsLangServerClient implements vscode.Disposable {
     _context : vscode.ExtensionContext;
@@ -424,6 +426,10 @@ export class ToolsLangServerClient implements vscode.Disposable {
 
     public getWarningDirectives(params: ToolsGetWarningDirectivesRequest) : Promise<ToolsGetWarningDirectivesResponse | undefined> {
         return this.sendRequest<ToolsGetWarningDirectivesRequest, ToolsGetWarningDirectivesResponse>(params, 'al/getwarningdirectives');
+    }
+
+    public collectWorkspaceCodeActions(params: ToolsCollectWorkspaceCodeActionsRequest) : Promise<ToolsCollectWorkspaceCodeActionsResponse | undefined> {
+        return this.sendRequest<ToolsCollectWorkspaceCodeActionsRequest, ToolsCollectWorkspaceCodeActionsResponse>(params, 'al/collectworkspacecodeactions');
     }
 
     //next available object id

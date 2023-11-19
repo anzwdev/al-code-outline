@@ -1,9 +1,11 @@
 # Change Log
 
 ## 3.0.54
+ - Idea #501 - If Expression in a Case-statement is an option/enum list all members
  - Issue #504 - Empty section is removed
 
 Thank you
+ - Floris-G for idea #501
  - fvet for reporting issue #504
 
 ## 3.0.53
