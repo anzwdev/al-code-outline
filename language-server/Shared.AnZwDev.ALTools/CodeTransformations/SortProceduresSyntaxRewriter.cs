@@ -222,56 +222,56 @@ namespace AnZwDev.ALTools.CodeTransformations
         public override SyntaxNode VisitTable(TableSyntax node)
         {
             if ((this.NodeInSpan(node)) && (node.Members != null) && (node.Members.Count > 0) && (!node.ContainsDiagnostics))
-                node = node.WithMembers(this.Sort(node, node.Members));
+                node = node.WithMembers(this.Sort(node, node.Members, node.CloseBraceToken.LeadingTrivia));
             return base.VisitTable(node);
         }
 
         public override SyntaxNode VisitPage(PageSyntax node)
         {
             if ((this.NodeInSpan(node)) && (node.Members != null) && (node.Members.Count > 0) && (!node.ContainsDiagnostics))
-                node = node.WithMembers(this.Sort(node, node.Members));
+                node = node.WithMembers(this.Sort(node, node.Members, node.CloseBraceToken.LeadingTrivia));
             return base.VisitPage(node);
         }
 
         public override SyntaxNode VisitReport(ReportSyntax node)
         {
             if ((this.NodeInSpan(node)) && (node.Members != null) && (node.Members.Count > 0) && (!node.ContainsDiagnostics))
-                node = node.WithMembers(this.Sort(node, node.Members));
+                node = node.WithMembers(this.Sort(node, node.Members, node.CloseBraceToken.LeadingTrivia));
             return base.VisitReport(node);
         }
 
         public override SyntaxNode VisitXmlPort(XmlPortSyntax node)
         {
             if ((this.NodeInSpan(node)) && (node.Members != null) && (node.Members.Count > 0) && (!node.ContainsDiagnostics))
-                node = node.WithMembers(this.Sort(node, node.Members));
+                node = node.WithMembers(this.Sort(node, node.Members, node.CloseBraceToken.LeadingTrivia));
             return base.VisitXmlPort(node);
         }
 
         public override SyntaxNode VisitCodeunit(CodeunitSyntax node)
         {
             if ((this.NodeInSpan(node)) && (node.Members != null) && (node.Members.Count > 0) && (!node.ContainsDiagnostics))
-                node = node.WithMembers(this.Sort(node, node.Members));
+                node = node.WithMembers(this.Sort(node, node.Members, node.CloseBraceToken.LeadingTrivia));
             return base.VisitCodeunit(node);
         }
 
         public override SyntaxNode VisitQuery(QuerySyntax node)
         {
             if ((this.NodeInSpan(node)) && (node.Members != null) && (node.Members.Count > 0) && (!node.ContainsDiagnostics))
-                node = node.WithMembers(this.Sort(node, node.Members));
+                node = node.WithMembers(this.Sort(node, node.Members, node.CloseBraceToken.LeadingTrivia));
             return base.VisitQuery(node);
         }
 
         public override SyntaxNode VisitTableExtension(TableExtensionSyntax node)
         {
             if ((this.NodeInSpan(node)) && (node.Members != null) && (node.Members.Count > 0) && (!node.ContainsDiagnostics))
-                node = node.WithMembers(this.Sort(node, node.Members));
+                node = node.WithMembers(this.Sort(node, node.Members, node.CloseBraceToken.LeadingTrivia));
             return base.VisitTableExtension(node);
         }
 
         public override SyntaxNode VisitPageExtension(PageExtensionSyntax node)
         {
             if ((this.NodeInSpan(node)) && (node.Members != null) && (node.Members.Count > 0) && (!node.ContainsDiagnostics))
-                node = node.WithMembers(this.Sort(node, node.Members));
+                node = node.WithMembers(this.Sort(node, node.Members, node.CloseBraceToken.LeadingTrivia));
             return base.VisitPageExtension(node);
         }
 
@@ -279,7 +279,7 @@ namespace AnZwDev.ALTools.CodeTransformations
         public override SyntaxNode VisitInterface(InterfaceSyntax node)
         {
             if ((this.NodeInSpan(node)) && (node.Members != null) && (node.Members.Count > 0) && (!node.ContainsDiagnostics))
-                node = node.WithMembers(this.Sort(node, node.Members));
+                node = node.WithMembers(this.Sort(node, node.Members, node.CloseBraceToken.LeadingTrivia));
             return base.VisitInterface(node);
         }
 #endif
@@ -287,21 +287,21 @@ namespace AnZwDev.ALTools.CodeTransformations
         public override SyntaxNode VisitPageCustomization(PageCustomizationSyntax node)
         {
             if ((this.NodeInSpan(node)) && (node.Members != null) && (node.Members.Count > 0) && (!node.ContainsDiagnostics))
-                node = node.WithMembers(this.Sort(node, node.Members));
+                node = node.WithMembers(this.Sort(node, node.Members, node.CloseBraceToken.LeadingTrivia));
             return base.VisitPageCustomization(node);
         }
 
         public override SyntaxNode VisitProfile(ProfileSyntax node)
         {
             if ((this.NodeInSpan(node)) && (node.Members != null) && (node.Members.Count > 0) && (!node.ContainsDiagnostics))
-                node = node.WithMembers(this.Sort(node, node.Members));
+                node = node.WithMembers(this.Sort(node, node.Members, node.CloseBraceToken.LeadingTrivia));
             return base.VisitProfile(node);
         }
 
         public override SyntaxNode VisitRequestPage(RequestPageSyntax node)
         {
             if ((this.NodeInSpan(node)) && (node.Members != null) && (node.Members.Count > 0) && (!node.ContainsDiagnostics))
-                node = node.WithMembers(this.Sort(node, node.Members));
+                node = node.WithMembers(this.Sort(node, node.Members, node.CloseBraceToken.LeadingTrivia));
             return base.VisitRequestPage(node);
         }
 
@@ -309,14 +309,14 @@ namespace AnZwDev.ALTools.CodeTransformations
         public override SyntaxNode VisitRequestPageExtension(RequestPageExtensionSyntax node)
         {
             if ((this.NodeInSpan(node)) && (node.Members != null) && (node.Members.Count > 0) && (!node.ContainsDiagnostics))
-                node = node.WithMembers(this.Sort(node, node.Members));
+                node = node.WithMembers(this.Sort(node, node.Members, node.CloseBraceToken.LeadingTrivia));
             return base.VisitRequestPageExtension(node);
         }
 
         public override SyntaxNode VisitReportExtension(ReportExtensionSyntax node)
         {
             if ((this.NodeInSpan(node)) && (node.Members != null) && (node.Members.Count > 0) && (!node.ContainsDiagnostics))
-                node = node.WithMembers(this.Sort(node, node.Members));
+                node = node.WithMembers(this.Sort(node, node.Members, node.CloseBraceToken.LeadingTrivia));
             return base.VisitReportExtension(node);
         }
 #endif
@@ -328,84 +328,84 @@ namespace AnZwDev.ALTools.CodeTransformations
         public override SyntaxNode VisitField(FieldSyntax node)
         {
             if ((this.NodeInSpan(node)) && (node.Triggers != null) && (node.Triggers.Count > 0) && (!node.ContainsDiagnostics))
-                node = node.WithTriggers(this.Sort(node, node.Triggers));
+                node = node.WithTriggers(this.Sort(node, node.Triggers, node.CloseBraceToken.LeadingTrivia));
             return base.VisitField(node);
         }
 
         public override SyntaxNode VisitPageField(PageFieldSyntax node)
         {
             if ((this.NodeInSpan(node)) && (node.Triggers != null) && (node.Triggers.Count > 0) && (!node.ContainsDiagnostics))
-                node = node.WithTriggers(this.Sort(node, node.Triggers));
+                node = node.WithTriggers(this.Sort(node, node.Triggers, node.CloseBraceToken.LeadingTrivia));
             return base.VisitPageField(node);
         }
 
         public override SyntaxNode VisitPageAction(PageActionSyntax node)
         {
             if ((this.NodeInSpan(node)) && (node.Triggers != null) && (node.Triggers.Count > 0) && (!node.ContainsDiagnostics))
-                node = node.WithTriggers(this.Sort(node, node.Triggers));
+                node = node.WithTriggers(this.Sort(node, node.Triggers, node.CloseBraceToken.LeadingTrivia));
             return base.VisitPageAction(node);
         }
 
         public override SyntaxNode VisitXmlPortFieldAttribute(XmlPortFieldAttributeSyntax node)
         {
             if ((this.NodeInSpan(node)) && (node.Triggers != null) && (node.Triggers.Count > 0) && (!node.ContainsDiagnostics))
-                node = node.WithTriggers(this.Sort(node, node.Triggers));
+                node = node.WithTriggers(this.Sort(node, node.Triggers, node.CloseBraceToken.LeadingTrivia));
             return base.VisitXmlPortFieldAttribute(node);
         }
 
         public override SyntaxNode VisitXmlPortFieldElement(XmlPortFieldElementSyntax node)
         {
             if ((this.NodeInSpan(node)) && (node.Triggers != null) && (node.Triggers.Count > 0) && (!node.ContainsDiagnostics))
-                node = node.WithTriggers(this.Sort(node, node.Triggers));
+                node = node.WithTriggers(this.Sort(node, node.Triggers, node.CloseBraceToken.LeadingTrivia));
             return base.VisitXmlPortFieldElement(node);
         }
 
         public override SyntaxNode VisitXmlPortTableElement(XmlPortTableElementSyntax node)
         {
             if ((this.NodeInSpan(node)) && (node.Triggers != null) && (node.Triggers.Count > 0) && (!node.ContainsDiagnostics))
-                node = node.WithTriggers(this.Sort(node, node.Triggers));
+                node = node.WithTriggers(this.Sort(node, node.Triggers, node.CloseBraceToken.LeadingTrivia));
             return base.VisitXmlPortTableElement(node);
         }
 
         public override SyntaxNode VisitXmlPortTextAttribute(XmlPortTextAttributeSyntax node)
         {
             if ((this.NodeInSpan(node)) && (node.Triggers != null) && (node.Triggers.Count > 0) && (!node.ContainsDiagnostics))
-                node = node.WithTriggers(this.Sort(node, node.Triggers));
+                node = node.WithTriggers(this.Sort(node, node.Triggers, node.CloseBraceToken.LeadingTrivia));
             return base.VisitXmlPortTextAttribute(node);
         }
 
         public override SyntaxNode VisitXmlPortTextElement(XmlPortTextElementSyntax node)
         {
             if ((this.NodeInSpan(node)) && (node.Triggers != null) && (node.Triggers.Count > 0) && (!node.ContainsDiagnostics))
-                node = node.WithTriggers(this.Sort(node, node.Triggers));
+                node = node.WithTriggers(this.Sort(node, node.Triggers, node.CloseBraceToken.LeadingTrivia));
             return base.VisitXmlPortTextElement(node);
         }
 
         public override SyntaxNode VisitControlModifyChange(ControlModifyChangeSyntax node)
         {
             if ((this.NodeInSpan(node)) && (node.Triggers != null) && (node.Triggers.Count > 0) && (!node.ContainsDiagnostics))
-                node = node.WithTriggers(this.Sort(node, node.Triggers));
+                node = node.WithTriggers(this.Sort(node, node.Triggers, node.CloseBraceToken.LeadingTrivia));
             return base.VisitControlModifyChange(node);
         }
 
         public override SyntaxNode VisitActionModifyChange(ActionModifyChangeSyntax node)
         {
             if ((this.NodeInSpan(node)) && (node.Triggers != null) && (node.Triggers.Count > 0) && (!node.ContainsDiagnostics))
-                node = node.WithTriggers(this.Sort(node, node.Triggers));
+                node = node.WithTriggers(this.Sort(node, node.Triggers, node.CloseBraceToken.LeadingTrivia));
             return base.VisitActionModifyChange(node);
         }
 
         public override SyntaxNode VisitFieldModification(FieldModificationSyntax node)
         {
             if ((this.NodeInSpan(node)) && (node.Triggers != null) && (node.Triggers.Count > 0) && (!node.ContainsDiagnostics))
-                node = node.WithTriggers(this.Sort(node, node.Triggers));
+                node = node.WithTriggers(this.Sort(node, node.Triggers, node.CloseBraceToken.LeadingTrivia));
             return base.VisitFieldModification(node);
         }
 
         public override SyntaxNode VisitReportDataItem(ReportDataItemSyntax node)
         {
             if ((this.NodeInSpan(node)) && (node.Triggers != null) && (node.Triggers.Count > 0) && (!node.ContainsDiagnostics))
-                node = node.WithTriggers(this.Sort(node, node.Triggers));
+                node = node.WithTriggers(this.Sort(node, node.Triggers, node.CloseBraceToken.LeadingTrivia));
             return base.VisitReportDataItem(node);
         }
 
@@ -413,22 +413,22 @@ namespace AnZwDev.ALTools.CodeTransformations
         public override SyntaxNode VisitReportExtensionDataSetModify(ReportExtensionDataSetModifySyntax node)
         {
             if ((this.NodeInSpan(node)) && (node.Triggers != null) && (node.Triggers.Count > 0) && (!node.ContainsDiagnostics))
-                node = node.WithTriggers(this.Sort(node, node.Triggers));
+                node = node.WithTriggers(this.Sort(node, node.Triggers, node.CloseBraceToken.LeadingTrivia));
             return base.VisitReportExtensionDataSetModify(node);
         }
 #endif
 
 #endregion
 
-        private SyntaxList<T> Sort<T>(SyntaxNode parent, SyntaxList<T> members) where T: SyntaxNode
+        private SyntaxList<T> Sort<T>(SyntaxNode parent, SyntaxList<T> members, SyntaxTriviaList endingTriviaList) where T: SyntaxNode
         {
             if (members.Count <= 1)
                 return members;
 
             //build list with regions
             SyntaxNodesGroupsTree<T> nodesGroupsTree = new SyntaxNodesGroupsTree<T>();
-            nodesGroupsTree.AddNodes(members);
-
+            nodesGroupsTree.AddNodes(members, endingTriviaList);
+            
             //somethis went wrong - do not sort
             if (nodesGroupsTree.Root == null)
                 return members;

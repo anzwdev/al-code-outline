@@ -3,11 +3,12 @@
 ## 3.0.54
  - Idea #501 - If Expression in a Case-statement is an option/enum list all members
  - Issue #504 - Empty section is removed
+ - Issue #505 - Sort procedures skips regions
  - Issue #506 - New commands: Add missing ending dot to ToolTips
 
 Thank you
  - Floris-G for idea #501
- - fvet for reporting issue #504
+ - fvet for reporting issue #504 and #505
  - Arthurvdv for reporting issue #506
 
 ## 3.0.53
