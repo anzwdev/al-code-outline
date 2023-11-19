@@ -222,56 +222,96 @@ namespace AnZwDev.ALTools.CodeTransformations
         public override SyntaxNode VisitTable(TableSyntax node)
         {
             if ((this.NodeInSpan(node)) && (node.Members != null) && (node.Members.Count > 0) && (!node.ContainsDiagnostics))
-                node = node.WithMembers(this.Sort(node, node.Members, node.CloseBraceToken.LeadingTrivia));
+            {
+                (var newMembers, var newClosingToken, var closingTokenModified) = this.Sort(node, node.Members, node.CloseBraceToken);
+                node = node.WithMembers(newMembers);
+                if (closingTokenModified)
+                    node = node.WithCloseBraceToken(newClosingToken);
+            }
             return base.VisitTable(node);
         }
 
         public override SyntaxNode VisitPage(PageSyntax node)
         {
             if ((this.NodeInSpan(node)) && (node.Members != null) && (node.Members.Count > 0) && (!node.ContainsDiagnostics))
-                node = node.WithMembers(this.Sort(node, node.Members, node.CloseBraceToken.LeadingTrivia));
+            {
+                (var newMembers, var newClosingToken, var closingTokenModified) = this.Sort(node, node.Members, node.CloseBraceToken);
+                node = node.WithMembers(newMembers);
+                if (closingTokenModified)
+                    node = node.WithCloseBraceToken(newClosingToken);
+            }
             return base.VisitPage(node);
         }
 
         public override SyntaxNode VisitReport(ReportSyntax node)
         {
             if ((this.NodeInSpan(node)) && (node.Members != null) && (node.Members.Count > 0) && (!node.ContainsDiagnostics))
-                node = node.WithMembers(this.Sort(node, node.Members, node.CloseBraceToken.LeadingTrivia));
+            {
+                (var newMembers, var newClosingToken, var closingTokenModified) = this.Sort(node, node.Members, node.CloseBraceToken);
+                node = node.WithMembers(newMembers);
+                if (closingTokenModified)
+                    node = node.WithCloseBraceToken(newClosingToken);
+            }
             return base.VisitReport(node);
         }
 
         public override SyntaxNode VisitXmlPort(XmlPortSyntax node)
         {
             if ((this.NodeInSpan(node)) && (node.Members != null) && (node.Members.Count > 0) && (!node.ContainsDiagnostics))
-                node = node.WithMembers(this.Sort(node, node.Members, node.CloseBraceToken.LeadingTrivia));
+            {
+                (var newMembers, var newClosingToken, var closingTokenModified) = this.Sort(node, node.Members, node.CloseBraceToken);
+                node = node.WithMembers(newMembers);
+                if (closingTokenModified)
+                    node = node.WithCloseBraceToken(newClosingToken);
+            }
             return base.VisitXmlPort(node);
         }
 
         public override SyntaxNode VisitCodeunit(CodeunitSyntax node)
         {
             if ((this.NodeInSpan(node)) && (node.Members != null) && (node.Members.Count > 0) && (!node.ContainsDiagnostics))
-                node = node.WithMembers(this.Sort(node, node.Members, node.CloseBraceToken.LeadingTrivia));
+            {
+                (var newMembers, var newClosingToken, var closingTokenModified) = this.Sort(node, node.Members, node.CloseBraceToken);
+                node = node.WithMembers(newMembers);
+                if (closingTokenModified)
+                    node = node.WithCloseBraceToken(newClosingToken);
+            }
             return base.VisitCodeunit(node);
         }
 
         public override SyntaxNode VisitQuery(QuerySyntax node)
         {
             if ((this.NodeInSpan(node)) && (node.Members != null) && (node.Members.Count > 0) && (!node.ContainsDiagnostics))
-                node = node.WithMembers(this.Sort(node, node.Members, node.CloseBraceToken.LeadingTrivia));
+            {
+                (var newMembers, var newClosingToken, var closingTokenModified) = this.Sort(node, node.Members, node.CloseBraceToken);
+                node = node.WithMembers(newMembers);
+                if (closingTokenModified)
+                    node = node.WithCloseBraceToken(newClosingToken);
+            }
             return base.VisitQuery(node);
         }
 
         public override SyntaxNode VisitTableExtension(TableExtensionSyntax node)
         {
             if ((this.NodeInSpan(node)) && (node.Members != null) && (node.Members.Count > 0) && (!node.ContainsDiagnostics))
-                node = node.WithMembers(this.Sort(node, node.Members, node.CloseBraceToken.LeadingTrivia));
+            {
+                (var newMembers, var newClosingToken, var closingTokenModified) = this.Sort(node, node.Members, node.CloseBraceToken);
+                node = node.WithMembers(newMembers);
+                if (closingTokenModified)
+                    node = node.WithCloseBraceToken(newClosingToken);
+            }
             return base.VisitTableExtension(node);
         }
 
         public override SyntaxNode VisitPageExtension(PageExtensionSyntax node)
         {
             if ((this.NodeInSpan(node)) && (node.Members != null) && (node.Members.Count > 0) && (!node.ContainsDiagnostics))
-                node = node.WithMembers(this.Sort(node, node.Members, node.CloseBraceToken.LeadingTrivia));
+            {
+                (var newMembers, var newClosingToken, var closingTokenModified) = this.Sort(node, node.Members, node.CloseBraceToken);
+                node = node.WithMembers(newMembers);
+                if (closingTokenModified)
+                    node = node.WithCloseBraceToken(newClosingToken);
+            }
             return base.VisitPageExtension(node);
         }
 
@@ -279,7 +319,12 @@ namespace AnZwDev.ALTools.CodeTransformations
         public override SyntaxNode VisitInterface(InterfaceSyntax node)
         {
             if ((this.NodeInSpan(node)) && (node.Members != null) && (node.Members.Count > 0) && (!node.ContainsDiagnostics))
-                node = node.WithMembers(this.Sort(node, node.Members, node.CloseBraceToken.LeadingTrivia));
+            {
+                (var newMembers, var newClosingToken, var closingTokenModified) = this.Sort(node, node.Members, node.CloseBraceToken);
+                node = node.WithMembers(newMembers);
+                if (closingTokenModified)
+                    node = node.WithCloseBraceToken(newClosingToken);
+            }
             return base.VisitInterface(node);
         }
 #endif
@@ -287,21 +332,36 @@ namespace AnZwDev.ALTools.CodeTransformations
         public override SyntaxNode VisitPageCustomization(PageCustomizationSyntax node)
         {
             if ((this.NodeInSpan(node)) && (node.Members != null) && (node.Members.Count > 0) && (!node.ContainsDiagnostics))
-                node = node.WithMembers(this.Sort(node, node.Members, node.CloseBraceToken.LeadingTrivia));
+            {
+                (var newMembers, var newClosingToken, var closingTokenModified) = this.Sort(node, node.Members, node.CloseBraceToken);
+                node = node.WithMembers(newMembers);
+                if (closingTokenModified)
+                    node = node.WithCloseBraceToken(newClosingToken);
+            }
             return base.VisitPageCustomization(node);
         }
 
         public override SyntaxNode VisitProfile(ProfileSyntax node)
         {
             if ((this.NodeInSpan(node)) && (node.Members != null) && (node.Members.Count > 0) && (!node.ContainsDiagnostics))
-                node = node.WithMembers(this.Sort(node, node.Members, node.CloseBraceToken.LeadingTrivia));
+            {
+                (var newMembers, var newClosingToken, var closingTokenModified) = this.Sort(node, node.Members, node.CloseBraceToken);
+                node = node.WithMembers(newMembers);
+                if (closingTokenModified)
+                    node = node.WithCloseBraceToken(newClosingToken);
+            }
             return base.VisitProfile(node);
         }
 
         public override SyntaxNode VisitRequestPage(RequestPageSyntax node)
         {
             if ((this.NodeInSpan(node)) && (node.Members != null) && (node.Members.Count > 0) && (!node.ContainsDiagnostics))
-                node = node.WithMembers(this.Sort(node, node.Members, node.CloseBraceToken.LeadingTrivia));
+            {
+                (var newMembers, var newClosingToken, var closingTokenModified) = this.Sort(node, node.Members, node.CloseBraceToken);
+                node = node.WithMembers(newMembers);
+                if (closingTokenModified)
+                    node = node.WithCloseBraceToken(newClosingToken);
+            }
             return base.VisitRequestPage(node);
         }
 
@@ -309,14 +369,24 @@ namespace AnZwDev.ALTools.CodeTransformations
         public override SyntaxNode VisitRequestPageExtension(RequestPageExtensionSyntax node)
         {
             if ((this.NodeInSpan(node)) && (node.Members != null) && (node.Members.Count > 0) && (!node.ContainsDiagnostics))
-                node = node.WithMembers(this.Sort(node, node.Members, node.CloseBraceToken.LeadingTrivia));
+            {
+                (var newMembers, var newClosingToken, var closingTokenModified) = this.Sort(node, node.Members, node.CloseBraceToken);
+                node = node.WithMembers(newMembers);
+                if (closingTokenModified)
+                    node = node.WithCloseBraceToken(newClosingToken);
+            }
             return base.VisitRequestPageExtension(node);
         }
 
         public override SyntaxNode VisitReportExtension(ReportExtensionSyntax node)
         {
             if ((this.NodeInSpan(node)) && (node.Members != null) && (node.Members.Count > 0) && (!node.ContainsDiagnostics))
-                node = node.WithMembers(this.Sort(node, node.Members, node.CloseBraceToken.LeadingTrivia));
+            {
+                (var newMembers, var newClosingToken, var closingTokenModified) = this.Sort(node, node.Members, node.CloseBraceToken);
+                node = node.WithMembers(newMembers);
+                if (closingTokenModified)
+                    node = node.WithCloseBraceToken(newClosingToken);
+            }
             return base.VisitReportExtension(node);
         }
 #endif
@@ -328,84 +398,144 @@ namespace AnZwDev.ALTools.CodeTransformations
         public override SyntaxNode VisitField(FieldSyntax node)
         {
             if ((this.NodeInSpan(node)) && (node.Triggers != null) && (node.Triggers.Count > 0) && (!node.ContainsDiagnostics))
-                node = node.WithTriggers(this.Sort(node, node.Triggers, node.CloseBraceToken.LeadingTrivia));
+            {
+                (var newTriggers, var newClosingToken, var closingTokenModified) = this.Sort(node, node.Triggers, node.CloseBraceToken);
+                node = node.WithTriggers(newTriggers);
+                if (closingTokenModified)
+                    node = node.WithCloseBraceToken(newClosingToken);
+            }
             return base.VisitField(node);
         }
 
         public override SyntaxNode VisitPageField(PageFieldSyntax node)
         {
             if ((this.NodeInSpan(node)) && (node.Triggers != null) && (node.Triggers.Count > 0) && (!node.ContainsDiagnostics))
-                node = node.WithTriggers(this.Sort(node, node.Triggers, node.CloseBraceToken.LeadingTrivia));
+            {
+                (var newTriggers, var newClosingToken, var closingTokenModified) = this.Sort(node, node.Triggers, node.CloseBraceToken);
+                node = node.WithTriggers(newTriggers);
+                if (closingTokenModified)
+                    node = node.WithCloseBraceToken(newClosingToken);
+            }
             return base.VisitPageField(node);
         }
 
         public override SyntaxNode VisitPageAction(PageActionSyntax node)
         {
             if ((this.NodeInSpan(node)) && (node.Triggers != null) && (node.Triggers.Count > 0) && (!node.ContainsDiagnostics))
-                node = node.WithTriggers(this.Sort(node, node.Triggers, node.CloseBraceToken.LeadingTrivia));
+            {
+                (var newTriggers, var newClosingToken, var closingTokenModified) = this.Sort(node, node.Triggers, node.CloseBraceToken);
+                node = node.WithTriggers(newTriggers);
+                if (closingTokenModified)
+                    node = node.WithCloseBraceToken(newClosingToken);
+            }
             return base.VisitPageAction(node);
         }
 
         public override SyntaxNode VisitXmlPortFieldAttribute(XmlPortFieldAttributeSyntax node)
         {
             if ((this.NodeInSpan(node)) && (node.Triggers != null) && (node.Triggers.Count > 0) && (!node.ContainsDiagnostics))
-                node = node.WithTriggers(this.Sort(node, node.Triggers, node.CloseBraceToken.LeadingTrivia));
+            {
+                (var newTriggers, var newClosingToken, var closingTokenModified) = this.Sort(node, node.Triggers, node.CloseBraceToken);
+                node = node.WithTriggers(newTriggers);
+                if (closingTokenModified)
+                    node = node.WithCloseBraceToken(newClosingToken);
+            }
             return base.VisitXmlPortFieldAttribute(node);
         }
 
         public override SyntaxNode VisitXmlPortFieldElement(XmlPortFieldElementSyntax node)
         {
             if ((this.NodeInSpan(node)) && (node.Triggers != null) && (node.Triggers.Count > 0) && (!node.ContainsDiagnostics))
-                node = node.WithTriggers(this.Sort(node, node.Triggers, node.CloseBraceToken.LeadingTrivia));
+            {
+                (var newTriggers, var newClosingToken, var closingTokenModified) = this.Sort(node, node.Triggers, node.CloseBraceToken);
+                node = node.WithTriggers(newTriggers);
+                if (closingTokenModified)
+                    node = node.WithCloseBraceToken(newClosingToken);
+            }
             return base.VisitXmlPortFieldElement(node);
         }
 
         public override SyntaxNode VisitXmlPortTableElement(XmlPortTableElementSyntax node)
         {
             if ((this.NodeInSpan(node)) && (node.Triggers != null) && (node.Triggers.Count > 0) && (!node.ContainsDiagnostics))
-                node = node.WithTriggers(this.Sort(node, node.Triggers, node.CloseBraceToken.LeadingTrivia));
+            {
+                (var newTriggers, var newClosingToken, var closingTokenModified) = this.Sort(node, node.Triggers, node.CloseBraceToken);
+                node = node.WithTriggers(newTriggers);
+                if (closingTokenModified)
+                    node = node.WithCloseBraceToken(newClosingToken);
+            }
             return base.VisitXmlPortTableElement(node);
         }
 
         public override SyntaxNode VisitXmlPortTextAttribute(XmlPortTextAttributeSyntax node)
         {
             if ((this.NodeInSpan(node)) && (node.Triggers != null) && (node.Triggers.Count > 0) && (!node.ContainsDiagnostics))
-                node = node.WithTriggers(this.Sort(node, node.Triggers, node.CloseBraceToken.LeadingTrivia));
+            {
+                (var newTriggers, var newClosingToken, var closingTokenModified) = this.Sort(node, node.Triggers, node.CloseBraceToken);
+                node = node.WithTriggers(newTriggers);
+                if (closingTokenModified)
+                    node = node.WithCloseBraceToken(newClosingToken);
+            }
             return base.VisitXmlPortTextAttribute(node);
         }
 
         public override SyntaxNode VisitXmlPortTextElement(XmlPortTextElementSyntax node)
         {
             if ((this.NodeInSpan(node)) && (node.Triggers != null) && (node.Triggers.Count > 0) && (!node.ContainsDiagnostics))
-                node = node.WithTriggers(this.Sort(node, node.Triggers, node.CloseBraceToken.LeadingTrivia));
+            {
+                (var newTriggers, var newClosingToken, var closingTokenModified) = this.Sort(node, node.Triggers, node.CloseBraceToken);
+                node = node.WithTriggers(newTriggers);
+                if (closingTokenModified)
+                    node = node.WithCloseBraceToken(newClosingToken);
+            }
             return base.VisitXmlPortTextElement(node);
         }
 
         public override SyntaxNode VisitControlModifyChange(ControlModifyChangeSyntax node)
         {
             if ((this.NodeInSpan(node)) && (node.Triggers != null) && (node.Triggers.Count > 0) && (!node.ContainsDiagnostics))
-                node = node.WithTriggers(this.Sort(node, node.Triggers, node.CloseBraceToken.LeadingTrivia));
+            {
+                (var newTriggers, var newClosingToken, var closingTokenModified) = this.Sort(node, node.Triggers, node.CloseBraceToken);
+                node = node.WithTriggers(newTriggers);
+                if (closingTokenModified)
+                    node = node.WithCloseBraceToken(newClosingToken);
+            }
             return base.VisitControlModifyChange(node);
         }
 
         public override SyntaxNode VisitActionModifyChange(ActionModifyChangeSyntax node)
         {
             if ((this.NodeInSpan(node)) && (node.Triggers != null) && (node.Triggers.Count > 0) && (!node.ContainsDiagnostics))
-                node = node.WithTriggers(this.Sort(node, node.Triggers, node.CloseBraceToken.LeadingTrivia));
+            {
+                (var newTriggers, var newClosingToken, var closingTokenModified) = this.Sort(node, node.Triggers, node.CloseBraceToken);
+                node = node.WithTriggers(newTriggers);
+                if (closingTokenModified)
+                    node = node.WithCloseBraceToken(newClosingToken);
+            }
             return base.VisitActionModifyChange(node);
         }
 
         public override SyntaxNode VisitFieldModification(FieldModificationSyntax node)
         {
             if ((this.NodeInSpan(node)) && (node.Triggers != null) && (node.Triggers.Count > 0) && (!node.ContainsDiagnostics))
-                node = node.WithTriggers(this.Sort(node, node.Triggers, node.CloseBraceToken.LeadingTrivia));
+            {
+                (var newTriggers, var newClosingToken, var closingTokenModified) = this.Sort(node, node.Triggers, node.CloseBraceToken);
+                node = node.WithTriggers(newTriggers);
+                if (closingTokenModified)
+                    node = node.WithCloseBraceToken(newClosingToken);
+            }
             return base.VisitFieldModification(node);
         }
 
         public override SyntaxNode VisitReportDataItem(ReportDataItemSyntax node)
         {
             if ((this.NodeInSpan(node)) && (node.Triggers != null) && (node.Triggers.Count > 0) && (!node.ContainsDiagnostics))
-                node = node.WithTriggers(this.Sort(node, node.Triggers, node.CloseBraceToken.LeadingTrivia));
+            {
+                (var newTriggers, var newClosingToken, var closingTokenModified) = this.Sort(node, node.Triggers, node.CloseBraceToken);
+                node = node.WithTriggers(newTriggers);
+                if (closingTokenModified)
+                    node = node.WithCloseBraceToken(newClosingToken);
+            }
             return base.VisitReportDataItem(node);
         }
 
@@ -413,25 +543,30 @@ namespace AnZwDev.ALTools.CodeTransformations
         public override SyntaxNode VisitReportExtensionDataSetModify(ReportExtensionDataSetModifySyntax node)
         {
             if ((this.NodeInSpan(node)) && (node.Triggers != null) && (node.Triggers.Count > 0) && (!node.ContainsDiagnostics))
-                node = node.WithTriggers(this.Sort(node, node.Triggers, node.CloseBraceToken.LeadingTrivia));
+            {
+                (var newTriggers, var newClosingToken, var closingTokenModified) = this.Sort(node, node.Triggers, node.CloseBraceToken);
+                node = node.WithTriggers(newTriggers);
+                if (closingTokenModified)
+                    node = node.WithCloseBraceToken(newClosingToken);
+            }
             return base.VisitReportExtensionDataSetModify(node);
         }
 #endif
 
 #endregion
 
-        private SyntaxList<T> Sort<T>(SyntaxNode parent, SyntaxList<T> members, SyntaxTriviaList endingTriviaList) where T: SyntaxNode
+        private (SyntaxList<T>, SyntaxToken, bool) Sort<T>(SyntaxNode parent, SyntaxList<T> members, SyntaxToken closingToken) where T: SyntaxNode
         {
             if (members.Count <= 1)
-                return members;
+                return (members, closingToken, false);
 
             //build list with regions
             SyntaxNodesGroupsTree<T> nodesGroupsTree = new SyntaxNodesGroupsTree<T>();
-            nodesGroupsTree.AddNodes(members, endingTriviaList);
+            (_, var newClosingToken, var closingTokenModified) = nodesGroupsTree.AddNodes(members, closingToken);
             
             //somethis went wrong - do not sort
             if (nodesGroupsTree.Root == null)
-                return members;
+                return (members, closingToken, false);
 
             MethodSortInfoComparer<T> comparer = new MethodSortInfoComparer<T>(TriggerSortMode, TriggersOrder, parent.Kind.ConvertToLocalType());
 
@@ -442,7 +577,7 @@ namespace AnZwDev.ALTools.CodeTransformations
                 if (!list.IsOrdered(comparer))
                     this.NoOfChanges++;
                 list.Sort(comparer);
-                return MethodSortInfo<T>.ToSyntaxList(list);
+                return (MethodSortInfo<T>.ToSyntaxList(list), newClosingToken.Value, closingTokenModified);
             }
 
             //has child groups - sort them separately
@@ -460,7 +595,7 @@ namespace AnZwDev.ALTools.CodeTransformations
             }
 
             //return sorted nodes
-            return nodesGroupsTree.CreateSyntaxList();
+            return (nodesGroupsTree.CreateSyntaxList(), newClosingToken.Value, closingTokenModified);
         }
 
     }

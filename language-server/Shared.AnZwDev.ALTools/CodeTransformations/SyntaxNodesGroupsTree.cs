@@ -22,8 +22,10 @@ namespace AnZwDev.ALTools.CodeTransformations
 
         #region Add nodes to the tree
 
-        public bool AddNodes(IEnumerable<T> nodesCollection, SyntaxTriviaList? endingTriviaList = null)
+        public (bool, SyntaxToken?, bool) AddNodes(IEnumerable<T> nodesCollection, SyntaxToken? closingToken = null)
         {
+            var closingTokenModified = false;
+
             this.Root = new SyntaxNodesGroup<T>();
             SyntaxNodesGroup<T> group = this.Root;
             foreach (T node in nodesCollection)
@@ -32,20 +34,18 @@ namespace AnZwDev.ALTools.CodeTransformations
                 if (group == null)
                 {
                     this.Root = null;
-                    return false;
+                    return (false, closingToken, closingTokenModified);
                 }
             }
 
-            if (endingTriviaList != null)
+            if (closingToken != null)
             {
                 var hasGroups = false;
-                (group, hasGroups) = ProcessSyntaxTrivias(group, endingTriviaList.Value);
+                (group, hasGroups, closingToken, closingTokenModified) = ProcessClosingSyntaxTokenLeadingTrivias(group, closingToken.Value);
+                if (group == null)
                 {
-                    if (group == null)
-                    {
-                        this.Root = null;
-                        return false;
-                    }
+                    this.Root = null;
+                    return (false, closingToken, closingTokenModified);
                 }
             }
 
@@ -53,14 +53,25 @@ namespace AnZwDev.ALTools.CodeTransformations
             if (group.ParentGroup != null)
             {
                 this.Root = null;
-                return false;
+                return (false, closingToken, closingTokenModified);
             }
 
-            return true;
+            return (true, closingToken, closingTokenModified);
         }
 
         protected SyntaxNodesGroup<T> AddNode(SyntaxNodesGroup<T> group, T node)
         {
+#if BC
+            var directives = node.GetDirectives((directive) => {
+                var kind = directive.Kind.ConvertToLocalType();
+                return
+                    (kind != ConvertedSyntaxKind.RegionDirectiveTrivia) &&
+                    (kind != ConvertedSyntaxKind.EndRegionDirectiveTrivia);
+            });
+            if (directives.Count > 0)
+                return null;
+#endif
+
             SyntaxTriviaList triviaList = node.GetLeadingTrivia();
 
             if ((triviaList != null) && (triviaList.Count > 0))
@@ -110,9 +121,11 @@ namespace AnZwDev.ALTools.CodeTransformations
             return group;
         }
 
-        public (SyntaxNodesGroup<T>, bool) ProcessSyntaxTrivias(SyntaxNodesGroup<T> group, SyntaxTriviaList syntaxTrivias)
+        public (SyntaxNodesGroup<T>, bool, SyntaxToken, bool) ProcessClosingSyntaxTokenLeadingTrivias(SyntaxNodesGroup<T> group, SyntaxToken token)
         {
             bool hasGroups = false;
+            bool tokenModified = false;
+            SyntaxTriviaList syntaxTrivias = token.LeadingTrivia;
 
             if ((syntaxTrivias != null) && (syntaxTrivias.Count > 0))
             {
@@ -138,7 +151,7 @@ namespace AnZwDev.ALTools.CodeTransformations
                             group.TrailingTrivia = triviaCache;
                             group = group.ParentGroup;
                             if (group == null)
-                                return (null, hasGroups);
+                                return (null, hasGroups, token, tokenModified);
                             triviaCache = new List<SyntaxTrivia>();
                             hasGroups = true;
                             break;
@@ -146,14 +159,20 @@ namespace AnZwDev.ALTools.CodeTransformations
 #if BC
                             //do not sort if code contains other directives
                             if (trivia.IsDirective)
-                                return (null, hasGroups);
+                                return (null, hasGroups, token, tokenModified);
 #endif
                             break;
                     }
                 }
+
+                if (hasGroups)
+                {
+                    token = token.WithLeadingTrivia(triviaCache);
+                    tokenModified = true;
+                }
             }
 
-            return (group, hasGroups);
+            return (group, hasGroups, token, tokenModified);
         }
 
         #endregion
