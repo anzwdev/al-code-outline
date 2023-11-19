@@ -3,10 +3,12 @@
 ## 3.0.54
  - Idea #501 - If Expression in a Case-statement is an option/enum list all members
  - Issue #504 - Empty section is removed
+ - Issue #506 - New commands: Add missing ending dot to ToolTips
 
 Thank you
  - Floris-G for idea #501
  - fvet for reporting issue #504
+ - Arthurvdv for reporting issue #506
 
 ## 3.0.53
  - Issue #453 - One Statement Per Line bugfix - incorrect line break before "until"

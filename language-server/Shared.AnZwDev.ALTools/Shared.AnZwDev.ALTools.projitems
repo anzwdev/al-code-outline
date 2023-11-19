@@ -165,6 +165,7 @@
     <Compile Include="$(MSBuildThisFileDirectory)CaseInformationCollectionsDisctionary.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)CodeAnalysis\SyntaxTreeDirectivesParser.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)CodeCompletion\CodeCompletionParameters.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)CodeTransformations\AddDotToToolTipsSyntaxRewriter.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)CodeTransformations\AddMissingCaseLinesSyntaxRewriter.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)CodeTransformations\AddReferencedTablesPermissionsSyntaxRewriter.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)CodeTransformations\AddTableDataCaptionFieldsRewriter.cs" />
@@ -225,6 +226,7 @@
     <Compile Include="$(MSBuildThisFileDirectory)Extensions\ListExtensions.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)SyntaxHelpers\EnumCaseHelper.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)SyntaxHelpers\ExpressionFactory.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)WorkspaceCommands\AddDotToToolTipsWorkspaceCommand.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)WorkspaceCommands\AddMissingCaseLinesWorkspaceCommand.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)WorkspaceCommands\CollapseEmptyBracketsWorkspaceCommand.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)WorkspaceCommands\Parameters\TriggersOrderParameter.cs" />

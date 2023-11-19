@@ -47,6 +47,7 @@ namespace AnZwDev.ALTools.WorkspaceCommands
             this.RegisterCommand(new MakeFlowFieldsReadOnlyWorkspaceCommand(this.ALDevToolsServer));
             this.RegisterCommand(new AddTableDataCaptionFieldsWorkspaceCommand(this.ALDevToolsServer));
             this.RegisterCommand(new AddDropDownFieldGroupsWorkspaceCommand(this.ALDevToolsServer));
+            this.RegisterCommand(new AddDotToToolTipsWorkspaceCommand(this.ALDevToolsServer));
 
             this.RegisterCommand(new FixKeywordsCaseWorkspaceCommand(this.ALDevToolsServer));
 
@@ -55,6 +56,7 @@ namespace AnZwDev.ALTools.WorkspaceCommands
             this.RegisterCommand(new RemoveEmptyLinesWorkspaceCommand(this.ALDevToolsServer));
             this.RegisterCommand(new RemoveEmptySectionsWorkspaceCommand(this.ALDevToolsServer));
             this.RegisterCommand(new RemoveEmptyTriggersWorkspaceCommand(this.ALDevToolsServer));
+
 
 #if BC            
             this.RegisterCommand(new RemoveWithWorkspaceCommand(this.ALDevToolsServer));

@@ -47,6 +47,7 @@ import { GenerateCSVXmlPortHeadersModifier } from '../alsyntaxmodifiers/generate
 import { RemoveRedundantDataClassificationModifier } from '../alsyntaxmodifiers/removeRedundantDataClassificationModifier';
 import { CollapseEmptyBracketsModifier } from '../alsyntaxmodifiers/collapseEmptyBracketsModifier';
 import { OneStatementPerLineModifier } from '../alsyntaxmodifiers/oneStatementPerLineModifier';
+import { AddDotToToolTipModifier } from '../alsyntaxmodifiers/addDotToToolTipModifier';
 
 export class ALCodeTransformationService extends DevToolsExtensionService {
     protected _syntaxFactories: ISyntaxModifierFactoriesCollection;
@@ -84,6 +85,7 @@ export class ALCodeTransformationService extends DevToolsExtensionService {
 
         this.registerModifierCommands('AddTableDataCaptionFields', 'azALDevTools.AddEditorTableDataCaptionFields', 'azALDevTools.AddProjectTableDataCaptionFields', () => new AddTableDataCaptionFieldsModifier(this._context));
         this.registerModifierCommands('AddDropDownFieldGroups', 'azALDevTools.AddEditorDropDownFieldGroups', 'azALDevTools.AddProjectDropDownFieldGroups', () => new AddDropDownFieldGroupsModifier(this._context));
+        this.registerModifierCommands('AddEndingToolTipDot', 'azALDevTools.AddEditorEndingToolTipDot', 'azALDevTools.AddProjectEndingToolTipDot', () => new AddDotToToolTipModifier(this._context));
 
         this.registerModifierCommands('AddEnumValuesCaptions', 'azALDevTools.AddEditorEnumValuesCaption', 'azALDevTools.AddProjectEnumValuesCaption', () => new EnumCaptionsModifier(this._context));
         this.registerModifierCommands('LockRemovedFieldCaptions', 'azALDevTools.LockEditorRemovedFieldCaptions', 'azALDevTools.LockProjectRemovedFieldCaptions', () => new LockRemovedFieldsCaptionsModifier(this._context));

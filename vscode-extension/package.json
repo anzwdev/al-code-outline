@@ -333,7 +333,7 @@
 				"category": "AZ AL Dev Tools",
 				"command": "azALDevTools.AddProjectTableDataCaptionFields",
 				"title": "Add Table DataCaptionFields to the Active Project"
-			},
+			},			
 			{
 				"category": "AZ AL Dev Tools",
 				"command": "azALDevTools.AddEditorDropDownFieldGroups",
@@ -343,6 +343,16 @@
 				"category": "AZ AL Dev Tools",
 				"command": "azALDevTools.AddProjectDropDownFieldGroups",
 				"title": "Add DropDown Field Groups to the Active Project"
+			},
+			{
+				"category": "AZ AL Dev Tools",
+				"command": "azALDevTools.AddEditorEndingToolTipDot",
+				"title": "Add Ending Dot to ToolTips in the Active Editor"
+			},
+			{
+				"category": "AZ AL Dev Tools",
+				"command": "azALDevTools.AddProjectEndingToolTipDot",
+				"title": "Add Ending Dot to ToolTips in the Active Project"
 			},
 			{
 				"category": "AZ AL Dev Tools",
@@ -851,6 +861,14 @@
 				},
 				{
 					"command": "azALDevTools.AddProjectDropDownFieldGroups",
+					"when": "azALDevTools.extensionActive"
+				},
+				{
+					"command": "azALDevTools.AddEditorEndingToolTipDot",
+					"when": "editorLangId == al"
+				},
+				{
+					"command": "azALDevTools.AddProjectEndingToolTipDot",
 					"when": "azALDevTools.extensionActive"
 				},
 				{
