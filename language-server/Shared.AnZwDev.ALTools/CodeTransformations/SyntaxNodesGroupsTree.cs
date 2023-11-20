@@ -62,6 +62,7 @@ namespace AnZwDev.ALTools.CodeTransformations
         protected SyntaxNodesGroup<T> AddNode(SyntaxNodesGroup<T> group, T node)
         {
 #if BC
+            /*
             var directives = node.GetDirectives((directive) => {
                 var kind = directive.Kind.ConvertToLocalType();
                 return
@@ -70,6 +71,8 @@ namespace AnZwDev.ALTools.CodeTransformations
             });
             if (directives.Count > 0)
                 return null;
+            */
+
 #endif
 
             SyntaxTriviaList triviaList = node.GetLeadingTrivia();
@@ -116,6 +119,11 @@ namespace AnZwDev.ALTools.CodeTransformations
                 if (hasGroups)
                     node = node.WithLeadingTrivia(triviaCache);
             }
+
+#if BC
+            if (node.HasOpenDirectives())
+                return null;
+#endif
 
             group.SyntaxNodes.Add(node);
             return group;

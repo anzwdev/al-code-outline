@@ -224,6 +224,7 @@
     <Compile Include="$(MSBuildThisFileDirectory)CodeTransformations\TriggersOrder.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)CodeTransformations\TriggersOrderCollection.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Extensions\ListExtensions.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Extensions\SyntaxNodeDirectiveExtensions.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)SyntaxHelpers\EnumCaseHelper.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)SyntaxHelpers\ExpressionFactory.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)WorkspaceCommands\AddDotToToolTipsWorkspaceCommand.cs" />
