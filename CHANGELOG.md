@@ -5,10 +5,11 @@
  - Issue #504 - Empty section is removed
  - Issue #505 - Sort procedures skips regions
  - Issue #506 - New commands: Add missing ending dot to ToolTips
+ - Merge pull request #503 by fvet - readme update
 
 Thank you
  - Floris-G for idea #501
- - fvet for reporting issue #504 and #505
+ - fvet for reporting issue #504 and #505 and pull-request #503
  - Arthurvdv for reporting issue #506
 
 ## 3.0.53
