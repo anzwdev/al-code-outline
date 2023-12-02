@@ -6,11 +6,12 @@
  - Issue #505 - Sort procedures skips regions
  - Issue #506 - New commands: Add missing ending dot to ToolTips
  - Merge pull request #503 by fvet - readme update
+ - Feature request #510 - Remove semicolon from procedure declaration
 
 Thank you
  - Floris-G for idea #501
  - fvet for reporting issue #504 and #505 and pull-request #503
- - Arthurvdv for reporting issue #506
+ - Arthurvdv for reporting issue #506 and #510
 
 ## 3.0.53
  - Issue #453 - One Statement Per Line bugfix - incorrect line break before "until"

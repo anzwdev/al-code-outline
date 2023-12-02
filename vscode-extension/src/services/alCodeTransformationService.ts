@@ -48,6 +48,7 @@ import { RemoveRedundantDataClassificationModifier } from '../alsyntaxmodifiers/
 import { CollapseEmptyBracketsModifier } from '../alsyntaxmodifiers/collapseEmptyBracketsModifier';
 import { OneStatementPerLineModifier } from '../alsyntaxmodifiers/oneStatementPerLineModifier';
 import { AddDotToToolTipModifier } from '../alsyntaxmodifiers/addDotToToolTipModifier';
+import { RemoveProceduresSemicolonModifier } from '../alsyntaxmodifiers/removeProceduresSemicolonModifier';
 
 export class ALCodeTransformationService extends DevToolsExtensionService {
     protected _syntaxFactories: ISyntaxModifierFactoriesCollection;
@@ -99,6 +100,7 @@ export class ALCodeTransformationService extends DevToolsExtensionService {
         this.registerModifierCommands('MakeFlowFieldsReadOnly', 'azALDevTools.MakeEditorFlowFieldsReadOnly', 'azALDevTools.MakeProjectFlowFieldsReadOnly', () => new MakeFlowFieldsReadOnlyModifier(this._context));
         this.registerModifierCommands('RemoveUnusedVariables', 'azALDevTools.RemoveEditorUnusedVariables', 'azALDevTools.RemoveProjectUnusedVariables', () => new RemoveUnusedVariablesModifier(this._context));
         this.registerModifierCommands('RemoveBeginEnd', 'azALDevTools.RemoveEditorBeginEnd', 'azALDevTools.RemoveProjectBeginEnd', () => new RemoveBeginEndModifier(this._context));
+        this.registerModifierCommands('RemoveProceduresSemicolon', 'azALDevTools.RemoveEditorProceduresSemicolon', 'azALDevTools.RemoveProjectProceduresSemicolon', () => new RemoveProceduresSemicolonModifier(this._context));
         this.registerModifierCommands('CollapseEmptyBrackets', 'azALDevTools.CollapseEditorEmptyBrackets', 'azALDevTools.CollapseProjectEmptyBrackets', () => new CollapseEmptyBracketsModifier(this._context));
         this.registerModifierCommands('OneStatementPerLine', 'azALDevTools.EditorOneStatementPerLine', 'azALDevTools.ProjectOneStatementPerLine', () => new OneStatementPerLineModifier(this._context));
 

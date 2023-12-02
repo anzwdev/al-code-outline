@@ -265,7 +265,7 @@ namespace AnZwDev.ALTools.Extensions
         {
             while (node != null)
             {
-                if (node.Kind.IsApplicationObject())
+                if (node.Kind.ConvertToLocalType().IsApplicationObject())
                     return node;
                 node = node.Parent;
             }

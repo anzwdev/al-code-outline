@@ -76,6 +76,7 @@ namespace AnZwDev.ALTools.WorkspaceCommands
             this.RegisterCommand(new RemoveVariableWorkspaceCommand(this.ALDevToolsServer));
             this.RegisterCommand(new ConvertObjectIdsToNamesWorkspaceCommand(this.ALDevToolsServer));
             this.RegisterCommand(new RemoveBeginEndWorkspaceCommandd(this.ALDevToolsServer));
+            this.RegisterCommand(new RemoveProceduresSemicolonWorkspaceCommand(this.ALDevToolsServer));
 
             this.RegisterCommand(new CollapseEmptyBracketsWorkspaceCommand(this.ALDevToolsServer));
 

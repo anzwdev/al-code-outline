@@ -498,6 +498,16 @@
 			},
 			{
 				"category": "AZ AL Dev Tools",
+				"command": "azALDevTools.RemoveEditorProceduresSemicolon",
+				"title": "Remove procedures semicolon from the Active Editor"
+			},
+			{
+				"category": "AZ AL Dev Tools",
+				"command": "azALDevTools.RemoveProjectProceduresSemicolon",
+				"title": "Remove procedures semicolon from the Active Project"
+			},
+			{
+				"category": "AZ AL Dev Tools",
 				"command": "azALDevTools.RemoveEditorEmptyTriggers",
 				"title": "Remove Empty Triggers from the Active Editor"
 			},
@@ -981,6 +991,14 @@
 				},
 				{
 					"command": "azALDevTools.RemoveProjectBeginEnd",
+					"when": "azALDevTools.extensionActive"
+				},
+				{
+					"command": "azALDevTools.RemoveEditorProceduresSemicolon",
+					"when": "editorLangId == al"
+				},
+				{
+					"command": "azALDevTools.RemoveProjectProceduresSemicolon",
 					"when": "azALDevTools.extensionActive"
 				},
 				{
@@ -1636,7 +1654,8 @@
 								"RemoveRedundantAppAreas",
 								"RemoveRedundantDataClassification",
 								"CollapseEmptyBrackets",
-								"OneStatementPerLine"
+								"OneStatementPerLine",
+								"RemoveProceduresSemicolon"
 							],
 							"enumDescriptions": [
 								"Remove With Statements",
@@ -1673,7 +1692,8 @@
 								"Remove Redundant Application Areas",
 								"Remove Redundant DataClassification",
 								"Collapse Empty Brackets",
-								"One Statement Per Line"
+								"One Statement Per Line",
+								"Remove Procedures Semicolon"
 							]
 						},
 						"description": "List of commands run by the Code Cleanup"
@@ -1917,6 +1937,12 @@
 						"type": "boolean",
 						"default": false,
 						"description": "Set to true to keep affixes in variable names suggested by completion providers",
+						"scope": "resource"
+					},
+					"alOutline.removeProceduresSemicolonIncludeInterfaces": {
+						"type": "boolean",
+						"default": true,
+						"description": "Set to true to remove procedures semicolon also from interfaces",
 						"scope": "resource"
 					},
 					"alOutline.completionProviders": {
