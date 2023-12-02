@@ -326,6 +326,16 @@
 			},
 			{
 				"category": "AZ AL Dev Tools",
+				"command": "azALDevTools.AddEditorUsingRegion",
+				"title": "Add Region around Usings in the Active Editor"
+			},
+			{
+				"category": "AZ AL Dev Tools",
+				"command": "azALDevTools.AddProjectUsingRegion",
+				"title": "Add Region around Usings in the Active Project"
+			},
+			{
+				"category": "AZ AL Dev Tools",
 				"command": "azALDevTools.AddEditorTableDataCaptionFields",
 				"title": "Add Table DataCaptionFields to the Active Editor"
 			},
@@ -855,6 +865,14 @@
 				},
 				{
 					"command": "azALDevTools.AddProjectEnumValuesCaption",
+					"when": "azALDevTools.extensionActive"
+				},
+				{
+					"command": "azALDevTools.AddEditorUsingRegion",
+					"when": "editorLangId == al"
+				},
+				{
+					"command": "azALDevTools.AddProjectUsingRegion",
 					"when": "azALDevTools.extensionActive"
 				},
 				{

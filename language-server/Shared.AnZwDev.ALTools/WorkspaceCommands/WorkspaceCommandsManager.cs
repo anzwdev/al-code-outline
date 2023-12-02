@@ -70,6 +70,7 @@ namespace AnZwDev.ALTools.WorkspaceCommands
             this.RegisterCommand(new AddReferencedTablesPermissionsWorkspaceCommand(this.ALDevToolsServer));
             this.RegisterCommand(new GenerateCSVXmlPortHeadersWorkspaceCommand(this.ALDevToolsServer));
             this.RegisterCommand(new AddMissingCaseLinesWorkspaceCommand(this.ALDevToolsServer));
+            this.RegisterCommand(new AddUsingRegionWorkspaceCommand(this.ALDevToolsServer));
 #endif
             this.RegisterCommand(new RemoveRedundantDataClassificationWorkspaceCommand(this.ALDevToolsServer));
 

@@ -49,6 +49,7 @@ import { CollapseEmptyBracketsModifier } from '../alsyntaxmodifiers/collapseEmpt
 import { OneStatementPerLineModifier } from '../alsyntaxmodifiers/oneStatementPerLineModifier';
 import { AddDotToToolTipModifier } from '../alsyntaxmodifiers/addDotToToolTipModifier';
 import { RemoveProceduresSemicolonModifier } from '../alsyntaxmodifiers/removeProceduresSemicolonModifier';
+import { AddUsingRegionModifier } from '../alsyntaxmodifiers/addUsingRegionModifier';
 
 export class ALCodeTransformationService extends DevToolsExtensionService {
     protected _syntaxFactories: ISyntaxModifierFactoriesCollection;
@@ -103,6 +104,7 @@ export class ALCodeTransformationService extends DevToolsExtensionService {
         this.registerModifierCommands('RemoveProceduresSemicolon', 'azALDevTools.RemoveEditorProceduresSemicolon', 'azALDevTools.RemoveProjectProceduresSemicolon', () => new RemoveProceduresSemicolonModifier(this._context));
         this.registerModifierCommands('CollapseEmptyBrackets', 'azALDevTools.CollapseEditorEmptyBrackets', 'azALDevTools.CollapseProjectEmptyBrackets', () => new CollapseEmptyBracketsModifier(this._context));
         this.registerModifierCommands('OneStatementPerLine', 'azALDevTools.EditorOneStatementPerLine', 'azALDevTools.ProjectOneStatementPerLine', () => new OneStatementPerLineModifier(this._context));
+        this.registerModifierCommands('AddUsingRegion', 'azALDevTools.AddEditorUsingRegion', 'azALDevTools.AddProjectUsingRegion', () => new AddUsingRegionModifier(this._context));
 
         this.registerModifierCommands('RemoveEmptyLines', 'azALDevTools.RemoveEditorEmptyLines', 'azALDevTools.RemoveProjectEmptyLines', () => new RemoveEmptyLinesModifier(this._context));
         this.registerModifierCommands('RemoveEmptySections', 'azALDevTools.RemoveEditorEmptySections', 'azALDevTools.RemoveProjectEmptySections', () => new RemoveEmptySectionsModifier(this._context));

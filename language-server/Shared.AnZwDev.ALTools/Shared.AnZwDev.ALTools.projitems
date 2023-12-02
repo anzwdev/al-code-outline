@@ -170,6 +170,7 @@
     <Compile Include="$(MSBuildThisFileDirectory)CodeTransformations\AddReferencedTablesPermissionsSyntaxRewriter.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)CodeTransformations\AddTableDataCaptionFieldsRewriter.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)CodeTransformations\AddDropDownFieldGroupsRewriter.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)CodeTransformations\AddUsingRegionSyntaxRewriter.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)CodeTransformations\BaseRemoveEmptyNodesSyntaxRewriter.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)CodeAnalysis\AppSourceCopSettings.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)CodeAnalysis\CodeAnalyzerRule.cs" />
@@ -231,6 +232,7 @@
     <Compile Include="$(MSBuildThisFileDirectory)SyntaxHelpers\ExpressionFactory.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)WorkspaceCommands\AddDotToToolTipsWorkspaceCommand.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)WorkspaceCommands\AddMissingCaseLinesWorkspaceCommand.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)WorkspaceCommands\AddUsingRegionWorkspaceCommand.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)WorkspaceCommands\CollapseEmptyBracketsWorkspaceCommand.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)WorkspaceCommands\Parameters\TriggersOrderParameter.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)WorkspaceCommands\RemoveProceduresSemicolonWorkspaceCommand.cs" />

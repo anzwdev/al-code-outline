@@ -6,7 +6,8 @@
  - Issue #505 - Sort procedures skips regions
  - Issue #506 - New commands: Add missing ending dot to ToolTips
  - Merge pull request #503 by fvet - readme update
- - Feature request #510 - Remove semicolon from procedure declaration
+ - Idea #509 - Add region around namespaces
+ - Feature request #510 - Remove semicolon from procedure declaration 
 
 Thank you
  - Floris-G for idea #501
