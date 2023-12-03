@@ -1,9 +1,13 @@
 ﻿using AnZwDev.ALTools.ALSymbols;
 using AnZwDev.ALTools.Workspace;
+using AnZwDev.ALTools.Extensions;
+using Microsoft.Dynamics.Nav.CodeAnalysis.Syntax;
 using System;
 using System.Collections.Generic;
 using System.Text;
 using System.Xml.Serialization;
+using Microsoft.Dynamics.Nav.CodeAnalysis.Text;
+using Microsoft.Dynamics.Nav.CodeAnalysis;
 
 namespace AnZwDev.ALTools.WorkspaceCommands
 {
@@ -43,6 +47,7 @@ namespace AnZwDev.ALTools.WorkspaceCommands
             this.RegisterCommand(new MakeFlowFieldsReadOnlyWorkspaceCommand(this.ALDevToolsServer));
             this.RegisterCommand(new AddTableDataCaptionFieldsWorkspaceCommand(this.ALDevToolsServer));
             this.RegisterCommand(new AddDropDownFieldGroupsWorkspaceCommand(this.ALDevToolsServer));
+            this.RegisterCommand(new AddDotToToolTipsWorkspaceCommand(this.ALDevToolsServer));
 
             this.RegisterCommand(new FixKeywordsCaseWorkspaceCommand(this.ALDevToolsServer));
 
@@ -51,6 +56,7 @@ namespace AnZwDev.ALTools.WorkspaceCommands
             this.RegisterCommand(new RemoveEmptyLinesWorkspaceCommand(this.ALDevToolsServer));
             this.RegisterCommand(new RemoveEmptySectionsWorkspaceCommand(this.ALDevToolsServer));
             this.RegisterCommand(new RemoveEmptyTriggersWorkspaceCommand(this.ALDevToolsServer));
+
 
 #if BC            
             this.RegisterCommand(new RemoveWithWorkspaceCommand(this.ALDevToolsServer));
@@ -63,12 +69,15 @@ namespace AnZwDev.ALTools.WorkspaceCommands
             this.RegisterCommand(new AddEnumCaptionsWorkspaceCommand(this.ALDevToolsServer));
             this.RegisterCommand(new AddReferencedTablesPermissionsWorkspaceCommand(this.ALDevToolsServer));
             this.RegisterCommand(new GenerateCSVXmlPortHeadersWorkspaceCommand(this.ALDevToolsServer));
+            this.RegisterCommand(new AddMissingCaseLinesWorkspaceCommand(this.ALDevToolsServer));
+            this.RegisterCommand(new AddUsingRegionWorkspaceCommand(this.ALDevToolsServer));
 #endif
             this.RegisterCommand(new RemoveRedundantDataClassificationWorkspaceCommand(this.ALDevToolsServer));
 
             this.RegisterCommand(new RemoveVariableWorkspaceCommand(this.ALDevToolsServer));
             this.RegisterCommand(new ConvertObjectIdsToNamesWorkspaceCommand(this.ALDevToolsServer));
             this.RegisterCommand(new RemoveBeginEndWorkspaceCommandd(this.ALDevToolsServer));
+            this.RegisterCommand(new RemoveProceduresSemicolonWorkspaceCommand(this.ALDevToolsServer));
 
             this.RegisterCommand(new CollapseEmptyBracketsWorkspaceCommand(this.ALDevToolsServer));
 
@@ -102,6 +111,33 @@ namespace AnZwDev.ALTools.WorkspaceCommands
             }
             else
                 throw new Exception($"Workspace command {commandName} not found.");
+        }
+
+        public List<WorkspaceCommandCodeAction> GetCodeActions(string sourceCode, string projectPath, string filePath, Range range)
+        {
+            var codeActions = new List<WorkspaceCommandCodeAction>();
+            var project = ALDevToolsServer.Workspace.FindProject(projectPath);
+            if (project == null)
+                project = ALDevToolsServer.Workspace.FindProject(filePath);
+
+            if (project != null)
+            {
+                SourceText sourceText = SourceText.From(sourceCode);
+#if BC
+                SyntaxTree syntaxTree = SyntaxTree.ParseObjectText(sourceText, null, project.GetSyntaxTreeParseOptions());
+#else
+                SyntaxTree syntaxTree = SyntaxTree.ParseObjectText(sourceText, null);
+#endif
+                var span = sourceText.Lines.GetTextSpan(new LinePositionSpan(new LinePosition(range.start.line, range.start.character), new LinePosition(range.end.line, range.end.character)));
+                var syntaxNode = syntaxTree.FindNodeByPositionInFullSpan(span.Start);
+
+                foreach (var command in _commands.Values)
+                {
+                    command.CollectCodeActions(syntaxTree, syntaxNode, range, codeActions);
+                }
+            }
+
+            return codeActions;
         }
 
     }

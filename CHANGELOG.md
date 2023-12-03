@@ -1,5 +1,19 @@
 # Change Log
 
+## 3.0.54
+ - Idea #501 - If Expression in a Case-statement is an option/enum list all members
+ - Issue #504 - Empty section is removed
+ - Issue #505 - Sort procedures skips regions
+ - Issue #506 - New commands: Add missing ending dot to ToolTips
+ - Merge pull request #503 by fvet - readme update
+ - Idea #509 - Add region around namespaces
+ - Feature request #510 - Remove semicolon from procedure declaration 
+
+Thank you
+ - Floris-G for idea #501
+ - fvet for reporting issue #504 and #505 and pull-request #503
+ - Arthurvdv for reporting issue #506 and #510
+
 ## 3.0.53
  - Issue #453 - One Statement Per Line bugfix - incorrect line break before "until"
 

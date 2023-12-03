@@ -265,7 +265,7 @@ namespace AnZwDev.ALTools.Extensions
         {
             while (node != null)
             {
-                if (node.Kind.IsApplicationObject())
+                if (node.Kind.ConvertToLocalType().IsApplicationObject())
                     return node;
                 node = node.Parent;
             }
@@ -395,6 +395,17 @@ namespace AnZwDev.ALTools.Extensions
             if (stringValue != null)
                 return ALSyntaxHelper.DecodeName(stringValue);
             return null;
+        }
+
+        public static bool IsObsoletePendingOrRemoved(this SyntaxNode node)
+        {
+#if BC
+            var property = node.GetIdentifierPropertyValue("ObsoleteState");
+            return (!String.IsNullOrWhiteSpace(property)) &&
+                ((property.Equals("Pending", StringComparison.CurrentCultureIgnoreCase)) || (property.Equals("Removed", StringComparison.CurrentCultureIgnoreCase)));
+#else
+            return false;
+#endif
         }
 
         #region Nav2018 helpers

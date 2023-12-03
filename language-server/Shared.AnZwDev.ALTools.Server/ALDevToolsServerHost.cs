@@ -64,6 +64,7 @@ namespace AnZwDev.ALTools.Server
 
             //code transformations
             this.Dispatcher.RegisterRequestHandler(new WorkspaceCommandRequestHandler(this.ALDevToolsServer, this));
+            this.Dispatcher.RegisterRequestHandler(new CollectWorkspaceCommandCodeActionsRequestHandler(this.ALDevToolsServer, this));
 
             //symbols information
             this.Dispatcher.RegisterRequestHandler(new GetObjectsListRequestHandler(this.ALDevToolsServer, this));

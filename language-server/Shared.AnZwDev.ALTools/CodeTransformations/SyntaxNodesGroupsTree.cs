@@ -6,6 +6,7 @@ using Microsoft.Dynamics.Nav.CodeAnalysis;
 using Microsoft.Dynamics.Nav.CodeAnalysis.Syntax;
 using AnZwDev.ALTools.Extensions;
 using AnZwDev.ALTools.ALSymbols.Internal;
+using System.Xml.Linq;
 
 namespace AnZwDev.ALTools.CodeTransformations
 {
@@ -21,8 +22,10 @@ namespace AnZwDev.ALTools.CodeTransformations
 
         #region Add nodes to the tree
 
-        public bool AddNodes(IEnumerable<T> nodesCollection)
+        public (bool, SyntaxToken?, bool) AddNodes(IEnumerable<T> nodesCollection, SyntaxToken? closingToken = null)
         {
+            var closingTokenModified = false;
+
             this.Root = new SyntaxNodesGroup<T>();
             SyntaxNodesGroup<T> group = this.Root;
             foreach (T node in nodesCollection)
@@ -31,14 +34,47 @@ namespace AnZwDev.ALTools.CodeTransformations
                 if (group == null)
                 {
                     this.Root = null;
-                    return false;
+                    return (false, closingToken, closingTokenModified);
                 }
             }
-            return true;
+
+            if (closingToken != null)
+            {
+                var hasGroups = false;
+                (group, hasGroups, closingToken, closingTokenModified) = ProcessClosingSyntaxTokenLeadingTrivias(group, closingToken.Value);
+                if (group == null)
+                {
+                    this.Root = null;
+                    return (false, closingToken, closingTokenModified);
+                }
+            }
+
+            //something went wrong and we are not back at the top group (missing endregion directives)
+            if (group.ParentGroup != null)
+            {
+                this.Root = null;
+                return (false, closingToken, closingTokenModified);
+            }
+
+            return (true, closingToken, closingTokenModified);
         }
 
         protected SyntaxNodesGroup<T> AddNode(SyntaxNodesGroup<T> group, T node)
         {
+#if BC
+            /*
+            var directives = node.GetDirectives((directive) => {
+                var kind = directive.Kind.ConvertToLocalType();
+                return
+                    (kind != ConvertedSyntaxKind.RegionDirectiveTrivia) &&
+                    (kind != ConvertedSyntaxKind.EndRegionDirectiveTrivia);
+            });
+            if (directives.Count > 0)
+                return null;
+            */
+
+#endif
+
             SyntaxTriviaList triviaList = node.GetLeadingTrivia();
 
             if ((triviaList != null) && (triviaList.Count > 0))
@@ -84,11 +120,70 @@ namespace AnZwDev.ALTools.CodeTransformations
                     node = node.WithLeadingTrivia(triviaCache);
             }
 
+#if BC
+            if (node.HasOpenDirectives())
+                return null;
+#endif
+
             group.SyntaxNodes.Add(node);
             return group;
         }
-        
-#endregion
+
+        public (SyntaxNodesGroup<T>, bool, SyntaxToken, bool) ProcessClosingSyntaxTokenLeadingTrivias(SyntaxNodesGroup<T> group, SyntaxToken token)
+        {
+            bool hasGroups = false;
+            bool tokenModified = false;
+            SyntaxTriviaList syntaxTrivias = token.LeadingTrivia;
+
+            if ((syntaxTrivias != null) && (syntaxTrivias.Count > 0))
+            {
+                //collect regions
+                List<SyntaxTrivia> triviaCache = new List<SyntaxTrivia>();
+
+                foreach (SyntaxTrivia trivia in syntaxTrivias)
+                {
+                    triviaCache.Add(trivia);
+                    ConvertedSyntaxKind localTriviaKind = trivia.Kind.ConvertToLocalType();
+
+                    switch (localTriviaKind)
+                    {
+                        case ConvertedSyntaxKind.RegionDirectiveTrivia:
+                            SyntaxNodesGroup<T> childGroup = new SyntaxNodesGroup<T>();
+                            childGroup.LeadingTrivia = triviaCache;
+                            group.AddGroup(childGroup);
+                            group = childGroup;
+                            triviaCache = new List<SyntaxTrivia>();
+                            hasGroups = true;
+                            break;
+                        case ConvertedSyntaxKind.EndRegionDirectiveTrivia:
+                            group.TrailingTrivia = triviaCache;
+                            group = group.ParentGroup;
+                            if (group == null)
+                                return (null, hasGroups, token, tokenModified);
+                            triviaCache = new List<SyntaxTrivia>();
+                            hasGroups = true;
+                            break;
+                        default:
+#if BC
+                            //do not sort if code contains other directives
+                            if (trivia.IsDirective)
+                                return (null, hasGroups, token, tokenModified);
+#endif
+                            break;
+                    }
+                }
+
+                if (hasGroups)
+                {
+                    token = token.WithLeadingTrivia(triviaCache);
+                    tokenModified = true;
+                }
+            }
+
+            return (group, hasGroups, token, tokenModified);
+        }
+
+        #endregion
 
         public SyntaxList<T> CreateSyntaxList()
         {

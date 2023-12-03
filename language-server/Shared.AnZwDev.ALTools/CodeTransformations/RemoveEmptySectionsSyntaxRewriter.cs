@@ -13,6 +13,7 @@ namespace AnZwDev.ALTools.CodeTransformations
         public bool RemovePageFieldGroups { get; set; }
         public bool RemoveActionGroups { get; set; }
         public bool RemoveActions { get; set; }
+        public bool IncludeObsolete { get; set; }
 
         public RemoveEmptySectionsSyntaxRewriter()
         {
@@ -360,6 +361,9 @@ namespace AnZwDev.ALTools.CodeTransformations
 
         protected override bool CanRemoveMember(SyntaxNode node)
         {
+            if ((!IncludeObsolete) && (node.IsObsoletePendingOrRemoved()))
+                return false;
+
             switch (node)
             {
                 case RequestPageSyntax requestPageSyntax:

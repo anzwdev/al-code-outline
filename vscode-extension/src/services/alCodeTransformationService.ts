@@ -47,6 +47,9 @@ import { GenerateCSVXmlPortHeadersModifier } from '../alsyntaxmodifiers/generate
 import { RemoveRedundantDataClassificationModifier } from '../alsyntaxmodifiers/removeRedundantDataClassificationModifier';
 import { CollapseEmptyBracketsModifier } from '../alsyntaxmodifiers/collapseEmptyBracketsModifier';
 import { OneStatementPerLineModifier } from '../alsyntaxmodifiers/oneStatementPerLineModifier';
+import { AddDotToToolTipModifier } from '../alsyntaxmodifiers/addDotToToolTipModifier';
+import { RemoveProceduresSemicolonModifier } from '../alsyntaxmodifiers/removeProceduresSemicolonModifier';
+import { AddUsingRegionModifier } from '../alsyntaxmodifiers/addUsingRegionModifier';
 
 export class ALCodeTransformationService extends DevToolsExtensionService {
     protected _syntaxFactories: ISyntaxModifierFactoriesCollection;
@@ -68,7 +71,6 @@ export class ALCodeTransformationService extends DevToolsExtensionService {
         this.registerDocumentRangeCommand('azALDevTools.addAllObjectsPermissions', () => new AddAllObjectsPermissionsModifier(this._context));
         this.registerDocumentRangeCommand('azALDevTools.addReferencedTablesPermissions', () => new AddReferencedTablesPermissionsModifier(this._context));
         this.registerDocumentRangeCommand('azALDevTools.generateCSVXmlPortHeaders', () => new GenerateCSVXmlPortHeadersModifier(this._context));
-        
 
         this.registerDocumentRangeCommand('azALDevTools.removeVariable', () => new WorkspaceCommandSyntaxModifier(this._context, 'removeVariable', 'removeVariable'));
         this.registerDocumentSymbolCommand('azALDevTools.ReuseToolTipFromOtherPages', () => new ReuseSingleFieldToolTipModifier(this._context));
@@ -85,6 +87,7 @@ export class ALCodeTransformationService extends DevToolsExtensionService {
 
         this.registerModifierCommands('AddTableDataCaptionFields', 'azALDevTools.AddEditorTableDataCaptionFields', 'azALDevTools.AddProjectTableDataCaptionFields', () => new AddTableDataCaptionFieldsModifier(this._context));
         this.registerModifierCommands('AddDropDownFieldGroups', 'azALDevTools.AddEditorDropDownFieldGroups', 'azALDevTools.AddProjectDropDownFieldGroups', () => new AddDropDownFieldGroupsModifier(this._context));
+        this.registerModifierCommands('AddEndingToolTipDot', 'azALDevTools.AddEditorEndingToolTipDot', 'azALDevTools.AddProjectEndingToolTipDot', () => new AddDotToToolTipModifier(this._context));
 
         this.registerModifierCommands('AddEnumValuesCaptions', 'azALDevTools.AddEditorEnumValuesCaption', 'azALDevTools.AddProjectEnumValuesCaption', () => new EnumCaptionsModifier(this._context));
         this.registerModifierCommands('LockRemovedFieldCaptions', 'azALDevTools.LockEditorRemovedFieldCaptions', 'azALDevTools.LockProjectRemovedFieldCaptions', () => new LockRemovedFieldsCaptionsModifier(this._context));
@@ -98,8 +101,10 @@ export class ALCodeTransformationService extends DevToolsExtensionService {
         this.registerModifierCommands('MakeFlowFieldsReadOnly', 'azALDevTools.MakeEditorFlowFieldsReadOnly', 'azALDevTools.MakeProjectFlowFieldsReadOnly', () => new MakeFlowFieldsReadOnlyModifier(this._context));
         this.registerModifierCommands('RemoveUnusedVariables', 'azALDevTools.RemoveEditorUnusedVariables', 'azALDevTools.RemoveProjectUnusedVariables', () => new RemoveUnusedVariablesModifier(this._context));
         this.registerModifierCommands('RemoveBeginEnd', 'azALDevTools.RemoveEditorBeginEnd', 'azALDevTools.RemoveProjectBeginEnd', () => new RemoveBeginEndModifier(this._context));
+        this.registerModifierCommands('RemoveProceduresSemicolon', 'azALDevTools.RemoveEditorProceduresSemicolon', 'azALDevTools.RemoveProjectProceduresSemicolon', () => new RemoveProceduresSemicolonModifier(this._context));
         this.registerModifierCommands('CollapseEmptyBrackets', 'azALDevTools.CollapseEditorEmptyBrackets', 'azALDevTools.CollapseProjectEmptyBrackets', () => new CollapseEmptyBracketsModifier(this._context));
         this.registerModifierCommands('OneStatementPerLine', 'azALDevTools.EditorOneStatementPerLine', 'azALDevTools.ProjectOneStatementPerLine', () => new OneStatementPerLineModifier(this._context));
+        this.registerModifierCommands('AddUsingRegion', 'azALDevTools.AddEditorUsingRegion', 'azALDevTools.AddProjectUsingRegion', () => new AddUsingRegionModifier(this._context));
 
         this.registerModifierCommands('RemoveEmptyLines', 'azALDevTools.RemoveEditorEmptyLines', 'azALDevTools.RemoveProjectEmptyLines', () => new RemoveEmptyLinesModifier(this._context));
         this.registerModifierCommands('RemoveEmptySections', 'azALDevTools.RemoveEditorEmptySections', 'azALDevTools.RemoveProjectEmptySections', () => new RemoveEmptySectionsModifier(this._context));

@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Microsoft.Dynamics.Nav.CodeAnalysis.Text;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -20,6 +21,38 @@ namespace AnZwDev.ALTools.ALSymbols
         {
             this.line = newLine;
             this.character = newCharacter;
+        }
+
+        public int Compare(LinePosition pos)
+        {
+            if (this.line == pos.Line)
+                return this.character - pos.Character;
+            return this.line - pos.Line;
+        }
+
+        public bool IsGreater(LinePosition pos)
+        {
+            return (this.Compare(pos) > 0);
+        }
+
+        public bool IsLower(LinePosition pos)
+        {
+            return (this.Compare(pos) < 0);
+        }
+
+        public bool IsGreaterOrEqual(LinePosition pos)
+        {
+            return (this.Compare(pos) >= 0);
+        }
+
+        public bool IsLowerOrEqual(LinePosition pos)
+        {
+            return (this.Compare(pos) <= 0);
+        }
+
+        public bool IsEqual(LinePosition pos)
+        {
+            return (this.Compare(pos) == 0);
         }
 
         public int Compare(Position pos)

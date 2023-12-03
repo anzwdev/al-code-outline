@@ -16,6 +16,7 @@ namespace AnZwDev.ALTools.WorkspaceCommands
         public static string RemoveActionGroupsParameterName = "removeActionGroups";
         public static string RemoveActionsParameterName = "removeActions";
         public static string IgnoreCommentsParameterName = "ignoreComments";
+        public static string IncludeObsoleteParameterName = "includeObsolete";
 
         public RemoveEmptySectionsWorkspaceCommand(ALDevToolsServer alDevToolsServer) : base(alDevToolsServer, "removeEmptySections")
         {
@@ -29,6 +30,7 @@ namespace AnZwDev.ALTools.WorkspaceCommands
             this.SyntaxRewriter.RemoveActionGroups = parameters.GetBoolValue(RemoveActionGroupsParameterName);
             this.SyntaxRewriter.RemoveActions = parameters.GetBoolValue(RemoveActionsParameterName);
             this.SyntaxRewriter.IgnoreComments = parameters.GetBoolValue(IgnoreCommentsParameterName);
+            this.SyntaxRewriter.IncludeObsolete = parameters.GetBoolValue(IncludeObsoleteParameterName);
         }
 
     }

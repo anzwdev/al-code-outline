@@ -2,7 +2,7 @@
 	"name": "al-code-outline",
 	"displayName": "AZ AL Dev Tools/AL Code Outline",
 	"description": "AZ AL Development Tools: AL code outline, object browser, object creators",
-	"version": "3.0.53",
+	"version": "3.0.54",
 	"publisher": "andrzejzwierzchowski",
 	"engines": {
 		"vscode": "^1.47.0"
@@ -326,6 +326,16 @@
 			},
 			{
 				"category": "AZ AL Dev Tools",
+				"command": "azALDevTools.AddEditorUsingRegion",
+				"title": "Add Region around Usings in the Active Editor"
+			},
+			{
+				"category": "AZ AL Dev Tools",
+				"command": "azALDevTools.AddProjectUsingRegion",
+				"title": "Add Region around Usings in the Active Project"
+			},
+			{
+				"category": "AZ AL Dev Tools",
 				"command": "azALDevTools.AddEditorTableDataCaptionFields",
 				"title": "Add Table DataCaptionFields to the Active Editor"
 			},
@@ -333,7 +343,7 @@
 				"category": "AZ AL Dev Tools",
 				"command": "azALDevTools.AddProjectTableDataCaptionFields",
 				"title": "Add Table DataCaptionFields to the Active Project"
-			},
+			},			
 			{
 				"category": "AZ AL Dev Tools",
 				"command": "azALDevTools.AddEditorDropDownFieldGroups",
@@ -343,6 +353,16 @@
 				"category": "AZ AL Dev Tools",
 				"command": "azALDevTools.AddProjectDropDownFieldGroups",
 				"title": "Add DropDown Field Groups to the Active Project"
+			},
+			{
+				"category": "AZ AL Dev Tools",
+				"command": "azALDevTools.AddEditorEndingToolTipDot",
+				"title": "Add Ending Dot to ToolTips in the Active Editor"
+			},
+			{
+				"category": "AZ AL Dev Tools",
+				"command": "azALDevTools.AddProjectEndingToolTipDot",
+				"title": "Add Ending Dot to ToolTips in the Active Project"
 			},
 			{
 				"category": "AZ AL Dev Tools",
@@ -485,6 +505,16 @@
 				"category": "AZ AL Dev Tools",
 				"command": "azALDevTools.RemoveProjectBeginEnd",
 				"title": "Remove Begin..End around Single Statements from the Active Project"
+			},
+			{
+				"category": "AZ AL Dev Tools",
+				"command": "azALDevTools.RemoveEditorProceduresSemicolon",
+				"title": "Remove procedures semicolon from the Active Editor"
+			},
+			{
+				"category": "AZ AL Dev Tools",
+				"command": "azALDevTools.RemoveProjectProceduresSemicolon",
+				"title": "Remove procedures semicolon from the Active Project"
 			},
 			{
 				"category": "AZ AL Dev Tools",
@@ -838,6 +868,14 @@
 					"when": "azALDevTools.extensionActive"
 				},
 				{
+					"command": "azALDevTools.AddEditorUsingRegion",
+					"when": "editorLangId == al"
+				},
+				{
+					"command": "azALDevTools.AddProjectUsingRegion",
+					"when": "azALDevTools.extensionActive"
+				},
+				{
 					"command": "azALDevTools.AddEditorTableDataCaptionFields",
 					"when": "editorLangId == al"
 				},
@@ -851,6 +889,14 @@
 				},
 				{
 					"command": "azALDevTools.AddProjectDropDownFieldGroups",
+					"when": "azALDevTools.extensionActive"
+				},
+				{
+					"command": "azALDevTools.AddEditorEndingToolTipDot",
+					"when": "editorLangId == al"
+				},
+				{
+					"command": "azALDevTools.AddProjectEndingToolTipDot",
 					"when": "azALDevTools.extensionActive"
 				},
 				{
@@ -963,6 +1009,14 @@
 				},
 				{
 					"command": "azALDevTools.RemoveProjectBeginEnd",
+					"when": "azALDevTools.extensionActive"
+				},
+				{
+					"command": "azALDevTools.RemoveEditorProceduresSemicolon",
+					"when": "editorLangId == al"
+				},
+				{
+					"command": "azALDevTools.RemoveProjectProceduresSemicolon",
 					"when": "azALDevTools.extensionActive"
 				},
 				{
@@ -1618,7 +1672,8 @@
 								"RemoveRedundantAppAreas",
 								"RemoveRedundantDataClassification",
 								"CollapseEmptyBrackets",
-								"OneStatementPerLine"
+								"OneStatementPerLine",
+								"RemoveProceduresSemicolon"
 							],
 							"enumDescriptions": [
 								"Remove With Statements",
@@ -1655,7 +1710,8 @@
 								"Remove Redundant Application Areas",
 								"Remove Redundant DataClassification",
 								"Collapse Empty Brackets",
-								"One Statement Per Line"
+								"One Statement Per Line",
+								"Remove Procedures Semicolon"
 							]
 						},
 						"description": "List of commands run by the Code Cleanup"
@@ -1899,6 +1955,18 @@
 						"type": "boolean",
 						"default": false,
 						"description": "Set to true to keep affixes in variable names suggested by completion providers",
+						"scope": "resource"
+					},
+					"alOutline.removeProceduresSemicolonIncludeInterfaces": {
+						"type": "boolean",
+						"default": true,
+						"description": "Set to true to remove procedures semicolon also from interfaces",
+						"scope": "resource"
+					},
+					"alOutline.usingsRegionTitle": {
+						"type": "string",
+						"default": "Usings",
+						"description": "Title of the usings region",
 						"scope": "resource"
 					},
 					"alOutline.completionProviders": {

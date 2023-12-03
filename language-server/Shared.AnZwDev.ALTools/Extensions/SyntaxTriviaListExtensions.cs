@@ -109,6 +109,52 @@ namespace AnZwDev.ALTools.Extensions
             return false;
         }
 
+        public static bool EndsWithNewLine(this SyntaxTriviaList triviaList)
+        {
+            if ((triviaList != null) || (triviaList.Count > 0))
+                return triviaList[triviaList.Count - 1].Kind.ConvertToLocalType() == ConvertedSyntaxKind.EndOfLineTrivia;
+            return false;
+        }
+
+        public static bool StartsWithNewLine(this SyntaxTriviaList triviaList)
+        {
+            if ((triviaList != null) || (triviaList.Count > 0))
+                return triviaList[0].Kind.ConvertToLocalType() == ConvertedSyntaxKind.EndOfLineTrivia;
+            return false;
+        }
+
+        public static bool OpensRegion(this IEnumerable<SyntaxTrivia> triviaList)
+        {
+            return (triviaList.GetRegionDepth() > 0);
+        }
+
+        public static bool ClosesRegion(this IEnumerable<SyntaxTrivia> triviaList)
+        {
+            return (triviaList.GetRegionDepth() < 0);
+        }
+
+        public static int GetRegionDepth(this IEnumerable<SyntaxTrivia> triviaList)
+        {
+            if (triviaList == null)
+                return 0;
+
+            var depth = 0;
+            foreach (SyntaxTrivia trivia in triviaList)
+            {
+                ConvertedSyntaxKind kind = trivia.Kind.ConvertToLocalType();
+                switch (kind)
+                {
+                    case ConvertedSyntaxKind.RegionDirectiveTrivia:
+                        depth++;
+                        break;
+                    case ConvertedSyntaxKind.EndRegionDirectiveTrivia:
+                        depth--;
+                        break;
+                }
+            }
+            return depth;
+        }
+
         public static bool ContainsDirectives(this IEnumerable<SyntaxTrivia> triviaList)
         {
             if (triviaList == null)
