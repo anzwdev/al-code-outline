@@ -43,6 +43,33 @@ namespace AnZwDev.ALTools.CodeTransformations
             group.ParentGroup = this;
         }
 
+        public void RemoveSingleNodeGroups()
+        {
+            if ((this.ChildGroups == null) || (this.ChildGroups.Count == 0))
+                return;
+
+            var idx = 0;
+            while (idx < this.ChildGroups.Count)
+            {
+                var group = this.ChildGroups[idx];
+                if ((group.SyntaxNodes != null) && (group.SyntaxNodes.Count == 1))
+                {
+                    var syntaxNode = group.SyntaxNodes[0];
+                    if (group.LeadingTrivia != null)
+                        syntaxNode = syntaxNode.WithLeadingLeadingTrivia(group.LeadingTrivia);
+                    if (group.TrailingTrivia != null)
+                        syntaxNode = syntaxNode.WithTrailingTrailingTrivia(group.TrailingTrivia);
+                    this.SyntaxNodes.Add(syntaxNode);
+                    this.ChildGroups.RemoveAt(idx);
+                }
+                else
+                    idx++;
+            }
+
+            for (int i = 0; i < this.ChildGroups.Count; i++)
+                this.ChildGroups[i].RemoveSingleNodeGroups();
+        }
+
         #region Get syntax nodes
 
         public void GetSyntaxNodes(List<T> list)
@@ -111,6 +138,7 @@ namespace AnZwDev.ALTools.CodeTransformations
 
         #endregion
 
+        #region Sorting
 
         public bool SortSyntaxNodes(IComparer<T> comparer)
         {
@@ -167,6 +195,7 @@ namespace AnZwDev.ALTools.CodeTransformations
             return sorted;
         }
 
+        #endregion
 
     }
 }

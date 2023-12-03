@@ -22,7 +22,7 @@ namespace AnZwDev.ALTools.CodeTransformations
 
         #region Add nodes to the tree
 
-        public (bool, SyntaxToken?, bool) AddNodes(IEnumerable<T> nodesCollection, SyntaxToken? closingToken = null)
+        public (bool, SyntaxToken?, bool) AddNodes(IEnumerable<T> nodesCollection, bool dontGroupSingleNodeRegions, SyntaxToken? closingToken = null)
         {
             var closingTokenModified = false;
 
@@ -55,6 +55,9 @@ namespace AnZwDev.ALTools.CodeTransformations
                 this.Root = null;
                 return (false, closingToken, closingTokenModified);
             }
+
+            if (dontGroupSingleNodeRegions)
+                this.Root.RemoveSingleNodeGroups();
 
             return (true, closingToken, closingTokenModified);
         }
@@ -230,7 +233,7 @@ namespace AnZwDev.ALTools.CodeTransformations
             return false;
         }
 
-        public static SyntaxList<T> SortSyntaxList(SyntaxList<T> syntaxList, IComparer<T> comparer, out bool sorted)
+        public static SyntaxList<T> SortSyntaxList(SyntaxList<T> syntaxList, IComparer<T> comparer, bool sortSingleNodeRegions, out bool sorted)
         {
             sorted = false;
 
@@ -239,7 +242,7 @@ namespace AnZwDev.ALTools.CodeTransformations
 
             //build list with regions
             SyntaxNodesGroupsTree<T> nodesGroupsTree = new SyntaxNodesGroupsTree<T>();
-            nodesGroupsTree.AddNodes(syntaxList);
+            nodesGroupsTree.AddNodes(syntaxList, sortSingleNodeRegions);
 
             //somethis went wrong - do not sort
             if (nodesGroupsTree.Root == null)
@@ -257,7 +260,7 @@ namespace AnZwDev.ALTools.CodeTransformations
             return nodesGroupsTree.CreateSyntaxList();
         }
 
-        public static SeparatedSyntaxList<T> SortSeparatedSyntaxList(SeparatedSyntaxList<T> syntaxList, IComparer<T> comparer, out bool sorted)
+        public static SeparatedSyntaxList<T> SortSeparatedSyntaxList(SeparatedSyntaxList<T> syntaxList, IComparer<T> comparer, bool sortSingleNodeRegions, out bool sorted)
         {
             sorted = false;
 
@@ -294,7 +297,7 @@ namespace AnZwDev.ALTools.CodeTransformations
 
             //build list with regions
             SyntaxNodesGroupsTree<T> nodesGroupsTree = new SyntaxNodesGroupsTree<T>();
-            nodesGroupsTree.AddNodes(updatedNodes);
+            nodesGroupsTree.AddNodes(updatedNodes, sortSingleNodeRegions);
 
             //somethis went wrong - do not sort
             if (nodesGroupsTree.Root == null)
@@ -324,7 +327,7 @@ namespace AnZwDev.ALTools.CodeTransformations
             return nodesGroupsTree.CreateSeparatedSyntaxList();
         }
 
-        public static SyntaxList<T> SortSyntaxListWithSortInfo(SyntaxList<T> syntaxList, IComparer<SyntaxNodeSortInfo<T>> comparer, out bool sorted)
+        public static SyntaxList<T> SortSyntaxListWithSortInfo(SyntaxList<T> syntaxList, IComparer<SyntaxNodeSortInfo<T>> comparer, bool sortSingleNodeRegions, out bool sorted)
         {
             sorted = false;
 
@@ -333,7 +336,7 @@ namespace AnZwDev.ALTools.CodeTransformations
 
             //build list with regions
             SyntaxNodesGroupsTree<T> nodesGroupsTree = new SyntaxNodesGroupsTree<T>();
-            nodesGroupsTree.AddNodes(syntaxList);
+            nodesGroupsTree.AddNodes(syntaxList, sortSingleNodeRegions);
 
             //somethis went wrong - do not sort
             if (nodesGroupsTree.Root == null)

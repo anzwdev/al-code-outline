@@ -11,6 +11,8 @@ namespace AnZwDev.ALTools.CodeTransformations
     public class SortPageCustomizationsSyntaxRewriter : ALSyntaxRewriter
     {
 
+        public bool SortSingleNodeRegions { get; set; }
+
         public SortPageCustomizationsSyntaxRewriter()
         {
         }
@@ -20,7 +22,7 @@ namespace AnZwDev.ALTools.CodeTransformations
             PropertySyntax property = node.PropertyList.GetPropertyEntry("Customizations");
             if ((property != null) && (this.NodeInSpan(property)) && (!property.ContainsDiagnostics))
             {
-                PropertySyntax newProperty = property.SortCommaSeparatedPropertyValue(out bool sorted);
+                PropertySyntax newProperty = property.SortCommaSeparatedPropertyValue(SortSingleNodeRegions, out bool sorted);
                 if (sorted)
                     NoOfChanges++;
                 node = node.WithPropertyList(

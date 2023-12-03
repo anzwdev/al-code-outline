@@ -54,6 +54,7 @@ namespace AnZwDev.ALTools.CodeTransformations
 
         #endregion
 
+        public bool SortSingleNodeRegions { get; set; } = false;
 
         public SortReportColumnsSyntaxRewriter()
         {
@@ -65,7 +66,7 @@ namespace AnZwDev.ALTools.CodeTransformations
             {
                 SyntaxList<ReportDataItemElementSyntax> elements =
                     SyntaxNodesGroupsTree<ReportDataItemElementSyntax>.SortSyntaxListWithSortInfo(
-                        node.Elements, new ReportElementComparer(), out bool sorted);
+                        node.Elements, new ReportElementComparer(), SortSingleNodeRegions, out bool sorted);
                 if (sorted)
                     this.NoOfChanges++;
                 node = node.WithElements(elements);
@@ -81,7 +82,7 @@ namespace AnZwDev.ALTools.CodeTransformations
             {
                 SyntaxList<ReportColumnSyntax> columns =
                     SyntaxNodesGroupsTree<ReportColumnSyntax>.SortSyntaxListWithSortInfo(
-                        node.Columns, new ReportColumnComparer(), out bool sorted);
+                        node.Columns, new ReportColumnComparer(), SortSingleNodeRegions, out bool sorted);
                 if (sorted)
                     this.NoOfChanges++;
                 node = node.WithColumns(columns);
