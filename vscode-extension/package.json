@@ -1963,6 +1963,12 @@
 						"description": "Set to true to remove procedures semicolon also from interfaces",
 						"scope": "resource"
 					},
+					"alOutline.usingsRegionTitle": {
+						"type": "string",
+						"default": "Usings",
+						"description": "Title of the usings region",
+						"scope": "resource"
+					},
 					"alOutline.completionProviders": {
 						"type": "array",
 						"items": {
