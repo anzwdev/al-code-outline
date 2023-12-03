@@ -37,8 +37,6 @@ namespace AnZwDev.ALTools.CodeTransformations
                 var leadingTrivia = usings[0].GetLeadingTrivia();
                 var trailingTrivia = usings[usings.Count - 1].GetTrailingTrivia();
 
-                
-
                 if ((!leadingTrivia.OpensRegion()) && (!trailingTrivia.ClosesRegion()))
                 {
                     if (!leadingTrivia.EndsWithNewLine())
@@ -58,8 +56,6 @@ namespace AnZwDev.ALTools.CodeTransformations
 
             return base.VisitCompilationUnit(node);
         }
-
-
 
     }
 
