@@ -54,6 +54,8 @@ namespace AnZwDev.ALTools.CodeTransformations
 
         #endregion
 
+        public bool SortSingleNodeRegions { get; set; } = false;
+
         public SortPropertiesSyntaxRewriter()
         {
         }
@@ -74,11 +76,11 @@ namespace AnZwDev.ALTools.CodeTransformations
 #if BC
             SyntaxList<PropertySyntaxOrEmpty> properties =
                 SyntaxNodesGroupsTree<PropertySyntaxOrEmpty>.SortSyntaxListWithSortInfo(
-                    node.Properties, new PropertyComparer(), out sorted);
+                    node.Properties, new PropertyComparer(), SortSingleNodeRegions, out sorted);
 #else
             SyntaxList<PropertySyntax> properties =
                 SyntaxNodesGroupsTree<PropertySyntax>.SortSyntaxListWithSortInfo(
-                    node.Properties, new PropertyComparer(), out sorted);
+                    node.Properties, new PropertyComparer(), SortSingleNodeRegions, out sorted);
 #endif
             return node.WithProperties(properties);
         }

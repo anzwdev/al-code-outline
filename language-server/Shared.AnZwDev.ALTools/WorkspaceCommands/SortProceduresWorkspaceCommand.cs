@@ -14,6 +14,7 @@ namespace AnZwDev.ALTools.WorkspaceCommands
 
         public static string TriggersSortModeParameterName = "triggersSortMode";
         public static string TriggersNaturalOrderParameterName = "triggersNaturalOrder";
+        public static string SortSingleNodeRegionsParameterName = "sortSingleNodeRegions";
 
         public SortProceduresWorkspaceCommand(ALDevToolsServer alDevToolsServer) : base(alDevToolsServer, "sortProcedures")
         {
@@ -33,6 +34,8 @@ namespace AnZwDev.ALTools.WorkspaceCommands
                     for (int i = 0; i < triggersOrder.Length; i++)
                         this.SyntaxRewriter.TriggersOrder.Add(triggersOrder[i].ToTriggersOrder());
             }
+
+            this.SyntaxRewriter.SortSingleNodeRegions = parameters.GetBoolValue(SortSingleNodeRegionsParameterName);
         }
 
     }

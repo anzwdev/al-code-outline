@@ -10,6 +10,8 @@ namespace AnZwDev.ALTools.CodeTransformations
     public class SortPermissionSetListSyntaxRewriter : ALSyntaxRewriter
     {
 
+        public bool SortSingleNodeRegions { get; set; } = false;
+
         public SortPermissionSetListSyntaxRewriter()
         {
         }
@@ -44,7 +46,7 @@ namespace AnZwDev.ALTools.CodeTransformations
 
         protected PropertySyntax Sort(PropertySyntax property)
         {
-            property = property.SortCommaSeparatedPropertyValue(out bool sorted);
+            property = property.SortCommaSeparatedPropertyValue(SortSingleNodeRegions, out bool sorted);
             if (sorted)
                 NoOfChanges++;
             /*

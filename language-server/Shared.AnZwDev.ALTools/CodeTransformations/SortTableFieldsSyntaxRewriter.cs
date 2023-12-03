@@ -50,6 +50,8 @@ namespace AnZwDev.ALTools.CodeTransformations
 
         #endregion
 
+        public bool SortSingleNodeRegions { get; set; } = false;
+
         public SortTableFieldsSyntaxRewriter()
         {
         }
@@ -60,7 +62,7 @@ namespace AnZwDev.ALTools.CodeTransformations
             {
                 TableFieldComparer<FieldSyntax> comparer = new TableFieldComparer<FieldSyntax>();
                 SyntaxList<FieldSyntax> fields = SyntaxNodesGroupsTree<FieldSyntax>.SortSyntaxList(
-                    node.Fields, comparer, out bool sorted);
+                    node.Fields, comparer, SortSingleNodeRegions, out bool sorted);
                 if (sorted)
                     this.NoOfChanges++;
                 return node.WithFields(fields);
@@ -74,7 +76,7 @@ namespace AnZwDev.ALTools.CodeTransformations
             {
                 TableFieldComparer<FieldBaseSyntax> comparer = new TableFieldComparer<FieldBaseSyntax>();
                 SyntaxList<FieldBaseSyntax> fields = SyntaxNodesGroupsTree<FieldBaseSyntax>.SortSyntaxList(
-                    node.Fields, comparer, out bool sorted);
+                    node.Fields, comparer, SortSingleNodeRegions, out bool sorted);
                 if (sorted)
                     this.NoOfChanges++;
                 return node.WithFields(fields);

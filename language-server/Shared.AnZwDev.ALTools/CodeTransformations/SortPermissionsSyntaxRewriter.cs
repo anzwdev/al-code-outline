@@ -11,6 +11,8 @@ namespace AnZwDev.ALTools.CodeTransformations
     public class SortPermissionsSyntaxRewriter : ALSyntaxRewriter
     {
 
+        public bool SortSingleNodeRegions { get; set; } = false;
+
         public SortPermissionsSyntaxRewriter()
         {
         }
@@ -24,7 +26,7 @@ namespace AnZwDev.ALTools.CodeTransformations
 
         protected SeparatedSyntaxList<PermissionSyntax> Sort(SeparatedSyntaxList<PermissionSyntax> permissions)
         {            
-            var newPermissions = SyntaxNodesGroupsTree<PermissionSyntax>.SortSeparatedSyntaxList(permissions, new PermissionComparer(), out bool sorted);
+            var newPermissions = SyntaxNodesGroupsTree<PermissionSyntax>.SortSeparatedSyntaxList(permissions, new PermissionComparer(), SortSingleNodeRegions, out bool sorted);
             if (sorted)
                 this.NoOfChanges++;
             return newPermissions;

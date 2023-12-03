@@ -210,6 +210,7 @@ namespace AnZwDev.ALTools.CodeTransformations
 
         #endregion
 
+        public bool SortSingleNodeRegions { get; set; } = false;
         public SortProceduresTriggerSortMode TriggerSortMode { get; set; } = SortProceduresTriggerSortMode.None;
         internal TriggersOrderCollection TriggersOrder { get; } = new TriggersOrderCollection();
 
@@ -562,7 +563,7 @@ namespace AnZwDev.ALTools.CodeTransformations
 
             //build list with regions
             SyntaxNodesGroupsTree<T> nodesGroupsTree = new SyntaxNodesGroupsTree<T>();
-            (_, var newClosingToken, var closingTokenModified) = nodesGroupsTree.AddNodes(members, closingToken);
+            (_, var newClosingToken, var closingTokenModified) = nodesGroupsTree.AddNodes(members, SortSingleNodeRegions, closingToken);
             
             //somethis went wrong - do not sort
             if (nodesGroupsTree.Root == null)

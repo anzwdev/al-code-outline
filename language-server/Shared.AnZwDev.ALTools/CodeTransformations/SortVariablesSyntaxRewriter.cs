@@ -15,6 +15,7 @@ namespace AnZwDev.ALTools.CodeTransformations
     {
 
         public VariablesSortMode SortMode { get; set; }
+        public bool SortSingleNodeRegions { get; set; } = false;
 
         #region Variable comparer
 
@@ -301,7 +302,7 @@ namespace AnZwDev.ALTools.CodeTransformations
 
             //sort variables
             var newVariables = SyntaxNodesGroupsTree<VariableDeclarationBaseSyntax>.SortSyntaxList(
-                variables, new VariableComparer(this.SortMode, variables), out bool sorted);
+                variables, new VariableComparer(this.SortMode, variables), SortSingleNodeRegions, out bool sorted);
             if (sorted || anyNamesSorted)
                 this.NoOfChanges++;
             return newVariables;
@@ -311,7 +312,7 @@ namespace AnZwDev.ALTools.CodeTransformations
         {
             if ((variables.VariableNames != null) && (variables.VariableNames.Count > 1))
             {
-                var newNames = SyntaxNodesGroupsTree<VariableDeclarationNameSyntax>.SortSeparatedSyntaxList(variables.VariableNames, comparer, out bool sorted);
+                var newNames = SyntaxNodesGroupsTree<VariableDeclarationNameSyntax>.SortSeparatedSyntaxList(variables.VariableNames, comparer, SortSingleNodeRegions, out bool sorted);
                 if (sorted)
                     return (variables.WithVariableNames(newNames), true);
             }
@@ -323,7 +324,7 @@ namespace AnZwDev.ALTools.CodeTransformations
         protected SyntaxList<VariableDeclarationSyntax> SortVariables(SyntaxList<VariableDeclarationSyntax> variables)
         {
             var newVariables = SyntaxNodesGroupsTree<VariableDeclarationSyntax>.SortSyntaxList(
-                variables, new VariableComparer(variables), out bool sorted);
+                variables, new VariableComparer(variables), SortSingleNodeRegions, out bool sorted);
             if (sorted)
                 this.NoOfChanges++;
             return newVariables;

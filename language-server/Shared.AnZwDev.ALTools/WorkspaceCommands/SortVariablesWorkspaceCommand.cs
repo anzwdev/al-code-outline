@@ -12,6 +12,7 @@ namespace AnZwDev.ALTools.WorkspaceCommands
     {
 
         public static string SortModeParameterName = "variablesSortMode";
+        public static string SortSingleNodeRegionsParameterName = "sortSingleNodeRegions";
 
         public SortVariablesWorkspaceCommand(ALDevToolsServer alDevToolsServer) : base(alDevToolsServer, "sortVariables")
         {
@@ -21,6 +22,7 @@ namespace AnZwDev.ALTools.WorkspaceCommands
         {
             base.SetParameters(sourceCode, project, filePath, span, parameters);
             this.SyntaxRewriter.SortMode = VariableSortModeExtensions.FromString(parameters.GetStringValue(SortModeParameterName));
+            this.SyntaxRewriter.SortSingleNodeRegions = parameters.GetBoolValue(SortSingleNodeRegionsParameterName);
         }
 
 
