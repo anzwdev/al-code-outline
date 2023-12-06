@@ -138,7 +138,7 @@ namespace AnZwDev.ALTools.WorkspaceCommands
                     content = FileUtils.SafeReadAllText(filePaths[i]);
 
                 SourceText fileSourceText = SourceText.From(content);
-                SyntaxTree syntaxTree = SyntaxTree.ParseObjectText(fileSourceText, null, parseOptions);
+                SyntaxTree syntaxTree = SyntaxTree.ParseObjectText(fileSourceText, filePaths[i], parseOptions);
 
                 syntaxTrees.Add(syntaxTree);
 

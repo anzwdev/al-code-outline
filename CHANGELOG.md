@@ -1,5 +1,11 @@
 # Change Log
 
+## 3.0.55
+ - Issue #515 - Empty path name is not legal error fix
+
+Thank you
+ - RadoArvay, bokhimlin and tillrouvier for reporting issue #515
+
 ## 3.0.54
  - Idea #501 - If Expression in a Case-statement is an option/enum list all members
  - Issue #504 - Empty section is removed
