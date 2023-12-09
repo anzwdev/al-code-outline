@@ -87,8 +87,9 @@ namespace AZALDevToolsTestConsoleApp
             //filePath = "C:\\Projects\\Sandboxes\\al-test-projects\\BC184TestProject\\StatementsTest.al";
             //filePath = "C:\\Projects\\Sandboxes\\al-test-projects\\SmallBC23\\PTEMagic.Codeunit.al";
 
-            filePath = "C:\\Projects\\Sandboxes\\al-test-projects\\SmallBC23\\SortProceduresTests.Codeunit.al";
+            //filePath = "C:\\Projects\\Sandboxes\\al-test-projects\\SmallBC23\\SortProceduresTests.Codeunit.al";
             //filePath = "C:\\Projects\\Sandboxes\\al-test-projects\\SmallBC23\\InterfaceDemo.Interface.al";
+            filePath = "C:\\Projects\\Sandboxes\\al-test-projects\\SmallBC23\\PTEMagic.Codeunit.al";
 
             string content = FileUtils.SafeReadAllText(filePath);
             Dictionary<string, string> pm = new();
@@ -117,7 +118,7 @@ namespace AZALDevToolsTestConsoleApp
             //pm.Add("dependencyName3", "Microsoft - Base Application");
 
             //WorkspaceCommandResult o = host.ALDevToolsServer.WorkspaceCommandsManager.RunCommand("removeWith", content, projects[0].folderPath, filePath, null, pm, null);
-            //WorkspaceCommandResult o = host.ALDevToolsServer.WorkspaceCommandsManager.RunCommand("addAllObjectsPermissions", content, projectPath, null, pm);
+            //WorkspaceCommandResult o = host.ALDevToolsServer.WorkspaceCommandsManager.RunCommand("addAllObjectsPermissions", content, projects[0].folderPath, filePath, null, pm, null);
             //WorkspaceCommandResult o = host.ALDevToolsServer.WorkspaceCommandsManager.RunCommand("fixIdentifiersCase", content, projects[0].folderPath, filePath, null, pm, null);
 
             //WorkspaceCommandResult o = host.ALDevToolsServer.WorkspaceCommandsManager.RunCommand("removeUnusedVariables", content, projects[0].folderPath, filePath, null, pm, null);
@@ -134,7 +135,7 @@ namespace AZALDevToolsTestConsoleApp
             //WorkspaceCommandResult o = host.ALDevToolsServer.WorkspaceCommandsManager.RunCommand("removeRedundantAppAreas", content, projects[0].folderPath, filePath, null, pm, null);
             //WorkspaceCommandResult o = host.ALDevToolsServer.WorkspaceCommandsManager.RunCommand("addTableDataCaptionFields", content, projects[0].folderPath, filePath, null, pm, null);
             //WorkspaceCommandResult o = host.ALDevToolsServer.WorkspaceCommandsManager.RunCommand("addDropDownFieldGroups", content, projects[0].folderPath, filePath, null, pm, null);
-            //WorkspaceCommandResult o = host.ALDevToolsServer.WorkspaceCommandsManager.RunCommand("addReferencedTablesPermissions", content, projects[0].folderPath, filePath, null, pm, null);
+            WorkspaceCommandResult o = host.ALDevToolsServer.WorkspaceCommandsManager.RunCommand("addReferencedTablesPermissions", content, projects[0].folderPath, filePath, null, pm, null);
             //WorkspaceCommandResult o = host.ALDevToolsServer.WorkspaceCommandsManager.RunCommand("generateCSVXmlPortHeaders", content, projects[0].folderPath, filePath, null, pm, null);
             //WorkspaceCommandResult o = host.ALDevToolsServer.WorkspaceCommandsManager.RunCommand("removeRedundantDataClassification", content, projects[0].folderPath, filePath, null, pm, null);
             //WorkspaceCommandResult o = host.ALDevToolsServer.WorkspaceCommandsManager.RunCommand("sortProcedures", content, projects[0].folderPath, filePath, null, pm, null);
@@ -143,7 +144,7 @@ namespace AZALDevToolsTestConsoleApp
             //WorkspaceCommandResult o = host.ALDevToolsServer.WorkspaceCommandsManager.RunCommand("addMissingCaseLines", content, projects[0].folderPath, filePath, null, pm, null);
             //WorkspaceCommandResult o = host.ALDevToolsServer.WorkspaceCommandsManager.RunCommand("addTooTipsEndingDots", content, projects[0].folderPath, filePath, null, pm, null);
             //WorkspaceCommandResult o = host.ALDevToolsServer.WorkspaceCommandsManager.RunCommand("removeProceduresSemicolon", content, projects[0].folderPath, filePath, null, pm, null);
-            WorkspaceCommandResult o = host.ALDevToolsServer.WorkspaceCommandsManager.RunCommand("addUsingRegion", content, projects[0].folderPath, filePath, null, pm, null);
+            //WorkspaceCommandResult o = host.ALDevToolsServer.WorkspaceCommandsManager.RunCommand("addUsingRegion", content, projects[0].folderPath, filePath, null, pm, null);
 
             var allObj = project.AllSymbols.Tables.GetObjects().ToList();
 

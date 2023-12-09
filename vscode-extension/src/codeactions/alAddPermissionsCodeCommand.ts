@@ -49,8 +49,8 @@ export class ALAddPermissionsCodeCommand extends ALCodeAction {
                             usedObjectsAction.command = {
                                 command: "azALDevTools.addReferencedTablesPermissions",
                                 title: "Add Used Tables Permissions",
-                                arguments: [document, symbol.range]
-                            }
+                                arguments: [document, appObject.range]
+                            };
                             actions.push(usedObjectsAction);
                             break;
                     }

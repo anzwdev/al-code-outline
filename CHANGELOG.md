@@ -2,9 +2,11 @@
 
 ## 3.0.56
  - Issue #514 - Code Analyzers: most AppSourceCop rules appear twice
+ - Issue #516 - Add permissions functionality seems to be broken.
 
 Thank you
  - NKarolak for reporting issue #514
+ - guidorobben for reporting issue #516
 
 ## 3.0.55
  - Issue #515 - Empty path name is not legal error fix
