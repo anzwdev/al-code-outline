@@ -1,5 +1,11 @@
 # Change Log
 
+## 3.0.56
+ - Issue #514 - Code Analyzers: most AppSourceCop rules appear twice
+
+Thank you
+ - NKarolak for reporting issue #514
+
 ## 3.0.55
  - Issue #515 - Empty path name is not legal error fix
 
