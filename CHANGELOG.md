@@ -3,10 +3,12 @@
 ## 3.0.56
  - Issue #514 - Code Analyzers: most AppSourceCop rules appear twice
  - Issue #516 - Add permissions functionality seems to be broken.
+ - Issue #519 - Convert Object Ids to Names does not convert CodeunitID in AddAction of ErrorInfo
 
 Thank you
  - NKarolak for reporting issue #514
  - guidorobben for reporting issue #516
+ - pri-kise for reporting issue #519
 
 ## 3.0.55
  - Issue #515 - Empty path name is not legal error fix

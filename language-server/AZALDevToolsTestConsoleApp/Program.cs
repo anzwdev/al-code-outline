@@ -122,7 +122,7 @@ namespace AZALDevToolsTestConsoleApp
             //WorkspaceCommandResult o = host.ALDevToolsServer.WorkspaceCommandsManager.RunCommand("fixIdentifiersCase", content, projects[0].folderPath, filePath, null, pm, null);
 
             //WorkspaceCommandResult o = host.ALDevToolsServer.WorkspaceCommandsManager.RunCommand("removeUnusedVariables", content, projects[0].folderPath, filePath, null, pm, null);
-            //WorkspaceCommandResult o = host.ALDevToolsServer.WorkspaceCommandsManager.RunCommand("convertObjectIdsToNames", content, projects[0], null, pm);
+            WorkspaceCommandResult o = host.ALDevToolsServer.WorkspaceCommandsManager.RunCommand("convertObjectIdsToNames", content, projects[0].folderPath, filePath, null, pm, null);
             //WorkspaceCommandResult o = host.ALDevToolsServer.WorkspaceCommandsManager.RunCommand("addParentheses", content, projects[0].folderPath, filePath, null, pm, null);
             //WorkspaceCommandResult o = host.ALDevToolsServer.WorkspaceCommandsManager.RunCommand("sortVariables", content, projects[0].folderPath, filePath, null, pm, null);
             //WorkspaceCommandResult o = host.ALDevToolsServer.WorkspaceCommandsManager.RunCommand("removeBeginEnd", content, projects[0], filePath, null, pm);
@@ -135,7 +135,7 @@ namespace AZALDevToolsTestConsoleApp
             //WorkspaceCommandResult o = host.ALDevToolsServer.WorkspaceCommandsManager.RunCommand("removeRedundantAppAreas", content, projects[0].folderPath, filePath, null, pm, null);
             //WorkspaceCommandResult o = host.ALDevToolsServer.WorkspaceCommandsManager.RunCommand("addTableDataCaptionFields", content, projects[0].folderPath, filePath, null, pm, null);
             //WorkspaceCommandResult o = host.ALDevToolsServer.WorkspaceCommandsManager.RunCommand("addDropDownFieldGroups", content, projects[0].folderPath, filePath, null, pm, null);
-            WorkspaceCommandResult o = host.ALDevToolsServer.WorkspaceCommandsManager.RunCommand("addReferencedTablesPermissions", content, projects[0].folderPath, filePath, null, pm, null);
+            //WorkspaceCommandResult o = host.ALDevToolsServer.WorkspaceCommandsManager.RunCommand("addReferencedTablesPermissions", content, projects[0].folderPath, filePath, null, pm, null);
             //WorkspaceCommandResult o = host.ALDevToolsServer.WorkspaceCommandsManager.RunCommand("generateCSVXmlPortHeaders", content, projects[0].folderPath, filePath, null, pm, null);
             //WorkspaceCommandResult o = host.ALDevToolsServer.WorkspaceCommandsManager.RunCommand("removeRedundantDataClassification", content, projects[0].folderPath, filePath, null, pm, null);
             //WorkspaceCommandResult o = host.ALDevToolsServer.WorkspaceCommandsManager.RunCommand("sortProcedures", content, projects[0].folderPath, filePath, null, pm, null);

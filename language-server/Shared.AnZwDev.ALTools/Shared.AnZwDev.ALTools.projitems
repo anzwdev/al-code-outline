@@ -16,11 +16,15 @@
     <Compile Include="$(MSBuildThisFileDirectory)ALLanguageInformation\ImageInformationComparer.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)ALLanguageInformation\ImageInformationProvider.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)ALLanguageInformation\KeywordInformation.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)ALLanguageInformation\MethodObjectIdParametersInformation.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)ALLanguageInformation\ObjectIdParameterInformation.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)ALLanguageInformation\PageActionAreaCaseInformation.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)ALLanguageInformation\PageAreaCaseInformation.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)ALLanguageInformation\QueryMembersCaseInformation.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)ALLanguageInformation\ReportMembersCaseInformation.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)ALLanguageInformation\SystemPartCaseInformation.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)ALLanguageInformation\SystemTypeObjectIdParametersInformation.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)ALLanguageInformation\SystemTypesObjectIdParametersInformationDictionary.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)ALSymbolReferences\ALAppAccessMode.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)ALSymbolReferences\ALAppBaseSymbolsLibrarySource.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)ALSymbolReferences\ALAppDirective.cs" />
