@@ -7,14 +7,6 @@ namespace AnZwDev.ALTools.ALSymbols.Internal
     public enum ConvertedNavTypeKind
     {
         None = 0,
-        _ClrOption = 0x10000,
-        _Variable = 0x20000,
-        _Parameter = 0x40000,
-        _ReturnValue = 0x80000,
-        _Field = 0x100000,
-        _Control = 0x200000,
-        _Text = 0x400000,
-        _Key = 0x800000,
         Array = 1,
         Boolean = 12451842,
         Byte = 3014659,

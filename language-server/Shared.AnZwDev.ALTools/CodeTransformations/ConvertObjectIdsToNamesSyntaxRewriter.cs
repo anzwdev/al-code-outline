@@ -13,7 +13,13 @@ using System.Text;
 
 namespace AnZwDev.ALTools.CodeTransformations
 {
+
+
+#if BC
     public class ConvertObjectIdsToNamesSyntaxRewriter : ALSemanticModelSyntaxRewriter
+#else
+    public class ConvertObjectIdsToNamesSyntaxRewriter : ALSyntaxRewriter
+#endif
     {
 
         public ConvertObjectIdsToNamesSyntaxRewriter()
@@ -108,6 +114,7 @@ namespace AnZwDev.ALTools.CodeTransformations
             return base.VisitInvocationExpression(node);
         }
 
+#if BC
         public override SyntaxNode VisitAssignmentStatement(AssignmentStatementSyntax node)
         {
             if (!node.ContainsDiagnostics)
@@ -124,7 +131,7 @@ namespace AnZwDev.ALTools.CodeTransformations
 
             return base.VisitAssignmentStatement(node);
         }
-
+#endif
 
         private AssignmentStatementSyntax ReplaceIdAssignmentWithName(AssignmentStatementSyntax node, string objectType)
         {
@@ -193,6 +200,8 @@ namespace AnZwDev.ALTools.CodeTransformations
             return node;
         }
 
+#if BC
+
         private ObjectIdParameterInformation[] GetObjectIdMethodParameter(InvocationExpressionSyntax node)
         {
             if ((node.ArgumentList?.Arguments != null) && (node.ArgumentList?.Arguments.Count > 0))
@@ -234,6 +243,38 @@ namespace AnZwDev.ALTools.CodeTransformations
 
             return null;
         }
+
+#else
+
+        private ObjectIdParameterInformation[] GetObjectIdMethodParameter(InvocationExpressionSyntax node)
+        {
+            if ((node.ArgumentList != null) && (node.ArgumentList.Arguments != null) && (node.ArgumentList.Arguments.Count > 0) && (node.ArgumentList.Arguments[0] is LiteralExpressionSyntax argumentSyntax))
+            {
+                if (argumentSyntax.Literal is Int32SignedLiteralValueSyntax intLiteralSyntax)
+                {
+                    int objectId;
+                    if (Int32.TryParse(intLiteralSyntax.Number.ValueText, out objectId))
+                    {
+                        if ((objectId != 0) && (node.Expression is MemberAccessExpressionSyntax expressionSyntax))
+                        {
+                            if (expressionSyntax.Expression is IdentifierNameSyntax expressionNameSyntax)
+                            {
+                                string expressionName = expressionNameSyntax.Identifier.ValueText;
+                                string expressionMemberName = expressionSyntax.Name?.Identifier.ValueText;
+                                string objectType = this.GetObjectTypeForSystemFunction(expressionName, expressionMemberName);
+                                if (objectType != null)
+                                    return new ObjectIdParameterInformation[] { new ObjectIdParameterInformation(0, objectType) };
+                            }
+                        }
+                    }
+                }
+            }
+
+            return null;
+        }
+
+#endif
+
 
         protected string GetObjectTypeForSystemFunction(string expressionName, string expressionMemberName)
         {
@@ -387,4 +428,6 @@ namespace AnZwDev.ALTools.CodeTransformations
         }
 
     }
+
 }
+
