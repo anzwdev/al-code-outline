@@ -5,7 +5,7 @@ using System.Text;
 
 namespace AnZwDev.ALTools.Workspace.SymbolsInformation
 {
-    public class XmlPortInformation : SymbolWithIdInformation
+    public class XmlPortInformation : BaseObjectInformation
     {
 
         public XmlPortInformation()

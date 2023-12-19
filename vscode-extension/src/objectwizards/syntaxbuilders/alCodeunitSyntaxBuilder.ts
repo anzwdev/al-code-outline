@@ -18,8 +18,8 @@ export class ALCodeunitSyntaxBuilder {
         writer.writeStartCodeunit(data.objectId, data.objectName, data.interfaceName);
 
         //write properties
-        if ((data.selectedTable) && (data.selectedTable.length > 0)) {
-            writer.writeProperty("TableNo", writer.encodeName(data.selectedTable));
+        if ((data.selectedTable) && (data.selectedTable.name)) {
+            writer.writeProperty("TableNo", writer.encodeName(data.selectedTable.name));
 
             writer.writeLine("");
             writer.writeLine("trigger OnRun()");
@@ -32,7 +32,9 @@ export class ALCodeunitSyntaxBuilder {
 
         if ((data.interfaceName) && (data.interfaceName != '')) {
             let methodsResponse = await this._toolsExtensionContext.toolsLangServerClient.getInterfaceMethodsList(
-                new toolsGetInterfaceMethodsListRequest(destUri?.fsPath, data.interfaceName));
+                new toolsGetInterfaceMethodsListRequest(destUri?.fsPath, {
+                    nameWithNamespaceOrId: data.interfaceName
+                }));
              if ((methodsResponse) && (methodsResponse.symbols) && (methodsResponse.symbols.length > 0)) {
                 for (let i=0; i<methodsResponse.symbols.length; i++) {
                     if (methodsResponse.symbols[i].header) {

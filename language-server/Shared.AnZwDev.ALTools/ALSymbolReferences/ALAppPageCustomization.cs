@@ -19,5 +19,11 @@ namespace AnZwDev.ALTools.ALSymbolReferences
             return ALSymbolKind.PageCustomizationObject;
         }
 
+        public override ALObjectType GetALObjectType()
+        {
+            return ALObjectType.PageCustomization;
+        }
+
+
     }
 }

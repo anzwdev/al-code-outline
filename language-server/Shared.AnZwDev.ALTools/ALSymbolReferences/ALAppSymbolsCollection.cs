@@ -8,10 +8,10 @@ using AnZwDev.ALTools.ALSymbols;
 
 namespace AnZwDev.ALTools.ALSymbolReferences
 {
-    public class ALAppElementsCollection<T> : List<T>, IALAppElementsCollection where T : ALAppBaseElement
+    public class ALAppSymbolsCollection<T> : List<T>, IALAppSymbolsCollection where T : ALAppBaseElement
     {
 
-        public ALAppElementsCollection()
+        public ALAppSymbolsCollection()
         {
         }
 

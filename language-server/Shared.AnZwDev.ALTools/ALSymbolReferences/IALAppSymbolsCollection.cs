@@ -4,7 +4,7 @@ using System.Text;
 
 namespace AnZwDev.ALTools.ALSymbolReferences
 {
-    public interface IALAppElementsCollection
+    public interface IALAppSymbolsCollection
     {
 
         void AddBaseElement(ALAppBaseElement element);

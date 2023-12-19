@@ -26,11 +26,20 @@
     <Compile Include="$(MSBuildThisFileDirectory)ALLanguageInformation\SystemTypeObjectIdParametersInformation.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)ALLanguageInformation\SystemTypesObjectIdParametersInformationDictionary.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)ALSymbolReferences\ALAppAccessMode.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)ALSymbolReferences\ALAppAllObjectsCollection.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)ALSymbolReferences\ALAppBaseSymbolsLibrarySource.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)ALSymbolReferences\ALAppDirective.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)ALSymbolReferences\ALAppNamespace.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)ALSymbolReferences\ALAppObjectIdMap.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)ALSymbolReferences\ALAppObjectsCollection.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)ALSymbolReferences\ALAppObjectsCollectionContainer.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)ALSymbolReferences\ALAppObjectsCollectionsContainersCollection.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)ALSymbolReferences\ALAppSymbolReferenceDependency.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)ALSymbolReferences\IALAppObjectsCollectionContainer.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)ALSymbolReferences\Search\ALAppObjectsEnumerationExtensions.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)ALSymbolReferences\Search\ALAppObjectsFilteringExtensions.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)ALSymbols\ALObjectIdentifier.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)ALSymbols\ALObjectType.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)ALSymbolReferences\ALAppPermission.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)ALSymbolReferences\Extensions\ALAppPermissionObjectTypeExtensions.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)ALSymbolReferences\Extensions\ALAppPermissionValueExtensions.cs" />
@@ -52,7 +61,7 @@
     <Compile Include="$(MSBuildThisFileDirectory)ALSymbolReferences\ALAppDotNetAssemblyDeclaration.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)ALSymbolReferences\ALAppDotNetPackage.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)ALSymbolReferences\ALAppDotNetTypeDeclaration.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)ALSymbolReferences\ALAppElementsCollection.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)ALSymbolReferences\ALAppSymbolsCollection.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)ALSymbolReferences\ALAppElementWithName.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)ALSymbolReferences\ALAppElementWithNameId.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)ALSymbolReferences\ALAppEnum.cs" />
@@ -98,6 +107,7 @@
     <Compile Include="$(MSBuildThisFileDirectory)ALSymbolReferences\ALAppXmlPort.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)ALSymbolReferences\ALAppXmlPortNode.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)ALSymbolReferences\IALAppObjectExtension.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)ALSymbolReferences\IALAppObjectsCollection.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)ALSymbolReferences\IReadOnlyALAppObjectsCollection.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)ALSymbolReferences\MergedPermissions\MergedALAppPermission.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)ALSymbolReferences\MergedPermissions\MergedALAppPermissionsCollection.cs" />
@@ -108,7 +118,7 @@
     <Compile Include="$(MSBuildThisFileDirectory)ALSymbolReferences\MergedReferences\MergedALAppObjectsCollection.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)ALSymbolReferences\MergedReferences\MergedALAppSymbolReference.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)ALSymbolReferences\Compiler\ALSymbolReferenceCompiler.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)ALSymbolReferences\IALAppElementsCollection.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)ALSymbolReferences\IALAppSymbolsCollection.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)ALSymbolReferences\MergedReferences\MergedAllALAppObjectsCollection.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)ALSymbolReferences\ALAppPermissionObjectType.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)ALSymbolReferences\Serialization\AppFileHelper.cs" />
@@ -129,10 +139,12 @@
     <Compile Include="$(MSBuildThisFileDirectory)ALSymbols\ALFullSyntaxTree.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)ALSymbols\ALFullSyntaxTreeNode.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)ALSymbols\ALMemberAccessExpression.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)ALSymbols\ALObjectTypesInformationCollection.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)ALSymbols\ALObjectTypeInformation.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)ALSymbols\ALSymbol.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)ALSymbols\ALSymbolAccessModifier.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)ALSymbols\ALSymbolKind.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)ALSymbols\ALSymbolKindExtension.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)ALSymbols\ALSymbolKindExtensions.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)ALSymbols\ALSymbolLibrariesCollection.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)ALSymbols\ALSymbolPositionComparer.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)ALSymbols\ALSymbolsLibrary.cs" />
@@ -143,6 +155,7 @@
     <Compile Include="$(MSBuildThisFileDirectory)ALSymbols\ALSyntaxTree.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)ALSymbols\ALSyntaxTreesCollection.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)ALSymbols\ALSyntaxTreeSymbol.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)ALSymbols\ALObjectReference.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)ALSymbols\PositionComparer.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)ALSymbols\RangeComparer.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)ALSymbols\SymbolReaders\ALBaseSyntaxTreeSymbolsReader.cs" />
@@ -175,6 +188,7 @@
     <Compile Include="$(MSBuildThisFileDirectory)CodeTransformations\AddTableDataCaptionFieldsRewriter.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)CodeTransformations\AddDropDownFieldGroupsRewriter.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)CodeTransformations\AddUsingRegionSyntaxRewriter.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)CodeTransformations\ALSyntaxRewriterWithNamespaces.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)CodeTransformations\BaseRemoveEmptyNodesSyntaxRewriter.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)CodeAnalysis\AppSourceCopSettings.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)CodeAnalysis\CodeAnalyzerRule.cs" />
@@ -206,6 +220,10 @@
     <Compile Include="$(MSBuildThisFileDirectory)CodeTransformations\FixTextOverflowAssignmentSyntaxRewriter.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)CodeTransformations\GenerateCSVXmlPortHeadersSyntaxRewriter.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)CodeTransformations\MakeFlowFieldsReadOnlySyntaxRewriter.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)CodeTransformations\Namespaces\AddProjectNamespacesConverter.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)CodeTransformations\Namespaces\SortUsingSyntaxRewriter.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)CodeTransformations\Namespaces\SyntaxTreeUsingsCollector.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)CodeTransformations\Namespaces\UsingInformation.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)CodeTransformations\RemoveProceduresSemicolonSyntaxRewriter.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)CodeTransformations\RemoveRedundandAppAreasSyntaxRewriter.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)CodeTransformations\RefreshToolTipsSyntaxRewriter.cs" />
@@ -229,8 +247,10 @@
     <Compile Include="$(MSBuildThisFileDirectory)CodeTransformations\SortProceduresTriggerSortMode.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)CodeTransformations\TriggersOrder.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)CodeTransformations\TriggersOrderCollection.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Extensions\CompilationUnitSyntaxExtensions.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Extensions\ConvertedSyntaxKindExtensions.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Extensions\ListExtensions.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Extensions\SyntaxList_UsingsExtensions.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Extensions\SyntaxNodeDirectiveExtensions.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)SyntaxHelpers\EnumCaseHelper.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)SyntaxHelpers\ExpressionFactory.cs" />
@@ -365,7 +385,6 @@
     <Compile Include="$(MSBuildThisFileDirectory)WorkspaceCommands\WorkspaceCommandResult.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)WorkspaceCommands\WorkspaceCommandsManager.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Workspace\ALProject.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)Workspace\ALProjectAllALAppSymbolReferencesCollection.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Workspace\ALProjectDependenciesCollection.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Workspace\ALProjectDependency.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Workspace\ALProjectFile.cs" />
@@ -387,6 +406,8 @@
     <Compile Include="$(MSBuildThisFileDirectory)Workspace\Serialization\ALProjectMetadataSerializer.ProjectDependencyMetadata.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Workspace\Serialization\ALProjectMetadataSerializer.ProjectIdRangeMetadata.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Workspace\Serialization\ALProjectMetadataSerializer.ProjectMetadata.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Workspace\SymbolReferences\ALProjectSymbolReferencesExtensions.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Workspace\SymbolReferences\ALProjectSymbolReferenceWithAccessPermissions.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Workspace\SymbolsInformation\BaseExtendableObjectInformationProvider.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Workspace\SymbolsInformation\BaseObjectInformation.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Workspace\SymbolsInformation\BaseObjectInformationProvider.cs" />

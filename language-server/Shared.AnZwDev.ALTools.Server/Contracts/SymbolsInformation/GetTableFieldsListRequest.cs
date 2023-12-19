@@ -7,7 +7,7 @@ namespace AnZwDev.ALTools.Server.Contracts.SymbolsInformation
     public class GetTableFieldsListRequest : GetSymbolsInformationRequest
     {
 
-        public string table { get; set; }
+        public SymbolReference tableReference { get; set; }
         public bool includeDisabled { get; set; }
         public bool includeObsolete { get; set; }
         public bool includeNormal { get; set; }

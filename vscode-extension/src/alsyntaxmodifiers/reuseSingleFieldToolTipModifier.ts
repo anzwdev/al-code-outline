@@ -19,13 +19,16 @@ export class ReuseSingleFieldToolTipModifier extends WorkspaceCommandSyntaxModif
 
     async runForDocumentSymbol(document: vscode.TextDocument, symbol: AZSymbolInformation, withUI: boolean) {
         //process symbol and get details
-        if (!symbol)
+        if (!symbol) {
             return;
+        }
 
-        if (symbol.kind != AZSymbolKind.PageField) {
-            if (symbol.kind == AZSymbolKind.Property)
-                if ((symbol.parent) && (symbol.parent.parent) && (symbol.parent.parent.kind == AZSymbolKind.PageField))
+        if (symbol.kind !== AZSymbolKind.PageField) {
+            if (symbol.kind === AZSymbolKind.Property) {
+                if ((symbol.parent) && (symbol.parent.parent) && (symbol.parent.parent.kind === AZSymbolKind.PageField)) {
                     symbol = symbol.parent.parent;
+                }
+            }
         }
 
         if ((symbol.kind != AZSymbolKind.PageField) ||
@@ -46,7 +49,15 @@ export class ReuseSingleFieldToolTipModifier extends WorkspaceCommandSyntaxModif
 
         //download list of available tooltips
         let response = await this._context.toolsLangServerClient.getPageFieldAvailableToolTips(
-            new ToolsGetPageFieldAvailableToolTipsRequest(document.uri.fsPath, objectType, objectSymbol.name, sourceTable, symbol.source));
+            new ToolsGetPageFieldAvailableToolTipsRequest(document.uri.fsPath, objectType, {
+                    id: objectSymbol.id,
+                    name: objectSymbol.name,
+                    namespaceName: objectSymbol.namespaceName
+                }, {
+                    usings: objectSymbol.usings,
+                    nameWithNamespaceOrId: sourceTable
+                },
+                symbol.source));
 
         if ((!response) || (!response.toolTips) || (response.toolTips.length == 0)) {
             vscode.window.showInformationMessage('Cannot find any tooltips for this field');

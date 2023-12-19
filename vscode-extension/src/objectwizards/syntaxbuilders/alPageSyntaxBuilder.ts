@@ -22,7 +22,9 @@ export class ALPageSyntaxBuilder {
 
         writer.writeStartObject("page", data.objectId, data.objectName);
         writer.addProperty("PageType", data.pageType);
-        writer.addProperty("SourceTable", writer.encodeName(data.selectedTable));
+        if ((data.selectedTable) && (data.selectedTable.name)) {
+            writer.addProperty("SourceTable", writer.encodeName(data.selectedTable.name));
+        }
         
         if (isApi) {
             writer.addProperty("APIPublisher", writer.encodeString(data.apiPublisher));

@@ -8,7 +8,7 @@ namespace AnZwDev.ALTools.ALSymbolReferences
     public class ALAppPermissionSet : ALAppObject
     {
 
-        public ALAppElementsCollection<ALAppPermission> Permissions { get; set; }
+        public ALAppSymbolsCollection<ALAppPermission> Permissions { get; set; }
 
         public ALAppPermissionSet()
         {
@@ -17,6 +17,11 @@ namespace AnZwDev.ALTools.ALSymbolReferences
         public override ALSymbolKind GetALSymbolKind()
         {
             return ALSymbolKind.PermissionSet;
+        }
+
+        public override ALObjectType GetALObjectType()
+        {
+            return ALObjectType.PermissionSet;
         }
 
         public override void ReplaceIdReferences(ALAppObjectIdMap idMap)

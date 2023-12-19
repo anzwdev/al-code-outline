@@ -1,12 +1,13 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Net.Http.Headers;
 using System.Text;
 using System.Threading.Tasks;
 
 namespace AnZwDev.ALTools.ALSymbols
 {
-    public static class ALSymbolKindExtension
+    public static class ALSymbolKindExtensions
     {
 
         public static string ToName(this ALSymbolKind value)

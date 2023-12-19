@@ -11,7 +11,7 @@ namespace AnZwDev.ALTools.ALSymbolReferences
     {
 
         public string TargetObject { get; set; }
-        public ALAppElementsCollection<ALAppTableField> FieldModifications { get; set; }
+        public ALAppSymbolsCollection<ALAppTableField> FieldModifications { get; set; }
 
         public ALAppTableExtension()
         {
@@ -29,9 +29,20 @@ namespace AnZwDev.ALTools.ALSymbolReferences
             return ALSymbolKind.TableExtensionObject;
         }
 
+        public override ALObjectType GetALObjectType()
+        {
+            return ALObjectType.TableExtension ;
+        }
+
         public string GetTargetObjectName()
         {
             return this.TargetObject;
         }
+
+        public ALObjectReference GetTargetObjectReference()
+        {
+            return new ALObjectReference(Usings, this.TargetObject);
+        }
+
     }
 }

@@ -11,9 +11,9 @@ namespace AnZwDev.ALTools.ALSymbolReferences
     {
 
         public string RelatedTable { get; set; }
-        public ALAppElementsCollection<ALAppQueryDataItem> DataItems { get; set; }
-        public ALAppElementsCollection<ALAppQueryColumn> Columns { get; set; }
-        public ALAppElementsCollection<ALAppQueryFilter> Filters { get; set; }
+        public ALAppSymbolsCollection<ALAppQueryDataItem> DataItems { get; set; }
+        public ALAppSymbolsCollection<ALAppQueryColumn> Columns { get; set; }
+        public ALAppSymbolsCollection<ALAppQueryFilter> Filters { get; set; }
 
         public ALAppQueryDataItem()
         {

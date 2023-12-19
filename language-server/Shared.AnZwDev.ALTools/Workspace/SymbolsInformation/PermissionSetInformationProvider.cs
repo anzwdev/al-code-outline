@@ -1,39 +1,31 @@
 ﻿using AnZwDev.ALTools.ALSymbolReferences;
 using AnZwDev.ALTools.ALSymbolReferences.MergedPermissions;
+using AnZwDev.ALTools.ALSymbolReferences.Search;
 using AnZwDev.ALTools.ALSymbols;
 using AnZwDev.ALTools.Extensions;
+using Microsoft.Dynamics.Nav.CodeAnalysis;
 using System;
 using System.Collections.Generic;
+using System.Runtime.Serialization;
 using System.Text;
 
 namespace AnZwDev.ALTools.Workspace.SymbolsInformation
 {
-    public class PermissionSetInformationProvider
+
+    public class PermissionSetInformationProvider : BaseExtendableObjectInformationProvider<ALAppPermissionSet, ALAppPermissionSetExtension>
     {
+
+        public PermissionSetInformationProvider() : base(x => x.PermissionSets, x => x.PermissionSetExtensions)
+        {
+        }
 
         public List<PermissionSetInformation> GetPermissionSets(ALProject project, bool includeNonAccessible)
         {
-            List<PermissionSetInformation> infoList = new List<PermissionSetInformation>();
-            foreach (ALProjectDependency dependency in project.Dependencies)
-            {
-                if (dependency.Symbols != null)
-                    AddPermissionSets(infoList, dependency.Symbols, includeNonAccessible || dependency.InternalsVisible);
-            }
-            if (project.Symbols != null)
-                AddPermissionSets(infoList, project.Symbols, true);
+            var infoList = new List<PermissionSetInformation>();
+            var objectsEnumerable = GetALAppObjectsCollection(project, includeNonAccessible);
+            foreach (var obj in objectsEnumerable)
+                infoList.Add(new PermissionSetInformation(obj));
             return infoList;
-        }
-
-        private void AddPermissionSets(List<PermissionSetInformation> infoList, ALAppSymbolReference symbols, bool includeInternal)
-        {
-            if (symbols.PermissionSets != null)
-            {
-                for (int i = 0; i < symbols.PermissionSets.Count; i++)
-                {
-                    if ((includeInternal) || (symbols.PermissionSets[i].GetAccessMode() != ALAppAccessMode.Internal))
-                        infoList.Add(new PermissionSetInformation(symbols.PermissionSets[i]));
-                }
-            }
         }
 
         public MergedALAppPermissionSet GetMergedPermissionSet(ALProject project, string includedPermissionSetsNames, string excludedPermissionSetsNames)
@@ -42,21 +34,24 @@ namespace AnZwDev.ALTools.Workspace.SymbolsInformation
             return CreateMergedPermissionSet(project, mergedPermissionSetsCollection, includedPermissionSetsNames, excludedPermissionSetsNames);
         }
 
+        /*
         public MergedALAppPermissionSet GetMergedPermissionSet(ALProject project, string permissionSetName)
         {
             Dictionary<string, MergedALAppPermissionSet> mergedPermissionSetsCollection = new Dictionary<string, MergedALAppPermissionSet>();
             return GetOrCreateMergedPermissionSet(project, mergedPermissionSetsCollection, permissionSetName);
         }
+        */
 
-        private MergedALAppPermissionSet GetOrCreateMergedPermissionSet(ALProject project, Dictionary<string, MergedALAppPermissionSet> mergedPermissionSetsCollection, string permissionSetName)
+        private MergedALAppPermissionSet GetOrCreateMergedPermissionSet(ALProject project, Dictionary<string, MergedALAppPermissionSet> mergedPermissionSetsCollection, ALObjectReference permissionSetName)
         {
-            permissionSetName = permissionSetName.ToLower();
-            if (mergedPermissionSetsCollection.ContainsKey(permissionSetName))
-                return mergedPermissionSetsCollection[permissionSetName];
+            var permissionSetFullNameKey = permissionSetName.GetFullName().ToLower();
+            if (mergedPermissionSetsCollection.ContainsKey(permissionSetFullNameKey))
+                return mergedPermissionSetsCollection[permissionSetFullNameKey];
 
             var mergedPermissionSet = CreateMergedPermissionSet(project, mergedPermissionSetsCollection, permissionSetName);
+            
             if (mergedPermissionSet != null)
-                mergedPermissionSetsCollection.Add(permissionSetName, mergedPermissionSet);
+                mergedPermissionSetsCollection.Add(permissionSetFullNameKey, mergedPermissionSet);
             return mergedPermissionSet;
         }
 
@@ -64,61 +59,65 @@ namespace AnZwDev.ALTools.Workspace.SymbolsInformation
         {
             MergedALAppPermissionSet mergedPermissionSet = new MergedALAppPermissionSet();
             return CreateMergedPermissionSet(project, mergedPermissionSetsCollection, mergedPermissionSet,
-                "", includedPermissionSetsNames, excludedPermissionSetsNames);
-
+                null, includedPermissionSetsNames, excludedPermissionSetsNames);
         }
 
-        private MergedALAppPermissionSet CreateMergedPermissionSet(ALProject project, Dictionary<string, MergedALAppPermissionSet> mergedPermissionSetsCollection, string permissionSetName)
+        private MergedALAppPermissionSet CreateMergedPermissionSet(ALProject project, Dictionary<string, MergedALAppPermissionSet> mergedPermissionSetsCollection, ALObjectReference permissionSetName)
         {
-            var permissionSet = project.AllSymbols.PermissionSets.FindObject(permissionSetName);
+            var permissionSet = GetALAppObjectsCollection(project)
+                .FindFirst(null, permissionSetName.NamespaceName, permissionSetName.Name);
             if (permissionSet == null)
                 return null;
 
             MergedALAppPermissionSet mergedPermissionSet = new MergedALAppPermissionSet(permissionSet);
 
             return CreateMergedPermissionSet(project, mergedPermissionSetsCollection, mergedPermissionSet,
-                permissionSetName,
+                permissionSet,
                 permissionSet.Properties?.GetProperty("IncludedPermissionSets")?.Value,
                 permissionSet.Properties?.GetProperty("ExcludedPermissionSets")?.Value);
         }
 
-        private MergedALAppPermissionSet CreateMergedPermissionSet(ALProject project, Dictionary<string, MergedALAppPermissionSet> mergedPermissionSetsCollection, 
-            MergedALAppPermissionSet mergedPermissionSet, string permissionSetName, string includedPermissionSetsNames, string excludedPermissionSetsNames)
+        private MergedALAppPermissionSet CreateMergedPermissionSet(
+            ALProject project, Dictionary<string, MergedALAppPermissionSet> mergedPermissionSetsCollection, 
+            MergedALAppPermissionSet mergedPermissionSet, ALAppPermissionSet permissionSet,
+            string includedPermissionSetsNames, string excludedPermissionSetsNames)
         { 
             HashSet<string> includedPermissionSets = new HashSet<string>();
             HashSet<string> excludedPermissionSets = new HashSet<string>();
 
-            includedPermissionSets.AddRange(ALSyntaxHelper.DecodeNamesList(includedPermissionSetsNames));
-            excludedPermissionSets.AddRange(ALSyntaxHelper.DecodeNamesList(excludedPermissionSetsNames));
+            includedPermissionSets.AddRange(ALSyntaxHelper.SplitNamesList(includedPermissionSetsNames));
+            excludedPermissionSets.AddRange(ALSyntaxHelper.SplitNamesList(excludedPermissionSetsNames));
 
-            if (!String.IsNullOrWhiteSpace(permissionSetName))
+            if (permissionSet != null)
             {
-                var permissionSetExtensionsCollection = project.AllSymbols.PermissionSetExtensions.FindAllExtensions(permissionSetName);
-                if (permissionSetExtensionsCollection != null)
-                    foreach (var permissionSetExtension in permissionSetExtensionsCollection)
-                    {
-                        mergedPermissionSet.IncludedPermissions.AddRange(permissionSetExtension.Permissions);
 
-                        includedPermissionSets.AddRange(
-                            ALSyntaxHelper.DecodeNamesList(
-                                permissionSetExtension.Properties?.GetProperty("IncludedPermissionSets")?.Value));
+                var permissionSetExtensionsCollection = GetALAppObjectExtensionsCollection(project, permissionSet);
+                foreach (var permissionSetExtension in permissionSetExtensionsCollection)
+                {
+                    mergedPermissionSet.IncludedPermissions.AddRange(permissionSetExtension.Permissions);
 
-                        excludedPermissionSets.AddRange(
-                            ALSyntaxHelper.DecodeNamesList(
-                                permissionSetExtension.Properties?.GetProperty("ExcludedPermissionSets")?.Value));
-                    }
+                    includedPermissionSets.AddRange(
+                        ALSyntaxHelper.SplitNamesList(
+                            permissionSetExtension.Properties?.GetProperty("IncludedPermissionSets")?.Value));
+
+                    excludedPermissionSets.AddRange(
+                        ALSyntaxHelper.SplitNamesList(
+                            permissionSetExtension.Properties?.GetProperty("ExcludedPermissionSets")?.Value));
+                }
             }
-
+            
             foreach (var includedPermissionSetName in includedPermissionSets)
             {
-                var includedMergedPermissionSet = GetOrCreateMergedPermissionSet(project, mergedPermissionSetsCollection, includedPermissionSetName);
+                var objectReference = new ALObjectReference(permissionSet?.Usings, includedPermissionSetName);
+                var includedMergedPermissionSet = GetOrCreateMergedPermissionSet(project, mergedPermissionSetsCollection, objectReference);
                 if (includedMergedPermissionSet != null)
                     mergedPermissionSet.IncludedPermissions.AddRange(includedMergedPermissionSet.EffectivePermissions.GetAllPermissions());
             }
 
             foreach (var excludedPermissionSetName in excludedPermissionSets)
             {
-                var excludedMergedPermissionSet = GetOrCreateMergedPermissionSet(project, mergedPermissionSetsCollection, excludedPermissionSetName);
+                var objectReference = new ALObjectReference(permissionSet?.Usings, excludedPermissionSetName);
+                var excludedMergedPermissionSet = GetOrCreateMergedPermissionSet(project, mergedPermissionSetsCollection, objectReference);
                 if (excludedMergedPermissionSet != null)
                     mergedPermissionSet.ExcludedPermissions.AddRange(excludedMergedPermissionSet.EffectivePermissions.GetAllPermissions());
             }

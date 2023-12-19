@@ -6,7 +6,7 @@ using AnZwDev.ALTools.ALSymbolReferences;
 
 namespace AnZwDev.ALTools.Workspace.SymbolsInformation
 {
-    public class CodeunitInformation : SymbolInformation
+    public class CodeunitInformation : BaseObjectInformation
     {
 
         [JsonProperty("implements")]

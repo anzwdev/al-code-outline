@@ -8,8 +8,8 @@ namespace AnZwDev.ALTools.Server.Contracts.SymbolsInformation
     {
         public string path { get; set; }
         public string objectType { get; set; }
-        public string objectName { get; set; }
-        public string sourceTable { get; set; }
+        public SymbolReference objectReference { get; set; }
+        public SymbolReference sourceTableReference { get; set; }
         public string fieldExpression { get; set; }
 
     }

@@ -6,6 +6,11 @@ using System.Text;
 
 namespace AnZwDev.ALTools.Workspace.SymbolsInformation
 {
+
+    //!!! TO-DO !!!
+    //!!! Simplify GetNextObjectId !!!
+    //!!! Use ALObjectType enum !!!
+
     public class ObjectIdInformationProvider
     {
 
@@ -18,7 +23,7 @@ namespace AnZwDev.ALTools.Workspace.SymbolsInformation
             if ((project.Properties == null) || (project.Properties.Ranges == null) || (project.Properties.Ranges.Count == 0))
                 return 0;
 
-            ALSymbolKind symbolKind = ALSymbolKindExtension.FromObjectTypeName(objectType);
+            ALSymbolKind symbolKind = ALSymbolKindExtensions.FromObjectTypeName(objectType);
             if (symbolKind == ALSymbolKind.Undefined)
                 return 0;
 

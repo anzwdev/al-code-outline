@@ -10,7 +10,7 @@ namespace AnZwDev.ALTools.ALSymbolReferences
     public class ALAppDotNetAssemblyDeclaration : ALAppElementWithName
     {
 
-        public ALAppElementsCollection<ALAppDotNetTypeDeclaration> TypeDeclarations { get; set; }
+        public ALAppSymbolsCollection<ALAppDotNetTypeDeclaration> TypeDeclarations { get; set; }
 
         public ALAppDotNetAssemblyDeclaration()
         {

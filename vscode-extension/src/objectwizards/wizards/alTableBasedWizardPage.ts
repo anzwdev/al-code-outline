@@ -76,7 +76,7 @@ export class ALTableBasedWizardPage extends ProjectItemWizardPage {
             let fieldList: string[] = [];
             let response = await this._toolsExtensionContext.toolsLangServerClient.getTableFieldsList(
                 new ToolsGetTableFieldsListRequest(this._settings.getDestDirectoryPath(), 
-                this._tableWizardData.selectedTable, false, false, true, true, this._includeFlowFilters, this._includeToolTips, this._toolTipsSourceDependencies));
+                this._tableWizardData.selectedTable!, false, false, true, true, this._includeFlowFilters, this._includeToolTips, this._toolTipsSourceDependencies));
             if ((response) && (response.symbols)) {
                 for (let i=0; i<response.symbols.length; i++) {
                     let name = response.symbols[i].name;
@@ -122,7 +122,9 @@ export class ALTableBasedWizardPage extends ProjectItemWizardPage {
             (this._tableWizardData.selectedTable != tableName) ||
             (this._includeFlowFilters != includeFlowFilters);
 
-        this._tableWizardData.selectedTable = tableName;
+        this._tableWizardData.selectedTable = {
+            name: tableName
+        };
         this._includeFlowFilters = includeFlowFilters;
         if ((fieldChanged) || (!this._tableWizardData.fieldList) || (this._tableWizardData.fieldList.length == 0))
             this.loadFields();

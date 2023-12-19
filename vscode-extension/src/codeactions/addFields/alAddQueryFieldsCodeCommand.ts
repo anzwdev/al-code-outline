@@ -51,7 +51,12 @@ export class ALAddQueryFieldsCodeCommand extends ALBaseAddFieldsCodeCommand {
 
         //get list of fields
         let response = await this._toolsExtensionContext.toolsLangServerClient.getQueryDataItemDetails(
-            new ToolsGetQueryDataItemDetailsRequest(document.uri.fsPath, objectSymbol.name, dataItemSymbol.name, false, true));
+            new ToolsGetQueryDataItemDetailsRequest(document.uri.fsPath, {
+                namespaceName: objectSymbol.namespaceName,
+                name: objectSymbol.name,
+                id: objectSymbol.id
+            }, 
+            dataItemSymbol.name, false, true));
         if ((!response) || (!response.symbol) || (!response.symbol.availableTableFields))
             return;
 

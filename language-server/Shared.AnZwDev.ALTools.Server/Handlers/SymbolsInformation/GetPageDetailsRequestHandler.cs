@@ -29,7 +29,10 @@ namespace AnZwDev.ALTools.Server.Handlers.SymbolsInformation
                 if (project != null)
                 {
                     PageInformationProvider provider = new PageInformationProvider();
-                    response.symbol = provider.GetPageDetails(project, parameters.name, parameters.getExistingFields, parameters.getAvailableFields, parameters.getToolTips, parameters.toolTipsSourceDependencies);
+                    response.symbol = provider.GetPageDetails(
+                        project,
+                        parameters.symbolReference.ToALObjectReference(),
+                        parameters.getExistingFields, parameters.getAvailableFields, parameters.getToolTips, parameters.toolTipsSourceDependencies); ;
                     if (response.symbol != null)
                         response.symbol.Sort();
                 }

@@ -7,7 +7,7 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 using System.Threading.Tasks;
-
+using AnZwDev.ALTools.ALSymbols;
 
 namespace AnZwDev.ALTools.Server.Handlers.SymbolsInformation
 {
@@ -25,12 +25,15 @@ namespace AnZwDev.ALTools.Server.Handlers.SymbolsInformation
 
             try
             {
-
                 ALProject project = this.Server.Workspace.FindProject(parameters.path, true);
                 if (project != null)
                 {
                     QueryInformationProvider provider = new QueryInformationProvider();
-                    response.symbol = provider.GetQueryDataItemInformationDetails(project, parameters.objectName, parameters.name, parameters.getExistingFields, parameters.getAvailableFields);
+                    response.symbol = provider.GetQueryDataItemInformationDetails(project, 
+                        parameters.symbolReference.ToALObjectReference(),
+                        parameters.childSymbolName, 
+                        parameters.getExistingFields, parameters.getAvailableFields);
+
                     if (response.symbol != null)
                         response.symbol.Sort();
                 }

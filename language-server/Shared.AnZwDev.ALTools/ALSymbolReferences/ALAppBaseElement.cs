@@ -35,6 +35,11 @@ namespace AnZwDev.ALTools.ALSymbolReferences
             return ALSymbolKind.Undefined;
         }
 
+        public virtual ALObjectType GetALObjectType()
+        {
+            return ALObjectType.None;
+        }
+
         public virtual ALSymbolAccessModifier? GetAccessModifier()
         {
             return null;

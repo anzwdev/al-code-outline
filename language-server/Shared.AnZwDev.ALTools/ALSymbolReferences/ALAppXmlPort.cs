@@ -11,7 +11,7 @@ namespace AnZwDev.ALTools.ALSymbolReferences
     {
 
         public ALAppRequestPage RequestPage { get; set; }
-        public ALAppElementsCollection<ALAppXmlPortNode> Schema { get; set; }
+        public ALAppSymbolsCollection<ALAppXmlPortNode> Schema { get; set; }
 
         public ALAppXmlPort()
         {
@@ -20,6 +20,11 @@ namespace AnZwDev.ALTools.ALSymbolReferences
         public override ALSymbolKind GetALSymbolKind()
         {
             return ALSymbolKind.XmlPortObject;
+        }
+
+        public override ALObjectType GetALObjectType()
+        {
+            return ALObjectType.XmlPort;
         }
 
         protected override void AddChildALSymbols(ALSymbol symbol)

@@ -12,7 +12,7 @@ class XmlPortWizard extends TableBasedObjectWizard {
         //initialize fields
         document.getElementById("objectid").value = this._data.objectId;
         document.getElementById("objectname").value = this._data.objectName;
-        document.getElementById("srctable").value = this._data.selectedTable;
+        document.getElementById("srctable").value = this._data.selectedTable.name;
         document.getElementById("fieldsas").value = this._data.fieldNodeType;
         this.updateMainButtons();
         this.loadTables();
@@ -40,12 +40,12 @@ class XmlPortWizard extends TableBasedObjectWizard {
     }
 
     collectStep1Data() {
-        var prevTableName = this._data.selectedTable;        
+        var prevTableName = this._data.selectedTable.name;        
         this._data.objectId = document.getElementById("objectid").value;
         this._data.objectName = document.getElementById("objectname").value;
-        this._data.selectedTable = document.getElementById("srctable").value;
+        this._data.selectedTable.name = document.getElementById("srctable").value;
         this._data.fieldNodeType = document.getElementById("fieldsas").value;
-        if (prevTableName != this._data.selectedTable) {
+        if (prevTableName != this._data.selectedTable.name) {
             htmlHelper.clearChildrenById("srcfields");
             htmlHelper.clearChildrenById("destfields");            
             this.sendMessage({

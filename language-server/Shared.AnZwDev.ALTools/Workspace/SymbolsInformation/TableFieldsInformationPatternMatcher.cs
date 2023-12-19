@@ -1,4 +1,5 @@
 ﻿using AnZwDev.ALTools.ALSymbolReferences.Serialization;
+using AnZwDev.ALTools.ALSymbols;
 using AnZwDev.ALTools.Workspace.SymbolsInformation.Sorting;
 using Microsoft.Extensions.FileSystemGlobbing;
 using System;
@@ -18,9 +19,9 @@ namespace AnZwDev.ALTools.Workspace.SymbolsInformation
         {
         }
 
-        public List<TableFieldInformaton> Match(ALProject project, string tableName, bool includePrimaryKeys, List<string> fieldNamePatternsList, bool includeNormal, bool includeFlowFields, bool includeFlowFilters)
+        public List<TableFieldInformaton> Match(ALProject project, ALObjectReference tableReference, bool includePrimaryKeys, List<string> fieldNamePatternsList, bool includeNormal, bool includeFlowFields, bool includeFlowFilters)
         {
-            var tableInformation = TableInformationProvider.GetTableInformation(project, tableName, false, false, includeNormal, includeFlowFields, includeFlowFilters, false, null);
+            var tableInformation = TableInformationProvider.GetTableInformation(project, tableReference, false, false, includeNormal, includeFlowFields, includeFlowFilters, false, null);
 
             List<TableFieldInformaton> collectedFields = new List<TableFieldInformaton>();
             if (tableInformation != null)

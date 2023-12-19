@@ -5,7 +5,7 @@ using AnZwDev.ALTools.ALSymbolReferences;
 
 namespace AnZwDev.ALTools.Workspace.SymbolsInformation
 {
-    public class EnumInformation : SymbolInformation
+    public class EnumInformation : BaseObjectInformation
     {
 
         public EnumInformation()

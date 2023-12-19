@@ -10,11 +10,16 @@ namespace AnZwDev.ALTools.ALSymbolReferences
     public class ALAppControlAddIn : ALAppObject
     {
 
-        public ALAppElementsCollection<ALAppMethod> Events { get; set; }
+        public ALAppSymbolsCollection<ALAppMethod> Events { get; set; }
 
         public override ALSymbolKind GetALSymbolKind()
         {
             return ALSymbolKind.ControlAddInObject;
+        }
+
+        public override ALObjectType GetALObjectType()
+        {
+            return ALObjectType.ControlAddIn;
         }
 
         protected override void AddChildALSymbols(ALSymbol symbol)

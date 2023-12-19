@@ -1,15 +1,17 @@
+import { ToolsSymbolReference } from "./toolsSymbolReference";
+
 export class ToolsGetPageFieldAvailableToolTipsRequest {
     path: string;
     objectType: string;
-    objectName: string;
-    sourceTable: string;
+    objectReference: ToolsSymbolReference;
+    sourceTableReference: ToolsSymbolReference;
     fieldExpression: string;
 
-    constructor(newPath: string, newObjectType: string, newObjectName: string, newSourceTable: string, newFieldExpression: string) {
+    constructor(newPath: string, newObjectType: string, newObjectReference: ToolsSymbolReference, newSourceTableReference: ToolsSymbolReference, newFieldExpression: string) {
         this.path = newPath;
         this.objectType = newObjectType;
-        this.objectName = newObjectName;
-        this.sourceTable = newSourceTable;
+        this.objectReference = newObjectReference;
+        this.sourceTableReference = newSourceTableReference;
         this.fieldExpression = newFieldExpression;
     }
 

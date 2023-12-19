@@ -9,6 +9,7 @@ import { ToolsGetPageDetailsRequest } from '../../langserver/symbolsinformation/
 import { TableFieldInformation } from '../../symbolsinformation/tableFieldInformation';
 import { TableFieldsSelector } from './tableFieldsSelector';
 import { AppAreaMode } from '../../alsyntaxmodifiers/appAreaMode';
+import { ToolsSymbolReference } from '../../langserver/symbolsinformation/toolsSymbolReference';
 
 export class ALAddPageFieldsCodeCommand extends ALBaseAddFieldsCodeCommand {
     constructor(context : DevToolsExtensionContext) {
@@ -55,13 +56,18 @@ export class ALAddPageFieldsCodeCommand extends ALBaseAddFieldsCodeCommand {
 
         let isApiPage : boolean = ((!!pageSymbol.subtype) && (pageSymbol.subtype.toLowerCase() == 'api'));
 
-        let pageName = (pageSymbol.kind == AZSymbolKind.PageExtensionObject)?pageSymbol.extends:pageSymbol.name;
-        if (!pageName)
-            return;
+        let pageReference: ToolsSymbolReference = (pageSymbol.kind === AZSymbolKind.PageExtensionObject)?{
+            usings: pageSymbol.usings,
+            nameWithNamespaceOrId: pageSymbol.extends
+        }:{
+            namespaceName: pageSymbol.namespaceName,
+            name: pageSymbol.name,
+            id: pageSymbol.id
+        };
 
         //get available fields from the language server
         let response = await this._toolsExtensionContext.toolsLangServerClient.getPageDetails(
-            new ToolsGetPageDetailsRequest(document.uri.fsPath, pageName, false, true, reuseToolTips, toolTipsSource));
+            new ToolsGetPageDetailsRequest(document.uri.fsPath, pageReference, false, true, reuseToolTips, toolTipsSource));
         if ((!response) || (!response.symbol) || (!response.symbol.availableTableFields))
             return;
 

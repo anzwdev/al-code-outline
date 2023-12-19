@@ -14,7 +14,7 @@ namespace AnZwDev.ALTools.ALSymbolReferences
         //public string Expression { get; set; }
         public ALAppPageControlKind Kind { get; set; }
         public ALAppTypeDefinition TypeDefinition { get; set; }
-        public ALAppElementsCollection<ALAppPageControl> Controls { get; set; }
+        public ALAppSymbolsCollection<ALAppPageControl> Controls { get; set; }
         public ALAppPropertiesCollection Properties { get; set; }
 
         public ALAppPageControl()

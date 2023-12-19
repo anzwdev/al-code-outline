@@ -19,5 +19,10 @@ namespace AnZwDev.ALTools.ALSymbolReferences
             return ALSymbolKind.CodeunitObject;
         }
 
+        public override ALObjectType GetALObjectType()
+        {
+            return ALObjectType.Codeunit;
+        }
+
     }
 }

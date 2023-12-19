@@ -9,6 +9,7 @@ using System.Text;
 using AnZwDev.ALTools.ALSymbols.Internal;
 using Newtonsoft.Json.Linq;
 using System.Xml.Linq;
+using System.Runtime.CompilerServices;
 
 namespace AnZwDev.ALTools.ALSymbols.SymbolReaders
 {
@@ -18,6 +19,8 @@ namespace AnZwDev.ALTools.ALSymbols.SymbolReaders
         public bool IncludeProperties { get; set; }
         private bool _tableHasKeys = false;
         private ALSymbolAccessModifier? _varAccessModifier = null;
+        private string _namespaceName = null;
+        private HashSet<string> _usings = null;
 
         public ALSymbolInfoSyntaxTreeReader(bool includeProperties)
         {
@@ -232,6 +235,13 @@ namespace AnZwDev.ALTools.ALSymbols.SymbolReaders
             
             ProcessNodeTypeSpecificProperties(symbol, syntaxTree, parentNode, node);
 
+            //update namespaces details
+            if (symbol.kind.IsObjectDefinition())
+            {
+                symbol.namespaceName = _namespaceName;
+                symbol.usings = _usings;
+            }
+
             return symbol;         
         }
 
@@ -243,6 +253,11 @@ namespace AnZwDev.ALTools.ALSymbols.SymbolReaders
         {
             switch (node)
             {
+                //compilation unit
+                case CompilationUnitSyntax compilationUnitSyntax:
+                    ProcessCompilationUnit(compilationUnitSyntax);
+                    break;
+
                 //general object nodes
                 case PropertySyntax propertySyntax:
                     ProcessPropertyNode(symbol, propertySyntax);
@@ -388,6 +403,19 @@ namespace AnZwDev.ALTools.ALSymbols.SymbolReaders
             }
 
         }
+
+        #region Compilation unit processing
+
+        private void ProcessCompilationUnit(CompilationUnitSyntax compilationUnitSyntax)
+        {
+#if BC
+            _namespaceName = compilationUnitSyntax.GetNamespaceName();
+            _usings = compilationUnitSyntax.Usings.GetUsingsNamespacesNames();
+#endif
+        }
+
+        #endregion
+
 
         #region General nodes properties processing
 

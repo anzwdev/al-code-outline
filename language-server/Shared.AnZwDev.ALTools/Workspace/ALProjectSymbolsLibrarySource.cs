@@ -1,5 +1,7 @@
 ﻿using AnZwDev.ALTools.ALSymbolReferences;
+using AnZwDev.ALTools.ALSymbolReferences.Search;
 using AnZwDev.ALTools.ALSymbols;
+using AnZwDev.ALTools.Workspace.SymbolReferences;
 using System;
 using System.Collections.Generic;
 using System.Text;
@@ -28,33 +30,36 @@ namespace AnZwDev.ALTools.Workspace
 
         protected ALSymbolSourceLocation GetSymbolSourceLocation(ALSymbol symbol, bool projectSource)
         {
-            ALSymbolSourceLocation location = new ALSymbolSourceLocation(symbol);
-
-            ALAppObject alAppObject;
-            if (this.Project.Symbols != null)
+            var location = new ALSymbolSourceLocation(symbol);
+            var objectTypeInformation = ALObjectTypesInformationCollection.Get(symbol.kind);
+            if ((objectTypeInformation != null) && (objectTypeInformation.ALObjectType != ALObjectType.None))
             {
-                alAppObject = this.Project.Symbols.FindObjectByName(symbol.kind, symbol.name, false);
-                if (alAppObject != null)
-                {
-                    this.SetSource(location, this.Project.Symbols, alAppObject, projectSource);
-                    return location;
-                }
-            }
 
-            if (this.Project.Dependencies != null)
-            {
-                foreach (ALProjectDependency dependency in this.Project.Dependencies)
+                if (this.Project.Symbols != null)
                 {
-                    if (dependency.Symbols != null)
+                    var alAppObject = this.Project.Symbols.AllObjects
+                        .FilterByObjectType(objectTypeInformation.ALObjectType)
+                        .FindFirst<ALAppObject>(null, symbol.namespaceName, symbol.name);
+                    if (alAppObject != null)
                     {
-                        alAppObject = dependency.Symbols.FindObjectByName(symbol.kind, symbol.name, false);
-                        if (alAppObject != null)
-                        {
-                            this.SetSource(location, dependency.Symbols, alAppObject, projectSource);
-                            return location;
-                        }
+                        this.SetSource(location, this.Project.Symbols, alAppObject, projectSource);
+                        return location;
                     }
                 }
+
+                if (this.Project.Dependencies != null)
+                    foreach (ALProjectDependency dependency in this.Project.Dependencies)
+                        if (dependency.Symbols != null)
+                        {
+                            var alAppObject = dependency.Symbols.AllObjects
+                                .FilterByObjectType(objectTypeInformation.ALObjectType)
+                                .FindFirst<ALAppObject>(null, symbol.namespaceName, symbol.name);
+                            if (alAppObject != null)
+                            {
+                                this.SetSource(location, dependency.Symbols, alAppObject, projectSource);
+                                return location;
+                            }
+                        }
             }
 
             return location;

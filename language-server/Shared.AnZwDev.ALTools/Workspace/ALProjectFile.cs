@@ -33,10 +33,10 @@ namespace AnZwDev.ALTools.Workspace
                 if (_symbols != value)
                 {
                     if (_symbols != null)
-                        this.Project.Symbols.RemoveObjects(_symbols);
+                        this.Project.Symbols.AllObjects.RemoveRange(_symbols);
                     _symbols = value;
                     if (_symbols != null)
-                        this.Project.Symbols.AddObjects(_symbols);
+                        this.Project.Symbols.AllObjects.AddRange(_symbols);
                 }
             }
         }

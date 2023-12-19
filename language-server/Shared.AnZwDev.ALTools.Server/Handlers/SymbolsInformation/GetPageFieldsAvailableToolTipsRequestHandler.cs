@@ -25,7 +25,11 @@ namespace AnZwDev.ALTools.Server.Handlers.SymbolsInformation
             if (project != null)
             {
                 PageInformationProvider provider = new PageInformationProvider();
-                response.toolTips = provider.GetPageFieldAvailableToolTips(project, parameters.objectType, parameters.objectName, parameters.sourceTable, parameters.fieldExpression);
+                response.toolTips = provider.GetPageFieldAvailableToolTips(project, 
+                    parameters.objectType,
+                    parameters.objectReference.ToALObjectIdentifier(),
+                    parameters.sourceTableReference.ToALObjectReference(), 
+                    parameters.fieldExpression);
             }
 
             return response;

@@ -9,7 +9,7 @@ using System.Text;
 
 namespace AnZwDev.ALTools.CodeTransformations
 {
-    public class AddDropDownFieldGroupsRewriter : ALSyntaxRewriter
+    public class AddDropDownFieldGroupsRewriter : ALSyntaxRewriterWithNamespaces
     {
 
         public List<string> FieldNamesPatterns { get; set; } = null;
@@ -19,12 +19,14 @@ namespace AnZwDev.ALTools.CodeTransformations
             var fieldGroup = GetDropDownFieldGroup(node);
             if (fieldGroup == null)
             {
-                var tableName = ALSyntaxHelper.DecodeName(node.Name?.ToString());
+                //!!! TO-DO !!!
+                //!!! Check if it works !!!
+                var tableIdentifier = new ALObjectIdentifier(NamespaceName, node.ObjectId?.Value.ValueText, node.Name?.Identifier.ValueText);
 
-                if (tableName != null)
+                if (!tableIdentifier.IsEmpty())
                 {
                     var matcher = new TableFieldsInformationPatternMatcher();
-                    var collectedFields = matcher.Match(Project, tableName, true, FieldNamesPatterns, true, true, false);
+                    var collectedFields = matcher.Match(Project, tableIdentifier.ToObjectReference(), true, FieldNamesPatterns, true, true, false);
 
                     if (collectedFields.Count > 0)
                     {

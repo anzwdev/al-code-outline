@@ -7,6 +7,7 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 using System.Threading.Tasks;
+using AnZwDev.ALTools.ALSymbols;
 
 namespace AnZwDev.ALTools.Server.Handlers.SymbolsInformation
 {
@@ -26,7 +27,11 @@ namespace AnZwDev.ALTools.Server.Handlers.SymbolsInformation
             if (project != null)
             {
                 TableInformationProvider provider = new TableInformationProvider();
-                response.symbols = provider.GetTableFields(project, parameters.table, parameters.includeDisabled, parameters.includeObsolete, parameters.includeNormal, parameters.includeFlowFields, parameters.includeFlowFilters, parameters.includeToolTips, parameters.toolTipsSourceDependencies);
+                response.symbols = provider.GetTableFields(project, 
+                    parameters.tableReference.ToALObjectReference(),                  
+                    parameters.includeDisabled, parameters.includeObsolete, parameters.includeNormal, 
+                    parameters.includeFlowFields, parameters.includeFlowFilters, parameters.includeToolTips, 
+                    parameters.toolTipsSourceDependencies);
                 response.symbols.Sort(new SymbolInformationComparer());
             }
 

@@ -1,7 +1,10 @@
-﻿using AnZwDev.ALTools.ALSymbols;
+﻿using AnZwDev.ALTools.ALSymbolReferences;
+using AnZwDev.ALTools.ALSymbolReferences.Search;
+using AnZwDev.ALTools.ALSymbols;
 using AnZwDev.ALTools.ALSymbols.Internal;
 using AnZwDev.ALTools.CodeAnalysis;
 using AnZwDev.ALTools.Extensions;
+using AnZwDev.ALTools.Workspace.SymbolReferences;
 using AnZwDev.ALTools.Workspace.SymbolsInformation;
 using Microsoft.Dynamics.Nav.CodeAnalysis;
 using Microsoft.Dynamics.Nav.CodeAnalysis.Syntax;
@@ -19,7 +22,7 @@ namespace AnZwDev.ALTools.CodeTransformations
         public string PageActionTooltip { get; set; }
         public bool UseFieldDescription { get; set; }
         
-        public Dictionary<string, Dictionary<string, List<LabelInformation>>> ToolTipsCache { get; set; }
+        public Dictionary<int, Dictionary<string, List<LabelInformation>>> ToolTipsCache { get; set; }
 
         public ToolTipSyntaxRewriter()
         {
@@ -48,13 +51,12 @@ namespace AnZwDev.ALTools.CodeTransformations
             TableFieldCaptionInfo captionInfo = this.GetFieldCaption(node);
             if (this.UseFieldDescription)
                 forceToolTipValue = new LabelInformation("ToolTip", captionInfo.Description);
-            else if ((this.ToolTipsCache != null) && (!String.IsNullOrWhiteSpace(this.TableName)) && (!String.IsNullOrWhiteSpace(captionInfo.FieldName)))
+            else if ((this.ToolTipsCache != null) && (this.Table != null) && (!String.IsNullOrWhiteSpace(captionInfo.FieldName)))
             {
                 //find first tooltip from other pages
-                string tableNameKey = this.TableName.ToLower();
-                if (this.ToolTipsCache.ContainsKey(tableNameKey))
+                if (this.ToolTipsCache.ContainsKey(this.Table.Id))
                 {
-                    var tableToolTipsCache = this.ToolTipsCache[tableNameKey];
+                    var tableToolTipsCache = this.ToolTipsCache[this.Table.Id];
                     string fieldNameKey = captionInfo.FieldName.ToLower();
                     if (tableToolTipsCache.ContainsKey(fieldNameKey))
                     {
@@ -166,10 +168,13 @@ namespace AnZwDev.ALTools.CodeTransformations
                         return ((pageType == null) || (!pageType.Equals("API", StringComparison.CurrentCultureIgnoreCase)));
                     case ConvertedSyntaxKind.PageExtensionObject:
                         var pageExtension = node as PageExtensionSyntax;
-                        string basePageName = ALSyntaxHelper.DecodeName(pageExtension?.BaseObject?.ToString());
-                        if (!String.IsNullOrWhiteSpace(basePageName))
+                        var basePageReference = new ALObjectReference(Usings, pageExtension?.BaseObject?.ToString());
+                        if (!basePageReference.IsEmpty())
                         {
-                            var basePage = this.Project.AllSymbols.Pages.FindObject(basePageName);
+                            var basePage = this.Project
+                                .GetAllSymbolReferences()
+                                .GetAllObjects<ALAppPage>(x => x.Pages)
+                                .FindFirst<ALAppPage>(basePageReference);
                             if ((basePage != null) && (basePage.Properties != null))
                             {
                                 var basePageType = basePage.Properties.Where(p => ((p.Name != null) && (p.Name.Equals("PageType", StringComparison.CurrentCultureIgnoreCase)))).FirstOrDefault();

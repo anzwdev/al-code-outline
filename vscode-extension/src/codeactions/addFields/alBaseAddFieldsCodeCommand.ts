@@ -6,20 +6,23 @@ import { AZSymbolKind } from '../../symbollibraries/azSymbolKind';
 import { ALSyntaxHelper } from '../../allanguage/alSyntaxHelper';
 import { TableFieldInformation } from '../../symbolsinformation/tableFieldInformation';
 import { ToolsGetTableFieldsListRequest } from '../../langserver/symbolsinformation/toolsGetTableFieldsListRequest';
+import { ToolsSymbolReference } from '../../langserver/symbolsinformation/toolsSymbolReference';
 
 export class ALBaseAddFieldsCodeCommand extends ALCodeCommand {
     constructor(context : DevToolsExtensionContext, shortName: string, commandName: string) {
         super(context, shortName, commandName);
     }
     
-    protected async getTableFields(name: string): Promise<TableFieldInformation[] | undefined> {
+    protected async getTableFields(tableReference: ToolsSymbolReference): Promise<TableFieldInformation[] | undefined> {
         let uri: vscode.Uri | undefined = this.getDocumentUri();
         let configuration = vscode.workspace.getConfiguration('alOutline', uri);
         let reuseToolTips = !configuration.get<boolean>('doNotReuseToolTipsFromOtherPages');
         let toolTipsSource = configuration.get<string[]>('reuseToolTipsFromDependencies');
 
         let response = await this._toolsExtensionContext.toolsLangServerClient.getTableFieldsList(new ToolsGetTableFieldsListRequest(
-            uri?.fsPath, name, false, false, true, true, true, reuseToolTips, toolTipsSource));
+            uri?.fsPath, 
+            tableReference, 
+            false, false, true, true, true, reuseToolTips, toolTipsSource));
         if (!response)
             return;
         return response.symbols;

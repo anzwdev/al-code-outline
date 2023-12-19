@@ -47,14 +47,8 @@ namespace AnZwDev.ALTools.Workspace
         /// <summary>
         /// Symbols defined in project
         /// </summary>
-        public ALAppSymbolReference Symbols { get; set; }
+        public ALAppSymbolReference Symbols { get; }
         
-        /// <summary>
-        /// All symbols defined in project and in dependencies
-        /// </summary>
-        public MergedALAppSymbolReference AllSymbols { get; }
-
-
         #endregion
 
         #region Initialization
@@ -79,8 +73,7 @@ namespace AnZwDev.ALTools.Workspace
             this.Files = new ALProjectFilesCollection(this);
             this.Dependencies = new ALProjectDependenciesCollection();
             this.Symbols = new ALAppSymbolReference();
-            this.Properties = null;
-            this.AllSymbols = new MergedALAppSymbolReference(new ALProjectAllALAppSymbolReferencesCollection(this));
+            this.Properties = null;            
         }
 
         #endregion

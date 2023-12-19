@@ -1,16 +1,19 @@
 ﻿using AnZwDev.ALTools;
 using AnZwDev.ALTools.ALLanguageInformation;
 using AnZwDev.ALTools.ALSymbolReferences;
+using AnZwDev.ALTools.ALSymbolReferences.Search;
 using AnZwDev.ALTools.ALSymbolReferences.Compiler;
 using AnZwDev.ALTools.ALSymbolReferences.Serialization;
 using AnZwDev.ALTools.ALSymbols;
 using AnZwDev.ALTools.ALSymbols.SymbolReaders;
 using AnZwDev.ALTools.CodeAnalysis;
 using AnZwDev.ALTools.CodeTransformations;
+using AnZwDev.ALTools.CodeTransformations.Namespaces;
 using AnZwDev.ALTools.Core;
 using AnZwDev.ALTools.DuplicateCodeSearch;
 using AnZwDev.ALTools.Server;
 using AnZwDev.ALTools.Workspace;
+using AnZwDev.ALTools.Workspace.SymbolReferences;
 using AnZwDev.ALTools.Workspace.SymbolsInformation;
 using AnZwDev.ALTools.WorkspaceCommands;
 using System;
@@ -59,6 +62,11 @@ namespace AZALDevToolsTestConsoleApp
 
             DCDuplicateCodeAnalyzer duplicateAnalyzer = new DCDuplicateCodeAnalyzer(3, AnZwDev.ALTools.ALSymbols.Internal.ConvertedObsoleteState.None);
             var duplicatesList = duplicateAnalyzer.FindDuplicates(host.ALDevToolsServer.Workspace, null);
+
+
+            AddProjectNamespacesConverter projectNamespacesConverter = new AddProjectNamespacesConverter();
+            projectNamespacesConverter.TestFile(host.ALDevToolsServer.Workspace.Projects[0], filePath);
+
 
             //filePath = "C:\\Projects\\Sandboxes\\al-test-projects\\SmallBC18\\Pag50104.MyPrefixMyPageCard.al";
             //filePath = "C:\\Projects\\Sandboxes\\al-test-projects\\SmallBC18\\permissionset-Ext50101.MyPermSetExt03.al";
@@ -146,24 +154,30 @@ namespace AZALDevToolsTestConsoleApp
             //WorkspaceCommandResult o = host.ALDevToolsServer.WorkspaceCommandsManager.RunCommand("removeProceduresSemicolon", content, projects[0].folderPath, filePath, null, pm, null);
             //WorkspaceCommandResult o = host.ALDevToolsServer.WorkspaceCommandsManager.RunCommand("addUsingRegion", content, projects[0].folderPath, filePath, null, pm, null);
 
-            var allObj = project.AllSymbols.Tables.GetObjects().ToList();
+            var allObj = project.GetAllSymbolReferences()
+                .GetAllObjects<ALAppTable>(x => x.Tables)
+                .ToList();
 
-
-
-            PageInformationProvider pageInformationProvider = new PageInformationProvider();
-            var toolTipsList = pageInformationProvider.GetPageFieldAvailableToolTips(project, "Page", "MyTestPage", "", "Rec.\"No.\"");
-
-            PageInformation pageInformation = pageInformationProvider.GetPageDetails(project, "wqefewf", true, true, true, null);
-
+            var pageReference = new ALObjectReference(null, "MyTestPage");
+            var page = project
+                .GetAllSymbolReferences()
+                .GetAllObjects<ALAppPage>(x => x.Pages)
+                .FindFirst(pageReference);
+            if (page != null)
+            {
+                PageInformationProvider pageInformationProvider = new PageInformationProvider();
+                var toolTipsList = pageInformationProvider.GetPageFieldAvailableToolTips(project, "Page", page.GetIdentifier(), new ALObjectReference(), "Rec.\"No.\"");
+                PageInformation pageInformation = pageInformationProvider.GetPageDetails(project, new ALObjectReference(null, "wqefewf"), true, true, true, null);
+            }
             ObjectIdInformationProvider objectIdInformationProvider = new();
             long id = objectIdInformationProvider.GetNextObjectId(project, "Page");
 
             TableInformationProvider tableInformationProvider = new();
-            List<TableFieldInformaton> fields = tableInformationProvider.GetTableFields(project, "Purchase Line", false, false, true, true, true, false, null);
+            List<TableFieldInformaton> fields = tableInformationProvider.GetTableFields(project, new ALObjectReference(null, "Sales Line"), false, false, true, true, true, false, null);
             List<TableFieldInformaton> fields2 = fields.Where(p => (p.Name.StartsWith("Description"))).ToList();
 
             ReportInformationProvider reportInformationProvider = new();
-            ReportInformation reportInformation = reportInformationProvider.GetFullReportInformation(project, "Sales Order");
+            ReportInformation reportInformation = reportInformationProvider.GetFullReportInformation(project, new ALObjectReference(null, "Sales Order"));
 
 
             Console.WriteLine("Done");

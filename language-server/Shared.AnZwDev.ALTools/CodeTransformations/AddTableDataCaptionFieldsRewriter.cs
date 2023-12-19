@@ -13,7 +13,7 @@ using System.Xml.Linq;
 
 namespace AnZwDev.ALTools.CodeTransformations
 {
-    public class AddTableDataCaptionFieldsRewriter : ALSyntaxRewriter
+    public class AddTableDataCaptionFieldsRewriter : ALSyntaxRewriterWithNamespaces
     {
 
         public List<string> FieldNamesPatterns { get; set; } = null;
@@ -84,30 +84,31 @@ namespace AnZwDev.ALTools.CodeTransformations
 
         protected PropertyValueSyntax CreateDataCaptionFieldsPropertyValue(TableSyntax node)
         {
-            var tableName = ALSyntaxHelper.DecodeName(node.Name?.ToString());
+            //!!! TO-DO !!!
+            //!!! Check if it works !!!
+            var tableIdentifier = new ALObjectIdentifier(NamespaceName, node.ObjectId?.Value.ValueText, node.Name?.Identifier.ValueText);
 
-            if (tableName == null)
-                return null;
-
-
-            var matcher = new TableFieldsInformationPatternMatcher();
-            var collectedFields = matcher.Match(Project, tableName, true, FieldNamesPatterns, true, true, false);
-
-            if (collectedFields.Count > 0)
+            if (!tableIdentifier.IsEmpty())
             {
-                var fieldNamesSyntaxList = new List<IdentifierNameSyntax>();
-                for (int i = 0; i < collectedFields.Count; i++)
+                var matcher = new TableFieldsInformationPatternMatcher();
+                var collectedFields = matcher.Match(Project, tableIdentifier.ToObjectReference(), true, FieldNamesPatterns, true, true, false);
+
+                if (collectedFields.Count > 0)
                 {
-                    var fieldName = collectedFields[i].Name;
-                    if (KeywordInformation.IsAnyKeyword(fieldName))
-                        fieldName = ALSyntaxHelper.EncodeName(fieldName, true);
+                    var fieldNamesSyntaxList = new List<IdentifierNameSyntax>();
+                    for (int i = 0; i < collectedFields.Count; i++)
+                    {
+                        var fieldName = collectedFields[i].Name;
+                        if (KeywordInformation.IsAnyKeyword(fieldName))
+                            fieldName = ALSyntaxHelper.EncodeName(fieldName, true);
 
-                    fieldNamesSyntaxList.Add(SyntaxFactory.IdentifierName(fieldName));
+                        fieldNamesSyntaxList.Add(SyntaxFactory.IdentifierName(fieldName));
+                    }
+
+                    var fieldNamesSyntaxSeparatedList = new SeparatedSyntaxList<IdentifierNameSyntax>();
+                    fieldNamesSyntaxSeparatedList = fieldNamesSyntaxSeparatedList.AddRange(fieldNamesSyntaxList);
+                    return SyntaxFactory.CommaSeparatedPropertyValue(fieldNamesSyntaxSeparatedList);
                 }
-
-                var fieldNamesSyntaxSeparatedList = new SeparatedSyntaxList<IdentifierNameSyntax>();
-                fieldNamesSyntaxSeparatedList = fieldNamesSyntaxSeparatedList.AddRange(fieldNamesSyntaxList);
-                return SyntaxFactory.CommaSeparatedPropertyValue(fieldNamesSyntaxSeparatedList);
             }
 
             return null;

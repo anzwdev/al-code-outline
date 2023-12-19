@@ -10,7 +10,7 @@ namespace AnZwDev.ALTools.ALSymbolReferences
     public class ALAppEnum : ALAppObject
     {
 
-        public ALAppElementsCollection<ALAppEnumValue> Values { get; set; }
+        public ALAppSymbolsCollection<ALAppEnumValue> Values { get; set; }
 
         public ALAppEnum()
         {
@@ -19,6 +19,11 @@ namespace AnZwDev.ALTools.ALSymbolReferences
         public override ALSymbolKind GetALSymbolKind()
         {
             return ALSymbolKind.EnumType;
+        }
+
+        public override ALObjectType GetALObjectType()
+        {
+            return ALObjectType.EnumType;
         }
 
         protected override void AddChildALSymbols(ALSymbol symbol)

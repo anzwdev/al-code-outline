@@ -79,7 +79,7 @@ namespace AnZwDev.ALTools.ALSymbolReferences
                     allObjectsCollection = new ALAppObjectsCollection<T>();
 
                 for (int i = 0; i < namespaceObjectsCollection.Count; i++)
-                    namespaceObjectsCollection[i].Namespace = FullName;
+                    namespaceObjectsCollection[i].NamespaceName = FullName;
                 allObjectsCollection.AddRange(namespaceObjectsCollection);
             }
 

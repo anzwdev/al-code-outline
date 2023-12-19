@@ -22,7 +22,9 @@ export class ALInterfaceSyntaxBuilder {
 
         if ((data.baseCodeunitName) && (data.baseCodeunitName != '')) {
             let methodsResponse = await this._toolsExtensionContext.toolsLangServerClient.getCodeunitMethodsList(
-                new toolsGetCodeunitMethodsListRequest(destUri?.fsPath, data.baseCodeunitName));
+                new toolsGetCodeunitMethodsListRequest(destUri?.fsPath, {
+                    nameWithNamespaceOrId: data.baseCodeunitName
+                }));
 
             if ((methodsResponse) && (methodsResponse.symbols) && (methodsResponse.symbols.length > 0)) {
                 for (let i=0; i<methodsResponse.symbols.length; i++) {

@@ -8,6 +8,7 @@ import { AZDocumentSymbolsLibrary } from '../../symbollibraries/azDocumentSymbol
 import { TableFieldsSelector } from './tableFieldsSelector';
 import { ToolsGetReportDataItemDetailsRequest } from '../../langserver/symbolsinformation/toolsGetReportDataItemDetailsRequest';
 import { TableFieldInformation } from '../../symbolsinformation/tableFieldInformation';
+import { ToolsSymbolReference } from '../../langserver/symbolsinformation/toolsSymbolReference';
 
 export class ALAddReportFieldsCodeCommand extends ALBaseAddFieldsCodeCommand {
     constructor(context : DevToolsExtensionContext) {
@@ -53,9 +54,14 @@ export class ALAddReportFieldsCodeCommand extends ALBaseAddFieldsCodeCommand {
         let objectSymbol = dataItemSymbol.findParentByKindList(parentKind);
         if (!objectSymbol)
             return;
-        let reportName = (objectSymbol.kind == AZSymbolKind.ReportExtensionObject)?objectSymbol.extends:objectSymbol.name;
-        if (!reportName)
-            return;
+        let reportReference : ToolsSymbolReference = (objectSymbol.kind === AZSymbolKind.ReportExtensionObject)? {
+            usings: objectSymbol.usings,
+            nameWithNamespaceOrId: objectSymbol.extends
+        }:{
+            namespaceName: objectSymbol.namespaceName,
+            name: objectSymbol.name,
+            id: objectSymbol.id
+        };
 
         let dataItemName = (dataItemSymbol.kind == AZSymbolKind.ReportExtensionAddColumnChange)?dataItemSymbol.extends:dataItemSymbol.name;
         if (!dataItemName)
@@ -63,7 +69,7 @@ export class ALAddReportFieldsCodeCommand extends ALBaseAddFieldsCodeCommand {
 
         //get list of fields
         let response = await this._toolsExtensionContext.toolsLangServerClient.getReportDataItemDetails(
-            new ToolsGetReportDataItemDetailsRequest(document.uri.fsPath, reportName, dataItemName, false, true));
+            new ToolsGetReportDataItemDetailsRequest(document.uri.fsPath, reportReference, dataItemName, false, true));
         if ((!response) || (!response.symbol) || (!response.symbol.availableTableFields))
             return;
 

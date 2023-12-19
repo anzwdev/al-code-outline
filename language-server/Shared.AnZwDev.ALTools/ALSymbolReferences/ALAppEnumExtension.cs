@@ -2,6 +2,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Security.AccessControl;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -28,9 +29,19 @@ namespace AnZwDev.ALTools.ALSymbolReferences
             return ALSymbolKind.EnumExtensionType;
         }
 
+        public override ALObjectType GetALObjectType()
+        {
+            return ALObjectType.EnumExtensionType;
+        }
+
         public string GetTargetObjectName()
         {
             return this.TargetObject;
+        }
+
+        public ALObjectReference GetTargetObjectReference()
+        {
+            return new ALObjectReference(Usings, this.TargetObject);
         }
     }
 }

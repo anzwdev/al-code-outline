@@ -12,7 +12,13 @@ namespace AnZwDev.ALTools.ALSymbols
     {
 #pragma warning disable IDE1006
         public int? id { get; set; }
-        
+
+        [JsonProperty(NullValueHandling = NullValueHandling.Ignore)]
+        public string namespaceName { get; set; }
+
+        [JsonProperty(NullValueHandling = NullValueHandling.Ignore)]
+        public HashSet<string> usings { get; set; }
+
         [JsonProperty(NullValueHandling = NullValueHandling.Ignore)]
         public string name { get; set; }
 

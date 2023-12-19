@@ -7,6 +7,7 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 using System.Threading.Tasks;
+using AnZwDev.ALTools.ALSymbols;
 
 namespace AnZwDev.ALTools.Server.Handlers.SymbolsInformation
 {
@@ -29,7 +30,10 @@ namespace AnZwDev.ALTools.Server.Handlers.SymbolsInformation
                 if (project != null)
                 {
                     ReportInformationProvider provider = new ReportInformationProvider();
-                    response.symbol = provider.GetReportDataItemInformationDetails(project, parameters.objectName, parameters.name, parameters.getExistingFields, parameters.getAvailableFields);
+                    response.symbol = provider.GetReportDataItemInformationDetails(project, 
+                        parameters.symbolReference.ToALObjectReference(),
+                        parameters.childSymbolName,
+                        parameters.getExistingFields, parameters.getAvailableFields);
                     if (response.symbol != null)
                         response.symbol.Sort();
                 }

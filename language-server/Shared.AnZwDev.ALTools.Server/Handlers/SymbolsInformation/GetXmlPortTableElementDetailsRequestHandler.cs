@@ -30,7 +30,10 @@ namespace AnZwDev.ALTools.Server.Handlers.SymbolsInformation
                 if (project != null)
                 {
                     XmlPortInformationProvider provider = new XmlPortInformationProvider();
-                    response.symbol = provider.GetXmlPortTableElementDetails(project, parameters.objectName, parameters.name, parameters.getExistingFields, parameters.getAvailableFields);
+                    response.symbol = provider.GetXmlPortTableElementDetails(project, 
+                        parameters.symbolReference.ToALObjectReference(),
+                        parameters.childSymbolName,
+                        parameters.getExistingFields, parameters.getAvailableFields);
                     if (response.symbol != null)
                         response.symbol.Sort();
                 }

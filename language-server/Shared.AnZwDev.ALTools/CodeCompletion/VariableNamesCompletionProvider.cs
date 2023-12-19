@@ -3,6 +3,7 @@ using AnZwDev.ALTools.ALSymbols;
 using AnZwDev.ALTools.ALSymbols.Internal;
 using AnZwDev.ALTools.Extensions;
 using AnZwDev.ALTools.Workspace;
+using AnZwDev.ALTools.Workspace.SymbolReferences;
 using Microsoft.Dynamics.Nav.CodeAnalysis;
 using Microsoft.Dynamics.Nav.CodeAnalysis.Syntax;
 using System;
@@ -46,15 +47,15 @@ namespace AnZwDev.ALTools.CodeCompletion
 
         private void CreateCompletionItems(ALProject project, CodeCompletionParameters parameters, List<CodeCompletionItem> completionItems, bool addSemicolon, bool addByVarDeclaration)
         {
-            CreateCompletionItems(project, project.AllSymbols.Tables.GetObjects(), parameters, completionItems, false, addSemicolon, addByVarDeclaration);
-            CreateCompletionItems(project, project.AllSymbols.Tables.GetObjects(), parameters, completionItems, true, addSemicolon, addByVarDeclaration);
-            CreateCompletionItems(project, project.AllSymbols.Codeunits.GetObjects(), parameters, completionItems, false, addSemicolon, addByVarDeclaration);
-            CreateCompletionItems(project, project.AllSymbols.Pages.GetObjects(), parameters, completionItems, false, addSemicolon, addByVarDeclaration);
-            CreateCompletionItems(project, project.AllSymbols.Reports.GetObjects(), parameters, completionItems, false, addSemicolon, addByVarDeclaration);
-            CreateCompletionItems(project, project.AllSymbols.Queries.GetObjects(), parameters, completionItems, false, addSemicolon, addByVarDeclaration);
-            CreateCompletionItems(project, project.AllSymbols.XmlPorts.GetObjects(), parameters, completionItems, false, addSemicolon, addByVarDeclaration);
-            CreateCompletionItems(project, project.AllSymbols.EnumTypes.GetObjects(), parameters, completionItems, false, addSemicolon, addByVarDeclaration);
-            CreateCompletionItems(project, project.AllSymbols.Interfaces.GetObjects(), parameters, completionItems, false, addSemicolon, addByVarDeclaration);
+            CreateCompletionItems(project, ALObjectType.Table, parameters, completionItems, false, addSemicolon, addByVarDeclaration);
+            CreateCompletionItems(project, ALObjectType.Table, parameters, completionItems, true, addSemicolon, addByVarDeclaration);
+            CreateCompletionItems(project, ALObjectType.Codeunit, parameters, completionItems, false, addSemicolon, addByVarDeclaration);
+            CreateCompletionItems(project, ALObjectType.Page, parameters, completionItems, false, addSemicolon, addByVarDeclaration);
+            CreateCompletionItems(project, ALObjectType.Report, parameters, completionItems, false, addSemicolon, addByVarDeclaration);
+            CreateCompletionItems(project, ALObjectType.Query, parameters, completionItems, false, addSemicolon, addByVarDeclaration);
+            CreateCompletionItems(project, ALObjectType.XmlPort, parameters, completionItems, false, addSemicolon, addByVarDeclaration);
+            CreateCompletionItems(project, ALObjectType.EnumType, parameters, completionItems, false, addSemicolon, addByVarDeclaration);
+            CreateCompletionItems(project, ALObjectType.Interface, parameters, completionItems, false, addSemicolon, addByVarDeclaration);
         }
 
         private (bool, bool, bool) ValidSyntaxNode(SyntaxNode syntaxNode, int position)
@@ -240,8 +241,10 @@ namespace AnZwDev.ALTools.CodeCompletion
             return null;
         }
 
-        private void CreateCompletionItems(ALProject project, IEnumerable<ALAppObject> typesCollection, CodeCompletionParameters parameters, List<CodeCompletionItem> completionItems, bool asTemporaryVariable, bool addSemicolon, bool addByVarDeclaration)
+        private void CreateCompletionItems(ALProject project, ALObjectType objectType, CodeCompletionParameters parameters, List<CodeCompletionItem> completionItems, bool asTemporaryVariable, bool addSemicolon, bool addByVarDeclaration)
         {
+            var typesCollection = project.GetAllSymbolReferences().GetAllObjects(objectType);
+
             foreach (var type in typesCollection)
             {
                 var varName = type.Name;

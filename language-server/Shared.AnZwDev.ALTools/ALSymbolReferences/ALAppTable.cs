@@ -11,9 +11,9 @@ namespace AnZwDev.ALTools.ALSymbolReferences
     {
 
 
-        public ALAppElementsCollection<ALAppTableField> Fields { get; set; }
-        public ALAppElementsCollection<ALAppTableKey> Keys { get; set; }
-        public ALAppElementsCollection<ALAppFieldGroup> FieldGroups { get; set; }
+        public ALAppSymbolsCollection<ALAppTableField> Fields { get; set; }
+        public ALAppSymbolsCollection<ALAppTableKey> Keys { get; set; }
+        public ALAppSymbolsCollection<ALAppFieldGroup> FieldGroups { get; set; }
 
         public ALAppTable()
         {
@@ -22,6 +22,11 @@ namespace AnZwDev.ALTools.ALSymbolReferences
         public override ALSymbolKind GetALSymbolKind()
         {
             return ALSymbolKind.TableObject;
+        }
+
+        public override ALObjectType GetALObjectType()
+        {
+            return ALObjectType.Table;
         }
 
         protected override void AddChildALSymbols(ALSymbol symbol)

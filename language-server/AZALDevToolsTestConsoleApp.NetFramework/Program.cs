@@ -65,9 +65,7 @@ namespace AZALDevToolsTestConsoleApp.NetFramework
             syntaxTree.Load("", filePath, project);
 
             PageInformationProvider pageInformationProvider = new PageInformationProvider();
-            PageInformation pageInformation = pageInformationProvider.GetPageDetails(project, "MyPageCard", true, true, true, null);
-
-
+            PageInformation pageInformation = pageInformationProvider.GetPageDetails(project, new ALObjectReference(null, "MyPageCard"), true, true, true, null);
 
             /*
             XmlPortInformationProvider xmlPortInformationProvider = new XmlPortInformationProvider();
@@ -75,7 +73,7 @@ namespace AZALDevToolsTestConsoleApp.NetFramework
             */
 
             ReportInformationProvider reportInformationProvider = new ReportInformationProvider();
-            ReportDataItemInformation reportDataItemInformation = reportInformationProvider.GetReportDataItemInformationDetails(project, "Sales Invoice NA", "T1", true, true);
+            ReportDataItemInformation reportDataItemInformation = reportInformationProvider.GetReportDataItemInformationDetails(project, new ALObjectReference(null, "Sales Invoice NA"), "T1", true, true);
 
             Console.WriteLine("Done");
             Console.ReadKey();

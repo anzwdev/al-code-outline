@@ -107,6 +107,8 @@
     <Compile Include="$(MSBuildThisFileDirectory)Contracts\SymbolsInformation\GetXmlPortsListResponse.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Contracts\SymbolsInformation\GetXmlPortTableElementDetailsRequest.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Contracts\SymbolsInformation\GetXmlPortTableElementDetailsResponse.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Contracts\SymbolsInformation\SymbolReference.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Contracts\SymbolsInformation\SymbolReferenceExtensions.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Contracts\WorkspaceCommandRequest.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Contracts\WorkspaceCommandResponse.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Contracts\ChangeTracking\WorkspaceFoldersChangeNotificationRequest.cs" />

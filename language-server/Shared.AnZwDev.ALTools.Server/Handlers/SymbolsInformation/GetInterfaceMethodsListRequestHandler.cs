@@ -26,7 +26,7 @@ namespace AnZwDev.ALTools.Server.Handlers.SymbolsInformation
             if (project != null)
             {
                 InterfaceInformationProvider provider = new InterfaceInformationProvider();
-                response.symbols = provider.GetMethodsInformation(project, parameters.name);
+                response.symbols = provider.GetMethodsInformation(project, parameters.symbolReference.ToALObjectReference());
             }
 
             return response;

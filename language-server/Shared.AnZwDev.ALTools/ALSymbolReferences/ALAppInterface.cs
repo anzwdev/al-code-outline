@@ -18,5 +18,10 @@ namespace AnZwDev.ALTools.ALSymbolReferences
             return ALSymbolKind.Interface;
         }
 
+        public override ALObjectType GetALObjectType()
+        {
+            return ALObjectType.Interface;
+        }
+
     }
 }
