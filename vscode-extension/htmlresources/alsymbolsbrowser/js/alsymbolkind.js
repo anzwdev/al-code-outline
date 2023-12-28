@@ -208,8 +208,10 @@ var ALSymbolKind = {
     //Syntax tree
     SyntaxTreeNode : 50056,
     SyntaxTreeToken : 50057,
-    SyntaxTreeTrivia : 50058
+    SyntaxTreeTrivia : 50058,
 
-    //Next available id 50064
+    Region : 50066,
+    UsingDirective : 50067
 
+    //Next available id 50068
 };

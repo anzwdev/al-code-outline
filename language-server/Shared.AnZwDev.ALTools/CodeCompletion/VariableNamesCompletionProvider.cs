@@ -1,5 +1,4 @@
-﻿using AnZwDev.ALTools.ALSymbolReferences;
-using AnZwDev.ALTools.ALSymbols;
+﻿using AnZwDev.ALTools.ALSymbols;
 using AnZwDev.ALTools.ALSymbols.Internal;
 using AnZwDev.ALTools.Extensions;
 using AnZwDev.ALTools.Workspace;
@@ -35,27 +34,42 @@ namespace AnZwDev.ALTools.CodeCompletion
 
         public override void CollectCompletionItems(ALProject project, SyntaxTree syntaxTree, SyntaxNode syntaxNode, int position, CodeCompletionParameters parameters, List<CodeCompletionItem> completionItems)
         {
+            Position usingPosition = null;
+            HashSet<string> usings = null;
+            var usesNamespaces = false;
+#if BC
+            var compilationUnit = syntaxTree.GetRoot() as CompilationUnitSyntax;
+            if (compilationUnit != null)
+            {
+                usesNamespaces = compilationUnit.UsesNamespaces();
+                var textLines = syntaxTree.GetText().Lines;
+                var usingLinePosition = compilationUnit.GetUsingsStartLinePosition(textLines);
+                usingPosition = new Position(usingLinePosition.Line, usingLinePosition.Character);
+                usings = compilationUnit.Usings.GetUsingsNamespacesNames();
+            }
+#endif
+
             (bool validNode, bool addSemicolon, bool addVarVersions) = ValidSyntaxNode(syntaxNode, position);
 
             if (validNode)
             {
-                CreateCompletionItems(project, parameters, completionItems, addSemicolon, false);
+                CreateCompletionItems(project, parameters, completionItems, addSemicolon, false, usesNamespaces, usingPosition, usings);
                 if (addVarVersions)
-                    CreateCompletionItems(project, parameters, completionItems, addSemicolon, true);
+                    CreateCompletionItems(project, parameters, completionItems, addSemicolon, true, usesNamespaces, usingPosition, usings);
             }
         }
 
-        private void CreateCompletionItems(ALProject project, CodeCompletionParameters parameters, List<CodeCompletionItem> completionItems, bool addSemicolon, bool addByVarDeclaration)
+        private void CreateCompletionItems(ALProject project, CodeCompletionParameters parameters, List<CodeCompletionItem> completionItems, bool addSemicolon, bool addByVarDeclaration, bool useNamespaces, Position usingPosition, HashSet<string> usings)
         {
-            CreateCompletionItems(project, ALObjectType.Table, parameters, completionItems, false, addSemicolon, addByVarDeclaration);
-            CreateCompletionItems(project, ALObjectType.Table, parameters, completionItems, true, addSemicolon, addByVarDeclaration);
-            CreateCompletionItems(project, ALObjectType.Codeunit, parameters, completionItems, false, addSemicolon, addByVarDeclaration);
-            CreateCompletionItems(project, ALObjectType.Page, parameters, completionItems, false, addSemicolon, addByVarDeclaration);
-            CreateCompletionItems(project, ALObjectType.Report, parameters, completionItems, false, addSemicolon, addByVarDeclaration);
-            CreateCompletionItems(project, ALObjectType.Query, parameters, completionItems, false, addSemicolon, addByVarDeclaration);
-            CreateCompletionItems(project, ALObjectType.XmlPort, parameters, completionItems, false, addSemicolon, addByVarDeclaration);
-            CreateCompletionItems(project, ALObjectType.EnumType, parameters, completionItems, false, addSemicolon, addByVarDeclaration);
-            CreateCompletionItems(project, ALObjectType.Interface, parameters, completionItems, false, addSemicolon, addByVarDeclaration);
+            CreateCompletionItems(project, ALObjectType.Table, parameters, completionItems, false, addSemicolon, addByVarDeclaration, useNamespaces, usingPosition, usings);
+            CreateCompletionItems(project, ALObjectType.Table, parameters, completionItems, true, addSemicolon, addByVarDeclaration, useNamespaces, usingPosition, usings);
+            CreateCompletionItems(project, ALObjectType.Codeunit, parameters, completionItems, false, addSemicolon, addByVarDeclaration, useNamespaces, usingPosition, usings);
+            CreateCompletionItems(project, ALObjectType.Page, parameters, completionItems, false, addSemicolon, addByVarDeclaration, useNamespaces, usingPosition, usings);
+            CreateCompletionItems(project, ALObjectType.Report, parameters, completionItems, false, addSemicolon, addByVarDeclaration, useNamespaces, usingPosition, usings);
+            CreateCompletionItems(project, ALObjectType.Query, parameters, completionItems, false, addSemicolon, addByVarDeclaration, useNamespaces, usingPosition, usings);
+            CreateCompletionItems(project, ALObjectType.XmlPort, parameters, completionItems, false, addSemicolon, addByVarDeclaration, useNamespaces, usingPosition, usings);
+            CreateCompletionItems(project, ALObjectType.EnumType, parameters, completionItems, false, addSemicolon, addByVarDeclaration, useNamespaces, usingPosition, usings);
+            CreateCompletionItems(project, ALObjectType.Interface, parameters, completionItems, false, addSemicolon, addByVarDeclaration, useNamespaces, usingPosition, usings);
         }
 
         private (bool, bool, bool) ValidSyntaxNode(SyntaxNode syntaxNode, int position)
@@ -241,8 +255,9 @@ namespace AnZwDev.ALTools.CodeCompletion
             return null;
         }
 
-        private void CreateCompletionItems(ALProject project, ALObjectType objectType, CodeCompletionParameters parameters, List<CodeCompletionItem> completionItems, bool asTemporaryVariable, bool addSemicolon, bool addByVarDeclaration)
+        private void CreateCompletionItems(ALProject project, ALObjectType objectType, CodeCompletionParameters parameters, List<CodeCompletionItem> completionItems, bool asTemporaryVariable, bool addSemicolon, bool addByVarDeclaration, bool useNamespaces, Position usingPosition, HashSet<string> usings)
         {
+            var hasUsings = ((usings != null) && (usings.Count > 0));
             var typesCollection = project.GetAllSymbolReferences().GetAllObjects(objectType);
 
             foreach (var type in typesCollection)
@@ -276,6 +291,26 @@ namespace AnZwDev.ALTools.CodeCompletion
 
                 if ((IncludeDataType) && (!addSemicolon))
                     item.commitCharacters = _fullDeclarationCommitCharacters;
+
+                if ((useNamespaces) && (!String.IsNullOrWhiteSpace(type.NamespaceName)))
+                {
+                    item.description = type.NamespaceName;
+
+                    if ((usings == null) || (!usings.Contains(type.NamespaceName)))
+                    {
+                        var usingsText = "using " + type.NamespaceName + ";\n";
+                        if (!hasUsings)
+                            usingsText = "\n" + usingsText;
+
+                        if (usingPosition.character > 0)
+                            usingsText = usingsText + "".PadRight(usingPosition.character, ' ');
+
+                        item.AddEdit(
+                            new CodeCompletionTextEdit(
+                                new Range(usingPosition, usingPosition),
+                                usingsText));
+                    }
+                }
 
                 completionItems.Add(item);
             }

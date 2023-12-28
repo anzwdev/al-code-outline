@@ -5,7 +5,7 @@
 	"version": "3.0.56",
 	"publisher": "andrzejzwierzchowski",
 	"engines": {
-		"vscode": "^1.47.0"
+		"vscode": "^1.63.0"
 	},
 	"author": {
 		"name": "Andrzej Zwierzchowski",
@@ -443,6 +443,41 @@
 				"category": "AZ AL Dev Tools",
 				"command": "azALDevTools.ProjectOneStatementPerLine",
 				"title": "One Statement Per Line in the Active Project"
+			},
+			{
+				"category": "AZ AL Dev Tools",
+				"command": "azALDevTools.SortEditorUsings",
+				"title": "Sort Usings in the Active Editor"
+			},
+			{
+				"category": "AZ AL Dev Tools",
+				"command": "azALDevTools.SortProjectUsings",
+				"title": "Sort Usings in the Active Project"
+			},
+			{
+				"category": "AZ AL Dev Tools",
+				"command": "azALDevTools.AddMissingEditorUsings",
+				"title": "Add Missing Usings to the Active Editor"
+			},
+			{
+				"category": "AZ AL Dev Tools",
+				"command": "azALDevTools.AddMissingProjectUsings",
+				"title": "Add Missing Usings to the Active Project"
+			},
+			{
+				"category": "AZ AL Dev Tools",
+				"command": "azALDevTools.RemoveUnusedEditorUsings",
+				"title": "Remove Unused Usings from the Active Editor"
+			},
+			{
+				"category": "AZ AL Dev Tools",
+				"command": "azALDevTools.RemoveUnusedProjectUsings",
+				"title": "Remove Unused Usings from the Active Project"
+			},
+			{
+				"category": "AZ AL Dev Tools",
+				"command": "azALDevTools.EnableProjectNamespaces",
+				"title": "Add Namespaces Support to the Active Project"
 			},
 			{
 				"category": "AZ AL Dev Tools",
@@ -889,6 +924,34 @@
 				},
 				{
 					"command": "azALDevTools.AddProjectDropDownFieldGroups",
+					"when": "azALDevTools.extensionActive"
+				},
+				{
+					"command": "azALDevTools.SortEditorUsings",
+					"when": "editorLangId == al"
+				},
+				{
+					"command": "azALDevTools.SortProjectUsings",
+					"when": "azALDevTools.extensionActive"
+				},
+				{
+					"command": "azALDevTools.AddMissingEditorUsings",
+					"when": "editorLangId == al"
+				},
+				{
+					"command": "azALDevTools.AddMissingProjectUsings",
+					"when": "azALDevTools.extensionActive"
+				},
+				{
+					"command": "azALDevTools.RemoveUnusedEditorUsings",
+					"when": "editorLangId == al"
+				},
+				{
+					"command": "azALDevTools.RemoveUnusedProjectUsings",
+					"when": "azALDevTools.extensionActive"
+				},
+				{
+					"command": "azALDevTools.EnableProjectNamespaces",
 					"when": "azALDevTools.extensionActive"
 				},
 				{
@@ -1612,6 +1675,7 @@
 								"SortPermissions",
 								"SortPermissionSetList",
 								"SortCustomizations",
+								"SortUsings",
 								"OneStatementPerLine",
 								"FormatDocument"
 							],
@@ -1623,6 +1687,7 @@
 								"Sort permissions",
 								"Sort permission sets",
 								"Sort customizations",
+								"Sort usings",
 								"One statement per line",
 								"Format document"
 							]
@@ -1661,6 +1726,8 @@
 								"SortTableFields",
 								"SortVariables",
 								"SortCustomizations",
+								"SortUsings",
+								"RemoveUnusedUsings",
 								"RemoveBeginEnd",
 								"RemoveEmptyTriggers",
 								"RemoveEmptyLines", 
@@ -1699,6 +1766,8 @@
 								"Sort Table Fields",
 								"Sort Variables",
 								"Sort Customizations",
+								"Sort Usings",
+								"Remove Unused Usings",
 								"Remove Begin..End",
 								"Remove Empty Triggers",
 								"Remove Empty Lines",
@@ -2025,7 +2094,7 @@
 		"test": "node ./out/test/runTest.js"
 	},
 	"devDependencies": {
-		"@types/vscode": "^1.47.0",
+		"@types/vscode": "^1.63.0",
 		"@types/glob": "^7.1.1",
 		"@types/mocha": "^7.0.2",
 		"@types/node": "^13.11.0",

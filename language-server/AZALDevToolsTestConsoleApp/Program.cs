@@ -63,9 +63,13 @@ namespace AZALDevToolsTestConsoleApp
             DCDuplicateCodeAnalyzer duplicateAnalyzer = new DCDuplicateCodeAnalyzer(3, AnZwDev.ALTools.ALSymbols.Internal.ConvertedObsoleteState.None);
             var duplicatesList = duplicateAnalyzer.FindDuplicates(host.ALDevToolsServer.Workspace, null);
 
-
+            Helpers.CopyFolder("C:\\Projects\\Sandboxes\\al-test-projects\\SmallBC23.Backup", "C:\\Projects\\Sandboxes\\al-test-projects\\SmallBC23");
             AddProjectNamespacesConverter projectNamespacesConverter = new AddProjectNamespacesConverter();
-            projectNamespacesConverter.TestFile(host.ALDevToolsServer.Workspace.Projects[0], filePath);
+            projectNamespacesConverter.AddNamespacesToProject(
+                host.ALDevToolsServer.Workspace,
+                host.ALDevToolsServer.Workspace.Projects[0],
+                "AN.Demo",
+                true);
 
 
             //filePath = "C:\\Projects\\Sandboxes\\al-test-projects\\SmallBC18\\Pag50104.MyPrefixMyPageCard.al";
@@ -117,6 +121,8 @@ namespace AZALDevToolsTestConsoleApp
 
             ALProject project = host.ALDevToolsServer.Workspace.Projects[0];
 
+
+            Helpers.CopyFolder("C:\\Projects\\Sandboxes\\al-test-projects\\SmallBC23.Backup", "C:\\Projects\\Sandboxes\\al-test-projects\\SmallBC23");
             ALSymbolInfoSyntaxTreeReader syntaxTreeReader = new(true);
             ALSymbol symbols = syntaxTreeReader.ProcessSourceFile(filePath, project);
 

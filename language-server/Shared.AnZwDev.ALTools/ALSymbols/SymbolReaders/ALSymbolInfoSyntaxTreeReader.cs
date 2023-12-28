@@ -1012,6 +1012,11 @@ namespace AnZwDev.ALTools.ALSymbols.SymbolReaders
                 case ConvertedSyntaxKind.PropertyList: return ALSymbolKind.PropertyList;
                 case ConvertedSyntaxKind.Property: return ALSymbolKind.Property;
 
+                //namespaces
+                case ConvertedSyntaxKind.NamespaceDeclaration: return ALSymbolKind.Namespace;
+                case ConvertedSyntaxKind.UsingDirective: return ALSymbolKind.UsingDirective;
+
+
             }
             return ALSymbolKind.Undefined;
         }

@@ -1,9 +1,11 @@
 # Change Log
 
 ## 3.0.56
+ - Issue #507 - Namespaces quick fixes and commands
  - Issue #514 - Code Analyzers: most AppSourceCop rules appear twice
  - Issue #516 - Add permissions functionality seems to be broken.
  - Issue #519 - Convert Object Ids to Names does not convert CodeunitID in AddAction of ErrorInfo
+ - Issue #520 - Namespaces support added
 
 Thank you
  - NKarolak for reporting issue #514

@@ -5,10 +5,10 @@ import { AZSymbolInformation } from "../../symbollibraries/azSymbolInformation";
 import { AZSymbolKind } from '../../symbollibraries/azSymbolKind';
 import { ALCodeAction } from "../alCodeAction";
 
-export class ALSortPermissionsCommand extends ALCodeAction {
+export class ALSortUsingsCommand extends ALCodeAction {
 
     constructor(context : DevToolsExtensionContext) {
-        super(context, "SortPermissions");
+        super(context, "SortUsings");
     }
 
     collectCodeActions(docSymbols: AZDocumentSymbolsLibrary, symbol: AZSymbolInformation | undefined, document: vscode.TextDocument, range: vscode.Range | vscode.Selection, diagnostics: vscode.Diagnostic[], actions: vscode.CodeAction[]) {
@@ -17,17 +17,15 @@ export class ALSortPermissionsCommand extends ALCodeAction {
 
             //collect list of objects in selection range
             if ((symbol) && 
-                (symbol.kind === AZSymbolKind.Property) && 
-                (symbol.name) && 
-                (symbol.name.toLowerCase() === "permissions") &&
+                (symbol.kind === AZSymbolKind.UsingDirective) && 
                 (!symbol.containsDiagnostics) &&
                 (symbol.selectionRange) &&
-                (symbol.selectionRange.start.line === range.start.line)) {
+                (symbol.selectionRange.start.line == range.start.line)) {
 
-                let action = new vscode.CodeAction("Sort permissions (AZ AL Dev Tools)", vscode.CodeActionKind.QuickFix);
+                let action = new vscode.CodeAction("Sort usings (AZ AL Dev Tools)", vscode.CodeActionKind.QuickFix);
                 action.command = {
-                    command: "azALDevTools.sortPermissions",
-                    title: "Sort Permissions",
+                    command: "azALDevTools.sortUsings",
+                    title: "Sort Usings",
                     arguments: [document, symbol.range]
                 };
                 actions.push(action);

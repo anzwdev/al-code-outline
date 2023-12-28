@@ -4,7 +4,7 @@ using System.Text;
 
 namespace AnZwDev.ALTools.CodeTransformations.Namespaces
 {
-    internal class UsingInformation
+    internal class NamespaceUsingReference
     {
 
         public string Id { get; }
@@ -15,11 +15,11 @@ namespace AnZwDev.ALTools.CodeTransformations.Namespaces
         public bool InVariableDeclaration { get; set; }
         public bool UsingRequired { get; set; }
 
-        public UsingInformation() 
+        public NamespaceUsingReference() 
         {
         }
 
-        public UsingInformation(string namespaceName, string filePath, bool inUsing, bool inVariableDeclaration, bool usingRequired)
+        public NamespaceUsingReference(string namespaceName, string filePath, bool inUsing, bool inVariableDeclaration, bool usingRequired)
         {
             Namespace = namespaceName;
             FilePath = filePath;
@@ -32,7 +32,7 @@ namespace AnZwDev.ALTools.CodeTransformations.Namespaces
                 Id = FilePath;
         }
 
-        public void Merge(UsingInformation usingInformation)
+        public void Merge(NamespaceUsingReference usingInformation)
         {
             InUsing = InUsing | usingInformation.InUsing;
             InVariableDeclaration = InVariableDeclaration | usingInformation.InVariableDeclaration;

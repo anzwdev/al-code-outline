@@ -13,6 +13,7 @@ using AnZwDev.ALTools.CodeAnalysis;
 using AnZwDev.ALTools.ALSymbolReferences.MergedReferences;
 using Microsoft.Dynamics.Nav.CodeAnalysis.Syntax;
 using Microsoft.Dynamics.Nav.CodeAnalysis;
+using System.Linq;
 
 namespace AnZwDev.ALTools.Workspace
 {
@@ -259,6 +260,17 @@ namespace AnZwDev.ALTools.Workspace
         public bool IsALProject()
         {
             return (this.Properties != null);
+        }
+
+        public bool UsesNamespaces()
+        {
+#if BC
+            return 
+                (this.Symbols != null) &&
+                (this.Symbols.AllObjects.Any(p => (!String.IsNullOrWhiteSpace(p.NamespaceName))));
+#else
+            return false;
+#endif
         }
 
         #region Path and file names methods

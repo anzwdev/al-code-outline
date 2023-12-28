@@ -216,7 +216,9 @@ export enum AZSymbolKind {
     SyntaxTreeToken = 50057,
     SyntaxTreeTrivia = 50058,
 
-    Region = 50066
-    //Next available id 50067
+    Region = 50066,
+    UsingDirective = 50067
+
+    //Next available id 50068
 
 }

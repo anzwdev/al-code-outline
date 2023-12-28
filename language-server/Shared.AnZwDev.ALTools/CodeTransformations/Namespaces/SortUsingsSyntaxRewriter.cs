@@ -12,7 +12,7 @@ namespace AnZwDev.ALTools.CodeTransformations.Namespaces
 
 #if BC
 
-    internal class SortUsingSyntaxRewriter : ALSyntaxRewriter
+    public class SortUsingsSyntaxRewriter : ALSyntaxRewriter
     {
 
         #region Usings comparer
@@ -38,7 +38,7 @@ namespace AnZwDev.ALTools.CodeTransformations.Namespaces
 
         public bool SortSingleNodeRegions { get; set; } = false;
 
-        public SortUsingSyntaxRewriter()
+        public SortUsingsSyntaxRewriter()
         {
         }
 

@@ -50,6 +50,10 @@ import { OneStatementPerLineModifier } from '../alsyntaxmodifiers/oneStatementPe
 import { AddDotToToolTipModifier } from '../alsyntaxmodifiers/addDotToToolTipModifier';
 import { RemoveProceduresSemicolonModifier } from '../alsyntaxmodifiers/removeProceduresSemicolonModifier';
 import { AddUsingRegionModifier } from '../alsyntaxmodifiers/addUsingRegionModifier';
+import { SortUsingsModifier } from '../alsyntaxmodifiers/sortUsingsModifier';
+import { AddMissingUsingsModifier } from '../alsyntaxmodifiers/addMissingUsingsModifier';
+import { RemoveUnusedUsingsModifier } from '../alsyntaxmodifiers/removeUnusedUsingsModifier';
+import { AddNamespaceSupportModifier } from '../alsyntaxmodifiers/addNamespaceSupportModifier';
 
 export class ALCodeTransformationService extends DevToolsExtensionService {
     protected _syntaxFactories: ISyntaxModifierFactoriesCollection;
@@ -71,6 +75,7 @@ export class ALCodeTransformationService extends DevToolsExtensionService {
         this.registerDocumentRangeCommand('azALDevTools.addAllObjectsPermissions', () => new AddAllObjectsPermissionsModifier(this._context));
         this.registerDocumentRangeCommand('azALDevTools.addReferencedTablesPermissions', () => new AddReferencedTablesPermissionsModifier(this._context));
         this.registerDocumentRangeCommand('azALDevTools.generateCSVXmlPortHeaders', () => new GenerateCSVXmlPortHeadersModifier(this._context));
+        this.registerDocumentRangeCommand('azALDevTools.sortUsings', () => new SortUsingsModifier(this._context));
 
         this.registerDocumentRangeCommand('azALDevTools.removeVariable', () => new WorkspaceCommandSyntaxModifier(this._context, 'removeVariable', 'removeVariable'));
         this.registerDocumentSymbolCommand('azALDevTools.ReuseToolTipFromOtherPages', () => new ReuseSingleFieldToolTipModifier(this._context));
@@ -122,6 +127,11 @@ export class ALCodeTransformationService extends DevToolsExtensionService {
         this.registerModifierCommands('SortVariables', 'azALDevTools.SortEditorVariables', 'azALDevTools.SortWorkspaceVariables', () => new SortVariablesModifier(this._context));
         this.registerModifierCommands('SortCustomizations', 'azALDevTools.SortEditorCustomizations', 'azALDevTools.SortWorkspaceCustomizations', () => new SortCustomizationsModifier(this._context));
 
+        this.registerModifierCommands('SortUsings', 'azALDevTools.SortEditorUsings', 'azALDevTools.SortProjectUsings', () => new SortUsingsModifier(this._context));
+        this.registerModifierCommands('AddMissingUsings', 'azALDevTools.AddMissingEditorUsings', 'azALDevTools.AddMissingProjectUsings', () => new AddMissingUsingsModifier(this._context));
+        this.registerModifierCommands('RemoveUnusedUsings', 'azALDevTools.RemoveUnusedEditorUsings', 'azALDevTools.RemoveUnusedProjectUsings', () => new RemoveUnusedUsingsModifier(this._context));
+        this.registerModifierCommands('EnableNamespaces', undefined, 'azALDevTools.EnableProjectNamespaces', () => new AddNamespaceSupportModifier(this._context));
+
         this.registerModifierCommands(undefined, 'azALDevTools.RunEditorCodeCleanup', 'azALDevTools.RunWorkspaceCodeCleanup', () => new BatchSyntaxModifier(this._context));
         this.registerModifiedFilesOnlyCommand('azALDevTools.RunModifiedFilesCodeCleanup', () => new BatchSyntaxModifier(this._context));
 
@@ -130,11 +140,18 @@ export class ALCodeTransformationService extends DevToolsExtensionService {
         this._syntaxFactories["TrimTrailingWhitespace"] = (() => new TrimTrailingWhitespaceModifier(this._context));
     }
 
-    protected registerModifierCommands(name: string | undefined, editorCmdName: string, workspaceCmdName: string, modifierFactory: () => SyntaxModifier) {
-        if (name)
+    protected registerModifierCommands(name: string | undefined, editorCmdName: string | undefined, workspaceCmdName: string | undefined, modifierFactory: () => SyntaxModifier) {
+        if (name) {
             this._syntaxFactories[name] = modifierFactory;
-        this.registerEditorCommand(editorCmdName, modifierFactory);
-        this.registerWorkspaceCommand(workspaceCmdName, modifierFactory);
+        }
+        
+        if (editorCmdName){
+            this.registerEditorCommand(editorCmdName, modifierFactory);
+        }
+
+        if (workspaceCmdName) {
+            this.registerWorkspaceCommand(workspaceCmdName, modifierFactory);
+        }
     }
 
     protected registerEditorCommand(name: string, modifierFactory: () => SyntaxModifier) {

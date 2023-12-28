@@ -26,6 +26,7 @@ import { TextRange } from '../symbollibraries/textRange';
 import { ToolsWorkspaceCommandRequest } from '../langserver/toolsWorkspaceCommandRequest';
 import { ToolsWorkspaceCommandResponse } from '../langserver/toolsWorkspaceCommandResponse';
 import { error } from 'console';
+import { ALSortUsingsCommand } from './sortSymbols/alSortUsingsCommand';
 
 export class ALCodeActionsProvider implements vscode.CodeActionProvider {
     protected _toolsExtensionContext : DevToolsExtensionContext;
@@ -54,6 +55,7 @@ export class ALCodeActionsProvider implements vscode.CodeActionProvider {
             new ALSortPermissionsCommand(this._toolsExtensionContext),
             new ALSortPermissionSetListCommand(this._toolsExtensionContext),
             new ALSortCustomizationsCommand(this._toolsExtensionContext),
+            new ALSortUsingsCommand(this._toolsExtensionContext),
             
             new ALCreateInterfaceCodeCommand(this._toolsExtensionContext),
             
