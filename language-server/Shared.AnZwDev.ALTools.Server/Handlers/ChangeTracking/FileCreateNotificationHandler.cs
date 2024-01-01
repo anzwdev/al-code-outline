@@ -1,27 +1,22 @@
 ﻿using AnZwDev.ALTools.Server.Contracts.ChangeTracking;
-using AnZwDev.VSCodeLangServer.Protocol.Server;
-using AnZwDev.VSCodeLangServer.Protocol.MessageProtocol;
-using System;
-using System.Collections.Generic;
-using System.Text;
+using StreamJsonRpc;
 using System.Threading.Tasks;
 
 namespace AnZwDev.ALTools.Server.Handlers.ChangeTracking
 {
-    public class FileCreateNotificationHandler : BaseALNotificationHandler<FilesNotificationRequest>
+    public class FileCreateNotificationHandler : RequestHandler
     {
 
-        public FileCreateNotificationHandler(ALDevToolsServer alDevToolsServer, LanguageServerHost languageServerHost) : base(alDevToolsServer, languageServerHost, "ws/fileCreate")
+        public FileCreateNotificationHandler(LanguageServerHost languageServerHost) : base(languageServerHost)
         {
         }
 
-#pragma warning disable 1998
-        public override async Task HandleNotification(FilesNotificationRequest parameters, NotificationContext context)
+        [JsonRpcMethod("ws/fileCreate", UseSingleObjectParameterDeserialization = true)]
+        public void FileCreate(FilesNotificationRequest parameters)
         {
             this.Server.Workspace.OnFilesCreate(parameters.files);
 
         }
-#pragma warning restore 1998
 
     }
 }

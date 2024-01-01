@@ -1,23 +1,20 @@
 ﻿using AnZwDev.ALTools.ALSymbols;
 using AnZwDev.ALTools.Server.Contracts;
-using AnZwDev.VSCodeLangServer.Protocol.MessageProtocol;
-using AnZwDev.VSCodeLangServer.Protocol.Server;
+using StreamJsonRpc;
 using System;
-using System.Collections.Generic;
-using System.Text;
 using System.Threading.Tasks;
 
 namespace AnZwDev.ALTools.Server.Handlers
 {
-    public class GetLibrarySymbolLocationRequestHandler : BaseALRequestHandler<GetLibrarySymbolLocationRequest, GetLibrarySymbolLocationResponse>
+    public class GetLibrarySymbolLocationRequestHandler : RequestHandler
     {
 
-        public GetLibrarySymbolLocationRequestHandler(ALDevToolsServer server, LanguageServerHost languageServerHost) : base(server, languageServerHost, "al/librarysymbollocation")
+        public GetLibrarySymbolLocationRequestHandler(LanguageServerHost languageServerHost) : base(languageServerHost)
         {
         }
 
-#pragma warning disable 1998
-        protected override async Task<GetLibrarySymbolLocationResponse> HandleMessage(GetLibrarySymbolLocationRequest parameters, RequestContext<GetLibrarySymbolLocationResponse> context)
+        [JsonRpcMethod("al/librarysymbollocation", UseSingleObjectParameterDeserialization = true)]
+        public GetLibrarySymbolLocationResponse GetLibrarySymbolLocation(GetLibrarySymbolLocationRequest parameters)
         {
             GetLibrarySymbolLocationResponse response = new GetLibrarySymbolLocationResponse();
             try
@@ -36,8 +33,6 @@ namespace AnZwDev.ALTools.Server.Handlers
             }
             return response;
         }
-#pragma warning restore 1998
-
 
     }
 }

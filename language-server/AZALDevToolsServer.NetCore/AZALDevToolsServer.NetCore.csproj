@@ -2,21 +2,16 @@
 
   <PropertyGroup>
     <OutputType>Exe</OutputType>
-    <TargetFramework>net6.0</TargetFramework>
+    <TargetFramework>net8.0</TargetFramework>
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="Newtonsoft.Json" Version="13.0.1" />
-    <PackageReference Include="Serilog" Version="2.11.0" />
-    <PackageReference Include="Serilog.Sinks.Async" Version="1.5.0" />
-    <PackageReference Include="Serilog.Sinks.Console" Version="4.0.1" />
-    <PackageReference Include="Serilog.Sinks.File" Version="5.0.0" />
+    <PackageReference Include="Newtonsoft.Json" Version="13.0.3" />
   </ItemGroup>
 
   <ItemGroup>
     <ProjectReference Include="..\AnZwDev.ALTools.Server\AnZwDev.ALTools.Server.csproj" />
     <ProjectReference Include="..\AnZwDev.ALTools\AnZwDev.ALTools.csproj" />
-    <ProjectReference Include="..\AnZwDev.VSCodeLangServer\AnZwDev.VSCodeLangServer.csproj" />
   </ItemGroup>
 
 </Project>

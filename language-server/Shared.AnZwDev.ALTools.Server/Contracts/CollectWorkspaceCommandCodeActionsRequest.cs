@@ -19,7 +19,7 @@ namespace AnZwDev.ALTools.Server.Contracts
         public string FilePath { get; set; }
 
         [JsonProperty("range")]
-        public Range Range { get; set; }
+        public TextRange Range { get; set; }
 
     }
 }

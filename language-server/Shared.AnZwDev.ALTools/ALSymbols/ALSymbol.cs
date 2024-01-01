@@ -49,13 +49,13 @@ namespace AnZwDev.ALTools.ALSymbols
         public List<ALSymbol> childSymbols { get; set; }
         
         [JsonProperty(NullValueHandling = NullValueHandling.Ignore)]
-        public Range range { get; set; }
+        public TextRange range { get; set; }
 
         [JsonProperty(NullValueHandling = NullValueHandling.Ignore)]
-        public Range selectionRange { get; set; }
+        public TextRange selectionRange { get; set; }
 
         [JsonProperty(NullValueHandling = NullValueHandling.Ignore)]
-        public Range contentRange { get; set; }
+        public TextRange contentRange { get; set; }
 
         [JsonProperty(NullValueHandling = NullValueHandling.Ignore)]
         public bool? containsDiagnostics { get; set; }

@@ -17,7 +17,7 @@ namespace AnZwDev.ALTools.WorkspaceCommands
         {
         }
 
-        protected override (string, bool, string) ProcessSourceCode(string sourceCode, ALProject project, string filePath, Range range, Dictionary<string, string> parameters)
+        protected override (string, bool, string) ProcessSourceCode(string sourceCode, ALProject project, string filePath, TextRange range, Dictionary<string, string> parameters)
         {
             string newSourceCode = sourceCode.MultilineTrimEnd();
 
@@ -30,7 +30,7 @@ namespace AnZwDev.ALTools.WorkspaceCommands
             return (newSourceCode, true, null);
         }
 
-        public override WorkspaceCommandResult Run(string sourceCode, ALProject project, string filePath, Range range, Dictionary<string, string> parameters, List<string> excludeFiles)
+        public override WorkspaceCommandResult Run(string sourceCode, ALProject project, string filePath, TextRange range, Dictionary<string, string> parameters, List<string> excludeFiles)
         {
             this._totalNoOfChanges = 0;
             this._noOfChangedFiles = 0;

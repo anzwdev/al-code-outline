@@ -17,7 +17,7 @@ namespace AnZwDev.ALTools.WorkspaceCommands
         {
         }
 
-        protected override (string, bool, string) ProcessSourceCode(string sourceCode, ALProject project, string filePath, Range range, Dictionary<string, string> parameters)
+        protected override (string, bool, string) ProcessSourceCode(string sourceCode, ALProject project, string filePath, TextRange range, Dictionary<string, string> parameters)
         {
             string newSourceCode = sourceCode.RemoveDuplicateEmptyLines();
             int prevNoOfChangedFiles = this.SyntaxRewriter.NoOfChangedFiles;

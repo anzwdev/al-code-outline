@@ -1,26 +1,21 @@
 ﻿using AnZwDev.ALTools.Server.Contracts.ChangeTracking;
-using AnZwDev.VSCodeLangServer.Protocol.Server;
-using AnZwDev.VSCodeLangServer.Protocol.MessageProtocol;
-using System;
-using System.Collections.Generic;
-using System.Text;
+using StreamJsonRpc;
 using System.Threading.Tasks;
 
 namespace AnZwDev.ALTools.Server.Handlers.ChangeTracking
 {
-    public class FileDeleteNotificationHandler : BaseALNotificationHandler<FilesNotificationRequest>
+    public class FileDeleteNotificationHandler : RequestHandler
     {
 
-        public FileDeleteNotificationHandler(ALDevToolsServer alDevToolsServer, LanguageServerHost languageServerHost) : base(alDevToolsServer, languageServerHost, "ws/fileDelete")
+        public FileDeleteNotificationHandler(LanguageServerHost languageServerHost) : base(languageServerHost)
         {
         }
 
-#pragma warning disable 1998
-        public override async Task HandleNotification(FilesNotificationRequest parameters, NotificationContext context)
+        [JsonRpcMethod("ws/fileDelete", UseSingleObjectParameterDeserialization = true)]
+        public void FileDelete(FilesNotificationRequest parameters)
         {
             this.Server.Workspace.OnFilesDelete(parameters.files);
         }
-#pragma warning restore 1998
 
     }
 }

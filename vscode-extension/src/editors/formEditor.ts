@@ -61,7 +61,7 @@ export class FormEditor extends TextDocumentWebViewEditor {
                 });
             }
         }
-        catch(e) {
+        catch(e: any) {
             let errorMessage = "Cannot parse file content. Please open file in the text editor and fix all issues. Parser error: " +
                 e.message;            
             //set current fields firs

@@ -32,7 +32,7 @@ namespace AnZwDev.ALTools.WorkspaceCommands
             this.ModifiedFilesNamesHashSet = null;
         }
 
-        public virtual (WorkspaceCommandResult, bool) CanRun(string sourceCode, ALProject alProject, string filePath, Range range, Dictionary<string, string> parameters, List<string> excludeFiles)
+        public virtual (WorkspaceCommandResult, bool) CanRun(string sourceCode, ALProject alProject, string filePath, TextRange range, Dictionary<string, string> parameters, List<string> excludeFiles)
         {
             bool modifiedFilesOnly = this.GetModifiedFilesOnlyValue(parameters);
             if (modifiedFilesOnly)
@@ -60,7 +60,7 @@ namespace AnZwDev.ALTools.WorkspaceCommands
             return (null, true);
         }
 
-        public virtual WorkspaceCommandResult Run(string sourceCode, ALProject alProject, string filePath, Range range, Dictionary<string, string> parameters, List<string> excludeFiles)
+        public virtual WorkspaceCommandResult Run(string sourceCode, ALProject alProject, string filePath, TextRange range, Dictionary<string, string> parameters, List<string> excludeFiles)
         {
             return WorkspaceCommandResult.Empty;
         }
@@ -106,7 +106,7 @@ namespace AnZwDev.ALTools.WorkspaceCommands
                 (parameters["modifiedFilesOnly"].Equals("true", StringComparison.CurrentCultureIgnoreCase)));
         }
 
-        public virtual void CollectCodeActions(SyntaxTree syntaxTree, SyntaxNode node, Range range, List<WorkspaceCommandCodeAction> actions)
+        public virtual void CollectCodeActions(SyntaxTree syntaxTree, SyntaxNode node, TextRange range, List<WorkspaceCommandCodeAction> actions)
         {
         }
 

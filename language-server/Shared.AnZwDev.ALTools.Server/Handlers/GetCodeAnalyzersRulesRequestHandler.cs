@@ -1,25 +1,19 @@
-﻿using AnZwDev.ALTools;
-using AnZwDev.ALTools.CodeAnalysis;
-using AnZwDev.VSCodeLangServer.Protocol.Server;
-using AnZwDev.VSCodeLangServer.Protocol.MessageProtocol;
+﻿using AnZwDev.ALTools.CodeAnalysis;
 using AnZwDev.ALTools.Server.Contracts;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
+using StreamJsonRpc;
 using System.Threading.Tasks;
 
 namespace AnZwDev.ALTools.Server.Handlers
 {
-    public class GetCodeAnalyzersRulesRequestHandler : BaseALRequestHandler<GetCodeAnalyzersRulesRequest, GetCodeAnalyzersRulesResponse>
+    public class GetCodeAnalyzersRulesRequestHandler : RequestHandler
     {
 
-        public GetCodeAnalyzersRulesRequestHandler(ALDevToolsServer server, LanguageServerHost languageServerHost) : base(server, languageServerHost, "al/getcodeanalyzersrules")
+        public GetCodeAnalyzersRulesRequestHandler(LanguageServerHost languageServerHost) : base(languageServerHost)
         {
         }
 
-#pragma warning disable 1998
-        protected override async Task<GetCodeAnalyzersRulesResponse> HandleMessage(GetCodeAnalyzersRulesRequest parameters, RequestContext<GetCodeAnalyzersRulesResponse> context)
+        [JsonRpcMethod("al/getcodeanalyzersrules", UseSingleObjectParameterDeserialization = true)]
+        public GetCodeAnalyzersRulesResponse GetCodeAnalyzersRules(GetCodeAnalyzersRulesRequest parameters)
         {
             CodeAnalyzersLibrary library = this.Server.CodeAnalyzersLibraries.GetCodeAnalyzersLibrary(parameters.name);
 
@@ -32,8 +26,6 @@ namespace AnZwDev.ALTools.Server.Handlers
 
             return response;
         }
-#pragma warning restore 1998
-
 
     }
 }

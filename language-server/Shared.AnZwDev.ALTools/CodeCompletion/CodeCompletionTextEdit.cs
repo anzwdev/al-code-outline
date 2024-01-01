@@ -10,7 +10,7 @@ namespace AnZwDev.ALTools.CodeCompletion
     {
 
         [JsonProperty("range", NullValueHandling = NullValueHandling.Ignore)]
-        public Range Range { get; set; }
+        public TextRange Range { get; set; }
 
         [JsonProperty("newText", NullValueHandling = NullValueHandling.Ignore)]
         public string NewText { get; set; }
@@ -19,7 +19,7 @@ namespace AnZwDev.ALTools.CodeCompletion
         {
         }
 
-        public CodeCompletionTextEdit(Range range, string newText)
+        public CodeCompletionTextEdit(TextRange range, string newText)
         {
             Range = range;
             NewText = newText;

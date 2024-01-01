@@ -9,14 +9,14 @@ import { TextEditorHelper } from '../tools/textEditorHelper';
 import { AppAreaMode } from '../alsyntaxmodifiers/appAreaMode';
 
 export class ALLangServerProxy {
-    private langClient : vscodelangclient.LanguageClient | undefined;
+    //!!!private langClient : vscodelangclient.LanguageClient | undefined;
     public extensionPath : string | undefined;
     public version : Version;
     public alEditorService: any;
 
     constructor() {
         this.version = new Version();
-        this.langClient = undefined;
+        //!!!this.langClient = undefined;
         this.alEditorService = undefined;
         this.checkExtensionProperties();
     }
@@ -49,29 +49,12 @@ export class ALLangServerProxy {
     }
 
     protected checkLanguageClient() : boolean {
-        if (!this.langClient) {
+        if (!this.alEditorService) {
             let alExtension = this.getALExtension();
             if ((!alExtension) || (!alExtension.isActive))
                 return false;
 
             if (alExtension.exports) {
-                //find language client
-                if (alExtension.exports.languageServerClient) {
-                    if (alExtension.exports.languageServerClient.languageClient)
-                        this.langClient = alExtension.exports.languageServerClient.languageClient;
-                    else
-                        this.langClient = alExtension.exports.languageServerClient;
-                 } else if (alExtension.exports.services) {
-                    let services = alExtension.exports.services;
-                    let langClientFound = false;
-                    for (let sidx = 0; ((sidx < services.length) && (!langClientFound)); sidx++) {
-                        if (services[sidx].languageServerClient) {                        
-                            this.langClient = services[sidx].languageServerClient;
-                            langClientFound = true;
-                        }
-                    }
-                }
-
                 //find editor service
                 if (alExtension.exports.services) {
                     let alServices = alExtension.exports.services;
@@ -80,7 +63,6 @@ export class ALLangServerProxy {
                             this.alEditorService = alServices[sidx];
                     }
                 }
-
             }
 
         }
@@ -119,23 +101,6 @@ export class ALLangServerProxy {
         };
     }
 
-    async switchWorkspace(resourceUri: vscode.Uri, workspacePath: string) {
-        if ((!this.langClient) ||
-            (!this.alEditorService) || 
-            (this.alEditorService.lastActiveWorkspacePath === workspacePath) ||
-            (!vscode.workspace.workspaceFolders) || 
-            (vscode.workspace.workspaceFolders.length <= 1))
-            return;
-
-        //switch workspace
-        let result = await this.langClient.sendRequest('al/setActiveWorkspace', {
-            currentWorkspaceFolderPath: workspacePath,
-            settings: this.getWorkspaceSettings(resourceUri, workspacePath)
-        })
-
-        this.alEditorService.lastActiveWorkspacePath = undefined;
-    }
-
     getCurrentWorkspaceFolderPath() : string | undefined {
         if ((!vscode.workspace.workspaceFolders) || (vscode.workspace.workspaceFolders.length == 0))
             return undefined;
@@ -149,290 +114,6 @@ export class ALLangServerProxy {
         return vscode.workspace.workspaceFolders[0].uri.fsPath;
     }
 
-    /**
-     * @deprecated This method should not be used. Please use methods ToolsLangServerClient class if possible. For missing functionality create an issue on GitHub.
-     */
-    async getCompletionForSourceCode(resourceUri: vscode.Uri | undefined, progressMessage : string, sourceCode : string, posLine : number, posColumn : number, 
-        lastSourceLine : number, lastSourceColumn : number) : Promise<vscode.CompletionList | undefined> {
-        
-            return await vscode.window.withProgress<vscode.CompletionList | undefined>({
-                    location: vscode.ProgressLocation.Notification,
-                    title: progressMessage
-                }, async (progress) => {
-
-                    if ((!vscode.workspace.workspaceFolders) || (vscode.workspace.workspaceFolders.length == 0))
-                        return undefined;
-
-                    //find workspace folder for resource
-                    let rootFsPath: string;
-                    if (!resourceUri) {
-                        //resource not defined, find workspace folder for active document
-                        let editor = vscode.window.activeTextEditor;
-                        if ((editor) && (editor.document))
-                            resourceUri = editor.document.uri;
-                    }
-                    
-                    if (!resourceUri) {
-                        rootFsPath = vscode.workspace.workspaceFolders[0].uri.fsPath;
-                    } else {
-                        let rootFolder = vscode.workspace.getWorkspaceFolder(resourceUri);
-                        if ((rootFolder) && (rootFolder.uri))
-                            rootFsPath = rootFolder.uri.fsPath;
-                        else {
-                            let rootUri = TextEditorHelper.getActiveWorkspaceFolderUri();
-                            if (rootUri)
-                                rootFsPath = rootUri.fsPath;
-                            else
-                                rootFsPath = resourceUri.fsPath;
-                        }
-                    }
-
-                    try {
-                        this.checkLanguageClient();
-                        if (!this.langClient)
-                            return undefined;
-                        
-                        if (resourceUri)
-                            await this.switchWorkspace(resourceUri, rootFsPath);
-
-                        let docPath : string = path.join(rootFsPath, '.vscode\\temp-al-proxy.al');
-                        let docUri : vscode.Uri = vscode.Uri.file(docPath);
-    
-                        //let fs = require('fs');
-                        //if (!fs.existsSync(docPath)) {
-                        //    fs.writeFileSync(docPath, '', 'utf8');
-                        //}
-                    
-                        //open virtual document
-                        this.langClient.sendNotification('textDocument/didOpen', { textDocument: {
-                            uri : docUri.toString(),
-                            languageId : 'al',
-                            version : 1,
-                            text : sourceCode
-                        }});
-
-                        //run intellisense on virtual document
-                        let tokenSource : vscode.CancellationTokenSource = new vscode.CancellationTokenSource();
-                        let token : vscode.CancellationToken = tokenSource.token;
-                
-                        let list = await this.langClient.sendRequest<vscode.CompletionItem[]|vscode.CompletionList|undefined>('textDocument/completion', {
-                            textDocument : {
-                                uri : docUri.toString()
-                            },
-                            position : {
-                                line : posLine,
-                                character : posColumn
-                            },
-                            context : undefined
-                        }, token);
-
-                        //clear document content
-                        this.langClient.sendNotification('textDocument/didChange', {
-                            textDocument: {
-                                uri: docUri.toString()                                
-                            },
-                            contentChanges: [
-                                {
-                                    range: {
-                                        start: {
-                                            line: 0,
-                                            character: 0
-                                        },
-                                        end: {
-                                            line: lastSourceLine,
-                                            character: lastSourceColumn
-                                        }
-
-                                    },
-                                    rangeLength: sourceCode.length,
-                                    text: ''
-                                }
-                            ]
-                        });
-
-                        //close document
-                        this.langClient.sendNotification('textDocument/didClose', { textDocument: {
-                            uri: docUri.toString()
-                        }});
-
-                        if (!list)
-                            return undefined;
-
-                        let complList : vscode.CompletionList;
-                        if (list instanceof vscode.CompletionList) 
-                            complList = list;
-                        else {
-                            let items : vscode.CompletionItem[] = list;
-                            complList = new vscode.CompletionList(items);
-                        }
-
-                        //fix type kind
-                        if (complList.items) {
-                            for (let i = 0; i<complList.items.length; i++) {
-                                let complItem = complList.items[i];
-                                if (complItem.kind)
-                                    complItem.kind = complItem.kind - 1;
-                            }
-                        }
-
-                        return complList;
-                    }
-                    catch (e) {
-                        return undefined;
-                    }
-            });
-    }
-
-    /**
-     * @deprecated This method should not be used. Please use getNextObjectId method from ToolsLangServerClient class
-     */
-     async getNextObjectId(resourceUri: vscode.Uri | undefined, objectType : string) : Promise<string> {
-        let fileContent = objectType + " 0 _symbolcache\n{\n}";
-        let list = await this.getCompletionForSourceCode(resourceUri, "Finding next free object id.", fileContent,
-            0, objectType.length + 1, 2, 1); 
-
-        //process results        
-        if (list && list.items) {
-            for (let i=0; i<list.items.length; i++) {
-                let item = list.items[i];
-                if (item.kind == vscode.CompletionItemKind.Reference)
-                    return item.label;
-            }
-        }
-
-        return "";
-    }
-
-    /**
-     * @deprecated This method should not be used. Please use getPagesList method from ToolsLangServerClient class
-     */
-     async getPageList(resourceUri: vscode.Uri | undefined) : Promise<string[]> {
-        let fileContent = "page 0 _symbolcache\n{\nprocedure t()\nvar\nf:page ;\nbegin\nend;\n}";
-        let list = await this.getCompletionForSourceCode(resourceUri, "Loading list of pages.", fileContent,
-            4, 7, 7, 1);
-
-        //process results
-        if (list)
-            return this.getSymbolLabels(list, vscode.CompletionItemKind.Class);
-        return [];
-    }
-
-    /**
-     * @deprecated This method should not be used. Please use getTablesList method from ToolsLangServerClient class
-     */
-    async getTableList(resourceUri: vscode.Uri | undefined) : Promise<string[]> {
-        let fileContent = "codeunit 0 _symbolcache\n{\nprocedure t()\nvar\nf:record ;\nbegin\nend;\n}";
-        let list = await this.getCompletionForSourceCode(resourceUri, "Loading list of tables.", fileContent,
-            4, 9, 7, 1);
-
-        //process results
-        if (list)
-            return this.getSymbolLabels(list, vscode.CompletionItemKind.Class);
-        return [];
-    }
-
-    /**
-     * @deprecated This method should not be used. Please use getCodeunitsList method from ToolsLangServerClient class
-     */
-     async getCodeunitList(resourceUri: vscode.Uri | undefined) : Promise<string[]> {
-        let fileContent = "codeunit 0 _symbolcache\n{\nprocedure t()\nvar\nf:codeunit ;\nbegin\nend;\n}";
-        let list = await this.getCompletionForSourceCode(resourceUri, "Loading list of codeunits.", fileContent,
-            4, 11, 7, 1);
-
-        //process results
-        if (list)
-            return this.getSymbolLabels(list, vscode.CompletionItemKind.Class);
-        return [];
-    }
-
-    /**
-     * @deprecated This method should not be used. Please use getInterfacesList method from ToolsLangServerClient class
-     */
-     async getInterfaceList(resourceUri: vscode.Uri | undefined) : Promise<string[]> {
-        let fileContent = "codeunit 0 _symbolcache implements  \n{\n}";
-        let list = await this.getCompletionForSourceCode(resourceUri, "Loading list of interfaces.", fileContent,
-            0, 36, 2, 1);
-
-        //process results
-        if (list)
-            return this.getSymbolLabels(list, vscode.CompletionItemKind.Reference);
-        return [];
-    }
-
-    /**
-     * @deprecated This method should not be used. Please use getInterfacesMethodsList or getCodeunitMethodsList method from ToolsLangServerClient class
-     */
-    async getObjectMethods(resourceUri: vscode.Uri | undefined, objectType: string, objectName: string) : Promise<string[] | undefined> {
-        if ((!objectName) || (objectName == ""))
-            return undefined;
-        
-        objectName = ALSyntaxHelper.toNameText(objectName);
-        
-        let fileContent = "codeunit 0 _symbolcache\n{\nprocedure t()\nvar\nf: " + objectType + " " + objectName + ";\nbegin\nf.;\nend;\n}";
-        let list = await this.getCompletionForSourceCode(resourceUri, "Loading list of interface methods.", fileContent,
-            6, 2, 8, 1);
-
-        //process results
-        let out : string[] = [];
-        
-        if (list && list.items) {
-            for (let i=0; i<list.items.length; i++) {
-                let item = list.items[i];
-                if ((item.detail) && (item.kind == vscode.CompletionItemKind.Method)) {
-                    out.push(ALSyntaxHelper.fromNameText(item.detail));
-                }
-            }
-        }
-
-        return out;
-    }
-
-    /**
-     * @deprecated This method should not be used. Please use getPageDetails method from ToolsLangServerClient class
-     */
-    async getAvailablePageFieldList(resourceUri: vscode.Uri | undefined, pageName : string) : Promise<string[]> {
-        pageName = ALSyntaxHelper.toNameText(pageName);
-
-        let fileContent = "pageextension 0 _symbolcache extends " + pageName + "\n{\nlayout\n{\naddfirst(undefined)\n{\nfield()\n}\n}\n}";
-        let list = await this.getCompletionForSourceCode(resourceUri, "Loading list of table fields.", fileContent,
-            6, 6, 9, 1);
-
-        //process results
-        if (list)
-            return this.getSymbolLabels(list, vscode.CompletionItemKind.Field);
-        return [];
-    }
-
-    /**
-     * @deprecated This method should not be used. Please use getTableFieldsList method from ToolsLangServerClient class
-     */
-    async getFieldList(resourceUri: vscode.Uri | undefined, tableName : string) : Promise<string[]> {
-        tableName = ALSyntaxHelper.toNameText(tableName);
-        
-        let fileContent = "codeunit 0 _symbolcache\n{\nprocedure t()\nvar\nf:record " + tableName + ";\nbegin\nf.;\nend;\n}";
-        let list = await this.getCompletionForSourceCode(resourceUri, "Loading list of table fields.", fileContent,
-            6, 2, 8, 1);
-
-        //process results
-        if (list)
-            return this.getSymbolLabels(list, vscode.CompletionItemKind.Field);
-        return [];
-    }
-
-    /**
-     * @deprecated This method should not be used. Please use getEnumsList method from ToolsLangServerClient class
-     */
-     async getEnumList(resourceUri: vscode.Uri | undefined) : Promise<string[]> {
-        let fileContent = "codeunit 0 _symbolcache\n{\nprocedure t()\nvar\nf:enum ;\nbegin\nend;\n}";
-        let list = await this.getCompletionForSourceCode(resourceUri, "Loading list of enums.", fileContent,
-            4, 7, 7, 1);
-
-        //process results
-        if (list)
-            return this.getSymbolLabels(list, vscode.CompletionItemKind.Reference);       
-        return [];
-    }
-
     protected getSymbolLabels(list: vscode.CompletionList, kind: vscode.CompletionItemKind): string[] {
         let out : string[] = [];
         
@@ -440,7 +121,7 @@ export class ALLangServerProxy {
             for (let i=0; i<list.items.length; i++) {
                 let item = list.items[i];
                 if (item.kind === kind) {
-                    out.push(ALSyntaxHelper.fromNameText(item.label));
+                    out.push(ALSyntaxHelper.fromNameText(item.label.toString()));
                 }
             }
         }
@@ -462,81 +143,8 @@ export class ALLangServerProxy {
         return undefined;
     }
 
-    /**
-     * @deprecated This method should not be used. Please use getProjectSymbolLocation method from ToolsLangServerClient class
-     */    
-    async getDefinitionLocation(objectType : string, objectName : string) : Promise<vscode.Location | undefined> {
-        return await vscode.window.withProgress<vscode.Location | undefined>({
-            location: vscode.ProgressLocation.Notification,
-            title: 'Loading object definition'
-        }, async (progress) => {
-            let sourceCode : string = 'codeunit 0 _symbolcache\n{\nprocedure t()\nvar\nf: ' + 
-                objectType + ' ' + 
-                ALSyntaxHelper.toNameText(objectName) + 
-                ';\nbegin\nend;\n}';
-            let lastSourceLine = 7;
-            let lastSourceColumn = 1;
-            
-            if ((!vscode.workspace.workspaceFolders) || (vscode.workspace.workspaceFolders.length == 0))
-                return undefined;
-
-            try {
-
-                this.checkLanguageClient();
-                if (!this.langClient)
-                    return undefined;
-
-                let docPath : string = path.join(vscode.workspace.workspaceFolders[0].uri.fsPath, '.al-lang-proxy\\tempalfile.al');
-                let docUri : vscode.Uri = vscode.Uri.file(docPath);
-
-                //open virtual document
-                this.langClient.sendNotification('textDocument/didOpen', { textDocument: {
-                    uri : docUri.toString(),
-                    languageId : 'al',
-                    version : 1,
-                    text : sourceCode
-                }});
-
-                let srcPos = new vscode.Position(4, 5 + objectType.length);
-                let docPos : vscode.Location | undefined = await this.getDefinitionLocationFromDocument(docUri.toString(), srcPos);
-
-                //clear document content
-                this.langClient.sendNotification('textDocument/didChange', {
-                    textDocument: {
-                        uri: docUri.toString()                                
-                    },
-                    contentChanges: [
-                        {
-                            range: {
-                                start: {
-                                    line: 0,
-                                    character: 0
-                                },
-                                end: {
-                                    line: lastSourceLine,
-                                    character: lastSourceColumn
-                                }
-
-                            },
-                            rangeLength: sourceCode.length,
-                            text: ''
-                        }
-                    ]
-                });
-
-                //close document
-                this.langClient.sendNotification('textDocument/didClose', { textDocument: {
-                    uri: docUri.toString()
-                }});
-
-                return docPos;
-            }
-            catch (e) {
-                return undefined;
-            }
-        });
-    }
-
+    /*
+    !!!
     async getDefinitionLocationFromDocument(docUri: string, pos: vscode.Position) : Promise<vscode.Location | undefined> {
         let docPos : vscode.Location | undefined = undefined;
         try {
@@ -579,6 +187,7 @@ export class ALLangServerProxy {
 
         return docPos; 
     }
+    */
 
     async getLaunchConfiguration() : Promise<any|undefined> {
         if ((!vscode.workspace.workspaceFolders) || (vscode.workspace.workspaceFolders.length == 0))

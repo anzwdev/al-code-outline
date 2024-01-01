@@ -307,7 +307,7 @@ namespace AnZwDev.ALTools.CodeCompletion
 
                         item.AddEdit(
                             new CodeCompletionTextEdit(
-                                new Range(usingPosition, usingPosition),
+                                new TextRange(usingPosition, usingPosition),
                                 usingsText));
                     }
                 }

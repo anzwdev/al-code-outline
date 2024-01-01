@@ -1,5 +1,4 @@
-﻿using AnZwDev.VSCodeLangServer.Protocol.MessageProtocol;
-using AnZwDev.VSCodeLangServer.Protocol.Server;
+﻿using StreamJsonRpc;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -8,19 +7,18 @@ using System.Threading.Tasks;
 
 namespace AnZwDev.ALTools.Server.Handlers
 {
-    public class ExitNotificationHandler : NotificationHandler<object>
+    public class ExitNotificationHandler : RequestHandler
     {
 
-        public ExitNotificationHandler(LanguageServerHost languageServerHost) : base(languageServerHost, "exit")
+        public ExitNotificationHandler(LanguageServerHost languageServerHost) : base(languageServerHost)
         {
         }
 
-#pragma warning disable 1998
-        public override async Task HandleNotification(object parameters, NotificationContext context)
+        [JsonRpcMethod("exit", UseSingleObjectParameterDeserialization = true)]
+        public void Exit(object parameters)
         {
             this.LanguageServerHost.Stop();
         }
-#pragma warning restore 1998
 
     }
 }

@@ -1,25 +1,20 @@
-﻿using AnZwDev.ALTools;
-using AnZwDev.ALTools.ALSymbols;
-using AnZwDev.VSCodeLangServer.Protocol.MessageProtocol;
+﻿using AnZwDev.ALTools.ALSymbols;
 using AnZwDev.ALTools.Server.Contracts;
+using StreamJsonRpc;
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
-using AnZwDev.VSCodeLangServer.Protocol.Server;
 
 namespace AnZwDev.ALTools.Server.Handlers
 {
-    public class LibrarySymbolsDetailsRequestHandler : BaseALRequestHandler<LibrarySymbolsDetailsRequest, LibrarySymbolsDetailsResponse>
+    public class LibrarySymbolsDetailsRequestHandler : RequestHandler
     {
 
-        public LibrarySymbolsDetailsRequestHandler(ALDevToolsServer server, LanguageServerHost languageServerHost) : base(server, languageServerHost, "al/librarysymbolsdetails")
+        public LibrarySymbolsDetailsRequestHandler(LanguageServerHost languageServerHost) : base(languageServerHost)
         {
         }
 
-#pragma warning disable 1998
-        protected override async Task<LibrarySymbolsDetailsResponse> HandleMessage(LibrarySymbolsDetailsRequest parameters, RequestContext<LibrarySymbolsDetailsResponse> context)
+        [JsonRpcMethod("al/librarysymbolsdetails", UseSingleObjectParameterDeserialization = true)]
+        public LibrarySymbolsDetailsResponse LibrarySymbolsDetails(LibrarySymbolsDetailsRequest parameters)
         {
             LibrarySymbolsDetailsResponse response = new LibrarySymbolsDetailsResponse();
             try
@@ -36,7 +31,6 @@ namespace AnZwDev.ALTools.Server.Handlers
             }
             return response;
         }
-#pragma warning restore 1998
 
     }
 }

@@ -26,7 +26,7 @@ namespace AnZwDev.ALTools.WorkspaceCommands
         {
         }
 
-        public override WorkspaceCommandResult Run(string sourceCode, ALProject project, string filePath, Range range, Dictionary<string, string> parameters, List<string> excludeFiles)
+        public override WorkspaceCommandResult Run(string sourceCode, ALProject project, string filePath, TextRange range, Dictionary<string, string> parameters, List<string> excludeFiles)
         {
             SourceText sourceText = null;
             SyntaxTree sourceSyntaxTree = null;
@@ -182,7 +182,7 @@ namespace AnZwDev.ALTools.WorkspaceCommands
             return (true, null);
         }
 
-        protected (bool, string) ProcessFile(SourceText sourceText, SyntaxTree syntaxTree, Compilation compilation, ALProject project, Range range, Dictionary<string, string> parameters)
+        protected (bool, string) ProcessFile(SourceText sourceText, SyntaxTree syntaxTree, Compilation compilation, ALProject project, TextRange range, Dictionary<string, string> parameters)
         {
             SyntaxNode rootNode = syntaxTree.GetRoot();
             if (rootNode != null)
@@ -195,7 +195,7 @@ namespace AnZwDev.ALTools.WorkspaceCommands
             return (true, null);
         }
 
-        protected (string, bool, string) ProcessSourceCode(SourceText sourceText, SyntaxTree syntaxTree, Compilation compilation, ALProject project, Range range, Dictionary<string, string> parameters)
+        protected (string, bool, string) ProcessSourceCode(SourceText sourceText, SyntaxTree syntaxTree, Compilation compilation, ALProject project, TextRange range, Dictionary<string, string> parameters)
         {
             try
             {

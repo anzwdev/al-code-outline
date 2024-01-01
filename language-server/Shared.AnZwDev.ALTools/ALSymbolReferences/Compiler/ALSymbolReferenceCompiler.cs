@@ -101,7 +101,7 @@ namespace AnZwDev.ALTools.ALSymbolReferences.Compiler
             {
                 case PragmaWarningDirectiveTriviaSyntax pragmaWarningDirectiveTriviaSyntax:
                     return new ALAppPragmaWarningDirective(
-                        new Range(syntaxTree.GetLineSpan(directiveSyntax.FullSpan)),
+                        new TextRange(syntaxTree.GetLineSpan(directiveSyntax.FullSpan)),
                         pragmaWarningDirectiveTriviaSyntax.DisableOrRestoreKeyword.Kind.ConvertToLocalType() == ConvertedSyntaxKind.DisableKeyword,
                         GetRulesIds(pragmaWarningDirectiveTriviaSyntax.ErrorCodes));
                 case PragmaImplicitWithDirectiveTriviaSyntax pragmaImplicitWithDirectiveTriviaSyntax:

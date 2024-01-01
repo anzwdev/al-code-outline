@@ -3,12 +3,12 @@ import * as path from 'path';
 import { BaseWebViewEditor } from '../../webviews/baseWebViewEditor';
 import { DevToolsExtensionContext } from '../../devToolsExtensionContext';
 import { ALObjectWizardSettings } from './alObjectWizardSettings';
-import { ICRSExtensionPublicApi } from 'crs-al-language-extension-api';
 import { CRSALLangExtHelper } from '../../crsAlLangExtHelper';
 import { FileBuilder } from '../fileBuilder';
 import { ToolsGetProjectSettingsRequest } from '../../langserver/toolsGetProjectSettingsRequest';
 import { ToolsGetProjectSettingsResponse } from '../../langserver/toolsGetProjectSettingsResponse';
 import { ALObjectWizardData } from './alObjectWizardData';
+import { ICRSExtensionPublicApi } from '../../CRSExtensionPublicApiInterfaces';
 
 export class ProjectItemWizardPage extends BaseWebViewEditor {
     protected _toolsExtensionContext : DevToolsExtensionContext;

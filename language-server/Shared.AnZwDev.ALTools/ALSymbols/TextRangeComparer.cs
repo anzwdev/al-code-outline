@@ -4,12 +4,12 @@ using System.Text;
 
 namespace AnZwDev.ALTools.ALSymbols
 {
-    public class RangeComparer : IComparer<Range>
+    public class TextRangeComparer : IComparer<TextRange>
     {
 
         private readonly PositionComparer _positionComparer = new PositionComparer();
 
-        public int Compare(Range x, Range y)
+        public int Compare(TextRange x, TextRange y)
         {
             if ((x == null) && (y == null))
                 return 0;

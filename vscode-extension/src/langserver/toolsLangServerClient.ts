@@ -1,8 +1,6 @@
-'use strict';
-
 import * as vscode from 'vscode';
 import * as cp from 'child_process';
-import * as rpc from 'vscode-jsonrpc';
+import * as rpc from 'vscode-jsonrpc/node';
 import { ToolsDocumentSymbolsRequest } from './toolsDocumentSymbolsRequest';
 import { ToolsDocumentSymbolsResponse } from './toolsDocumentSymbolsResponse';
 import { ToolsPackageSymbolsRequest } from './toolsPackageSymbolsRequest';
@@ -21,7 +19,6 @@ import { ToolsGetCodeAnalyzersRulesRequest } from './toolsGetCodeAnalyzersRulesR
 import { ToolsGetCodeAnalyzersRulesResponse } from './toolsGetCodeAnalyzersRulesResponse';
 import { ToolsGetFullSyntaxTreeRequest } from './toolsGetFullSyntaxTreeRequest';
 import { ToolsGetFullSyntaxTreeResponse } from './toolsGetFullSyntaxTreeResponse';
-import { ALFullSyntaxTreeHelper } from '../symbollibraries/alFullSyntaxTreeHelper';
 import { ToolsWorkspaceCommandRequest } from './toolsWorkspaceCommandRequest';
 import { ToolsWorkspaceCommandResponse } from './toolsWorkspaceCommandResponse';
 import { Version } from '../tools/version';
@@ -151,112 +148,36 @@ export class ToolsLangServerClient implements vscode.Disposable {
         }
     }
 
-    public async getALDocumentSymbols(params : ToolsDocumentSymbolsRequest) : Promise<ToolsDocumentSymbolsResponse|undefined> {
-        try {
-            if (!this._connection)
-                return undefined;
-                    
-            let reqType = new rpc.RequestType<ToolsDocumentSymbolsRequest, ToolsDocumentSymbolsResponse, void, void>('al/documentsymbols');
-            let val = await this._connection.sendRequest(reqType, params);
-            return val;
-        }
-        catch (e) {
-            return undefined;
-        }
+    public getALDocumentSymbols(params : ToolsDocumentSymbolsRequest) : Promise<ToolsDocumentSymbolsResponse|undefined> {
+        return this.sendRequest<ToolsDocumentSymbolsRequest, ToolsDocumentSymbolsResponse>(params, 'al/documentsymbols');
     }
 
-    public async getAppPackageSymbols(params : ToolsPackageSymbolsRequest) : Promise<ToolsPackageSymbolsResponse|undefined> {
-        try {
-            if (!this._connection)
-                return undefined;
-                    
-            let reqType = new rpc.RequestType<ToolsPackageSymbolsRequest, ToolsPackageSymbolsResponse, void, void>('al/packagesymbols');
-            let val = await this._connection.sendRequest(reqType, params);
-            return val;
-        }
-        catch (e) {
-            return undefined;
-        }
+    public getAppPackageSymbols(params : ToolsPackageSymbolsRequest) : Promise<ToolsPackageSymbolsResponse|undefined> {
+        return this.sendRequest<ToolsPackageSymbolsRequest, ToolsPackageSymbolsResponse>(params, 'al/packagesymbols');
     }
 
-    public async getProjectSymbols(params : ToolsProjectSymbolsRequest) : Promise<ToolsProjectSymbolsResponse|undefined> {
-        try {
-            if (!this._connection)
-                return undefined;
-                
-            let reqType = new rpc.RequestType<ToolsProjectSymbolsRequest, ToolsProjectSymbolsResponse, void, void>('al/projectsymbols');
-            let val = await this._connection.sendRequest(reqType, params);
-            return val;
-        }
-        catch (e) {
-            return undefined;
-        }
+    public getProjectSymbols(params : ToolsProjectSymbolsRequest) : Promise<ToolsProjectSymbolsResponse|undefined> {
+        return this.sendRequest<ToolsProjectSymbolsRequest, ToolsProjectSymbolsResponse>(params, 'al/projectsymbols');
     }
 
-    public async getLibrarySymbolsDetails(params : ToolsLibrarySymbolsDetailsRequest) : Promise<ToolsLibrarySymbolsDetailsResponse|undefined> {
-        try {
-            if (!this._connection)
-                return undefined;
-                
-            let reqType = new rpc.RequestType<ToolsLibrarySymbolsDetailsRequest, ToolsLibrarySymbolsDetailsResponse, void, void>('al/librarysymbolsdetails');
-            let val = await this._connection.sendRequest(reqType, params);
-            return val;
-        }
-        catch (e) {
-            return undefined;
-        }
+    public getLibrarySymbolsDetails(params : ToolsLibrarySymbolsDetailsRequest) : Promise<ToolsLibrarySymbolsDetailsResponse|undefined> {
+        return this.sendRequest<ToolsLibrarySymbolsDetailsRequest, ToolsLibrarySymbolsDetailsResponse>(params, 'al/librarysymbolsdetails');
     }
 
     public closeSymbolsLibrary(params: ToolsCloseSymbolsLibraryRequest) {
-        try {
-            if (!this._connection)
-                return undefined;
-
-            let reqType = new rpc.NotificationType<ToolsCloseSymbolsLibraryRequest, void>('al/closesymbolslibrary');;
-            this._connection.sendNotification(reqType, params);
-        }
-        catch (e) {
-        }
+        this.sendNotification(params, 'al/closesymbolslibrary');
     }
 
-    public async getSyntaxTree(params: ToolsGetSyntaxTreeRequest) : Promise<ToolsGetSyntaxTreeResponse|undefined> {
-        try {
-            if (!this._connection)
-                return undefined;
-                
-            let reqType = new rpc.RequestType<ToolsGetSyntaxTreeRequest, ToolsGetSyntaxTreeResponse, void, void>('al/getsyntaxtree');
-            let val = await this._connection.sendRequest(reqType, params);
-            return val;
-        }
-        catch(e) {
-            return undefined;
-        }
+    public getSyntaxTree(params: ToolsGetSyntaxTreeRequest) : Promise<ToolsGetSyntaxTreeResponse|undefined> {
+        return this.sendRequest<ToolsGetSyntaxTreeRequest, ToolsGetSyntaxTreeResponse>(params, 'al/getsyntaxtree');
     }
 
-    public async getSyntaxTreeSymbol(params: ToolsGetSyntaxTreeSymbolsRequest) : Promise<ToolsGetSyntaxTreeSymbolResponse|undefined> {
-        try {
-            if (!this._connection)
-                return undefined;
-                
-            let reqType = new rpc.RequestType<ToolsGetSyntaxTreeSymbolsRequest, ToolsGetSyntaxTreeSymbolResponse, void, void>('al/getsyntaxtreesymbol');
-            let val = await this._connection.sendRequest(reqType, params);
-            return val;
-        }
-        catch(e) {
-            return undefined;
-        }
+    public getSyntaxTreeSymbol(params: ToolsGetSyntaxTreeSymbolsRequest) : Promise<ToolsGetSyntaxTreeSymbolResponse|undefined> {
+        return this.sendRequest<ToolsGetSyntaxTreeSymbolsRequest, ToolsGetSyntaxTreeSymbolResponse>(params, 'al/getsyntaxtreesymbol');
     }
 
     public closeSyntaxTree(params: ToolsCloseSyntaxTreeRequest) {
-        try {
-            if (!this._connection)
-                return undefined;
-
-            let reqType = new rpc.NotificationType<ToolsCloseSyntaxTreeRequest, void>('al/closesyntaxtree');;
-            this._connection.sendNotification(reqType, params);
-        }
-        catch (e) {
-        }
+        this.sendNotification(params, 'al/closesyntaxtree');
     }
 
     //syntax tree
@@ -272,49 +193,16 @@ export class ToolsLangServerClient implements vscode.Disposable {
         this.sendNotification(params, 'al/closerawsyntaxtree');
     }
     
-
-    public async getFullSyntaxTree(params: ToolsGetFullSyntaxTreeRequest, restoreParent: boolean) : Promise<ToolsGetFullSyntaxTreeResponse|undefined> {
-        try {
-            if (!this._connection)
-                return undefined;
-                
-            let reqType = new rpc.RequestType<ToolsGetFullSyntaxTreeRequest, ToolsGetFullSyntaxTreeResponse, void, void>('al/getfullsyntaxtree');
-            let val = await this._connection.sendRequest(reqType, params);
-            if ((restoreParent) && (val) && (val.root))
-                ALFullSyntaxTreeHelper.restoreNodeParent(val.root, undefined);
-
-            return val;
-        }
-        catch(e) {
-            return undefined;
-        }
+    public getFullSyntaxTree(params: ToolsGetFullSyntaxTreeRequest, restoreParent: boolean) : Promise<ToolsGetFullSyntaxTreeResponse|undefined> {
+        return this.sendRequest<ToolsGetFullSyntaxTreeRequest, ToolsGetFullSyntaxTreeResponse>(params, 'al/getfullsyntaxtree');
     }
     
-    public async getCodeAnalyzersRules(params: ToolsGetCodeAnalyzersRulesRequest) : Promise<ToolsGetCodeAnalyzersRulesResponse|undefined> {
-        try {
-            if (!this._connection)
-                return undefined;
-                
-            let reqType = new rpc.RequestType<ToolsGetCodeAnalyzersRulesRequest, ToolsGetCodeAnalyzersRulesResponse, void, void>('al/getcodeanalyzersrules');
-            let val = await this._connection.sendRequest(reqType, params);
-            return val;
-        }
-        catch(e) {
-            return undefined;
-        }
+    public getCodeAnalyzersRules(params: ToolsGetCodeAnalyzersRulesRequest) : Promise<ToolsGetCodeAnalyzersRulesResponse|undefined> {
+        return this.sendRequest<ToolsGetCodeAnalyzersRulesRequest, ToolsGetCodeAnalyzersRulesResponse>(params, 'al/getcodeanalyzersrules');
     }
 
-    public async workspaceCommand(params: ToolsWorkspaceCommandRequest) : Promise<ToolsWorkspaceCommandResponse | undefined> {
-        try {
-            if (!this._connection)
-                return undefined;
-            let reqType = new rpc.RequestType<ToolsWorkspaceCommandRequest, ToolsWorkspaceCommandResponse, void, void>('al/workspacecommand');
-            let val = await this._connection.sendRequest(reqType, params);
-            return val;
-        }
-        catch(e) {
-            return undefined;
-        }
+    public workspaceCommand(params: ToolsWorkspaceCommandRequest) : Promise<ToolsWorkspaceCommandResponse | undefined> {
+        return this.sendRequest<ToolsWorkspaceCommandRequest, ToolsWorkspaceCommandResponse>(params, 'al/workspacecommand');
     }
 
     public findDuplicateCode(params: ToolsFindDuplicateCodeRequest) : Promise<ToolsFindDuplicateCodeResponse | undefined> {
@@ -517,7 +405,7 @@ export class ToolsLangServerClient implements vscode.Disposable {
             if (!this._connection)
                 return undefined;
 
-            let reqType = new rpc.NotificationType<T, void>(command);
+            let reqType = new rpc.NotificationType<T>(command);
             this._connection.sendNotification(reqType, params);
         }
         catch (e) {
@@ -528,7 +416,7 @@ export class ToolsLangServerClient implements vscode.Disposable {
         try {
             if (!this._connection)
                 return undefined;
-            let reqType = new rpc.RequestType<Req, Res, void, void>(command);
+            let reqType = new rpc.RequestType<Req, Res, void>(command);
             let val = await this._connection.sendRequest(reqType, params);
             return val;
         }

@@ -1,6 +1,6 @@
 import * as vscode from 'vscode';
 import { DevToolsExtensionContext } from '../devToolsExtensionContext';
-import { ToolsDocumentPositionRequest } from '../langserver/ToolsDocumentPositionRequest';
+import { ToolsDocumentPositionRequest } from '../langserver/toolsDocumentPositionRequest';
 
 export class ALHoverProvider implements vscode.HoverProvider {
 

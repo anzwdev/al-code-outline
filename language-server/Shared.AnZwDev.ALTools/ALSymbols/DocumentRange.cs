@@ -5,7 +5,7 @@ using System.Text;
 
 namespace AnZwDev.ALTools.ALSymbols
 {
-    public class DocumentRange : Range
+    public class DocumentRange : TextRange
     {
         public string filePath { get; set; }
 

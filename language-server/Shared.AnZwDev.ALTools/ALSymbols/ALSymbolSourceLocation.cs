@@ -15,7 +15,7 @@ namespace AnZwDev.ALTools.ALSymbols
         public string sourcePath { get; set; }
 
         [JsonProperty(NullValueHandling = NullValueHandling.Ignore)]
-        public Range range { get; set; }
+        public TextRange range { get; set; }
 
         public ALSymbolSourceLocation()
         {

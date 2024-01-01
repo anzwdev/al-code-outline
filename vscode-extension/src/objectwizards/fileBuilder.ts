@@ -15,8 +15,8 @@ export class FileBuilder {
                 preview : false
             });
         }
-        catch (err) {
-            vscode.window.showErrorMessage(err);
+        catch (err: any) {
+            vscode.window.showErrorMessage(err.toString());
         }
     }
 
@@ -30,7 +30,7 @@ export class FileBuilder {
                 preview : false
             });
         }
-        catch (err) {
+        catch (err: any) {
             vscode.window.showErrorMessage(err);
         }
     }
@@ -76,7 +76,7 @@ export class FileBuilder {
             try {
                 fs.appendFileSync(newFilePath, content);
             }
-            catch (e) {
+            catch (e: any) {
                 vscode.window.showErrorMessage('Cannot create the AL file, please check if you selected correct output directory and your "CRS.FileNamePattern" setting. Error: ' + e.message);
                 return undefined;
             }
@@ -99,7 +99,7 @@ export class FileBuilder {
             fs.appendFileSync(newFilePath, content);
             return newFilePath;
         }
-        catch (e) {
+        catch (e: any) {
             vscode.window.showErrorMessage('Cannot create the AL file, please check if you selected correct output directory and your "CRS.FileNamePattern" setting. Error: ' + e.message);
             return undefined;
         }
@@ -120,9 +120,9 @@ export class FileBuilder {
             try {
                 fs.mkdirSync(curDirPathToCreate);
             } 
-            catch (err) {
-                if (err.code !== 'EEXIST') {
-                    throw err;
+            catch (e: any) {
+                if (e.code !== 'EEXIST') {
+                    throw e;
                 }
             }
     

@@ -1,7 +1,7 @@
 <Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <TargetFramework>netstandard2.0</TargetFramework>
+    <TargetFramework>netstandard2.1</TargetFramework>
   </PropertyGroup>
 
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
@@ -13,12 +13,12 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="Newtonsoft.Json" Version="13.0.1" />
+    <PackageReference Include="Newtonsoft.Json" Version="13.0.3" />
+    <PackageReference Include="StreamJsonRpc" Version="2.17.8" />
   </ItemGroup>
 
   <ItemGroup>
     <ProjectReference Include="..\AnZwDev.ALTools\AnZwDev.ALTools.csproj" />
-    <ProjectReference Include="..\AnZwDev.VSCodeLangServer\AnZwDev.VSCodeLangServer.csproj" />
   </ItemGroup>
 
   <Import Project="..\Shared.AnZwDev.ALTools.Server\Shared.AnZwDev.ALTools.Server.projitems" Label="Shared" />

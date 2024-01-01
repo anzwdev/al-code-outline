@@ -96,11 +96,11 @@ namespace AnZwDev.ALTools.ALSymbols.SymbolReaders
             alNode.kind = token.Kind.ToString();
             
             FileLinePositionSpan lineSpan = syntaxTree.GetLineSpan(token.FullSpan);
-            alNode.fullSpan = new Range(lineSpan.StartLinePosition.Line, lineSpan.StartLinePosition.Character,
+            alNode.fullSpan = new TextRange(lineSpan.StartLinePosition.Line, lineSpan.StartLinePosition.Character,
                 lineSpan.EndLinePosition.Line, lineSpan.EndLinePosition.Character);
 
             lineSpan = syntaxTree.GetLineSpan(token.Span);
-            alNode.span = new Range(lineSpan.StartLinePosition.Line, lineSpan.StartLinePosition.Character,
+            alNode.span = new TextRange(lineSpan.StartLinePosition.Line, lineSpan.StartLinePosition.Character,
                 lineSpan.StartLinePosition.Line, lineSpan.StartLinePosition.Character);
 
             return alNode;
@@ -113,11 +113,11 @@ namespace AnZwDev.ALTools.ALSymbols.SymbolReaders
             alNode.kind = node.Kind.ToString();
 
             FileLinePositionSpan lineSpan = syntaxTree.GetLineSpan(node.FullSpan);
-            alNode.fullSpan = new Range(lineSpan.StartLinePosition.Line, lineSpan.StartLinePosition.Character,
+            alNode.fullSpan = new TextRange(lineSpan.StartLinePosition.Line, lineSpan.StartLinePosition.Character,
                 lineSpan.EndLinePosition.Line, lineSpan.EndLinePosition.Character);
 
             lineSpan = syntaxTree.GetLineSpan(node.Span);
-            alNode.span = new Range(lineSpan.StartLinePosition.Line, lineSpan.StartLinePosition.Character,
+            alNode.span = new TextRange(lineSpan.StartLinePosition.Line, lineSpan.StartLinePosition.Character,
                 lineSpan.StartLinePosition.Line, lineSpan.StartLinePosition.Character);
 
             //additional properties

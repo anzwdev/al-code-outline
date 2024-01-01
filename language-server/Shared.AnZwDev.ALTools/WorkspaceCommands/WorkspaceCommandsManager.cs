@@ -99,7 +99,7 @@ namespace AnZwDev.ALTools.WorkspaceCommands
             this.RegisterCommand(groupCommand);
         }
 
-        public WorkspaceCommandResult RunCommand(string commandName, string sourceCode, string projectPath, string filePath, Range range, Dictionary<string, string> parameters, List<string> excludeFiles)
+        public WorkspaceCommandResult RunCommand(string commandName, string sourceCode, string projectPath, string filePath, TextRange range, Dictionary<string, string> parameters, List<string> excludeFiles)
         {
             if (_commands.ContainsKey(commandName))
             {
@@ -117,7 +117,7 @@ namespace AnZwDev.ALTools.WorkspaceCommands
                 throw new Exception($"Workspace command {commandName} not found.");
         }
 
-        public List<WorkspaceCommandCodeAction> GetCodeActions(string sourceCode, string projectPath, string filePath, Range range)
+        public List<WorkspaceCommandCodeAction> GetCodeActions(string sourceCode, string projectPath, string filePath, TextRange range)
         {
             var codeActions = new List<WorkspaceCommandCodeAction>();
             var project = ALDevToolsServer.Workspace.FindProject(projectPath);

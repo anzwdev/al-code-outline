@@ -157,7 +157,7 @@
     <Compile Include="$(MSBuildThisFileDirectory)ALSymbols\ALSyntaxTreeSymbol.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)ALSymbols\ALObjectReference.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)ALSymbols\PositionComparer.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)ALSymbols\RangeComparer.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)ALSymbols\TextRangeComparer.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)ALSymbols\SymbolReaders\ALBaseSyntaxTreeSymbolsReader.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)ALSymbols\SymbolReaders\ALRawSyntaxTreeSymbolsReader.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)ALSymbols\DocumentRange.cs" />
@@ -173,7 +173,7 @@
     <Compile Include="$(MSBuildThisFileDirectory)ALSymbols\Internal\ConvertedVariableKind.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)ALSymbols\Position.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)ALSymbols\PropertyValue.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)ALSymbols\Range.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)ALSymbols\TextRange.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)ALSymbols\SymbolReaders\ALFullSyntaxTreeReader.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)ALSymbols\SymbolReaders\ALRegionDirective.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)ALSymbols\SymbolReaders\ALSymbolInfoSyntaxTreeReader.cs" />

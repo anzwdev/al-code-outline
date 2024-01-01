@@ -1,27 +1,20 @@
-﻿using AnZwDev.ALTools;
-using AnZwDev.ALTools.ALSymbols;
-using AnZwDev.ALTools.ALSymbols.SymbolReaders;
-using AnZwDev.VSCodeLangServer.Protocol.Server;
-using AnZwDev.VSCodeLangServer.Protocol.MessageProtocol;
+﻿using AnZwDev.ALTools.ALSymbols;
 using AnZwDev.ALTools.Server.Contracts;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
 using AnZwDev.ALTools.Workspace;
+using StreamJsonRpc;
 
 namespace AnZwDev.ALTools.Server.Handlers
 {
-    public class GetSyntaxTreeRequestHandler : BaseALRequestHandler<GetSyntaxTreeRequest, GetSyntaxTreeResponse>
+    public class GetSyntaxTreeRequestHandler : RequestHandler
     {
 
-        public GetSyntaxTreeRequestHandler(ALDevToolsServer server, LanguageServerHost languageServerHost) : base(server, languageServerHost, "al/getsyntaxtree")
+        public GetSyntaxTreeRequestHandler(LanguageServerHost languageServerHost) : base(languageServerHost)
         {
         }
 
-#pragma warning disable 1998
-        protected override async Task<GetSyntaxTreeResponse> HandleMessage(GetSyntaxTreeRequest parameters, RequestContext<GetSyntaxTreeResponse> context)
+        [JsonRpcMethod("al/getsyntaxtree", UseSingleObjectParameterDeserialization = true)]
+        public GetSyntaxTreeResponse GetSyntaxTree(GetSyntaxTreeRequest parameters)
         {
             ALProject project = Server.Workspace.FindProject(parameters.path, parameters.projectPath, true);
             ALSyntaxTree syntaxTree = this.Server.SyntaxTrees.FindOrCreate(parameters.path, parameters.open);
@@ -34,7 +27,6 @@ namespace AnZwDev.ALTools.Server.Handlers
 
             return response;
         }
-#pragma warning restore 1998
 
     }
 }

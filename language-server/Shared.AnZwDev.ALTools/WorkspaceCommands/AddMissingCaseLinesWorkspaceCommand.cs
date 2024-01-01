@@ -29,7 +29,7 @@ namespace AnZwDev.ALTools.WorkspaceCommands
             this.SyntaxRewriter.IgnoreElseStatement = parameters.GetBoolValue(IgnoreElseParameterName);
         }
 
-        public override void CollectCodeActions(SyntaxTree syntaxTree, SyntaxNode node, Range range, List<WorkspaceCommandCodeAction> actions)
+        public override void CollectCodeActions(SyntaxTree syntaxTree, SyntaxNode node, TextRange range, List<WorkspaceCommandCodeAction> actions)
         {
             var caseStatement = node as CaseStatementSyntax;
             if (caseStatement == null)
@@ -40,7 +40,7 @@ namespace AnZwDev.ALTools.WorkspaceCommands
             if (caseStatement != null)
             {
                 var nodeLineSpan = syntaxTree.GetLineSpan(caseStatement.FullSpan);
-                var nodeRange = new Range(nodeLineSpan);
+                var nodeRange = new TextRange(nodeLineSpan);
                 actions.Add(new WorkspaceCommandCodeAction(this.Name, nodeRange, "Add missing case lines"));
             }
         }

@@ -6,6 +6,11 @@
  - Issue #516 - Add permissions functionality seems to be broken.
  - Issue #519 - Convert Object Ids to Names does not convert CodeunitID in AddAction of ErrorInfo
  - Issue #520 - Namespaces support added
+ - VS Code api references updated to the latest version of VS Code
+ - Language server communication updated and redesigned
+   - Old vscode language server client TypeScript libraries replaced by the latest vscode jsonrpc library
+   - Custom c# language server implementation removed and replaced by Microsoft StreamJsonRpc library
+ - Language server upgraded to .net 8
 
 Thank you
  - NKarolak for reporting issue #514

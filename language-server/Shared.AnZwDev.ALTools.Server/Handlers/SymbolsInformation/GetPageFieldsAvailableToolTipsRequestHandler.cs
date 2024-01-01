@@ -1,23 +1,19 @@
 ﻿using AnZwDev.ALTools.Server.Contracts.SymbolsInformation;
 using AnZwDev.ALTools.Workspace;
 using AnZwDev.ALTools.Workspace.SymbolsInformation;
-using AnZwDev.VSCodeLangServer.Protocol.Server;
-using AnZwDev.VSCodeLangServer.Protocol.MessageProtocol;
-using System;
-using System.Collections.Generic;
-using System.Text;
+using StreamJsonRpc;
 using System.Threading.Tasks;
 
 namespace AnZwDev.ALTools.Server.Handlers.SymbolsInformation
 {
-    internal class GetPageFieldsAvailableToolTipsRequestHandler : BaseALRequestHandler<GetPageFieldAvailableToolTipsRequest, GetPageFieldAvailableToolTipsResponse>
+    internal class GetPageFieldsAvailableToolTipsRequestHandler : RequestHandler
     {
-        public GetPageFieldsAvailableToolTipsRequestHandler(ALDevToolsServer server, LanguageServerHost languageServerHost) : base(server, languageServerHost, "al/getpagefieldtooltips")
+        public GetPageFieldsAvailableToolTipsRequestHandler(LanguageServerHost languageServerHost) : base(languageServerHost)
         {
         }
 
-#pragma warning disable 1998
-        protected override async Task<GetPageFieldAvailableToolTipsResponse> HandleMessage(GetPageFieldAvailableToolTipsRequest parameters, RequestContext<GetPageFieldAvailableToolTipsResponse> context)
+        [JsonRpcMethod("al/getpagefieldtooltips", UseSingleObjectParameterDeserialization = true)]
+        public GetPageFieldAvailableToolTipsResponse GetPageFieldAvailableToolTips(GetPageFieldAvailableToolTipsRequest parameters)
         {
             GetPageFieldAvailableToolTipsResponse response = new GetPageFieldAvailableToolTipsResponse();
 
@@ -34,6 +30,6 @@ namespace AnZwDev.ALTools.Server.Handlers.SymbolsInformation
 
             return response;
         }
-#pragma warning restore 1998
+
     }
 }

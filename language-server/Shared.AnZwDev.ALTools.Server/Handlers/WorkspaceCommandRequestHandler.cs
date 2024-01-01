@@ -1,28 +1,20 @@
-﻿using AnZwDev.ALTools;
-using AnZwDev.ALTools.CodeTransformations;
-using AnZwDev.ALTools.WorkspaceCommands;
-using AnZwDev.VSCodeLangServer.Protocol.Server;
-using AnZwDev.VSCodeLangServer.Protocol.MessageProtocol;
+﻿using AnZwDev.ALTools.WorkspaceCommands;
 using AnZwDev.ALTools.Server.Contracts;
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Reflection;
-using System.Text;
 using System.Threading.Tasks;
-using AnZwDev.VSCodeLangServer.Utility;
+using StreamJsonRpc;
 
 namespace AnZwDev.ALTools.Server.Handlers
 {
-    public class WorkspaceCommandRequestHandler : BaseALRequestHandler<WorkspaceCommandRequest, WorkspaceCommandResponse>
+    public class WorkspaceCommandRequestHandler : RequestHandler
     {
 
-        public WorkspaceCommandRequestHandler(ALDevToolsServer server, LanguageServerHost languageServerHost) : base(server, languageServerHost, "al/workspacecommand")
+        public WorkspaceCommandRequestHandler(LanguageServerHost languageServerHost) : base(languageServerHost)
         {
         }
 
-#pragma warning disable 1998
-        protected override async Task<WorkspaceCommandResponse> HandleMessage(WorkspaceCommandRequest parameters, RequestContext<WorkspaceCommandResponse> context)
+        [JsonRpcMethod("al/workspacecommand", UseSingleObjectParameterDeserialization = true)]
+        public WorkspaceCommandResponse WorkspaceCommand(WorkspaceCommandRequest parameters)
         {
             WorkspaceCommandResponse response = new WorkspaceCommandResponse();
             try
@@ -42,7 +34,6 @@ namespace AnZwDev.ALTools.Server.Handlers
             }
             return response;
         }
-#pragma warning restore 1998
 
 
     }

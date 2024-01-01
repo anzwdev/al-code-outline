@@ -2,8 +2,6 @@ import * as vscode from 'vscode';
 import { BaseWebViewEditor } from "./baseWebViewEditor";
 import { DevToolsExtensionContext } from '../devToolsExtensionContext';
 import { StringHelper } from '../tools/stringHelper';
-import { getVSCodeDownloadUrl } from 'vscode-test/out/util';
-import { EditorsService } from '../services/editorsService';
 
 export class TextDocumentWebViewEditor extends BaseWebViewEditor {
     public document: vscode.TextDocument | undefined;

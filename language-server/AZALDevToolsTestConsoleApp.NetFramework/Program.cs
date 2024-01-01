@@ -25,8 +25,7 @@ namespace AZALDevToolsTestConsoleApp.NetFramework
             //string extensionPath = "C:\\Users\\azwie\\Downloads\\VSCode-win32-x64-1.45.1\\data\\extensions\\microsoft.al-0.13.82793";
             string extensionPath = "C:\\Projects\\MicrosoftALVersions\\LatestBC";
 
-            ALDevToolsServerHost host = new ALDevToolsServerHost(extensionPath);
-            host.Initialize();
+            LanguageServerHost host = new LanguageServerHost(extensionPath);
 
             ALDevToolsServer alDevToolsServer = new ALDevToolsServer(extensionPath);
 

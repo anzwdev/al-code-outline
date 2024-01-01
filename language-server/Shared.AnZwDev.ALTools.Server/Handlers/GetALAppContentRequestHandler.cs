@@ -1,25 +1,23 @@
 ﻿using AnZwDev.ALTools.ALSymbolReferences.Serialization;
 using AnZwDev.ALTools.Server.Contracts;
-using AnZwDev.VSCodeLangServer.Protocol.Server;
-using AnZwDev.VSCodeLangServer.Protocol.MessageProtocol;
+using StreamJsonRpc;
 using System;
-using System.Collections.Generic;
 using System.IO;
 using System.IO.Compression;
-using System.Text;
 using System.Threading.Tasks;
 
 namespace AnZwDev.ALTools.Server.Handlers
 {
-    public class GetALAppContentRequestHandler : BaseALRequestHandler<GetALAppContentRequest, GetALAppContentResponse>
+    public class GetALAppContentRequestHandler : RequestHandler
     {
 
-        public GetALAppContentRequestHandler(ALDevToolsServer server, LanguageServerHost languageServerHost) : base(server, languageServerHost, "al/getalappcontent")
+        public GetALAppContentRequestHandler(LanguageServerHost languageServerHost) : base(languageServerHost)
         {
         }
 
-#pragma warning disable 1998
-        protected override async Task<GetALAppContentResponse> HandleMessage(GetALAppContentRequest parameters, RequestContext<GetALAppContentResponse> context)
+
+        [JsonRpcMethod("al/getalappcontent", UseSingleObjectParameterDeserialization = true)]
+        public GetALAppContentResponse GetALAppContent(GetALAppContentRequest parameters)
         {
             GetALAppContentResponse response = new GetALAppContentResponse();
             try
@@ -80,7 +78,6 @@ namespace AnZwDev.ALTools.Server.Handlers
             }
             return response;
         }
-#pragma warning restore 1998
 
     }
 }

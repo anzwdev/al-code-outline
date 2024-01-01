@@ -51,7 +51,6 @@ import { AddDotToToolTipModifier } from '../alsyntaxmodifiers/addDotToToolTipMod
 import { RemoveProceduresSemicolonModifier } from '../alsyntaxmodifiers/removeProceduresSemicolonModifier';
 import { AddUsingRegionModifier } from '../alsyntaxmodifiers/addUsingRegionModifier';
 import { SortUsingsModifier } from '../alsyntaxmodifiers/sortUsingsModifier';
-import { AddMissingUsingsModifier } from '../alsyntaxmodifiers/addMissingUsingsModifier';
 import { RemoveUnusedUsingsModifier } from '../alsyntaxmodifiers/removeUnusedUsingsModifier';
 import { AddNamespaceSupportModifier } from '../alsyntaxmodifiers/addNamespaceSupportModifier';
 
@@ -128,7 +127,6 @@ export class ALCodeTransformationService extends DevToolsExtensionService {
         this.registerModifierCommands('SortCustomizations', 'azALDevTools.SortEditorCustomizations', 'azALDevTools.SortWorkspaceCustomizations', () => new SortCustomizationsModifier(this._context));
 
         this.registerModifierCommands('SortUsings', 'azALDevTools.SortEditorUsings', 'azALDevTools.SortProjectUsings', () => new SortUsingsModifier(this._context));
-        this.registerModifierCommands('AddMissingUsings', 'azALDevTools.AddMissingEditorUsings', 'azALDevTools.AddMissingProjectUsings', () => new AddMissingUsingsModifier(this._context));
         this.registerModifierCommands('RemoveUnusedUsings', 'azALDevTools.RemoveUnusedEditorUsings', 'azALDevTools.RemoveUnusedProjectUsings', () => new RemoveUnusedUsingsModifier(this._context));
         this.registerModifierCommands('EnableNamespaces', undefined, 'azALDevTools.EnableProjectNamespaces', () => new AddNamespaceSupportModifier(this._context));
 

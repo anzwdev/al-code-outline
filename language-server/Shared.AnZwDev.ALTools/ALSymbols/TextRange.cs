@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace AnZwDev.ALTools.ALSymbols
 {
-    public class Range
+    public class TextRange
     {
 
         public Position start { get; set; }
@@ -15,26 +15,26 @@ namespace AnZwDev.ALTools.ALSymbols
         public bool isEmpty { get; private set; }
         public bool isSingleLine { get; private set; }
 
-        public Range()
+        public TextRange()
         {
             this.start = null;
             this.end = null;
             UpdateStatus();
         }
 
-        public Range(FileLinePositionSpan span): this(span.StartLinePosition.Line, span.StartLinePosition.Character, span.EndLinePosition.Line, span.EndLinePosition.Character)
+        public TextRange(FileLinePositionSpan span): this(span.StartLinePosition.Line, span.StartLinePosition.Character, span.EndLinePosition.Line, span.EndLinePosition.Character)
         {
             UpdateStatus();
         }
 
-        public Range(Position newStart, Position newEnd)
+        public TextRange(Position newStart, Position newEnd)
         {
             this.start = newStart;
             this.end = newEnd;
             UpdateStatus();
         }
 
-        public Range(int startLine, int startCharacter, int endLine, int endCharacter)
+        public TextRange(int startLine, int startCharacter, int endLine, int endCharacter)
         {
             this.start = new Position(startLine, startCharacter);
             this.end = new Position(endLine, endCharacter);
@@ -51,7 +51,7 @@ namespace AnZwDev.ALTools.ALSymbols
             return $"{start.line}_{start.character}_{end.line}_{end.character}";
         }
 
-        public void Add(Range range)
+        public void Add(TextRange range)
         {
             if (range.start != null)
             {

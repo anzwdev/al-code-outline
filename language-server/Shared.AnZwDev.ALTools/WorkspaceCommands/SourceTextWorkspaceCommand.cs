@@ -17,7 +17,7 @@ namespace AnZwDev.ALTools.WorkspaceCommands
         {
         }
 
-        public override WorkspaceCommandResult Run(string sourceCode, ALProject project, string filePath, Range range, Dictionary<string, string> parameters, List<string> excludeFiles)
+        public override WorkspaceCommandResult Run(string sourceCode, ALProject project, string filePath, TextRange range, Dictionary<string, string> parameters, List<string> excludeFiles)
         {
             string newSourceCode = null;
             bool success = true;
@@ -40,7 +40,7 @@ namespace AnZwDev.ALTools.WorkspaceCommands
             return new WorkspaceCommandResult(newSourceCode, true, errorMessage);
         }
 
-        protected virtual (string, bool, string) ProcessSourceCode(string sourceCode, ALProject project, string filePath, Range range, Dictionary<string, string> parameters)
+        protected virtual (string, bool, string) ProcessSourceCode(string sourceCode, ALProject project, string filePath, TextRange range, Dictionary<string, string> parameters)
         {
             return (sourceCode, true, null);
         }

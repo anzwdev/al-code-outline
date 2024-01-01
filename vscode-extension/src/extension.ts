@@ -1,11 +1,10 @@
-'use strict';
 // The module 'vscode' contains the VS Code extensibility API
 // Import the module and reference it with the alias vscode in your code below
 import * as vscode from 'vscode';
 import { DevToolsExtensionContext } from './devToolsExtensionContext';
 
-// this method is called when your extension is activated
-// your extension is activated the very first time the command is executed
+// This method is called when your extension is activated
+// Your extension is activated the very first time the command is executed
 export function activate(context: vscode.ExtensionContext) {
     const toolsExtensionContext: DevToolsExtensionContext = new DevToolsExtensionContext(context);
     toolsExtensionContext.activeDocumentSymbols.initializeContent();
@@ -14,7 +13,7 @@ export function activate(context: vscode.ExtensionContext) {
     return toolsExtensionContext;
 }
 
-// this method is called when your extension is deactivated
+// This method is called when your extension is deactivated
 export function deactivate() {
     vscode.commands.executeCommand('setContext', 'azALDevTools.extensionActive', false);
 }

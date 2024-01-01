@@ -33,8 +33,7 @@ namespace AZALDevToolsTestConsoleApp
         {
             string extensionPath = "C:\\Projects\\MicrosoftALVersions\\LatestBC";
 
-            ALDevToolsServerHost host = new(extensionPath);
-            host.Initialize();
+            LanguageServerHost host = new(extensionPath);
 
             ALDevToolsServer alDevToolsServer = new(extensionPath);
 

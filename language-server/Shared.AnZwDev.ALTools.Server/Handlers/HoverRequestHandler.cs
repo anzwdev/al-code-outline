@@ -1,26 +1,23 @@
 ﻿using AnZwDev.ALTools.Hover;
 using AnZwDev.ALTools.Server.Contracts;
-using AnZwDev.VSCodeLangServer.Protocol.MessageProtocol;
-using AnZwDev.VSCodeLangServer.Protocol.Server;
+using StreamJsonRpc;
 using System;
-using System.Collections.Generic;
-using System.Text;
 using System.Threading.Tasks;
 
 namespace AnZwDev.ALTools.Server.Handlers
 {
-    internal class HoverRequestHandler : BaseALRequestHandler<HoverRequest, HoverResponse>
+    internal class HoverRequestHandler : RequestHandler
     {
 
         private HoverProvidersCollection _hoverProviders;
 
-        public HoverRequestHandler(ALDevToolsServer server, LanguageServerHost languageServerHost) : base(server, languageServerHost, "al/hover")
+        public HoverRequestHandler(LanguageServerHost languageServerHost) : base(languageServerHost)
         {
-            _hoverProviders = new HoverProvidersCollection(server);
+            _hoverProviders = new HoverProvidersCollection(languageServerHost.ALDevToolsServer);
         }
 
-#pragma warning disable 1998
-        protected override async Task<HoverResponse> HandleMessage(HoverRequest parameters, RequestContext<HoverResponse> context)
+        [JsonRpcMethod("al/hover", UseSingleObjectParameterDeserialization = true)]
+        public HoverResponse Hover(HoverRequest parameters)
         {
             HoverResponse response = new HoverResponse();
             try
@@ -33,7 +30,6 @@ namespace AnZwDev.ALTools.Server.Handlers
             }
             return response;
         }
-#pragma warning restore 1998
 
     }
 }

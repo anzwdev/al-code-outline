@@ -7,7 +7,7 @@ namespace AnZwDev.ALTools.ALSymbols
     public class ALSymbolPositionComparer : IComparer<ALSymbol>
     {
 
-        private readonly RangeComparer _rangeComparer = new RangeComparer();
+        private readonly TextRangeComparer _rangeComparer = new TextRangeComparer();
 
         public int Compare(ALSymbol x, ALSymbol y)
         {

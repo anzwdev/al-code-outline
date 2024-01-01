@@ -1,24 +1,21 @@
 ﻿using AnZwDev.ALTools.Server.Contracts.SymbolsInformation;
 using AnZwDev.ALTools.Workspace;
 using AnZwDev.ALTools.Workspace.SymbolsInformation;
-using AnZwDev.VSCodeLangServer.Protocol.MessageProtocol;
-using AnZwDev.VSCodeLangServer.Protocol.Server;
+using StreamJsonRpc;
 using System;
-using System.Collections.Generic;
-using System.Text;
 using System.Threading.Tasks;
 
 namespace AnZwDev.ALTools.Server.Handlers.SymbolsInformation
 {
-    public class GetNextObjectIdRequestHandler : BaseALRequestHandler<GetNextObjectIdRequest, GetNextObjectIdResponse>
+    public class GetNextObjectIdRequestHandler : RequestHandler
     {
 
-        public GetNextObjectIdRequestHandler(ALDevToolsServer server, LanguageServerHost languageServerHost) : base(server, languageServerHost, "al/getnextobjectid")
+        public GetNextObjectIdRequestHandler(LanguageServerHost languageServerHost) : base(languageServerHost)
         {
         }
 
-#pragma warning disable 1998
-        protected override async Task<GetNextObjectIdResponse> HandleMessage(GetNextObjectIdRequest parameters, RequestContext<GetNextObjectIdResponse> context)
+        [JsonRpcMethod("al/getnextobjectid", UseSingleObjectParameterDeserialization = true)]
+        public GetNextObjectIdResponse GetNextObjectId(GetNextObjectIdRequest parameters)
         {
             GetNextObjectIdResponse response = new GetNextObjectIdResponse
             {
@@ -44,8 +41,6 @@ namespace AnZwDev.ALTools.Server.Handlers.SymbolsInformation
             return response;
 
         }
-#pragma warning restore 1998
-
 
     }
 }

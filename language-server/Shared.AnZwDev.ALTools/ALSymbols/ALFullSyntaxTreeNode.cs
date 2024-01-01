@@ -18,10 +18,10 @@ namespace AnZwDev.ALTools.ALSymbols
         public string kind { get; set; }
         
         [JsonProperty(NullValueHandling = NullValueHandling.Ignore)]
-        public Range span { get; set; }
+        public TextRange span { get; set; }
         
         [JsonProperty(NullValueHandling = NullValueHandling.Ignore)]
-        public Range fullSpan { get; set; }
+        public TextRange fullSpan { get; set; }
         
         [JsonProperty(NullValueHandling = NullValueHandling.Ignore)]
         public List<ALFullSyntaxTreeNode> childNodes { get; private set; }

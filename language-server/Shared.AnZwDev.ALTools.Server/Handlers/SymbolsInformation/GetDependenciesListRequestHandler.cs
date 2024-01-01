@@ -1,24 +1,20 @@
-﻿using AnZwDev.ALTools.ALSymbolReferences;
-using AnZwDev.ALTools.Extensions;
-using AnZwDev.ALTools.Server.Contracts.SymbolsInformation;
+﻿using AnZwDev.ALTools.Server.Contracts.SymbolsInformation;
 using AnZwDev.ALTools.Workspace;
-using AnZwDev.VSCodeLangServer.Protocol.MessageProtocol;
-using AnZwDev.VSCodeLangServer.Protocol.Server;
+using StreamJsonRpc;
 using System;
 using System.Collections.Generic;
-using System.Text;
 using System.Threading.Tasks;
 
 namespace AnZwDev.ALTools.Server.Handlers.SymbolsInformation
 {
-    public class GetDependenciesListRequestHandler : BaseALRequestHandler<GetDependenciesListRequest, GetDependenciesListResponse>
+    public class GetDependenciesListRequestHandler : RequestHandler
     {
-        public GetDependenciesListRequestHandler(ALDevToolsServer server, LanguageServerHost languageServerHost) : base(server, languageServerHost, "al/getdependencieslist")
+        public GetDependenciesListRequestHandler(LanguageServerHost languageServerHost) : base(languageServerHost)
         {
         }
 
-#pragma warning disable 1998
-        protected override async Task<GetDependenciesListResponse> HandleMessage(GetDependenciesListRequest parameters, RequestContext<GetDependenciesListResponse> context)
+        [JsonRpcMethod("al/getdependencieslist", UseSingleObjectParameterDeserialization = true)]
+        public GetDependenciesListResponse GetDependenciesList(GetDependenciesListRequest parameters)
         {
             GetDependenciesListResponse response = new GetDependenciesListResponse();
 
@@ -43,7 +39,6 @@ namespace AnZwDev.ALTools.Server.Handlers.SymbolsInformation
             return response;
 
         }
-#pragma warning restore 1998
 
     }
 }

@@ -9,7 +9,8 @@
     <Import_RootNamespace>AnZwDev.ALTools.Server</Import_RootNamespace>
   </PropertyGroup>
   <ItemGroup>
-    <Compile Include="$(MSBuildThisFileDirectory)ALDevToolsServerHost.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Handlers\RequestHandler.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)LanguageServerHost.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Contracts\AppPackageSymbolsRequest.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Contracts\AppPackageSymbolsResponse.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Contracts\BaseOpenSymbolsLibraryResponse.cs" />
@@ -113,8 +114,6 @@
     <Compile Include="$(MSBuildThisFileDirectory)Contracts\WorkspaceCommandResponse.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Contracts\ChangeTracking\WorkspaceFoldersChangeNotificationRequest.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Handlers\AppPackageSymbolsRequestHandler.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)Handlers\BaseALNotificationHandler.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)Handlers\BaseALRequestHandler.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Handlers\ChangeTracking\ConfigurationChangeNotificationHandler.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Handlers\ChangeTracking\DocumentContentChangeRequestHandler.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Handlers\ChangeTracking\DocumentCloseNotificationHandler.cs" />

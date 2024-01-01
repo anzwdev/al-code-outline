@@ -1,28 +1,21 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using AnZwDev.ALTools;
 using AnZwDev.ALTools.ALSymbols;
 using AnZwDev.ALTools.ALSymbols.SymbolReaders;
-using AnZwDev.VSCodeLangServer.Protocol.MessageProtocol;
 using AnZwDev.ALTools.Server.Contracts;
-using AnZwDev.VSCodeLangServer.Utility;
-using AnZwDev.VSCodeLangServer.Protocol.Server;
 using AnZwDev.ALTools.Workspace;
+using StreamJsonRpc;
 
 namespace AnZwDev.ALTools.Server.Handlers
 {
-    public class DocumentSymbolsRequestHandler : BaseALRequestHandler<DocumentSymbolsRequest, DocumentSymbolsResponse>
+    public class DocumentSymbolsRequestHandler : RequestHandler
     {
 
-        public DocumentSymbolsRequestHandler(ALDevToolsServer server, LanguageServerHost languageServerHost) : base(server, languageServerHost, "al/documentsymbols")
+        public DocumentSymbolsRequestHandler(LanguageServerHost languageServerHost) : base(languageServerHost)
         {
         }
 
-#pragma warning disable 1998
-        protected override async Task<DocumentSymbolsResponse> HandleMessage(DocumentSymbolsRequest parameters, RequestContext<DocumentSymbolsResponse> context)
+        [JsonRpcMethod("al/documentsymbols", UseSingleObjectParameterDeserialization = true)]
+        public DocumentSymbolsResponse GetDocumentSymbols(DocumentSymbolsRequest parameters)
         {
             DocumentSymbolsResponse response = new DocumentSymbolsResponse();
             try
@@ -50,7 +43,7 @@ namespace AnZwDev.ALTools.Server.Handlers
 
             return response;
         }
-#pragma warning restore 1998
+
 
     }
 }

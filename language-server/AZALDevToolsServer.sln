@@ -1,11 +1,9 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio Version 16
-VisualStudioVersion = 16.0.29920.165
+# Visual Studio Version 17
+VisualStudioVersion = 17.8.34330.188
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AnZwDev.ALTools", "AnZwDev.ALTools\AnZwDev.ALTools.csproj", "{266523F6-4E4A-4AAB-88D6-7C814A03AE41}"
-EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AnZwDev.VSCodeLangServer", "AnZwDev.VSCodeLangServer\AnZwDev.VSCodeLangServer.csproj", "{370BCFC1-0542-4A43-BF7E-2F9777AA062B}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AZALDevToolsTestConsoleApp", "AZALDevToolsTestConsoleApp\AZALDevToolsTestConsoleApp.csproj", "{E68F7EFA-80E5-4CCD-AE81-BFDAD5C3A15F}"
 EndProject
@@ -28,14 +26,6 @@ EndProject
 Project("{D954291E-2A0B-460D-934E-DC6B0785DB48}") = "Shared.AnZwDev.ALTools.Server", "Shared.AnZwDev.ALTools.Server\Shared.AnZwDev.ALTools.Server.shproj", "{DAD5E11E-9D4E-47B8-9D49-5451ACD49013}"
 EndProject
 Global
-	GlobalSection(SharedMSBuildProjectFiles) = preSolution
-		Shared.AnZwDev.ALTools.Server\Shared.AnZwDev.ALTools.Server.projitems*{23da7234-5a89-4a2c-b97e-0c133f9f90a8}*SharedItemsImports = 5
-		Shared.AnZwDev.ALTools\Shared.AnZwDev.ALTools.projitems*{266523f6-4e4a-4aab-88d6-7c814a03ae41}*SharedItemsImports = 5
-		Shared.AnZwDev.ALTools\Shared.AnZwDev.ALTools.projitems*{3d135999-5ebf-4063-a5c3-b142b5ccfe30}*SharedItemsImports = 4
-		Shared.AnZwDev.ALTools.Server\Shared.AnZwDev.ALTools.Server.projitems*{af393350-c960-4c6b-95fd-526ae575cc82}*SharedItemsImports = 4
-		Shared.AnZwDev.ALTools.Server\Shared.AnZwDev.ALTools.Server.projitems*{dad5e11e-9d4e-47b8-9d49-5451acd49013}*SharedItemsImports = 13
-		Shared.AnZwDev.ALTools\Shared.AnZwDev.ALTools.projitems*{f5845f76-37f2-45a8-bf68-8aec74ba1d1e}*SharedItemsImports = 13
-	EndGlobalSection
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
 		Release|Any CPU = Release|Any CPU
@@ -45,10 +35,6 @@ Global
 		{266523F6-4E4A-4AAB-88D6-7C814A03AE41}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{266523F6-4E4A-4AAB-88D6-7C814A03AE41}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{266523F6-4E4A-4AAB-88D6-7C814A03AE41}.Release|Any CPU.Build.0 = Release|Any CPU
-		{370BCFC1-0542-4A43-BF7E-2F9777AA062B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{370BCFC1-0542-4A43-BF7E-2F9777AA062B}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{370BCFC1-0542-4A43-BF7E-2F9777AA062B}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{370BCFC1-0542-4A43-BF7E-2F9777AA062B}.Release|Any CPU.Build.0 = Release|Any CPU
 		{E68F7EFA-80E5-4CCD-AE81-BFDAD5C3A15F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{E68F7EFA-80E5-4CCD-AE81-BFDAD5C3A15F}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{E68F7EFA-80E5-4CCD-AE81-BFDAD5C3A15F}.Release|Any CPU.ActiveCfg = Release|Any CPU
@@ -88,5 +74,13 @@ Global
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {7B140F7D-63CB-4236-BC28-0E47FE1504A5}
+	EndGlobalSection
+	GlobalSection(SharedMSBuildProjectFiles) = preSolution
+		Shared.AnZwDev.ALTools.Server\Shared.AnZwDev.ALTools.Server.projitems*{23da7234-5a89-4a2c-b97e-0c133f9f90a8}*SharedItemsImports = 5
+		Shared.AnZwDev.ALTools\Shared.AnZwDev.ALTools.projitems*{266523f6-4e4a-4aab-88d6-7c814a03ae41}*SharedItemsImports = 5
+		Shared.AnZwDev.ALTools\Shared.AnZwDev.ALTools.projitems*{3d135999-5ebf-4063-a5c3-b142b5ccfe30}*SharedItemsImports = 4
+		Shared.AnZwDev.ALTools.Server\Shared.AnZwDev.ALTools.Server.projitems*{af393350-c960-4c6b-95fd-526ae575cc82}*SharedItemsImports = 4
+		Shared.AnZwDev.ALTools.Server\Shared.AnZwDev.ALTools.Server.projitems*{dad5e11e-9d4e-47b8-9d49-5451acd49013}*SharedItemsImports = 13
+		Shared.AnZwDev.ALTools\Shared.AnZwDev.ALTools.projitems*{f5845f76-37f2-45a8-bf68-8aec74ba1d1e}*SharedItemsImports = 13
 	EndGlobalSection
 EndGlobal

@@ -1,23 +1,19 @@
 ﻿using AnZwDev.ALTools.ALSymbols;
 using AnZwDev.ALTools.Server.Contracts;
-using AnZwDev.VSCodeLangServer.Protocol.MessageProtocol;
-using AnZwDev.VSCodeLangServer.Protocol.Server;
-using System;
-using System.Collections.Generic;
-using System.Text;
+using StreamJsonRpc;
 using System.Threading.Tasks;
 
 namespace AnZwDev.ALTools.Server.Handlers
 {
-    public class GetRawSyntaxTreeSymbolRequestHandler : BaseALRequestHandler<GetSyntaxTreeSymbolRequest, GetSyntaxTreeSymbolResponse>
+    public class GetRawSyntaxTreeSymbolRequestHandler : RequestHandler
     {
 
-        public GetRawSyntaxTreeSymbolRequestHandler(ALDevToolsServer server, LanguageServerHost languageServerHost) : base(server, languageServerHost, "al/getrawsyntaxtreesymbol")
+        public GetRawSyntaxTreeSymbolRequestHandler(LanguageServerHost languageServerHost) : base(languageServerHost)
         {
         }
 
-#pragma warning disable 1998
-        protected override async Task<GetSyntaxTreeSymbolResponse> HandleMessage(GetSyntaxTreeSymbolRequest parameters, RequestContext<GetSyntaxTreeSymbolResponse> context)
+        [JsonRpcMethod("al/getrawsyntaxtreesymbol", UseSingleObjectParameterDeserialization = true)]
+        public GetSyntaxTreeSymbolResponse GetSyntaxTreeSymbol(GetSyntaxTreeSymbolRequest parameters)
         {
             ALSyntaxTree syntaxTree = this.Server.RawSyntaxTrees.FindOrCreate(parameters.path, false);
             ALSyntaxTreeSymbol symbol = syntaxTree.GetSyntaxTreeSymbolByPath(parameters.symbolPath);
@@ -31,6 +27,6 @@ namespace AnZwDev.ALTools.Server.Handlers
 
             return response;
         }
-#pragma warning restore 1998
+
     }
 }

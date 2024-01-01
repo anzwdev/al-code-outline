@@ -1,24 +1,21 @@
 ﻿using AnZwDev.ALTools.ALSymbols;
 using AnZwDev.ALTools.Server.Contracts;
 using AnZwDev.ALTools.Workspace;
-using AnZwDev.VSCodeLangServer.Protocol.MessageProtocol;
-using AnZwDev.VSCodeLangServer.Protocol.Server;
+using StreamJsonRpc;
 using System;
-using System.Collections.Generic;
-using System.Text;
 using System.Threading.Tasks;
 
 namespace AnZwDev.ALTools.Server.Handlers
 {
-    public class GetProjectSymbolLocationRequestHandler : BaseALRequestHandler<GetProjectSymbolLocationRequest, GetProjectSymbolLocationResponse>
+    public class GetProjectSymbolLocationRequestHandler : RequestHandler
     {
 
-        public GetProjectSymbolLocationRequestHandler(ALDevToolsServer server, LanguageServerHost languageServerHost) : base(server, languageServerHost, "al/projectsymbollocation")
+        public GetProjectSymbolLocationRequestHandler(LanguageServerHost languageServerHost) : base(languageServerHost)
         {
         }
 
-#pragma warning disable 1998
-        protected override async Task<GetProjectSymbolLocationResponse> HandleMessage(GetProjectSymbolLocationRequest parameters, RequestContext<GetProjectSymbolLocationResponse> context)
+        [JsonRpcMethod("al/projectsymbollocation", UseSingleObjectParameterDeserialization = true)]
+        public GetProjectSymbolLocationResponse GetProjectSymbolLocation(GetProjectSymbolLocationRequest parameters)
         {
             GetProjectSymbolLocationResponse response = new GetProjectSymbolLocationResponse();
             try
@@ -37,7 +34,6 @@ namespace AnZwDev.ALTools.Server.Handlers
             }
             return response;
         }
-#pragma warning restore 1998
 
     }
 }
