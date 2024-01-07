@@ -1,7 +1,6 @@
 ﻿using AnZwDev.ALTools.DuplicateCodeSearch;
 using AnZwDev.ALTools.Server.Contracts;
-using AnZwDev.VSCodeLangServer.Protocol.MessageProtocol;
-using AnZwDev.VSCodeLangServer.Protocol.Server;
+using StreamJsonRpc;
 using System;
 using System.Collections.Generic;
 using System.Text;
@@ -9,15 +8,15 @@ using System.Threading.Tasks;
 
 namespace AnZwDev.ALTools.Server.Handlers
 {
-    public class FindDuplicateCodeRequestHandler : BaseALRequestHandler<FindDuplicateCodeRequest, FindDuplicateCodeResponse>
+    public class FindDuplicateCodeRequestHandler : RequestHandler
     {
 
-        public FindDuplicateCodeRequestHandler(ALDevToolsServer server, LanguageServerHost languageServerHost) : base(server, languageServerHost, "al/findDuplicateCode")
+        public FindDuplicateCodeRequestHandler(LanguageServerHost languageServerHost) : base(languageServerHost)
         {
         }
 
-#pragma warning disable 1998
-        protected override async Task<FindDuplicateCodeResponse> HandleMessage(FindDuplicateCodeRequest parameters, RequestContext<FindDuplicateCodeResponse> context)
+        [JsonRpcMethod("al/findDuplicateCode", UseSingleObjectParameterDeserialization = true)]
+        public FindDuplicateCodeResponse FindDuplicateCode(FindDuplicateCodeRequest parameters)
         {
             FindDuplicateCodeResponse response = new FindDuplicateCodeResponse();
             try
@@ -32,6 +31,6 @@ namespace AnZwDev.ALTools.Server.Handlers
             }
             return response;
         }
-#pragma warning restore 1998
+
     }
 }

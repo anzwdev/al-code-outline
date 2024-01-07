@@ -9,19 +9,16 @@ namespace AnZwDev.ALTools.Workspace.SymbolsInformation
     public class InterfaceInformationProvider : BaseObjectInformationProvider<ALAppInterface>
     {
 
-        protected override MergedALAppObjectsCollection<ALAppInterface> GetALAppObjectsCollection(ALProject project)
-        {
-            return project.AllSymbols.Interfaces;
+        public InterfaceInformationProvider() : base(x => x.Interfaces)
+        { 
         }
 
         public List<InterfaceInformation> GetInterfaces(ALProject project)
         {
             List<InterfaceInformation> infoList = new List<InterfaceInformation>();
-            IEnumerable<ALAppInterface> objectsCollection = project.AllSymbols.Interfaces.GetObjects();
+            IEnumerable<ALAppInterface> objectsCollection = GetALAppObjectsCollection(project);
             foreach (ALAppInterface item in objectsCollection)
-            {
                 infoList.Add(new InterfaceInformation(item));
-            }
             return infoList;
         }
 

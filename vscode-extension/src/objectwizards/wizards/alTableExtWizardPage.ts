@@ -36,7 +36,7 @@ export class ALTableExtWizardPage extends ALTableBasedWizardPage {
         //build new object
         var builder : ALTableExtSyntaxBuilder = new ALTableExtSyntaxBuilder();
         var source = builder.buildFromTableExtWizardData(this._settings.getDestDirectoryUri(), this._tableExtWizardData);
-        this.createObjectExtensionFile('TableExtension', this._tableExtWizardData.objectId, this._tableExtWizardData.objectName, this._tableExtWizardData.selectedTable, source);
+        this.createObjectExtensionFile('TableExtension', this._tableExtWizardData.objectId, this._tableExtWizardData.objectName, this._tableExtWizardData.selectedTable!.name!, source);
 
         return true;
     }

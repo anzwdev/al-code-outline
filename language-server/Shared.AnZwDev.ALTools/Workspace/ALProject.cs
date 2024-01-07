@@ -13,6 +13,7 @@ using AnZwDev.ALTools.CodeAnalysis;
 using AnZwDev.ALTools.ALSymbolReferences.MergedReferences;
 using Microsoft.Dynamics.Nav.CodeAnalysis.Syntax;
 using Microsoft.Dynamics.Nav.CodeAnalysis;
+using System.Linq;
 
 namespace AnZwDev.ALTools.Workspace
 {
@@ -47,14 +48,8 @@ namespace AnZwDev.ALTools.Workspace
         /// <summary>
         /// Symbols defined in project
         /// </summary>
-        public ALAppSymbolReference Symbols { get; set; }
+        public ALAppSymbolReference Symbols { get; }
         
-        /// <summary>
-        /// All symbols defined in project and in dependencies
-        /// </summary>
-        public MergedALAppSymbolReference AllSymbols { get; }
-
-
         #endregion
 
         #region Initialization
@@ -79,8 +74,7 @@ namespace AnZwDev.ALTools.Workspace
             this.Files = new ALProjectFilesCollection(this);
             this.Dependencies = new ALProjectDependenciesCollection();
             this.Symbols = new ALAppSymbolReference();
-            this.Properties = null;
-            this.AllSymbols = new MergedALAppSymbolReference(new ALProjectAllALAppSymbolReferencesCollection(this));
+            this.Properties = null;            
         }
 
         #endregion
@@ -266,6 +260,17 @@ namespace AnZwDev.ALTools.Workspace
         public bool IsALProject()
         {
             return (this.Properties != null);
+        }
+
+        public bool UsesNamespaces()
+        {
+#if BC
+            return 
+                (this.Symbols != null) &&
+                (this.Symbols.AllObjects.Any(p => (!String.IsNullOrWhiteSpace(p.NamespaceName))));
+#else
+            return false;
+#endif
         }
 
         #region Path and file names methods

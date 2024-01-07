@@ -47,7 +47,7 @@ export class TextEditorHelper {
 
             return targetEditor;
         }
-        catch (e) {
+        catch (e: any) {
             vscode.window.showErrorMessage(e.message);
         }
         return undefined;
@@ -63,7 +63,7 @@ export class TextEditorHelper {
                     preview : false
                 });
         }
-        catch (e) {
+        catch (e:any) {
             vscode.window.showErrorMessage(e.message);
         }
     }

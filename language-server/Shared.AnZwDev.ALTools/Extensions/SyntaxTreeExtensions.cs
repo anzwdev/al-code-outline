@@ -88,10 +88,10 @@ namespace AnZwDev.ALTools.Extensions
             return null;
         }
 
-        public static Range GetLineRange(this SyntaxTree syntaxTree, TextSpan textSpan)
+        public static TextRange GetLineRange(this SyntaxTree syntaxTree, TextSpan textSpan)
         {
             var lineSpan = syntaxTree.GetLineSpan(textSpan);
-            return new Range(lineSpan.StartLinePosition.Line, lineSpan.StartLinePosition.Character,
+            return new TextRange(lineSpan.StartLinePosition.Line, lineSpan.StartLinePosition.Character,
                 lineSpan.EndLinePosition.Line, lineSpan.EndLinePosition.Character);
         }
 

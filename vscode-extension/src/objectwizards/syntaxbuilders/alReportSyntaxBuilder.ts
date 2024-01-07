@@ -47,10 +47,10 @@ export class ALReportSyntaxBuilder {
     }
 
     private writeDataSet(writer : ALSyntaxWriter, data : ALReportWizardData, addDataItemName: boolean | undefined) {
-        let dataSetName = writer.createName(data.selectedTable);
+        let dataSetName = writer.createName(data.selectedTable!.name!);
         writer.writeStartNamedBlock("dataset");
 
-        writer.writeStartNameSourceBlock("dataitem", dataSetName, writer.encodeName(data.selectedTable));
+        writer.writeStartNameSourceBlock("dataitem", dataSetName, writer.encodeName(data.selectedTable!.name!));
 
         if (data.selectedFieldList) {
             for (let i=0; i<data.selectedFieldList.length; i++) {

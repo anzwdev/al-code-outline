@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Text;
 using System.Xml.Linq;
 using AnZwDev.ALTools.ALSymbolReferences;
@@ -43,10 +44,25 @@ namespace AnZwDev.ALTools.ALSymbolReferences.Compiler
             {
                 List<ALAppObject> alObjectsList = new List<ALAppObject>();
                 this.ProcessSyntaxNode(node, alObjectsList);
+
+                string namespaceName = null;
+                HashSet<string> usings = null;
+
+#if BC
+                var compilationUnit = node as CompilationUnitSyntax;
+                if (compilationUnit != null)
+                {
+                    namespaceName = compilationUnit.GetNamespaceName();
+                    usings = compilationUnit.Usings.GetUsingsNamespacesNames();
+                }
+#endif
+
                 foreach (ALAppObject alAppObject in alObjectsList)
                 {
                     alAppObject.ReferenceSourceFileName = sourcePath;
                     alAppObject.INT_Parsed = true;
+                    alAppObject.NamespaceName = namespaceName;
+                    alAppObject.Usings = usings;
                 }
                 return alObjectsList;
             }
@@ -85,7 +101,7 @@ namespace AnZwDev.ALTools.ALSymbolReferences.Compiler
             {
                 case PragmaWarningDirectiveTriviaSyntax pragmaWarningDirectiveTriviaSyntax:
                     return new ALAppPragmaWarningDirective(
-                        new Range(syntaxTree.GetLineSpan(directiveSyntax.FullSpan)),
+                        new TextRange(syntaxTree.GetLineSpan(directiveSyntax.FullSpan)),
                         pragmaWarningDirectiveTriviaSyntax.DisableOrRestoreKeyword.Kind.ConvertToLocalType() == ConvertedSyntaxKind.DisableKeyword,
                         GetRulesIds(pragmaWarningDirectiveTriviaSyntax.ErrorCodes));
                 case PragmaImplicitWithDirectiveTriviaSyntax pragmaImplicitWithDirectiveTriviaSyntax:
@@ -112,10 +128,9 @@ namespace AnZwDev.ALTools.ALSymbolReferences.Compiler
 
 #endregion
 
+        #region Process syntax nodes
 
-#region Process syntax nodes
-
-protected void ProcessSyntaxNodesList(IEnumerable<SyntaxNode> nodesList, List<ALAppObject> alObjectsList)
+        protected void ProcessSyntaxNodesList(IEnumerable<SyntaxNode> nodesList, List<ALAppObject> alObjectsList)
         {
             if (nodesList != null)
             {
@@ -217,11 +232,11 @@ protected void ProcessSyntaxNodesList(IEnumerable<SyntaxNode> nodesList, List<AL
 
         #region Table fields
 
-        protected ALAppElementsCollection<ALAppTableField> CreateTableFieldsList(SyntaxList<FieldSyntax> nodeList)
+        protected ALAppSymbolsCollection<ALAppTableField> CreateTableFieldsList(SyntaxList<FieldSyntax> nodeList)
         {
             if ((nodeList != null) && (nodeList.Count > 0))
             {
-                ALAppElementsCollection<ALAppTableField> list = new ALAppElementsCollection<ALAppTableField>();
+                ALAppSymbolsCollection<ALAppTableField> list = new ALAppSymbolsCollection<ALAppTableField>();
                 foreach (FieldSyntax node in nodeList)
                 {
                     list.Add(this.CreateTableField(node));
@@ -247,11 +262,11 @@ protected void ProcessSyntaxNodesList(IEnumerable<SyntaxNode> nodesList, List<AL
 
         #region Table keys
 
-        protected ALAppElementsCollection<ALAppTableKey> CreateTableKeysList(SyntaxList<KeySyntax> nodeList)
+        protected ALAppSymbolsCollection<ALAppTableKey> CreateTableKeysList(SyntaxList<KeySyntax> nodeList)
         {
             if ((nodeList != null) && (nodeList.Count > 0))
             {
-                ALAppElementsCollection<ALAppTableKey> list = new ALAppElementsCollection<ALAppTableKey>();
+                ALAppSymbolsCollection<ALAppTableKey> list = new ALAppSymbolsCollection<ALAppTableKey>();
                 foreach (KeySyntax node in nodeList)
                 {
                     list.Add(this.CreateTableKey(node));
@@ -282,11 +297,11 @@ protected void ProcessSyntaxNodesList(IEnumerable<SyntaxNode> nodesList, List<AL
 
         #region Table field groups
 
-        protected ALAppElementsCollection<ALAppFieldGroup> CreateTableFieldGroupsList(SyntaxList<FieldGroupSyntax> nodeList)
+        protected ALAppSymbolsCollection<ALAppFieldGroup> CreateTableFieldGroupsList(SyntaxList<FieldGroupSyntax> nodeList)
         {
             if ((nodeList != null) && (nodeList.Count > 0))
             {
-                ALAppElementsCollection<ALAppFieldGroup> list = new ALAppElementsCollection<ALAppFieldGroup>();
+                ALAppSymbolsCollection<ALAppFieldGroup> list = new ALAppSymbolsCollection<ALAppFieldGroup>();
                 foreach (FieldGroupSyntax node in nodeList)
                 {
                     list.Add(this.CreateTableFieldGroup(node));
@@ -335,9 +350,9 @@ protected void ProcessSyntaxNodesList(IEnumerable<SyntaxNode> nodesList, List<AL
 
         #region Page controls
 
-        protected ALAppElementsCollection<ALAppPageControl> CreatePageControlsList(SyntaxList<PageAreaSyntax> nodeList)
+        protected ALAppSymbolsCollection<ALAppPageControl> CreatePageControlsList(SyntaxList<PageAreaSyntax> nodeList)
         {
-            ALAppElementsCollection<ALAppPageControl> controls = new ALAppElementsCollection<ALAppPageControl>();
+            ALAppSymbolsCollection<ALAppPageControl> controls = new ALAppSymbolsCollection<ALAppPageControl>();
             foreach (PageAreaSyntax controlSyntax in nodeList)
             {
                 controls.Add(this.CreatePageControl(controlSyntax));
@@ -345,9 +360,9 @@ protected void ProcessSyntaxNodesList(IEnumerable<SyntaxNode> nodesList, List<AL
             return controls;
         }
 
-        protected ALAppElementsCollection<ALAppPageControl> CreatePageControlsList(SyntaxList<ControlBaseSyntax> nodeList)
+        protected ALAppSymbolsCollection<ALAppPageControl> CreatePageControlsList(SyntaxList<ControlBaseSyntax> nodeList)
         {
-            ALAppElementsCollection<ALAppPageControl> controls = new ALAppElementsCollection<ALAppPageControl>();
+            ALAppSymbolsCollection<ALAppPageControl> controls = new ALAppSymbolsCollection<ALAppPageControl>();
             foreach (ControlBaseSyntax controlSyntax in nodeList)
             {
                 controls.Add(this.CreatePageControl(controlSyntax));
@@ -430,9 +445,9 @@ protected void ProcessSyntaxNodesList(IEnumerable<SyntaxNode> nodesList, List<AL
 
         #region Page actions
 
-        protected ALAppElementsCollection<ALAppPageAction> CreatePageActionsList(SyntaxList<PageActionAreaSyntax> nodesList)
+        protected ALAppSymbolsCollection<ALAppPageAction> CreatePageActionsList(SyntaxList<PageActionAreaSyntax> nodesList)
         {
-            ALAppElementsCollection<ALAppPageAction> actionsList = new ALAppElementsCollection<ALAppPageAction>();
+            ALAppSymbolsCollection<ALAppPageAction> actionsList = new ALAppSymbolsCollection<ALAppPageAction>();
             foreach (PageActionAreaSyntax actionSyntax in nodesList)
             {
                 actionsList.Add(CreatePageAction(actionSyntax));
@@ -440,9 +455,9 @@ protected void ProcessSyntaxNodesList(IEnumerable<SyntaxNode> nodesList, List<AL
             return actionsList;
         }
 
-        protected ALAppElementsCollection<ALAppPageAction> CreatePageActionsList(SyntaxList<ActionBaseSyntax> nodesList)
+        protected ALAppSymbolsCollection<ALAppPageAction> CreatePageActionsList(SyntaxList<ActionBaseSyntax> nodesList)
         {
-            ALAppElementsCollection<ALAppPageAction> actionsList = new ALAppElementsCollection<ALAppPageAction>();
+            ALAppSymbolsCollection<ALAppPageAction> actionsList = new ALAppSymbolsCollection<ALAppPageAction>();
             foreach (ActionBaseSyntax actionSyntax in nodesList)
             {
                 actionsList.Add(CreatePageAction(actionSyntax));
@@ -528,9 +543,9 @@ protected void ProcessSyntaxNodesList(IEnumerable<SyntaxNode> nodesList, List<AL
 
         #region Report data items
 
-        protected ALAppElementsCollection<ALAppReportDataItem> CreateReportDataItemsList(SyntaxList<ReportDataItemSyntax> nodesList)
+        protected ALAppSymbolsCollection<ALAppReportDataItem> CreateReportDataItemsList(SyntaxList<ReportDataItemSyntax> nodesList)
         {
-            ALAppElementsCollection<ALAppReportDataItem> list = new ALAppElementsCollection<ALAppReportDataItem>();
+            ALAppSymbolsCollection<ALAppReportDataItem> list = new ALAppSymbolsCollection<ALAppReportDataItem>();
             foreach (ReportDataItemSyntax dataItemSyntax in nodesList)
             {
                 list.Add(this.CreateReportDataItem(dataItemSyntax));
@@ -563,12 +578,12 @@ protected void ProcessSyntaxNodesList(IEnumerable<SyntaxNode> nodesList, List<AL
             {
                 case ConvertedSyntaxKind.ReportDataItem:
                     if (dataItem.DataItems == null)
-                        dataItem.DataItems = new ALAppElementsCollection<ALAppReportDataItem>();
+                        dataItem.DataItems = new ALAppSymbolsCollection<ALAppReportDataItem>();
                     dataItem.DataItems.Add(this.CreateReportDataItem((ReportDataItemSyntax)elementSyntax));
                     break;
                 case ConvertedSyntaxKind.ReportColumn:
                     if (dataItem.Columns == null)
-                        dataItem.Columns = new ALAppElementsCollection<ALAppReportColumn>();
+                        dataItem.Columns = new ALAppSymbolsCollection<ALAppReportColumn>();
                     dataItem.Columns.Add(this.CreateReportColumn((ReportColumnSyntax)elementSyntax));
                     break;
             }
@@ -652,7 +667,7 @@ protected void ProcessSyntaxNodesList(IEnumerable<SyntaxNode> nodesList, List<AL
             {
                 string parentName = (change.Anchor != null) ? ALSyntaxHelper.DecodeName(change.Anchor.ToString()) : "";
                 if (alObject.Columns == null)
-                    alObject.Columns = new ALAppElementsCollection<ALAppReportColumn>();
+                    alObject.Columns = new ALAppSymbolsCollection<ALAppReportColumn>();
                 foreach (ReportColumnSyntax columnSyntax in change.Columns)
                 {
                     ALAppReportColumn column = CreateReportColumn(columnSyntax);
@@ -668,7 +683,7 @@ protected void ProcessSyntaxNodesList(IEnumerable<SyntaxNode> nodesList, List<AL
             {
                 string parentName = (change.Anchor != null) ? ALSyntaxHelper.DecodeName(change.Anchor.ToString()) : "";
                 if (alObject.DataItems == null)
-                    alObject.DataItems = new ALAppElementsCollection<ALAppReportDataItem>();
+                    alObject.DataItems = new ALAppSymbolsCollection<ALAppReportDataItem>();
                 foreach (ReportDataItemSyntax dataItemSyntax in change.DataItems)
                 {
                     ALAppReportDataItem dataItem = CreateReportDataItem(dataItemSyntax);
@@ -698,7 +713,7 @@ protected void ProcessSyntaxNodesList(IEnumerable<SyntaxNode> nodesList, List<AL
             //add elements
             if ((node.XmlPortSchema != null) && (node.XmlPortSchema.XmlPortSchema != null))
             {
-                alObject.Schema = new ALAppElementsCollection<ALAppXmlPortNode>();
+                alObject.Schema = new ALAppSymbolsCollection<ALAppXmlPortNode>();
                 foreach (XmlPortNodeSyntax childNode in node.XmlPortSchema.XmlPortSchema)
                 {
                     alObject.Schema.Add(CreateXmlPortNode(childNode));
@@ -738,7 +753,7 @@ protected void ProcessSyntaxNodesList(IEnumerable<SyntaxNode> nodesList, List<AL
 
             if ((node.Schema != null) && (node.Schema.Count > 0))
             {
-                alXmlPortNode.Schema = new ALAppElementsCollection<ALAppXmlPortNode>();
+                alXmlPortNode.Schema = new ALAppSymbolsCollection<ALAppXmlPortNode>();
                 foreach (XmlPortNodeSyntax childNode in node.Schema)
                 {
                     alXmlPortNode.Schema.Add(CreateXmlPortNode(childNode));
@@ -779,9 +794,9 @@ protected void ProcessSyntaxNodesList(IEnumerable<SyntaxNode> nodesList, List<AL
 
 #region Query data items
 
-        protected ALAppElementsCollection<ALAppQueryDataItem> CreateQueryDataItemsList(SyntaxList<QueryDataItemSyntax> nodesList)
+        protected ALAppSymbolsCollection<ALAppQueryDataItem> CreateQueryDataItemsList(SyntaxList<QueryDataItemSyntax> nodesList)
         {
-            ALAppElementsCollection<ALAppQueryDataItem> list = new ALAppElementsCollection<ALAppQueryDataItem>();
+            ALAppSymbolsCollection<ALAppQueryDataItem> list = new ALAppSymbolsCollection<ALAppQueryDataItem>();
             foreach (QueryDataItemSyntax dataItemSyntax in nodesList)
             {
                 list.Add(this.CreateQueryDataItem(dataItemSyntax));
@@ -815,17 +830,17 @@ protected void ProcessSyntaxNodesList(IEnumerable<SyntaxNode> nodesList, List<AL
             {
                 case ConvertedSyntaxKind.QueryColumn:
                     if (dataItem.Columns == null)
-                        dataItem.Columns = new ALAppElementsCollection<ALAppQueryColumn>();
+                        dataItem.Columns = new ALAppSymbolsCollection<ALAppQueryColumn>();
                     dataItem.Columns.Add(this.CreateQueryColumn((QueryColumnSyntax)elementSyntax));
                     break;
                 case ConvertedSyntaxKind.QueryDataItem:
                     if (dataItem.DataItems == null)
-                        dataItem.DataItems = new ALAppElementsCollection<ALAppQueryDataItem>();
+                        dataItem.DataItems = new ALAppSymbolsCollection<ALAppQueryDataItem>();
                     dataItem.DataItems.Add(this.CreateQueryDataItem((QueryDataItemSyntax)elementSyntax));
                     break;
                 case ConvertedSyntaxKind.QueryFilter:
                     if (dataItem.Filters == null)
-                        dataItem.Filters = new ALAppElementsCollection<ALAppQueryFilter>();
+                        dataItem.Filters = new ALAppSymbolsCollection<ALAppQueryFilter>();
                     dataItem.Filters.Add(this.CreateQueryFilter((QueryFilterSyntax)elementSyntax));
                     break;
             }
@@ -897,9 +912,9 @@ protected void ProcessSyntaxNodesList(IEnumerable<SyntaxNode> nodesList, List<AL
 
 #region Control changes
 
-        protected ALAppElementsCollection<ALAppPageControlChange> CreatePageExtensionControlChangesList(SyntaxList<ControlChangeBaseSyntax> nodesList)
+        protected ALAppSymbolsCollection<ALAppPageControlChange> CreatePageExtensionControlChangesList(SyntaxList<ControlChangeBaseSyntax> nodesList)
         {
-            ALAppElementsCollection<ALAppPageControlChange> list = new ALAppElementsCollection<ALAppPageControlChange>();
+            ALAppSymbolsCollection<ALAppPageControlChange> list = new ALAppSymbolsCollection<ALAppPageControlChange>();
             foreach (ControlChangeBaseSyntax changeSyntax in nodesList)
             {
                 list.Add(CreatePageExtensionControlChange(changeSyntax));
@@ -949,9 +964,9 @@ protected void ProcessSyntaxNodesList(IEnumerable<SyntaxNode> nodesList, List<AL
 
 #region Action changes
 
-        protected ALAppElementsCollection<ALAppPageActionChange> CreatePageExtensionActionChangesList(SyntaxList<ActionChangeBaseSyntax> nodesList)
+        protected ALAppSymbolsCollection<ALAppPageActionChange> CreatePageExtensionActionChangesList(SyntaxList<ActionChangeBaseSyntax> nodesList)
         {
-            ALAppElementsCollection<ALAppPageActionChange> list = new ALAppElementsCollection<ALAppPageActionChange>();
+            ALAppSymbolsCollection<ALAppPageActionChange> list = new ALAppSymbolsCollection<ALAppPageActionChange>();
             foreach (ActionChangeBaseSyntax changeSyntax in nodesList)
             {
                 list.Add(CreatePageExtensionActionChange(changeSyntax));
@@ -1013,7 +1028,7 @@ protected void ProcessSyntaxNodesList(IEnumerable<SyntaxNode> nodesList, List<AL
 
             if (node.Fields != null)
             {
-                ALAppElementsCollection<ALAppTableField> modifiedFields = null;
+                ALAppSymbolsCollection<ALAppTableField> modifiedFields = null;
                 alObject.Fields = this.CreateTableExtensionFieldsList(node.Fields.Fields, out modifiedFields);
                 alObject.FieldModifications = modifiedFields;
             }
@@ -1031,12 +1046,12 @@ protected void ProcessSyntaxNodesList(IEnumerable<SyntaxNode> nodesList, List<AL
 
         #region Fields
 
-        protected ALAppElementsCollection<ALAppTableField> CreateTableExtensionFieldsList(SyntaxList<FieldBaseSyntax> nodesList, out ALAppElementsCollection<ALAppTableField> modifiedFields)
+        protected ALAppSymbolsCollection<ALAppTableField> CreateTableExtensionFieldsList(SyntaxList<FieldBaseSyntax> nodesList, out ALAppSymbolsCollection<ALAppTableField> modifiedFields)
         {
             modifiedFields = null;
             if ((nodesList != null) && (nodesList.Count > 0))
             {
-                ALAppElementsCollection<ALAppTableField> list = new ALAppElementsCollection<ALAppTableField>();
+                ALAppSymbolsCollection<ALAppTableField> list = new ALAppSymbolsCollection<ALAppTableField>();
                 foreach (FieldBaseSyntax node in nodesList)
                 {
                     ConvertedSyntaxKind kind = node.Kind.ConvertToLocalType();
@@ -1052,7 +1067,7 @@ protected void ProcessSyntaxNodesList(IEnumerable<SyntaxNode> nodesList, List<AL
                             if (fieldModification != null)
                             {
                                 if (modifiedFields == null)
-                                    modifiedFields = new ALAppElementsCollection<ALAppTableField>();
+                                    modifiedFields = new ALAppSymbolsCollection<ALAppTableField>();
                                 modifiedFields.Add(this.CreateTableFieldModification(fieldModification));
                             }
                             break;
@@ -1077,7 +1092,7 @@ protected void ProcessSyntaxNodesList(IEnumerable<SyntaxNode> nodesList, List<AL
         #region Field groups
 
 #if BC
-        protected ALAppElementsCollection<ALAppFieldGroup> CreateTableExtensionFieldsGroups(SyntaxList<FieldGroupChangeBaseSyntax> nodesList)
+        protected ALAppSymbolsCollection<ALAppFieldGroup> CreateTableExtensionFieldsGroups(SyntaxList<FieldGroupChangeBaseSyntax> nodesList)
         {
             return null;
         }
@@ -1133,7 +1148,7 @@ protected void ProcessSyntaxNodesList(IEnumerable<SyntaxNode> nodesList, List<AL
 #region Assembly declaration
 
 #if BC
-        protected ALAppElementsCollection<ALAppDotNetAssemblyDeclaration> CreateAssemblyDeclarationsList(SyntaxList<DotNetAssemblySyntax> nodesList)
+        protected ALAppSymbolsCollection<ALAppDotNetAssemblyDeclaration> CreateAssemblyDeclarationsList(SyntaxList<DotNetAssemblySyntax> nodesList)
         {
             return null;
         }
@@ -1161,11 +1176,11 @@ protected void ProcessSyntaxNodesList(IEnumerable<SyntaxNode> nodesList, List<AL
 #region Enum values
 
 #if BC
-        protected ALAppElementsCollection<ALAppEnumValue> CreateEnumValuesList(SyntaxList<EnumValueSyntax> nodesList)
+        protected ALAppSymbolsCollection<ALAppEnumValue> CreateEnumValuesList(SyntaxList<EnumValueSyntax> nodesList)
         {
             if ((nodesList != null) && (nodesList.Count > 0))
             {
-                ALAppElementsCollection<ALAppEnumValue> list = new ALAppElementsCollection<ALAppEnumValue>();
+                ALAppSymbolsCollection<ALAppEnumValue> list = new ALAppSymbolsCollection<ALAppEnumValue>();
                 foreach (EnumValueSyntax node in nodesList)
                 {
                     list.Add(this.CreateEnumValue(node));
@@ -1235,12 +1250,12 @@ protected void ProcessSyntaxNodesList(IEnumerable<SyntaxNode> nodesList, List<AL
             return alObject;
         }
 
-        public ALAppElementsCollection<ALAppPermission> CreatePermissionsList(PermissionPropertyValueSyntax permissionsPropertyValue)
+        public ALAppSymbolsCollection<ALAppPermission> CreatePermissionsList(PermissionPropertyValueSyntax permissionsPropertyValue)
         {
             if (permissionsPropertyValue == null)
                 return null;
 
-            ALAppElementsCollection<ALAppPermission> alAppPermissionsCollection = new ALAppElementsCollection<ALAppPermission>();
+            ALAppSymbolsCollection<ALAppPermission> alAppPermissionsCollection = new ALAppSymbolsCollection<ALAppPermission>();
 
             if ((permissionsPropertyValue.PermissionProperties != null) && (permissionsPropertyValue.PermissionProperties.Count > 0))
                 foreach (var permissionProperty in permissionsPropertyValue.PermissionProperties)
@@ -1317,7 +1332,7 @@ protected void ProcessSyntaxNodesList(IEnumerable<SyntaxNode> nodesList, List<AL
         {
             if ((nodeList != null) && (nodeList.Count > 0))
             {
-                alObject.Methods = new ALAppElementsCollection<ALAppMethod>();
+                alObject.Methods = new ALAppSymbolsCollection<ALAppMethod>();
 
                 foreach (MemberSyntax memberNode in nodeList)
                 {
@@ -1385,11 +1400,11 @@ protected void ProcessSyntaxNodesList(IEnumerable<SyntaxNode> nodesList, List<AL
             return method;
         }
 
-        protected ALAppElementsCollection<ALAppMethodParameter> CreateMethodParameters(ParameterListSyntax parameterListSyntax)
+        protected ALAppSymbolsCollection<ALAppMethodParameter> CreateMethodParameters(ParameterListSyntax parameterListSyntax)
         {
             if ((parameterListSyntax != null) && (parameterListSyntax.Parameters != null))
             {
-                ALAppElementsCollection<ALAppMethodParameter> parameters = new ALAppElementsCollection<ALAppMethodParameter>();
+                ALAppSymbolsCollection<ALAppMethodParameter> parameters = new ALAppSymbolsCollection<ALAppMethodParameter>();
                 foreach (ParameterSyntax parameterSyntax in parameterListSyntax.Parameters)
                 {
                     parameters.Add(this.CreateMethodParameter(parameterSyntax));
@@ -1409,11 +1424,11 @@ protected void ProcessSyntaxNodesList(IEnumerable<SyntaxNode> nodesList, List<AL
             return parameter;
         }
 
-        protected ALAppElementsCollection<ALAppAttribute> CreateAttributes(SyntaxList<MemberAttributeSyntax> attributeListSyntax)
+        protected ALAppSymbolsCollection<ALAppAttribute> CreateAttributes(SyntaxList<MemberAttributeSyntax> attributeListSyntax)
         {
             if ((attributeListSyntax != null) && (attributeListSyntax.Count > 0))
             {
-                ALAppElementsCollection<ALAppAttribute> attributeList = new ALAppElementsCollection<ALAppAttribute>();
+                ALAppSymbolsCollection<ALAppAttribute> attributeList = new ALAppSymbolsCollection<ALAppAttribute>();
                 foreach (MemberAttributeSyntax attributeSyntax in attributeListSyntax)
                 {
                     ALAppAttribute attribute = new ALAppAttribute();
@@ -1426,7 +1441,7 @@ protected void ProcessSyntaxNodesList(IEnumerable<SyntaxNode> nodesList, List<AL
         }
 
 #if BC
-        protected ALAppElementsCollection<ALAppVariable> CreateGlobalVarSection(GlobalVarSectionSyntax node)
+        protected ALAppSymbolsCollection<ALAppVariable> CreateGlobalVarSection(GlobalVarSectionSyntax node)
         {
             if ((node.Variables != null) && (node.Variables.Count > 0))
             {
@@ -1436,7 +1451,7 @@ protected void ProcessSyntaxNodesList(IEnumerable<SyntaxNode> nodesList, List<AL
 
                 }
 
-                ALAppElementsCollection<ALAppVariable> variables = new ALAppElementsCollection<ALAppVariable>();
+                ALAppSymbolsCollection<ALAppVariable> variables = new ALAppSymbolsCollection<ALAppVariable>();
                 foreach (VariableDeclarationBaseSyntax variableSyntax in node.Variables)
                 {
                     variables.Add(CreateVariable(variableSyntax));

@@ -24,7 +24,7 @@ namespace AnZwDev.ALTools.Workspace.SymbolsInformation
         public string Description { get; set; }
         
         [JsonProperty("range", NullValueHandling = NullValueHandling.Ignore)]
-        public Range Range { get; set; }
+        public TextRange Range { get; set; }
 
         [JsonProperty("disabled")]
         public bool Disabled { get; set; }
@@ -53,7 +53,7 @@ namespace AnZwDev.ALTools.Workspace.SymbolsInformation
             };
         }
 
-        public static WarningDirectiveInfo Create(string ruleId, bool disabled, Range range)
+        public static WarningDirectiveInfo Create(string ruleId, bool disabled, TextRange range)
         {
             var title = disabled ? "Disabled" : "Enabled";
             title = title + " - "+ ruleId + ", Ln " + (range.start.line + 1).ToString();

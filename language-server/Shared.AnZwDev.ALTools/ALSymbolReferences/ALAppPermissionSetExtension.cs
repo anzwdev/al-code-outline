@@ -9,7 +9,7 @@ namespace AnZwDev.ALTools.ALSymbolReferences
     {
 
         public string TargetObject { get; set; }
-        public ALAppElementsCollection<ALAppPermission> Permissions { get; set; }
+        public ALAppSymbolsCollection<ALAppPermission> Permissions { get; set; }
 
         public ALAppPermissionSetExtension()
         {
@@ -20,9 +20,20 @@ namespace AnZwDev.ALTools.ALSymbolReferences
             return ALSymbolKind.PermissionSetExtension;
         }
 
+        public override ALObjectType GetALObjectType()
+        {
+            return ALObjectType.PermissionSetExtension;
+        }
+
+
         public string GetTargetObjectName()
         {
             return this.TargetObject;
+        }
+
+        public ALObjectReference GetTargetObjectReference()
+        {
+            return new ALObjectReference(Usings, this.TargetObject);
         }
 
         public override void ReplaceIdReferences(ALAppObjectIdMap idMap)

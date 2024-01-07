@@ -1,7 +1,6 @@
 ﻿using AnZwDev.ALTools.CodeCompletion;
 using AnZwDev.ALTools.Server.Contracts;
-using AnZwDev.VSCodeLangServer.Protocol.MessageProtocol;
-using AnZwDev.VSCodeLangServer.Protocol.Server;
+using StreamJsonRpc;
 using System;
 using System.Collections.Generic;
 using System.Text;
@@ -9,18 +8,18 @@ using System.Threading.Tasks;
 
 namespace AnZwDev.ALTools.Server.Handlers
 {
-    public class CodeCompletionRequestHandler : BaseALRequestHandler<CodeCompletionRequest, CodeCompletionResponse>
+    public class CodeCompletionRequestHandler : RequestHandler
     {
 
         private CodeCompletionProvidersCollection _codeCompletionProviders;
 
-        public CodeCompletionRequestHandler(ALDevToolsServer server, LanguageServerHost languageServerHost) : base(server, languageServerHost, "al/codecompletion")
+        public CodeCompletionRequestHandler(LanguageServerHost languageServerHost) : base(languageServerHost)
         {
             _codeCompletionProviders = new CodeCompletionProvidersCollection(this.Server);
         }
 
-#pragma warning disable 1998
-        protected override async Task<CodeCompletionResponse> HandleMessage(CodeCompletionRequest parameters, RequestContext<CodeCompletionResponse> context)
+        [JsonRpcMethod("al/codecompletion", UseSingleObjectParameterDeserialization = true)]
+        public CodeCompletionResponse GetCodeCompletion(CodeCompletionRequest parameters)
         {
             CodeCompletionResponse response = new CodeCompletionResponse();
             try
@@ -40,7 +39,6 @@ namespace AnZwDev.ALTools.Server.Handlers
             }
             return response;
         }
-#pragma warning restore 1998
 
     }
 

@@ -1,7 +1,8 @@
 import { ToolsSymbolInformationRequest } from "./toolsSymbolInformationRequest";
+import { ToolsSymbolReference } from "./toolsSymbolReference";
 
 export class ToolsGetTableFieldsListRequest extends ToolsSymbolInformationRequest {
-    table: string | undefined;
+    tableReference: ToolsSymbolReference;
     includeDisabled: boolean;
     includeObsolete: boolean;
     includeNormal: boolean;
@@ -10,9 +11,9 @@ export class ToolsGetTableFieldsListRequest extends ToolsSymbolInformationReques
     includeToolTips: boolean;
     toolTipsSourceDependencies: string[] | undefined;
 
-    constructor(newPath: string | undefined, newTable: string, newIncludeDisabled: boolean, newIncludeObsolete: boolean, newIncludeNormal: boolean, newIncludeFlowFields: boolean, newIncludeFlowFilters: boolean, newIncludeToolTips: boolean, newToolTipsSourceDependencies: string[] | undefined) {
+    constructor(newPath: string | undefined, newTableReference: ToolsSymbolReference, newIncludeDisabled: boolean, newIncludeObsolete: boolean, newIncludeNormal: boolean, newIncludeFlowFields: boolean, newIncludeFlowFilters: boolean, newIncludeToolTips: boolean, newToolTipsSourceDependencies: string[] | undefined) {
         super(newPath, true);
-        this.table = newTable;
+        this.tableReference = newTableReference;
         this.includeDisabled = newIncludeDisabled;
         this.includeObsolete = newIncludeObsolete;
         this.includeNormal = newIncludeNormal;

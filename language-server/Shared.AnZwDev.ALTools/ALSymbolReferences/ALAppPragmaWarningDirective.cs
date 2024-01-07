@@ -12,7 +12,7 @@ namespace AnZwDev.ALTools.ALSymbolReferences
         public bool Disabled { get; set; }
         public List<string> Rules { get; set; }
 
-        public ALAppPragmaWarningDirective(Range range, bool disabled, List<string> rules) : base(range)
+        public ALAppPragmaWarningDirective(TextRange range, bool disabled, List<string> rules) : base(range)
         {
             Disabled = disabled;
             Rules = rules;

@@ -17,8 +17,8 @@ namespace AnZwDev.ALTools.ALSymbolReferences
         public bool IsLocal { get; set; }
         public string AccessModifier { get; set; }
         public int MethodKind { get; set; }
-        public ALAppElementsCollection<ALAppMethodParameter> Parameters { get; set; }
-        public ALAppElementsCollection<ALAppAttribute> Attributes { get; set; }
+        public ALAppSymbolsCollection<ALAppMethodParameter> Parameters { get; set; }
+        public ALAppSymbolsCollection<ALAppAttribute> Attributes { get; set; }
         public ALAppTypeDefinition ReturnTypeDefinition { get; set; }
 
         public ALAppMethod()

@@ -1,26 +1,23 @@
 ﻿using AnZwDev.ALTools.Navigation;
 using AnZwDev.ALTools.Server.Contracts;
-using AnZwDev.VSCodeLangServer.Protocol.MessageProtocol;
-using AnZwDev.VSCodeLangServer.Protocol.Server;
+using StreamJsonRpc;
 using System;
-using System.Collections.Generic;
-using System.Text;
 using System.Threading.Tasks;
 
 namespace AnZwDev.ALTools.Server.Handlers
 {
-    public class ReferencesRequestHandler : BaseALRequestHandler<ReferencesRequest, ReferencesResponse>
+    public class ReferencesRequestHandler : RequestHandler
     {
 
         private ReferencesProvidersCollection _referencesProviders;
 
-        public ReferencesRequestHandler(ALDevToolsServer server, LanguageServerHost languageServerHost) : base(server, languageServerHost, "al/references")
+        public ReferencesRequestHandler(LanguageServerHost languageServerHost) : base(languageServerHost)
         {
-            _referencesProviders = new ReferencesProvidersCollection(server);
+            _referencesProviders = new ReferencesProvidersCollection(languageServerHost.ALDevToolsServer);
         }
 
-#pragma warning disable 1998
-        protected override async Task<ReferencesResponse> HandleMessage(ReferencesRequest parameters, RequestContext<ReferencesResponse> context)
+        [JsonRpcMethod("al/references", UseSingleObjectParameterDeserialization = true)]
+        public ReferencesResponse GetReferences(ReferencesRequest parameters)
         {
             ReferencesResponse response = new ReferencesResponse();
             try
@@ -33,7 +30,6 @@ namespace AnZwDev.ALTools.Server.Handlers
             }
             return response;
         }
-#pragma warning restore 1998
 
     }
 }

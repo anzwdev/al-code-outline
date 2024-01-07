@@ -31,7 +31,7 @@ export class ALXmlPortSyntaxBuilder {
     }
 
     private writeSchema(writer : ALSyntaxWriter, data : ALXmlPortWizardData) {       
-        let tableElementName = writer.createName(data.selectedTable);
+        let tableElementName = writer.createName(data.selectedTable!.name!);
         let fieldNodeName : string;
         if (data.fieldNodeType == "element")
             fieldNodeName = "fieldelement";
@@ -41,7 +41,7 @@ export class ALXmlPortSyntaxBuilder {
         writer.writeStartNamedBlock("schema");
         writer.writeStartGroup("textelement", "RootNodeName");
 
-        writer.writeStartNameSourceBlock("tableelement", tableElementName, writer.encodeName(data.selectedTable));
+        writer.writeStartNameSourceBlock("tableelement", tableElementName, writer.encodeName(data.selectedTable!.name!));
 
         if (data.selectedFieldList)
         {

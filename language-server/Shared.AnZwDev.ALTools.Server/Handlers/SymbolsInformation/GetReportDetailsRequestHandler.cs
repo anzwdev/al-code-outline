@@ -1,24 +1,21 @@
 ﻿using AnZwDev.ALTools.Server.Contracts.SymbolsInformation;
 using AnZwDev.ALTools.Workspace;
 using AnZwDev.ALTools.Workspace.SymbolsInformation;
-using AnZwDev.VSCodeLangServer.Protocol.Server;
-using AnZwDev.VSCodeLangServer.Protocol.MessageProtocol;
+using StreamJsonRpc;
 using System;
-using System.Collections.Generic;
-using System.Text;
 using System.Threading.Tasks;
 
 namespace AnZwDev.ALTools.Server.Handlers.SymbolsInformation
 {
-    public class GetReportDetailsRequestHandler : BaseALRequestHandler<GetReportDetailsRequest, GetReportDetailsResponse>
+    public class GetReportDetailsRequestHandler : RequestHandler
     {
 
-        public GetReportDetailsRequestHandler(ALDevToolsServer server, LanguageServerHost languageServerHost) : base(server, languageServerHost, "al/getreportdetails")
+        public GetReportDetailsRequestHandler(LanguageServerHost languageServerHost) : base(languageServerHost)
         {
         }
 
-#pragma warning disable 1998
-        protected override async Task<GetReportDetailsResponse> HandleMessage(GetReportDetailsRequest parameters, RequestContext<GetReportDetailsResponse> context)
+        [JsonRpcMethod("al/getreportdetails", UseSingleObjectParameterDeserialization = true)]
+        public GetReportDetailsResponse GetReportDetails(GetReportDetailsRequest parameters)
         {
             GetReportDetailsResponse response = new GetReportDetailsResponse();
 
@@ -29,7 +26,7 @@ namespace AnZwDev.ALTools.Server.Handlers.SymbolsInformation
                 if (project != null)
                 {
                     ReportInformationProvider provider = new ReportInformationProvider();
-                    response.symbol = provider.GetFullReportInformation(project, parameters.name);
+                    response.symbol = provider.GetFullReportInformation(project, parameters.symbolReference.ToALObjectReference());
                     if (response.symbol != null)
                         response.symbol.Sort();
                 }
@@ -45,7 +42,6 @@ namespace AnZwDev.ALTools.Server.Handlers.SymbolsInformation
 
             return response;
         }
-#pragma warning restore 1998
 
     }
 }

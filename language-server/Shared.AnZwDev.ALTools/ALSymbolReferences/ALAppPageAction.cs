@@ -11,7 +11,7 @@ namespace AnZwDev.ALTools.ALSymbolReferences
     {
 
         public ALAppPageActionKind Kind { get; set; }
-        public ALAppElementsCollection<ALAppPageAction> Actions { get; set; }
+        public ALAppSymbolsCollection<ALAppPageAction> Actions { get; set; }
         public ALAppPropertiesCollection Properties { get; set; }
 
         public ALAppPageAction()

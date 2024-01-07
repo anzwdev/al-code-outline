@@ -5,6 +5,11 @@ using System.Text;
 
 namespace AnZwDev.ALTools.ALSymbolReferences.MergedReferences
 {
+    // !!! TO-DO !!!
+    // !!! Clean file !!!
+
+
+    /*
     public class MergedALAppObjectExtensionsCollection<T> : MergedALAppObjectsCollection<T> where T : ALAppObject, IALAppObjectExtension
     {
 
@@ -41,4 +46,5 @@ namespace AnZwDev.ALTools.ALSymbolReferences.MergedReferences
         }
 
     }
+    */
 }

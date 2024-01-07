@@ -281,7 +281,7 @@ namespace AnZwDev.ALTools.DuplicateCodeSearch
             AppendStatementInstance(
                 token.ToString().ToLower(),
                 true,
-                new Range(token.SyntaxTree.GetLineSpan(token.Span)), 
+                new TextRange(token.SyntaxTree.GetLineSpan(token.Span)), 
                 statementsBlock);
         }
 
@@ -300,12 +300,12 @@ namespace AnZwDev.ALTools.DuplicateCodeSearch
                 AppendStatementInstance(
                     keyBuilder.ToString().ToLower(),
                     ignore,
-                    new Range(node.SyntaxTree.GetLineSpan(node.Span)),
+                    new TextRange(node.SyntaxTree.GetLineSpan(node.Span)),
                     statementsBlock);
             }
         }
 
-        protected void AppendStatementInstance(string keyValue, bool ignore, Range range, DCStatementsBlock statementsBlock)
+        protected void AppendStatementInstance(string keyValue, bool ignore, TextRange range, DCStatementsBlock statementsBlock)
         {
             DCStatementKey key = this.StatementsDictionary.GetOrCreate(keyValue, ignore);
             DCStatementInstance statementInstance = new DCStatementInstance(statementsBlock, key, range, statementsBlock.Statements.Count);

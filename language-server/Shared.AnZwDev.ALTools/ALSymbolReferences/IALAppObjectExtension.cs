@@ -1,4 +1,5 @@
-﻿using System;
+﻿using AnZwDev.ALTools.ALSymbols;
+using System;
 using System.Collections.Generic;
 using System.Text;
 
@@ -8,6 +9,7 @@ namespace AnZwDev.ALTools.ALSymbolReferences
     {
 
         string GetTargetObjectName();
+        ALObjectReference GetTargetObjectReference();
 
     }
 }

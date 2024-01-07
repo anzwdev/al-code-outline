@@ -8,9 +8,9 @@ namespace AnZwDev.ALTools.ALSymbolReferences
     public class ALAppDirective
     {
 
-        public Range Range { get; set; }
+        public TextRange Range { get; set; }
 
-        public ALAppDirective(Range range)
+        public ALAppDirective(TextRange range)
         {
             this.Range = range;
         }

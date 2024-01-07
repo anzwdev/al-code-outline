@@ -1,5 +1,7 @@
 ﻿using AnZwDev.ALTools.ALSymbolReferences;
+using AnZwDev.ALTools.ALSymbolReferences.Search;
 using AnZwDev.ALTools.ALSymbols;
+using AnZwDev.ALTools.Workspace.SymbolReferences;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -7,10 +9,10 @@ using System.Text;
 
 namespace AnZwDev.ALTools.Workspace.SymbolsInformation
 {
-    public class XmlPortInformationProvider
+    public class XmlPortInformationProvider : BaseObjectInformationProvider<ALAppXmlPort>
     {
 
-        public XmlPortInformationProvider()
+        public XmlPortInformationProvider() : base(x => x.XmlPorts)
         {
         }
 
@@ -18,83 +20,21 @@ namespace AnZwDev.ALTools.Workspace.SymbolsInformation
 
         public List<XmlPortInformation> GetXmlPorts(ALProject project)
         {
-            List<XmlPortInformation> infoList = new List<XmlPortInformation>();
-            foreach (ALProjectDependency dependency in project.Dependencies)
-            {
-                if (dependency.Symbols != null)
-                    AddXmlPorts(infoList, dependency.Symbols);
-            }
-            if (project.Symbols != null)
-                AddXmlPorts(infoList, project.Symbols);
+            var infoList = new List<XmlPortInformation>();
+            var objectsEnumerable = GetALAppObjectsCollection(project);
+            foreach (var obj in objectsEnumerable)
+                infoList.Add(new XmlPortInformation(obj));
             return infoList;
-        }
 
-        private void AddXmlPorts(List<XmlPortInformation> infoList, ALAppSymbolReference symbols)
-        {
-            if (symbols.XmlPorts != null)
-            {
-                for (int i = 0; i < symbols.XmlPorts.Count; i++)
-                    infoList.Add(new XmlPortInformation(symbols.XmlPorts[i]));
-            }
-        }
-
-        #endregion
-
-        #region Find xml port
-
-        protected ALAppXmlPort FindXmlPort(ALProject project, string name)
-        {
-            ALAppXmlPort xmlPort = FindXmlPort(project.Symbols, name);
-            if (xmlPort != null)
-                return xmlPort;
-            foreach (ALProjectDependency dependency in project.Dependencies)
-            {
-                xmlPort = FindXmlPort(dependency.Symbols, name);
-                if (xmlPort != null)
-                    return xmlPort;
-            }
-            return null;
-        }
-
-        protected ALAppXmlPort FindXmlPort(ALProject project, int id)
-        {
-            ALAppXmlPort xmlPort = FindXmlPort(project.Symbols, id);
-            if (xmlPort != null)
-                return xmlPort;
-            foreach (ALProjectDependency dependency in project.Dependencies)
-            {
-                xmlPort = FindXmlPort(dependency.Symbols, id);
-                if (xmlPort != null)
-                    return xmlPort;
-            }
-            return null;
-        }
-
-        protected ALAppXmlPort FindXmlPort(ALAppSymbolReference symbols, string name)
-        {
-            if ((symbols != null) && (symbols.XmlPorts != null))
-                return symbols.XmlPorts
-                    .Where(p => (name.Equals(p.Name, StringComparison.CurrentCultureIgnoreCase)))
-                    .FirstOrDefault();
-            return null;
-        }
-
-        protected ALAppXmlPort FindXmlPort(ALAppSymbolReference symbols, int id)
-        {
-            if ((symbols != null) && (symbols.XmlPorts != null))
-                return symbols.XmlPorts
-                    .Where(p => (p.Id == id))
-                    .FirstOrDefault();
-            return null;
         }
 
         #endregion
 
         #region Get xml port table element details
 
-        public XmlPortTableElementInformation GetXmlPortTableElementDetails(ALProject project, string xmlPortName, string xmlPortTableElementName, bool getExistingFields, bool getAvailableFields)
+        public XmlPortTableElementInformation GetXmlPortTableElementDetails(ALProject project, ALObjectReference xmlPortReference, string xmlPortTableElementName, bool getExistingFields, bool getAvailableFields)
         {
-            ALAppXmlPort xmlPort = this.FindXmlPort(project, xmlPortName);
+            ALAppXmlPort xmlPort = FindXmlPort(project, xmlPortReference);
             if ((xmlPort == null) || (xmlPort.Schema == null))
                 return null;
             ALAppXmlPortNode xmlPortTableElement = xmlPort.FindNode(xmlPortTableElementName, ALAppXmlPortNodeKind.TableElement);
@@ -102,10 +42,11 @@ namespace AnZwDev.ALTools.Workspace.SymbolsInformation
                 return null;
 
             XmlPortTableElementInformation tableElementInformation = new XmlPortTableElementInformation(xmlPortTableElement);
-            if ((!String.IsNullOrWhiteSpace(tableElementInformation.Source)) && (getExistingFields || getAvailableFields))
+            var tableReference = new ALObjectReference(xmlPort.Usings, tableElementInformation.Source);
+            if ((!tableReference.IsEmpty()) && (getExistingFields || getAvailableFields))
             {
                 TableInformationProvider tableInformationProvider = new TableInformationProvider();
-                List<TableFieldInformaton> allTableFieldsList = tableInformationProvider.GetTableFields(project, tableElementInformation.Source, false, false, true, true, false, false, null);
+                List<TableFieldInformaton> allTableFieldsList = tableInformationProvider.GetTableFields(project, tableReference, false, false, true, true, false, false, null);
 
                 Dictionary<string, TableFieldInformaton> availableTableFieldsDict = allTableFieldsList.ToDictionary();
                 List<TableFieldInformaton> xmlPortTableFields = new List<TableFieldInformaton>();
@@ -123,7 +64,7 @@ namespace AnZwDev.ALTools.Workspace.SymbolsInformation
             return tableElementInformation;
         }
 
-        protected void CollectXmlPortTableFields(string xmlPortTableElementName, ALAppElementsCollection<ALAppXmlPortNode> nodesList, Dictionary<string, TableFieldInformaton> availableTableFieldsDict, List<TableFieldInformaton> xmlPortTableFields)
+        protected void CollectXmlPortTableFields(string xmlPortTableElementName, ALAppSymbolsCollection<ALAppXmlPortNode> nodesList, Dictionary<string, TableFieldInformaton> availableTableFieldsDict, List<TableFieldInformaton> xmlPortTableFields)
         {
             for (int i = 0; i < nodesList.Count; i++)
             {
@@ -158,15 +99,23 @@ namespace AnZwDev.ALTools.Workspace.SymbolsInformation
 
         #region XmlPort variables
 
-        public List<ALAppVariable> GetXmlPortVariables(ALProject project, string name)
+        public List<ALAppVariable> GetXmlPortVariables(ALProject project, ALObjectReference objectReference)
         {
-            ALAppXmlPort xmlPort = this.FindXmlPort(project, name);
+            ALAppXmlPort xmlPort = this.FindXmlPort(project, objectReference);
             if ((xmlPort != null) && (xmlPort.Variables != null) && (xmlPort.Variables.Count > 0))
                 return xmlPort.Variables;
             return null;
         }
 
         #endregion
+
+        private ALAppXmlPort FindXmlPort(ALProject project, ALObjectReference objectReference)
+        {
+            return project
+                .GetAllSymbolReferences()
+                .GetAllObjects<ALAppXmlPort>(x => x.XmlPorts)
+                .FindFirst(objectReference);
+        }
 
     }
 }

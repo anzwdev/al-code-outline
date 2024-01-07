@@ -1,23 +1,20 @@
 ﻿using AnZwDev.ALTools.ALLanguageInformation;
 using AnZwDev.ALTools.Server.Contracts.LanguageInformation;
-using AnZwDev.VSCodeLangServer.Protocol.MessageProtocol;
-using AnZwDev.VSCodeLangServer.Protocol.Server;
+using StreamJsonRpc;
 using System;
-using System.Collections.Generic;
-using System.Text;
 using System.Threading.Tasks;
 
 namespace AnZwDev.ALTools.Server.Handlers.LanguageInformation
 {
-    public class GetImagesRequestHandler : BaseALRequestHandler<GetImagesRequest, GetImagesResponse>
+    public class GetImagesRequestHandler : RequestHandler
     {
 
-        public GetImagesRequestHandler(ALDevToolsServer server, LanguageServerHost languageServerHost) : base(server, languageServerHost, "al/getimages")
+        public GetImagesRequestHandler(LanguageServerHost languageServerHost) : base(languageServerHost)
         {
         }
 
-#pragma warning disable 1998
-        protected override async Task<GetImagesResponse> HandleMessage(GetImagesRequest parameters, RequestContext<GetImagesResponse> context)
+        [JsonRpcMethod("al/getimages", UseSingleObjectParameterDeserialization = true)]
+        public GetImagesResponse GetImages(GetImagesRequest parameters)
         {
             GetImagesResponse response = new GetImagesResponse();
             try
@@ -45,8 +42,6 @@ namespace AnZwDev.ALTools.Server.Handlers.LanguageInformation
             }
             return response;
         }
-#pragma warning restore 1998
-
 
     }
 }

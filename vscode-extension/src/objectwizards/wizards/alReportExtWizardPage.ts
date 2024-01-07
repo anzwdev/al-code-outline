@@ -8,6 +8,7 @@ import { ToolsSymbolInformationRequest } from '../../langserver/symbolsinformati
 import { SymbolWithNameInformation } from '../../symbolsinformation/smbolWithNameInformation';
 import { ToolsGetReportDetailsRequest } from '../../langserver/symbolsinformation/toolsGetReportDetailsRequest';
 import { ALReportExtWizardDataItemData } from './alReportExtWizardDataItemData';
+import { ToolsSymbolReference } from '../../langserver/symbolsinformation/toolsSymbolReference';
 
 export class ALReportExtWizardPage extends ProjectItemWizardPage {
     protected _reportExtWizardData : ALReportExtWizardData;
@@ -104,8 +105,12 @@ export class ALReportExtWizardPage extends ProjectItemWizardPage {
         if (!baseReport)
             return;
 
+        let reportReference: ToolsSymbolReference = {
+            name: baseReport
+        };
+
         let response = await this._toolsExtensionContext.toolsLangServerClient.getReportDetails(
-            new ToolsGetReportDetailsRequest(this._settings.getDestDirectoryPath(), baseReport, true, true));
+            new ToolsGetReportDetailsRequest(this._settings.getDestDirectoryPath(), reportReference, true, true));
 
         if ((response) && (response.symbol)) {
             this.sendMessage({

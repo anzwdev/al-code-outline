@@ -16,7 +16,7 @@ namespace AnZwDev.ALTools.WorkspaceCommands
         public string Description { get; set; }
 
         [JsonProperty("range")]
-        public Range Range { get; set; }
+        public TextRange Range { get; set; }
 
         [JsonProperty("parameters", NullValueHandling = NullValueHandling.Ignore)]
         public Dictionary<string, string> Parameters { get; set; } = new Dictionary<string, string>();
@@ -25,7 +25,7 @@ namespace AnZwDev.ALTools.WorkspaceCommands
         {
         }
 
-        public WorkspaceCommandCodeAction(string commandName, Range range, string description)
+        public WorkspaceCommandCodeAction(string commandName, TextRange range, string description)
         {
             CommandName = commandName;
             Range = range;

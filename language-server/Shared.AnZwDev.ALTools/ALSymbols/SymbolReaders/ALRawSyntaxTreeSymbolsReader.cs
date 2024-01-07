@@ -57,11 +57,11 @@ namespace AnZwDev.ALTools.ALSymbols.SymbolReaders
                 symbolInfo.containsDiagnostics = true;
 
             var lineSpan = syntaxTree.GetLineSpan(node.FullSpan);
-            symbolInfo.range = new Range(lineSpan.StartLinePosition.Line, lineSpan.StartLinePosition.Character,
+            symbolInfo.range = new TextRange(lineSpan.StartLinePosition.Line, lineSpan.StartLinePosition.Character,
                 lineSpan.EndLinePosition.Line, lineSpan.EndLinePosition.Character);
 
             lineSpan = syntaxTree.GetLineSpan(node.Span);
-            symbolInfo.selectionRange = new Range(lineSpan.StartLinePosition.Line, lineSpan.StartLinePosition.Character,
+            symbolInfo.selectionRange = new TextRange(lineSpan.StartLinePosition.Line, lineSpan.StartLinePosition.Character,
                 lineSpan.StartLinePosition.Line, lineSpan.StartLinePosition.Character);
 
             var propertiesList = node.GetType().GetProperties();
@@ -115,11 +115,11 @@ namespace AnZwDev.ALTools.ALSymbols.SymbolReaders
                 symbolInfo.containsDiagnostics = true;
 
             var lineSpan = syntaxTree.GetLineSpan(node.FullSpan);
-            symbolInfo.range = new Range(lineSpan.StartLinePosition.Line, lineSpan.StartLinePosition.Character,
+            symbolInfo.range = new TextRange(lineSpan.StartLinePosition.Line, lineSpan.StartLinePosition.Character,
                 lineSpan.EndLinePosition.Line, lineSpan.EndLinePosition.Character);
 
             lineSpan = syntaxTree.GetLineSpan(node.Span);
-            symbolInfo.selectionRange = new Range(lineSpan.StartLinePosition.Line, lineSpan.StartLinePosition.Character,
+            symbolInfo.selectionRange = new TextRange(lineSpan.StartLinePosition.Line, lineSpan.StartLinePosition.Character,
                 lineSpan.StartLinePosition.Line, lineSpan.StartLinePosition.Character);
 
             return symbolInfo;
@@ -134,8 +134,8 @@ namespace AnZwDev.ALTools.ALSymbols.SymbolReaders
             symbolInfo.syntaxTreeNode = null; // node;
             symbolInfo.type = nodesCollection.GetType().Name;
 
-            symbolInfo.range = new Range();
-            symbolInfo.selectionRange = new Range();
+            symbolInfo.range = new TextRange();
+            symbolInfo.selectionRange = new TextRange();
 
             foreach (SyntaxNode node in nodesCollection)
             {

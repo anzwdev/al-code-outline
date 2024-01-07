@@ -1,27 +1,22 @@
 ﻿using AnZwDev.ALTools.Server.Contracts.ChangeTracking;
-using AnZwDev.VSCodeLangServer.Protocol.Server;
-using AnZwDev.VSCodeLangServer.Protocol.MessageProtocol;
-using System;
-using System.Collections.Generic;
-using System.Text;
+using StreamJsonRpc;
 using System.Threading.Tasks;
 
 namespace AnZwDev.ALTools.Server.Handlers.ChangeTracking
 {
-    public class FileSystemFileChangeNotificationHandler : BaseALNotificationHandler<FileSystemChangeNotificationRequest>
+    public class FileSystemFileChangeNotificationHandler : RequestHandler
     {
 
-        public FileSystemFileChangeNotificationHandler(ALDevToolsServer alDevToolsServer, LanguageServerHost languageServerHost) : base(alDevToolsServer, languageServerHost, "ws/fsFileChange")
+        public FileSystemFileChangeNotificationHandler(LanguageServerHost languageServerHost) : base(languageServerHost)
         {
         }
 
-#pragma warning disable 1998
-        public override async Task HandleNotification(FileSystemChangeNotificationRequest parameters, NotificationContext context)
+        [JsonRpcMethod("ws/fsFileChange", UseSingleObjectParameterDeserialization = true)]
+        public void FSFileChange(FileSystemChangeNotificationRequest parameters)
         {
             this.Server.Workspace.OnFileSystemFileChange(parameters.path);
 
         }
-#pragma warning restore 1998
 
     }
 }

@@ -1,24 +1,18 @@
-﻿using AnZwDev.ALTools.ALSymbols;
-using AnZwDev.ALTools.ALSymbols.SymbolReaders;
-using AnZwDev.ALTools.Server.Contracts.ChangeTracking;
-using AnZwDev.VSCodeLangServer.Protocol.Server;
-using AnZwDev.VSCodeLangServer.Protocol.MessageProtocol;
-using System;
-using System.Collections.Generic;
-using System.Text;
+﻿using AnZwDev.ALTools.Server.Contracts.ChangeTracking;
+using StreamJsonRpc;
 using System.Threading.Tasks;
 
 namespace AnZwDev.ALTools.Server.Handlers.ChangeTracking
 {
-    public class DocumentContentChangeRequestHandler : BaseALRequestHandler<DocumentContentChangeRequest, DocumentContentChangeResponse>
+    public class DocumentContentChangeRequestHandler : RequestHandler
     {
 
-        public DocumentContentChangeRequestHandler(ALDevToolsServer alDevToolsServer, LanguageServerHost languageServerHost) : base(alDevToolsServer, languageServerHost, "ws/documentContentChange")
+        public DocumentContentChangeRequestHandler(LanguageServerHost languageServerHost) : base(languageServerHost)
         {
         }
 
-#pragma warning disable 1998
-        protected override async Task<DocumentContentChangeResponse> HandleMessage(DocumentContentChangeRequest parameters, RequestContext<DocumentContentChangeResponse> context)
+        [JsonRpcMethod("ws/documentContentChange", UseSingleObjectParameterDeserialization = true)]
+        public DocumentContentChangeResponse DocumentContentChange(DocumentContentChangeRequest parameters)
         {
             DocumentContentChangeResponse response = new DocumentContentChangeResponse
             {
@@ -26,6 +20,6 @@ namespace AnZwDev.ALTools.Server.Handlers.ChangeTracking
             };
             return response;
         }
-#pragma warning restore 1998
+
     }
 }

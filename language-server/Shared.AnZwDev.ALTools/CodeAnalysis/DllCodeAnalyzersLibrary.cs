@@ -46,6 +46,7 @@ namespace AnZwDev.ALTools.CodeAnalysis
             {
                 try
                 {
+                    HashSet<string> loadedRules = new HashSet<string>();
                     Type[] types = module.GetTypes();
                     foreach (Type type in types)
                     {
@@ -57,8 +58,13 @@ namespace AnZwDev.ALTools.CodeAnalysis
                             {
                                 foreach (DiagnosticDescriptor diag in diagnostics)
                                 {
-                                    CodeAnalyzerRule rule = new CodeAnalyzerRule(diag);
-                                    this.Rules.Add(rule);
+                                    string id = diag.Id.ToString();
+                                    if (!loadedRules.Contains(id))
+                                    {
+                                        CodeAnalyzerRule rule = new CodeAnalyzerRule(diag);
+                                        this.Rules.Add(rule);
+                                        loadedRules.Add(id);
+                                    }
                                 }
                             }
                         }

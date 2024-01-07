@@ -35,7 +35,7 @@ namespace AnZwDev.ALTools.ALSymbolReferences
                 idMap.Add(item.Id, item);
         }
 
-        public void AddRange<T>(Dictionary<int, T> idMap, ALAppElementsCollection<T> collection) where T : ALAppElementWithNameId
+        public void AddRange<T>(Dictionary<int, T> idMap, ALAppSymbolsCollection<T> collection) where T : ALAppElementWithNameId
         {
             if (collection != null)
             {

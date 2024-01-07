@@ -63,7 +63,7 @@ export class ALProjectSymbolsLibrary extends ALBaseServerSideLibrary {
             }
 
         }
-        catch (e) {
+        catch (e: any) {
             this.showLoadError(e.message);
             return false;
         }

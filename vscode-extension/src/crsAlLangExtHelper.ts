@@ -1,10 +1,10 @@
 import * as vscode from 'vscode';
-import * as crsALExt from 'crs-al-language-extension-api';
+import { ICRSExtensionPublicApi } from './CRSExtensionPublicApiInterfaces';
 
 export class CRSALLangExtHelper {
-    private static _crsALLangExtApi : crsALExt.ICRSExtensionPublicApi | undefined = undefined;
+    private static _crsALLangExtApi : ICRSExtensionPublicApi | undefined = undefined;
 
-    public static async GetCrsAlLangExt() : Promise<crsALExt.ICRSExtensionPublicApi | undefined> {
+    public static async GetCrsAlLangExt() : Promise<ICRSExtensionPublicApi | undefined> {
         if (!this._crsALLangExtApi) {
             let crsExtension = vscode.extensions.getExtension('waldo.crs-al-language-extension');            
             if (crsExtension)

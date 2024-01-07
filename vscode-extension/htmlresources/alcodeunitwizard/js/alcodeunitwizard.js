@@ -28,7 +28,7 @@ class CodeunitWizard extends TableBasedObjectWizard{
         //initialize fields
         document.getElementById("objectid").value = this._data.objectId;
         document.getElementById("objectname").value = this._data.objectName;
-        document.getElementById("srctable").value = this._data.selectedTable;
+        document.getElementById("srctable").value = this._data.selectedTable.name;
         document.getElementById("interfaceName").value = this._data.interfaceName;
         this.updateControls();
         this.loadTables();
@@ -43,12 +43,12 @@ class CodeunitWizard extends TableBasedObjectWizard{
 
     loadInterfaces() {
         if (this._data)        
-            this.initInterfaceAutoComplete()
+            this.initInterfaceAutoComplete();
     }
 
     initInterfaceAutoComplete() {
         let me = this;
-        let allowedChars = new RegExp(/^[a-zA-Z\s]+$/)
+        let allowedChars = new RegExp(/^[a-zA-Z\s]+$/);
 
         document.getElementById('interfacePart').style.display = 'flex';
 
@@ -99,7 +99,7 @@ class CodeunitWizard extends TableBasedObjectWizard{
     collectStepData(finishSelected) {
         this._data.objectId = document.getElementById("objectid").value;
         this._data.objectName = document.getElementById("objectname").value;
-        this._data.selectedTable = document.getElementById("srctable").value;
+        this._data.selectedTable.name = document.getElementById("srctable").value;
         this._data.interfaceName = document.getElementById("interfaceName").value;
     }
 

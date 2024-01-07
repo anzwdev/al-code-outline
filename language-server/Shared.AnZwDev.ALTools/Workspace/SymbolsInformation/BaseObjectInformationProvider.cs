@@ -1,24 +1,32 @@
 ﻿using AnZwDev.ALTools.ALSymbolReferences;
+using AnZwDev.ALTools.ALSymbolReferences.Search;
 using AnZwDev.ALTools.ALSymbolReferences.MergedReferences;
+using AnZwDev.ALTools.Workspace.SymbolReferences;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using AnZwDev.ALTools.ALSymbols;
 
 namespace AnZwDev.ALTools.Workspace.SymbolsInformation
 {
     public class BaseObjectInformationProvider<T> where T : ALAppObject
     {
 
-        public BaseObjectInformationProvider()
+        private readonly Func<ALAppSymbolReference, IEnumerable<T>> _objectsEnumerable;
+
+        public BaseObjectInformationProvider(Func<ALAppSymbolReference, IEnumerable<T>> objectsEnumerable)
         {
+            _objectsEnumerable = objectsEnumerable;
         }
 
         #region Objects list and search
 
-        protected virtual MergedALAppObjectsCollection<T> GetALAppObjectsCollection(ALProject project)
+        protected IEnumerable<T> GetALAppObjectsCollection(ALProject project, bool includeNonAccessible = false)
         {
-            return null;
+            return project
+                .GetAllSymbolReferences()
+                .GetAllObjects<T>(_objectsEnumerable, includeNonAccessible);
         }
 
         #endregion
@@ -30,22 +38,16 @@ namespace AnZwDev.ALTools.Workspace.SymbolsInformation
             return alObject?.Methods;
         }
 
-        public IEnumerable<ALAppMethod> GetMethods(ALProject project, string name)
+        public IEnumerable<ALAppMethod> GetMethods(ALProject project, ALObjectReference objectReference)
         {
-            MergedALAppObjectsCollection<T> alObjectsCollection = this.GetALAppObjectsCollection(project);
-            return this.GetMethods(project, alObjectsCollection?.FindObject(name));
+            IEnumerable<T> alObjectsCollection = this.GetALAppObjectsCollection(project);
+            return this.GetMethods(project, alObjectsCollection?.FindFirst(objectReference));
         }
 
-        public IEnumerable<ALAppMethod> GetMethods(ALProject project, int id)
-        {
-            MergedALAppObjectsCollection<T> alObjectsCollection = this.GetALAppObjectsCollection(project);
-            return this.GetMethods(project, alObjectsCollection?.FindObject(id));
-        }
-
-        public List<MethodInformation> GetMethodsInformation(ALProject project, string name)
+        public List<MethodInformation> GetMethodsInformation(ALProject project, ALObjectReference objectReference)
         {
             List<MethodInformation> methodsInformation = new List<MethodInformation>();
-            IEnumerable<ALAppMethod> alObjectMethods = this.GetMethods(project, name);
+            IEnumerable<ALAppMethod> alObjectMethods = this.GetMethods(project, objectReference);
             foreach (ALAppMethod method in alObjectMethods)
             {
                 methodsInformation.Add(new MethodInformation(method));
@@ -62,16 +64,16 @@ namespace AnZwDev.ALTools.Workspace.SymbolsInformation
             return alObject?.Variables;
         }
 
-        public IEnumerable<ALAppVariable> GetVariables(ALProject project, string name)
+        public IEnumerable<ALAppVariable> GetVariables(ALProject project, ALObjectReference objectReference)
         {
-            MergedALAppObjectsCollection<T> alObjectsCollection = this.GetALAppObjectsCollection(project);
-            return this.GetVariables(project, alObjectsCollection?.FindObject(name));
+            IEnumerable<T> alObjectsCollection = this.GetALAppObjectsCollection(project);
+            return this.GetVariables(project, alObjectsCollection?.FindFirst(objectReference));
         }
 
         public IEnumerable<ALAppVariable> GetVariables(ALProject project, int id)
         {
-            MergedALAppObjectsCollection<T> alObjectsCollection = this.GetALAppObjectsCollection(project);
-            return this.GetVariables(project, alObjectsCollection?.FindObject(id));
+            IEnumerable<T> alObjectsCollection = this.GetALAppObjectsCollection(project);
+            return this.GetVariables(project, alObjectsCollection?.FindFirst(id));
         }
 
         #endregion

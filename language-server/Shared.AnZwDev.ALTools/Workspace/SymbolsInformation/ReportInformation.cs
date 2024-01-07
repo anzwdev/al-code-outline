@@ -10,6 +10,9 @@ namespace AnZwDev.ALTools.Workspace.SymbolsInformation
     public class ReportInformation: SymbolWithIdInformation
     {
 
+        [JsonProperty("namespace", NullValueHandling = NullValueHandling.Ignore)]
+        public string Namespace { get; set; }
+
         [JsonProperty("dataItems", NullValueHandling = NullValueHandling.Ignore)]
         public List<ReportDataItemInformation> DataItems { get; set; }
 
@@ -19,6 +22,7 @@ namespace AnZwDev.ALTools.Workspace.SymbolsInformation
 
         public ReportInformation(ALAppReport symbol): base(symbol)
         {
+            Namespace = symbol.NamespaceName;
         }
 
         public ReportDataItemInformation GetReportDataItem(string name)

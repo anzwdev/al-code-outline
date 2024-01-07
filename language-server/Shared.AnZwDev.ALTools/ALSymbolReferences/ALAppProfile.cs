@@ -19,5 +19,11 @@ namespace AnZwDev.ALTools.ALSymbolReferences
             return ALSymbolKind.ProfileObject;
         }
 
+        public override ALObjectType GetALObjectType()
+        {
+            return ALObjectType.Profile;
+        }
+
+
     }
 }

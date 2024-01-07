@@ -1,5 +1,4 @@
 ﻿using AnZwDev.ALTools.Logging;
-using AnZwDev.VSCodeLangServer.Utility;
 using System;
 using System.Collections.Generic;
 using System.Text;
@@ -8,12 +7,19 @@ namespace AnZwDev.ALTools.Server
 {
     public class MessageLogWriterImpl: IMessageLogWriter
     {
+        public string LogFilePath { get; }
 
-        private ALDevToolsServerHost _aLDevToolsServerHost;
-
-        public MessageLogWriterImpl(ALDevToolsServerHost serverHost)
+        public MessageLogWriterImpl(string logFilePath = null)
         {
-            this._aLDevToolsServerHost = serverHost;
+            LogFilePath = ValidateLogFilePath(logFilePath);
+        }
+
+        private string ValidateLogFilePath(string logFilePath)
+        {
+            if (!String.IsNullOrWhiteSpace(logFilePath))
+                return logFilePath;
+            string logFileFolderPath = System.IO.Path.GetDirectoryName(this.GetType().Assembly.Location);
+            return System.IO.Path.Combine(logFileFolderPath, "log.txt");
         }
 
         public void WriteError(Exception e)
@@ -24,12 +30,26 @@ namespace AnZwDev.ALTools.Server
         public void WriteError(Exception e, string messageStartPart)
         {
             if (String.IsNullOrEmpty(messageStartPart))
-                messageStartPart = "Error: ";
+                messageStartPart = "";
 
-            if ((this._aLDevToolsServerHost != null) && (this._aLDevToolsServerHost.Logger != null))
-                this._aLDevToolsServerHost.Logger.Write(LogLevel.Error, messageStartPart + e.Message + "\n" + e.StackTrace);
+            string message = 
+                "\n" +
+                DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss.fff") +
+                " [ERROR] " +
+                messageStartPart + 
+                e.Message + 
+                "\n" + 
+                e.StackTrace + 
+                "\n";
+
+            try
+            {
+                System.IO.File.AppendAllText(LogFilePath, message);
+            }
+            catch (Exception ex)
+            {
+            }
         }
-
 
     }
 }

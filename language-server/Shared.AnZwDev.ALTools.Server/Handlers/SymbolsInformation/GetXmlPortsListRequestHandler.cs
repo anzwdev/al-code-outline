@@ -1,24 +1,20 @@
 ﻿using AnZwDev.ALTools.Server.Contracts.SymbolsInformation;
 using AnZwDev.ALTools.Workspace;
 using AnZwDev.ALTools.Workspace.SymbolsInformation;
-using AnZwDev.VSCodeLangServer.Protocol.Server;
-using AnZwDev.VSCodeLangServer.Protocol.MessageProtocol;
-using System;
-using System.Collections.Generic;
-using System.Text;
+using StreamJsonRpc;
 using System.Threading.Tasks;
 
 namespace AnZwDev.ALTools.Server.Handlers.SymbolsInformation
 {
-    public class GetXmlPortsListRequestHandler : BaseALRequestHandler<GetXmlPortsListRequest, GetXmlPortsListResponse>
+    public class GetXmlPortsListRequestHandler : RequestHandler
     {
 
-        public GetXmlPortsListRequestHandler(ALDevToolsServer server, LanguageServerHost languageServerHost) : base(server, languageServerHost, "al/getxmlportslist")
+        public GetXmlPortsListRequestHandler(LanguageServerHost languageServerHost) : base(languageServerHost)
         {
         }
 
-#pragma warning disable 1998
-        protected override async Task<GetXmlPortsListResponse> HandleMessage(GetXmlPortsListRequest parameters, RequestContext<GetXmlPortsListResponse> context)
+        [JsonRpcMethod("al/getxmlportslist", UseSingleObjectParameterDeserialization = true)]
+        public GetXmlPortsListResponse GetXmlPortsList(GetXmlPortsListRequest parameters)
         {
             GetXmlPortsListResponse response = new GetXmlPortsListResponse();
 
@@ -32,7 +28,7 @@ namespace AnZwDev.ALTools.Server.Handlers.SymbolsInformation
 
             return response;
         }
-#pragma warning restore 1998
+
     }
 
 }

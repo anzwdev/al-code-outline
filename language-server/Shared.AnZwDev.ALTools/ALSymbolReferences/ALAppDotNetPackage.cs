@@ -10,7 +10,7 @@ namespace AnZwDev.ALTools.ALSymbolReferences
     public class ALAppDotNetPackage : ALAppObject
     {
 
-        public ALAppElementsCollection<ALAppDotNetAssemblyDeclaration> AssemblyDeclarations { get; set; }
+        public ALAppSymbolsCollection<ALAppDotNetAssemblyDeclaration> AssemblyDeclarations { get; set; }
 
         public ALAppDotNetPackage()
         {
@@ -19,6 +19,11 @@ namespace AnZwDev.ALTools.ALSymbolReferences
         public override ALSymbolKind GetALSymbolKind()
         {
             return ALSymbolKind.DotNetPackage;
+        }
+
+        public override ALObjectType GetALObjectType()
+        {
+            return ALObjectType.DotNetPackage;
         }
 
         protected override void AddChildALSymbols(ALSymbol symbol)

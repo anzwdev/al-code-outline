@@ -42,7 +42,7 @@ class TableExtWizard extends TableBasedObjectWizard {
         //initialize inputs
         document.getElementById("objectid").value = this._data.objectId;
         document.getElementById("objectname").value = this._data.objectName;
-        document.getElementById("srctable").value = this._data.selectedTable;
+        document.getElementById("srctable").value = this._data.selectedTable.name;
         //initialize field list
         if (this._data.fields) {
             this._fieldsgrid.setData(this._data.fields);
@@ -72,7 +72,7 @@ class TableExtWizard extends TableBasedObjectWizard {
     collectStepData(finishSelected) {
         this._data.objectId = document.getElementById("objectid").value;
         this._data.objectName = document.getElementById("objectname").value;
-        this._data.selectedTable = document.getElementById("srctable").value;
+        this._data.selectedTable.name = document.getElementById("srctable").value;
         this._data.fields = this._fieldsgrid.getData();
     }
 
@@ -81,7 +81,7 @@ class TableExtWizard extends TableBasedObjectWizard {
             return false;
         }
 
-        if ((!this._data.selectedTable) || (this._data.selectedTable == '')) {
+        if ((!this._data.selectedTable.name) || (this._data.selectedTable.name == '')) {
             this.sendMessage({
                 command: 'showError',
                 message: 'Please enter a target object name.'

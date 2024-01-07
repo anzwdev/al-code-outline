@@ -6,6 +6,8 @@ import { TextRange } from "./textRange";
 export class AZSymbolInformation {
     id : number;
     idx: number;
+    usings: string[] | undefined;
+    namespaceName : string | undefined;
     name : string;
     subtype : string | undefined;
     elementsubtype : string | undefined;
@@ -43,6 +45,8 @@ export class AZSymbolInformation {
         this.format = undefined;
         this.parent = undefined;
         this.access = undefined;
+        this.namespaceName = undefined;
+        this.usings = undefined;
     }
 
     public static create(newKind : AZSymbolKind, newName : string) {
@@ -89,6 +93,10 @@ export class AZSymbolInformation {
             obj.format = source.format;
         if (source.access !== undefined)
             obj.access = source.access;
+        if (source.namespaceName)
+            obj.namespaceName = source.namespaceName;
+        if (source.usings)
+            obj.usings = source.usings;
 
         if (source.childSymbols)
             for (let i=0; i<source.childSymbols.length; i++)

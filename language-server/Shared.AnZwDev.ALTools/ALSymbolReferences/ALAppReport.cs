@@ -11,7 +11,7 @@ namespace AnZwDev.ALTools.ALSymbolReferences
     {
 
         public ALAppRequestPage RequestPage { get; set; }
-        public ALAppElementsCollection<ALAppReportDataItem> DataItems { get; set; }
+        public ALAppSymbolsCollection<ALAppReportDataItem> DataItems { get; set; }
 
         public ALAppReport()
         {
@@ -21,6 +21,12 @@ namespace AnZwDev.ALTools.ALSymbolReferences
         {
             return ALSymbolKind.ReportObject;
         }
+
+        public override ALObjectType GetALObjectType()
+        {
+            return ALObjectType.Report;
+        }
+
 
         protected override void AddChildALSymbols(ALSymbol symbol)
         {
@@ -37,7 +43,7 @@ namespace AnZwDev.ALTools.ALSymbolReferences
             return null;
         }
 
-        protected ALAppReportDataItem FindDataItem(ALAppElementsCollection<ALAppReportDataItem> dataItemsCollection, string name)
+        protected ALAppReportDataItem FindDataItem(ALAppSymbolsCollection<ALAppReportDataItem> dataItemsCollection, string name)
         {
             foreach (ALAppReportDataItem dataItem in dataItemsCollection)
             {

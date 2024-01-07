@@ -6,6 +6,11 @@ using System.Text;
 
 namespace AnZwDev.ALTools.ALSymbolReferences.MergedReferences
 {
+
+    // !!! TO-DO !!!
+    // !!! Clean file !!!
+
+    /*
     public class MergedAllALAppObjectsCollection
     {
         
@@ -90,4 +95,5 @@ namespace AnZwDev.ALTools.ALSymbolReferences.MergedReferences
         }
 
     }
+    */
 }

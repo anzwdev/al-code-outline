@@ -1,10 +1,11 @@
 import { ToolsSymbolInformationRequest } from "./toolsSymbolInformationRequest";
+import { ToolsSymbolReference } from "./toolsSymbolReference";
 
 export class toolsGetCodeunitMethodsListRequest extends ToolsSymbolInformationRequest {
-    name: string;
+    symbolReference: ToolsSymbolReference;
 
-    constructor(newPath: string | undefined, newName: string) {
+    constructor(newPath: string | undefined, newSymbolReference: ToolsSymbolReference) {
         super(newPath, true);
-        this.name = newName;
+        this.symbolReference = newSymbolReference;
     }
 }

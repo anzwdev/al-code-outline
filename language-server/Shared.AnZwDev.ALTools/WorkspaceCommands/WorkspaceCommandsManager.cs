@@ -57,7 +57,6 @@ namespace AnZwDev.ALTools.WorkspaceCommands
             this.RegisterCommand(new RemoveEmptySectionsWorkspaceCommand(this.ALDevToolsServer));
             this.RegisterCommand(new RemoveEmptyTriggersWorkspaceCommand(this.ALDevToolsServer));
 
-
 #if BC            
             this.RegisterCommand(new RemoveWithWorkspaceCommand(this.ALDevToolsServer));
             this.RegisterCommand(new FixIdentifiersCaseWorkspaceCommand(this.ALDevToolsServer));
@@ -71,6 +70,8 @@ namespace AnZwDev.ALTools.WorkspaceCommands
             this.RegisterCommand(new GenerateCSVXmlPortHeadersWorkspaceCommand(this.ALDevToolsServer));
             this.RegisterCommand(new AddMissingCaseLinesWorkspaceCommand(this.ALDevToolsServer));
             this.RegisterCommand(new AddUsingRegionWorkspaceCommand(this.ALDevToolsServer));
+            this.RegisterCommand(new UpdateUsingsListWorkspaceCommand(this.ALDevToolsServer));
+            this.RegisterCommand(new AddProjectNamespacesWorkspaceCommand(this.ALDevToolsServer));
 #endif
             this.RegisterCommand(new RemoveRedundantDataClassificationWorkspaceCommand(this.ALDevToolsServer));
 
@@ -91,11 +92,14 @@ namespace AnZwDev.ALTools.WorkspaceCommands
             this.RegisterCommand(groupCommand.AddCommand(new SortPermissionSetListWorkspaceCommand(this.ALDevToolsServer)));
             this.RegisterCommand(groupCommand.AddCommand(new FormatDocumentWorkspaceCommand(this.ALDevToolsServer)));
             this.RegisterCommand(groupCommand.AddCommand(new SortCustomizationsWorkspaceCommand(this.ALDevToolsServer)));
+#if BC
+            this.RegisterCommand(groupCommand.AddCommand(new SortUsingsWorkspaceCommand(this.ALDevToolsServer)));
+#endif
 
             this.RegisterCommand(groupCommand);
         }
 
-        public WorkspaceCommandResult RunCommand(string commandName, string sourceCode, string projectPath, string filePath, Range range, Dictionary<string, string> parameters, List<string> excludeFiles)
+        public WorkspaceCommandResult RunCommand(string commandName, string sourceCode, string projectPath, string filePath, TextRange range, Dictionary<string, string> parameters, List<string> excludeFiles)
         {
             if (_commands.ContainsKey(commandName))
             {
@@ -113,7 +117,7 @@ namespace AnZwDev.ALTools.WorkspaceCommands
                 throw new Exception($"Workspace command {commandName} not found.");
         }
 
-        public List<WorkspaceCommandCodeAction> GetCodeActions(string sourceCode, string projectPath, string filePath, Range range)
+        public List<WorkspaceCommandCodeAction> GetCodeActions(string sourceCode, string projectPath, string filePath, TextRange range)
         {
             var codeActions = new List<WorkspaceCommandCodeAction>();
             var project = ALDevToolsServer.Workspace.FindProject(projectPath);

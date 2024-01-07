@@ -7,7 +7,7 @@ namespace AnZwDev.ALTools.Server.Contracts.SymbolsInformation
     public class GetSymbolInformationDetailsRequest : GetSymbolsInformationRequest
     {
 
-        public string name { get; set; }
+        public SymbolReference symbolReference { get; set; }
 
     }
 }

@@ -44,7 +44,7 @@ export class AsyncFileManager {
                 if (err)
                     reject(err);
                 else
-                    resolve();
+                    resolve({});
               });
         });
     }

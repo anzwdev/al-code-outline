@@ -10,8 +10,8 @@ namespace AnZwDev.ALTools.ALSymbolReferences
     public class ALAppPage : ALAppObject
     {
 
-        public ALAppElementsCollection<ALAppPageControl> Controls { get; set; }
-        public ALAppElementsCollection<ALAppPageAction> Actions { get; set; }
+        public ALAppSymbolsCollection<ALAppPageControl> Controls { get; set; }
+        public ALAppSymbolsCollection<ALAppPageAction> Actions { get; set; }
 
         public ALAppPage()
         {
@@ -22,6 +22,11 @@ namespace AnZwDev.ALTools.ALSymbolReferences
             return ALSymbolKind.PageObject;
         }
 
+        public override ALObjectType GetALObjectType()
+        {
+            return ALObjectType.Page;
+        }
+
         protected override void AddChildALSymbols(ALSymbol symbol)
         {
             this.Controls?.AddToALSymbol(symbol, ALSymbolKind.PageLayout, "layout");
@@ -29,15 +34,15 @@ namespace AnZwDev.ALTools.ALSymbolReferences
             base.AddChildALSymbols(symbol);
         }
 
-        public string GetSourceTable()
+        public ALObjectReference GetSourceTable()
         {
             if (this.Properties != null)
             {
                 ALAppProperty sourceTable = this.Properties.GetProperty("SourceTable");
                 if (sourceTable != null)
-                    return sourceTable.Value;
+                    return new ALObjectReference(Usings, sourceTable.Value);
             }
-            return null;
+            return new ALObjectReference();
         }
 
         public override void ReplaceIdReferences(ALAppObjectIdMap idMap)

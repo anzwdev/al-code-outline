@@ -12,8 +12,8 @@ namespace AnZwDev.ALTools.ALSymbolReferences
 
         public string TargetObject { get; set; }
 
-        public ALAppElementsCollection<ALAppPageControlChange> ControlChanges { get; set; }
-        public ALAppElementsCollection<ALAppPageActionChange> ActionChanges { get; set; }
+        public ALAppSymbolsCollection<ALAppPageControlChange> ControlChanges { get; set; }
+        public ALAppSymbolsCollection<ALAppPageActionChange> ActionChanges { get; set; }
 
         public ALAppPageExtension()
         {
@@ -22,6 +22,11 @@ namespace AnZwDev.ALTools.ALSymbolReferences
         public override ALSymbolKind GetALSymbolKind()
         {
             return ALSymbolKind.PageExtensionObject;
+        }
+
+        public override ALObjectType GetALObjectType()
+        {
+            return ALObjectType.PageExtension;
         }
 
         protected override ALSymbol CreateMainALSymbol()
@@ -41,6 +46,11 @@ namespace AnZwDev.ALTools.ALSymbolReferences
         public string GetTargetObjectName()
         {
             return this.TargetObject;
+        }
+
+        public ALObjectReference GetTargetObjectReference()
+        {
+            return new ALObjectReference(Usings, this.TargetObject);
         }
     }
 }

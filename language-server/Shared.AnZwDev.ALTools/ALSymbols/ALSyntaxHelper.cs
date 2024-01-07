@@ -268,7 +268,7 @@ namespace AnZwDev.ALTools.ALSymbols
             return name;
         }
 
-        public static List<string> DecodeNamesList(string value)
+        public static List<string> SplitNamesList(string value)
         {
             if (String.IsNullOrWhiteSpace(value))
                 return null;
@@ -286,7 +286,7 @@ namespace AnZwDev.ALTools.ALSymbols
                     case ',':
                         if (!inName)
                         {
-                            namesList.Add(DecodeName(value.Substring(startPos, endPos - startPos)));
+                            namesList.Add(value.Substring(startPos, endPos - startPos));
                             startPos = endPos + 1;
                         }
                         break;

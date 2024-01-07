@@ -1,5 +1,4 @@
-﻿using AnZwDev.VSCodeLangServer.Protocol.Server;
-using AnZwDev.VSCodeLangServer.Protocol.MessageProtocol;
+﻿using StreamJsonRpc;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -9,19 +8,19 @@ using System.Threading.Tasks;
 namespace AnZwDev.ALTools.Server.Handlers
 {
 
-    public class ShutdownRequestHandler : RequestHandler<object, object>
+    public class ShutdownRequestHandler : RequestHandler
     {
 
-        public ShutdownRequestHandler(LanguageServerHost languageServerHost) : base(languageServerHost, "shutdown")
+        public ShutdownRequestHandler(LanguageServerHost languageServerHost) : base(languageServerHost)
         {
         }
 
-#pragma warning disable 1998
-        protected override async Task<object> HandleMessage(object parameters, RequestContext<object> context)
+        [JsonRpcMethod("shutdown")]
+        public object ShutDown()
         {
             return new object();
         }
-#pragma warning restore 1998
+
     }
 
 }

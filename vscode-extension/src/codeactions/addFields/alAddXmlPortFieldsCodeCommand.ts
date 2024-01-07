@@ -55,7 +55,11 @@ export class ALAddXmlPortFieldsCodeCommand extends ALBaseAddFieldsCodeCommand {
 
         //get list of fields
         let response = await this._toolsExtensionContext.toolsLangServerClient.getXmlPortTableElementDetails(
-            new ToolsGetXmlPortTableElementDetailsRequest(document.uri.fsPath, xmlPortSymbol.name, dataItemSymbol.name, false, true));
+            new ToolsGetXmlPortTableElementDetailsRequest(document.uri.fsPath, {
+                namespaceName: xmlPortSymbol.namespaceName,
+                name: xmlPortSymbol.name,
+                id: xmlPortSymbol.id
+            }, dataItemSymbol.name, false, true));
         if ((!response) || (!response.symbol) || (!response.symbol.availableTableFields))
             return;
 

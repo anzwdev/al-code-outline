@@ -1,25 +1,21 @@
 ﻿using AnZwDev.ALTools.Server.Contracts.SymbolsInformation;
 using AnZwDev.ALTools.Workspace;
 using AnZwDev.ALTools.Workspace.SymbolsInformation;
-using AnZwDev.VSCodeLangServer.Protocol.Server;
-using AnZwDev.VSCodeLangServer.Protocol.MessageProtocol;
-using System;
-using System.Collections.Generic;
-using System.Text;
+using StreamJsonRpc;
 using System.Threading.Tasks;
 
 
 namespace AnZwDev.ALTools.Server.Handlers.SymbolsInformation
 {
-    public class GetReportsListRequestHandler : BaseALRequestHandler<GetReportsListRequest, GetReportsListResponse>
+    public class GetReportsListRequestHandler : RequestHandler
     {
 
-        public GetReportsListRequestHandler(ALDevToolsServer server, LanguageServerHost languageServerHost) : base(server, languageServerHost, "al/getreportslist")
+        public GetReportsListRequestHandler(LanguageServerHost languageServerHost) : base(languageServerHost)
         {
         }
 
-#pragma warning disable 1998
-        protected override async Task<GetReportsListResponse> HandleMessage(GetReportsListRequest parameters, RequestContext<GetReportsListResponse> context)
+        [JsonRpcMethod("al/getreportslist", UseSingleObjectParameterDeserialization = true)]
+        public GetReportsListResponse GetReportsList(GetReportsListRequest parameters)
         {
             GetReportsListResponse response = new GetReportsListResponse();
 
@@ -33,6 +29,6 @@ namespace AnZwDev.ALTools.Server.Handlers.SymbolsInformation
 
             return response;
         }
-#pragma warning restore 1998
+
     }
 }

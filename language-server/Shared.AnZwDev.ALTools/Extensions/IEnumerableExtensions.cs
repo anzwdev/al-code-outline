@@ -21,13 +21,17 @@ namespace AnZwDev.ALTools.Extensions
 
         public static HashSet<T> ToHashSet<T>(this IEnumerable<T> enumerable, bool nullIfEmpty)
         {
+            if ((enumerable == null) && (nullIfEmpty))
+                return null;
+
             bool isEmpty = true;
             HashSet<T> hashSet = new HashSet<T>();
-            foreach (T item in enumerable)
-            {
-                hashSet.Add(item);
-                isEmpty = false;
-            }
+            if (enumerable != null)
+                foreach (T item in enumerable)
+                {
+                    hashSet.Add(item);
+                    isEmpty = false;
+                }
             if (isEmpty)
                 return null;
             return hashSet;

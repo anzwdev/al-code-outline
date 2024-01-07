@@ -1,22 +1,18 @@
 ﻿using AnZwDev.ALTools.Server.Contracts.ChangeTracking;
-using AnZwDev.VSCodeLangServer.Protocol.Server;
-using AnZwDev.VSCodeLangServer.Protocol.MessageProtocol;
-using System;
-using System.Collections.Generic;
-using System.Text;
+using StreamJsonRpc;
 using System.Threading.Tasks;
 
 namespace AnZwDev.ALTools.Server.Handlers.ChangeTracking
 {
-    public class FileRenameNotificationHandler : BaseALNotificationHandler<FilesRenameNotificationRequest>
+    public class FileRenameNotificationHandler : RequestHandler
     {
 
-        public FileRenameNotificationHandler(ALDevToolsServer alDevToolsServer, LanguageServerHost languageServerHost) : base(alDevToolsServer, languageServerHost, "ws/fileRename")
+        public FileRenameNotificationHandler(LanguageServerHost languageServerHost) : base(languageServerHost)
         {
         }
 
-#pragma warning disable 1998
-        public override async Task HandleNotification(FilesRenameNotificationRequest parameters, NotificationContext context)
+        [JsonRpcMethod("ws/fileRename", UseSingleObjectParameterDeserialization = true)]
+        public void FileRename(FilesRenameNotificationRequest parameters)
         {
             if (parameters.files != null)
             {
@@ -26,7 +22,6 @@ namespace AnZwDev.ALTools.Server.Handlers.ChangeTracking
                 }
             }
         }
-#pragma warning restore 1998
 
     }
 }

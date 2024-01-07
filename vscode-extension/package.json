@@ -2,10 +2,10 @@
 	"name": "al-code-outline",
 	"displayName": "AZ AL Dev Tools/AL Code Outline",
 	"description": "AZ AL Development Tools: AL code outline, object browser, object creators",
-	"version": "3.0.55",
+	"version": "3.0.56",
 	"publisher": "andrzejzwierzchowski",
 	"engines": {
-		"vscode": "^1.47.0"
+		"vscode": "^1.85.0"
 	},
 	"author": {
 		"name": "Andrzej Zwierzchowski",
@@ -99,7 +99,6 @@
 				"command": "azALDevTools.showWarningDirectives",
 				"title": "Show warning directives"
 			},
-
 			{
 				"command": "azALDevTools.viewALApp",
 				"title": "Open in AL Object Browser"
@@ -206,28 +205,28 @@
 				"icon": "$(collapse-all)"
 			},
 			{
-				"command":"azALDevTools.sortOutlineViewByPosition",
+				"command": "azALDevTools.sortOutlineViewByPosition",
 				"title": "Sort By: Position"
 			},
 			{
-				"command":"azALDevTools.sortOutlineViewByName",
+				"command": "azALDevTools.sortOutlineViewByName",
 				"title": "Sort By: Name"
 			},
 			{
-				"command":"azALDevTools.sortOutlineViewByCategory",
+				"command": "azALDevTools.sortOutlineViewByCategory",
 				"title": "Sort By: Category"
 			},
 			{
-				"command":"azALDevTools.sortOutlineViewByPositionNoAction",
-				"title": "✓ Sort By: Position"
+				"command": "azALDevTools.sortOutlineViewByPositionNoAction",
+				"title": "? Sort By: Position"
 			},
 			{
-				"command":"azALDevTools.sortOutlineViewByNameNoAction",
-				"title": "✓ Sort By: Name"
+				"command": "azALDevTools.sortOutlineViewByNameNoAction",
+				"title": "? Sort By: Name"
 			},
 			{
-				"command":"azALDevTools.sortOutlineViewByCategoryNoAction",
-				"title": "✓ Sort By: Category"
+				"command": "azALDevTools.sortOutlineViewByCategoryNoAction",
+				"title": "? Sort By: Category"
 			},
 			{
 				"command": "azALDevTools.alOutlineEnableFollowCursor",
@@ -235,7 +234,7 @@
 			},
 			{
 				"command": "azALDevTools.alOutlineDisableFollowCursor",
-				"title": "✓ Follow Cursor"
+				"title": "? Follow Cursor"
 			},
 			{
 				"command": "alOutline.createListPage",
@@ -343,7 +342,7 @@
 				"category": "AZ AL Dev Tools",
 				"command": "azALDevTools.AddProjectTableDataCaptionFields",
 				"title": "Add Table DataCaptionFields to the Active Project"
-			},			
+			},
 			{
 				"category": "AZ AL Dev Tools",
 				"command": "azALDevTools.AddEditorDropDownFieldGroups",
@@ -446,6 +445,31 @@
 			},
 			{
 				"category": "AZ AL Dev Tools",
+				"command": "azALDevTools.SortEditorUsings",
+				"title": "Sort Usings in the Active Editor"
+			},
+			{
+				"category": "AZ AL Dev Tools",
+				"command": "azALDevTools.SortProjectUsings",
+				"title": "Sort Usings in the Active Project"
+			},
+			{
+				"category": "AZ AL Dev Tools",
+				"command": "azALDevTools.RemoveUnusedEditorUsings",
+				"title": "Remove Unused Usings from the Active Editor"
+			},
+			{
+				"category": "AZ AL Dev Tools",
+				"command": "azALDevTools.RemoveUnusedProjectUsings",
+				"title": "Remove Unused Usings from the Active Project"
+			},
+			{
+				"category": "AZ AL Dev Tools",
+				"command": "azALDevTools.EnableProjectNamespaces",
+				"title": "Add Namespaces Support to the Active Project"
+			},
+			{
+				"category": "AZ AL Dev Tools",
 				"command": "azALDevTools.MakeEditorFlowFieldsReadOnly",
 				"title": "Make FlowFields ReadOnly in the Active Editor"
 			},
@@ -454,7 +478,6 @@
 				"command": "azALDevTools.MakeProjectFlowFieldsReadOnly",
 				"title": "Make FlowFields ReadOnly in the Active Project"
 			},
-
 			{
 				"category": "AZ AL Dev Tools",
 				"command": "azALDevTools.CollapseEditorEmptyBrackets",
@@ -465,7 +488,6 @@
 				"command": "azALDevTools.CollapseProjectEmptyBrackets",
 				"title": "Collapse Empty Brackets in the Active Project"
 			},
-
 			{
 				"category": "AZ AL Dev Tools",
 				"command": "azALDevTools.ConvertEditorObjectIdsToNames",
@@ -578,7 +600,7 @@
 			},
 			{
 				"category": "AZ AL Dev Tools",
-				"command": "azALDevTools.SortEditorPermissions", 
+				"command": "azALDevTools.SortEditorPermissions",
 				"title": "Sort Permissions in the Active Editor"
 			},
 			{
@@ -586,10 +608,9 @@
 				"command": "azALDevTools.SortWorkspacePermissions",
 				"title": "Sort Permissions in the Active Project"
 			},
-
 			{
 				"category": "AZ AL Dev Tools",
-				"command": "azALDevTools.SortEditorPermissionSetList", 
+				"command": "azALDevTools.SortEditorPermissionSetList",
 				"title": "Sort Included PermissionSets in the Active Editor"
 			},
 			{
@@ -597,10 +618,9 @@
 				"command": "azALDevTools.SortWorkspacePermissionSetList",
 				"title": "Sort Included PermissionSets in the Active Project"
 			},
-
 			{
 				"category": "AZ AL Dev Tools",
-				"command": "azALDevTools.SortEditorProcedures", 
+				"command": "azALDevTools.SortEditorProcedures",
 				"title": "Sort Procedures in the Active Editor"
 			},
 			{
@@ -610,7 +630,7 @@
 			},
 			{
 				"category": "AZ AL Dev Tools",
-				"command": "azALDevTools.SortEditorProperties", 
+				"command": "azALDevTools.SortEditorProperties",
 				"title": "Sort Properties in the Active Editor"
 			},
 			{
@@ -630,7 +650,7 @@
 			},
 			{
 				"category": "AZ AL Dev Tools",
-				"command": "azALDevTools.SortEditorTableFields", 
+				"command": "azALDevTools.SortEditorTableFields",
 				"title": "Sort Table Fields in the Active Editor"
 			},
 			{
@@ -717,7 +737,7 @@
 					"command": "azALDevTools.sortDuplicatesByTypeNoOfDuplicates",
 					"when": "false"
 				},
-					{
+				{
 					"command": "azALDevTools.showDocumentSymbols"
 				},
 				{
@@ -731,7 +751,7 @@
 				{
 					"command": "azALDevTools.showCodeAnalyzers",
 					"when": "azALDevTools.extensionActive"
-				},				
+				},
 				{
 					"command": "azALDevTools.goToDefinitionSymbolTree"
 				},
@@ -761,34 +781,34 @@
 				},
 				{
 					"command": "azALDevTools.refreshOutlineView",
-					"when": "false"					
+					"when": "false"
 				},
 				{
 					"command": "azALDevTools.alOutlineCollapseAll",
 					"when": "false"
 				},
 				{
-					"command":"azALDevTools.sortOutlineViewByPosition",
+					"command": "azALDevTools.sortOutlineViewByPosition",
 					"when": "false"
 				},
 				{
-					"command":"azALDevTools.sortOutlineViewByName",
+					"command": "azALDevTools.sortOutlineViewByName",
 					"when": "false"
 				},
 				{
-					"command":"azALDevTools.sortOutlineViewByCategory",
+					"command": "azALDevTools.sortOutlineViewByCategory",
 					"when": "false"
 				},
 				{
-					"command":"azALDevTools.sortOutlineViewByPositionNoAction",
+					"command": "azALDevTools.sortOutlineViewByPositionNoAction",
 					"when": "false"
 				},
 				{
-					"command":"azALDevTools.sortOutlineViewByNameNoAction",
+					"command": "azALDevTools.sortOutlineViewByNameNoAction",
 					"when": "false"
 				},
 				{
-					"command":"azALDevTools.sortOutlineViewByCategoryNoAction",
+					"command": "azALDevTools.sortOutlineViewByCategoryNoAction",
 					"when": "false"
 				},
 				{
@@ -889,6 +909,26 @@
 				},
 				{
 					"command": "azALDevTools.AddProjectDropDownFieldGroups",
+					"when": "azALDevTools.extensionActive"
+				},
+				{
+					"command": "azALDevTools.SortEditorUsings",
+					"when": "editorLangId == al"
+				},
+				{
+					"command": "azALDevTools.SortProjectUsings",
+					"when": "azALDevTools.extensionActive"
+				},
+				{
+					"command": "azALDevTools.RemoveUnusedEditorUsings",
+					"when": "editorLangId == al"
+				},
+				{
+					"command": "azALDevTools.RemoveUnusedProjectUsings",
+					"when": "azALDevTools.extensionActive"
+				},
+				{
+					"command": "azALDevTools.EnableProjectNamespaces",
 					"when": "azALDevTools.extensionActive"
 				},
 				{
@@ -1068,7 +1108,7 @@
 					"when": "azALDevTools.extensionActive"
 				},
 				{
-					"command": "azALDevTools.SortEditorPermissions", 
+					"command": "azALDevTools.SortEditorPermissions",
 					"when": "editorLangId == al"
 				},
 				{
@@ -1076,7 +1116,7 @@
 					"when": "azALDevTools.extensionActive"
 				},
 				{
-					"command": "azALDevTools.SortEditorPermissionSetList", 
+					"command": "azALDevTools.SortEditorPermissionSetList",
 					"when": "editorLangId == al"
 				},
 				{
@@ -1084,7 +1124,7 @@
 					"when": "azALDevTools.extensionActive"
 				},
 				{
-					"command": "azALDevTools.SortEditorProcedures", 
+					"command": "azALDevTools.SortEditorProcedures",
 					"when": "editorLangId == al"
 				},
 				{
@@ -1092,7 +1132,7 @@
 					"when": "azALDevTools.extensionActive"
 				},
 				{
-					"command": "azALDevTools.SortEditorProperties", 
+					"command": "azALDevTools.SortEditorProperties",
 					"when": "editorLangId == al"
 				},
 				{
@@ -1108,7 +1148,7 @@
 					"when": "azALDevTools.extensionActive"
 				},
 				{
-					"command": "azALDevTools.SortEditorTableFields", 
+					"command": "azALDevTools.SortEditorTableFields",
 					"when": "editorLangId == al"
 				},
 				{
@@ -1176,34 +1216,34 @@
 					"command": "azALDevTools.alOutlineDisableFollowCursor",
 					"when": "view == azALDevTools.SymbolsTreeProvider && azALDevTools:alOutlineFollowCursor",
 					"group": "1-actions"
-				},				
+				},
 				{
-					"command":"azALDevTools.sortOutlineViewByPosition",
+					"command": "azALDevTools.sortOutlineViewByPosition",
 					"when": "view == azALDevTools.SymbolsTreeProvider && azALDevTools:alOutlineSortMode != position",
 					"group": "z-commands@1"
 				},
 				{
-					"command":"azALDevTools.sortOutlineViewByPositionNoAction",
+					"command": "azALDevTools.sortOutlineViewByPositionNoAction",
 					"when": "view == azALDevTools.SymbolsTreeProvider && azALDevTools:alOutlineSortMode == position",
 					"group": "z-commands@1"
 				},
 				{
-					"command":"azALDevTools.sortOutlineViewByName",
+					"command": "azALDevTools.sortOutlineViewByName",
 					"when": "view == azALDevTools.SymbolsTreeProvider && azALDevTools:alOutlineSortMode != name",
 					"group": "z-commands@2"
 				},
 				{
-					"command":"azALDevTools.sortOutlineViewByNameNoAction",
+					"command": "azALDevTools.sortOutlineViewByNameNoAction",
 					"when": "view == azALDevTools.SymbolsTreeProvider && azALDevTools:alOutlineSortMode == name",
 					"group": "z-commands@2"
 				},
 				{
-					"command":"azALDevTools.sortOutlineViewByCategory",
+					"command": "azALDevTools.sortOutlineViewByCategory",
 					"when": "view == azALDevTools.SymbolsTreeProvider && azALDevTools:alOutlineSortMode != category",
 					"group": "z-commands@3"
 				},
 				{
-					"command":"azALDevTools.sortOutlineViewByCategoryNoAction",
+					"command": "azALDevTools.sortOutlineViewByCategoryNoAction",
 					"when": "view == azALDevTools.SymbolsTreeProvider && azALDevTools:alOutlineSortMode == category",
 					"group": "z-commands@3"
 				},
@@ -1242,7 +1282,7 @@
 				{
 					"command": "azALDevTools.sortDuplicatesByTypeNoOfDuplicates",
 					"when": "view == azALDevTools.DuplicateCodeTreeProvider"
-				}	
+				}
 			],
 			"view/item/context": [
 				{
@@ -1384,15 +1424,16 @@
 						"scope": "resource",
 						"description": "Application area creation mode. They can be added to all controls or default value can be inherited from main object. This settings works for BC21 or newer",
 						"enum": [
-							"inheritFromMainObject", 
-							"addToAllControls"],
+							"inheritFromMainObject",
+							"addToAllControls"
+						],
 						"enumDescriptions": [
 							"Inherit from the main object",
 							"Add to all controls"
 						]
 					},
 					"alOutline.apiFieldNamesConversion": {
-						"type":"array",
+						"type": "array",
 						"items": {
 							"type": "object",
 							"properties": {
@@ -1499,7 +1540,7 @@
 							"removeActions": {
 								"type": "boolean",
 								"description": "Remove empty actions (no properties and no code)"
-							},					
+							},
 							"ignoreComments": {
 								"type": "boolean",
 								"description": "Removes sections even if it contains comments inside"
@@ -1612,6 +1653,7 @@
 								"SortPermissions",
 								"SortPermissionSetList",
 								"SortCustomizations",
+								"SortUsings",
 								"OneStatementPerLine",
 								"FormatDocument"
 							],
@@ -1623,6 +1665,7 @@
 								"Sort permissions",
 								"Sort permission sets",
 								"Sort customizations",
+								"Sort usings",
 								"One statement per line",
 								"Format document"
 							]
@@ -1661,9 +1704,11 @@
 								"SortTableFields",
 								"SortVariables",
 								"SortCustomizations",
+								"SortUsings",
+								"RemoveUnusedUsings",
 								"RemoveBeginEnd",
 								"RemoveEmptyTriggers",
-								"RemoveEmptyLines", 
+								"RemoveEmptyLines",
 								"RemoveEmptySections",
 								"RemoveStrSubstNoFromError",
 								"FormatDocument",
@@ -1699,6 +1744,8 @@
 								"Sort Table Fields",
 								"Sort Variables",
 								"Sort Customizations",
+								"Sort Usings",
+								"Remove Unused Usings",
 								"Remove Begin..End",
 								"Remove Empty Triggers",
 								"Remove Empty Lines",
@@ -1766,7 +1813,7 @@
 						"scope": "resource",
 						"description": "Add tooltips to page fields"
 					},
- 					"alOutline.createApiFieldsCaptions": {
+					"alOutline.createApiFieldsCaptions": {
 						"type": "boolean",
 						"default": true,
 						"scope": "resource",
@@ -1809,7 +1856,6 @@
 						"scope": "resource",
 						"uniqueItems": true,
 						"description": "Additional list of name affixes patterns, '?' can be used for matching any character. These values are used to remove affixes from names in code actions, commands and code completion"
-
 					},
 					"alOutline.fixCaseRemovesQuotesFromDataTypeIdentifiers": {
 						"type": "boolean",
@@ -1839,7 +1885,7 @@
 						],
 						"default": "fullTypeName",
 						"description": "Specifies how variables are sorted by `Sort Variables` commands.",
-						"scope": "resource"						
+						"scope": "resource"
 					},
 					"alOutline.triggersSortMode": {
 						"type": "string",
@@ -1858,7 +1904,7 @@
 						"scope": "resource"
 					},
 					"alOutline.triggersNaturalOrder": {
-						"type":"array",
+						"type": "array",
 						"items": {
 							"type": "object",
 							"properties": {
@@ -1942,7 +1988,14 @@
 						"items": {
 							"type": "string"
 						},
-						"default": ["Name", "Description", "Post Code", "City", "Address", "Address 2"],
+						"default": [
+							"Name",
+							"Description",
+							"Post Code",
+							"City",
+							"Address",
+							"Address 2"
+						],
 						"scope": "resource",
 						"uniqueItems": true,
 						"description": "Field names patterns for fields in table DropDown field group created by 'Add DropDown Field Groups' commands"
@@ -1952,7 +2005,10 @@
 						"items": {
 							"type": "string"
 						},
-						"default": ["Name", "Description"],
+						"default": [
+							"Name",
+							"Description"
+						],
 						"scope": "resource",
 						"uniqueItems": true,
 						"description": "Field names patterns for fields in table DataCaptionFields property created by 'Add Table DataCaptionFields' commands"
@@ -2019,25 +2075,24 @@
 	"scripts": {
 		"vscode:prepublish": "npm run compile",
 		"compile": "tsc -p ./",
-		"lint": "eslint src --ext ts",
 		"watch": "tsc -watch -p ./",
 		"pretest": "npm run compile && npm run lint",
-		"test": "node ./out/test/runTest.js"
+		"lint": "eslint src --ext ts",
+		"test": "vscode-test"
 	},
 	"devDependencies": {
-		"@types/vscode": "^1.47.0",
-		"@types/glob": "^7.1.1",
-		"@types/mocha": "^7.0.2",
-		"@types/node": "^13.11.0",
-		"eslint": "^6.8.0",
-		"@typescript-eslint/parser": "^2.26.0",
-		"@typescript-eslint/eslint-plugin": "^2.26.0",
-		"glob": "^7.1.6",
-		"mocha": "^10.2.0",
-		"typescript": "^3.8.3",
-		"vscode-test": "^1.3.0"
+		"@types/mocha": "^10.0.6",
+		"@types/node": "18.x",
+		"@types/vscode": "^1.85.0",
+		"@typescript-eslint/eslint-plugin": "^6.15.0",
+		"@typescript-eslint/parser": "^6.15.0",
+		"@vscode/test-cli": "^0.0.4",
+		"@vscode/test-electron": "^2.3.8",
+		"eslint": "^8.56.0",
+		"typescript": "^5.3.3"
 	},
 	"dependencies": {
-		"vscode-languageclient": "^6.1.3"
+		"vscode-jsonrpc": "^8.2.0",
+		"vscode-languageclient": "^9.0.1"
 	}
 }

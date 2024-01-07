@@ -11,11 +11,13 @@ namespace AnZwDev.ALTools.ALSymbolReferences
     public class ALAppObject : ALAppElementWithNameId
     {
         public bool INT_Parsed { get; set; }
-        public string Namespace { get; set; }
+        public string NamespaceName { get; set; }
+        public HashSet<string> Usings { get; set; }
+
         public string ReferenceSourceFileName { get; set; }
         public ALAppPropertiesCollection Properties { get; set; }
-        public ALAppElementsCollection<ALAppVariable> Variables { get; set; }
-        public ALAppElementsCollection<ALAppMethod> Methods { get; set; }
+        public ALAppSymbolsCollection<ALAppVariable> Variables { get; set; }
+        public ALAppSymbolsCollection<ALAppMethod> Methods { get; set; }
 
 
         public ALAppObject()
@@ -27,6 +29,10 @@ namespace AnZwDev.ALTools.ALSymbolReferences
         {
             ALSymbol symbol = base.CreateMainALSymbol();
             symbol.fullName = symbol.kind.ToName() + " " + ALSyntaxHelper.EncodeName(this.Name);
+
+            symbol.namespaceName = this.NamespaceName;
+            symbol.usings = this.Usings;
+
             return symbol;
         }
 
@@ -78,6 +84,16 @@ namespace AnZwDev.ALTools.ALSymbolReferences
         {
             var permissions = GetInherentPermissions();
             return (permissions != null) && (permissions.IndexOf("X") >= 0);
+        }
+
+        public ALObjectReference GetReference()
+        {
+            return new ALObjectReference(Usings, NamespaceName, Id, Name);
+        }
+
+        public ALObjectIdentifier GetIdentifier()
+        {
+            return new ALObjectIdentifier(NamespaceName, Id, Name);
         }
 
 

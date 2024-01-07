@@ -1,72 +1,39 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Reflection.Emit;
 using System.Text;
 using AnZwDev.ALTools.ALSymbolReferences;
-using AnZwDev.ALTools.ALSymbolReferences.MergedReferences;
+using AnZwDev.ALTools.ALSymbolReferences.Search;
+using AnZwDev.ALTools.ALSymbols;
+using AnZwDev.ALTools.Workspace.SymbolReferences;
 
 namespace AnZwDev.ALTools.Workspace.SymbolsInformation
 {
     public class TableInformationProvider : BaseExtendableObjectInformationProvider<ALAppTable, ALAppTableExtension>
     {
 
-        #region Objects list and search
-
-        protected override MergedALAppObjectsCollection<ALAppTable> GetALAppObjectsCollection(ALProject project)
+        public TableInformationProvider() : base(x => x.Tables, x => x.TableExtensions)
         {
-            return project.AllSymbols.Tables;
         }
-
-        protected override MergedALAppObjectExtensionsCollection<ALAppTableExtension> GetALAppObjectExtensionsCollection(ALProject project)
-        {
-            return project.AllSymbols.TableExtensions;
-        }
-
-        #endregion
 
         #region Get list of tables
 
         public List<TableInformation> GetTables(ALProject project)
         {
             List<TableInformation> infoList = new List<TableInformation>();
-            IEnumerable<ALAppTable> tablesCollection = this.GetALAppObjectsCollection(project)?.GetObjects();
-            if (tablesCollection != null)
-                foreach (ALAppTable table in tablesCollection)
-                    infoList.Add(new TableInformation(table));
+            foreach (var table in GetALAppObjectsCollection(project))
+                infoList.Add(new TableInformation(table));
             return infoList;
         }
-
-        /*
-        public List<TableInformation> GetTables(ALProject project)
-        {
-            List<TableInformation> infoList = new List<TableInformation>();
-            foreach (ALProjectDependency dependency in project.Dependencies)
-            {
-                if (dependency.Symbols != null)
-                    AddTables(infoList, dependency.Symbols);
-            }
-            if (project.Symbols != null)
-                AddTables(infoList, project.Symbols);
-            return infoList;
-        }
-
-        private void AddTables(List<TableInformation> infoList, ALAppSymbolReference symbols)
-        {
-            if (symbols.Tables != null)
-            {
-                for (int i = 0; i < symbols.Tables.Count; i++)
-                    infoList.Add(new TableInformation(symbols.Tables[i]));
-            }
-        }
-        */
 
         #endregion
 
         #region Get table details
 
-        public TableInformation GetTableInformation(ALProject project, string tableName, bool includeDisabled, bool includeObsolete, bool includeNormal, bool includeFlowFields, bool includeFlowFilters, bool includeToolTips, IEnumerable<string> toolTipsSourceDependencies)
+        public TableInformation GetTableInformation(ALProject project, ALObjectReference tableReference, bool includeDisabled, bool includeObsolete, bool includeNormal, bool includeFlowFields, bool includeFlowFilters, bool includeToolTips, IEnumerable<string> toolTipsSourceDependencies)
         {
-            (var alTable, var fields) = GetTableFieldsWithALAppTable(project, tableName, includeDisabled, includeObsolete, includeNormal, includeFlowFields, includeFlowFilters, includeToolTips, toolTipsSourceDependencies);
+            (var alTable, var fields) = GetTableFieldsWithALAppTable(project, tableReference, includeDisabled, includeObsolete, includeNormal, includeFlowFields, includeFlowFilters, includeToolTips, toolTipsSourceDependencies);
             
             if (alTable == null)
                 return null;
@@ -94,19 +61,16 @@ namespace AnZwDev.ALTools.Workspace.SymbolsInformation
 
         #region Find table
 
-        protected (ALAppTable, ALProject) FindTableWithSourceProject(ALProject project, string name)
+        protected (ALAppTable, ALProject) FindTableWithSourceProject(ALProject project, ALObjectReference tableReference)
         {
-            ALAppTable table = project.Symbols?.Tables?
-                    .Where(p => (name.Equals(p.Name, StringComparison.CurrentCultureIgnoreCase)))
-                    .FirstOrDefault();
+
+            ALAppTable table = ((IEnumerable<ALAppTable>)project.Symbols?.Tables)?.FindFirst(tableReference);
             if (table != null)
                 return (table, project);
 
             foreach (ALProjectDependency dependency in project.Dependencies)
             {
-                table = dependency.Symbols?.Tables?
-                    .Where(p => (name.Equals(p.Name, StringComparison.CurrentCultureIgnoreCase)))
-                    .FirstOrDefault();
+                table = ((IEnumerable<ALAppTable>)dependency.Symbols?.Tables)?.FindFirst(tableReference);
                 if (table != null)
                     return (table, dependency.SourceProject);
             }
@@ -115,41 +79,29 @@ namespace AnZwDev.ALTools.Workspace.SymbolsInformation
 
         #endregion
 
-        #region Find table extension
-
-        protected ALAppTableExtension FindTableExtension(ALAppSymbolReference symbols, string tableName)
-        {
-            if ((symbols != null) && (symbols.TableExtensions != null))
-                return symbols.TableExtensions
-                    .Where(p => (tableName.Equals(p.TargetObject, StringComparison.CurrentCultureIgnoreCase)))
-                    .FirstOrDefault();
-            return null;
-        }
-
-        #endregion
-
         #region Get table fields
 
-        public List<TableFieldInformaton> GetTableFields(ALProject project, string tableName, bool includeDisabled, bool includeObsolete, bool includeNormal, bool includeFlowFields, bool includeFlowFilters, bool includeToolTips, IEnumerable<string> toolTipsSourceDependencies)
+        public List<TableFieldInformaton> GetTableFields(ALProject project, ALObjectReference tableReference, bool includeDisabled, bool includeObsolete, bool includeNormal, bool includeFlowFields, bool includeFlowFilters, bool includeToolTips, IEnumerable<string> toolTipsSourceDependencies)
         {
-            (var _, var fields) = GetTableFieldsWithALAppTable(project, tableName, includeDisabled, includeObsolete, includeNormal, includeFlowFields, includeFlowFilters, includeToolTips, toolTipsSourceDependencies);
+            (var _, var fields) = GetTableFieldsWithALAppTable(project, tableReference, includeDisabled, includeObsolete, includeNormal, includeFlowFields, includeFlowFilters, includeToolTips, toolTipsSourceDependencies);
             return fields;
         }
 
-        private (ALAppTable, List<TableFieldInformaton>) GetTableFieldsWithALAppTable(ALProject project, string tableName, bool includeDisabled, bool includeObsolete, bool includeNormal, bool includeFlowFields, bool includeFlowFilters, bool includeToolTips, IEnumerable<string> toolTipsSourceDependencies)
+        private (ALAppTable, List<TableFieldInformaton>) GetTableFieldsWithALAppTable(ALProject project, ALObjectReference tableReference, bool includeDisabled, bool includeObsolete, bool includeNormal, bool includeFlowFields, bool includeFlowFilters, bool includeToolTips, IEnumerable<string> toolTipsSourceDependencies)
         {
             List<TableFieldInformaton> fields = new List<TableFieldInformaton>();
 
             //find table
-            (ALAppTable table, ALProject tableSourceProject) = this.FindTableWithSourceProject(project, tableName);
+            (ALAppTable table, ALProject tableSourceProject) = this.FindTableWithSourceProject(project, tableReference);
             if (table == null)
                 return (null, fields);
+            var tableIdentifier = table.GetIdentifier();
 
             //add fields from table
             this.AddFields(fields, tableSourceProject, table.Fields, includeDisabled, includeObsolete, includeNormal, includeFlowFields, includeFlowFilters);
 
             //add table extension fields
-            ALAppTableExtension tableExtension = this.FindTableExtension(project.Symbols, tableName);
+            ALAppTableExtension tableExtension = ((IEnumerable<ALAppTableExtension>)project.Symbols.TableExtensions)?.FindFirstExtension(tableIdentifier);
             if (tableExtension != null)
             {
                 this.AddFields(fields, project, tableExtension.Fields, includeDisabled, includeObsolete, includeNormal, includeFlowFields, includeFlowFilters);
@@ -158,7 +110,7 @@ namespace AnZwDev.ALTools.Workspace.SymbolsInformation
 
             foreach (ALProjectDependency dependency in project.Dependencies)
             {
-                tableExtension = FindTableExtension(dependency.Symbols, tableName);
+                tableExtension = ((IEnumerable<ALAppTableExtension>)dependency.Symbols?.TableExtensions)?.FindFirstExtension(tableIdentifier);
                 if (tableExtension != null)
                     this.AddFields(fields, dependency.SourceProject, tableExtension.Fields, includeDisabled, includeObsolete, includeNormal, includeFlowFields, includeFlowFilters);
             }
@@ -167,12 +119,11 @@ namespace AnZwDev.ALTools.Workspace.SymbolsInformation
             if (includeToolTips)
             {
                 PageInformationProvider pageInformationProvider = new PageInformationProvider();
-                string[] tables = { tableName };
-                Dictionary<string, Dictionary<string, List<LabelInformation>>> toolTips = pageInformationProvider.CollectTableFieldsToolTips(project, tables, toolTipsSourceDependencies);
-                string tableKey = tableName.ToLower();
-                if (toolTips.ContainsKey(tableKey))
+                ALObjectIdentifier[] tables = { tableIdentifier };
+                Dictionary<int, Dictionary<string, List<LabelInformation>>> toolTips = pageInformationProvider.CollectTableFieldsToolTips(project, tables, toolTipsSourceDependencies);
+                if (toolTips.ContainsKey(tableIdentifier.Id))
                 {
-                    Dictionary<string, List<LabelInformation>> fieldsToolTips = toolTips[tableKey];
+                    Dictionary<string, List<LabelInformation>> fieldsToolTips = toolTips[tableIdentifier.Id];
                     for (int i = 0; i < fields.Count; i++)
                     {
                         string fieldKey = fields[i].Name?.ToLower();
@@ -188,7 +139,7 @@ namespace AnZwDev.ALTools.Workspace.SymbolsInformation
             return (table, fields);
         }
 
-        protected void AddFields(List<TableFieldInformaton> fields, ALProject project, ALAppElementsCollection<ALAppTableField> fieldReferencesList, bool includeDisabled, bool includeObsolete, bool includeNormal, bool includeFlowFields, bool includeFlowFilters)
+        protected void AddFields(List<TableFieldInformaton> fields, ALProject project, ALAppSymbolsCollection<ALAppTableField> fieldReferencesList, bool includeDisabled, bool includeObsolete, bool includeNormal, bool includeFlowFields, bool includeFlowFilters)
         {
             if (fieldReferencesList != null)
             {
@@ -213,7 +164,7 @@ namespace AnZwDev.ALTools.Workspace.SymbolsInformation
             }
         }
         
-        protected void UpdateFields(List<TableFieldInformaton> fields, ALAppElementsCollection<ALAppTableField> fieldModificationsCollection)
+        protected void UpdateFields(List<TableFieldInformaton> fields, ALAppSymbolsCollection<ALAppTableField> fieldModificationsCollection)
         {
             if (fieldModificationsCollection != null)
             {

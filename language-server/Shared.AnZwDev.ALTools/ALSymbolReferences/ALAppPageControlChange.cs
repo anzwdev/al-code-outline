@@ -10,7 +10,7 @@ namespace AnZwDev.ALTools.ALSymbolReferences
     public class ALAppPageControlChange : ALAppElementWithName
     {
 
-        public ALAppElementsCollection<ALAppPageControl> Controls { get; set; }
+        public ALAppSymbolsCollection<ALAppPageControl> Controls { get; set; }
 
         public ALAppPageControlChange()
         {

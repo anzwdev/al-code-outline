@@ -28,5 +28,25 @@ namespace AnZwDev.ALTools.SyntaxHelpers
             return statement;
         }
 
+#if BC
+
+        public static NameSyntax NamespaceName(string namespaceName)
+        {
+            string[] parts = namespaceName.Split('.');
+            if (parts.Length == 0)
+                return null;
+            if (parts.Length == 1)
+                return SyntaxFactory.IdentifierName(parts[0]);
+            var nameSyntax = SyntaxFactory.QualifiedName(
+                SyntaxFactory.IdentifierName(parts[0]),
+                SyntaxFactory.IdentifierName(parts[1]));
+            for (var i = 2; i < parts.Length; i++)
+                nameSyntax = SyntaxFactory.QualifiedName(
+                    nameSyntax,
+                    SyntaxFactory.IdentifierName(parts[i]));
+            return nameSyntax;
+        }
+#endif
+
     }
 }

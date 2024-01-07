@@ -1,5 +1,8 @@
-﻿using AnZwDev.ALTools.CodeAnalysis;
+﻿using AnZwDev.ALTools.ALSymbolReferences;
+using AnZwDev.ALTools.ALSymbolReferences.Search;
+using AnZwDev.ALTools.CodeAnalysis;
 using AnZwDev.ALTools.Extensions;
+using AnZwDev.ALTools.Workspace.SymbolReferences;
 using AnZwDev.ALTools.Workspace.SymbolsInformation;
 using Microsoft.Dynamics.Nav.CodeAnalysis;
 using Microsoft.Dynamics.Nav.CodeAnalysis.Syntax;
@@ -12,7 +15,7 @@ namespace AnZwDev.ALTools.CodeTransformations
     public class RefreshToolTipsSyntaxRewriter : BaseToolTipsSyntaxRewriter
     {
 
-        public Dictionary<string, Dictionary<string, List<LabelInformation>>> ToolTipsCache { get; set; }
+        public Dictionary<int, Dictionary<string, List<LabelInformation>>> ToolTipsCache { get; set; }
 
         public RefreshToolTipsSyntaxRewriter()
         {
@@ -22,7 +25,7 @@ namespace AnZwDev.ALTools.CodeTransformations
         {
             if ((!node.ContainsDiagnostics) && 
                 (this.ToolTipsCache != null) && 
-                (!String.IsNullOrWhiteSpace(this.TableName)) && 
+                (this.Table != null) &&
                 (!node.HasProperty("ToolTipML")))
             {
                 if ((!this.HasToolTip(node)) && (this.ToolTipDisabled(node)))
@@ -30,10 +33,9 @@ namespace AnZwDev.ALTools.CodeTransformations
 
                 //find first tooltip from other pages
                 TableFieldCaptionInfo captionInfo = this.GetFieldCaption(node);
-                string tableNameKey = this.TableName.ToLower();
-                if (this.ToolTipsCache.ContainsKey(tableNameKey))
+                if (this.ToolTipsCache.ContainsKey(this.Table.Id))
                 {
-                    Dictionary<string, List<LabelInformation>> tableToolTipsCache = this.ToolTipsCache[tableNameKey];
+                    Dictionary<string, List<LabelInformation>> tableToolTipsCache = this.ToolTipsCache[this.Table.Id];
                     string fieldNameKey = captionInfo.FieldName.ToLower();
                     if (tableToolTipsCache.ContainsKey(fieldNameKey))
                     {

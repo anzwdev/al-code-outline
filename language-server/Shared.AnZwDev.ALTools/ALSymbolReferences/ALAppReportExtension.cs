@@ -10,8 +10,8 @@ namespace AnZwDev.ALTools.ALSymbolReferences
 
         public string Target { get; set; }
         public ALAppRequestPageExtension RequestPage { get; set; }
-        public ALAppElementsCollection<ALAppReportDataItem> DataItems { get; set; }
-        public ALAppElementsCollection<ALAppReportColumn> Columns { get; set; }
+        public ALAppSymbolsCollection<ALAppReportDataItem> DataItems { get; set; }
+        public ALAppSymbolsCollection<ALAppReportColumn> Columns { get; set; }
 
         public ALAppReportExtension()
         {
@@ -23,7 +23,7 @@ namespace AnZwDev.ALTools.ALSymbolReferences
             return null;
         }
 
-        protected ALAppReportDataItem FindDataItem(ALAppElementsCollection<ALAppReportDataItem> dataItemsCollection, string name)
+        protected ALAppReportDataItem FindDataItem(ALAppSymbolsCollection<ALAppReportDataItem> dataItemsCollection, string name)
         {
             foreach (ALAppReportDataItem dataItem in dataItemsCollection)
             {
@@ -44,6 +44,12 @@ namespace AnZwDev.ALTools.ALSymbolReferences
         {
             return ALSymbolKind.ReportExtensionObject;
         }
+
+        public override ALObjectType GetALObjectType()
+        {
+            return ALObjectType.ReportExtension;
+        }
+
 
         protected override ALSymbol CreateMainALSymbol()
         {
@@ -95,5 +101,11 @@ namespace AnZwDev.ALTools.ALSymbolReferences
         {
             return this.Target;
         }
+
+        public ALObjectReference GetTargetObjectReference()
+        {
+            return new ALObjectReference(Usings, this.Target);
+        }
+
     }
 }

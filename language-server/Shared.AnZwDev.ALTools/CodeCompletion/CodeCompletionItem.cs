@@ -21,11 +21,17 @@ namespace AnZwDev.ALTools.CodeCompletion
         [JsonProperty("detail", NullValueHandling = NullValueHandling.Ignore)]
         public string detail { get; set; }
 
+        [JsonProperty("description", NullValueHandling = NullValueHandling.Ignore)]
+        public string description { get; set; }
+
         [JsonProperty("tags", NullValueHandling = NullValueHandling.Ignore)]
         public List<CodeCompletionItemTag> tags { get; set; }
 
         [JsonProperty("commitCharacters", NullValueHandling = NullValueHandling.Ignore)]
         public string[] commitCharacters { get; set; }
+
+        [JsonProperty("additionalTextEdits", NullValueHandling = NullValueHandling.Ignore)]
+        public List<CodeCompletionTextEdit> additionalTextEdits { get; set; }
 
         public CodeCompletionItem()
         { 
@@ -35,6 +41,13 @@ namespace AnZwDev.ALTools.CodeCompletion
         {
             this.label = label;
             this.kind = kind;
+        }
+
+        public void AddEdit(CodeCompletionTextEdit edit)
+        {
+            if (additionalTextEdits == null)
+                additionalTextEdits = new List<CodeCompletionTextEdit>();
+            additionalTextEdits.Add(edit);
         }
 
     }

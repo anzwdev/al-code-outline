@@ -31,7 +31,6 @@ namespace AnZwDev.ALTools.CodeTransformations
         {
             if ((this.NodeInSpan(node)) && (!node.ContainsDiagnostics))
             {
-
                 RequiredPermissions.Clear();
                 var existingPermissionsValue = node.GetPropertyValue("Permissions") as PermissionPropertyValueSyntax;
                 if (existingPermissionsValue != null)

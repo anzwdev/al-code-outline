@@ -1,24 +1,20 @@
 ﻿using AnZwDev.ALTools.Server.Contracts.SymbolsInformation;
 using AnZwDev.ALTools.Workspace;
 using AnZwDev.ALTools.Workspace.SymbolsInformation;
-using AnZwDev.VSCodeLangServer.Protocol.MessageProtocol;
-using AnZwDev.VSCodeLangServer.Protocol.Server;
-using System;
-using System.Collections.Generic;
-using System.Text;
+using StreamJsonRpc;
 using System.Threading.Tasks;
 
 namespace AnZwDev.ALTools.Server.Handlers.SymbolsInformation
 {
-    public class GetInterfaceMethodsListRequestHandler : BaseALRequestHandler<GetInterfaceMethodsListRequest, GetInterfaceMethodsListResponse>
+    public class GetInterfaceMethodsListRequestHandler : RequestHandler
     {
 
-        public GetInterfaceMethodsListRequestHandler(ALDevToolsServer server, LanguageServerHost languageServerHost) : base(server, languageServerHost, "al/getinterfacemethodslist")
+        public GetInterfaceMethodsListRequestHandler(LanguageServerHost languageServerHost) : base(languageServerHost)
         {
         }
 
-#pragma warning disable 1998
-        protected override async Task<GetInterfaceMethodsListResponse> HandleMessage(GetInterfaceMethodsListRequest parameters, RequestContext<GetInterfaceMethodsListResponse> context)
+        [JsonRpcMethod("al/getinterfacemethodslist", UseSingleObjectParameterDeserialization = true)]
+        public GetInterfaceMethodsListResponse GetInterfaceMethodsList(GetInterfaceMethodsListRequest parameters)
         {
             GetInterfaceMethodsListResponse response = new GetInterfaceMethodsListResponse();
 
@@ -26,12 +22,11 @@ namespace AnZwDev.ALTools.Server.Handlers.SymbolsInformation
             if (project != null)
             {
                 InterfaceInformationProvider provider = new InterfaceInformationProvider();
-                response.symbols = provider.GetMethodsInformation(project, parameters.name);
+                response.symbols = provider.GetMethodsInformation(project, parameters.symbolReference.ToALObjectReference());
             }
 
             return response;
         }
-#pragma warning restore 1998
 
     }
 }

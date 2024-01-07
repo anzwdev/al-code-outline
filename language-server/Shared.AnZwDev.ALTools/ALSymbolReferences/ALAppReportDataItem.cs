@@ -12,8 +12,8 @@ namespace AnZwDev.ALTools.ALSymbolReferences
         
         public string OwningDataItemName { get; set; }
         public string RelatedTable { get; set; }
-        public ALAppElementsCollection<ALAppReportColumn> Columns { get; set; }
-        public ALAppElementsCollection<ALAppReportDataItem> DataItems { get; set; }
+        public ALAppSymbolsCollection<ALAppReportColumn> Columns { get; set; }
+        public ALAppSymbolsCollection<ALAppReportDataItem> DataItems { get; set; }
 
         public ALAppReportDataItem()
         {

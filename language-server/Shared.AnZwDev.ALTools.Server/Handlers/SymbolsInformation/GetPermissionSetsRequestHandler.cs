@@ -1,24 +1,20 @@
 ﻿using AnZwDev.ALTools.Server.Contracts.SymbolsInformation;
 using AnZwDev.ALTools.Workspace;
 using AnZwDev.ALTools.Workspace.SymbolsInformation;
-using AnZwDev.VSCodeLangServer.Protocol.MessageProtocol;
-using AnZwDev.VSCodeLangServer.Protocol.Server;
-using System;
-using System.Collections.Generic;
-using System.Text;
+using StreamJsonRpc;
 using System.Threading.Tasks;
 
 namespace AnZwDev.ALTools.Server.Handlers.SymbolsInformation
 {
-    public class GetPermissionSetsRequestHandler : BaseALRequestHandler<GetPermissionSetsRequest, GetPermissionSetsResponse>
+    public class GetPermissionSetsRequestHandler : RequestHandler
     {
 
-        public GetPermissionSetsRequestHandler(ALDevToolsServer server, LanguageServerHost languageServerHost) : base(server, languageServerHost, "al/getpermissionsetslist")
+        public GetPermissionSetsRequestHandler(LanguageServerHost languageServerHost) : base(languageServerHost)
         {
         }
 
-#pragma warning disable 1998
-        protected override async Task<GetPermissionSetsResponse> HandleMessage(GetPermissionSetsRequest parameters, RequestContext<GetPermissionSetsResponse> context)
+        [JsonRpcMethod("al/getpermissionsetslist", UseSingleObjectParameterDeserialization = true)]
+        public GetPermissionSetsResponse GetPermissionSets(GetPermissionSetsRequest parameters)
         {
             GetPermissionSetsResponse response = new GetPermissionSetsResponse();
 
@@ -32,6 +28,6 @@ namespace AnZwDev.ALTools.Server.Handlers.SymbolsInformation
 
             return response;
         }
-#pragma warning restore 1998
+
     }
 }

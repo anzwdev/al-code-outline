@@ -17,19 +17,19 @@ export class ALSortPermissionsCommand extends ALCodeAction {
 
             //collect list of objects in selection range
             if ((symbol) && 
-                (symbol.kind == AZSymbolKind.Property) && 
+                (symbol.kind === AZSymbolKind.Property) && 
                 (symbol.name) && 
-                (symbol.name.toLowerCase() == "permissions") &&
+                (symbol.name.toLowerCase() === "permissions") &&
                 (!symbol.containsDiagnostics) &&
                 (symbol.selectionRange) &&
-                (symbol.selectionRange.start.line == range.start.line)) {
+                (symbol.selectionRange.start.line === range.start.line)) {
 
                 let action = new vscode.CodeAction("Sort permissions (AZ AL Dev Tools)", vscode.CodeActionKind.QuickFix);
                 action.command = {
                     command: "azALDevTools.sortPermissions",
                     title: "Sort Permissions",
                     arguments: [document, symbol.range]
-                }
+                };
                 actions.push(action);
             }
         }

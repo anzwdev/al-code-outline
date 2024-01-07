@@ -47,10 +47,10 @@ export class ALQuerySyntaxBuilder {
     }
 
     private writeDataSet(writer : ALSyntaxWriter, data : ALQueryWizardData, isApi: boolean) {
-        let dataItemName = isApi?writer.createApiName(data.selectedTable):writer.createName(data.selectedTable);
+        let dataItemName = isApi?writer.createApiName(data.selectedTable!.name!):writer.createName(data.selectedTable!.name!);
 
         writer.writeStartNamedBlock("elements");
-        writer.writeStartNameSourceBlock("dataitem", writer.encodeName(dataItemName), writer.encodeName(data.selectedTable));
+        writer.writeStartNameSourceBlock("dataitem", writer.encodeName(dataItemName), writer.encodeName(data.selectedTable!.name!));
         if (data.selectedFieldList) {
             for (let i=0; i<data.selectedFieldList.length; i++) {
                 let columnName = isApi?writer.createApiName(data.selectedFieldList[i].name!):writer.createName(data.selectedFieldList[i].name!);

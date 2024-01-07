@@ -10,7 +10,7 @@ namespace AnZwDev.ALTools.ALSymbolReferences
 
         public ALAppXmlPortNodeKind Kind { get; set; }
         public string Expression { get; set; }
-        public ALAppElementsCollection<ALAppXmlPortNode> Schema { get; set; }
+        public ALAppSymbolsCollection<ALAppXmlPortNode> Schema { get; set; }
 
         public ALAppXmlPortNode()
         {
@@ -44,7 +44,7 @@ namespace AnZwDev.ALTools.ALSymbolReferences
         public void AddChildNode(ALAppXmlPortNode node)
         {
             if (this.Schema == null)
-                this.Schema = new ALAppElementsCollection<ALAppXmlPortNode>();
+                this.Schema = new ALAppSymbolsCollection<ALAppXmlPortNode>();
             this.Schema.Add(node);
         }
 

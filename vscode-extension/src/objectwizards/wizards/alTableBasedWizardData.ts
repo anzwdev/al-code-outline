@@ -1,6 +1,7 @@
 'use strict';
 
 import { AppAreaMode } from "../../alsyntaxmodifiers/appAreaMode";
+import { ToolsSymbolReference } from "../../langserver/symbolsinformation/toolsSymbolReference";
 import { ToolsGetProjectSettingsResponse } from "../../langserver/toolsGetProjectSettingsResponse";
 import { TableFieldInformation } from "../../symbolsinformation/tableFieldInformation";
 import { ALObjectWizardData } from "./alObjectWizardData";
@@ -8,7 +9,7 @@ import { ALObjectWizardData } from "./alObjectWizardData";
 export class ALTableBasedWizardData extends ALObjectWizardData {
     objectName : string;
     tableList : string[] | undefined;
-    selectedTable : string;
+    selectedTable : ToolsSymbolReference;
     fieldList : TableFieldInformation[] | undefined;
     flowFiltersList : TableFieldInformation[] | undefined;
     selectedFieldList : TableFieldInformation[] | undefined;
@@ -22,9 +23,11 @@ export class ALTableBasedWizardData extends ALObjectWizardData {
         super();
         this.objectName = "";
         this.tableList = undefined;
-        this.selectedTable = "";
-        this.fieldList = undefined;        
-        this.selectedFieldList = undefined;        
+        this.selectedTable = {
+            name: ""
+        };
+        this.fieldList = undefined;
+        this.selectedFieldList = undefined;
         this.fixedTable = false;
         this.applicationArea = "All";
         this.applicationAreaMode = AppAreaMode.addToAllControls;

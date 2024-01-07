@@ -3,6 +3,7 @@ using AnZwDev.ALTools.ALSymbols;
 using AnZwDev.ALTools.ALSymbols.Internal;
 using AnZwDev.ALTools.Extensions;
 using AnZwDev.ALTools.Workspace;
+using AnZwDev.ALTools.Workspace.SymbolReferences;
 using Microsoft.Dynamics.Nav.CodeAnalysis;
 using Microsoft.Dynamics.Nav.CodeAnalysis.Syntax;
 using System;
@@ -110,18 +111,20 @@ namespace AnZwDev.ALTools.CodeCompletion
 
         private void CreateCompletionItems(string name, ALProject project, List<CodeCompletionItem> completionItems)
         {
-            CreateCompletionItems(name, project, project.AllSymbols.Tables.GetObjects(), completionItems, name.StartsWith("Temp", StringComparison.CurrentCultureIgnoreCase));
-            CreateCompletionItems(name, project, project.AllSymbols.Codeunits.GetObjects(), completionItems);
-            CreateCompletionItems(name, project, project.AllSymbols.Pages.GetObjects(), completionItems);
-            CreateCompletionItems(name, project, project.AllSymbols.Reports.GetObjects(), completionItems);
-            CreateCompletionItems(name, project, project.AllSymbols.Queries.GetObjects(), completionItems);
-            CreateCompletionItems(name, project, project.AllSymbols.XmlPorts.GetObjects(), completionItems);
-            CreateCompletionItems(name, project, project.AllSymbols.EnumTypes.GetObjects(), completionItems);
-            CreateCompletionItems(name, project, project.AllSymbols.Interfaces.GetObjects(), completionItems);
+            CreateCompletionItems(name, project, ALObjectType.Table, completionItems, name.StartsWith("Temp", StringComparison.CurrentCultureIgnoreCase));
+            CreateCompletionItems(name, project, ALObjectType.Codeunit, completionItems);
+            CreateCompletionItems(name, project, ALObjectType.Page, completionItems);
+            CreateCompletionItems(name, project, ALObjectType.Report, completionItems);
+            CreateCompletionItems(name, project, ALObjectType.Query, completionItems);
+            CreateCompletionItems(name, project, ALObjectType.XmlPort, completionItems);
+            CreateCompletionItems(name, project, ALObjectType.EnumType, completionItems);
+            CreateCompletionItems(name, project, ALObjectType.Interface, completionItems);
         }
 
-        private void CreateCompletionItems(string name, ALProject project, IEnumerable<ALAppObject> typesCollection, List<CodeCompletionItem> completionItems, bool temporaryRecordVariable = false)
+        private void CreateCompletionItems(string name, ALProject project, ALObjectType objectType, List<CodeCompletionItem> completionItems, bool temporaryRecordVariable = false)
         {
+            var typesCollection = project.GetAllSymbolReferences().GetAllObjects(objectType);
+
             foreach (var type in typesCollection)
             {
                 var varName = ALSyntaxHelper.ObjectNameToVariableNamePart(type.Name)

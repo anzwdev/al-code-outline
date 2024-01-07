@@ -25,8 +25,7 @@ namespace AZALDevToolsTestConsoleApp.NetFramework
             //string extensionPath = "C:\\Users\\azwie\\Downloads\\VSCode-win32-x64-1.45.1\\data\\extensions\\microsoft.al-0.13.82793";
             string extensionPath = "C:\\Projects\\MicrosoftALVersions\\LatestBC";
 
-            ALDevToolsServerHost host = new ALDevToolsServerHost(extensionPath);
-            host.Initialize();
+            LanguageServerHost host = new LanguageServerHost(extensionPath);
 
             ALDevToolsServer alDevToolsServer = new ALDevToolsServer(extensionPath);
 
@@ -65,9 +64,7 @@ namespace AZALDevToolsTestConsoleApp.NetFramework
             syntaxTree.Load("", filePath, project);
 
             PageInformationProvider pageInformationProvider = new PageInformationProvider();
-            PageInformation pageInformation = pageInformationProvider.GetPageDetails(project, "MyPageCard", true, true, true, null);
-
-
+            PageInformation pageInformation = pageInformationProvider.GetPageDetails(project, new ALObjectReference(null, "MyPageCard"), true, true, true, null);
 
             /*
             XmlPortInformationProvider xmlPortInformationProvider = new XmlPortInformationProvider();
@@ -75,7 +72,7 @@ namespace AZALDevToolsTestConsoleApp.NetFramework
             */
 
             ReportInformationProvider reportInformationProvider = new ReportInformationProvider();
-            ReportDataItemInformation reportDataItemInformation = reportInformationProvider.GetReportDataItemInformationDetails(project, "Sales Invoice NA", "T1", true, true);
+            ReportDataItemInformation reportDataItemInformation = reportInformationProvider.GetReportDataItemInformationDetails(project, new ALObjectReference(null, "Sales Invoice NA"), "T1", true, true);
 
             Console.WriteLine("Done");
             Console.ReadKey();

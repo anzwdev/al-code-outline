@@ -1,24 +1,21 @@
 ﻿using AnZwDev.ALTools.Server.Contracts.SymbolsInformation;
 using AnZwDev.ALTools.Workspace;
 using AnZwDev.ALTools.Workspace.SymbolsInformation;
-using AnZwDev.VSCodeLangServer.Protocol.Server;
-using AnZwDev.VSCodeLangServer.Protocol.MessageProtocol;
+using StreamJsonRpc;
 using System;
-using System.Collections.Generic;
-using System.Text;
 using System.Threading.Tasks;
 
 namespace AnZwDev.ALTools.Server.Handlers.SymbolsInformation
 {
-    public class GetPageDetailsRequestHandler : BaseALRequestHandler<GetPageDetailsRequest, GetPageDetailsResponse>
+    public class GetPageDetailsRequestHandler : RequestHandler
     {
 
-        public GetPageDetailsRequestHandler(ALDevToolsServer server, LanguageServerHost languageServerHost) : base(server, languageServerHost, "al/getpagedetails")
+        public GetPageDetailsRequestHandler(LanguageServerHost languageServerHost) : base(languageServerHost)
         {
         }
 
-#pragma warning disable 1998
-        protected override async Task<GetPageDetailsResponse> HandleMessage(GetPageDetailsRequest parameters, RequestContext<GetPageDetailsResponse> context)
+        [JsonRpcMethod("al/getpagedetails", UseSingleObjectParameterDeserialization = true)]
+        public GetPageDetailsResponse GetPageDetails(GetPageDetailsRequest parameters)
         {
                 GetPageDetailsResponse response = new GetPageDetailsResponse();
 
@@ -29,7 +26,10 @@ namespace AnZwDev.ALTools.Server.Handlers.SymbolsInformation
                 if (project != null)
                 {
                     PageInformationProvider provider = new PageInformationProvider();
-                    response.symbol = provider.GetPageDetails(project, parameters.name, parameters.getExistingFields, parameters.getAvailableFields, parameters.getToolTips, parameters.toolTipsSourceDependencies);
+                    response.symbol = provider.GetPageDetails(
+                        project,
+                        parameters.symbolReference.ToALObjectReference(),
+                        parameters.getExistingFields, parameters.getAvailableFields, parameters.getToolTips, parameters.toolTipsSourceDependencies); ;
                     if (response.symbol != null)
                         response.symbol.Sort();
                 }
@@ -46,7 +46,6 @@ namespace AnZwDev.ALTools.Server.Handlers.SymbolsInformation
             return response;
 
         }
-#pragma warning restore 1998
 
     }
 }

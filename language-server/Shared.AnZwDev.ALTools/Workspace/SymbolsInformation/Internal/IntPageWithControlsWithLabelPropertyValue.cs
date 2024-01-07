@@ -1,4 +1,5 @@
 ﻿using AnZwDev.ALTools.ALSymbolReferences;
+using AnZwDev.ALTools.ALSymbols;
 using System;
 using System.Collections.Generic;
 using System.Text;
@@ -9,24 +10,23 @@ namespace AnZwDev.ALTools.Workspace.SymbolsInformation.Internal
     {
 
         public string Name { get; set; }
-        public string SourceTable { get; set; }
+        public ALObjectIdentifier SourceTableIdentifier { get; set; }
         public string PropertyName { get; }
         public Dictionary<string, IntPageControlWithLabelPropertyValue> Controls { get; }
 
-        public IntPageWithControlsWithLabelPropertyValue(ALAppPage alAppPage, string propertyName)
+        public IntPageWithControlsWithLabelPropertyValue(ALAppPage alAppPage, ALObjectIdentifier sourceTableIdentifier, string propertyName)
         {
             //get page properties
             this.Controls = new Dictionary<string, IntPageControlWithLabelPropertyValue>();
             this.Name = alAppPage.Name;
             this.PropertyName = propertyName;
-            if (alAppPage.Properties != null)
-                this.SourceTable = alAppPage.Properties.GetValue("SourceTable");
+            this.SourceTableIdentifier = sourceTableIdentifier;
 
             //add controls
             this.AddControls(alAppPage.Controls);
         }
 
-        protected void AddControls(ALAppElementsCollection<ALAppPageControl> alAppControlsList)
+        protected void AddControls(ALAppSymbolsCollection<ALAppPageControl> alAppControlsList)
         {
             if (alAppControlsList != null)
                 for (int i = 0; i < alAppControlsList.Count; i++)

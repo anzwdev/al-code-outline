@@ -10,7 +10,7 @@ namespace AnZwDev.ALTools.ALSymbolReferences
     public class ALAppQuery : ALAppObject
     {
 
-        public ALAppElementsCollection<ALAppQueryDataItem> Elements { get; set; }
+        public ALAppSymbolsCollection<ALAppQueryDataItem> Elements { get; set; }
 
         public ALAppQuery()
         {
@@ -20,6 +20,12 @@ namespace AnZwDev.ALTools.ALSymbolReferences
         {
             return ALSymbolKind.QueryObject;
         }
+
+        public override ALObjectType GetALObjectType()
+        {
+            return ALObjectType.Query;
+        }
+
 
         protected override void AddChildALSymbols(ALSymbol symbol)
         {
@@ -34,7 +40,7 @@ namespace AnZwDev.ALTools.ALSymbolReferences
             return null;
         }
 
-        protected ALAppQueryDataItem FindDataItem(ALAppElementsCollection<ALAppQueryDataItem> dataItemsCollection, string name)
+        protected ALAppQueryDataItem FindDataItem(ALAppSymbolsCollection<ALAppQueryDataItem> dataItemsCollection, string name)
         {
             foreach (ALAppQueryDataItem dataItem in dataItemsCollection)
             {

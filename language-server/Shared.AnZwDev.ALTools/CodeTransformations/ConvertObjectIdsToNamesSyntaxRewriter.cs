@@ -1,4 +1,5 @@
-﻿using AnZwDev.ALTools.ALSymbolReferences;
+﻿using AnZwDev.ALTools.ALLanguageInformation;
+using AnZwDev.ALTools.ALSymbolReferences;
 using AnZwDev.ALTools.ALSymbols;
 using AnZwDev.ALTools.ALSymbols.Internal;
 using AnZwDev.ALTools.Extensions;
@@ -6,11 +7,19 @@ using Microsoft.Dynamics.Nav.CodeAnalysis;
 using Microsoft.Dynamics.Nav.CodeAnalysis.Syntax;
 using System;
 using System.Collections.Generic;
+using System.Data.Common;
+using System.Linq.Expressions;
 using System.Text;
 
 namespace AnZwDev.ALTools.CodeTransformations
 {
+
+
+#if BC
+    public class ConvertObjectIdsToNamesSyntaxRewriter : ALSemanticModelSyntaxRewriter
+#else
     public class ConvertObjectIdsToNamesSyntaxRewriter : ALSyntaxRewriter
+#endif
     {
 
         public ConvertObjectIdsToNamesSyntaxRewriter()
@@ -93,50 +102,179 @@ namespace AnZwDev.ALTools.CodeTransformations
             return base.VisitObjectNameOrId(node);
         }
 
-
         public override SyntaxNode VisitInvocationExpression(InvocationExpressionSyntax node)
         {
             if (!node.ContainsDiagnostics)
             {
-                if ((node.ArgumentList != null) && (node.ArgumentList.Arguments != null) && (node.ArgumentList.Arguments.Count > 0) && (node.ArgumentList.Arguments[0] is LiteralExpressionSyntax argumentSyntax))
-                {
-                    if (argumentSyntax.Literal is Int32SignedLiteralValueSyntax intLiteralSyntax)
-                    {
-                        int objectId;
-                        if (Int32.TryParse(intLiteralSyntax.Number.ValueText, out objectId))
-                        {
-                            if ((objectId != 0) && (node.Expression is MemberAccessExpressionSyntax expressionSyntax))
-                            {
-                                if (expressionSyntax.Expression is IdentifierNameSyntax expressionNameSyntax)
-                                {
-                                    string expressionName = expressionNameSyntax.Identifier.ValueText;
-                                    string expressionMemberName = expressionSyntax.Name?.Identifier.ValueText;
-                                    string objectType = this.GetObjectTypeForSystemFunction(expressionName, expressionMemberName);
-                                    if (objectType != null)
-                                    {
-                                        ALAppObject alAppObject = this.FindObjectById(objectType, objectId);
-                                        string objectName = alAppObject?.Name;
-                                        if (!String.IsNullOrWhiteSpace(objectName))
-                                        {
-                                            this.NoOfChanges++;
-                                            CodeExpressionSyntax newArgumentSyntax = SyntaxFactory.OptionAccessExpression(
-                                                SyntaxFactory.IdentifierName(this.ObjectTypeNameToEnumName(objectType)),
-                                                SyntaxFactory.IdentifierName(objectName)).WithTriviaFrom(argumentSyntax);
-                                            SeparatedSyntaxList<CodeExpressionSyntax> newArguments = node.ArgumentList.Arguments.Replace(argumentSyntax, newArgumentSyntax);
-                                            ArgumentListSyntax newArgumentList = node.ArgumentList.WithArguments(newArguments);
-                                            node = node.WithArgumentList(newArgumentList);
-                                        }
-                                    }
-                                }
-                            }
+                var objectIdParameters = GetObjectIdMethodParameter(node);
+                if (objectIdParameters != null)
+                    node = ReplaceIdParametersWithNames(node, objectIdParameters);
+            }
 
+            return base.VisitInvocationExpression(node);
+        }
+
+#if BC
+        public override SyntaxNode VisitAssignmentStatement(AssignmentStatementSyntax node)
+        {
+            if (!node.ContainsDiagnostics)
+            {
+                var operation = SemanticModel.GetOperation(node);
+
+                if (operation is IInvocationExpression invocationExpression)
+                {
+                    var objectIdParameters = GetObjectIdInvocationExpressionParameter(invocationExpression);
+                    if ((objectIdParameters != null) && (objectIdParameters.Length > 0) && (objectIdParameters[0].Index == 0))
+                        node = ReplaceIdAssignmentWithName(node, objectIdParameters[0].ObjectType);
+                }
+            }
+
+            return base.VisitAssignmentStatement(node);
+        }
+#endif
+
+        private AssignmentStatementSyntax ReplaceIdAssignmentWithName(AssignmentStatementSyntax node, string objectType)
+        {
+            if (node.Source is LiteralExpressionSyntax sourceSyntax)
+            {
+                if (sourceSyntax.Literal is Int32SignedLiteralValueSyntax intLiteralSyntax)
+                {
+                    int objectId;
+                    if (Int32.TryParse(intLiteralSyntax.Number.ValueText, out objectId))
+                    {
+                        if (objectId != 0)
+                        {
+                            ALAppObject alAppObject = this.FindObjectById(objectType, objectId);
+                            string objectName = alAppObject?.Name;
+                            if (!String.IsNullOrWhiteSpace(objectName))
+                            {
+                                this.NoOfChanges++;
+                                CodeExpressionSyntax newSourceSyntax = SyntaxFactory.OptionAccessExpression(
+                                    SyntaxFactory.IdentifierName(this.ObjectTypeNameToEnumName(objectType)),
+                                    SyntaxFactory.IdentifierName(objectName)).WithTriviaFrom(sourceSyntax);
+                                node = node.WithSource(newSourceSyntax);
+                            }
                         }
                     }
                 }
             }
 
-            return base.VisitInvocationExpression(node);
+            return node;
         }
+
+        private InvocationExpressionSyntax ReplaceIdParametersWithNames(InvocationExpressionSyntax node, ObjectIdParameterInformation[] parameter)
+        {
+            for (int i=0; i<parameter.Length; i++)
+                node = ReplaceIdParameterWithName(node, parameter[i]);
+            return node;
+        }
+
+        private InvocationExpressionSyntax ReplaceIdParameterWithName(InvocationExpressionSyntax node, ObjectIdParameterInformation parameter)
+        {
+            if ((node.ArgumentList.Arguments.Count > parameter.Index) && (node.ArgumentList.Arguments[parameter.Index] is LiteralExpressionSyntax argumentSyntax))
+            {
+                if (argumentSyntax.Literal is Int32SignedLiteralValueSyntax intLiteralSyntax)
+                {
+                    int objectId;
+                    if (Int32.TryParse(intLiteralSyntax.Number.ValueText, out objectId))
+                    {
+                        if (objectId != 0)
+                        {
+                            ALAppObject alAppObject = this.FindObjectById(parameter.ObjectType, objectId);
+                            string objectName = alAppObject?.Name;
+                            if (!String.IsNullOrWhiteSpace(objectName))
+                            {
+                                this.NoOfChanges++;
+                                CodeExpressionSyntax newArgumentSyntax = SyntaxFactory.OptionAccessExpression(
+                                    SyntaxFactory.IdentifierName(this.ObjectTypeNameToEnumName(parameter.ObjectType)),
+                                    SyntaxFactory.IdentifierName(objectName)).WithTriviaFrom(argumentSyntax);
+                                SeparatedSyntaxList<CodeExpressionSyntax> newArguments = node.ArgumentList.Arguments.Replace(argumentSyntax, newArgumentSyntax);
+                                ArgumentListSyntax newArgumentList = node.ArgumentList.WithArguments(newArguments);
+                                node = node.WithArgumentList(newArgumentList);
+                            }
+                        }
+                    }
+                }
+            }
+
+            return node;
+        }
+
+#if BC
+
+        private ObjectIdParameterInformation[] GetObjectIdMethodParameter(InvocationExpressionSyntax node)
+        {
+            if ((node.ArgumentList?.Arguments != null) && (node.ArgumentList?.Arguments.Count > 0))
+            {
+                var operation = SemanticModel.GetOperation(node);
+
+                if (operation is IInvocationExpression invocationExpression)
+                    return GetObjectIdInvocationExpressionParameter(invocationExpression);
+            }
+
+            return null;
+        }
+
+        private ObjectIdParameterInformation[] GetObjectIdInvocationExpressionParameter(IInvocationExpression invocationExpression)
+        {
+            if ((invocationExpression.Instance == null) && (invocationExpression.TargetMethod?.ContainingSymbol != null))
+            {
+                //system methods
+                if ((invocationExpression.TargetMethod.MethodKind.ConvertToLocalType() == ConvertedMethodKind.BuiltInMethod) &&
+                    (invocationExpression.TargetMethod.ContainingSymbol.Kind.ConvertToLocalType() == ConvertedSymbolKind.Class))
+                {
+                    var typeName = invocationExpression.TargetMethod.ContainingSymbol.Name;
+                    var methodName = invocationExpression.TargetMethod.Name;
+                    var objectType = GetObjectTypeForSystemFunction(typeName, methodName);
+                    if (objectType == null)
+                        return null;
+                    return new ObjectIdParameterInformation[] { new ObjectIdParameterInformation(0, objectType) };
+                }
+
+            }
+            else
+            {
+                var invocationInstanceType = invocationExpression.Instance.Type;
+                var navTypeKind = invocationInstanceType.NavTypeKind.ConvertToLocalType();
+                var systemMethod = SystemTypesObjectIdParametersInformationDictionary.GetSystemTypeMethod(navTypeKind, invocationExpression.TargetMethod?.Name);
+                if (systemMethod != null)
+                    return systemMethod.Parameters;
+            }
+
+            return null;
+        }
+
+#else
+
+        private ObjectIdParameterInformation[] GetObjectIdMethodParameter(InvocationExpressionSyntax node)
+        {
+            if ((node.ArgumentList != null) && (node.ArgumentList.Arguments != null) && (node.ArgumentList.Arguments.Count > 0) && (node.ArgumentList.Arguments[0] is LiteralExpressionSyntax argumentSyntax))
+            {
+                if (argumentSyntax.Literal is Int32SignedLiteralValueSyntax intLiteralSyntax)
+                {
+                    int objectId;
+                    if (Int32.TryParse(intLiteralSyntax.Number.ValueText, out objectId))
+                    {
+                        if ((objectId != 0) && (node.Expression is MemberAccessExpressionSyntax expressionSyntax))
+                        {
+                            if (expressionSyntax.Expression is IdentifierNameSyntax expressionNameSyntax)
+                            {
+                                string expressionName = expressionNameSyntax.Identifier.ValueText;
+                                string expressionMemberName = expressionSyntax.Name?.Identifier.ValueText;
+                                string objectType = this.GetObjectTypeForSystemFunction(expressionName, expressionMemberName);
+                                if (objectType != null)
+                                    return new ObjectIdParameterInformation[] { new ObjectIdParameterInformation(0, objectType) };
+                            }
+                        }
+                    }
+                }
+            }
+
+            return null;
+        }
+
+#endif
+
 
         protected string GetObjectTypeForSystemFunction(string expressionName, string expressionMemberName)
         {
@@ -290,4 +428,6 @@ namespace AnZwDev.ALTools.CodeTransformations
         }
 
     }
+
 }
+

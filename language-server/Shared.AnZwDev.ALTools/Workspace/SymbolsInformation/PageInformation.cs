@@ -12,12 +12,16 @@ namespace AnZwDev.ALTools.Workspace.SymbolsInformation
         [JsonProperty("applicationArea")]
         public string ApplicationArea { get; set; }
 
+        [JsonProperty("namespace", NullValueHandling = NullValueHandling.Ignore)]
+        public string Namespace { get; set; }
+
         public PageInformation()
         {
         }
 
         public PageInformation(ALAppPage page) : base(page, null)
         {
+            Namespace = page.NamespaceName;
             if (page.Properties != null)
             {
                 this.Caption = page.Properties.GetValue("Caption");

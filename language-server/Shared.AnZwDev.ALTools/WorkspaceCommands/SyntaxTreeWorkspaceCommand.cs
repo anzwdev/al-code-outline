@@ -17,7 +17,7 @@ namespace AnZwDev.ALTools.WorkspaceCommands
         {
         }
 
-        protected override (string, bool, string) ProcessSourceCode(string sourceCode, ALProject project, string filePath, Range range, Dictionary<string, string> parameters)
+        protected override (string, bool, string) ProcessSourceCode(string sourceCode, ALProject project, string filePath, TextRange range, Dictionary<string, string> parameters)
         {
             try
             {
@@ -26,7 +26,7 @@ namespace AnZwDev.ALTools.WorkspaceCommands
                 //parse source code
                 SourceText sourceText = SourceText.From(sourceCode);
 #if BC
-                SyntaxTree syntaxTree = SyntaxTree.ParseObjectText(sourceText, null, project.GetSyntaxTreeParseOptions());
+                SyntaxTree syntaxTree = SyntaxTree.ParseObjectText(sourceText, filePath, project.GetSyntaxTreeParseOptions());
 #else
                 SyntaxTree syntaxTree = SyntaxTree.ParseObjectText(sourceText, null);
 #endif

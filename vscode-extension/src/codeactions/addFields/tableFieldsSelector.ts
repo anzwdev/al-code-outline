@@ -128,8 +128,10 @@ export class TableFieldsSelector {
         return 0;
     }
 
-    protected onSelectionChanged(itemList: TableFieldQuickPickItem[]) {
-        this.updateItems(itemList, false);
+    protected onSelectionChanged(itemList: readonly TableFieldQuickPickItem[]) {
+        let newList: TableFieldQuickPickItem[] = [];
+        newList.push(...itemList);
+        this.updateItems(newList, false);
     }
 
     protected onButton(button: vscode.QuickInputButton) {
@@ -150,7 +152,7 @@ export class TableFieldsSelector {
         return false;
     }
 
-    protected isListEqual(a: TableFieldQuickPickItem[], b: TableFieldQuickPickItem[]): boolean {
+    protected isListEqual(a: readonly TableFieldQuickPickItem[], b: TableFieldQuickPickItem[]): boolean {
         if (a.length != b.length)
             return false;
         for (let i=0; i<a.length; i++) {

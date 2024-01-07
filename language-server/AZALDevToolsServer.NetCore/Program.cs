@@ -1,15 +1,15 @@
 ﻿using AnZwDev.ALTools.Server;
+using Microsoft.VisualStudio.Threading;
 using System;
 
 namespace AZALDevToolsServer.NetCore
 {
     class Program
     {
-        static void Main(string[] args)
+        static async System.Threading.Tasks.Task Main(string[] args)
         {
-            ALDevToolsServerHost host = new ALDevToolsServerHost(args[0]);
-            host.Initialize();
-            host.Run();
+            LanguageServerHost host = new LanguageServerHost(args[0]);
+            await host.RunAsync();
         }
     }
 }

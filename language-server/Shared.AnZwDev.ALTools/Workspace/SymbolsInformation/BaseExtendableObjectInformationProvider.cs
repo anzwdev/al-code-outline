@@ -1,5 +1,6 @@
 ﻿using AnZwDev.ALTools.ALSymbolReferences;
 using AnZwDev.ALTools.ALSymbolReferences.MergedReferences;
+using AnZwDev.ALTools.Workspace.SymbolReferences;
 using System;
 using System.Collections.Generic;
 using System.Text;
@@ -8,15 +9,21 @@ namespace AnZwDev.ALTools.Workspace.SymbolsInformation
 {
     public class BaseExtendableObjectInformationProvider<T,E> : BaseObjectInformationProvider<T> where T: ALAppObject where E: ALAppObject, IALAppObjectExtension
     {
-        public BaseExtendableObjectInformationProvider()
+
+        private readonly Func<ALAppSymbolReference, IEnumerable<E>> _objectExtensionsEnumerable;
+
+        public BaseExtendableObjectInformationProvider(Func<ALAppSymbolReference, IEnumerable<T>> objectsEnumberable, Func<ALAppSymbolReference, IEnumerable<E>> objectExtensionsEnumerable) : base(objectsEnumberable)
         {
+            _objectExtensionsEnumerable = objectExtensionsEnumerable;
         }
 
         #region Object list and search
 
-        protected virtual MergedALAppObjectExtensionsCollection<E> GetALAppObjectExtensionsCollection(ALProject project)
+        protected IEnumerable<E> GetALAppObjectExtensionsCollection(ALProject project, T baseObject)
         {
-            return null;
+            return project
+                .GetAllSymbolReferences()
+                .GetObjectExtensions<E>(_objectExtensionsEnumerable, baseObject.GetIdentifier());
         }
 
         #endregion
@@ -25,29 +32,20 @@ namespace AnZwDev.ALTools.Workspace.SymbolsInformation
 
         protected override IEnumerable<ALAppMethod> GetMethods(ALProject project, T alObject)
         {
-            //main methods
-            if ((alObject != null) && (alObject.Methods != null))
+            if (alObject != null)
             {
-                foreach (ALAppMethod alAppMethod in alObject.Methods) 
-                { 
-                    yield return alAppMethod; 
-                }
-            }
+                //main methods
+                if (alObject.Methods != null)
+                    foreach (ALAppMethod alAppMethod in alObject.Methods)
+                        yield return alAppMethod;
 
-            //extension methods
-            IEnumerable<E> extensions = this.GetALAppObjectExtensionsCollection(project)?.FindAllExtensions(alObject.Name);
-            if (extensions != null)
-            {
-                foreach (E ext in extensions)
-                {
-                    if ((ext != null) && (ext.Methods != null))
-                    {
-                        foreach (ALAppMethod alAppMethod in ext.Methods) 
-                        { 
-                            yield return alAppMethod; 
-                        }
-                    }
-                }
+                //extension methods
+                IEnumerable<E> extensions = this.GetALAppObjectExtensionsCollection(project, alObject);
+                if (extensions != null)
+                    foreach (E ext in extensions)
+                        if (ext.Methods != null)
+                            foreach (ALAppMethod alAppMethod in ext.Methods)
+                                yield return alAppMethod;
             }
         }
 
@@ -57,29 +55,20 @@ namespace AnZwDev.ALTools.Workspace.SymbolsInformation
 
         protected override IEnumerable<ALAppVariable> GetVariables(ALProject project, T alObject)
         {
-            //main methods
-            if ((alObject != null) && (alObject.Variables != null))
+            if (alObject != null)
             {
-                foreach (ALAppVariable alVariable in alObject.Variables)
-                {
-                    yield return alVariable;
-                }
-            }
+                //main methods
+                if (alObject.Variables != null)
+                    foreach (ALAppVariable alVariable in alObject.Variables)
+                        yield return alVariable;
 
-            //extension methods
-            IEnumerable<E> extensions = this.GetALAppObjectExtensionsCollection(project)?.FindAllExtensions(alObject.Name);
-            if (extensions != null)
-            {
-                foreach (E ext in extensions)
-                {
-                    if ((ext != null) && (ext.Variables != null))
-                    {
-                        foreach (ALAppVariable alVariable in ext.Variables)
-                        {
-                            yield return alVariable;
-                        }
-                    }
-                }
+                //extension methods
+                IEnumerable<E> extensions = this.GetALAppObjectExtensionsCollection(project, alObject);
+                if (extensions != null)
+                    foreach (E ext in extensions)
+                        if ((ext != null) && (ext.Variables != null))
+                            foreach (ALAppVariable alVariable in ext.Variables)
+                                yield return alVariable;
             }
         }
 

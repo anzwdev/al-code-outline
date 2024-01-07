@@ -14,11 +14,19 @@ namespace AZALDevToolsServer.NetFrameworkNav2018
 {
     class Program
     {
+
+        static async System.Threading.Tasks.Task Main(string[] args)
+        {
+            LanguageServerHost host = new LanguageServerHost(args[0]);
+            await host.RunAsync();
+        }
+
+        /*
         static void Main(string[] args)
         {
-            ALDevToolsServerHost host = new ALDevToolsServerHost(args[0]);
-            host.Initialize();
-            host.Run();
+            LanguageServerHost host = new LanguageServerHost(args[0]);
+            host.RunAsync().Wait();
         }
+        */
     }
 }

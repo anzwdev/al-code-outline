@@ -5,10 +5,7 @@ using Microsoft.Dynamics.Nav.CodeAnalysis.Syntax;
 using Microsoft.Dynamics.Nav.CodeAnalysis;
 using System;
 using System.Collections.Generic;
-using System.Text;
 using AnZwDev.ALTools.ALSymbols.Internal;
-using Newtonsoft.Json.Linq;
-using System.Xml.Linq;
 
 namespace AnZwDev.ALTools.ALSymbols.SymbolReaders
 {
@@ -18,6 +15,8 @@ namespace AnZwDev.ALTools.ALSymbols.SymbolReaders
         public bool IncludeProperties { get; set; }
         private bool _tableHasKeys = false;
         private ALSymbolAccessModifier? _varAccessModifier = null;
+        private string _namespaceName = null;
+        private HashSet<string> _usings = null;
 
         public ALSymbolInfoSyntaxTreeReader(bool includeProperties)
         {
@@ -203,7 +202,7 @@ namespace AnZwDev.ALTools.ALSymbols.SymbolReaders
                     return true;
                 case ConvertedSyntaxKind.IdentifierName:
                     var lineSpan = syntaxTree.GetLineSpan(node.Span);
-                    symbol.selectionRange = new Range(lineSpan.StartLinePosition.Line, lineSpan.StartLinePosition.Character,
+                    symbol.selectionRange = new TextRange(lineSpan.StartLinePosition.Line, lineSpan.StartLinePosition.Character,
                         lineSpan.EndLinePosition.Line, lineSpan.EndLinePosition.Character);
                     return true;
             }
@@ -232,6 +231,13 @@ namespace AnZwDev.ALTools.ALSymbols.SymbolReaders
             
             ProcessNodeTypeSpecificProperties(symbol, syntaxTree, parentNode, node);
 
+            //update namespaces details
+            if (symbol.kind.IsObjectDefinition())
+            {
+                symbol.namespaceName = _namespaceName;
+                symbol.usings = _usings;
+            }
+
             return symbol;         
         }
 
@@ -243,6 +249,11 @@ namespace AnZwDev.ALTools.ALSymbols.SymbolReaders
         {
             switch (node)
             {
+                //compilation unit
+                case CompilationUnitSyntax compilationUnitSyntax:
+                    ProcessCompilationUnit(compilationUnitSyntax);
+                    break;
+
                 //general object nodes
                 case PropertySyntax propertySyntax:
                     ProcessPropertyNode(symbol, propertySyntax);
@@ -384,10 +395,52 @@ namespace AnZwDev.ALTools.ALSymbols.SymbolReaders
                 case ReportExtensionDataSetAddColumnSyntax reportExtensionDataSetAddColumnSyntax:
                     ProcessReportExtensionAddColumnChangeNode(syntaxTree, symbol, reportExtensionDataSetAddColumnSyntax);
                     break;
+
+                //usings
+                case NamespaceDeclarationSyntax namespaceDeclarationSyntax:
+                    ProcessNamespace(symbol, namespaceDeclarationSyntax); 
+                    break;
+                case UsingDirectiveSyntax usingDirectiveSyntax:
+                    ProcessUsing(symbol, usingDirectiveSyntax);
+                    break;
 #endif
             }
 
         }
+
+        #region Compilation unit processing
+
+        private void ProcessCompilationUnit(CompilationUnitSyntax compilationUnitSyntax)
+        {
+#if BC
+            _namespaceName = compilationUnitSyntax.GetNamespaceName();
+            _usings = compilationUnitSyntax.Usings.GetUsingsNamespacesNames();
+#endif
+        }
+
+
+#if BC
+        private void ProcessNamespace(ALSymbol symbol, NamespaceDeclarationSyntax namespaceDeclarationSyntax)
+        {
+            symbol.name = "namespace";
+
+            var namespaceName = namespaceDeclarationSyntax.Name?.ToString();
+            if (!String.IsNullOrWhiteSpace(namespaceName))
+                symbol.fullName = symbol.name + " " + namespaceName;
+        }
+
+        private void ProcessUsing(ALSymbol symbol, UsingDirectiveSyntax usingDirectiveSyntax)
+        {
+            symbol.name = "using";
+
+            var namespaceName = usingDirectiveSyntax.Name?.ToString();
+            if (!String.IsNullOrWhiteSpace(namespaceName))
+                symbol.fullName = symbol.name + " " + namespaceName;
+        }
+#endif
+
+        #endregion
+
 
         #region General nodes properties processing
 
@@ -809,7 +862,7 @@ namespace AnZwDev.ALTools.ALSymbols.SymbolReaders
             {
                 var startSpan = syntaxTree.GetLineSpan(contentStartToken.Span);
                 var endSpan = syntaxTree.GetLineSpan(contentEndToken.Span);
-                symbol.contentRange = new Range(startSpan.EndLinePosition.Line, startSpan.EndLinePosition.Character,
+                symbol.contentRange = new TextRange(startSpan.EndLinePosition.Line, startSpan.EndLinePosition.Character,
                     endSpan.StartLinePosition.Line, endSpan.StartLinePosition.Character);
             }
         }
@@ -819,11 +872,11 @@ namespace AnZwDev.ALTools.ALSymbols.SymbolReaders
             IEnumerable<SyntaxNode> list = syntax.ChildNodes();
             if (list != null)
             {
-                Range totalRange = null;
+                TextRange totalRange = null;
                 foreach (SyntaxNode childNode in list)
                 {
                     var lineSpan = syntaxTree.GetLineSpan(childNode.FullSpan);
-                    Range nodeRange = new Range(lineSpan.StartLinePosition.Line, lineSpan.StartLinePosition.Character,
+                    TextRange nodeRange = new TextRange(lineSpan.StartLinePosition.Line, lineSpan.StartLinePosition.Character,
                         lineSpan.EndLinePosition.Line, lineSpan.EndLinePosition.Character);
                     if (totalRange == null)
                         totalRange = nodeRange;
@@ -983,6 +1036,11 @@ namespace AnZwDev.ALTools.ALSymbols.SymbolReaders
                 //properties
                 case ConvertedSyntaxKind.PropertyList: return ALSymbolKind.PropertyList;
                 case ConvertedSyntaxKind.Property: return ALSymbolKind.Property;
+
+                //namespaces
+                case ConvertedSyntaxKind.NamespaceDeclaration: return ALSymbolKind.Namespace;
+                case ConvertedSyntaxKind.UsingDirective: return ALSymbolKind.UsingDirective;
+
 
             }
             return ALSymbolKind.Undefined;

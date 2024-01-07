@@ -6,6 +6,6 @@ namespace AnZwDev.ALTools.Server.Contracts.SymbolsInformation
 {
     public class GetTableBasedChildSymbolDetailsRequest : GetTableBasedSymbolDetailsRequest
     {
-        public string objectName { get; set; }
+        public string childSymbolName { get; set; }
     }
 }

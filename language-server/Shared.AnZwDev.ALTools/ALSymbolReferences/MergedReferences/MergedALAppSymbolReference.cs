@@ -5,6 +5,11 @@ using System.Text;
 
 namespace AnZwDev.ALTools.ALSymbolReferences.MergedReferences
 {
+    //!!! TO-DO !!!
+    //!!! Clean file !!!
+
+    /*
+
     public class MergedALAppSymbolReference
     {
 
@@ -51,7 +56,13 @@ namespace AnZwDev.ALTools.ALSymbolReferences.MergedReferences
             this.PermissionSetExtensions = new MergedALAppObjectExtensionsCollection<ALAppPermissionSetExtension>(this.AllSymbolReferences, ALSymbolKind.PermissionSetExtension, x => x?.PermissionSetExtensions);
         }
 
-
+        public ALAppObject FindObject(ALSymbolKind symbolKind, HashSet<string> usings, string namespaceName, string name)
+        {
+            return AllSymbolReferences.FindObject(symbolKind, usings, namespaceName, name);
+        }
 
     }
+
+    */
+
 }

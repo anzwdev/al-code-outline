@@ -3,6 +3,7 @@ import { DevToolsExtensionContext } from '../devToolsExtensionContext';
 import { CodeCompletionItem } from '../langserver/codeCompletion/codeCompletionItem';
 import { ToolsCodeCompletionRequest } from '../langserver/codeCompletion/toolsCodeCompletionRequest';
 import { TextPosition } from '../symbollibraries/textPosition';
+import { CodeCompletionTextEdit } from '../langserver/codeCompletion/codeCompletionTextEdit';
 
 export class ALCompletionProvider implements vscode.CompletionItemProvider {
 
@@ -41,18 +42,56 @@ export class ALCompletionProvider implements vscode.CompletionItemProvider {
     }
 
     private createCompletionItem(source: CodeCompletionItem) {
-        let item = new vscode.CompletionItem(source.label!, source.kind);
+        let item = new vscode.CompletionItem({
+            label: source.label!,
+            detail: source.detail,
+            description: source.description
+        }, source.kind);
         item.filterText = source.filterText;
-        if (source.tags)
+
+        if (source.tags) {
             item.tags = source.tags;
-        if (source.insertText)
+        }
+
+        if (source.insertText) {
             item.insertText = source.insertText;
-        if (source.detail)
+        }
+
+        if (source.detail) {
             item.detail = source.detail;
-        if (source.commitCharacters)
+        }
+
+        if (source.commitCharacters) {
             item.commitCharacters = source.commitCharacters;
+        }
+
+        if (source.additionalTextEdits) {
+            item.additionalTextEdits = this.createTextEdits(source.additionalTextEdits);
+        }
 
         return item;
     }
-    
+
+    private createTextEdits(source: CodeCompletionTextEdit[]): vscode.TextEdit[] {
+        let textEdits: vscode.TextEdit[] = [];
+        if (source) {
+            for (let i=0; i<source.length; i++) {
+                let textEdit = this.createTextEdit(source[i]);
+                if (textEdit) {
+                    textEdits.push(textEdit);
+                }
+            }
+        }
+        return textEdits;
+    }
+
+    private createTextEdit(source: CodeCompletionTextEdit): vscode.TextEdit | undefined {
+        if ((source.range) && (source.newText)) {
+            let range = new vscode.Range(source.range.start.line, source.range.start.character, source.range.end.line, source.range.end.character);
+            let textEdit = new vscode.TextEdit(range, source.newText);
+            return textEdit;
+        }
+        return undefined;
+    }
+
 }

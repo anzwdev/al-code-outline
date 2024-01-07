@@ -48,8 +48,8 @@ export class ALOutlineTreeItem extends vscode.TreeItem {
                             if (aname < bname) return -1;
                             if (aname > bname) return 1;
 
-                            aname = a.label!.toLowerCase();
-                            bname = b.label!.toLowerCase();
+                            aname = a.label!.toString().toLowerCase();
+                            bname = b.label!.toString().toLowerCase();
                             if (aname < bname) return -1;
                             if (aname > bname) return 1;
                             return 0;                               
@@ -57,8 +57,8 @@ export class ALOutlineTreeItem extends vscode.TreeItem {
                         break;
                     case ALOutlineSortMode.name:
                         this.childNodes.sort((a,b) => {
-                            let aname = a.label!.toLowerCase();
-                            let bname = b.label!.toLowerCase();
+                            let aname = a.label!.toString().toLowerCase();
+                            let bname = b.label!.toString().toLowerCase();
                             if (aname < bname) return -1;
                             if (aname > bname) return 1;
                             return 0;                               

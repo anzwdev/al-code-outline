@@ -1,24 +1,20 @@
 ﻿using AnZwDev.ALTools.Server.Contracts.SymbolsInformation;
 using AnZwDev.ALTools.Workspace;
 using AnZwDev.ALTools.Workspace.SymbolsInformation;
-using AnZwDev.VSCodeLangServer.Protocol.Server;
-using AnZwDev.VSCodeLangServer.Protocol.MessageProtocol;
-using System;
-using System.Collections.Generic;
-using System.Text;
+using StreamJsonRpc;
 using System.Threading.Tasks;
 
 namespace AnZwDev.ALTools.Server.Handlers.SymbolsInformation
 {
-    public class GetInterfacesListRequestHandler : BaseALRequestHandler<GetInterfacesListRequest, GetInterfacesListResponse>
+    public class GetInterfacesListRequestHandler : RequestHandler
     {
 
-        public GetInterfacesListRequestHandler(ALDevToolsServer server, LanguageServerHost languageServerHost) : base(server, languageServerHost, "al/getinterfaceslist")
+        public GetInterfacesListRequestHandler(LanguageServerHost languageServerHost) : base(languageServerHost)
         {
         }
 
-#pragma warning disable 1998
-        protected override async Task<GetInterfacesListResponse> HandleMessage(GetInterfacesListRequest parameters, RequestContext<GetInterfacesListResponse> context)
+        [JsonRpcMethod("al/getinterfaceslist", UseSingleObjectParameterDeserialization = true)]
+        public GetInterfacesListResponse GetInterfacesList(GetInterfacesListRequest parameters)
         {
             GetInterfacesListResponse response = new GetInterfacesListResponse();
 
@@ -32,7 +28,6 @@ namespace AnZwDev.ALTools.Server.Handlers.SymbolsInformation
 
             return response;
         }
-#pragma warning restore 1998
 
     }
 }
