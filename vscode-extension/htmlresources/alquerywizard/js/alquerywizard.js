@@ -15,7 +15,7 @@ class QueryWizard extends TableBasedObjectWizard {
         //initialize fields
         document.getElementById("objectid").value = this._data.objectId;
         document.getElementById("objectname").value = this._data.objectName;
-        document.getElementById("srctable").value = this._data.selectedTable;
+        document.getElementById("srctable").value = this._data.selectedTable.name;
         document.getElementById("querytype").value = this._data.queryType;
         document.getElementById("apipublisher").value = this._data.apiPublisher;
         document.getElementById("apigroup").value = this._data.apiGroup;

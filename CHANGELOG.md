@@ -1,5 +1,11 @@
 # Change Log
 
+## 3.0.57
+ - Issue #521 - Apply Default API settings when creating an api query
+
+Thank you
+ - jorispoppe for reporting issue #521
+
 ## 3.0.56
  - Issue #507 - Namespaces quick fixes and commands
  - Issue #514 - Code Analyzers: most AppSourceCop rules appear twice
