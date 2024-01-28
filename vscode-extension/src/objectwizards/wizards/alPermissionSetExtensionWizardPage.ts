@@ -4,6 +4,7 @@ import { ALPermissionSetExtensionSyntaxBuilder } from '../syntaxbuilders/alPermi
 import { ALObjectWizardSettings } from "./alObjectWizardSettings";
 import { ALPermissionSetExtensionWizardData } from "./alPermissionSetExtensionWizardData";
 import { ALPermissionSetWizardPage } from "./alPermissionSetWizardPage";
+import { ToolsSymbolReference } from '../../langserver/symbolsinformation/toolsSymbolReference';
 
 export class ALPermissionSetExtensionWizardPage extends ALPermissionSetWizardPage {
     private _permissionSetExtensionWizardData : ALPermissionSetExtensionWizardData;
@@ -22,8 +23,23 @@ export class ALPermissionSetExtensionWizardPage extends ALPermissionSetWizardPag
     }
     
     protected async setBuilderData(data: any) {
-        await super.setBuilderData(data);
         this._permissionSetExtensionWizardData.basePermissionSet = data.basePermissionSet;
+        await super.setBuilderData(data);
+    }
+
+    protected collectReferencedObjects(): ToolsSymbolReference[] {
+        let referencedObjects = super.collectReferencedObjects();
+        if (this._permissionSetExtensionWizardData.basePermissionSet) {
+            referencedObjects.push({
+                nameWithNamespaceOrId: this._permissionSetExtensionWizardData.basePermissionSet,
+                typeName: 'PermissionSet'
+            });
+        }
+        return referencedObjects;
+    }
+
+    protected getWizardObjectType(): string {
+        return 'PermissionSetExtension';
     }
 
     protected runBuilder() {

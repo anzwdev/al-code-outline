@@ -85,6 +85,8 @@ import { toolsGetCodeunitMethodsListRequest } from './symbolsinformation/toolsGe
 import { ToolsGetCodeunitMethodsListResponse } from './symbolsinformation/toolsGetCodeunitMethodsListResponse';
 import { ToolsCollectWorkspaceCodeActionsRequest } from './toolsCollectWorkspaceCodeActionsRequest';
 import { ToolsCollectWorkspaceCodeActionsResponse } from './toolsCollectWorkspaceCodeActionsResponse';
+import { ToolsGetNewFileRequiredInterfacesRequest } from './toolsGetNewFileRequiredInterfacesRequest';
+import { ToolsGetNewFileRequiredInterfacesResponse } from './toolsGetNewFileRequiredInterfacesResponse';
 
 export class ToolsLangServerClient implements vscode.Disposable {
     _context : vscode.ExtensionContext;
@@ -320,12 +322,17 @@ export class ToolsLangServerClient implements vscode.Disposable {
         return this.sendRequest<ToolsCollectWorkspaceCodeActionsRequest, ToolsCollectWorkspaceCodeActionsResponse>(params, 'al/collectworkspacecodeactions');
     }
 
+    public getNewFileRequiredInterfaces(params: ToolsGetNewFileRequiredInterfacesRequest) : Promise<ToolsGetNewFileRequiredInterfacesResponse | undefined> {
+        return this.sendRequest<ToolsGetNewFileRequiredInterfacesRequest, ToolsGetNewFileRequiredInterfacesResponse>(params, 'al/getnewfilerequiredinterfaces');
+    }
+
     //next available object id
     public async getNextObjectId(path: string | undefined, objectType: string) : Promise<number> {
         let response = await this.sendRequest<ToolsGetNextObjectIdRequest, ToolsGetNextObjectIdResponse>(
             new ToolsGetNextObjectIdRequest(path, objectType), 'al/getnextobjectid');
-        if ((response) && (response.id))
+        if ((response) && (response.id)) {
             return response.id;
+        }
         return 0;
     }
 
@@ -396,7 +403,7 @@ export class ToolsLangServerClient implements vscode.Disposable {
 
     public async configurationChange(params: ToolsConfigurationChangeRequest) {
         this.sendNotification(params, "ws/configurationChange");
-    }   
+    }
 
     //internal communication methods
 

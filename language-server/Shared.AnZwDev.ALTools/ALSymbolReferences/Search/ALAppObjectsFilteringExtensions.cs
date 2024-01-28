@@ -20,7 +20,12 @@ namespace AnZwDev.ALTools.ALSymbolReferences.Search
         {
             if (objectReference.ObjectId != 0)
                 return FindFirst<T>(objects, objectReference.ObjectId);
-            return FindFirst<T>(objects, objectReference.Usings, objectReference.NamespaceName, objectReference.Name);
+            var found = FindFirst<T>(objects, objectReference.Usings, objectReference.NamespaceName, objectReference.Name);
+
+            if ((found == null) && (!String.IsNullOrWhiteSpace(objectReference.NamespaceName)))
+                found = FindFirst<T>(objects, objectReference.Usings, null, objectReference.NameWithNamespace);
+
+            return found;
         }
 
         public static T FindFirst<T>(this IEnumerable<T> objects, int id) where T : ALAppObject

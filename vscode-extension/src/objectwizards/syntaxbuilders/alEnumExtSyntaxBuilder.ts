@@ -12,6 +12,9 @@ export class ALEnumExtSyntaxBuilder {
         //generate file content
         let writer : ALSyntaxWriter = new ALSyntaxWriter(destUri);
 
+        writer.writeNamespace(data.objectNamespace);
+        writer.writeUsings(data.objectUsings);
+
         writer.writeStartExtensionObject("enumextension", data.objectId, data.objectName, data.baseEnum);
         writer.writeLine("");
 

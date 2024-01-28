@@ -13,6 +13,10 @@ export class ALReportExtSyntaxBuilder {
 
         //generate file content
         let writer : ALSyntaxWriter = new ALSyntaxWriter(destUri);
+
+        writer.writeNamespace(data.objectNamespace);
+        writer.writeUsings(data.objectUsings);
+
         writer.writeStartExtensionObject("reportextension", data.objectId, data.objectName, data.baseReport);
 
         writer.writeStartDataset();

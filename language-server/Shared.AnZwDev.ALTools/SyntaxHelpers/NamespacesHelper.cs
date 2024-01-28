@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Text;
 
 namespace AnZwDev.ALTools.SyntaxHelpers
@@ -9,6 +10,9 @@ namespace AnZwDev.ALTools.SyntaxHelpers
 
         public static string GetNamespaceName(string projectPath, string filePath, string rootNamespace, bool useFoldersStructure = true)
         {
+            if (String.IsNullOrWhiteSpace(rootNamespace))
+                rootNamespace = MakeValidNamespace(Path.GetFileName(projectPath));
+
             var namespaceName = rootNamespace.Trim();
 
             if (useFoldersStructure)

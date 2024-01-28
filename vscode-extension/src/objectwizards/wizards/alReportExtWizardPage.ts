@@ -78,6 +78,21 @@ export class ALReportExtWizardPage extends ProjectItemWizardPage {
 
         await this.finishObjectIdReservation(this._reportExtWizardData);
 
+        //get namespaces information
+        let referencedObjects: ToolsSymbolReference[] = [];
+        if (this._reportExtWizardData.baseReport) {
+            referencedObjects.push({
+                nameWithNamespaceOrId: this._reportExtWizardData.baseReport,
+                typeName: 'Report'
+            });
+        }
+
+        let fileNamespaces = await this.getNamespacesInformation('ReportExtension', referencedObjects);
+        if (fileNamespaces) {
+            this._reportExtWizardData.objectNamespace = fileNamespaces.namespaceName;
+            this._reportExtWizardData.objectUsings = fileNamespaces.usings;
+        }
+
         //build new object
         let builder : ALReportExtSyntaxBuilder = new ALReportExtSyntaxBuilder();
         let source = await builder.buildFromReportExtWizardData(this._settings.getDestDirectoryUri(),

@@ -6,6 +6,7 @@ import { ALXmlPortWizardData } from './alXmlPortWizardData';
 import { ALXmlPortSyntaxBuilder } from '../syntaxbuilders/alXmlPortSyntaxBuilder';
 import { DevToolsExtensionContext } from '../../devToolsExtensionContext';
 import { ALObjectWizardSettings } from './alObjectWizardSettings';
+import { ToolsSymbolReference } from '../../langserver/symbolsinformation/toolsSymbolReference';
 
 export class ALXmlPortWizardPage extends ALTableBasedWizardPage {
     protected _xmlPortWizardData : ALXmlPortWizardData;
@@ -37,6 +38,21 @@ export class ALXmlPortWizardPage extends ALTableBasedWizardPage {
         }
 
         await this.finishObjectIdReservation(this._xmlPortWizardData);
+
+        //get namespaces information
+        let referencedObjects: ToolsSymbolReference[] = [];
+        if (this._xmlPortWizardData.selectedTable) {
+            referencedObjects.push({
+                nameWithNamespaceOrId: this._xmlPortWizardData.selectedTable,
+                typeName: 'Table'
+            });
+        }
+
+        let fileNamespaces = await this.getNamespacesInformation('XmlPort', referencedObjects);
+        if (fileNamespaces) {
+            this._xmlPortWizardData.objectNamespace = fileNamespaces.namespaceName;
+            this._xmlPortWizardData.objectUsings = fileNamespaces.usings;
+        }
 
         //load project settings from the language server
         this._xmlPortWizardData.projectSettings = await this.getProjectSettings();        

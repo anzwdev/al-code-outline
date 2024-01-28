@@ -4,4 +4,5 @@ export interface ToolsSymbolReference {
     id?: number;
     name?: string;
     nameWithNamespaceOrId?: string;
+    typeName?: string;
 }

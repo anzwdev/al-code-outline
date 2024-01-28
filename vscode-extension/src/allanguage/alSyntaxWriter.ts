@@ -5,6 +5,7 @@ import { NameValue } from '../tools/nameValue';
 import { AppAreaMode } from '../alsyntaxmodifiers/appAreaMode';
 import { ApiFieldNameConversion } from './apiFieldNameConversion';
 import { LabelInformation } from '../symbolsinformation/labelInformation';
+import { StringValue } from 'vscode-languageclient';
 
 export class ALSyntaxWriter {
     private content : string;
@@ -118,6 +119,22 @@ export class ALSyntaxWriter {
     public writeNameSourceBlock(blockName : string, propertyName : string, propertySource : string) {
         this.writeStartNameSourceBlock(blockName, propertyName, propertySource);
         this.writeEndBlock();
+    }
+
+    public writeNamespace(namespaceName: string | undefined) {
+        if ((namespaceName) && (namespaceName !== "")) {
+            this.writeLine("namespace " + namespaceName + ";");
+            this.writeLine("");
+        }
+    }    
+
+    public writeUsings(usings: string[] | undefined) {
+        if ((usings) && (usings.length > 0)) {
+            for (let i=0; i<usings.length; i++) {
+                this.writeLine("using " + usings[i] + ";");
+            }
+            this.writeLine("");
+        }
     }
 
     public writeStartObject(type : string, id : string, name : string) {

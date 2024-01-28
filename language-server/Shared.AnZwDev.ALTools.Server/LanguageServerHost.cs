@@ -84,6 +84,7 @@ namespace AnZwDev.ALTools.Server
             this.RegisterRequestHandler(new GetReportDetailsRequestHandler(this));
             this.RegisterRequestHandler(new GetDependenciesListRequestHandler(this));
             this.RegisterRequestHandler(new GetWarningDirectivesRequestHandler(this));
+            this.RegisterRequestHandler(new GetNewFileRequiredInterfacesHandler(this));
 
             //next available object id
             this.RegisterRequestHandler(new GetNextObjectIdRequestHandler(this));

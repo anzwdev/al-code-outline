@@ -6,6 +6,7 @@ import { ALEnumWizardData } from './alEnumWizardData';
 import { ALEnumSyntaxBuilder } from '../syntaxbuilders/alEnumSyntaxBuilder';
 import { DevToolsExtensionContext } from '../../devToolsExtensionContext';
 import { ALObjectWizardSettings } from './alObjectWizardSettings';
+import { ToolsSymbolReference } from '../../langserver/symbolsinformation/toolsSymbolReference';
 
 export class ALEnumWizardPage extends ProjectItemWizardPage {
     private _enumWizardData : ALEnumWizardData;
@@ -41,6 +42,15 @@ export class ALEnumWizardPage extends ProjectItemWizardPage {
         this._enumWizardData.extensible = data.extensible;
     
         await this.finishObjectIdReservation(this._enumWizardData);
+
+        //get namespaces information
+        let referencedObjects: ToolsSymbolReference[] = [];
+
+        let fileNamespaces = await this.getNamespacesInformation('Enum', referencedObjects);
+        if (fileNamespaces) {
+            this._enumWizardData.objectNamespace = fileNamespaces.namespaceName;
+            this._enumWizardData.objectUsings = fileNamespaces.usings;
+        }
 
         //build new object
         var builder : ALEnumSyntaxBuilder = new ALEnumSyntaxBuilder();

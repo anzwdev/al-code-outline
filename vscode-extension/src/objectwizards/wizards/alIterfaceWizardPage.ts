@@ -6,6 +6,7 @@ import { ProjectItemWizardPage } from "./projectItemWizardPage";
 import { ALInterfaceSyntaxBuilder } from '../syntaxbuilders/alInterfaceSyntaxBuilder';
 import { ToolsSymbolInformationRequest } from '../../langserver/symbolsinformation/toolsSymbolInformationRequest';
 import { SymbolWithNameInformation } from '../../symbolsinformation/smbolWithNameInformation';
+import { ToolsSymbolReference } from '../../langserver/symbolsinformation/toolsSymbolReference';
 
 export class ALInterfaceWizardPage extends ProjectItemWizardPage {
     protected _wizardData : ALInterfaceWizardData;
@@ -33,6 +34,15 @@ export class ALInterfaceWizardPage extends ProjectItemWizardPage {
         this._wizardData.objectName = data.objectName;
         this._wizardData.baseCodeunitName = data.baseCodeunitName;
         
+        //get namespaces information
+        let referencedObjects: ToolsSymbolReference[] = [];
+
+        let fileNamespaces = await this.getNamespacesInformation('Interface', referencedObjects);
+        if (fileNamespaces) {
+            this._wizardData.objectNamespace = fileNamespaces.namespaceName;
+            this._wizardData.objectUsings = fileNamespaces.usings;
+        }
+
         //build new object
         let builder : ALInterfaceSyntaxBuilder = new ALInterfaceSyntaxBuilder(this._toolsExtensionContext);
         let source = await builder.buildFromInterfaceWizardDataAsync(this._settings.getDestDirectoryUri(),

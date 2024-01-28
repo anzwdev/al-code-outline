@@ -8,10 +8,11 @@ namespace AnZwDev.ALTools.ALSymbols
     public struct ALObjectReference
     {
 
-        public HashSet<string> Usings { get; set; }
-        public string NamespaceName { get; set; }
-        public string Name { get; set; }
-        public int ObjectId { get; set; }
+        public HashSet<string> Usings { get; }
+        public string NamespaceName { get; }
+        public string Name { get; }
+        public int ObjectId { get; }
+        public string NameWithNamespace { get; }
 
         public ALObjectReference(HashSet<string> usings, string nameWithNamespaceOrId)
         {
@@ -19,6 +20,7 @@ namespace AnZwDev.ALTools.ALSymbols
             NamespaceName = null;
             Name = null;
             ObjectId = 0;
+            NameWithNamespace = null;
 
             if (!String.IsNullOrWhiteSpace(nameWithNamespaceOrId))
             {
@@ -26,6 +28,7 @@ namespace AnZwDev.ALTools.ALSymbols
                     ObjectId = objectId;
                 else
                 {
+                    NameWithNamespace = nameWithNamespaceOrId;
                     var namespaceEndPos = FindNamespaceEndPos(nameWithNamespaceOrId);
                     if (namespaceEndPos >= 0)
                     {
@@ -44,6 +47,18 @@ namespace AnZwDev.ALTools.ALSymbols
             NamespaceName = namespaceName;
             ObjectId = id;
             Name = name;
+            NameWithNamespace = null;
+
+            if (String.IsNullOrWhiteSpace(name))
+                NameWithNamespace = null;
+            else
+            {
+                var fullName = ALSyntaxHelper.EncodeName(Name);
+                if (HasNamespace())
+                    NameWithNamespace = NamespaceName + "." + fullName;
+                else
+                    NameWithNamespace = fullName;
+            }
         }
 
         public ALObjectReference(HashSet<string> usings, string namespaceName, string name) : this(usings, namespaceName, 0, name)

@@ -9,7 +9,7 @@ import { ALObjectWizardData } from "./alObjectWizardData";
 export class ALTableBasedWizardData extends ALObjectWizardData {
     objectName : string;
     tableList : string[] | undefined;
-    selectedTable : ToolsSymbolReference;
+    selectedTable : string | undefined;
     fieldList : TableFieldInformation[] | undefined;
     flowFiltersList : TableFieldInformation[] | undefined;
     selectedFieldList : TableFieldInformation[] | undefined;
@@ -23,9 +23,7 @@ export class ALTableBasedWizardData extends ALObjectWizardData {
         super();
         this.objectName = "";
         this.tableList = undefined;
-        this.selectedTable = {
-            name: ""
-        };
+        this.selectedTable = "";
         this.fieldList = undefined;
         this.selectedFieldList = undefined;
         this.fixedTable = false;

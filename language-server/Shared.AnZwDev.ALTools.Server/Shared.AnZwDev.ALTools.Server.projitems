@@ -9,7 +9,10 @@
     <Import_RootNamespace>AnZwDev.ALTools.Server</Import_RootNamespace>
   </PropertyGroup>
   <ItemGroup>
+    <Compile Include="$(MSBuildThisFileDirectory)Contracts\SymbolsInformation\GetNewFileRequiredInterfacesRequest.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Contracts\SymbolsInformation\GetNewFileRequiredInterfacesResponse.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Handlers\RequestHandler.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Handlers\SymbolsInformation\GetNewFileRequiredInterfacesHandler.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)LanguageServerHost.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Contracts\AppPackageSymbolsRequest.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Contracts\AppPackageSymbolsResponse.cs" />

@@ -7,6 +7,7 @@ import { ALEnumExtSyntaxBuilder } from '../syntaxbuilders/alEnumExtSyntaxBuilder
 import { DevToolsExtensionContext } from '../../devToolsExtensionContext';
 import { ALObjectWizardSettings } from './alObjectWizardSettings';
 import { SymbolWithNameInformation } from '../../symbolsinformation/smbolWithNameInformation';
+import { ToolsSymbolReference } from '../../langserver/symbolsinformation/toolsSymbolReference';
 
 export class ALEnumExtWizardPage extends ProjectItemWizardPage {
     private _enumExtWizardData : ALEnumExtWizardData;
@@ -68,6 +69,21 @@ export class ALEnumExtWizardPage extends ProjectItemWizardPage {
             this._enumExtWizardData.firstValueId = firstValueId;
 
         await this.finishObjectIdReservation(this._enumExtWizardData);
+
+        //get namespaces information
+        let referencedObjects: ToolsSymbolReference[] = [];
+        if (this._enumExtWizardData.baseEnum) {
+            referencedObjects.push({
+                nameWithNamespaceOrId: this._enumExtWizardData.baseEnum,
+                typeName: 'Enum'
+            });
+        }
+
+        let fileNamespaces = await this.getNamespacesInformation('EnumExtension', referencedObjects);
+        if (fileNamespaces) {
+            this._enumExtWizardData.objectNamespace = fileNamespaces.namespaceName;
+            this._enumExtWizardData.objectUsings = fileNamespaces.usings;
+        }
 
         //build new object
         let builder : ALEnumExtSyntaxBuilder = new ALEnumExtSyntaxBuilder();

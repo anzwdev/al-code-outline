@@ -5,7 +5,9 @@ export class ALObjectWizardData {
     objectId : string;
     idResProviders: string[] | undefined;
     idResProviderName: string | undefined;
-    idResObjectType: string;    
+    idResObjectType: string;
+    objectNamespace: string | undefined;
+    objectUsings: string[] | undefined;
 
     constructor() {
         this.objectId = '';

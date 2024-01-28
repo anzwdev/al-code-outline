@@ -8,6 +8,7 @@ import { ALObjectWizardSettings } from "./alObjectWizardSettings";
 import { ALPermissionSetWizardData } from "./alPermissionSetWizardData";
 import { ProjectItemWizardPage } from "./projectItemWizardPage";
 import { ObjectInformation } from '../../symbolsinformation/objectInformation';
+import { ToolsSymbolReference } from '../../langserver/symbolsinformation/toolsSymbolReference';
 
 export class ALPermissionSetWizardPage extends ProjectItemWizardPage {
     private _permissionSetWizardData : ALPermissionSetWizardData;
@@ -42,6 +43,10 @@ export class ALPermissionSetWizardPage extends ProjectItemWizardPage {
         return true;
     }
 
+    protected getWizardObjectType(): string {
+        return 'PermissionSet';
+    }
+
     protected async setBuilderData(data: any) {
         //build parameters
         this._permissionSetWizardData.objectId = data.objectId;
@@ -62,6 +67,44 @@ export class ALPermissionSetWizardPage extends ProjectItemWizardPage {
             let getObjectsResponse = await this._toolsExtensionContext.toolsLangServerClient.getObjectsList(getObjectsRequest);
             if ((getObjectsResponse) && (getObjectsResponse.symbols)) {
                 this._permissionSetWizardData.selectedObjectsList = this.removeObjectsWithFullInherentPermissions(getObjectsResponse.symbols);
+            }
+        }
+
+        //get namespaces information
+        let referencedObjects = this.collectReferencedObjects();
+        let fileNamespaces = await this.getNamespacesInformation(this.getWizardObjectType(), referencedObjects);
+        if (fileNamespaces) {            
+            this._permissionSetWizardData.objectNamespace = fileNamespaces.namespaceName;
+            this._permissionSetWizardData.objectUsings = fileNamespaces.usings;
+            this.addReferencedObjectsNamespaces();
+        }
+    }
+
+    protected collectReferencedObjects(): ToolsSymbolReference[] {
+        let referencedObjects: ToolsSymbolReference[] = [];
+        if (this._permissionSetWizardData.selectedPermissionSetList) {
+            for (let i=0; i<this._permissionSetWizardData.selectedPermissionSetList.length; i++) {
+                referencedObjects.push({
+                    nameWithNamespaceOrId: this._permissionSetWizardData.selectedPermissionSetList[i],
+                    typeName: 'PermissionSet'
+                });
+            }
+        }
+        return referencedObjects;
+    }
+
+    protected addReferencedObjectsNamespaces() {
+        //collect unique namespaces from namespace property of elements of this._permissionSetWizardData.selectedObjectsList array
+        if ((this._permissionSetWizardData.objectNamespace) && (this._permissionSetWizardData.objectNamespace !== "") && (this._permissionSetWizardData.selectedObjectsList)) {
+            if (!this._permissionSetWizardData.objectUsings) {
+                this._permissionSetWizardData.objectUsings = [];
+            }
+
+            for (let i=0; i<this._permissionSetWizardData.selectedObjectsList.length; i++) {
+                let namespaceName = this._permissionSetWizardData.selectedObjectsList[i].namespace;
+                if ((namespaceName) && (namespaceName !== this._permissionSetWizardData.objectNamespace) && (this._permissionSetWizardData.objectUsings.indexOf(namespaceName) < 0)) {
+                    this._permissionSetWizardData.objectUsings.push(namespaceName);
+                }
             }
         }
     }

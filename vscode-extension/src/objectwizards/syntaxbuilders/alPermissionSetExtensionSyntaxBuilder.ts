@@ -7,7 +7,10 @@ export class ALPermissionSetExtensionSyntaxBuilder extends ALPermissionSetSyntax
 
     buildFromPermissionSetExtWizardData(destUri: vscode.Uri | undefined, data : ALPermissionSetExtensionWizardData) : string {
         let writer : ALSyntaxWriter = new ALSyntaxWriter(destUri);
-       
+
+        writer.writeNamespace(data.objectNamespace);
+        writer.writeUsings(data.objectUsings);
+        
         writer.writeStartExtensionObject("permissionsetextension", data.objectId, data.objectName, data.basePermissionSet);
 
         this.writeIncludePermissionSetList(writer, data.selectedPermissionSetList);

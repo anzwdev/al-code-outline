@@ -6,6 +6,7 @@ import { ALQueryWizardData } from "./alQueryWizardData";
 import { ALQuerySyntaxBuilder } from '../syntaxbuilders/alQuerySyntaxBuilder';
 import { DevToolsExtensionContext } from '../../devToolsExtensionContext';
 import { ALObjectWizardSettings } from './alObjectWizardSettings';
+import { ToolsSymbolReference } from '../../langserver/symbolsinformation/toolsSymbolReference';
 
 export class ALQueryWizardPage extends ALTableBasedWizardPage {
     protected _queryWizardData : ALQueryWizardData;
@@ -43,6 +44,21 @@ export class ALQueryWizardPage extends ALTableBasedWizardPage {
         }
 
         await this.finishObjectIdReservation(this._queryWizardData);
+
+        //get namespaces information
+        let referencedObjects: ToolsSymbolReference[] = [];
+        if (this._queryWizardData.selectedTable) {
+            referencedObjects.push({
+                nameWithNamespaceOrId: this._queryWizardData.selectedTable,
+                typeName: 'Table'
+            });
+        }
+
+        let fileNamespaces = await this.getNamespacesInformation('Query', referencedObjects);
+        if (fileNamespaces) {
+            this._queryWizardData.objectNamespace = fileNamespaces.namespaceName;
+            this._queryWizardData.objectUsings = fileNamespaces.usings;
+        }
 
         //load project settings from the language server
         this._queryWizardData.projectSettings = await this.getProjectSettings();

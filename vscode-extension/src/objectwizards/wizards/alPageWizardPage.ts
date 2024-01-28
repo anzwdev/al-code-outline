@@ -7,6 +7,8 @@ import { ALPageWizardFastTabData } from './alPageWizardFastTabData';
 import { ALPageSyntaxBuilder } from '../syntaxbuilders/alPageSyntaxBuilder';
 import { DevToolsExtensionContext } from '../../devToolsExtensionContext';
 import { ALObjectWizardSettings } from './alObjectWizardSettings';
+import { ToolsGetNewFileRequiredInterfacesRequest } from '../../langserver/toolsGetNewFileRequiredInterfacesRequest';
+import { ToolsSymbolReference } from '../../langserver/symbolsinformation/toolsSymbolReference';
 
 export class ALPageWizardPage extends ALTableBasedWizardPage {
     protected _pageWizardData : ALPageWizardData;
@@ -79,6 +81,21 @@ export class ALPageWizardPage extends ALTableBasedWizardPage {
 
         //load project settings from the language server
         this._pageWizardData.projectSettings = await this.getProjectSettings();
+
+        //get namespaces information
+        let referencedObjects: ToolsSymbolReference[] = [];
+        if (this._pageWizardData.selectedTable) {
+            referencedObjects.push({
+                nameWithNamespaceOrId: this._pageWizardData.selectedTable,
+                typeName: 'Table'
+            });
+        }
+
+        let fileNamespaces = await this.getNamespacesInformation('Page', referencedObjects);
+        if (fileNamespaces) {
+            this._pageWizardData.objectNamespace = fileNamespaces.namespaceName;
+            this._pageWizardData.objectUsings = fileNamespaces.usings;
+        }
 
         //build new object
         let builder : ALPageSyntaxBuilder = new ALPageSyntaxBuilder();

@@ -30,7 +30,7 @@ class PageWizard extends TableBasedObjectWizard {
         //initialize fields
         document.getElementById("objectid").value = this._data.objectId;
         document.getElementById("objectname").value = this._data.objectName;
-        document.getElementById("srctable").value = this._data.selectedTable.name;
+        document.getElementById("srctable").value = this._data.selectedTable;
         document.getElementById("pagetype").value = this._data.pageType;
         document.getElementById("fasttabs").value = this._data.fastTabs;
         document.getElementById("apparea").value = this._data.applicationArea;
@@ -82,12 +82,12 @@ class PageWizard extends TableBasedObjectWizard {
     }
 
     collectStep1Data(finishSelected) {
-        var prevTableName = this._data.selectedTable.name;   
+        var prevTableName = this._data.selectedTable;   
         var prevFastTab = this._data.fastTabs;
         
         this._data.objectId = document.getElementById("objectid").value;
         this._data.objectName = document.getElementById("objectname").value;
-        this._data.selectedTable.name = document.getElementById("srctable").value;
+        this._data.selectedTable = document.getElementById("srctable").value;
         this._data.pageType = document.getElementById("pagetype").value;
         this._data.fastTabs = document.getElementById("fasttabs").value;
         this._data.applicationArea = document.getElementById("apparea").value;
@@ -102,7 +102,7 @@ class PageWizard extends TableBasedObjectWizard {
         let prevSelectFlowFilters = this._selectFlowFilters;
         this._selectFlowFilters = ((this._data.pageType) && (this._data.pageType == "API"));
 
-        if (prevTableName != this._data.selectedTable.name) {
+        if (prevTableName !== this._data.selectedTable) {
             htmlHelper.clearChildrenById("srcfields");
             htmlHelper.clearChildrenById("destfields");
             htmlHelper.clearChildrenById("srcflowfilters");
@@ -116,12 +116,13 @@ class PageWizard extends TableBasedObjectWizard {
             if (this._data.selectedFlowFilterList)
                 this._data.selectedFlowFilterList = [];
 
-            if (!finishSelected)
+            if (!finishSelected) {
                 this.sendMessage({
                     command: 'selectTable',
-                    tableName: this._data.selectedTable.name,
+                    tableName: this._data.selectedTable,
                     includeFlowFilters: true
                 });
+            }
         } else if (prevSelectFlowFilters != this._selectFlowFilters) {
             this.loadFlowFilters();
         }
