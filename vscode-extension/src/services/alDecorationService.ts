@@ -5,6 +5,7 @@ import { DevToolsExtensionContext } from "../devToolsExtensionContext";
 import { DevToolsExtensionService } from "./devToolsExtensionService";
 import { ALConditionalCompilationParser } from '../editorextensions/alConditionalCompilationParser';
 import { ALConditionalCompilationSection } from '../editorextensions/alConditionalCompilationSection';
+import { ToolsGetFileContentRequest } from '../langserver/toolsGetFileContentRequest';
 
 export class ALDecorationService extends DevToolsExtensionService {
     directiveDisabledCode = vscode.window.createTextEditorDecorationType({
@@ -47,11 +48,11 @@ export class ALDecorationService extends DevToolsExtensionService {
         }
     }
 
-    private applyDecorations(editor: vscode.TextEditor) {
+    private async applyDecorations(editor: vscode.TextEditor) {
         let document = editor.document;
         let decorationsArray: vscode.DecorationOptions[] = [];
 
-        this.loadDirectives(document);
+        await this.loadDirectives(document);
 
         let parser = new ALConditionalCompilationParser(this.currentDirectives);
         let sections = parser.parseDocument(document);
@@ -72,18 +73,22 @@ export class ALDecorationService extends DevToolsExtensionService {
         }
     }
 
-    private loadDirectives(document: vscode.TextDocument) {
+    private async loadDirectives(document: vscode.TextDocument) {
         var folder = vscode.workspace.getWorkspaceFolder(document.uri);
         if ((folder) && ((!this.currentWorkspaceFolder) || (!this.currentDirectives) || (this.currentWorkspaceFolder !== folder.uri.fsPath))) {
             this.currentWorkspaceFolder = folder.uri.fsPath;
 
             try {
                 let filePath = path.join(folder.uri.fsPath, "app.json");
-                let appJson = JSON.parse(fs.readFileSync(filePath, 'utf8'));
-                if ((appJson) && (appJson.preprocessorSymbols)) {
-                    this.currentDirectives = [];
-                    for (let i = 0; i < appJson.preprocessorSymbols.length; i++) {
-                        this.currentDirectives?.push(appJson.preprocessorSymbols[i]);
+
+                let fileContentResponse = await this._context.toolsLangServerClient.getFileContent(new ToolsGetFileContentRequest(filePath));
+                if ((fileContentResponse) && (fileContentResponse.content) && (fileContentResponse.content !== "")) {
+                    let appJson = JSON.parse(fileContentResponse.content);
+                    if ((appJson) && (appJson.preprocessorSymbols)) {
+                        this.currentDirectives = [];
+                        for (let i = 0; i < appJson.preprocessorSymbols.length; i++) {
+                            this.currentDirectives?.push(appJson.preprocessorSymbols[i]);
+                        }
                     }
                 }
             }

@@ -87,6 +87,8 @@ import { ToolsCollectWorkspaceCodeActionsRequest } from './toolsCollectWorkspace
 import { ToolsCollectWorkspaceCodeActionsResponse } from './toolsCollectWorkspaceCodeActionsResponse';
 import { ToolsGetNewFileRequiredInterfacesRequest } from './toolsGetNewFileRequiredInterfacesRequest';
 import { ToolsGetNewFileRequiredInterfacesResponse } from './toolsGetNewFileRequiredInterfacesResponse';
+import { ToolsGetFileContentRequest } from './toolsGetFileContentRequest';
+import { ToolsGetFileContentResponse } from './toolsGetFileContentResponse';
 
 export class ToolsLangServerClient implements vscode.Disposable {
     _context : vscode.ExtensionContext;
@@ -354,6 +356,11 @@ export class ToolsLangServerClient implements vscode.Disposable {
     public getImages(params: ToolsGetImagesRequest) : Promise<ToolsGetImagesResponse | undefined> {
         return this.sendRequest<ToolsGetImagesRequest, ToolsGetImagesResponse>(params, "al/getimages");
     }
+
+    public getFileContent(params: ToolsGetFileContentRequest) : Promise<ToolsGetFileContentResponse | undefined> {
+        return this.sendRequest<ToolsGetFileContentRequest, ToolsGetFileContentResponse>(params, 'al/getfilecontent');
+    }
+
 
     //workspace and file notifications
 

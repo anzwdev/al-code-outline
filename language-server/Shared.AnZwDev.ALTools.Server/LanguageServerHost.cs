@@ -115,6 +115,8 @@ namespace AnZwDev.ALTools.Server
 
             this.RegisterRequestHandler(new ConfigurationChangeNotificationHandler(this));
 
+            this.RegisterRequestHandler(new GetFileContentRequestHandler(this));
+
             //language handlers
             this.RegisterRequestHandler(new GetImagesRequestHandler(this));
 
