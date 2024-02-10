@@ -17,6 +17,22 @@ namespace AnZwDev.ALTools.CodeTransformations
         {
         }
 
+        public override SyntaxNode VisitMemberAttribute(MemberAttributeSyntax node)
+        {
+            string name = node.Name?.Identifier.ValueText;
+            if (name != null)
+            {
+                var newName = MemberAttributeNameCaseInformation.Values.FixCase(name);
+                if (newName != name)
+                {
+                    var newNodeName = SyntaxFactory.IdentifierName(newName).WithTriviaFrom(node.Name);
+                    node = node.WithName(newNodeName);
+                    NoOfChanges++;
+                }
+            }           
+            return base.VisitMemberAttribute(node);
+        }
+
         public override SyntaxNode VisitEnumPropertyValue(EnumPropertyValueSyntax node)
         {
             var value = ALSyntaxHelper.DecodeName(node.Value.ToString());

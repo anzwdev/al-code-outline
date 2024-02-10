@@ -16,6 +16,7 @@
     <Compile Include="$(MSBuildThisFileDirectory)ALLanguageInformation\ImageInformationComparer.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)ALLanguageInformation\ImageInformationProvider.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)ALLanguageInformation\KeywordInformation.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)ALLanguageInformation\MemberAttributeNameCaseInformation.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)ALLanguageInformation\MethodObjectIdParametersInformation.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)ALLanguageInformation\ObjectIdParameterInformation.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)ALLanguageInformation\PageActionAreaCaseInformation.cs" />
