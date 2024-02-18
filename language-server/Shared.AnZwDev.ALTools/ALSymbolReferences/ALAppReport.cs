@@ -47,7 +47,7 @@ namespace AnZwDev.ALTools.ALSymbolReferences
         {
             foreach (ALAppReportDataItem dataItem in dataItemsCollection)
             {
-                if (name.Equals(dataItem.Name, StringComparison.CurrentCultureIgnoreCase))
+                if (name.Equals(dataItem.Name, StringComparison.OrdinalIgnoreCase))
                     return dataItem;
                 if (dataItem.DataItems != null)
                 {

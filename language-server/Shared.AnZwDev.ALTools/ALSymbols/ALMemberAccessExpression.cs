@@ -20,7 +20,7 @@ namespace AnZwDev.ALTools.ALSymbols
         {
             if (String.IsNullOrWhiteSpace(this.Expression))
                 return this.Name;
-            else if (this.Name.Equals("rec", StringComparison.CurrentCultureIgnoreCase))
+            else if (this.Name.Equals("rec", StringComparison.OrdinalIgnoreCase))
                 return this.Expression;
             return null;
         }

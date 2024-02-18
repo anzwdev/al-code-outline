@@ -50,7 +50,7 @@ namespace AnZwDev.ALTools.Workspace.SymbolsInformation
                                 for (int typeIdx = 0; typeIdx < assembly.TypeDeclarations.Count; typeIdx++)
                                 {
                                     ALAppDotNetTypeDeclaration type = assembly.TypeDeclarations[typeIdx];
-                                    if ((type.AliasName != null) && (aliasName.Equals(type.AliasName, StringComparison.CurrentCultureIgnoreCase)))
+                                    if ((type.AliasName != null) && (aliasName.Equals(type.AliasName, StringComparison.OrdinalIgnoreCase)))
                                     {
                                         return new DotNetTypeInformation(type.TypeName, type.AliasName);
                                     }

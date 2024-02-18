@@ -105,7 +105,7 @@ namespace AnZwDev.ALTools.Workspace.SymbolsInformation
                 foreach (var reportExtension in reportExtensionsEnumerable)
                 {
                     if (reportExtension.Columns != null)
-                        this.CollectReportDataItemFields(reportExtension.Columns.Where(p => (dataItemName.Equals(p.OwningDataItemName, StringComparison.CurrentCultureIgnoreCase))), dataItemFieldsBuffer); //!!! TO-DO !!! Check this code with namespaces
+                        this.CollectReportDataItemFields(reportExtension.Columns.Where(p => (dataItemName.Equals(p.OwningDataItemName, StringComparison.OrdinalIgnoreCase))), dataItemFieldsBuffer); //!!! TO-DO !!! Check this code with namespaces
                 }
                 //add fields
                 dataItemFieldsBuffer.ApplyToDataItemInformation(getExistingFields, getAvailableFields);
@@ -145,7 +145,7 @@ namespace AnZwDev.ALTools.Workspace.SymbolsInformation
                 string sourceExpression = null;
                 if (!isMemberAccess)
                     sourceExpression = memberAccessExpression.Name.ToLower();
-                else if (dataItemFieldsBuffer.Name.Equals(memberAccessExpression.Name, StringComparison.CurrentCultureIgnoreCase))
+                else if (dataItemFieldsBuffer.Name.Equals(memberAccessExpression.Name, StringComparison.OrdinalIgnoreCase))
                     sourceExpression = memberAccessExpression.Expression.ToLower();
 
                 if ((!String.IsNullOrWhiteSpace(sourceExpression)) && (dataItemFieldsBuffer.AvailableTableFieldsDict.ContainsKey(sourceExpression)))

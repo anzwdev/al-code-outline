@@ -42,7 +42,7 @@ namespace AnZwDev.ALTools.ALSymbols
             if ((Id != 0) && (Id == objectReference.ObjectId))
                 return true;
 
-            if ((!String.IsNullOrEmpty(Name)) && (Name.Equals(objectReference.Name, StringComparison.CurrentCultureIgnoreCase)))
+            if ((!String.IsNullOrEmpty(Name)) && (Name.Equals(objectReference.Name, StringComparison.OrdinalIgnoreCase)))
             {
                 if ((!objectReference.HasNamespace()) && (!objectReference.HasUsings()))
                     return true;
@@ -50,12 +50,12 @@ namespace AnZwDev.ALTools.ALSymbols
                 if (!HasNamespace())
                     return false;
 
-                if (NamespaceName.Equals(objectReference.NamespaceName, StringComparison.CurrentCultureIgnoreCase))
+                if (NamespaceName.Equals(objectReference.NamespaceName, StringComparison.OrdinalIgnoreCase))
                     return true;
 
                 if (objectReference.Usings != null)
                     foreach (var usingNamespace in objectReference.Usings)
-                        if (NamespaceName.Equals(usingNamespace, StringComparison.CurrentCultureIgnoreCase))
+                        if (NamespaceName.Equals(usingNamespace, StringComparison.OrdinalIgnoreCase))
                             return true;
             }
 

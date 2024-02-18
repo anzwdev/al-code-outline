@@ -630,6 +630,16 @@
 			},
 			{
 				"category": "AZ AL Dev Tools",
+				"command": "azALDevTools.SortEditorTriggers",
+				"title": "Sort Triggers in the Active Editor"
+			},
+			{
+				"category": "AZ AL Dev Tools",
+				"command": "azALDevTools.SortWorkspaceTriggers",
+				"title": "Sort Triggers in the Active Project"
+			},
+			{
+				"category": "AZ AL Dev Tools",
 				"command": "azALDevTools.SortEditorProperties",
 				"title": "Sort Properties in the Active Editor"
 			},
@@ -1129,6 +1139,14 @@
 				},
 				{
 					"command": "azALDevTools.SortWorkspaceProcedures",
+					"when": "azALDevTools.extensionActive"
+				},
+				{
+					"command": "azALDevTools.SortEditorTriggers",
+					"when": "editorLangId == al"
+				},
+				{
+					"command": "azALDevTools.SortWorkspaceTriggers",
 					"when": "azALDevTools.extensionActive"
 				},
 				{

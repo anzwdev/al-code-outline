@@ -21,11 +21,11 @@ namespace AnZwDev.ALTools.ALSymbolReferences.Serialization
                 {
                     NavxModuleReference moduleRef = modules[i];
                     if (
-                        ((checkId) && (id.Equals(moduleRef.Id, StringComparison.CurrentCultureIgnoreCase))) ||
+                        ((checkId) && (id.Equals(moduleRef.Id, StringComparison.OrdinalIgnoreCase))) ||
                         (
                             ((!checkId) || (String.IsNullOrWhiteSpace(moduleRef.Id))) &&
-                            (name.Equals(moduleRef.Name, StringComparison.CurrentCultureIgnoreCase)) &&
-                            (publisher.Equals(moduleRef.Publisher, StringComparison.CurrentCultureIgnoreCase))
+                            (name.Equals(moduleRef.Name, StringComparison.OrdinalIgnoreCase)) &&
+                            (publisher.Equals(moduleRef.Publisher, StringComparison.OrdinalIgnoreCase))
                         ))
                         return moduleRef;
                 }

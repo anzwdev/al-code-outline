@@ -54,7 +54,7 @@ namespace AnZwDev.ALTools.CodeAnalysis
 
         protected CodeAnalyzersLibrary CreateCodeAnalyzersLibrary(string name)
         {
-            if ((name != null) && (name.Equals("Compiler", StringComparison.CurrentCultureIgnoreCase)))
+            if ((name != null) && (name.Equals("Compiler", StringComparison.OrdinalIgnoreCase)))
                 return new CompilerCodeAnalyzersLibrary(name);
             return new DllCodeAnalyzersLibrary(this.ALDevToolsServer, name);
         }
@@ -81,7 +81,7 @@ namespace AnZwDev.ALTools.CodeAnalysis
             foreach (var library in this.LibrariesCache.Values)
             {
                 var rule = library.Rules
-                    .Where(p => (ruleId.Equals(p.id, StringComparison.CurrentCultureIgnoreCase)))
+                    .Where(p => (ruleId.Equals(p.id, StringComparison.OrdinalIgnoreCase)))
                     .FirstOrDefault();
                 if (rule != null)
                     return rule;

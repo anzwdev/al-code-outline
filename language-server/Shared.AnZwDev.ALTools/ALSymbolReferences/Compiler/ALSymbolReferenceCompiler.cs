@@ -1532,7 +1532,7 @@ namespace AnZwDev.ALTools.ALSymbolReferences.Compiler
             if (node.Temporary != null)
             {
                 string temporary = node.Temporary.ToString();
-                alType.Temporary = ((temporary != null) && (temporary.Equals("temporary", StringComparison.CurrentCultureIgnoreCase)));
+                alType.Temporary = ((temporary != null) && (temporary.Equals("temporary", StringComparison.OrdinalIgnoreCase)));
 
                 if (node.DataType != null)
                 {

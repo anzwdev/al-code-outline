@@ -72,15 +72,15 @@ namespace AnZwDev.ALTools.ALSymbolReferences
             if (this.Properties != null)
             {
                 string enabledState = this.Properties.GetValue("Enabled");
-                if ((enabledState != null) && (enabledState.Equals("0") || enabledState.Equals("false", StringComparison.CurrentCultureIgnoreCase)))
+                if ((enabledState != null) && (enabledState.Equals("0") || enabledState.Equals("false", StringComparison.OrdinalIgnoreCase)))
                     return ALAppTableFieldState.Disabled;
 
                 string obsoleteState = this.Properties.GetValue("ObsoleteState");
                 if (!String.IsNullOrWhiteSpace(obsoleteState))
                 {
-                    if (obsoleteState.Equals("Pending", StringComparison.CurrentCultureIgnoreCase))
+                    if (obsoleteState.Equals("Pending", StringComparison.OrdinalIgnoreCase))
                         return ALAppTableFieldState.ObsoletePending;
-                    if (obsoleteState.Equals("Removed", StringComparison.CurrentCultureIgnoreCase))
+                    if (obsoleteState.Equals("Removed", StringComparison.OrdinalIgnoreCase))
                         return ALAppTableFieldState.ObsoleteRemoved;
                 }
             }
@@ -94,9 +94,9 @@ namespace AnZwDev.ALTools.ALSymbolReferences
                 string fieldClass = this.Properties.GetValue("FieldClass");
                 if (!String.IsNullOrWhiteSpace(fieldClass))
                 {
-                    if (fieldClass.Equals("FlowField", StringComparison.CurrentCultureIgnoreCase))
+                    if (fieldClass.Equals("FlowField", StringComparison.OrdinalIgnoreCase))
                         return ALAppTableFieldClass.FlowField;
-                    if (fieldClass.Equals("FlowFilter", StringComparison.CurrentCultureIgnoreCase))
+                    if (fieldClass.Equals("FlowFilter", StringComparison.OrdinalIgnoreCase))
                         return ALAppTableFieldClass.FlowFilter;
                 }
             }

@@ -94,7 +94,7 @@ namespace AnZwDev.ALTools.WorkspaceCommands
                 (parameters != null) && 
                 (parameters.ContainsKey("skipFormatting")) && 
                 (parameters["skipFormatting"] != null) &&
-                (parameters["skipFormatting"].Equals("true", StringComparison.CurrentCultureIgnoreCase)));
+                (parameters["skipFormatting"].Equals("true", StringComparison.OrdinalIgnoreCase)));
         }
 
         protected bool GetModifiedFilesOnlyValue(Dictionary<string, string> parameters)
@@ -103,7 +103,7 @@ namespace AnZwDev.ALTools.WorkspaceCommands
                 (parameters != null) &&
                 (parameters.ContainsKey("modifiedFilesOnly")) &&
                 (parameters["modifiedFilesOnly"] != null) &&
-                (parameters["modifiedFilesOnly"].Equals("true", StringComparison.CurrentCultureIgnoreCase)));
+                (parameters["modifiedFilesOnly"].Equals("true", StringComparison.OrdinalIgnoreCase)));
         }
 
         public virtual void CollectCodeActions(SyntaxTree syntaxTree, SyntaxNode node, TextRange range, List<WorkspaceCommandCodeAction> actions)

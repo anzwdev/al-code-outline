@@ -38,7 +38,7 @@ namespace AnZwDev.ALTools.Extensions
                 (!String.IsNullOrWhiteSpace(propertySyntax.Value.ToString())) &&
                 (
                     (emptyValue == null) ||
-                    (!emptyValue.Equals(propertySyntax.Value.ToString(), StringComparison.CurrentCultureIgnoreCase))));
+                    (!emptyValue.Equals(propertySyntax.Value.ToString(), StringComparison.OrdinalIgnoreCase))));
         }
 
         public static bool CheckIfPropertyValueEquals(this SyntaxNode node, string propertyName, bool value)
@@ -51,7 +51,7 @@ namespace AnZwDev.ALTools.Extensions
         public static bool CheckIfPropertyValueEquals(this SyntaxNode node, string propertyName, string value)
         {
             string propertyValue = node.GetPropertyValue(propertyName)?.ToString()?.Trim();
-            return ((propertyValue != null) && (propertyValue.Equals(value, StringComparison.CurrentCultureIgnoreCase)));
+            return ((propertyValue != null) && (propertyValue.Equals(value, StringComparison.OrdinalIgnoreCase)));
         }
 
         public static SyntaxTriviaList CreateChildNodeIdentTrivia(this SyntaxNode node)
@@ -385,7 +385,7 @@ namespace AnZwDev.ALTools.Extensions
         {
             var stringValue = node.GetPropertyValue(propertyName)?.ToString();
             if (stringValue != null)
-                return (stringValue.Equals("true", StringComparison.CurrentCultureIgnoreCase)) || (stringValue == "1");
+                return (stringValue.Equals("true", StringComparison.OrdinalIgnoreCase)) || (stringValue == "1");
             return defaultValue;
         }
 
@@ -402,7 +402,7 @@ namespace AnZwDev.ALTools.Extensions
 #if BC
             var property = node.GetIdentifierPropertyValue("ObsoleteState");
             return (!String.IsNullOrWhiteSpace(property)) &&
-                ((property.Equals("Pending", StringComparison.CurrentCultureIgnoreCase)) || (property.Equals("Removed", StringComparison.CurrentCultureIgnoreCase)));
+                ((property.Equals("Pending", StringComparison.OrdinalIgnoreCase)) || (property.Equals("Removed", StringComparison.OrdinalIgnoreCase)));
 #else
             return false;
 #endif

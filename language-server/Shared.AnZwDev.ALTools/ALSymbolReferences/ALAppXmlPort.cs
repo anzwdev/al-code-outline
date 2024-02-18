@@ -47,7 +47,7 @@ namespace AnZwDev.ALTools.ALSymbolReferences
         {
             for (int i=0; i<nodes.Count; i++)
             {
-                if ((nodes[i].Kind == nodeKind) && (name.Equals(nodes[i].Name, StringComparison.CurrentCultureIgnoreCase)))
+                if ((nodes[i].Kind == nodeKind) && (name.Equals(nodes[i].Name, StringComparison.OrdinalIgnoreCase)))
                     return nodes[i];
             }
             

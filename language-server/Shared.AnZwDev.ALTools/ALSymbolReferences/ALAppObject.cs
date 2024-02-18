@@ -67,10 +67,10 @@ namespace AnZwDev.ALTools.ALSymbolReferences
             if (this.Properties != null)
             {
                 var internalProperty = this.Properties
-                    .Where(p => ((p.Name != null) && (p.Name.Equals("Access", StringComparison.CurrentCultureIgnoreCase))))
+                    .Where(p => ((p.Name != null) && (p.Name.Equals("Access", StringComparison.OrdinalIgnoreCase))))
                     .FirstOrDefault();
                 if (internalProperty != null)
-                    return ((internalProperty.Value != null) && (internalProperty.Value.Equals("Internal", StringComparison.CurrentCultureIgnoreCase)));
+                    return ((internalProperty.Value != null) && (internalProperty.Value.Equals("Internal", StringComparison.OrdinalIgnoreCase)));
             }
             return false;
         }

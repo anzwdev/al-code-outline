@@ -15,7 +15,7 @@ namespace AnZwDev.ALTools.ALSymbolReferences
         {
             for (int i = 0; i < this.Count; i++)
             {
-                if (name.Equals(this[i].Name, StringComparison.CurrentCultureIgnoreCase))
+                if (name.Equals(this[i].Name, StringComparison.OrdinalIgnoreCase))
                     return this[i];
             }
             return null;
@@ -25,7 +25,7 @@ namespace AnZwDev.ALTools.ALSymbolReferences
         {
             for (int i = 0; i < this.Count; i++)
             {
-                if (name.Equals(this[i].Name, StringComparison.CurrentCultureIgnoreCase))
+                if (name.Equals(this[i].Name, StringComparison.OrdinalIgnoreCase))
                     return this[i].Value;
             }
             return null;

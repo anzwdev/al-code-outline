@@ -48,7 +48,7 @@ namespace AnZwDev.ALTools.ALSymbolReferences.Search
             foreach (var item in objects)
                 if
                     (
-                        (name.Equals(item.Name, StringComparison.CurrentCultureIgnoreCase)) &&
+                        (name.Equals(item.Name, StringComparison.OrdinalIgnoreCase)) &&
                         (
                             ((!hasNamespaceName) && (!hasUsings)) ||
                             (
@@ -103,7 +103,7 @@ namespace AnZwDev.ALTools.ALSymbolReferences.Search
                 foreach (var item in objects)
                     if
                         (
-                            (name.Equals(item.Name, StringComparison.CurrentCultureIgnoreCase)) &&
+                            (name.Equals(item.Name, StringComparison.OrdinalIgnoreCase)) &&
                             (
                                 ((!hasNamespaceName) && (!hasUsings)) ||
                                 (

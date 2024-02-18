@@ -199,7 +199,7 @@ namespace AnZwDev.ALTools.ALSymbolReferences
             if (!String.IsNullOrWhiteSpace(namespaceName))
                 return collection
                     .Where(p => (
-                        (name.Equals(p.Name, StringComparison.CurrentCultureIgnoreCase)) &&
+                        (name.Equals(p.Name, StringComparison.OrdinalIgnoreCase)) &&
                         (namespaceName.Equals(p.NamespaceName))))
                     .FirstOrDefault();
 
@@ -209,7 +209,7 @@ namespace AnZwDev.ALTools.ALSymbolReferences
             {
                 var alObject = collection[i];
 
-                if (name.Equals(alObject.Name, StringComparison.CurrentCultureIgnoreCase))
+                if (name.Equals(alObject.Name, StringComparison.OrdinalIgnoreCase))
                 {
                     if ((String.IsNullOrWhiteSpace(alObject.NamespaceName)) || (usings.Contains(alObject.NamespaceName)))
                     {
@@ -489,7 +489,7 @@ namespace AnZwDev.ALTools.ALSymbolReferences
         {
             if ((!String.IsNullOrWhiteSpace(alAppObject.ReferenceSourceFileName)) &&
                 (!String.IsNullOrWhiteSpace(alAppObject.ReferenceSourceFileName)) &&
-                (this.ReferenceSourceFileName.EndsWith(".app", StringComparison.CurrentCultureIgnoreCase)))
+                (this.ReferenceSourceFileName.EndsWith(".app", StringComparison.OrdinalIgnoreCase)))
             {
                 string content = AppFileHelper.GetAppFileContent(this.ReferenceSourceFileName, alAppObject.ReferenceSourceFileName);
                 if (!String.IsNullOrWhiteSpace(content))
@@ -514,7 +514,7 @@ namespace AnZwDev.ALTools.ALSymbolReferences
             if (String.IsNullOrWhiteSpace(appId))
                 return true;
             appId = appId.Trim();
-            if (appId.Equals(this.AppId, StringComparison.CurrentCultureIgnoreCase))
+            if (appId.Equals(this.AppId, StringComparison.OrdinalIgnoreCase))
                 return true;
 
             //check InternalsVisibleTo setting

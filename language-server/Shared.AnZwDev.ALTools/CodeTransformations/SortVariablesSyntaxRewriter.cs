@@ -88,9 +88,9 @@ namespace AnZwDev.ALTools.CodeTransformations
                     {
                         typeName = typeName.Replace("\"", "").ToLower().TrimStart();
                         //ignore text value for labels and text constants
-                        if (typeName.StartsWith("label", StringComparison.CurrentCultureIgnoreCase))
+                        if (typeName.StartsWith("label", StringComparison.OrdinalIgnoreCase))
                             typeName = "label";
-                        else if (typeName.StartsWith("textconst", StringComparison.CurrentCultureIgnoreCase))
+                        else if (typeName.StartsWith("textconst", StringComparison.OrdinalIgnoreCase))
                             typeName = "textconst";
                     }
                     return typeName;

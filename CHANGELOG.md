@@ -6,12 +6,14 @@
  - Issue #532 - Code Action "Add multiple fields" doesn't work when SourceTable includes a dot
  - Issue #534 - Text Decorators does not work correctly when app.json is saved as UTF8-BOM
  - Issue #536 - [TEST] is not converted to [Test] when running "fix Case"
+ - Issue #538 - Issues running cleanup: "Unexpected StringComparison type: 'CurrentCultureIgnoreCase'. Only 'Ordinal' and 'OrdinalIgnoreCase' are supported."
 
 Thank you
  - jorispoppe for reporting issue #521
  - achim-t for reporting issue #532
  - zabcik for reporting issue #534
  - guidorobben for reporting issue #356
+ - jwikman for reporting issue #538
 
 ## 3.0.56
  - Issue #507 - Namespaces quick fixes and commands

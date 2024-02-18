@@ -13,7 +13,7 @@ namespace AnZwDev.ALTools.Extensions
             string nodeType = node.ControlKeyword.Text;
             return
                 (nodeType != null) &&
-                (nodeType.Equals("repeater", StringComparison.CurrentCultureIgnoreCase));
+                (nodeType.Equals("repeater", StringComparison.OrdinalIgnoreCase));
         }
 
     }

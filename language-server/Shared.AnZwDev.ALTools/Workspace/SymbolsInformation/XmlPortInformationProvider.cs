@@ -77,7 +77,7 @@ namespace AnZwDev.ALTools.Workspace.SymbolsInformation
                         if (!String.IsNullOrWhiteSpace(xmlPortNode.Expression))
                         {
                             ALMemberAccessExpression memberAccessExpression = ALSyntaxHelper.DecodeMemberAccessExpression(xmlPortNode.Expression);
-                            if ((!String.IsNullOrWhiteSpace(memberAccessExpression.Expression)) && (xmlPortTableElementName.Equals(memberAccessExpression.Name, StringComparison.CurrentCultureIgnoreCase)))
+                            if ((!String.IsNullOrWhiteSpace(memberAccessExpression.Expression)) && (xmlPortTableElementName.Equals(memberAccessExpression.Name, StringComparison.OrdinalIgnoreCase)))
                             {
                                 string sourceExpression = memberAccessExpression.Expression.ToLower();
                                 if (availableTableFieldsDict.ContainsKey(sourceExpression))

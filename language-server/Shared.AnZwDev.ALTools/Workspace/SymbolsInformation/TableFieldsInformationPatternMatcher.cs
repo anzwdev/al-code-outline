@@ -51,7 +51,7 @@ namespace AnZwDev.ALTools.Workspace.SymbolsInformation
 
         private void MatchField(string pattern, List<TableFieldInformaton> tableFields, HashSet<string> collectedFieldNames, List<TableFieldInformaton> collectedFields)
         {
-            var matcher = new Microsoft.Extensions.FileSystemGlobbing.Matcher(StringComparison.CurrentCultureIgnoreCase);
+            var matcher = new Microsoft.Extensions.FileSystemGlobbing.Matcher(StringComparison.OrdinalIgnoreCase);
             matcher.AddInclude(pattern);
 
             for (int i = 0; i < tableFields.Count; i++)

@@ -149,36 +149,36 @@ namespace AnZwDev.ALTools.ALSymbols
         public static ALSymbolKind MemberAttributeToMethodKind(string name)
         {
             //events
-            if (name.Equals("IntegrationEvent", StringComparison.CurrentCultureIgnoreCase))
+            if (name.Equals("IntegrationEvent", StringComparison.OrdinalIgnoreCase))
                 return ALSymbolKind.IntegrationEventDeclaration;
-            if (name.Equals("BusinessEvent", StringComparison.CurrentCultureIgnoreCase))
+            if (name.Equals("BusinessEvent", StringComparison.OrdinalIgnoreCase))
                 return ALSymbolKind.BusinessEventDeclaration;
-            if (name.Equals("EventSubscriber", StringComparison.CurrentCultureIgnoreCase))
+            if (name.Equals("EventSubscriber", StringComparison.OrdinalIgnoreCase))
                 return ALSymbolKind.EventSubscriberDeclaration;
             //tests
-            if (name.Equals("Test", StringComparison.CurrentCultureIgnoreCase))
+            if (name.Equals("Test", StringComparison.OrdinalIgnoreCase))
                 return ALSymbolKind.TestDeclaration;
-            if (name.Equals("ConfirmHandler", StringComparison.CurrentCultureIgnoreCase))
+            if (name.Equals("ConfirmHandler", StringComparison.OrdinalIgnoreCase))
                 return ALSymbolKind.ConfirmHandlerDeclaration;
-            if (name.Equals("FilterPageHandler", StringComparison.CurrentCultureIgnoreCase))
+            if (name.Equals("FilterPageHandler", StringComparison.OrdinalIgnoreCase))
                 return ALSymbolKind.FilterPageHandlerDeclaration;
-            if (name.Equals("HyperlinkHandler", StringComparison.CurrentCultureIgnoreCase))
+            if (name.Equals("HyperlinkHandler", StringComparison.OrdinalIgnoreCase))
                 return ALSymbolKind.HyperlinkHandlerDeclaration;
-            if (name.Equals("MessageHandler", StringComparison.CurrentCultureIgnoreCase))
+            if (name.Equals("MessageHandler", StringComparison.OrdinalIgnoreCase))
                 return ALSymbolKind.MessageHandlerDeclaration;
-            if (name.Equals("ModalPageHandler", StringComparison.CurrentCultureIgnoreCase))
+            if (name.Equals("ModalPageHandler", StringComparison.OrdinalIgnoreCase))
                 return ALSymbolKind.ModalPageHandlerDeclaration;
-            if (name.Equals("PageHandler", StringComparison.CurrentCultureIgnoreCase))
+            if (name.Equals("PageHandler", StringComparison.OrdinalIgnoreCase))
                 return ALSymbolKind.PageHandlerDeclaration;
-            if (name.Equals("ReportHandler", StringComparison.CurrentCultureIgnoreCase))
+            if (name.Equals("ReportHandler", StringComparison.OrdinalIgnoreCase))
                 return ALSymbolKind.ReportHandlerDeclaration;
-            if (name.Equals("RequestPageHandler", StringComparison.CurrentCultureIgnoreCase))
+            if (name.Equals("RequestPageHandler", StringComparison.OrdinalIgnoreCase))
                 return ALSymbolKind.RequestPageHandlerDeclaration;
-            if (name.Equals("SendNotificationHandler", StringComparison.CurrentCultureIgnoreCase))
+            if (name.Equals("SendNotificationHandler", StringComparison.OrdinalIgnoreCase))
                 return ALSymbolKind.SendNotificationHandlerDeclaration;
-            if (name.Equals("SessionSettingsHandler", StringComparison.CurrentCultureIgnoreCase))
+            if (name.Equals("SessionSettingsHandler", StringComparison.OrdinalIgnoreCase))
                 return ALSymbolKind.SessionSettingsHandlerDeclaration;
-            if (name.Equals("StrMenuHandler", StringComparison.CurrentCultureIgnoreCase))
+            if (name.Equals("StrMenuHandler", StringComparison.OrdinalIgnoreCase))
                 return ALSymbolKind.StrMenuHandlerDeclaration;
 
             return ALSymbolKind.Undefined;

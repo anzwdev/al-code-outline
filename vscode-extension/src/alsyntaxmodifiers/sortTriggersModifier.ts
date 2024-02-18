@@ -1,10 +1,10 @@
 import { DevToolsExtensionContext } from "../devToolsExtensionContext";
 import { SortProceduresOrTriggersModifier } from './sortProceduresOrTriggersModifier';
 
-export class SortProceduresModifier extends SortProceduresOrTriggersModifier {
+export class SortTriggersModifier extends SortProceduresOrTriggersModifier {
 
     constructor(context: DevToolsExtensionContext) {
-        super(context, "Sort Procedures", "sortProcedures");
+        super(context, "Sort Triggers", "sortTriggers");
     }
 
 }

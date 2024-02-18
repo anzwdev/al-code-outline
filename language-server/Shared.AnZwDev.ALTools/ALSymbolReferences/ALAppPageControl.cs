@@ -59,7 +59,7 @@ namespace AnZwDev.ALTools.ALSymbolReferences
             ALMemberAccessExpression memberAccessExpression = ALSyntaxHelper.DecodeMemberAccessExpression(expression);
             if (String.IsNullOrWhiteSpace(memberAccessExpression.Name))
                 return memberAccessExpression.Expression;
-            else if (memberAccessExpression.Name.Equals("rec", StringComparison.CurrentCultureIgnoreCase))
+            else if (memberAccessExpression.Name.Equals("rec", StringComparison.OrdinalIgnoreCase))
                 return memberAccessExpression.Expression;
             return null;
         }

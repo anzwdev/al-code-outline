@@ -20,7 +20,7 @@ namespace AnZwDev.ALTools.ALSymbolReferences.MergedReferences
         protected virtual bool ExtendsObject(T alObject, string baseObjectName)
         {
             var targetName = alObject.GetTargetObjectName();
-            return ((targetName != null) && (targetName.Equals(baseObjectName, StringComparison.CurrentCultureIgnoreCase)));
+            return ((targetName != null) && (targetName.Equals(baseObjectName, StringComparison.OrdinalIgnoreCase)));
         }
 
         public IEnumerable<T> FindAllExtensions(string baseObjectName)

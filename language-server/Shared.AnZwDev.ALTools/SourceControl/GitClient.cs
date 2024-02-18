@@ -32,7 +32,7 @@ namespace AnZwDev.ALTools.SourceControl
                 if (!String.IsNullOrWhiteSpace(line))
                 {
                     string fileName = Path.Combine(path, line.Trim());
-                    if ((!hasExt) || (fileName.EndsWith(fileExt, StringComparison.CurrentCultureIgnoreCase)))
+                    if ((!hasExt) || (fileName.EndsWith(fileExt, StringComparison.OrdinalIgnoreCase)))
                         files.Add(fileName);
                 }
             }

@@ -262,8 +262,8 @@ namespace AnZwDev.ALTools.CodeTransformations.Namespaces
                 var objectName = permissionProperty.ObjectReference.ToString();
                 if ((!String.IsNullOrWhiteSpace(objectType)) && (!String.IsNullOrWhiteSpace(objectName)))
                 {
-                    if ((objectType.Equals("TableData", StringComparison.CurrentCultureIgnoreCase)) ||
-                        (objectType.Equals("Table", StringComparison.CurrentCultureIgnoreCase)))
+                    if ((objectType.Equals("TableData", StringComparison.OrdinalIgnoreCase)) ||
+                        (objectType.Equals("Table", StringComparison.OrdinalIgnoreCase)))
                         objectType = "Record";
                 }
                 AddType(objectType, objectName);

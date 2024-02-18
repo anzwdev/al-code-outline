@@ -14,7 +14,7 @@ namespace AnZwDev.ALTools.CodeTransformations
         public override SyntaxNode VisitLabelPropertyValue(LabelPropertyValueSyntax node)
         {
             var propertyName = (node.Parent as PropertySyntax)?.Name?.Identifier.ValueText;
-            if ((!String.IsNullOrEmpty(propertyName)) && (propertyName.Equals("ToolTip", StringComparison.CurrentCultureIgnoreCase)))
+            if ((!String.IsNullOrEmpty(propertyName)) && (propertyName.Equals("ToolTip", StringComparison.OrdinalIgnoreCase)))
             {
                 var labelText = node.Value?.LabelText?.Value.Text;
                 if (labelText != null)

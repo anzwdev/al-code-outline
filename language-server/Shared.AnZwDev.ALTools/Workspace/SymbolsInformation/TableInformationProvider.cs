@@ -48,7 +48,7 @@ namespace AnZwDev.ALTools.Workspace.SymbolsInformation
                     if (pk.FieldNames[i] != null)
                     {
                         var field = information.Fields
-                            .Where(p => (p.Name != null) && (pk.FieldNames[i].Equals(p.Name, StringComparison.CurrentCultureIgnoreCase)))
+                            .Where(p => (p.Name != null) && (pk.FieldNames[i].Equals(p.Name, StringComparison.OrdinalIgnoreCase)))
                             .FirstOrDefault();
                         if (field != null)
                             information.PrimaryKeys.Add(field);
@@ -171,7 +171,7 @@ namespace AnZwDev.ALTools.Workspace.SymbolsInformation
                 foreach (ALAppTableField fieldModification in fieldModificationsCollection)
                 {
                     TableFieldInformaton field = fields
-                        .Where(p => ((p.Name != null) && (p.Name.Equals(fieldModification.Name, StringComparison.CurrentCultureIgnoreCase))))
+                        .Where(p => ((p.Name != null) && (p.Name.Equals(fieldModification.Name, StringComparison.OrdinalIgnoreCase))))
                         .FirstOrDefault();
                     if (field != null)
                         field.UpdateProperties(fieldModification.Properties);

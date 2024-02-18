@@ -31,10 +31,10 @@ namespace AnZwDev.ALTools.Core
         {
 #if BC
             if (RuntimeInformation.IsOSPlatform(OSPlatform.Windows))
-                return StringComparison.CurrentCultureIgnoreCase;
-            return StringComparison.CurrentCulture;
+                return StringComparison.OrdinalIgnoreCase;
+            return StringComparison.Ordinal;
 #else
-            return StringComparison.CurrentCultureIgnoreCase;
+            return StringComparison.OrdinalIgnoreCase;
 #endif
         }
 

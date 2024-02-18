@@ -289,23 +289,23 @@ namespace AnZwDev.ALTools.Workspace
         {
             string ext = Path.GetExtension(path);
 
-            if (ext.Equals(".al", StringComparison.CurrentCultureIgnoreCase))
+            if (ext.Equals(".al", StringComparison.OrdinalIgnoreCase))
                 return ALProjectFileType.AL;
 
-            if (ext.Equals(".xml", StringComparison.CurrentCultureIgnoreCase))
+            if (ext.Equals(".xml", StringComparison.OrdinalIgnoreCase))
                 return ALProjectFileType.Xml;
 
-            if (ext.Equals(".json", StringComparison.CurrentCultureIgnoreCase))
+            if (ext.Equals(".json", StringComparison.OrdinalIgnoreCase))
             {
                 string relativePath = this.GetRelativePath(path);
-                if (relativePath.Equals("app.json", StringComparison.CurrentCultureIgnoreCase))
+                if (relativePath.Equals("app.json", StringComparison.OrdinalIgnoreCase))
                     return ALProjectFileType.AppJson;
 
-                if (relativePath.Equals("AppSourceCop.json", StringComparison.CurrentCultureIgnoreCase))
+                if (relativePath.Equals("AppSourceCop.json", StringComparison.OrdinalIgnoreCase))
                     return ALProjectFileType.AppSourceCopJson;
             }
 
-            if (ext.Equals(".app", StringComparison.CurrentCultureIgnoreCase))
+            if (ext.Equals(".app", StringComparison.OrdinalIgnoreCase))
                 return ALProjectFileType.AppPackage;
 
             return ALProjectFileType.Undefined;

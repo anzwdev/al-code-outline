@@ -267,7 +267,7 @@ namespace AnZwDev.ALTools.CodeCompletion
                     varName = varName.RemovePrefixSuffix(project.MandatoryPrefixes, project.MandatorySuffixes, project.MandatoryAffixes, project.AdditionalMandatoryAffixesPatterns);
                 varName = ALSyntaxHelper.ObjectNameToVariableNamePart(varName);
 
-                var addTemporary = (asTemporaryVariable) && (!varName.StartsWith(_tempPrefix, StringComparison.CurrentCultureIgnoreCase));
+                var addTemporary = (asTemporaryVariable) && (!varName.StartsWith(_tempPrefix, StringComparison.OrdinalIgnoreCase));
 
                 if (addTemporary)
                     varName = _tempPrefix + varName;

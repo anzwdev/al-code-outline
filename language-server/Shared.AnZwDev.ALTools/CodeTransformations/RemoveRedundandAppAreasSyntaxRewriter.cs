@@ -171,7 +171,7 @@ namespace AnZwDev.ALTools.CodeTransformations
             return
                 (!String.IsNullOrWhiteSpace(_pageAppArea)) &&
                 (!String.IsNullOrWhiteSpace(memberAppArea)) &&
-                (memberAppArea.Equals(_pageAppArea, StringComparison.CurrentCultureIgnoreCase));
+                (memberAppArea.Equals(_pageAppArea, StringComparison.OrdinalIgnoreCase));
         }
 
         private PropertyListSyntax RemoveProperty(PropertyListSyntax propertyList, PropertySyntax property)
@@ -192,7 +192,7 @@ namespace AnZwDev.ALTools.CodeTransformations
                 case ValueCheckState.Equal:
                     var equal =
                         ((memberAppArea == null) && (_pageMembersAppArea == null)) ||
-                        ((memberAppArea != null) && (_pageMembersAppArea != null) && (memberAppArea.Equals(_pageMembersAppArea, StringComparison.CurrentCultureIgnoreCase)));
+                        ((memberAppArea != null) && (_pageMembersAppArea != null) && (memberAppArea.Equals(_pageMembersAppArea, StringComparison.OrdinalIgnoreCase)));
                     if (!equal)
                     {
                         _pageMembersAppArea = null;

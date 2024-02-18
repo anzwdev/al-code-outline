@@ -51,7 +51,7 @@ namespace AnZwDev.ALTools.Extensions
                 warnings = new Dictionary<string, bool>();
 
             var pragmaType = pragmaWarningDirective.DisableOrRestoreKeyword.Text;
-            var warningEnabled = (pragmaType != null) && (pragmaType.Equals("restore", StringComparison.CurrentCultureIgnoreCase));
+            var warningEnabled = (pragmaType != null) && (pragmaType.Equals("restore", StringComparison.OrdinalIgnoreCase));
 
             if ((pragmaWarningDirective.ErrorCodes != null) && (pragmaWarningDirective.ErrorCodes.Count > 0))
             {

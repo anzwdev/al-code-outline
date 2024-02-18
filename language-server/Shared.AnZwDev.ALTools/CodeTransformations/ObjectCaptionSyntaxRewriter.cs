@@ -36,7 +36,7 @@ namespace AnZwDev.ALTools.CodeTransformations
         {
             //check page type
             string pageType = ALSyntaxHelper.DecodeName(node.GetProperty("PageType")?.Value?.ToString());
-            if ((pageType == null) || (!pageType.Equals("API", StringComparison.CurrentCultureIgnoreCase)))
+            if ((pageType == null) || (!pageType.Equals("API", StringComparison.OrdinalIgnoreCase)))
             {
                 if (!node.HasProperty("CaptionML"))
                 {

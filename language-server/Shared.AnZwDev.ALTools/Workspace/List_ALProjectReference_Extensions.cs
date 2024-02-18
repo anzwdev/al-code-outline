@@ -21,11 +21,11 @@ namespace AnZwDev.ALTools.Workspace
                 {
                     ALProjectReference projectRef = projectReferences[i];
                     if (
-                        ((checkId) && (id.Equals(projectRef.Id, StringComparison.CurrentCultureIgnoreCase))) ||
+                        ((checkId) && (id.Equals(projectRef.Id, StringComparison.OrdinalIgnoreCase))) ||
                         (
                             ((!checkId) || (String.IsNullOrWhiteSpace(projectRef.Id))) &&
-                            (name.Equals(projectRef.Name, StringComparison.CurrentCultureIgnoreCase)) &&
-                            (publisher.Equals(projectRef.Publisher, StringComparison.CurrentCultureIgnoreCase))
+                            (name.Equals(projectRef.Name, StringComparison.OrdinalIgnoreCase)) &&
+                            (publisher.Equals(projectRef.Publisher, StringComparison.OrdinalIgnoreCase))
                         ))
                         return projectRef;
                 }

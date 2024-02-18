@@ -173,7 +173,7 @@ namespace AnZwDev.ALTools.CodeTransformations
                                         if ((property != null) && (property.Name != null) && (property.Name.Identifier != null))
                                         {
                                             string propertyName = property.Name.Identifier.ValueText;
-                                            if ((propertyName != null) && (propertyName.Equals("ApplicationArea", StringComparison.CurrentCultureIgnoreCase)))
+                                            if ((propertyName != null) && (propertyName.Equals("ApplicationArea", StringComparison.OrdinalIgnoreCase)))
                                             {
                                                 newName = ApplicationAreaCaseInformation.Values.FixCase(newName);
                                                 updated = true;
@@ -213,7 +213,7 @@ namespace AnZwDev.ALTools.CodeTransformations
                                 bool isKeywordOrDataType = KeywordInformation.IsAnyKeywordOrDataTypeName(newName);
 
                                 if (
-                                    (decodedPrevName.Equals(newName, StringComparison.CurrentCultureIgnoreCase)) && 
+                                    (decodedPrevName.Equals(newName, StringComparison.OrdinalIgnoreCase)) && 
                                     (
                                         (isKeyword) ||
                                         ((!this.RemoveQuotesFromDataTypeIdentifiers) && (isKeywordOrDataType)) ||
@@ -302,7 +302,7 @@ namespace AnZwDev.ALTools.CodeTransformations
                 if ((optionSymbol != null) && (optionSymbol.Type != null))
                 {
                     string newName = optionSymbol.Type.Name;
-                    if ((newName != null) && (newName.Equals(memberName, StringComparison.CurrentCultureIgnoreCase)))
+                    if ((newName != null) && (newName.Equals(memberName, StringComparison.OrdinalIgnoreCase)))
                     {
                         memberName = newName;
                         return true;
@@ -323,7 +323,7 @@ namespace AnZwDev.ALTools.CodeTransformations
                 if ((property != null) && (property.Name != null) && (property.Name.Identifier != null))
                 {
                     string propertyName = property.Name.Identifier.ValueText;
-                    return ((propertyName != null) && (propertyName.Equals("ApplicationArea", StringComparison.CurrentCultureIgnoreCase)));
+                    return ((propertyName != null) && (propertyName.Equals("ApplicationArea", StringComparison.OrdinalIgnoreCase)));
                 }
             }
             return false;

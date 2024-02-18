@@ -195,7 +195,7 @@ namespace AnZwDev.ALTools.Workspace.SymbolsInformation
             //find source table if not specified
             if (tableReference.IsEmpty())
             {
-                if (objectType.Equals("PageExtension", StringComparison.CurrentCultureIgnoreCase))
+                if (objectType.Equals("PageExtension", StringComparison.OrdinalIgnoreCase))
                 {
                     var pageExtension = project
                         .GetAllSymbolReferences()
@@ -210,7 +210,7 @@ namespace AnZwDev.ALTools.Workspace.SymbolsInformation
                         tableReference = page.GetSourceTable();
                     }
                 }
-                else if (objectType.Equals("Page", StringComparison.CurrentCultureIgnoreCase))
+                else if (objectType.Equals("Page", StringComparison.OrdinalIgnoreCase))
                 {
                     var page = project
                         .GetAllSymbolReferences()

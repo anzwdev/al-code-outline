@@ -41,7 +41,7 @@ namespace AnZwDev.ALTools.Extensions
 
         public static bool EqualsOrEmpty(this string value, string value2)
         {
-            return ((String.IsNullOrWhiteSpace(value)) || (value.Equals(value2, StringComparison.CurrentCultureIgnoreCase)));
+            return ((String.IsNullOrWhiteSpace(value)) || (value.Equals(value2, StringComparison.OrdinalIgnoreCase)));
         }
 
         public static bool EqualsToOneOf(this string value, params string[] compValues)
@@ -102,7 +102,7 @@ namespace AnZwDev.ALTools.Extensions
             {
                 for (int i = 0; i < prefixes.Count; i++)
                 {
-                    if ((!String.IsNullOrWhiteSpace(prefixes[i])) && (text.StartsWith(prefixes[i], StringComparison.CurrentCultureIgnoreCase)))
+                    if ((!String.IsNullOrWhiteSpace(prefixes[i])) && (text.StartsWith(prefixes[i], StringComparison.OrdinalIgnoreCase)))
                     {
                         found = true;
                         return text.Substring(prefixes[i].Length).Trim();
@@ -119,7 +119,7 @@ namespace AnZwDev.ALTools.Extensions
             {
                 for (int i = 0; i < suffixes.Count; i++)
                 {
-                    if ((!String.IsNullOrWhiteSpace(suffixes[i])) && (text.EndsWith(suffixes[i], StringComparison.CurrentCultureIgnoreCase)))
+                    if ((!String.IsNullOrWhiteSpace(suffixes[i])) && (text.EndsWith(suffixes[i], StringComparison.OrdinalIgnoreCase)))
                     {
                         found = true;
                         return text.Substring(0, text.Length - suffixes[i].Length).Trim();
@@ -314,7 +314,7 @@ namespace AnZwDev.ALTools.Extensions
         public static bool StartsWithAny(this string text, string[] startParts)
         {
             for (int i = 0; i < startParts.Length; i++)
-                if (text.StartsWith(startParts[i], StringComparison.CurrentCultureIgnoreCase))
+                if (text.StartsWith(startParts[i], StringComparison.OrdinalIgnoreCase))
                     return true;
             return false;
         }
@@ -322,7 +322,7 @@ namespace AnZwDev.ALTools.Extensions
         public static bool EndsWithAny(this string text, string[] endsParts)
         {
             for (int i = 0; i < endsParts.Length; i++)
-                if (text.EndsWith(endsParts[i], StringComparison.CurrentCultureIgnoreCase))
+                if (text.EndsWith(endsParts[i], StringComparison.OrdinalIgnoreCase))
                     return true;
             return false;
         }
@@ -330,14 +330,14 @@ namespace AnZwDev.ALTools.Extensions
         public static bool EqualsAny(this string text, string[] values)
         {
             for (int i = 0; i < values.Length; i++)
-                if (text.Equals(values[i], StringComparison.CurrentCultureIgnoreCase))
+                if (text.Equals(values[i], StringComparison.OrdinalIgnoreCase))
                     return true;
             return false;
         }
 
         public static bool ToBool(this string value)
         {
-            return ((value != null) && (value.Equals("true", StringComparison.CurrentCultureIgnoreCase)));
+            return ((value != null) && (value.Equals("true", StringComparison.OrdinalIgnoreCase)));
         }
 
         public static int ToInt(this string value, int defaultValue = 0)
