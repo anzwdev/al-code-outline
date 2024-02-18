@@ -17,7 +17,8 @@ namespace AnZwDev.ALTools.WorkspaceCommands
         {
             base.SetParameters(sourceCode, project, filePath, span, parameters);
             this.SyntaxRewriter.SortProcedures = false;
-            this.SyntaxRewriter.TriggerSortMode = CodeTransformations.SortProceduresTriggerSortMode.NaturalOrder;
+            if (this.SyntaxRewriter.TriggerSortMode == CodeTransformations.SortProceduresTriggerSortMode.None)
+                this.SyntaxRewriter.TriggerSortMode = CodeTransformations.SortProceduresTriggerSortMode.NaturalOrder;
         }
 
     }

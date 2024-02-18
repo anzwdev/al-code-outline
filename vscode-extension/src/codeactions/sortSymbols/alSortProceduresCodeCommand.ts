@@ -23,15 +23,19 @@ export class ALSortProceduresCodeCommand extends ALCodeAction {
                 let isTrigger = symbol.isTrigger();
                 let isMethod = symbol.isMethod();
 
-                if ((isTrigger) || (isMethod))
+                if ((isTrigger) || (isMethod)) {
                     symbol = symbol.parent;
+                }
 
                 if (symbol) {
                     hasTriggers = isTrigger || symbol.hasTriggers();
                     hasMethods = isMethod || symbol.hasMethods();
+                    let showSortProcedures = isMethod || symbol.hasMethods();
+                    let showSortTriggers = isTrigger || symbol.hasTriggers();
 
-                    if (isMethod || symbol.hasMethods()) {
-                        let action = new vscode.CodeAction("Sort procedures (AZ AL Dev Tools)", vscode.CodeActionKind.QuickFix);
+                    if (showSortProcedures) {
+                        let caption = showSortTriggers?"Sort procedures and triggers (AZ AL Dev Tools)":"Sort procedures (AZ AL Dev Tools)";
+                        let action = new vscode.CodeAction(caption, vscode.CodeActionKind.QuickFix);
                         action.command = {
                             command: "azALDevTools.sortProcedures",
                             title: "Sort Procedures",
@@ -40,7 +44,7 @@ export class ALSortProceduresCodeCommand extends ALCodeAction {
                         actions.push(action);
                     }
 
-                    if (isTrigger || symbol.hasTriggers()) {
+                    if (showSortTriggers) {
                         let action = new vscode.CodeAction("Sort triggers (AZ AL Dev Tools)", vscode.CodeActionKind.QuickFix);
                         action.command = {
                             command: "azALDevTools.sortTriggers",
