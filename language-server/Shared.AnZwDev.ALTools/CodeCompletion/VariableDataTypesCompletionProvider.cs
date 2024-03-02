@@ -123,9 +123,12 @@ namespace AnZwDev.ALTools.CodeCompletion
 
         private void CreateCompletionItems(string name, ALProject project, ALObjectType objectType, List<CodeCompletionItem> completionItems, bool temporaryRecordVariable = false)
         {
-            var typesCollection = project.GetAllSymbolReferences().GetAllObjects(objectType);
+            var objectCollection = project
+                .SymbolsWithDependencies
+                .GetObjectsCollection(objectType);
+            var objectsEnumerable = objectCollection.GetAll();
 
-            foreach (var type in typesCollection)
+            foreach (var type in objectsEnumerable)
             {
                 var varName = ALSyntaxHelper.ObjectNameToVariableNamePart(type.Name)
                     .ToLower()

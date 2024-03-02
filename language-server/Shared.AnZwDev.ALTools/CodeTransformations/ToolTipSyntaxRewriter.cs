@@ -172,9 +172,9 @@ namespace AnZwDev.ALTools.CodeTransformations
                         if (!basePageReference.IsEmpty())
                         {
                             var basePage = this.Project
-                                .GetAllSymbolReferences()
-                                .GetAllObjects<ALAppPage>(x => x.Pages)
-                                .FindFirst<ALAppPage>(basePageReference);
+                                .SymbolsWithDependencies
+                                .Pages
+                                .FindFirst(basePageReference);
                             if ((basePage != null) && (basePage.Properties != null))
                             {
                                 var basePageType = basePage.Properties.Where(p => ((p.Name != null) && (p.Name.Equals("PageType", StringComparison.OrdinalIgnoreCase)))).FirstOrDefault();

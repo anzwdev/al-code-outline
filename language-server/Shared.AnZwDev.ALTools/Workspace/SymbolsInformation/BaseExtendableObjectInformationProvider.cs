@@ -1,6 +1,5 @@
 ﻿using AnZwDev.ALTools.ALSymbolReferences;
-using AnZwDev.ALTools.ALSymbolReferences.MergedReferences;
-using AnZwDev.ALTools.Workspace.SymbolReferences;
+using AnZwDev.ALTools.ALSymbols;
 using System;
 using System.Collections.Generic;
 using System.Text;
@@ -10,20 +9,26 @@ namespace AnZwDev.ALTools.Workspace.SymbolsInformation
     public class BaseExtendableObjectInformationProvider<T,E> : BaseObjectInformationProvider<T> where T: ALAppObject where E: ALAppObject, IALAppObjectExtension
     {
 
-        private readonly Func<ALAppSymbolReference, IEnumerable<E>> _objectExtensionsEnumerable;
+        private readonly Func<ALProjectAllALAppSymbolsReference, ALProjectAllALAppObjectExtensionsCollection<E>> _objectExtensionsCollection;
 
-        public BaseExtendableObjectInformationProvider(Func<ALAppSymbolReference, IEnumerable<T>> objectsEnumberable, Func<ALAppSymbolReference, IEnumerable<E>> objectExtensionsEnumerable) : base(objectsEnumberable)
+        public BaseExtendableObjectInformationProvider(
+            Func<ALProjectAllALAppSymbolsReference, ALProjectAllALAppObjectsCollection<T>> objectsCollection,
+            Func<ALProjectAllALAppSymbolsReference, ALProjectAllALAppObjectExtensionsCollection<E>> objectExtensionsCollection) : base(objectsCollection)
         {
-            _objectExtensionsEnumerable = objectExtensionsEnumerable;
+            _objectExtensionsCollection = objectExtensionsCollection;
         }
 
         #region Object list and search
 
         protected IEnumerable<E> GetALAppObjectExtensionsCollection(ALProject project, T baseObject)
         {
-            return project
-                .GetAllSymbolReferences()
-                .GetObjectExtensions<E>(_objectExtensionsEnumerable, baseObject.GetIdentifier());
+            var baseObjectIdentifier = baseObject.GetIdentifier();
+            return _objectExtensionsCollection(project.SymbolsWithDependencies).GetObjectExtensions(baseObjectIdentifier);
+        }
+
+        protected IEnumerable<E> GetALAppObjectExtensionsCollection(ALProject project, ALObjectIdentifier baseObjectIdentifier)
+        {
+            return _objectExtensionsCollection(project.SymbolsWithDependencies).GetObjectExtensions(baseObjectIdentifier);
         }
 
         #endregion

@@ -22,7 +22,8 @@ namespace AnZwDev.ALTools.Workspace.SymbolsInformation
         public List<PermissionSetInformation> GetPermissionSets(ALProject project, bool includeNonAccessible)
         {
             var infoList = new List<PermissionSetInformation>();
-            var objectsEnumerable = GetALAppObjectsCollection(project, includeNonAccessible);
+            var objectsCollection = GetALAppObjectsCollection(project);
+            var objectsEnumerable = objectsCollection.GetAll(includeNonAccessible);
             foreach (var obj in objectsEnumerable)
                 infoList.Add(new PermissionSetInformation(obj));
             return infoList;
@@ -64,8 +65,10 @@ namespace AnZwDev.ALTools.Workspace.SymbolsInformation
 
         private MergedALAppPermissionSet CreateMergedPermissionSet(ALProject project, Dictionary<string, MergedALAppPermissionSet> mergedPermissionSetsCollection, ALObjectReference permissionSetName)
         {
-            var permissionSet = GetALAppObjectsCollection(project)
-                .FindFirst(null, permissionSetName.NamespaceName, permissionSetName.Name);
+            var permissionSet = project
+                .SymbolsWithDependencies
+                .PermissionSets
+                .FindFirst(permissionSetName.NamespaceName, permissionSetName.Name);
             if (permissionSet == null)
                 return null;
 

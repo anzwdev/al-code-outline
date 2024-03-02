@@ -110,6 +110,13 @@ namespace AnZwDev.ALTools.ALSymbols
         }
 
 
+        public static string EncodeFullName(string namespaceName, string name)
+        {
+            if (String.IsNullOrWhiteSpace(namespaceName))
+                return ALSyntaxHelper.EncodeName(name);
+            return namespaceName + "." + ALSyntaxHelper.EncodeName(name);
+        }
+
         public static string EncodeName(string name)
         {
             if (NameNeedsEcoding(name))

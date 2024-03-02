@@ -44,7 +44,7 @@ namespace AnZwDev.ALTools.ALSymbols
 
             if ((!String.IsNullOrEmpty(Name)) && (Name.Equals(objectReference.Name, StringComparison.OrdinalIgnoreCase)))
             {
-                if ((!objectReference.HasNamespace()) && (!objectReference.HasUsings()))
+                if ((!objectReference.HasNamespace) && (!objectReference.HasUsings()))
                     return true;
 
                 if (!HasNamespace())

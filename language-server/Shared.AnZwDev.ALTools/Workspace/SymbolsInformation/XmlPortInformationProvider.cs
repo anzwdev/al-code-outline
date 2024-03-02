@@ -21,7 +21,8 @@ namespace AnZwDev.ALTools.Workspace.SymbolsInformation
         public List<XmlPortInformation> GetXmlPorts(ALProject project)
         {
             var infoList = new List<XmlPortInformation>();
-            var objectsEnumerable = GetALAppObjectsCollection(project);
+            var objectsCollection = GetALAppObjectsCollection(project);
+            var objectsEnumerable = objectsCollection.GetAll();
             foreach (var obj in objectsEnumerable)
                 infoList.Add(new XmlPortInformation(obj));
             return infoList;
@@ -99,7 +100,7 @@ namespace AnZwDev.ALTools.Workspace.SymbolsInformation
 
         #region XmlPort variables
 
-        public List<ALAppVariable> GetXmlPortVariables(ALProject project, ALObjectReference objectReference)
+        public ALAppSymbolsCollection<ALAppVariable> GetXmlPortVariables(ALProject project, ALObjectReference objectReference)
         {
             ALAppXmlPort xmlPort = this.FindXmlPort(project, objectReference);
             if ((xmlPort != null) && (xmlPort.Variables != null) && (xmlPort.Variables.Count > 0))
@@ -112,8 +113,8 @@ namespace AnZwDev.ALTools.Workspace.SymbolsInformation
         private ALAppXmlPort FindXmlPort(ALProject project, ALObjectReference objectReference)
         {
             return project
-                .GetAllSymbolReferences()
-                .GetAllObjects<ALAppXmlPort>(x => x.XmlPorts)
+                .SymbolsWithDependencies
+                .XmlPorts
                 .FindFirst(objectReference);
         }
 

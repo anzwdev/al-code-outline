@@ -1,6 +1,5 @@
 ﻿using AnZwDev.ALTools.ALSymbolReferences;
 using AnZwDev.ALTools.ALSymbolReferences.Search;
-using AnZwDev.ALTools.ALSymbolReferences.MergedReferences;
 using AnZwDev.ALTools.Workspace.SymbolReferences;
 using System;
 using System.Collections.Generic;
@@ -13,20 +12,18 @@ namespace AnZwDev.ALTools.Workspace.SymbolsInformation
     public class BaseObjectInformationProvider<T> where T : ALAppObject
     {
 
-        private readonly Func<ALAppSymbolReference, IEnumerable<T>> _objectsEnumerable;
+        private readonly Func<ALProjectAllALAppSymbolsReference, ALProjectAllALAppObjectsCollection<T>> _objectsCollection;
 
-        public BaseObjectInformationProvider(Func<ALAppSymbolReference, IEnumerable<T>> objectsEnumerable)
+        public BaseObjectInformationProvider(Func<ALProjectAllALAppSymbolsReference, ALProjectAllALAppObjectsCollection<T>> objectsCollection)
         {
-            _objectsEnumerable = objectsEnumerable;
+            _objectsCollection = objectsCollection;
         }
 
         #region Objects list and search
 
-        protected IEnumerable<T> GetALAppObjectsCollection(ALProject project, bool includeNonAccessible = false)
+        protected ALProjectAllALAppObjectsCollection<T> GetALAppObjectsCollection(ALProject project)
         {
-            return project
-                .GetAllSymbolReferences()
-                .GetAllObjects<T>(_objectsEnumerable, includeNonAccessible);
+            return _objectsCollection(project.SymbolsWithDependencies);
         }
 
         #endregion
@@ -40,7 +37,7 @@ namespace AnZwDev.ALTools.Workspace.SymbolsInformation
 
         public IEnumerable<ALAppMethod> GetMethods(ALProject project, ALObjectReference objectReference)
         {
-            IEnumerable<T> alObjectsCollection = this.GetALAppObjectsCollection(project);
+            var alObjectsCollection = this.GetALAppObjectsCollection(project);
             return this.GetMethods(project, alObjectsCollection?.FindFirst(objectReference));
         }
 
@@ -66,13 +63,13 @@ namespace AnZwDev.ALTools.Workspace.SymbolsInformation
 
         public IEnumerable<ALAppVariable> GetVariables(ALProject project, ALObjectReference objectReference)
         {
-            IEnumerable<T> alObjectsCollection = this.GetALAppObjectsCollection(project);
+            var alObjectsCollection = this.GetALAppObjectsCollection(project);
             return this.GetVariables(project, alObjectsCollection?.FindFirst(objectReference));
         }
 
         public IEnumerable<ALAppVariable> GetVariables(ALProject project, int id)
         {
-            IEnumerable<T> alObjectsCollection = this.GetALAppObjectsCollection(project);
+            var alObjectsCollection = this.GetALAppObjectsCollection(project);
             return this.GetVariables(project, alObjectsCollection?.FindFirst(id));
         }
 

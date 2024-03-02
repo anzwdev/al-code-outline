@@ -65,8 +65,8 @@ namespace AnZwDev.ALTools.CodeTransformations
                 if (!pageReference.IsEmpty())
                 {
                     var page = this.Project
-                        .GetAllSymbolReferences()
-                        .GetAllObjects<ALAppPage>(x => x.Pages)
+                        .SymbolsWithDependencies
+                        .Pages
                         .FindFirst(pageReference);
                     if (page != null)
                     {
@@ -255,10 +255,13 @@ namespace AnZwDev.ALTools.CodeTransformations
 
         private void SetTable(ALObjectReference alObjectReference)
         {
-            this.Table = Project
-                .GetAllSymbolReferences()
-                .GetAllObjects<ALAppTable>(x => x.Tables)
-                .FindFirst(alObjectReference);
+            if (alObjectReference.IsEmpty())
+                this.Table = null;
+            else
+                this.Table = Project
+                    .SymbolsWithDependencies
+                    .Tables
+                    .FindFirst(alObjectReference);
         }
 
 

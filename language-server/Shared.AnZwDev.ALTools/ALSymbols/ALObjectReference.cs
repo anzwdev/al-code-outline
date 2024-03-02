@@ -13,6 +13,7 @@ namespace AnZwDev.ALTools.ALSymbols
         public string Name { get; }
         public int ObjectId { get; }
         public string NameWithNamespace { get; }
+        public bool HasNamespace { get; }
 
         public ALObjectReference(HashSet<string> usings, string nameWithNamespaceOrId)
         {
@@ -21,6 +22,7 @@ namespace AnZwDev.ALTools.ALSymbols
             Name = null;
             ObjectId = 0;
             NameWithNamespace = null;
+            HasNamespace = false;
 
             if (!String.IsNullOrWhiteSpace(nameWithNamespaceOrId))
             {
@@ -39,6 +41,8 @@ namespace AnZwDev.ALTools.ALSymbols
                         Name = ALSyntaxHelper.DecodeName(nameWithNamespaceOrId);
                 }
             }
+
+            HasNamespace = !String.IsNullOrWhiteSpace(NamespaceName);
         }
 
         public ALObjectReference(HashSet<string> usings, string namespaceName, int id, string name)
@@ -48,13 +52,14 @@ namespace AnZwDev.ALTools.ALSymbols
             ObjectId = id;
             Name = name;
             NameWithNamespace = null;
+            HasNamespace = !String.IsNullOrWhiteSpace(NamespaceName);
 
             if (String.IsNullOrWhiteSpace(name))
                 NameWithNamespace = null;
             else
             {
                 var fullName = ALSyntaxHelper.EncodeName(Name);
-                if (HasNamespace())
+                if (HasNamespace)
                     NameWithNamespace = NamespaceName + "." + fullName;
                 else
                     NameWithNamespace = fullName;
@@ -63,11 +68,6 @@ namespace AnZwDev.ALTools.ALSymbols
 
         public ALObjectReference(HashSet<string> usings, string namespaceName, string name) : this(usings, namespaceName, 0, name)
         { 
-        }
-
-        public bool HasNamespace()
-        { 
-            return !String.IsNullOrWhiteSpace(NamespaceName);
         }
 
         public bool HasUsings()
@@ -82,10 +82,7 @@ namespace AnZwDev.ALTools.ALSymbols
 
         public string GetFullName()
         {
-            var fullName = ALSyntaxHelper.EncodeName(Name);
-            if (HasNamespace())
-                return NamespaceName + "." + fullName;
-            return fullName;
+            return ALSyntaxHelper.EncodeFullName(NamespaceName, Name);
         }
 
         private int FindNamespaceEndPos(string nameWithNamespace)
@@ -106,6 +103,21 @@ namespace AnZwDev.ALTools.ALSymbols
             }
             return -1;
         }
+
+        public bool MatchNamespace(string namespaceName)
+        {
+            if (((!HasUsings()) && (!HasNamespace)) || (String.IsNullOrEmpty(namespaceName)))
+                return true;
+
+            if ((Usings != null) && (Usings.Contains(namespaceName)))
+                return true;
+
+            if (namespaceName.Equals(NamespaceName, StringComparison.OrdinalIgnoreCase))
+                return true;
+
+            return false;
+        }
+
 
     }
 }

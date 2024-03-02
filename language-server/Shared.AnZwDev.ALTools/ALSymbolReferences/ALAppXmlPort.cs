@@ -43,7 +43,7 @@ namespace AnZwDev.ALTools.ALSymbolReferences
             return null;
         }
 
-        protected ALAppXmlPortNode FindNode(List<ALAppXmlPortNode> nodes, string name, ALAppXmlPortNodeKind nodeKind)
+        protected ALAppXmlPortNode FindNode(ALAppSymbolsCollection<ALAppXmlPortNode> nodes, string name, ALAppXmlPortNodeKind nodeKind)
         {
             for (int i=0; i<nodes.Count; i++)
             {

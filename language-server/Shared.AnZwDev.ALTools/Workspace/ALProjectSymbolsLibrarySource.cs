@@ -38,8 +38,8 @@ namespace AnZwDev.ALTools.Workspace
                 if (this.Project.Symbols != null)
                 {
                     var alAppObject = this.Project.Symbols.AllObjects
-                        .FilterByObjectType(objectTypeInformation.ALObjectType)
-                        .FindFirst<ALAppObject>(null, symbol.namespaceName, symbol.name);
+                        .GetObjectsCollection(objectTypeInformation.ALObjectType)
+                        .FindFirst(symbol.namespaceName, symbol.name);
                     if (alAppObject != null)
                     {
                         this.SetSource(location, this.Project.Symbols, alAppObject, projectSource);
@@ -52,8 +52,8 @@ namespace AnZwDev.ALTools.Workspace
                         if (dependency.Symbols != null)
                         {
                             var alAppObject = dependency.Symbols.AllObjects
-                                .FilterByObjectType(objectTypeInformation.ALObjectType)
-                                .FindFirst<ALAppObject>(null, symbol.namespaceName, symbol.name);
+                                .GetObjectsCollection(objectTypeInformation.ALObjectType)
+                                .FindFirst(symbol.namespaceName, symbol.name);
                             if (alAppObject != null)
                             {
                                 this.SetSource(location, dependency.Symbols, alAppObject, projectSource);

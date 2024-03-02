@@ -47,8 +47,8 @@ namespace AnZwDev.ALTools.Server.Handlers.SymbolsInformation
                         {
                             var objectReference = symbolReference.ToALObjectReference();
                             var referencedObject = project
-                                .GetAllSymbolReferences()
-                                .GetAllObjects(objectType.ALObjectType)
+                                .SymbolsWithDependencies
+                                .GetObjectsCollection(objectType.ALObjectType)
                                 .FindFirst(objectReference);
                             if ((!String.IsNullOrWhiteSpace(referencedObject?.NamespaceName)) && (!usedNamespaces.Contains(referencedObject.NamespaceName)))
                             {

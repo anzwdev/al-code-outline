@@ -51,17 +51,17 @@ namespace AnZwDev.ALTools.ALSymbolReferences
             symbolReference.Queries = ProcessObjectsCollection(symbolReference.Queries, Queries);
             symbolReference.Codeunits = ProcessObjectsCollection(symbolReference.Codeunits, Codeunits);
             symbolReference.ControlAddIns = ProcessObjectsCollection(symbolReference.ControlAddIns, ControlAddIns);
-            symbolReference.PageExtensions = ProcessObjectsCollection(symbolReference.PageExtensions, PageExtensions);
-            symbolReference.TableExtensions = ProcessObjectsCollection(symbolReference.TableExtensions, TableExtensions);
+            symbolReference.PageExtensions = ProcessObjectExtensionsCollection(symbolReference.PageExtensions, PageExtensions);
+            symbolReference.TableExtensions = ProcessObjectExtensionsCollection(symbolReference.TableExtensions, TableExtensions);
             symbolReference.Profiles = ProcessObjectsCollection(symbolReference.Profiles, Profiles);
             symbolReference.PageCustomizations = ProcessObjectsCollection(symbolReference.PageCustomizations, PageCustomizations);
             symbolReference.DotNetPackages = ProcessObjectsCollection(symbolReference.DotNetPackages, DotNetPackages);
             symbolReference.EnumTypes = ProcessObjectsCollection(symbolReference.EnumTypes, EnumTypes);
-            symbolReference.EnumExtensionTypes = ProcessObjectsCollection(symbolReference.EnumExtensionTypes, EnumExtensionTypes);
+            symbolReference.EnumExtensionTypes = ProcessObjectExtensionsCollection(symbolReference.EnumExtensionTypes, EnumExtensionTypes);
             symbolReference.Interfaces = ProcessObjectsCollection(symbolReference.Interfaces, Interfaces);
-            symbolReference.ReportExtensions = ProcessObjectsCollection(symbolReference.ReportExtensions, ReportExtensions);
+            symbolReference.ReportExtensions = ProcessObjectExtensionsCollection(symbolReference.ReportExtensions, ReportExtensions);
             symbolReference.PermissionSets = ProcessObjectsCollection(symbolReference.PermissionSets, PermissionSets);
-            symbolReference.PermissionSetExtensions = ProcessObjectsCollection(symbolReference.PermissionSetExtensions, PermissionSetExtensions);
+            symbolReference.PermissionSetExtensions = ProcessObjectExtensionsCollection(symbolReference.PermissionSetExtensions, PermissionSetExtensions);
         }
 
         private void ProcessChildNamespaces(ALAppSymbolReference symbolReference)
@@ -85,6 +85,22 @@ namespace AnZwDev.ALTools.ALSymbolReferences
 
             return allObjectsCollection;
         }
+
+        private ALAppObjectExtensionsCollection<T> ProcessObjectExtensionsCollection<T>(ALAppObjectExtensionsCollection<T> allObjectsCollection, ALAppObjectsCollection<T> namespaceObjectsCollection) where T : ALAppObject, IALAppObjectExtension
+        {
+            if ((namespaceObjectsCollection != null) && (namespaceObjectsCollection.Count > 0))
+            {
+                if (allObjectsCollection == null)
+                    allObjectsCollection = new ALAppObjectExtensionsCollection<T>();
+
+                for (int i = 0; i < namespaceObjectsCollection.Count; i++)
+                    namespaceObjectsCollection[i].NamespaceName = FullName;
+                allObjectsCollection.AddRange(namespaceObjectsCollection);
+            }
+
+            return allObjectsCollection;
+        }
+
 
     }
 }

@@ -96,6 +96,10 @@ namespace AnZwDev.ALTools.ALSymbolReferences
             return new ALObjectIdentifier(NamespaceName, Id, Name);
         }
 
+        public string GetFullName()
+        {
+            return ALSyntaxHelper.EncodeFullName(NamespaceName, Name);
+        }
 
     }
 }

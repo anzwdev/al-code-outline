@@ -301,17 +301,17 @@ namespace AnZwDev.ALTools.CodeTransformations.Namespaces
                 //try to find object, maybe reference is just a <table> or <namespaces>.<table>?
                 var alObjectReference = new ALObjectReference(_usings, fieldReference);
                 var alObject = _namespacesInformation.Project
-                    .GetAllSymbolReferences()
-                    .GetAllObjects(ALObjectType.Table)
+                    .SymbolsWithDependencies
+                    .Tables
                     .FindFirst(alObjectReference);
-
+                    
                 //object not found, maybe it was <table>.<field> or <namespaces>.<table>.<field>?
-                if ((alObject == null) && (alObjectReference.HasNamespace()))
+                if ((alObject == null) && (alObjectReference.HasNamespace))
                 {
                     alObjectReference = new ALObjectReference(_usings, alObjectReference.NamespaceName);
                     alObject = _namespacesInformation.Project
-                        .GetAllSymbolReferences()
-                        .GetAllObjects(ALObjectType.Table)
+                        .SymbolsWithDependencies
+                        .Tables
                         .FindFirst(alObjectReference);
                 }
 
@@ -336,10 +336,8 @@ namespace AnZwDev.ALTools.CodeTransformations.Namespaces
             {
                 var alObjectReference = new ALObjectReference(_usings, subtypeName);
                 var alObject = _namespacesInformation.Project
-                    .GetAllSymbolReferences()
-                    .GetAllObjects(alObjectType)
-                    .FindFirst(alObjectReference);
-
+                    .SymbolsWithDependencies
+                    .FindFirst(alObjectType, alObjectReference);
                 if (alObject != null)
                     AddObject(alObject, alObjectReference);
             }
@@ -347,7 +345,7 @@ namespace AnZwDev.ALTools.CodeTransformations.Namespaces
 
         private void AddObject(ALAppObject alObject, ALObjectReference alObjectReference)
         {
-            var hasNamespace = alObjectReference.HasNamespace();
+            var hasNamespace = alObjectReference.HasNamespace;
             _namespacesInformation.AddNamespaceReference(
                 alObject.NamespaceName,
                 alObject.ReferenceSourceFileName,

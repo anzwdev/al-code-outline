@@ -17,7 +17,7 @@ namespace AnZwDev.ALTools.Workspace.SymbolsInformation
         public List<EnumInformation> GetEnums(ALProject project)
         {
             List<EnumInformation> infoList = new List<EnumInformation>();
-            var objectsEnumerable = GetALAppObjectsCollection(project);
+            var objectsEnumerable = GetALAppObjectsCollection(project).GetAll();
             foreach (var obj in objectsEnumerable)
                 infoList.Add(new EnumInformation(obj));
             return infoList;

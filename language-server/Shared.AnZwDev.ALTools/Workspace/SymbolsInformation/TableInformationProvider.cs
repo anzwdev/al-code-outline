@@ -22,7 +22,9 @@ namespace AnZwDev.ALTools.Workspace.SymbolsInformation
         public List<TableInformation> GetTables(ALProject project)
         {
             List<TableInformation> infoList = new List<TableInformation>();
-            foreach (var table in GetALAppObjectsCollection(project))
+            var objectsCollection = GetALAppObjectsCollection(project);
+            var objectsEnumerable = objectsCollection.GetAll();
+            foreach (var table in objectsEnumerable)
                 infoList.Add(new TableInformation(table));
             return infoList;
         }
@@ -64,13 +66,13 @@ namespace AnZwDev.ALTools.Workspace.SymbolsInformation
         protected (ALAppTable, ALProject) FindTableWithSourceProject(ALProject project, ALObjectReference tableReference)
         {
 
-            ALAppTable table = ((IEnumerable<ALAppTable>)project.Symbols?.Tables)?.FindFirst(tableReference);
+            ALAppTable table = project.Symbols?.Tables?.FindFirst(tableReference);
             if (table != null)
                 return (table, project);
 
             foreach (ALProjectDependency dependency in project.Dependencies)
             {
-                table = ((IEnumerable<ALAppTable>)dependency.Symbols?.Tables)?.FindFirst(tableReference);
+                table = dependency.Symbols?.Tables?.FindFirst(tableReference);
                 if (table != null)
                     return (table, dependency.SourceProject);
             }
@@ -101,20 +103,17 @@ namespace AnZwDev.ALTools.Workspace.SymbolsInformation
             this.AddFields(fields, tableSourceProject, table.Fields, includeDisabled, includeObsolete, includeNormal, includeFlowFields, includeFlowFilters);
 
             //add table extension fields
-            ALAppTableExtension tableExtension = ((IEnumerable<ALAppTableExtension>)project.Symbols.TableExtensions)?.FindFirstExtension(tableIdentifier);
-            if (tableExtension != null)
-            {
-                this.AddFields(fields, project, tableExtension.Fields, includeDisabled, includeObsolete, includeNormal, includeFlowFields, includeFlowFilters);
-                this.UpdateFields(fields, tableExtension.FieldModifications);
-            }
-
-            foreach (ALProjectDependency dependency in project.Dependencies)
-            {
-                tableExtension = ((IEnumerable<ALAppTableExtension>)dependency.Symbols?.TableExtensions)?.FindFirstExtension(tableIdentifier);
-                if (tableExtension != null)
-                    this.AddFields(fields, dependency.SourceProject, tableExtension.Fields, includeDisabled, includeObsolete, includeNormal, includeFlowFields, includeFlowFilters);
-            }
-
+            var tableExtensionsEnumerable = project
+                .SymbolsWithDependencies
+                .TableExtensions
+                .GetObjectExtensions(tableIdentifier);
+            if (tableExtensionsEnumerable != null)
+                foreach (var tableExtension in tableExtensionsEnumerable)
+                {
+                    this.AddFields(fields, tableSourceProject, tableExtension.Fields, includeDisabled, includeObsolete, includeNormal, includeFlowFields, includeFlowFilters);
+                    this.UpdateFields(fields, tableExtension.FieldModifications);
+                }
+                
             //collect tooltips
             if (includeToolTips)
             {
