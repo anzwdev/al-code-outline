@@ -10,14 +10,40 @@ export class SyntaxModifier {
     protected _showProgress: boolean;
     protected _progressMessage: string;
     name: string;
-    modifiedFilesOnly: boolean;
 
     constructor(context: DevToolsExtensionContext, newName: string) {
         this._context = context;
         this._showProgress = true;
         this._progressMessage = "Processing project files. Please wait...";
         this.name = newName;
-        this.modifiedFilesOnly = false;
+    }
+
+    async runForFiles() {
+        let confirmation = await this.confirmRunForFiles();
+        if (!confirmation)
+            return;
+
+        let workspaceUri = TextEditorHelper.getActiveWorkspaceFolderUri();
+        vscode.workspace.saveAll();
+        if (!workspaceUri)
+            return;
+
+        let cont = await this.askForParameters(workspaceUri);
+        if (!cont) {
+            vscode.window.showInformationMessage("Command cancelled");
+            return;
+        }
+
+        let forFiles = await this.getFilesToUpdate(workspaceUri);
+
+        let result = await this.runForWorkspaceWithoutUI(workspaceUri, forFiles);
+
+        if ((result) && (result.message)) {
+            if (result.success)
+                vscode.window.showInformationMessage(result.message);
+            else
+                vscode.window.showErrorMessage(result.message);
+        }
     }
 
     async runForWorkspace() {
@@ -36,7 +62,7 @@ export class SyntaxModifier {
             return;
         }
 
-        let result = await this.runForWorkspaceWithoutUI(workspaceUri);
+        let result = await this.runForWorkspaceWithoutUI(workspaceUri, undefined);
 
         if ((result) && (result.message)) {
             if (result.success)
@@ -46,13 +72,20 @@ export class SyntaxModifier {
         }
     }
 
-    async runForWorkspaceWithoutUI(workspaceUri: vscode.Uri): Promise<ISyntaxModifierResult | undefined> {
+    async runForWorkspaceWithoutUI(workspaceUri: vscode.Uri, forFiles: string[] | undefined): Promise<ISyntaxModifierResult | undefined> {
         return undefined;
     }
 
     protected async confirmRunForWorkspace(): Promise<boolean> {
         let confirmation = await vscode.window.showInformationMessage(
             'Do you want to run this command for all files in the current project folder?',
+            'Yes', 'No');
+        return (confirmation === 'Yes');
+    }
+
+    protected async confirmRunForFiles(): Promise<boolean> {
+        let confirmation = await vscode.window.showInformationMessage(
+            'Do you want to run this command for all uncommited files in the current project folder?',
             'Yes', 'No');
         return (confirmation === 'Yes');
     }
@@ -64,8 +97,6 @@ export class SyntaxModifier {
 
     protected getParameters(uri: vscode.Uri): any {
         let values: any = {};
-        if (this.modifiedFilesOnly)
-            values.modifiedFilesOnly = true;
         return values;
     }
 
@@ -146,11 +177,18 @@ export class SyntaxModifier {
     protected sortPropertiesOnSave(uri: vscode.Uri | undefined) : boolean {
         let settings = vscode.workspace.getConfiguration('alOutline', uri);                
         let actionsOnSave = settings.get<string[]>('codeActionsOnSave');
-        if (actionsOnSave)
-            for (let i=0; i<actionsOnSave.length; i++)
-                if (actionsOnSave[i] == 'SortProperties')
+        if (actionsOnSave) {
+            for (let i=0; i<actionsOnSave.length; i++) {
+                if (actionsOnSave[i] === 'SortProperties') {
                     return true;
+                }
+            }
+        }
         return false;
+    }
+
+    private getFilesToUpdate(workspaceUri: vscode.Uri | undefined) : Promise<string[] | undefined> {
+        return this._context.gitService.getUncommitedFiles(workspaceUri);
     }
 
 }

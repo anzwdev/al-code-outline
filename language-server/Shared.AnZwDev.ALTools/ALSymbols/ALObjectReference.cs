@@ -109,10 +109,10 @@ namespace AnZwDev.ALTools.ALSymbols
             if (((!HasUsings()) && (!HasNamespace)) || (String.IsNullOrEmpty(namespaceName)))
                 return true;
 
-            if ((Usings != null) && (Usings.Contains(namespaceName)))
+            if ((NamespaceName != null) && (namespaceName.Equals(NamespaceName, StringComparison.OrdinalIgnoreCase)))
                 return true;
 
-            if (namespaceName.Equals(NamespaceName, StringComparison.OrdinalIgnoreCase))
+            if ((Usings != null) && (Usings.Contains(namespaceName)))
                 return true;
 
             return false;

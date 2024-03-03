@@ -185,7 +185,6 @@ export class ALCodeTransformationService extends DevToolsExtensionService {
                 name,
                 async (document) => {
                     let cmd = modifierFactory();
-                    cmd.modifiedFilesOnly = false;
                     await cmd.runForWorkspace();
                 }
             )
@@ -198,8 +197,7 @@ export class ALCodeTransformationService extends DevToolsExtensionService {
                 name,
                 async (document) => {
                     let cmd = modifierFactory();
-                    cmd.modifiedFilesOnly = true;
-                    await cmd.runForWorkspace();
+                    await cmd.runForFiles();
                 }
             )
         );

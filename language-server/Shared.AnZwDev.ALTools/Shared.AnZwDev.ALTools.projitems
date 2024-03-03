@@ -333,7 +333,6 @@
     <Compile Include="$(MSBuildThisFileDirectory)Navigation\ReferencesProvider.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Navigation\ReferencesProvidersCollection.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Navigation\WarningDirectivesReferencesProvider.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)SourceControl\GitClient.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)WorkspaceCommands\AddAppAreasWorkspaceCommand.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)WorkspaceCommands\AddDropDownFieldGroupsWorkspaceCommand .cs" />
     <Compile Include="$(MSBuildThisFileDirectory)WorkspaceCommands\AddReferencedTablesPermissionsWorkspaceCommand.cs" />
