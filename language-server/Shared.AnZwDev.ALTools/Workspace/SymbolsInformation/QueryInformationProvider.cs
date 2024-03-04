@@ -22,8 +22,9 @@ namespace AnZwDev.ALTools.Workspace.SymbolsInformation
         public List<QueryInformation> GetQueries(ALProject project)
         {
             var infoList = new List<QueryInformation>();
-            var objectEnumerable = GetALAppObjectsCollection(project);
-            foreach (var obj in objectEnumerable)
+            var objectsCollection = GetALAppObjectsCollection(project);
+            var objectsEnumerable = objectsCollection.GetAll();
+            foreach (var obj in objectsEnumerable)
                 infoList.Add(new QueryInformation(obj));
             return infoList;
         }
@@ -90,7 +91,7 @@ namespace AnZwDev.ALTools.Workspace.SymbolsInformation
 
         #region Query variables
 
-        public List<ALAppVariable> GetQueryVariables(ALProject project, ALObjectReference objectReference)
+        public ALAppSymbolsCollection<ALAppVariable> GetQueryVariables(ALProject project, ALObjectReference objectReference)
         {
             ALAppQuery query = this.FindQuery(project, objectReference);
             if ((query != null) && (query.Variables != null) && (query.Variables.Count > 0))

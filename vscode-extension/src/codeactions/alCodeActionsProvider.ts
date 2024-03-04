@@ -205,7 +205,7 @@ export class ALCodeActionsProvider implements vscode.CodeActionProvider {
 
                         //run workspace command with progress
                         let workspaceFolder = vscode.workspace.getWorkspaceFolder(document.uri);
-                        let request = new ToolsWorkspaceCommandRequest(commandName, document.getText(), workspaceFolder!.uri.fsPath, document.uri.fsPath, commandRange, {}, undefined);
+                        let request = new ToolsWorkspaceCommandRequest(commandName, document.getText(), workspaceFolder!.uri.fsPath, document.uri.fsPath, commandRange, {}, undefined, undefined);
                         
                         let response = await vscode.window.withProgress<ToolsWorkspaceCommandResponse | undefined>({
                             location: vscode.ProgressLocation.Notification,

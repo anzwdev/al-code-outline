@@ -6,6 +6,7 @@ import { ALPageExtSyntaxBuilder } from '../syntaxbuilders/alPageExtSyntaxBuilder
 import { ProjectItemWizardPage } from './projectItemWizardPage';
 import { ToolsSymbolInformationRequest } from '../../langserver/symbolsinformation/toolsSymbolInformationRequest';
 import { SymbolWithNameInformation } from '../../symbolsinformation/smbolWithNameInformation';
+import { ToolsSymbolReference } from '../../langserver/symbolsinformation/toolsSymbolReference';
 
 export class ALPageExtWizardPage extends ProjectItemWizardPage {
     protected _pageExtWizardData : ALPageExtWizardData;
@@ -54,6 +55,21 @@ export class ALPageExtWizardPage extends ProjectItemWizardPage {
         this._pageExtWizardData.basePage = data.basePage;
         
         await this.finishObjectIdReservation(this._pageExtWizardData);
+
+        //get namespaces information
+        let referencedObjects: ToolsSymbolReference[] = [];
+        if (this._pageExtWizardData.basePage) {
+            referencedObjects.push({
+                nameWithNamespaceOrId: this._pageExtWizardData.basePage,
+                typeName: 'Page'
+            });
+        }
+
+        let fileNamespaces = await this.getNamespacesInformation('PageExtension', referencedObjects);
+        if (fileNamespaces) {
+            this._pageExtWizardData.objectNamespace = fileNamespaces.namespaceName;
+            this._pageExtWizardData.objectUsings = fileNamespaces.usings;
+        }
 
         //build new object
         let builder : ALPageExtSyntaxBuilder = new ALPageExtSyntaxBuilder();

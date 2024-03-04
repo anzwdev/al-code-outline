@@ -25,8 +25,8 @@ namespace AnZwDev.ALTools.ALSymbolReferences
             {
                 ALAppObject alAppObject = this.SymbolReference
                     .AllObjects
-                    .FilterByObjectType(objectTypeInformation.ALObjectType)
-                    .FindFirst(null, null, symbol.name);
+                    .GetObjectsCollection(objectTypeInformation.ALObjectType)
+                    .FindFirst(null, symbol.name);
                 if (alAppObject != null)
                     this.SetSource(location, this.SymbolReference, alAppObject);
             }

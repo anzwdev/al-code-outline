@@ -19,13 +19,13 @@ namespace AnZwDev.ALTools.WorkspaceCommands
             this.SyntaxRewriter = new T();
         }
 
-        public override WorkspaceCommandResult Run(string sourceCode, ALProject project, string filePath, TextRange range, Dictionary<string, string> parameters, List<string> excludeFiles)
+        public override WorkspaceCommandResult Run(string sourceCode, ALProject project, string filePath, TextRange range, Dictionary<string, string> parameters, List<string> excludeFiles, List<string> includeFiles)
         {
             this.SyntaxRewriter.TotalNoOfChanges = 0;
             this.SyntaxRewriter.NoOfChangedFiles = 0;
             this.SyntaxRewriter.NoOfChanges = 0;
 
-            WorkspaceCommandResult result = base.Run(sourceCode, project, filePath, range, parameters, excludeFiles);
+            WorkspaceCommandResult result = base.Run(sourceCode, project, filePath, range, parameters, excludeFiles, includeFiles);
 
             result.SetParameter(NoOfChangesParameterName, this.SyntaxRewriter.TotalNoOfChanges.ToString());
             result.SetParameter(NoOfChangedFilesParameterName, this.SyntaxRewriter.NoOfChangedFiles.ToString());

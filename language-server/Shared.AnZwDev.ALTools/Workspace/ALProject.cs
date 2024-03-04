@@ -10,7 +10,6 @@ using AnZwDev.ALTools.ALSymbols;
 using AnZwDev.ALTools.Extensions;
 using AnZwDev.ALTools.ALSymbolReferences;
 using AnZwDev.ALTools.CodeAnalysis;
-using AnZwDev.ALTools.ALSymbolReferences.MergedReferences;
 using Microsoft.Dynamics.Nav.CodeAnalysis.Syntax;
 using Microsoft.Dynamics.Nav.CodeAnalysis;
 using System.Linq;
@@ -49,6 +48,8 @@ namespace AnZwDev.ALTools.Workspace
         /// Symbols defined in project
         /// </summary>
         public ALAppSymbolReference Symbols { get; }
+
+        public ALProjectAllALAppSymbolsReference SymbolsWithDependencies { get; }
         
         #endregion
 
@@ -74,7 +75,8 @@ namespace AnZwDev.ALTools.Workspace
             this.Files = new ALProjectFilesCollection(this);
             this.Dependencies = new ALProjectDependenciesCollection();
             this.Symbols = new ALAppSymbolReference();
-            this.Properties = null;            
+            this.Properties = null;
+            this.SymbolsWithDependencies = new ALProjectAllALAppSymbolsReference(this);
         }
 
         #endregion
@@ -265,9 +267,8 @@ namespace AnZwDev.ALTools.Workspace
         public bool UsesNamespaces()
         {
 #if BC
-            return 
-                (this.Symbols != null) &&
-                (this.Symbols.AllObjects.Any(p => (!String.IsNullOrWhiteSpace(p.NamespaceName))));
+            return
+                (this.Symbols != null) && (this.Symbols.AllObjects.UsesNamespaces());
 #else
             return false;
 #endif
@@ -289,23 +290,23 @@ namespace AnZwDev.ALTools.Workspace
         {
             string ext = Path.GetExtension(path);
 
-            if (ext.Equals(".al", StringComparison.CurrentCultureIgnoreCase))
+            if (ext.Equals(".al", StringComparison.OrdinalIgnoreCase))
                 return ALProjectFileType.AL;
 
-            if (ext.Equals(".xml", StringComparison.CurrentCultureIgnoreCase))
+            if (ext.Equals(".xml", StringComparison.OrdinalIgnoreCase))
                 return ALProjectFileType.Xml;
 
-            if (ext.Equals(".json", StringComparison.CurrentCultureIgnoreCase))
+            if (ext.Equals(".json", StringComparison.OrdinalIgnoreCase))
             {
                 string relativePath = this.GetRelativePath(path);
-                if (relativePath.Equals("app.json", StringComparison.CurrentCultureIgnoreCase))
+                if (relativePath.Equals("app.json", StringComparison.OrdinalIgnoreCase))
                     return ALProjectFileType.AppJson;
 
-                if (relativePath.Equals("AppSourceCop.json", StringComparison.CurrentCultureIgnoreCase))
+                if (relativePath.Equals("AppSourceCop.json", StringComparison.OrdinalIgnoreCase))
                     return ALProjectFileType.AppSourceCopJson;
             }
 
-            if (ext.Equals(".app", StringComparison.CurrentCultureIgnoreCase))
+            if (ext.Equals(".app", StringComparison.OrdinalIgnoreCase))
                 return ALProjectFileType.AppPackage;
 
             return ALProjectFileType.Undefined;

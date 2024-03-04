@@ -7,6 +7,7 @@ import { ALTableExtSyntaxBuilder } from '../syntaxbuilders/alTableExtSyntaxBuild
 import { ALTableBasedWizardPage } from './alTableBasedWizardPage';
 import { ALTableExtWizardData } from './alTableExtWizardData';
 import { WizardTableFieldHelper } from './wizardTableFieldHelper';
+import { ToolsSymbolReference } from '../../langserver/symbolsinformation/toolsSymbolReference';
 
 export class ALTableExtWizardPage extends ALTableBasedWizardPage {
     private _tableExtWizardData : ALTableExtWizardData;
@@ -33,10 +34,25 @@ export class ALTableExtWizardPage extends ALTableBasedWizardPage {
     
         await this.finishObjectIdReservation(this._tableExtWizardData);
 
+        //get namespaces information
+        let referencedObjects: ToolsSymbolReference[] = [];
+        if (this._tableExtWizardData.selectedTable) {
+            referencedObjects.push({
+                nameWithNamespaceOrId: this._tableExtWizardData.selectedTable,
+                typeName: 'Table'
+            });
+        }
+
+        let fileNamespaces = await this.getNamespacesInformation('TableExtension', referencedObjects);
+        if (fileNamespaces) {
+            this._tableExtWizardData.objectNamespace = fileNamespaces.namespaceName;
+            this._tableExtWizardData.objectUsings = fileNamespaces.usings;
+        }
+
         //build new object
         var builder : ALTableExtSyntaxBuilder = new ALTableExtSyntaxBuilder();
         var source = builder.buildFromTableExtWizardData(this._settings.getDestDirectoryUri(), this._tableExtWizardData);
-        this.createObjectExtensionFile('TableExtension', this._tableExtWizardData.objectId, this._tableExtWizardData.objectName, this._tableExtWizardData.selectedTable!.name!, source);
+        this.createObjectExtensionFile('TableExtension', this._tableExtWizardData.objectId, this._tableExtWizardData.objectName, this._tableExtWizardData.selectedTable!, source);
 
         return true;
     }

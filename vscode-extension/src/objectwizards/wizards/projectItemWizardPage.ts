@@ -9,6 +9,9 @@ import { ToolsGetProjectSettingsRequest } from '../../langserver/toolsGetProject
 import { ToolsGetProjectSettingsResponse } from '../../langserver/toolsGetProjectSettingsResponse';
 import { ALObjectWizardData } from './alObjectWizardData';
 import { ICRSExtensionPublicApi } from '../../CRSExtensionPublicApiInterfaces';
+import { ToolsGetNewFileRequiredInterfacesResponse } from '../../langserver/toolsGetNewFileRequiredInterfacesResponse';
+import { ToolsGetNewFileRequiredInterfacesRequest } from '../../langserver/toolsGetNewFileRequiredInterfacesRequest';
+import { ToolsSymbolReference } from '../../langserver/symbolsinformation/toolsSymbolReference';
 
 export class ProjectItemWizardPage extends BaseWebViewEditor {
     protected _toolsExtensionContext : DevToolsExtensionContext;
@@ -114,23 +117,41 @@ export class ProjectItemWizardPage extends BaseWebViewEditor {
         let destPath = this.getDestFilePath(this._settings.destDirectoryPath, objectType);
         if (destPath) {
             let fullPath : string | undefined = FileBuilder.generateObjectFileInDir(destPath, fileName, content);
-            if (fullPath)
+            if (fullPath) {
                 FileBuilder.showFile(fullPath);
+            }
         }
+    }
+
+    protected async getNamespacesInformation(objectType: string, referencedObjects: ToolsSymbolReference[] | undefined) : Promise<ToolsGetNewFileRequiredInterfacesResponse | undefined> {
+        //get namespaces information
+        let destFilePath = this.getDestFilePath(this._settings.destDirectoryPath, objectType);
+        if (!destFilePath) {
+            return undefined;
+        }
+        destFilePath = path.join(destFilePath, "newFile.al");   //this file won't be saved, it is just temporary name
+
+        let alSettings = vscode.workspace.getConfiguration("al", vscode.Uri.file(destFilePath));
+        let rootNamespace = alSettings.get<string>("rootNamespace");       
+
+        return await this._toolsExtensionContext.toolsLangServerClient.getNewFileRequiredInterfaces(
+            new ToolsGetNewFileRequiredInterfacesRequest(true, destFilePath, rootNamespace, referencedObjects));
     }
 
     protected getDestFilePath(targetPath: string | undefined, objectType: string) : string | undefined {
         //target path has been specified - do not use crs reorganize settings
-        if (targetPath)
+        if (targetPath) {
             return targetPath;
+        }
         
         let workspacePathSelected: boolean = false;
         
         //no path - select current workspace folder
         if (!targetPath) {
             targetPath = this._toolsExtensionContext.alLangProxy.getCurrentWorkspaceFolderPath();
-            if (!targetPath)
+            if (!targetPath) {
                 return undefined;
+            }
             workspacePathSelected = true;
         }
           

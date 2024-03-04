@@ -258,16 +258,19 @@ namespace AnZwDev.ALTools.CodeCompletion
         private void CreateCompletionItems(ALProject project, ALObjectType objectType, CodeCompletionParameters parameters, List<CodeCompletionItem> completionItems, bool asTemporaryVariable, bool addSemicolon, bool addByVarDeclaration, bool useNamespaces, Position usingPosition, HashSet<string> usings)
         {
             var hasUsings = ((usings != null) && (usings.Count > 0));
-            var typesCollection = project.GetAllSymbolReferences().GetAllObjects(objectType);
+            var objectsCollection = project
+                .SymbolsWithDependencies
+                .GetObjectsCollection(objectType);
+            var objectsEnumerable = objectsCollection.GetAll(true);
 
-            foreach (var type in typesCollection)
+            foreach (var type in objectsEnumerable)
             {
                 var varName = type.Name;
                 if ((parameters == null) || (!parameters.KeepVariableNamesAffixes))
                     varName = varName.RemovePrefixSuffix(project.MandatoryPrefixes, project.MandatorySuffixes, project.MandatoryAffixes, project.AdditionalMandatoryAffixesPatterns);
                 varName = ALSyntaxHelper.ObjectNameToVariableNamePart(varName);
 
-                var addTemporary = (asTemporaryVariable) && (!varName.StartsWith(_tempPrefix, StringComparison.CurrentCultureIgnoreCase));
+                var addTemporary = (asTemporaryVariable) && (!varName.StartsWith(_tempPrefix, StringComparison.OrdinalIgnoreCase));
 
                 if (addTemporary)
                     varName = _tempPrefix + varName;

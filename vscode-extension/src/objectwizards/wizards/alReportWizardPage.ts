@@ -6,6 +6,7 @@ import { ALReportWizardData } from './alReportWizardData';
 import { ALReportSyntaxBuilder } from '../syntaxbuilders/alReportSyntaxBuilder';
 import { DevToolsExtensionContext } from '../../devToolsExtensionContext';
 import { ALObjectWizardSettings } from './alObjectWizardSettings';
+import { ToolsSymbolReference } from '../../langserver/symbolsinformation/toolsSymbolReference';
 
 export class ALReportWizardPage extends ALTableBasedWizardPage {
     protected _reportWizardData : ALReportWizardData;
@@ -38,6 +39,21 @@ export class ALReportWizardPage extends ALTableBasedWizardPage {
         }
 
         await this.finishObjectIdReservation(this._reportWizardData);
+
+        //get namespaces information
+        let referencedObjects: ToolsSymbolReference[] = [];
+        if (this._reportWizardData.selectedTable) {
+            referencedObjects.push({
+                nameWithNamespaceOrId: this._reportWizardData.selectedTable,
+                typeName: 'Table'
+            });
+        }
+
+        let fileNamespaces = await this.getNamespacesInformation('Report', referencedObjects);
+        if (fileNamespaces) {
+            this._reportWizardData.objectNamespace = fileNamespaces.namespaceName;
+            this._reportWizardData.objectUsings = fileNamespaces.usings;
+        }
 
         //load project settings from the language server
         this._reportWizardData.projectSettings = await this.getProjectSettings();

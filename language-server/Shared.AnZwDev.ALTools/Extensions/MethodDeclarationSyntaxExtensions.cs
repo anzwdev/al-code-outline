@@ -13,7 +13,7 @@ namespace AnZwDev.ALTools.Extensions
         {
             return
                 (syntax.Attributes != null) &&
-                (syntax.Attributes.Where(p => (p.Name != null) && (p.Name.ToString().Equals("EventSubscriber", StringComparison.CurrentCultureIgnoreCase))).Any());
+                (syntax.Attributes.Where(p => (p.Name != null) && (p.Name.ToString().Equals("EventSubscriber", StringComparison.OrdinalIgnoreCase))).Any());
         }
 
 

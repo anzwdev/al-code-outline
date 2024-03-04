@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using System.Text;
 using AnZwDev.ALTools.ALSymbolReferences;
-using AnZwDev.ALTools.ALSymbolReferences.MergedReferences;
 using AnZwDev.ALTools.Workspace.SymbolReferences;
 
 namespace AnZwDev.ALTools.Workspace.SymbolsInformation
@@ -17,7 +16,8 @@ namespace AnZwDev.ALTools.Workspace.SymbolsInformation
         public List<CodeunitInformation> GetCodeunits(ALProject project)
         {
             var infoList = new List<CodeunitInformation>();
-            var codeunitsEnumerable = GetALAppObjectsCollection(project);
+            var codeunitsCollection = GetALAppObjectsCollection(project);
+            var codeunitsEnumerable = codeunitsCollection.GetAll();
             foreach (var codeunit in codeunitsEnumerable)
                 infoList.Add(new CodeunitInformation(codeunit));
             return infoList;

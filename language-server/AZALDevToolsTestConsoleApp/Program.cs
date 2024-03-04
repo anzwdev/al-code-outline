@@ -24,6 +24,9 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using static System.Net.Mime.MediaTypeNames;
+using AnZwDev.ALTools.Server.Contracts.SymbolsInformation;
+using System.Runtime.Serialization;
+using System.Data;
 
 namespace AZALDevToolsTestConsoleApp
 {
@@ -44,10 +47,14 @@ namespace AZALDevToolsTestConsoleApp
             ImageInformationProvider provider = new();
             List<ImageInformation> images = provider.GetActionImages();
 
-
             //string filePath = "C:\\Projects\\Sandboxes\\al-test-projects\\small\\Pag50000.MySmallTableList.al";
             //string filePath = "C:\\Projects\\Sandboxes\\al-test-projects\\BC184TestProject\\Pag50100.MyPageEvS.al";
             string filePath = "C:\\Projects\\Sandboxes\\al-test-projects\\SmallBC23\\PTEMagic.Codeunit.al";
+
+
+
+
+
 
             //test project
             ALProjectSource[] projects =
@@ -62,6 +69,7 @@ namespace AZALDevToolsTestConsoleApp
             DCDuplicateCodeAnalyzer duplicateAnalyzer = new DCDuplicateCodeAnalyzer(3, AnZwDev.ALTools.ALSymbols.Internal.ConvertedObsoleteState.None);
             var duplicatesList = duplicateAnalyzer.FindDuplicates(host.ALDevToolsServer.Workspace, null);
 
+            /*
             Helpers.CopyFolder("C:\\Projects\\Sandboxes\\al-test-projects\\SmallBC23.Backup", "C:\\Projects\\Sandboxes\\al-test-projects\\SmallBC23");
             AddProjectNamespacesConverter projectNamespacesConverter = new AddProjectNamespacesConverter();
             projectNamespacesConverter.AddNamespacesToProject(
@@ -69,7 +77,7 @@ namespace AZALDevToolsTestConsoleApp
                 host.ALDevToolsServer.Workspace.Projects[0],
                 "AN.Demo",
                 true);
-
+            */
 
             //filePath = "C:\\Projects\\Sandboxes\\al-test-projects\\SmallBC18\\Pag50104.MyPrefixMyPageCard.al";
             //filePath = "C:\\Projects\\Sandboxes\\al-test-projects\\SmallBC18\\permissionset-Ext50101.MyPermSetExt03.al";
@@ -117,9 +125,9 @@ namespace AZALDevToolsTestConsoleApp
 
             pm.Add("includeInterfaces", "true");
 
+            pm.Add("reuseToolTips", "true");
 
             ALProject project = host.ALDevToolsServer.Workspace.Projects[0];
-
 
             Helpers.CopyFolder("C:\\Projects\\Sandboxes\\al-test-projects\\SmallBC23.Backup", "C:\\Projects\\Sandboxes\\al-test-projects\\SmallBC23");
             ALSymbolInfoSyntaxTreeReader syntaxTreeReader = new(true);
@@ -135,11 +143,11 @@ namespace AZALDevToolsTestConsoleApp
             //WorkspaceCommandResult o = host.ALDevToolsServer.WorkspaceCommandsManager.RunCommand("fixIdentifiersCase", content, projects[0].folderPath, filePath, null, pm, null);
 
             //WorkspaceCommandResult o = host.ALDevToolsServer.WorkspaceCommandsManager.RunCommand("removeUnusedVariables", content, projects[0].folderPath, filePath, null, pm, null);
-            WorkspaceCommandResult o = host.ALDevToolsServer.WorkspaceCommandsManager.RunCommand("convertObjectIdsToNames", content, projects[0].folderPath, filePath, null, pm, null);
+            //WorkspaceCommandResult o = host.ALDevToolsServer.WorkspaceCommandsManager.RunCommand("convertObjectIdsToNames", content, projects[0].folderPath, filePath, null, pm, null);
             //WorkspaceCommandResult o = host.ALDevToolsServer.WorkspaceCommandsManager.RunCommand("addParentheses", content, projects[0].folderPath, filePath, null, pm, null);
             //WorkspaceCommandResult o = host.ALDevToolsServer.WorkspaceCommandsManager.RunCommand("sortVariables", content, projects[0].folderPath, filePath, null, pm, null);
             //WorkspaceCommandResult o = host.ALDevToolsServer.WorkspaceCommandsManager.RunCommand("removeBeginEnd", content, projects[0], filePath, null, pm);
-            //WorkspaceCommandResult o = host.ALDevToolsServer.WorkspaceCommandsManager.RunCommand("addToolTips", content, projects[0], filePath, null, pm);
+            //WorkspaceCommandResult o = host.ALDevToolsServer.WorkspaceCommandsManager.RunCommand("addToolTips", content, projects[0].folderPath, filePath, null, pm, null, null);
             //WorkspaceCommandResult o = host.ALDevToolsServer.WorkspaceCommandsManager.RunCommand("refreshToolTips", content, projects[0], filePath, null, pm);
             //WorkspaceCommandResult o = host.ALDevToolsServer.WorkspaceCommandsManager.RunCommand("sortProperties", content, projects[0], filePath, null, pm);
             //WorkspaceCommandResult o = host.ALDevToolsServer.WorkspaceCommandsManager.RunCommand("removeEmptyLines", content, projects[0].folderPath, filePath, null, pm, null);
@@ -152,21 +160,21 @@ namespace AZALDevToolsTestConsoleApp
             //WorkspaceCommandResult o = host.ALDevToolsServer.WorkspaceCommandsManager.RunCommand("generateCSVXmlPortHeaders", content, projects[0].folderPath, filePath, null, pm, null);
             //WorkspaceCommandResult o = host.ALDevToolsServer.WorkspaceCommandsManager.RunCommand("removeRedundantDataClassification", content, projects[0].folderPath, filePath, null, pm, null);
             //WorkspaceCommandResult o = host.ALDevToolsServer.WorkspaceCommandsManager.RunCommand("sortProcedures", content, projects[0].folderPath, filePath, null, pm, null);
-            //WorkspaceCommandResult o = host.ALDevToolsServer.WorkspaceCommandsManager.RunCommand("fixIdentifiersCase", content, projects[0].folderPath, filePath, null, pm, null);
+            WorkspaceCommandResult o = host.ALDevToolsServer.WorkspaceCommandsManager.RunCommand("fixIdentifiersCase", content, projects[0].folderPath, filePath, null, pm, null, null);
             //WorkspaceCommandResult o = host.ALDevToolsServer.WorkspaceCommandsManager.RunCommand("oneStatementPerLine", content, projects[0].folderPath, filePath, null, pm, null);
             //WorkspaceCommandResult o = host.ALDevToolsServer.WorkspaceCommandsManager.RunCommand("addMissingCaseLines", content, projects[0].folderPath, filePath, null, pm, null);
             //WorkspaceCommandResult o = host.ALDevToolsServer.WorkspaceCommandsManager.RunCommand("addTooTipsEndingDots", content, projects[0].folderPath, filePath, null, pm, null);
             //WorkspaceCommandResult o = host.ALDevToolsServer.WorkspaceCommandsManager.RunCommand("removeProceduresSemicolon", content, projects[0].folderPath, filePath, null, pm, null);
             //WorkspaceCommandResult o = host.ALDevToolsServer.WorkspaceCommandsManager.RunCommand("addUsingRegion", content, projects[0].folderPath, filePath, null, pm, null);
 
-            var allObj = project.GetAllSymbolReferences()
-                .GetAllObjects<ALAppTable>(x => x.Tables)
-                .ToList();
+            var allObj = project
+                .SymbolsWithDependencies
+                .Tables;
 
             var pageReference = new ALObjectReference(null, "MyTestPage");
             var page = project
-                .GetAllSymbolReferences()
-                .GetAllObjects<ALAppPage>(x => x.Pages)
+                .SymbolsWithDependencies
+                .Pages
                 .FindFirst(pageReference);
             if (page != null)
             {

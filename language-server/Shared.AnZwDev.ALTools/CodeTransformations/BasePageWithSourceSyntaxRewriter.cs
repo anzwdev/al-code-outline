@@ -65,8 +65,8 @@ namespace AnZwDev.ALTools.CodeTransformations
                 if (!pageReference.IsEmpty())
                 {
                     var page = this.Project
-                        .GetAllSymbolReferences()
-                        .GetAllObjects<ALAppPage>(x => x.Pages)
+                        .SymbolsWithDependencies
+                        .Pages
                         .FindFirst(pageReference);
                     if (page != null)
                     {
@@ -133,7 +133,7 @@ namespace AnZwDev.ALTools.CodeTransformations
 
                 if ((fieldsList != null) && (fieldName != null))
                 {
-                    TableFieldInformaton tableField = fieldsList.Where(p => (fieldName.Equals(p.Name, StringComparison.CurrentCultureIgnoreCase))).FirstOrDefault();
+                    TableFieldInformaton tableField = fieldsList.Where(p => (fieldName.Equals(p.Name, StringComparison.OrdinalIgnoreCase))).FirstOrDefault();
                     if (tableField != null)
                     {
                         description = tableField.Description;
@@ -220,7 +220,7 @@ namespace AnZwDev.ALTools.CodeTransformations
             if ((variable.TypeDefinition == null) ||
                 (variable.TypeDefinition.Name == null) ||
                 (variable.TypeDefinition.Subtype == null) ||                
-                (!variable.TypeDefinition.Name.Equals("Record", StringComparison.CurrentCultureIgnoreCase)) ||
+                (!variable.TypeDefinition.Name.Equals("Record", StringComparison.OrdinalIgnoreCase)) ||
                 (String.IsNullOrWhiteSpace(variable.TypeDefinition.Subtype.Name)))
                 return null;
 
@@ -243,7 +243,7 @@ namespace AnZwDev.ALTools.CodeTransformations
             if ((propertySyntax != null) && (propertySyntax.Value != null))
             {
                 string value = propertySyntax.Value.ToString();
-                return ((value != null) && (value.Equals("false", StringComparison.CurrentCultureIgnoreCase)));
+                return ((value != null) && (value.Equals("false", StringComparison.OrdinalIgnoreCase)));
             }
             return false;
         }
@@ -255,10 +255,13 @@ namespace AnZwDev.ALTools.CodeTransformations
 
         private void SetTable(ALObjectReference alObjectReference)
         {
-            this.Table = Project
-                .GetAllSymbolReferences()
-                .GetAllObjects<ALAppTable>(x => x.Tables)
-                .FindFirst(alObjectReference);
+            if (alObjectReference.IsEmpty())
+                this.Table = null;
+            else
+                this.Table = Project
+                    .SymbolsWithDependencies
+                    .Tables
+                    .FindFirst(alObjectReference);
         }
 
 

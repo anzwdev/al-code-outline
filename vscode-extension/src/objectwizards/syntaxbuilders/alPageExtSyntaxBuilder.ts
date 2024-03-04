@@ -10,6 +10,9 @@ export class ALPageExtSyntaxBuilder {
         //generate file content
         let writer : ALSyntaxWriter = new ALSyntaxWriter(destUri);
 
+        writer.writeNamespace(data.objectNamespace);
+        writer.writeUsings(data.objectUsings);
+
         writer.writeStartExtensionObject("pageextension", data.objectId, data.objectName, data.basePage);
 
         writer.writeEndObject();

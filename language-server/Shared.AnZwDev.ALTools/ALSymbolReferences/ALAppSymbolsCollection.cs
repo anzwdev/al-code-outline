@@ -4,11 +4,12 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using AnZwDev.ALTools.Core;
 using AnZwDev.ALTools.ALSymbols;
 
 namespace AnZwDev.ALTools.ALSymbolReferences
 {
-    public class ALAppSymbolsCollection<T> : List<T>, IALAppSymbolsCollection where T : ALAppBaseElement
+    public class ALAppSymbolsCollection<T> : ExtendableList<T>, IALAppSymbolsCollection where T : ALAppBaseElement
     {
 
         public ALAppSymbolsCollection()

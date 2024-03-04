@@ -13,6 +13,9 @@ export class ALQuerySyntaxBuilder {
         let writer : ALSyntaxWriter = new ALSyntaxWriter(destUri);
         let isApi : boolean = (data.queryType.toLowerCase() === "api");
 
+        writer.writeNamespace(data.objectNamespace);
+        writer.writeUsings(data.objectUsings);
+
         writer.writeStartObject("query", data.objectId, data.objectName);
         writer.addProperty("QueryType", data.queryType);
 
@@ -47,10 +50,10 @@ export class ALQuerySyntaxBuilder {
     }
 
     private writeDataSet(writer : ALSyntaxWriter, data : ALQueryWizardData, isApi: boolean) {
-        let dataItemName = isApi?writer.createApiName(data.selectedTable!.name!):writer.createName(data.selectedTable!.name!);
+        let dataItemName = isApi?writer.createApiName(data.selectedTable!):writer.createName(data.selectedTable!);
 
         writer.writeStartNamedBlock("elements");
-        writer.writeStartNameSourceBlock("dataitem", writer.encodeName(dataItemName), writer.encodeName(data.selectedTable!.name!));
+        writer.writeStartNameSourceBlock("dataitem", writer.encodeName(dataItemName), writer.encodeName(data.selectedTable!));
         if (data.selectedFieldList) {
             for (let i=0; i<data.selectedFieldList.length; i++) {
                 let columnName = isApi?writer.createApiName(data.selectedFieldList[i].name!):writer.createName(data.selectedFieldList[i].name!);

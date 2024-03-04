@@ -165,20 +165,20 @@ namespace AnZwDev.ALTools.CodeTransformations
                         return true;
                     case ConvertedSyntaxKind.PageObject:
                         string pageType = ALSyntaxHelper.DecodeName(node.GetProperty("PageType")?.Value?.ToString());
-                        return ((pageType == null) || (!pageType.Equals("API", StringComparison.CurrentCultureIgnoreCase)));
+                        return ((pageType == null) || (!pageType.Equals("API", StringComparison.OrdinalIgnoreCase)));
                     case ConvertedSyntaxKind.PageExtensionObject:
                         var pageExtension = node as PageExtensionSyntax;
                         var basePageReference = new ALObjectReference(Usings, pageExtension?.BaseObject?.ToString());
                         if (!basePageReference.IsEmpty())
                         {
                             var basePage = this.Project
-                                .GetAllSymbolReferences()
-                                .GetAllObjects<ALAppPage>(x => x.Pages)
-                                .FindFirst<ALAppPage>(basePageReference);
+                                .SymbolsWithDependencies
+                                .Pages
+                                .FindFirst(basePageReference);
                             if ((basePage != null) && (basePage.Properties != null))
                             {
-                                var basePageType = basePage.Properties.Where(p => ((p.Name != null) && (p.Name.Equals("PageType", StringComparison.CurrentCultureIgnoreCase)))).FirstOrDefault();
-                                return ((basePageType?.Value == null) || (!basePageType.Value.Equals("API", StringComparison.CurrentCultureIgnoreCase)));
+                                var basePageType = basePage.Properties.Where(p => ((p.Name != null) && (p.Name.Equals("PageType", StringComparison.OrdinalIgnoreCase)))).FirstOrDefault();
+                                return ((basePageType?.Value == null) || (!basePageType.Value.Equals("API", StringComparison.OrdinalIgnoreCase)));
                             }
                         }
                         return true;

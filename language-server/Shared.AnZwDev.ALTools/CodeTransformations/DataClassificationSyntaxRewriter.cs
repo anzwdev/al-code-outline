@@ -39,7 +39,7 @@ namespace AnZwDev.ALTools.CodeTransformations
             {
                 _tableDataClassification = propertySyntax.Value.ToString();
                 if ((String.IsNullOrWhiteSpace(_tableDataClassification)) ||
-                    (_tableDataClassification.Equals("ToBeClassified", StringComparison.CurrentCultureIgnoreCase)))
+                    (_tableDataClassification.Equals("ToBeClassified", StringComparison.OrdinalIgnoreCase)))
                 {
                     NoOfChanges++;
                     node = node.ReplaceNode(propertySyntax, this.CreateDataClassificationProperty(node));
@@ -60,7 +60,7 @@ namespace AnZwDev.ALTools.CodeTransformations
         public override SyntaxNode VisitField(FieldSyntax node)
         {
             PropertyValueSyntax fieldClass = node.GetPropertyValue("FieldClass");
-            if ((fieldClass == null) || (fieldClass.ToString().Equals("Normal", StringComparison.CurrentCultureIgnoreCase)))
+            if ((fieldClass == null) || (fieldClass.ToString().Equals("Normal", StringComparison.OrdinalIgnoreCase)))
             {
                 PropertySyntax propertySyntax = node.GetProperty("DataClassification");
                 if (propertySyntax == null)
@@ -79,11 +79,11 @@ namespace AnZwDev.ALTools.CodeTransformations
                 {
                     string valueText = propertySyntax.Value.ToString();
                     if ((String.IsNullOrWhiteSpace(valueText)) ||
-                        (valueText.Equals("ToBeClassified", StringComparison.CurrentCultureIgnoreCase)))
+                        (valueText.Equals("ToBeClassified", StringComparison.OrdinalIgnoreCase)))
                     {
                         NoOfChanges++;
 
-                        if ((!String.IsNullOrWhiteSpace(_tableDataClassification)) && (_tableDataClassification.Equals(DataClassification, StringComparison.CurrentCultureIgnoreCase)))
+                        if ((!String.IsNullOrWhiteSpace(_tableDataClassification)) && (_tableDataClassification.Equals(DataClassification, StringComparison.OrdinalIgnoreCase)))
                             return node.WithPropertyList(
                                 node.PropertyList.WithProperties(
                                     node.PropertyList.Properties.Remove(propertySyntax)));

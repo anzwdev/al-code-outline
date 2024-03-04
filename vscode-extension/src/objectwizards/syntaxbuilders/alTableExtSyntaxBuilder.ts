@@ -10,7 +10,10 @@ export class ALTableExtSyntaxBuilder {
         //generate file content
         let writer : ALSyntaxWriter = new ALSyntaxWriter(destUri);
 
-        writer.writeStartExtensionObject("tableextension", data.objectId, data.objectName, data.selectedTable!.name!);
+        writer.writeNamespace(data.objectNamespace);
+        writer.writeUsings(data.objectUsings);
+
+        writer.writeStartExtensionObject("tableextension", data.objectId, data.objectName, data.selectedTable!);
 
         //write fields here
         writer.writeStartFields();

@@ -9,6 +9,9 @@ export class ALPermissionSetSyntaxBuilder {
     buildFromPermissionSetWizardData(destUri: vscode.Uri | undefined, data : ALPermissionSetWizardData) : string {
         let writer : ALSyntaxWriter = new ALSyntaxWriter(destUri);
 
+        writer.writeNamespace(data.objectNamespace);
+        writer.writeUsings(data.objectUsings);
+
         writer.writeStartObject("permissionset", data.objectId, data.objectName);
         writer.addProperty("Assignable", "true");
 

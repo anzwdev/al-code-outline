@@ -126,6 +126,10 @@ export class AZSymbolInformation {
             (this.kind == AZSymbolKind.Entitlement));
     }
 
+    public isTrigger() : boolean {
+        return (this.kind === AZSymbolKind.TriggerDeclaration);
+    }
+
     public isMethod() : boolean {
         return ((this.kind == AZSymbolKind.TestDeclaration) ||
             (this.kind == AZSymbolKind.ConfirmHandlerDeclaration) ||
@@ -516,6 +520,35 @@ export class AZSymbolInformation {
             default:
                 return "Undefined";
         }
+    }
+
+    hasMethods(): boolean {
+        if ((this.isALObject()) && (this.childSymbols)) {
+            for (let i=0; i<this.childSymbols.length; i++) {
+                if (this.childSymbols[i].isMethod()) {
+                    return true;
+                }
+            }
+        }   
+        return false;
+    }
+
+    hasTriggers(): boolean {
+        if (this.childSymbols) {
+            for (let i=0; i<this.childSymbols.length; i++) {
+                if (this.childSymbols[i].isTrigger()) {
+                    return true;
+                }
+            }
+
+            for (let i=0; i<this.childSymbols.length; i++) {
+                if (this.childSymbols[i].hasTriggers()) {
+                    return true;
+                }
+            }
+        }   
+        
+        return false;
     }
 
 }

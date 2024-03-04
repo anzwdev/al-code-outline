@@ -5,7 +5,6 @@ using System.Linq;
 using System.Text;
 using AnZwDev.ALTools.ALSymbolReferences;
 using AnZwDev.ALTools.Extensions;
-using AnZwDev.ALTools.ALSymbolReferences.MergedReferences;
 using AnZwDev.ALTools.Workspace.SymbolsInformation.Internal;
 using AnZwDev.ALTools.Workspace.SymbolReferences;
 using AnZwDev.ALTools.ALSymbolReferences.Search;
@@ -31,8 +30,10 @@ namespace AnZwDev.ALTools.Workspace.SymbolsInformation
         {
             var infoList = new List<PageInformation>();
             var alAppPagesCollection = this.GetALAppObjectsCollection(project);
-            foreach (ALAppPage alAppPage in alAppPagesCollection)
-                infoList.Add(new PageInformation(alAppPage));
+            var alAppPagesEnumerable = alAppPagesCollection.GetAll();
+            if (alAppPagesEnumerable != null)
+                foreach (ALAppPage alAppPage in alAppPagesEnumerable)
+                    infoList.Add(new PageInformation(alAppPage));
             return infoList;
         }
 
@@ -42,7 +43,10 @@ namespace AnZwDev.ALTools.Workspace.SymbolsInformation
 
         public PageInformation GetPageDetails(ALProject project, ALObjectReference pageReference, bool getExistingFields, bool getAvailableFields, bool getToolTips, IEnumerable<string> toolTipsSourceDependencies)
         {
-            ALAppPage pageObject = this.GetALAppObjectsCollection(project).FindFirst(pageReference);
+            ALAppPage pageObject = project
+                .SymbolsWithDependencies
+                .Pages
+                .FindFirst(pageReference);
             if (pageObject == null)
                 return null;
             PageInformation pageInformation = new PageInformation(pageObject);
@@ -141,8 +145,9 @@ namespace AnZwDev.ALTools.Workspace.SymbolsInformation
             var tableReference = page.GetSourceTable();
             if (!tableReference.IsEmpty())
             {
-                var table = project.GetAllSymbolReferences()
-                    .GetAllObjects<ALAppTable>(x => x.Tables)
+                var table = project
+                    .SymbolsWithDependencies
+                    .Tables
                     .FindFirst(tableReference);
                 if (table != null)
                 {
@@ -163,6 +168,7 @@ namespace AnZwDev.ALTools.Workspace.SymbolsInformation
                 foreach (ALAppPage page in project.Symbols.Pages)
                     CollectPageTableIdentifiers(tableReferencesCollection, project, page);
             }
+
             //collect tables from page extensions
             if (project.Symbols.PageExtensions != null)
             {
@@ -171,8 +177,9 @@ namespace AnZwDev.ALTools.Workspace.SymbolsInformation
                     var pageReference = pageExtension.GetTargetObjectReference();
                     if (!pageReference.IsEmpty())
                     { 
-                        var page = project.GetAllSymbolReferences()
-                            .GetAllObjects<ALAppPage>(x => x.Pages)
+                        var page = project
+                            .SymbolsWithDependencies
+                            .Pages
                             .FindFirst(pageReference);
                         if (page != null)
                             CollectPageTableIdentifiers(tableReferencesCollection, project, page);
@@ -195,26 +202,26 @@ namespace AnZwDev.ALTools.Workspace.SymbolsInformation
             //find source table if not specified
             if (tableReference.IsEmpty())
             {
-                if (objectType.Equals("PageExtension", StringComparison.CurrentCultureIgnoreCase))
+                if (objectType.Equals("PageExtension", StringComparison.OrdinalIgnoreCase))
                 {
                     var pageExtension = project
-                        .GetAllSymbolReferences()
-                        .GetAllObjects<ALAppPageExtension>(x => x.PageExtensions)
+                        .SymbolsWithDependencies
+                        .PageExtensions
                         .FindFirst(fieldOwnerIdentifier);
                     if (pageExtension != null)
                     {
                         var page = project
-                            .GetAllSymbolReferences()
-                            .GetAllObjects<ALAppPage>(x => x.Pages)
+                            .SymbolsWithDependencies
+                            .Pages
                             .FindFirst(pageExtension.GetTargetObjectReference());
                         tableReference = page.GetSourceTable();
                     }
                 }
-                else if (objectType.Equals("Page", StringComparison.CurrentCultureIgnoreCase))
+                else if (objectType.Equals("Page", StringComparison.OrdinalIgnoreCase))
                 {
                     var page = project
-                        .GetAllSymbolReferences()
-                        .GetAllObjects<ALAppPage>(x => x.Pages)
+                        .SymbolsWithDependencies
+                        .Pages
                         .FindFirst(fieldOwnerIdentifier);
                     tableReference = page.GetSourceTable();
                 }
@@ -225,8 +232,8 @@ namespace AnZwDev.ALTools.Workspace.SymbolsInformation
 
             //find table
             var table = project
-                .GetAllSymbolReferences()
-                .GetAllObjects<ALAppTable>(x => x.Tables)
+                .SymbolsWithDependencies
+                .Tables
                 .FindFirst(tableReference);
             if (table == null)
                 return null;
@@ -263,10 +270,9 @@ namespace AnZwDev.ALTools.Workspace.SymbolsInformation
 
             //collect pages with controls
             IEnumerable<ALAppPage> alAppPagesCollection = project
-                .GetAllSymbolReferences()
-                .FilterByName(dependenciesHashSet)
-                .GetAllObjects<ALAppPage>(x => x.Pages);
-
+                .SymbolsWithDependencies
+                .Pages
+                .Filter(dependenciesHashSet);
             foreach (ALAppPage alAppPage in alAppPagesCollection)
             {
                 var tableReference = alAppPage.GetSourceTable();
@@ -280,10 +286,9 @@ namespace AnZwDev.ALTools.Workspace.SymbolsInformation
 
             //apply extensions
             IEnumerable<(ALObjectIdentifier, ALAppPageExtension)> alAppPageExtensionsCollection = project
-                .GetAllSymbolReferences()
-                .FilterByName(dependenciesHashSet)
-                .GetAllObjects<ALAppPageExtension>(x => x.PageExtensions)
-                .FindAllExtensions(pagesIdentifiersCache);
+                .SymbolsWithDependencies
+                .PageExtensions
+                .GetObjectExtensions(pagesIdentifiersCache, dependenciesHashSet);
 
             foreach ((var pageIdentifier, var alAppPageExtension) in alAppPageExtensionsCollection)
                 pagesCacheDictionary[pageIdentifier.Id].ApplyPageExtension(alAppPageExtension);

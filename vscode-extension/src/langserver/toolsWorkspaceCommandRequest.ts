@@ -8,13 +8,15 @@ export class ToolsWorkspaceCommandRequest {
     range: TextRange | undefined;
     parameters: any;
     excludeFiles: string[] | undefined;
+    includeFiles: string[] | undefined;
 
     constructor(newCommand: string | undefined, newSource: string | undefined,
         newProjectPath: string | undefined, 
         newFilePath: string | undefined,
         newRange: TextRange | undefined, 
         newParameters: any,
-        newExcludeFiles: string[] | undefined) {
+        newExcludeFiles: string[] | undefined,
+        newIncludeFiles: string[] | undefined) {
         this.command = newCommand;
         this.source = newSource;
         this.projectPath = newProjectPath;
@@ -22,6 +24,7 @@ export class ToolsWorkspaceCommandRequest {
         this.range = newRange;
         this.parameters = newParameters;
         this.excludeFiles = newExcludeFiles;
+        this.includeFiles = newIncludeFiles;
     }
 
 }

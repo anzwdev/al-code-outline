@@ -50,7 +50,7 @@ namespace AnZwDev.ALTools.ALLanguageInformation
                     foreach (string name in imagesDictionary.Keys)
                     {
                         string content = Uri.UnescapeDataString(imagesDictionary[name]);
-                        if (!content.StartsWith("data:", StringComparison.CurrentCultureIgnoreCase))
+                        if (!content.StartsWith("data:", StringComparison.OrdinalIgnoreCase))
                             content = imageType + content;
                         imagesList.Add(new ImageInformation(name, content));
                     }

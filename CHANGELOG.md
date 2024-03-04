@@ -1,5 +1,30 @@
 # Change Log
 
+## 3.0.57
+ - Issue #419 - Xmlport / XmlPort sync with LinterCop
+ - Issue #520 and #507 - Namespaces support
+ - Issue #521 - Apply Default API settings when creating an api query
+ - Issue #530 - Code Cleanup slow 
+ - Issue #532 - Code Action "Add multiple fields" doesn't work when SourceTable includes a dot
+ - Issue #534 - Text Decorators does not work correctly when app.json is saved as UTF8-BOM
+ - Issue #535 - Separate 'Sort Triggers' action #535
+ - Issue #536 - [TEST] is not converted to [Test] when running "fix Case"
+ - Issue #537 - "Run Code Cleanup on Uncommited Files" requires one click per file
+ - Issue #538 - Issues running cleanup: "Unexpected StringComparison type: 'CurrentCultureIgnoreCase'. Only 'Ordinal' and 'OrdinalIgnoreCase' are supported."
+ - Issue #543 - Major slowdown in "Run Code Cleanup on Uncommitted Files in the Active Project"
+
+Thank you
+ - ChrisBlankDe, cegekaJG for reporting and discussing issue #419
+ - jorispoppe for reporting issue #521
+ - dsaveyn and fvet for reporting issue #530
+ - achim-t for reporting issue #532
+ - zabcik for reporting issue #534
+ - fvet for reporting issue #535
+ - guidorobben for reporting issue #356
+ - NKarolak for reporting issue #537
+ - jwikman for reporting issue #538
+ - cegekaJG for reporting issue #543
+
 ## 3.0.56
  - Issue #507 - Namespaces quick fixes and commands
  - Issue #514 - Code Analyzers: most AppSourceCop rules appear twice

@@ -34,7 +34,7 @@ namespace AnZwDev.ALTools.ALSymbolReferences
             string findNameWithPublisher = publisher + "_" + name;
             for (int i=0; i<this.Count; i++)
             {
-                if ((this[i].NameWithPublisher.Equals(findNameWithPublisher, StringComparison.CurrentCultureIgnoreCase)) &&
+                if ((this[i].NameWithPublisher.Equals(findNameWithPublisher, StringComparison.OrdinalIgnoreCase)) &&
                     (this[i].Version.GreaterOrEqual(findVersion)))
                 {
                     found = this[i];

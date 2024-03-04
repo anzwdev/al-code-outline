@@ -213,7 +213,7 @@ namespace AnZwDev.ALTools.CodeTransformations
                     if (isPermissionSet)
                         this.AddPermission(existingPermissions, permissionsList, objectInformation.Type, objectInformation.Name, equalsToken, executePermissions, leadingTriviaList, spaceTriviaList);
 
-                    if ((objectInformation.Type != null) && (objectInformation.Type.Equals("table", StringComparison.CurrentCultureIgnoreCase)))
+                    if ((objectInformation.Type != null) && (objectInformation.Type.Equals("table", StringComparison.OrdinalIgnoreCase)))
                         this.AddPermission(existingPermissions, permissionsList, "tabledata", objectInformation.Name, equalsToken, tableDataPermissions, leadingTriviaList, spaceTriviaList);
                 }
             }

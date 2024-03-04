@@ -30,7 +30,7 @@ namespace AnZwDev.ALTools.Workspace.SymbolsInformation
             if (this.DataItems == null)
                 return null;
             return this.DataItems
-                .Where(p => (p.Name.Equals(name, StringComparison.CurrentCultureIgnoreCase)))
+                .Where(p => (p.Name.Equals(name, StringComparison.OrdinalIgnoreCase)))
                 .FirstOrDefault();
         }
 

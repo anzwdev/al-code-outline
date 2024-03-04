@@ -86,7 +86,8 @@ When new objects are created, generators use "CRS AL Language Extension" templat
 Extension adds VS Code editor code actions to some of al elements to help developers modify or insert code quickly. At this these types of actions available:
  - Sorting actions that can sort
   - `Sort table fields` available when cursor is at the first line of table, table extension, fields keyword or table/table extension field. It will sort all fields by the field number. 
-  - `Sort procedures` available when cursor is at the first line of a procedure. This action will sort procedures and triggers of the same type (i.e. local) in a natural order
+  - `Sort procedures` available when cursor is at the first line of a procedure or trigger. This action will sort procedures and triggers of the same type (i.e. local) in a natural order
+  - `Sort triggers` available when cursor is at the first line of a trigger. This action will sort triggers
   - `Sort data item columns` available when cursor is at report data item, column or first line of the object declaration. This action will sort all columns inside data item in a natural order. If it is invoked from the first line of the object, it will sort columns inside all data items.
   - `Sort properties` available from the first line of any object declaration. It will sort properties of every element declared inside the object.
   - `Sort variables` available from the first line of any object declaration or from "var" keyword of local or global variables section
@@ -176,6 +177,8 @@ Extension adds a few commands that allow to automatically modify al code in the 
 * `Sort Permissions in the Active Project`: sorts permissions in the current project
 * `Sort Procedures in the Active Editor`: sorts procedures and triggers (sorting triggers is disabled by default) in the current editor
 * `Sort Procedures in the Active Project`: sorts procedures and triggers (sorting triggers is disabled by default) in the current project
+* `Sort Triggers in the Active Editor`: sorts triggers in the current editor
+* `Sort Triggers in the Active Project`: sorts triggers in the current project
 * `Sort Properties in the Active Editor`: sorts properties in the current editor
 * `Sort Properties in the Active Project`: sorts procedures in the current project
 * `Sort Customizations Property in the Active Editor`: sorts Customizations property values in the current editor
@@ -347,6 +350,7 @@ This extension contributes the following settings:
   * `ignoreComments`: removes sections even if it contains comments inside
 * `alOutline.fixCaseRemovesQuotesFromDataTypeIdentifiers`: when set to true, `Fix Identifiers and Keywords Case` commands will remove quotes around identifiers that use al data types as names
 * `alOutline.fixCaseRemovesQuotesFromNonDataTypeIdentifiers`: when set to true, `Fix Identifiers and Keywords Case` commands will remove quotes around identifiers that are not al data type names
+* `alOutline.useBCLinterCopCaseRules`: when set to true, BusinessCentral.LinterCop rules will be used by 'Fix Identifiers Case` commands (i.e. XmlPort instead of Xmlport)
 * `alOutline.variablesSortMode`: allows to select variables sort mode in `Sort variables` commands. There are 4 options available: 
   * `fullTypeName` - this is default value and uses full type name including object type if data type is an object (i.e. `Record Item`), if data type is the same, variables will be sorted by name
   * `mainTypeNameOnly` - uses main type name only and ignores object type names (i.e. `Record` if variable type is `Record Item`), if data type is the same, variables will be sorted by name
@@ -359,10 +363,10 @@ This extension contributes the following settings:
 * `alOutline.additionalMandatoryAffixesPatterns`: Additional list of name affixes patterns, '?' can be used for matching any character. These values are used to remove affixes from names in code actions, commands and code completion
 * `alOutline.dropDownGroupFieldsNamesPatterns`: array of string patters for table DropDown group fields created by "Add DropDown FieldGroups..." commands, you can use "*" for partial name matching, first found field for each setting entry will be used
 * `alOutline.tableDataCaptionFieldsNamesPatterns`: array of string patters for field names for table DataCaptionFields property created by "Add Table DataCaptionFields..." commands, you can use "*" for partial name matching, first found field for each setting entry will be used
-* `alOutline.triggersSortMode` - defines how "sort procedures" commands are sorting triggers, one of these values can be used:
-  * `None` - triggers won't be sorted, this is the default value
+* `alOutline.triggersSortMode` - defines how "sort procedures" and "sort triggers" commands are sorting triggers, one of these values can be used:
+  * `None` - triggers won't be sorted, this is the default value for sort procedures
   * `Name` - triggers will be sorted by name
-  * `NaturalOrder` - trigger will be sorted in the "logical" order (i.e. OnPreDataItem, OnAfterGetRecord, OnPostDataItem)
+  * `NaturalOrder` - trigger will be sorted in the "logical" order (i.e. OnPreDataItem, OnAfterGetRecord, OnPostDataItem), this option will be used by "sort triggers" if `alOutline.triggersSortMode` setting is set to `None`
 * `alOutline.triggersNaturalOrder` - array of objects allowing to override default "natural" triggers order for each al syntax element containing triggers. The "parent" field can contain one of these values: 
   * "Table", 
   * "TableExtension", 

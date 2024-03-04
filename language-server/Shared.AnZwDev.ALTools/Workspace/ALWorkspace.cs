@@ -121,11 +121,11 @@ namespace AnZwDev.ALTools.Workspace
                     if (
                         (
                             (compareId) &&
-                            (id.Equals(project.Properties.Id, StringComparison.CurrentCultureIgnoreCase))
+                            (id.Equals(project.Properties.Id, StringComparison.OrdinalIgnoreCase))
                         ) || (
                             (!compareId) &&
-                            (name.Equals(project.Properties.Name, StringComparison.CurrentCultureIgnoreCase)) &&
-                            (publisher.Equals(project.Properties.Publisher, StringComparison.CurrentCultureIgnoreCase))
+                            (name.Equals(project.Properties.Name, StringComparison.OrdinalIgnoreCase)) &&
+                            (publisher.Equals(project.Properties.Publisher, StringComparison.OrdinalIgnoreCase))
                         ))
                     {
                         if ((foundProject == null) || (project.Properties.Version == null) || (project.Properties.Version.Greater(version)))

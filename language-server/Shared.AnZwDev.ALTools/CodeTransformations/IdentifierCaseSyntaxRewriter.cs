@@ -25,6 +25,7 @@ namespace AnZwDev.ALTools.CodeTransformations
         public SemanticModel SemanticModel { get; set; }
         public bool RemoveQuotesFromDataTypeIdentifiers { get; set; }
         public bool RemoveQuotesFromNonDataTypeIdentifiers { get; set; } = true;
+        public bool UseBCLinterCopCaseRules { get; set; } = false;
 
         private DotNetInformationProvider _dotNetInformationProvider;
         protected DotNetInformationProvider DotNetInformationProvider
@@ -173,7 +174,7 @@ namespace AnZwDev.ALTools.CodeTransformations
                                         if ((property != null) && (property.Name != null) && (property.Name.Identifier != null))
                                         {
                                             string propertyName = property.Name.Identifier.ValueText;
-                                            if ((propertyName != null) && (propertyName.Equals("ApplicationArea", StringComparison.CurrentCultureIgnoreCase)))
+                                            if ((propertyName != null) && (propertyName.Equals("ApplicationArea", StringComparison.OrdinalIgnoreCase)))
                                             {
                                                 newName = ApplicationAreaCaseInformation.Values.FixCase(newName);
                                                 updated = true;
@@ -200,8 +201,12 @@ namespace AnZwDev.ALTools.CodeTransformations
                                     (symbolKind != ConvertedSymbolKind.DotNetAssembly) &&
                                     (symbolKind != ConvertedSymbolKind.DotNetPackage) &&
                                     (symbolKind != ConvertedSymbolKind.DotNetTypeDeclaration) &&
-                                    (symbolKind != ConvertedSymbolKind.DotNet)) 
+                                    (symbolKind != ConvertedSymbolKind.DotNet))
+                                {
                                     newName = info.Symbol.Name;
+                                    if ((symbolKind == ConvertedSymbolKind.Class) && (newName == "Xmlport") && (UseBCLinterCopCaseRules))
+                                        newName = "XmlPort";
+                                }
                             }
 
                             //if identifier is escaped keyword then leave it in that state
@@ -213,7 +218,7 @@ namespace AnZwDev.ALTools.CodeTransformations
                                 bool isKeywordOrDataType = KeywordInformation.IsAnyKeywordOrDataTypeName(newName);
 
                                 if (
-                                    (decodedPrevName.Equals(newName, StringComparison.CurrentCultureIgnoreCase)) && 
+                                    (decodedPrevName.Equals(newName, StringComparison.OrdinalIgnoreCase)) && 
                                     (
                                         (isKeyword) ||
                                         ((!this.RemoveQuotesFromDataTypeIdentifiers) && (isKeywordOrDataType)) ||
@@ -302,7 +307,7 @@ namespace AnZwDev.ALTools.CodeTransformations
                 if ((optionSymbol != null) && (optionSymbol.Type != null))
                 {
                     string newName = optionSymbol.Type.Name;
-                    if ((newName != null) && (newName.Equals(memberName, StringComparison.CurrentCultureIgnoreCase)))
+                    if ((newName != null) && (newName.Equals(memberName, StringComparison.OrdinalIgnoreCase)))
                     {
                         memberName = newName;
                         return true;
@@ -323,7 +328,7 @@ namespace AnZwDev.ALTools.CodeTransformations
                 if ((property != null) && (property.Name != null) && (property.Name.Identifier != null))
                 {
                     string propertyName = property.Name.Identifier.ValueText;
-                    return ((propertyName != null) && (propertyName.Equals("ApplicationArea", StringComparison.CurrentCultureIgnoreCase)));
+                    return ((propertyName != null) && (propertyName.Equals("ApplicationArea", StringComparison.OrdinalIgnoreCase)));
                 }
             }
             return false;

@@ -15,7 +15,7 @@ namespace AnZwDev.ALTools.Extensions
 
             foreach (PropertySyntax property in properties.Properties)
             {
-                if (name.Equals(property.Name.Identifier.ValueText, StringComparison.CurrentCultureIgnoreCase))
+                if (name.Equals(property.Name.Identifier.ValueText, StringComparison.OrdinalIgnoreCase))
                     return property;
             }
             return null;

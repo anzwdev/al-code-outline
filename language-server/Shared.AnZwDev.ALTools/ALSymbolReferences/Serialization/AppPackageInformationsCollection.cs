@@ -46,11 +46,11 @@ namespace AnZwDev.ALTools.ALSymbolReferences.Serialization
                     if (
                         (
                             (compareId) &&
-                            (id.Equals(app.Id, StringComparison.CurrentCultureIgnoreCase))
+                            (id.Equals(app.Id, StringComparison.OrdinalIgnoreCase))
                         ) || (
                             (!compareId) &&
-                            (name.Equals(app.Name, StringComparison.CurrentCultureIgnoreCase)) &&
-                            (publisher.Equals(app.Publisher, StringComparison.CurrentCultureIgnoreCase))
+                            (name.Equals(app.Name, StringComparison.OrdinalIgnoreCase)) &&
+                            (publisher.Equals(app.Publisher, StringComparison.OrdinalIgnoreCase))
                         ))
                     {
                         if ((foundPackage == null) || (app.Version.Greater(version)))

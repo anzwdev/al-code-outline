@@ -24,8 +24,9 @@ namespace AnZwDev.ALTools.Workspace.SymbolsInformation
         public List<ReportInformation> GetReports(ALProject project)
         {
             var infoList = new List<ReportInformation>();
-            var objectEnumerable = GetALAppObjectsCollection(project);
-            foreach (var obj in objectEnumerable)
+            var objectsCollection = GetALAppObjectsCollection(project);
+            var objectsEnumerable = objectsCollection.GetAll();
+            foreach (var obj in objectsEnumerable)
                 infoList.Add(new ReportInformation(obj));
             return infoList;
         }
@@ -61,8 +62,9 @@ namespace AnZwDev.ALTools.Workspace.SymbolsInformation
                 //find report extension data item
                 var reportIdentifier = report.GetIdentifier();
                 var reportExtensionsEnumerable = project
-                    .GetAllSymbolReferences()
-                    .GetObjectExtensions<ALAppReportExtension>(x => x.ReportExtensions, reportIdentifier);
+                    .SymbolsWithDependencies
+                    .ReportExtensions
+                    .GetObjectExtensions(reportIdentifier);
                 foreach (var reportExtension in reportExtensionsEnumerable)
                     if (reportExtension.DataItems != null)
                     {
@@ -99,14 +101,13 @@ namespace AnZwDev.ALTools.Workspace.SymbolsInformation
                     this.CollectReportDataItemFields(reportDataItem.Columns, dataItemFieldsBuffer);
 
                 //collect fields from report extensions
-                var reportExtensionsEnumerable = project
-                    .GetAllSymbolReferences()
-                    .GetObjectExtensions<ALAppReportExtension>(x => x.ReportExtensions, reportIdentifier);
-                foreach (var reportExtension in reportExtensionsEnumerable)
-                {
-                    if (reportExtension.Columns != null)
-                        this.CollectReportDataItemFields(reportExtension.Columns.Where(p => (dataItemName.Equals(p.OwningDataItemName, StringComparison.CurrentCultureIgnoreCase))), dataItemFieldsBuffer); //!!! TO-DO !!! Check this code with namespaces
-                }
+                var reportExtensionsEnumerable = GetALAppObjectExtensionsCollection(project, reportIdentifier);
+                if (reportExtensionsEnumerable != null)
+                    foreach (var reportExtension in reportExtensionsEnumerable)
+                    {
+                        if (reportExtension.Columns != null)
+                            this.CollectReportDataItemFields(reportExtension.Columns.Where(p => (dataItemName.Equals(p.OwningDataItemName, StringComparison.OrdinalIgnoreCase))), dataItemFieldsBuffer); //!!! TO-DO !!! Check this code with namespaces
+                    }
                 //add fields
                 dataItemFieldsBuffer.ApplyToDataItemInformation(getExistingFields, getAvailableFields);
             }
@@ -145,7 +146,7 @@ namespace AnZwDev.ALTools.Workspace.SymbolsInformation
                 string sourceExpression = null;
                 if (!isMemberAccess)
                     sourceExpression = memberAccessExpression.Name.ToLower();
-                else if (dataItemFieldsBuffer.Name.Equals(memberAccessExpression.Name, StringComparison.CurrentCultureIgnoreCase))
+                else if (dataItemFieldsBuffer.Name.Equals(memberAccessExpression.Name, StringComparison.OrdinalIgnoreCase))
                     sourceExpression = memberAccessExpression.Expression.ToLower();
 
                 if ((!String.IsNullOrWhiteSpace(sourceExpression)) && (dataItemFieldsBuffer.AvailableTableFieldsDict.ContainsKey(sourceExpression)))
@@ -218,7 +219,7 @@ namespace AnZwDev.ALTools.Workspace.SymbolsInformation
             return reportInformation;
         }
 
-        protected void AddDataItemInformationList(ALProject project, List<ReportDataItemInformation> dataItemInfoList, Dictionary<string, ReportDataItemInformationFieldsBuffer> dataItemsFieldsBuffer, HashSet<string> usings, List<ALAppReportDataItem> dataItemsList)
+        protected void AddDataItemInformationList(ALProject project, List<ReportDataItemInformation> dataItemInfoList, Dictionary<string, ReportDataItemInformationFieldsBuffer> dataItemsFieldsBuffer, HashSet<string> usings, ALAppSymbolsCollection<ALAppReportDataItem> dataItemsList)
         {
             for (int i = 0; i < dataItemsList.Count; i++)
                 this.AddDataItemInformation(project, dataItemInfoList, dataItemsFieldsBuffer, usings, dataItemsList[i], 0);

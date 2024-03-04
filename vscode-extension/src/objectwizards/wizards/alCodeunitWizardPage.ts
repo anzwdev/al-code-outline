@@ -6,6 +6,7 @@ import { ALCodeunitWizardData } from "./alCodeunitWizardData";
 import { ALCodeunitSyntaxBuilder } from '../syntaxbuilders/alCodeunitSyntaxBuilder';
 import { ToolsSymbolInformationRequest } from '../../langserver/symbolsinformation/toolsSymbolInformationRequest';
 import { SymbolWithNameInformation } from '../../symbolsinformation/smbolWithNameInformation';
+import { ToolsSymbolReference } from '../../langserver/symbolsinformation/toolsSymbolReference';
 
 export class ALCodeunitWizardPage extends ALTableBasedWizardPage {
     protected _codeunitWizardData : ALCodeunitWizardData;
@@ -45,6 +46,27 @@ export class ALCodeunitWizardPage extends ALTableBasedWizardPage {
         
         await this.finishObjectIdReservation(this._codeunitWizardData);
 
+        //get namespaces information
+        let referencedObjects: ToolsSymbolReference[] = [];
+        if (this._codeunitWizardData.selectedTable) {
+            referencedObjects.push({
+                nameWithNamespaceOrId: this._codeunitWizardData.selectedTable,
+                typeName: 'Table'
+            });
+        }
+        if (this._codeunitWizardData.interfaceName) {
+            referencedObjects.push({
+                nameWithNamespaceOrId: this._codeunitWizardData.interfaceName,
+                typeName: 'Interface'
+            });
+        }
+
+        let fileNamespaces = await this.getNamespacesInformation('Codeunit', referencedObjects);
+        if (fileNamespaces) {
+            this._codeunitWizardData.objectNamespace = fileNamespaces.namespaceName;
+            this._codeunitWizardData.objectUsings = fileNamespaces.usings;
+        }
+
         //build new object
         let builder : ALCodeunitSyntaxBuilder = new ALCodeunitSyntaxBuilder(this._toolsExtensionContext);
         let source = await builder.buildFromCodeunitWizardDataAsync(this._settings.getDestDirectoryUri(),
@@ -59,14 +81,16 @@ export class ALCodeunitWizardPage extends ALTableBasedWizardPage {
         if (this._toolsExtensionContext.alLangProxy.supportsInterfaces(resourceUri)) {
             let response = await this._toolsExtensionContext.toolsLangServerClient.getInterfacesList(
                 new ToolsSymbolInformationRequest(this._settings.getDestDirectoryPath(), false));
-            if (response)
-            this._codeunitWizardData.interfaceList = SymbolWithNameInformation.toNamesList(response.symbols);
+            if (response) {
+                this._codeunitWizardData.interfaceList = SymbolWithNameInformation.toNamesList(response.symbols);
+            }
             //this._codeunitWizardData.interfaceList = await this._toolsExtensionContext.alLangProxy.getInterfaceList(resourceUri);
-            if ((this._codeunitWizardData.interfaceList) && (this._codeunitWizardData.interfaceList.length > 0))
+            if ((this._codeunitWizardData.interfaceList) && (this._codeunitWizardData.interfaceList.length > 0)) {
                 this.sendMessage({
                     command : "setInterfaces",
                     data : this._codeunitWizardData.interfaceList
                 });
+            }
         }
     }
 

@@ -15,7 +15,7 @@ namespace AnZwDev.ALTools.Core
             _matcher = null;
             if ((excludedFiles != null) && (excludedFiles.Count > 0))
             {
-                _matcher = new Microsoft.Extensions.FileSystemGlobbing.Matcher(StringComparison.CurrentCultureIgnoreCase);
+                _matcher = new Microsoft.Extensions.FileSystemGlobbing.Matcher(StringComparison.OrdinalIgnoreCase);
                 _matcher.AddInclude("**/*.al");
                 for (int i = 0; i < excludedFiles.Count; i++)
                     if (!String.IsNullOrWhiteSpace(excludedFiles[i]))

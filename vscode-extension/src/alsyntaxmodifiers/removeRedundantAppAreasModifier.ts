@@ -10,10 +10,10 @@ export class RemoveRedundantAppAreasModifier extends WorkspaceCommandSyntaxModif
         super(context, "Remove Redundant App Areas", "removeRedundantAppAreas");
     }
 
-    async runForWorkspaceWithoutUI(workspaceUri: vscode.Uri): Promise<ISyntaxModifierResult | undefined> {
+    async runForWorkspaceWithoutUI(workspaceUri: vscode.Uri, forFiles: string[] | undefined): Promise<ISyntaxModifierResult | undefined> {
         if (!this.canRun(workspaceUri))
             return this.getCannotRunResult();
-        return await super.runForWorkspaceWithoutUI(workspaceUri);
+        return await super.runForWorkspaceWithoutUI(workspaceUri, forFiles);
     }
 
     async runForDocumentWithoutUI(text: string, workspaceUri: vscode.Uri, documentUri: vscode.Uri, range: TextRange | undefined): Promise<ISyntaxModifierResult | undefined> {

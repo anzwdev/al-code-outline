@@ -26,115 +26,26 @@ namespace AnZwDev.ALTools.ALSymbolReferences
 
         #region Objects collections
 
-        public ALAppObjectsCollection<ALAppTable> Tables
-        {
-            get => _objectsCollections.Tables.Collection;
-            set => _objectsCollections.Tables.Collection = value;
-        }
+        public ALAppObjectsCollection<ALAppTable> Tables { get; set; }
+        public ALAppObjectsCollection<ALAppPage> Pages { get; set; }
+        public ALAppObjectsCollection<ALAppReport> Reports { get; set; }
+        public ALAppObjectsCollection<ALAppXmlPort> XmlPorts { get; set; }
+        public ALAppObjectsCollection<ALAppQuery> Queries { get; set; }
+        public ALAppObjectsCollection<ALAppCodeunit> Codeunits { get; set; }
+        public ALAppObjectsCollection<ALAppControlAddIn> ControlAddIns { get; set; }
+        public ALAppObjectExtensionsCollection<ALAppPageExtension> PageExtensions { get; set; }
+        public ALAppObjectExtensionsCollection<ALAppTableExtension> TableExtensions { get; set; }
+        public ALAppObjectsCollection<ALAppProfile> Profiles { get; set; }
+        public ALAppObjectsCollection<ALAppPageCustomization> PageCustomizations { get; set; }
+        public ALAppObjectsCollection<ALAppDotNetPackage> DotNetPackages { get; set; }
+        public ALAppObjectsCollection<ALAppEnum> EnumTypes { get; set; }
+        public ALAppObjectExtensionsCollection<ALAppEnumExtension> EnumExtensionTypes { get; set; }
+        public ALAppObjectsCollection<ALAppInterface> Interfaces { get; set; }
+        public ALAppObjectExtensionsCollection<ALAppReportExtension> ReportExtensions { get; set; }
+        public ALAppObjectsCollection<ALAppPermissionSet> PermissionSets { get; set; }
+        public ALAppObjectExtensionsCollection<ALAppPermissionSetExtension> PermissionSetExtensions { get; set; }
 
-        public ALAppObjectsCollection<ALAppPage> Pages
-        {
-            get => _objectsCollections.Pages.Collection;
-            set => _objectsCollections.Pages.Collection = value;
-        }
-
-        public ALAppObjectsCollection<ALAppReport> Reports
-        {
-            get => _objectsCollections.Reports.Collection;
-            set => _objectsCollections.Reports.Collection = value;
-        }
-
-        public ALAppObjectsCollection<ALAppXmlPort> XmlPorts
-        {
-            get => _objectsCollections.XmlPorts.Collection;
-            set => _objectsCollections.XmlPorts.Collection = value;
-        }
-
-        public ALAppObjectsCollection<ALAppQuery> Queries
-        {
-            get => _objectsCollections.Queries.Collection;
-            set => _objectsCollections.Queries.Collection = value;
-        }
-
-        public ALAppObjectsCollection<ALAppCodeunit> Codeunits
-        {
-            get => _objectsCollections.Codeunits.Collection;
-            set => _objectsCollections.Codeunits.Collection = value;
-        }
-
-        public ALAppObjectsCollection<ALAppControlAddIn> ControlAddIns
-        {
-            get => _objectsCollections.ControlAddIns.Collection;
-            set => _objectsCollections.ControlAddIns.Collection = value;
-        }
-
-        public ALAppObjectsCollection<ALAppPageExtension> PageExtensions
-        {
-            get => _objectsCollections.PageExtensions.Collection;
-            set => _objectsCollections.PageExtensions.Collection = value;
-        }
-
-        public ALAppObjectsCollection<ALAppTableExtension> TableExtensions
-        {
-            get => _objectsCollections.TableExtensions.Collection;
-            set => _objectsCollections.TableExtensions.Collection = value;
-        }
-
-        public ALAppObjectsCollection<ALAppProfile> Profiles
-        {
-            get => _objectsCollections.Profiles.Collection;
-            set => _objectsCollections.Profiles.Collection = value;
-        }
-
-        public ALAppObjectsCollection<ALAppPageCustomization> PageCustomizations
-        {
-            get => _objectsCollections.PageCustomizations.Collection;
-            set => _objectsCollections.PageCustomizations.Collection = value;
-        }
-
-        public ALAppObjectsCollection<ALAppDotNetPackage> DotNetPackages
-        {
-            get => _objectsCollections.DotNetPackages.Collection;
-            set => _objectsCollections.DotNetPackages.Collection = value;
-        }
-
-        public ALAppObjectsCollection<ALAppEnum> EnumTypes
-        {
-            get => _objectsCollections.EnumTypes.Collection;
-            set => _objectsCollections.EnumTypes.Collection = value;
-        }
-
-        public ALAppObjectsCollection<ALAppEnumExtension> EnumExtensionTypes
-        {
-            get => _objectsCollections.EnumExtensionTypes.Collection;
-            set => _objectsCollections.EnumExtensionTypes.Collection = value;
-        }
-
-        public ALAppObjectsCollection<ALAppInterface> Interfaces
-        {
-            get => _objectsCollections.Interfaces.Collection;
-            set => _objectsCollections.Interfaces.Collection = value;
-        }
-
-        public ALAppObjectsCollection<ALAppReportExtension> ReportExtensions
-        {
-            get => _objectsCollections.ReportExtensions.Collection;
-            set => _objectsCollections.ReportExtensions.Collection = value;
-        }
-
-        public ALAppObjectsCollection<ALAppPermissionSet> PermissionSets
-        {
-            get => _objectsCollections.PermissionSets.Collection;
-            set => _objectsCollections.PermissionSets.Collection = value;
-        }
-
-        public ALAppObjectsCollection<ALAppPermissionSetExtension> PermissionSetExtensions
-        {
-            get => _objectsCollections.PermissionSetExtensions.Collection;
-            set => _objectsCollections.PermissionSetExtensions.Collection = value;
-        }
-
-        public ALAppAllObjectsCollection AllObjects { get => _allObjects; }
+        public ALAppAllObjectsCollection AllObjects { get; }
 
         #endregion
 
@@ -142,15 +53,12 @@ namespace AnZwDev.ALTools.ALSymbolReferences
 
         private ALSymbol _alSymbolCache = null;
         private bool _idReferencesReplaced = false;
-        private readonly ALAppObjectsCollectionsContainersCollection _objectsCollections;
-        private readonly ALAppAllObjectsCollection _allObjects;
 
         #endregion
 
         public ALAppSymbolReference()
         {
-            _objectsCollections = new ALAppObjectsCollectionsContainersCollection();
-            _allObjects = new ALAppAllObjectsCollection(_objectsCollections);
+            AllObjects = new ALAppAllObjectsCollection(this);
         }
 
         #region Objects processing
@@ -165,7 +73,7 @@ namespace AnZwDev.ALTools.ALSymbolReferences
 
         public void ReplaceObject(ALAppObject alObject)
         {
-            IALAppObjectsCollection alObjectsCollection = _objectsCollections.GetOrCreateCollection(alObject.GetALObjectType());
+            IALAppObjectsCollection alObjectsCollection = AllObjects.GetOrCreateObjectsCollection(alObject.GetALObjectType());
             if (alObjectsCollection != null)
             {
                 alObjectsCollection.Replace(alObject);
@@ -199,7 +107,7 @@ namespace AnZwDev.ALTools.ALSymbolReferences
             if (!String.IsNullOrWhiteSpace(namespaceName))
                 return collection
                     .Where(p => (
-                        (name.Equals(p.Name, StringComparison.CurrentCultureIgnoreCase)) &&
+                        (name.Equals(p.Name, StringComparison.OrdinalIgnoreCase)) &&
                         (namespaceName.Equals(p.NamespaceName))))
                     .FirstOrDefault();
 
@@ -209,7 +117,7 @@ namespace AnZwDev.ALTools.ALSymbolReferences
             {
                 var alObject = collection[i];
 
-                if (name.Equals(alObject.Name, StringComparison.CurrentCultureIgnoreCase))
+                if (name.Equals(alObject.Name, StringComparison.OrdinalIgnoreCase))
                 {
                     if ((String.IsNullOrWhiteSpace(alObject.NamespaceName)) || (usings.Contains(alObject.NamespaceName)))
                     {
@@ -489,7 +397,7 @@ namespace AnZwDev.ALTools.ALSymbolReferences
         {
             if ((!String.IsNullOrWhiteSpace(alAppObject.ReferenceSourceFileName)) &&
                 (!String.IsNullOrWhiteSpace(alAppObject.ReferenceSourceFileName)) &&
-                (this.ReferenceSourceFileName.EndsWith(".app", StringComparison.CurrentCultureIgnoreCase)))
+                (this.ReferenceSourceFileName.EndsWith(".app", StringComparison.OrdinalIgnoreCase)))
             {
                 string content = AppFileHelper.GetAppFileContent(this.ReferenceSourceFileName, alAppObject.ReferenceSourceFileName);
                 if (!String.IsNullOrWhiteSpace(content))
@@ -514,7 +422,7 @@ namespace AnZwDev.ALTools.ALSymbolReferences
             if (String.IsNullOrWhiteSpace(appId))
                 return true;
             appId = appId.Trim();
-            if (appId.Equals(this.AppId, StringComparison.CurrentCultureIgnoreCase))
+            if (appId.Equals(this.AppId, StringComparison.OrdinalIgnoreCase))
                 return true;
 
             //check InternalsVisibleTo setting

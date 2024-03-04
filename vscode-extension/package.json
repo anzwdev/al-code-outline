@@ -2,7 +2,7 @@
 	"name": "al-code-outline",
 	"displayName": "AZ AL Dev Tools/AL Code Outline",
 	"description": "AZ AL Development Tools: AL code outline, object browser, object creators",
-	"version": "3.0.56",
+	"version": "3.0.57",
 	"publisher": "andrzejzwierzchowski",
 	"engines": {
 		"vscode": "^1.85.0"
@@ -630,6 +630,16 @@
 			},
 			{
 				"category": "AZ AL Dev Tools",
+				"command": "azALDevTools.SortEditorTriggers",
+				"title": "Sort Triggers in the Active Editor"
+			},
+			{
+				"category": "AZ AL Dev Tools",
+				"command": "azALDevTools.SortWorkspaceTriggers",
+				"title": "Sort Triggers in the Active Project"
+			},
+			{
+				"category": "AZ AL Dev Tools",
 				"command": "azALDevTools.SortEditorProperties",
 				"title": "Sort Properties in the Active Editor"
 			},
@@ -1129,6 +1139,14 @@
 				},
 				{
 					"command": "azALDevTools.SortWorkspaceProcedures",
+					"when": "azALDevTools.extensionActive"
+				},
+				{
+					"command": "azALDevTools.SortEditorTriggers",
+					"when": "editorLangId == al"
+				},
+				{
+					"command": "azALDevTools.SortWorkspaceTriggers",
 					"when": "azALDevTools.extensionActive"
 				},
 				{
@@ -1649,6 +1667,7 @@
 								"SortReportColumns",
 								"SortProperties",
 								"SortProcedures",
+								"SortTriggers",
 								"SortVariables",
 								"SortPermissions",
 								"SortPermissionSetList",
@@ -1661,6 +1680,7 @@
 								"Sort report DataItem columns",
 								"Sort properties",
 								"Sort procedures",
+								"Sort triggers",
 								"Sort variables",
 								"Sort permissions",
 								"Sort permission sets",
@@ -1699,6 +1719,7 @@
 								"SortPermissions",
 								"SortPermissionSetList",
 								"SortProcedures",
+								"SortTriggers",
 								"SortProperties",
 								"SortReportColumns",
 								"SortTableFields",
@@ -1739,6 +1760,7 @@
 								"Sort Permissions",
 								"Sort PermissionSet List",
 								"Sort Procedures",
+								"Sort Triggers",
 								"Sort Properties",
 								"Sort Report Columns",
 								"Sort Table Fields",
@@ -1868,6 +1890,12 @@
 						"default": true,
 						"scope": "resource",
 						"description": "Set to true to remove quotes around identifiers having names that are not al data types when running 'Fix Identifiers and Keywords Case' commands"
+					},
+					"alOutline.useBCLinterCopCaseRules": {
+						"type": "boolean",
+						"default": false,
+						"scope": "resource",
+						"description": "Set to true to use case BCLinterCop case rules instead of Microsoft ones in 'Fix Identifiers and Keywords Case' commands"
 					},
 					"alOutline.variablesSortMode": {
 						"type": "string",

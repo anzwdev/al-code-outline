@@ -11,6 +11,9 @@ export class ALTableSyntaxBuilder {
         //generate file content
         let writer : ALSyntaxWriter = new ALSyntaxWriter(destUri);
 
+        writer.writeNamespace(data.objectNamespace);
+        writer.writeUsings(data.objectUsings);
+
         writer.writeStartObject("table", data.objectId, data.objectName);
         writer.addProperty("Caption", writer.encodeString(ALSyntaxHelper.removePrefixSuffix(data.objectName, data.projectSettings)));
 

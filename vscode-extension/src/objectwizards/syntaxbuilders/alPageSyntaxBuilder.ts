@@ -14,16 +14,20 @@ export class ALPageSyntaxBuilder {
 
         //generate file content
         let writer : ALSyntaxWriter = new ALSyntaxWriter(destUri);
-        if (data.applicationArea)
+        if (data.applicationArea) {
             writer.applicationArea = data.applicationArea;
+        }
         writer.applicationAreaMode = data.applicationAreaMode;
 
         let isApi : boolean = (data.pageType.toLowerCase() === "api");
 
+        writer.writeNamespace(data.objectNamespace);
+        writer.writeUsings(data.objectUsings);
+
         writer.writeStartObject("page", data.objectId, data.objectName);
         writer.addProperty("PageType", data.pageType);
-        if ((data.selectedTable) && (data.selectedTable.name)) {
-            writer.addProperty("SourceTable", writer.encodeName(data.selectedTable.name));
+        if (data.selectedTable) {
+            writer.addProperty("SourceTable", writer.encodeName(data.selectedTable));
         }
         
         if (isApi) {

@@ -15,11 +15,14 @@ export class ALCodeunitSyntaxBuilder {
         //generate file content
         let writer : ALSyntaxWriter = new ALSyntaxWriter(destUri);
 
+        writer.writeNamespace(data.objectNamespace);
+        writer.writeUsings(data.objectUsings);
+
         writer.writeStartCodeunit(data.objectId, data.objectName, data.interfaceName);
 
         //write properties
-        if ((data.selectedTable) && (data.selectedTable.name)) {
-            writer.writeProperty("TableNo", writer.encodeName(data.selectedTable.name));
+        if ((data.selectedTable) && (data.selectedTable)) {
+            writer.writeProperty("TableNo", writer.encodeName(data.selectedTable));
 
             writer.writeLine("");
             writer.writeLine("trigger OnRun()");

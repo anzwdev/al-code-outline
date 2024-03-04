@@ -17,7 +17,7 @@ namespace AnZwDev.ALTools.CodeTransformations
         public override SyntaxNode VisitField(FieldSyntax node)
         {
             PropertyValueSyntax fieldClass = node.GetPropertyValue("FieldClass");
-            if ((fieldClass != null) && (fieldClass.ToString().Equals("FlowField", StringComparison.CurrentCultureIgnoreCase)))
+            if ((fieldClass != null) && (fieldClass.ToString().Equals("FlowField", StringComparison.OrdinalIgnoreCase)))
             {
                 PropertySyntax propertySyntax = node.GetProperty("Editable");
                 if (propertySyntax == null)

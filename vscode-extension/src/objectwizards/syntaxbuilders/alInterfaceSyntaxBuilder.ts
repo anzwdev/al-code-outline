@@ -16,6 +16,9 @@ export class ALInterfaceSyntaxBuilder {
         //generate file content
         let writer : ALSyntaxWriter = new ALSyntaxWriter(destUri);
 
+        writer.writeNamespace(data.objectNamespace);
+        writer.writeUsings(data.objectUsings);
+
         writer.writeStartInterface(data.objectName);
 
         writer.writeLine("");

@@ -15,6 +15,9 @@ export class ALReportSyntaxBuilder {
         //generate file content
         let writer : ALSyntaxWriter = new ALSyntaxWriter(destUri);
 
+        writer.writeNamespace(data.objectNamespace);
+        writer.writeUsings(data.objectUsings);
+
         writer.writeStartObject("report", data.objectId, data.objectName);
 
         writer.addProperty("Caption", writer.encodeString(ALSyntaxHelper.removePrefixSuffix(data.objectName, data.projectSettings)));
@@ -47,10 +50,10 @@ export class ALReportSyntaxBuilder {
     }
 
     private writeDataSet(writer : ALSyntaxWriter, data : ALReportWizardData, addDataItemName: boolean | undefined) {
-        let dataSetName = writer.createName(data.selectedTable!.name!);
+        let dataSetName = writer.createName(data.selectedTable!);
         writer.writeStartNamedBlock("dataset");
 
-        writer.writeStartNameSourceBlock("dataitem", dataSetName, writer.encodeName(data.selectedTable!.name!));
+        writer.writeStartNameSourceBlock("dataitem", dataSetName, writer.encodeName(data.selectedTable!));
 
         if (data.selectedFieldList) {
             for (let i=0; i<data.selectedFieldList.length; i++) {

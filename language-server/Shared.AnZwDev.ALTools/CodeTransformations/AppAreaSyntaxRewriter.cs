@@ -33,7 +33,7 @@ namespace AnZwDev.ALTools.CodeTransformations
         public override SyntaxNode VisitPage(PageSyntax node)
         {
             string pageType = ALSyntaxHelper.DecodeName(node.GetProperty("PageType")?.Value?.ToString());
-            if ((pageType != null) && (pageType.Equals("API", StringComparison.CurrentCultureIgnoreCase)))
+            if ((pageType != null) && (pageType.Equals("API", StringComparison.OrdinalIgnoreCase)))
             {
                 _appAreasNotSupported = true;
                 var processedNode = base.VisitPage(node);

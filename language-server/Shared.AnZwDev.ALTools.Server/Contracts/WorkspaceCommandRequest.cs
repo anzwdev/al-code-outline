@@ -17,6 +17,7 @@ namespace AnZwDev.ALTools.Server.Contracts
         public TextRange range { get; set; }
         public Dictionary<string, string> parameters { get; set; }
         public List<string> excludeFiles { get; set; }
+        public List<string> includeFiles { get; set; }
 
     }
 }

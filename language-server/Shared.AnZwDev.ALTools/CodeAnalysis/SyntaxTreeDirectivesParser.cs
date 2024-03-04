@@ -40,7 +40,7 @@ namespace AnZwDev.ALTools.CodeAnalysis
 
                     var containsDirective = 
                         (pragmaWarningDirectiveTrivia.ErrorCodes.Count == 0) || 
-                        (pragmaWarningDirectiveTrivia.ErrorCodes.Any(p => (errorCode.Equals(ALSyntaxHelper.DecodeName(p.ToString()), StringComparison.CurrentCultureIgnoreCase))));
+                        (pragmaWarningDirectiveTrivia.ErrorCodes.Any(p => (errorCode.Equals(ALSyntaxHelper.DecodeName(p.ToString()), StringComparison.OrdinalIgnoreCase))));
 
                     if (containsDirective)
                         state = enabled;

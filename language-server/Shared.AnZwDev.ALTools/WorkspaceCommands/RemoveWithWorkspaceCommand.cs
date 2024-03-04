@@ -22,12 +22,12 @@ namespace AnZwDev.ALTools.WorkspaceCommands
         {
         }
 
-        public override WorkspaceCommandResult Run(string sourceCode, ALProject project, string filePath, TextRange range, Dictionary<string, string> parameters, List<string> excludeFiles)
+        public override WorkspaceCommandResult Run(string sourceCode, ALProject project, string filePath, TextRange range, Dictionary<string, string> parameters, List<string> excludeFiles, List<string> includeFiles)
         {
             this._totalNoOfChanges = 0;
             this._noOfChangedFiles = 0;
 
-            WorkspaceCommandResult result = base.Run(sourceCode, project, filePath, range, parameters, excludeFiles);
+            WorkspaceCommandResult result = base.Run(sourceCode, project, filePath, range, parameters, excludeFiles, includeFiles);
 
             result.SetParameter(NoOfChangesParameterName, this._totalNoOfChanges.ToString());
             result.SetParameter(NoOfChangedFilesParameterName, this._noOfChangedFiles.ToString());

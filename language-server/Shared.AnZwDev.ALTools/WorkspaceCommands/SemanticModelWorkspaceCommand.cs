@@ -2,7 +2,6 @@
 using AnZwDev.ALTools.Core;
 using AnZwDev.ALTools.Extensions;
 using AnZwDev.ALTools.Logging;
-using AnZwDev.ALTools.SourceControl;
 using AnZwDev.ALTools.Workspace;
 using Microsoft.Dynamics.Nav.CodeAnalysis;
 using Microsoft.Dynamics.Nav.CodeAnalysis.CommandLine;
@@ -26,7 +25,7 @@ namespace AnZwDev.ALTools.WorkspaceCommands
         {
         }
 
-        public override WorkspaceCommandResult Run(string sourceCode, ALProject project, string filePath, TextRange range, Dictionary<string, string> parameters, List<string> excludeFiles)
+        public override WorkspaceCommandResult Run(string sourceCode, ALProject project, string filePath, TextRange range, Dictionary<string, string> parameters, List<string> excludeFiles, List<string> includeFiles)
         {
             SourceText sourceText = null;
             SyntaxTree sourceSyntaxTree = null;
@@ -49,7 +48,7 @@ namespace AnZwDev.ALTools.WorkspaceCommands
                 }
             }
             else
-                (success, errorMessage) = this.ProcessDirectory(syntaxTrees, compilation, project, parameters, excludeFiles);
+                (success, errorMessage) = this.ProcessDirectory(syntaxTrees, compilation, project, parameters, excludeFiles, includeFiles);
 
             if (success)
                 return new WorkspaceCommandResult(newSourceCode);
@@ -154,22 +153,16 @@ namespace AnZwDev.ALTools.WorkspaceCommands
 
     #region Project files processing
 
-        protected bool ValidFile(string filePath)
+        protected (bool, string) ProcessDirectory(List<SyntaxTree> syntaxTrees, Compilation compilation, ALProject project, Dictionary<string, string> parameters, List<string> excludeFiles, List<string> includeFiles)
         {
-            return this.ModifiedFilesNamesHashSet.Contains(filePath);
-        }
-
-        protected (bool, string) ProcessDirectory(List<SyntaxTree> syntaxTrees, Compilation compilation, ALProject project, Dictionary<string, string> parameters, List<string> excludeFiles)
-        {
-            //get modified files if running for modified files only
-            bool modifiedFilesOnly = this.GetModifiedFilesOnlyValue(parameters);
+            HashSet<string> includeFilesHashSet = ((includeFiles != null) && (includeFiles.Count > 0)) ? includeFiles.ToLowerCaseHashSet() : null;
 
             var matcher = new ExcludedFilesMatcher(excludeFiles);
 
             //process files
             foreach (SyntaxTree syntaxTree in syntaxTrees)
             {
-                if ((!modifiedFilesOnly) || (this.ValidFile(syntaxTree.FilePath)))
+                if ((includeFilesHashSet == null) || (includeFilesHashSet.Contains(syntaxTree.FilePath.ToLower())))
                 {
                     if (matcher.ValidFile(project.RootPath, syntaxTree.FilePath))
                     {

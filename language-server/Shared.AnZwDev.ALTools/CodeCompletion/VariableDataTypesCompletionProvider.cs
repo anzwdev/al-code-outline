@@ -111,7 +111,7 @@ namespace AnZwDev.ALTools.CodeCompletion
 
         private void CreateCompletionItems(string name, ALProject project, List<CodeCompletionItem> completionItems)
         {
-            CreateCompletionItems(name, project, ALObjectType.Table, completionItems, name.StartsWith("Temp", StringComparison.CurrentCultureIgnoreCase));
+            CreateCompletionItems(name, project, ALObjectType.Table, completionItems, name.StartsWith("Temp", StringComparison.OrdinalIgnoreCase));
             CreateCompletionItems(name, project, ALObjectType.Codeunit, completionItems);
             CreateCompletionItems(name, project, ALObjectType.Page, completionItems);
             CreateCompletionItems(name, project, ALObjectType.Report, completionItems);
@@ -123,9 +123,12 @@ namespace AnZwDev.ALTools.CodeCompletion
 
         private void CreateCompletionItems(string name, ALProject project, ALObjectType objectType, List<CodeCompletionItem> completionItems, bool temporaryRecordVariable = false)
         {
-            var typesCollection = project.GetAllSymbolReferences().GetAllObjects(objectType);
+            var objectCollection = project
+                .SymbolsWithDependencies
+                .GetObjectsCollection(objectType);
+            var objectsEnumerable = objectCollection.GetAll();
 
-            foreach (var type in typesCollection)
+            foreach (var type in objectsEnumerable)
             {
                 var varName = ALSyntaxHelper.ObjectNameToVariableNamePart(type.Name)
                     .ToLower()
@@ -133,7 +136,7 @@ namespace AnZwDev.ALTools.CodeCompletion
                 if (name.Contains(varName))
                 {
                     var varDataType = type.GetALSymbolKind().ToVariableTypeName() + " " + ALSyntaxHelper.EncodeName(type.Name);
-                    if ((temporaryRecordVariable) && (!varName.StartsWith("Temp", StringComparison.CurrentCultureIgnoreCase)))
+                    if ((temporaryRecordVariable) && (!varName.StartsWith("Temp", StringComparison.OrdinalIgnoreCase)))
                         varDataType = varDataType + " temporary";
                     var item = new CodeCompletionItem(varDataType, CompletionItemKind.Class);
                     item.commitCharacters = _commitCharacters;

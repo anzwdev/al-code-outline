@@ -481,12 +481,12 @@ namespace AnZwDev.ALTools.ALSymbols.SymbolReaders
             } 
             else if (!String.IsNullOrWhiteSpace(obsoleteState))
             {
-                if (obsoleteState.Equals("Pending", StringComparison.CurrentCultureIgnoreCase))
+                if (obsoleteState.Equals("Pending", StringComparison.OrdinalIgnoreCase))
                 {
                     symbol.subtype = "ObsoletePending";
                     symbol.fullName = symbol.fullName + " (Obsolete-Pending)";
                 }
-                else if (obsoleteState.Equals("Removed", StringComparison.CurrentCultureIgnoreCase))
+                else if (obsoleteState.Equals("Removed", StringComparison.OrdinalIgnoreCase))
                 {
                     symbol.subtype = "ObsoleteRemoved";
                     symbol.fullName = symbol.fullName + " (Obsolete-Removed)";
@@ -657,7 +657,7 @@ namespace AnZwDev.ALTools.ALSymbols.SymbolReaders
             _varAccessModifier = null;
 
             var accessModifier = syntax.AccessModifier.ToString()?.Trim();
-            if ((accessModifier != null) && (accessModifier.Equals("protected", StringComparison.CurrentCultureIgnoreCase)))
+            if ((accessModifier != null) && (accessModifier.Equals("protected", StringComparison.OrdinalIgnoreCase)))
             {
                 symbol.access = ALSymbolAccessModifier.Protected;
                 _varAccessModifier = ALSymbolAccessModifier.Protected;

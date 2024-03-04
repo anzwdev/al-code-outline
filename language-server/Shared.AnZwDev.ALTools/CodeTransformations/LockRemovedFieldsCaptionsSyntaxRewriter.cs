@@ -72,7 +72,7 @@ namespace AnZwDev.ALTools.CodeTransformations
             if (obsoleteStateSyntax == null)
                 return false;
             string value = ALSyntaxHelper.DecodeName(obsoleteStateSyntax.ToString());
-            return ((value != null) && (value.Equals("Removed", StringComparison.CurrentCultureIgnoreCase)));
+            return ((value != null) && (value.Equals("Removed", StringComparison.OrdinalIgnoreCase)));
         }
 
     }

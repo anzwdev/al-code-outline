@@ -18,17 +18,21 @@ class TableBasedObjectWizard extends BaseObjectWizard {
         let fldSortName = document.getElementById('srcfldsortname');
         let fldSortId = document.getElementById('srcfldsortid');
 
-        if (fldSortName)
+        if (fldSortName) {
             fldSortName.className = "mselcaptb mseltbbtnsel";
+        }
         
-        if (fldSortId)
+        if (fldSortId) {
             fldSortId.addEventListener('click', event => {
                 this.sortSrcFieldsBy("id");
             });
-        if (fldSortName)
+        }
+        
+        if (fldSortName) {
             fldSortName.addEventListener('click', event => {
                 this.sortSrcFieldsBy("name");
-            });            
+            });
+        }
     }
 
     initFieldsSelProp(srcFlds, destFlds) {
@@ -101,8 +105,9 @@ class TableBasedObjectWizard extends BaseObjectWizard {
 
     loadFlowFilters() {
         if (this._flowFiltersSupported) {
-            if (!this._data.flowFilterList)
+            if (!this._data.flowFilterList) {
                 this._data.flowFilterList = [];
+            }
             this._srcFlowFilters.setData(this._data.flowFilterList);
             this._destFlowFilters.clear();
         }
@@ -110,17 +115,19 @@ class TableBasedObjectWizard extends BaseObjectWizard {
 
     loadFieldsAdv(selFlds) {
         let flds = this._data.fieldList;
-        if ((flds) && (flds.length > 0) && (selFlds) && (selFlds.length > 0))
+        if ((flds) && (flds.length > 0) && (selFlds) && (selFlds.length > 0)) {
             flds = flds.filter(item => {
                 return (selFlds.indexOf(item) < 0);
             });
+        }
         this._srcFields.setData(flds);
         this._destFields.clear();
     }
 
     loadTables() {
-        if (this._data)        
-            this.initAutoComplete()
+        if (this._data) {
+            this.initAutoComplete();
+        }
     }
 
     initAutoComplete() {
@@ -131,7 +138,7 @@ class TableBasedObjectWizard extends BaseObjectWizard {
 			input: document.getElementById('srctable'),
 			minLength: 1,
 			onSelect: function (item, inputfield) {
-				inputfield.value = item
+				inputfield.value = item;
 			},
 			fetch: function (text, callback) {
 				var match = text.toLowerCase();
@@ -156,12 +163,13 @@ class TableBasedObjectWizard extends BaseObjectWizard {
 					container.style.maxHeight = "140px";
 				}
 			}
-		})
+		});
     }
 
     setFields(data) {
-        if (!this._data)
+        if (!this._data) {
             this._data = {};
+        }
 
         this._data.fieldList = data.fieldList;
         this._data.flowFilterList = data.flowFilterList;
@@ -171,8 +179,9 @@ class TableBasedObjectWizard extends BaseObjectWizard {
     }
 
     setTables(data) {
-        if (!this._data)
+        if (!this._data) {
             this._data = {};
+        }
         this._data.tableList = data;
         this.loadTables();
     }
@@ -212,8 +221,8 @@ class TableBasedObjectWizard extends BaseObjectWizard {
     sortSrcFieldsBy(name) {
         let dispField = 'name';
         this._srcFields.sortBy(name, dispField);
-        document.getElementById('srcfldsortid').className = (name == 'id')?"mselcaptb mseltbbtnsel":"mselcaptb mseltbbtn";
-        document.getElementById('srcfldsortname').className = (name == 'name')?"mselcaptb mseltbbtnsel":"mselcaptb mseltbbtn";
+        document.getElementById('srcfldsortid').className = (name === 'id')?"mselcaptb mseltbbtnsel":"mselcaptb mseltbbtn";
+        document.getElementById('srcfldsortname').className = (name === 'name')?"mselcaptb mseltbbtnsel":"mselcaptb mseltbbtn";
     }
 
 }

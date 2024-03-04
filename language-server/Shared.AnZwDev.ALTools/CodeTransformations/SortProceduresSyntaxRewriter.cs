@@ -118,14 +118,15 @@ namespace AnZwDev.ALTools.CodeTransformations
             private static IComparer<string> _stringComparer = new SyntaxNodeNameComparer();
             private static int UndefinedPriority = -1;
 
-
             private TriggersOrderCollection _triggerNaturalOrder;
             private ConvertedSyntaxKind _parentKind;
-            public SortProceduresTriggerSortMode TriggerSortMode { get; set; }
+            private bool _sortProcedures;
+            private SortProceduresTriggerSortMode _triggerSortMode;
 
-            public MethodSortInfoComparer(SortProceduresTriggerSortMode triggerSortMode, TriggersOrderCollection triggersNaturalOrder, ConvertedSyntaxKind parentKind)
+            public MethodSortInfoComparer(SortProceduresTriggerSortMode triggerSortMode, bool sortProcedures, TriggersOrderCollection triggersNaturalOrder, ConvertedSyntaxKind parentKind)
             {
-                TriggerSortMode = triggerSortMode;
+                _triggerSortMode = triggerSortMode;
+                _sortProcedures = sortProcedures;
                 _parentKind = parentKind;
                 _triggerNaturalOrder = triggersNaturalOrder;
                 InitTypePriority();
@@ -160,23 +161,29 @@ namespace AnZwDev.ALTools.CodeTransformations
                         ALSymbolKind.IntegrationEventDeclaration
                     };
                     _typePriority = new Dictionary<ALSymbolKind, int>();
+
                     for (int i = 0; i < types.Length; i++)
                     {
-                        _typePriority.Add(types[i], i);
+                        if (_sortProcedures)
+                            _typePriority.Add(types[i], i);
+                        else if (types[i] == ALSymbolKind.TriggerDeclaration)
+                            _typePriority.Add(types[i], 0);
+                        else
+                            _typePriority.Add(types[i], 1);
                     }
                 }
             }
 
             protected int GetTypePriority(ALSymbolKind kind)
             {
-                if ((kind == ALSymbolKind.TriggerDeclaration) && (TriggerSortMode == SortProceduresTriggerSortMode.None))
+                if ((kind == ALSymbolKind.TriggerDeclaration) && (_triggerSortMode == SortProceduresTriggerSortMode.None))
                     return UndefinedPriority;
                 if (_typePriority.ContainsKey(kind))
                     return _typePriority[kind];
                 return UndefinedPriority;
             }
 
-            private int CompareTriggers(MethodSortInfo<T> x, MethodSortInfo<T> y)
+            private int CompareTriggersByNaturalOrder(MethodSortInfo<T> x, MethodSortInfo<T> y)
             {
                 if (_triggerNaturalOrder.TryCompare(_parentKind, x.Name, y.Name, out int result))
                     return result;
@@ -185,33 +192,45 @@ namespace AnZwDev.ALTools.CodeTransformations
 
             public int Compare(MethodSortInfo<T> x, MethodSortInfo<T> y)
             {
-                //sort triggers
-                if ((x.Kind == ALSymbolKind.TriggerDeclaration) && (y.Kind == ALSymbolKind.TriggerDeclaration) && (TriggerSortMode == SortProceduresTriggerSortMode.NaturalOrder))
-                    return CompareTriggers(x, y);
-
-                //check type
-                int xTypePriority = this.GetTypePriority(x.Kind);
-                int yTypePriority = this.GetTypePriority(y.Kind);
-                if (xTypePriority != yTypePriority)
-                    return xTypePriority - yTypePriority;
-
-                //for known types check name
-                if (yTypePriority != UndefinedPriority)
+                if ((_triggerSortMode != SortProceduresTriggerSortMode.None) || (_sortProcedures))
                 {
-                    int val = _stringComparer.Compare(x.Name, y.Name);
-                    if (val != 0)
-                        return val;
+                    //sort triggers
+                    if ((x.Kind == ALSymbolKind.TriggerDeclaration) && (y.Kind == ALSymbolKind.TriggerDeclaration) && (_triggerSortMode == SortProceduresTriggerSortMode.NaturalOrder))
+                        return CompareTriggersByNaturalOrder(x, y);
+
+                    //check type
+                    int xTypePriority = this.GetTypePriority(x.Kind);
+                    int yTypePriority = this.GetTypePriority(y.Kind);
+                    if (xTypePriority != yTypePriority)
+                        return xTypePriority - yTypePriority;
+
+                    //check name
+                    if ((CanSortByName(x.Kind)) && (CanSortByName(y.Kind)))
+                    {
+                        int val = _stringComparer.Compare(x.Name, y.Name);
+                        if (val != 0)
+                            return val;
+                    }
                 }
 
                 //check old index
                 return x.Index - y.Index;
             }
+
+            private bool CanSortByName(ALSymbolKind symbolKind)
+            {
+                if (symbolKind == ALSymbolKind.TriggerDeclaration)
+                    return (_triggerSortMode == SortProceduresTriggerSortMode.Name);
+                return _sortProcedures;
+            }
+
         }
 
         #endregion
 
         public bool SortSingleNodeRegions { get; set; } = false;
         public SortProceduresTriggerSortMode TriggerSortMode { get; set; } = SortProceduresTriggerSortMode.None;
+        public bool SortProcedures {  get; set; } = true;
         internal TriggersOrderCollection TriggersOrder { get; } = new TriggersOrderCollection();
 
         public SortProceduresSyntaxRewriter()
@@ -569,7 +588,7 @@ namespace AnZwDev.ALTools.CodeTransformations
             if (nodesGroupsTree.Root == null)
                 return (members, closingToken, false);
 
-            MethodSortInfoComparer<T> comparer = new MethodSortInfoComparer<T>(TriggerSortMode, TriggersOrder, parent.Kind.ConvertToLocalType());
+            MethodSortInfoComparer<T> comparer = new MethodSortInfoComparer<T>(TriggerSortMode, SortProcedures, TriggersOrder, parent.Kind.ConvertToLocalType());
 
             //does not have any child groups
             if (!nodesGroupsTree.Root.HasChildGroups)

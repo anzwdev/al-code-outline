@@ -12,6 +12,9 @@ export class ALXmlPortSyntaxBuilder {
         //generate file content
         let writer : ALSyntaxWriter = new ALSyntaxWriter(destUri);
 
+        writer.writeNamespace(data.objectNamespace);
+        writer.writeUsings(data.objectUsings);
+
         writer.writeStartObject("xmlport", data.objectId, data.objectName);
         
         writer.addProperty("Caption", writer.encodeString(ALSyntaxHelper.removePrefixSuffix(data.objectName, data.projectSettings)));
@@ -31,7 +34,7 @@ export class ALXmlPortSyntaxBuilder {
     }
 
     private writeSchema(writer : ALSyntaxWriter, data : ALXmlPortWizardData) {       
-        let tableElementName = writer.createName(data.selectedTable!.name!);
+        let tableElementName = writer.createName(data.selectedTable!);
         let fieldNodeName : string;
         if (data.fieldNodeType == "element")
             fieldNodeName = "fieldelement";
@@ -41,7 +44,7 @@ export class ALXmlPortSyntaxBuilder {
         writer.writeStartNamedBlock("schema");
         writer.writeStartGroup("textelement", "RootNodeName");
 
-        writer.writeStartNameSourceBlock("tableelement", tableElementName, writer.encodeName(data.selectedTable!.name!));
+        writer.writeStartNameSourceBlock("tableelement", tableElementName, writer.encodeName(data.selectedTable!));
 
         if (data.selectedFieldList)
         {

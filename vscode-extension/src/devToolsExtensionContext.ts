@@ -26,6 +26,7 @@ import { HoverService } from './services/hoverService';
 import { ReferencesService } from './services/referencesService';
 import { IdReservationService } from './services/idReservationService';
 import { ALDecorationService } from './services/alDecorationService';
+import { GitClientService } from './services/gitClientService';
 
 export class DevToolsExtensionContext implements vscode.Disposable {
     alLangProxy : ALLangServerProxy;    
@@ -51,6 +52,7 @@ export class DevToolsExtensionContext implements vscode.Disposable {
     referencesService: ReferencesService;
     idReservationService: IdReservationService;
     alDecorationService: ALDecorationService;
+    gitService: GitClientService;
 
     constructor(context : vscode.ExtensionContext) {
         this.alLangProxy = new ALLangServerProxy();
@@ -82,6 +84,7 @@ export class DevToolsExtensionContext implements vscode.Disposable {
         this.referencesService = new ReferencesService(this);
         this.idReservationService = new IdReservationService(this);
         this.alDecorationService = new ALDecorationService(this);
+        this.gitService = new GitClientService(this);
     }
 
     getUseSymbolsBrowser() : boolean {

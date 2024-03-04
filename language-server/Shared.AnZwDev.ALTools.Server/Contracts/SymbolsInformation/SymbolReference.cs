@@ -14,6 +14,7 @@ namespace AnZwDev.ALTools.Server.Contracts.SymbolsInformation
         public int id { get; set; }
         public string name { get; set; }
         public string nameWithNamespaceOrId { get; set; }
+        public string typeName { get; set; }
 
     }
 }

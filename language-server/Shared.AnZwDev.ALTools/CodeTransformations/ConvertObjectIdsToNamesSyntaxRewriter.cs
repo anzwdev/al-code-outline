@@ -31,7 +31,7 @@ namespace AnZwDev.ALTools.CodeTransformations
             if (!node.ContainsDiagnostics)
             {
                 string name = node.Name?.Identifier.ValueText;
-                if ((!String.IsNullOrWhiteSpace(name)) && (name.Equals("EventSubscriber", StringComparison.CurrentCultureIgnoreCase)) && (node.ArgumentList != null))
+                if ((!String.IsNullOrWhiteSpace(name)) && (name.Equals("EventSubscriber", StringComparison.OrdinalIgnoreCase)) && (node.ArgumentList != null))
                 {
                     SeparatedSyntaxList<AttributeArgumentSyntax> arguments = node.ArgumentList.Arguments;
                     if ((arguments != null) && (arguments.Count >= 2))

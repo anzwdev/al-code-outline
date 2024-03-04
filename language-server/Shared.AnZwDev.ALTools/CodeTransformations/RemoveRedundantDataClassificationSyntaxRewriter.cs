@@ -48,7 +48,7 @@ namespace AnZwDev.ALTools.CodeTransformations
             if (propertySyntax != null)
             {
                 string valueText = propertySyntax.Value.ToString();
-                if ((!String.IsNullOrWhiteSpace(valueText)) && (!String.IsNullOrWhiteSpace(_tableDataClassification)) && (_tableDataClassification.Equals(valueText, StringComparison.CurrentCultureIgnoreCase)))
+                if ((!String.IsNullOrWhiteSpace(valueText)) && (!String.IsNullOrWhiteSpace(_tableDataClassification)) && (_tableDataClassification.Equals(valueText, StringComparison.OrdinalIgnoreCase)))
                 {
                     NoOfChanges++;
                     return node.WithPropertyList(
@@ -72,7 +72,7 @@ namespace AnZwDev.ALTools.CodeTransformations
                 if (String.IsNullOrWhiteSpace(fieldDataClassification))
                     return null;
 
-                if ((foundDataClassification != null) && (!foundDataClassification.Equals(fieldDataClassification, StringComparison.CurrentCultureIgnoreCase)))
+                if ((foundDataClassification != null) && (!foundDataClassification.Equals(fieldDataClassification, StringComparison.OrdinalIgnoreCase)))
                     return null;
 
                 foundDataClassification = fieldDataClassification;

@@ -7,6 +7,7 @@ import { ToolsGetTableFieldsListRequest } from '../../langserver/symbolsinformat
 import { TableFieldInformation } from '../../symbolsinformation/tableFieldInformation';
 import { TableFieldInformationHelper } from '../../symbolsinformation/tableFieldInformationHelper';
 import { TableFieldClass } from '../../symbolsinformation/tableFieldClass';
+import { ToolsSymbolReference } from '../../langserver/symbolsinformation/toolsSymbolReference';
 
 export class ALTableBasedWizardPage extends ProjectItemWizardPage {
     private _tableWizardData : ALTableBasedWizardData;
@@ -76,7 +77,8 @@ export class ALTableBasedWizardPage extends ProjectItemWizardPage {
             let fieldList: string[] = [];
             let response = await this._toolsExtensionContext.toolsLangServerClient.getTableFieldsList(
                 new ToolsGetTableFieldsListRequest(this._settings.getDestDirectoryPath(), 
-                this._tableWizardData.selectedTable!, false, false, true, true, this._includeFlowFilters, this._includeToolTips, this._toolTipsSourceDependencies));
+                { nameWithNamespaceOrId: this._tableWizardData.selectedTable },                
+                false, false, true, true, this._includeFlowFilters, this._includeToolTips, this._toolTipsSourceDependencies));
             if ((response) && (response.symbols)) {
                 for (let i=0; i<response.symbols.length; i++) {
                     let name = response.symbols[i].name;
@@ -117,26 +119,28 @@ export class ALTableBasedWizardPage extends ProjectItemWizardPage {
         }
     }
 
-    protected setTable(tableName : string, includeFlowFilters: boolean) {
+    protected setTable(tableName : string | undefined, includeFlowFilters: boolean) {
         var fieldChanged = 
-            (this._tableWizardData.selectedTable != tableName) ||
-            (this._includeFlowFilters != includeFlowFilters);
+            (this._tableWizardData.selectedTable !== tableName) ||
+            (this._includeFlowFilters !== includeFlowFilters);
 
-        this._tableWizardData.selectedTable = {
-            name: tableName
-        };
+        this._tableWizardData.selectedTable = tableName;
         this._includeFlowFilters = includeFlowFilters;
-        if ((fieldChanged) || (!this._tableWizardData.fieldList) || (this._tableWizardData.fieldList.length == 0))
+        if ((fieldChanged) || (!this._tableWizardData.fieldList) || (this._tableWizardData.fieldList.length == 0)) {
             this.loadFields();
+        }
     }
 
     protected processWebViewMessage(message : any) : boolean {
-        if (super.processWebViewMessage(message))
+        if (super.processWebViewMessage(message)) {
             return true;
+        }
 
         switch (message.command) {
             case "selectTable":
-                this.setTable(message.tableName, !!message.includeFlowFilters);
+                if (message.tableName) {
+                    this.setTable(message.tableName, !!message.includeFlowFilters);
+                }
                 return true;
         }
         

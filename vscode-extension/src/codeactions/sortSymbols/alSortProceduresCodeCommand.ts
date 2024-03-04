@@ -14,24 +14,48 @@ export class ALSortProceduresCodeCommand extends ALCodeAction {
             let edit: vscode.WorkspaceEdit | undefined = undefined;
 
             if ((symbol) &&
-                ((symbol.isALObject()) || (symbol.isMethod())) &&
                 (symbol.selectionRange) &&
-                (symbol.selectionRange.start.line == range.start.line)) {
+                (symbol.selectionRange.start.line === range.start.line)) {
 
-                if (symbol.isMethod())
-                    symbol = symbol.findParentObject();
+                let hasMethods = false;
+                let hasTriggers = false;
 
-                if ((symbol) && (!symbol.containsDiagnostics)) {
-                    let action = new vscode.CodeAction("Sort procedures (AZ AL Dev Tools)", vscode.CodeActionKind.QuickFix);
-                    action.command = {
-                        command: "azALDevTools.sortProcedures",
-                        title: "Sort Procedures",
-                        arguments: [document, symbol.range]
-                    }
-                    actions.push(action);
+                let isTrigger = symbol.isTrigger();
+                let isMethod = symbol.isMethod();
+
+                if ((isTrigger) || (isMethod)) {
+                    symbol = symbol.parent;
                 }
 
+                if (symbol) {
+                    hasTriggers = isTrigger || symbol.hasTriggers();
+                    hasMethods = isMethod || symbol.hasMethods();
+                    let showSortProcedures = isMethod || symbol.hasMethods();
+                    let showSortTriggers = isTrigger || symbol.hasTriggers();
+
+                    if (showSortProcedures) {
+                        let caption = showSortTriggers?"Sort procedures and triggers (AZ AL Dev Tools)":"Sort procedures (AZ AL Dev Tools)";
+                        let action = new vscode.CodeAction(caption, vscode.CodeActionKind.QuickFix);
+                        action.command = {
+                            command: "azALDevTools.sortProcedures",
+                            title: "Sort Procedures",
+                            arguments: [document, symbol.range]
+                        };
+                        actions.push(action);
+                    }
+
+                    if (showSortTriggers) {
+                        let action = new vscode.CodeAction("Sort triggers (AZ AL Dev Tools)", vscode.CodeActionKind.QuickFix);
+                        action.command = {
+                            command: "azALDevTools.sortTriggers",
+                            title: "Sort Triggers",
+                            arguments: [document, symbol.range]
+                        };
+                        actions.push(action);
+                    }
+                }
             }
+
         }
     }
 

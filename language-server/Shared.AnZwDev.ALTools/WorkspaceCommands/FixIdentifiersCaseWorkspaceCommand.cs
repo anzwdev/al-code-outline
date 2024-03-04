@@ -18,6 +18,7 @@ namespace AnZwDev.ALTools.WorkspaceCommands
         public static string RemoveQuotesFromKeywordsParameterName = "removeQuotesFromKeywords";
         public static string RemoveQuotesFromDataTypeIdentifiersParameterName = "removeQuotesFromDataTypeIdentifiers";
         public static string RemoveQuotesFromNonDataTypeIdentifiersParameterName = "removeQuotesFromNonDataTypeIdentifiers";
+        public static string UseBCLinterCopCaseRulesParameterName = "useBCLinterCopCaseRules";
 
         protected int _totalNoOfChanges = 0;
         protected int _noOfChangedFiles = 0;
@@ -26,12 +27,12 @@ namespace AnZwDev.ALTools.WorkspaceCommands
         {
         }
 
-        public override WorkspaceCommandResult Run(string sourceCode, ALProject project, string filePath, TextRange range, Dictionary<string, string> parameters, List<string> excludeFiles)
+        public override WorkspaceCommandResult Run(string sourceCode, ALProject project, string filePath, TextRange range, Dictionary<string, string> parameters, List<string> excludeFiles, List<string> includeFiles)
         {
             this._totalNoOfChanges = 0;
             this._noOfChangedFiles = 0;
 
-            WorkspaceCommandResult result = base.Run(sourceCode, project, filePath, range, parameters, excludeFiles);
+            WorkspaceCommandResult result = base.Run(sourceCode, project, filePath, range, parameters, excludeFiles, includeFiles);
 
             result.SetParameter(NoOfChangesParameterName, this._totalNoOfChanges.ToString());
             result.SetParameter(NoOfChangedFilesParameterName, this._noOfChangedFiles.ToString());
@@ -48,6 +49,7 @@ namespace AnZwDev.ALTools.WorkspaceCommands
                 identifierCaseSyntaxRewriter.Project = project;
                 identifierCaseSyntaxRewriter.RemoveQuotesFromDataTypeIdentifiers = parameters.GetBoolValue(RemoveQuotesFromDataTypeIdentifiersParameterName);
                 identifierCaseSyntaxRewriter.RemoveQuotesFromNonDataTypeIdentifiers = parameters.GetBoolValue(RemoveQuotesFromNonDataTypeIdentifiersParameterName);
+                identifierCaseSyntaxRewriter.UseBCLinterCopCaseRules = parameters.GetBoolValue(UseBCLinterCopCaseRulesParameterName);
 
                 node = identifierCaseSyntaxRewriter.Visit(node);
 

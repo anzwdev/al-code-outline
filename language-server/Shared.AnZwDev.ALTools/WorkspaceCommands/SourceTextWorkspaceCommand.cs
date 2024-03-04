@@ -1,7 +1,6 @@
 ﻿using AnZwDev.ALTools.ALSymbols;
 using AnZwDev.ALTools.Core;
 using AnZwDev.ALTools.Extensions;
-using AnZwDev.ALTools.SourceControl;
 using AnZwDev.ALTools.Workspace;
 using Microsoft.Dynamics.Nav.CodeAnalysis;
 using System;
@@ -17,7 +16,7 @@ namespace AnZwDev.ALTools.WorkspaceCommands
         {
         }
 
-        public override WorkspaceCommandResult Run(string sourceCode, ALProject project, string filePath, TextRange range, Dictionary<string, string> parameters, List<string> excludeFiles)
+        public override WorkspaceCommandResult Run(string sourceCode, ALProject project, string filePath, TextRange range, Dictionary<string, string> parameters, List<string> excludeFiles, List<string> includeFiles)
         {
             string newSourceCode = null;
             bool success = true;
@@ -33,7 +32,7 @@ namespace AnZwDev.ALTools.WorkspaceCommands
                 }
             }
             else if (!String.IsNullOrWhiteSpace(project.RootPath))
-                (success, errorMessage) = this.ProcessDirectory(project, parameters, excludeFiles);
+                (success, errorMessage) = this.ProcessDirectory(project, parameters, excludeFiles, includeFiles);
 
             if (success)
                 return new WorkspaceCommandResult(newSourceCode);
@@ -45,13 +44,12 @@ namespace AnZwDev.ALTools.WorkspaceCommands
             return (sourceCode, true, null);
         }
 
-        protected virtual (bool, string) ProcessDirectory(ALProject project, Dictionary<string, string> parameters, List<string> excludeFiles)
+        protected virtual (bool, string) ProcessDirectory(ALProject project, Dictionary<string, string> parameters, List<string> excludeFiles, List<string> includeFiles)
         {
             string[] filePathsList;
 
-            bool modifiedFilesOnly = this.GetModifiedFilesOnlyValue(parameters);
-            if (modifiedFilesOnly)
-                filePathsList = this.ModifiedFilesNamesList;
+            if ((includeFiles != null) && (includeFiles.Count > 0))
+                filePathsList = includeFiles.ToArray();
             else
                 filePathsList = System.IO.Directory.GetFiles(project.RootPath, "*.al", System.IO.SearchOption.AllDirectories);
 
