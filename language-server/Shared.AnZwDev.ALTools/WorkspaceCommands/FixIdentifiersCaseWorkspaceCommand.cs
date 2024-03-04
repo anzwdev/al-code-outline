@@ -18,6 +18,7 @@ namespace AnZwDev.ALTools.WorkspaceCommands
         public static string RemoveQuotesFromKeywordsParameterName = "removeQuotesFromKeywords";
         public static string RemoveQuotesFromDataTypeIdentifiersParameterName = "removeQuotesFromDataTypeIdentifiers";
         public static string RemoveQuotesFromNonDataTypeIdentifiersParameterName = "removeQuotesFromNonDataTypeIdentifiers";
+        public static string UseBCLinterCopCaseRulesParameterName = "useBCLinterCopCaseRules";
 
         protected int _totalNoOfChanges = 0;
         protected int _noOfChangedFiles = 0;
@@ -48,6 +49,7 @@ namespace AnZwDev.ALTools.WorkspaceCommands
                 identifierCaseSyntaxRewriter.Project = project;
                 identifierCaseSyntaxRewriter.RemoveQuotesFromDataTypeIdentifiers = parameters.GetBoolValue(RemoveQuotesFromDataTypeIdentifiersParameterName);
                 identifierCaseSyntaxRewriter.RemoveQuotesFromNonDataTypeIdentifiers = parameters.GetBoolValue(RemoveQuotesFromNonDataTypeIdentifiersParameterName);
+                identifierCaseSyntaxRewriter.UseBCLinterCopCaseRules = parameters.GetBoolValue(UseBCLinterCopCaseRulesParameterName);
 
                 node = identifierCaseSyntaxRewriter.Visit(node);
 

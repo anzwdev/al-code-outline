@@ -350,6 +350,7 @@ This extension contributes the following settings:
   * `ignoreComments`: removes sections even if it contains comments inside
 * `alOutline.fixCaseRemovesQuotesFromDataTypeIdentifiers`: when set to true, `Fix Identifiers and Keywords Case` commands will remove quotes around identifiers that use al data types as names
 * `alOutline.fixCaseRemovesQuotesFromNonDataTypeIdentifiers`: when set to true, `Fix Identifiers and Keywords Case` commands will remove quotes around identifiers that are not al data type names
+* `alOutline.useBCLinterCopCaseRules`: when set to true, BusinessCentral.LinterCop rules will be used by 'Fix Identifiers Case` commands (i.e. XmlPort instead of Xmlport)
 * `alOutline.variablesSortMode`: allows to select variables sort mode in `Sort variables` commands. There are 4 options available: 
   * `fullTypeName` - this is default value and uses full type name including object type if data type is an object (i.e. `Record Item`), if data type is the same, variables will be sorted by name
   * `mainTypeNameOnly` - uses main type name only and ignores object type names (i.e. `Record` if variable type is `Record Item`), if data type is the same, variables will be sorted by name

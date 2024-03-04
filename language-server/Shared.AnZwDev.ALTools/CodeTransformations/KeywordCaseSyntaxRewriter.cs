@@ -166,7 +166,6 @@ namespace AnZwDev.ALTools.CodeTransformations
                 SyntaxTriviaList leadingTrivia = token.LeadingTrivia;
                 SyntaxTriviaList trailingTrivia = token.TrailingTrivia;
                 bool parsed = false;
-
 #if BC
                 ConvertedSyntaxKind kind = token.Kind.ConvertToLocalType();
                 SyntaxNode parentToken = token.Parent;

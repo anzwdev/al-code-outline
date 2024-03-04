@@ -25,6 +25,7 @@ namespace AnZwDev.ALTools.CodeTransformations
         public SemanticModel SemanticModel { get; set; }
         public bool RemoveQuotesFromDataTypeIdentifiers { get; set; }
         public bool RemoveQuotesFromNonDataTypeIdentifiers { get; set; } = true;
+        public bool UseBCLinterCopCaseRules { get; set; } = false;
 
         private DotNetInformationProvider _dotNetInformationProvider;
         protected DotNetInformationProvider DotNetInformationProvider
@@ -200,8 +201,12 @@ namespace AnZwDev.ALTools.CodeTransformations
                                     (symbolKind != ConvertedSymbolKind.DotNetAssembly) &&
                                     (symbolKind != ConvertedSymbolKind.DotNetPackage) &&
                                     (symbolKind != ConvertedSymbolKind.DotNetTypeDeclaration) &&
-                                    (symbolKind != ConvertedSymbolKind.DotNet)) 
+                                    (symbolKind != ConvertedSymbolKind.DotNet))
+                                {
                                     newName = info.Symbol.Name;
+                                    if ((symbolKind == ConvertedSymbolKind.Class) && (newName == "Xmlport") && (UseBCLinterCopCaseRules))
+                                        newName = "XmlPort";
+                                }
                             }
 
                             //if identifier is escaped keyword then leave it in that state

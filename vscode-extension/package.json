@@ -1891,6 +1891,12 @@
 						"scope": "resource",
 						"description": "Set to true to remove quotes around identifiers having names that are not al data types when running 'Fix Identifiers and Keywords Case' commands"
 					},
+					"alOutline.useBCLinterCopCaseRules": {
+						"type": "boolean",
+						"default": false,
+						"scope": "resource",
+						"description": "Set to true to use case BCLinterCop case rules instead of Microsoft ones in 'Fix Identifiers and Keywords Case' commands"
+					},
 					"alOutline.variablesSortMode": {
 						"type": "string",
 						"enum": [

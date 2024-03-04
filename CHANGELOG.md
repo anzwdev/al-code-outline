@@ -1,6 +1,7 @@
 # Change Log
 
 ## 3.0.57
+ - Issue #419 - Xmlport / XmlPort sync with LinterCop
  - Issue #520 and #507 - Namespaces support
  - Issue #521 - Apply Default API settings when creating an api query
  - Issue #530 - Code Cleanup slow 
@@ -13,6 +14,7 @@
  - Issue #543 - Major slowdown in "Run Code Cleanup on Uncommitted Files in the Active Project"
 
 Thank you
+ - ChrisBlankDe, cegekaJG for reporting and discussing issue #419
  - jorispoppe for reporting issue #521
  - dsaveyn and fvet for reporting issue #530
  - achim-t for reporting issue #532
