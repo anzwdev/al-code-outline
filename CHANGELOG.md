@@ -1,5 +1,11 @@
 # Change Log
 
+## 3.0.58
+ - Issue #548 - AL Page Wizard for Cust. Ledger Entry
+
+Thank you
+ - tonyabriccomeske for reporting issue #548
+
 ## 3.0.57
  - Issue #419 - Xmlport / XmlPort sync with LinterCop
  - Issue #520 and #507 - Namespaces support
