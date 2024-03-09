@@ -37,7 +37,7 @@ jobs:
           cd ".."
      
       - name: Build VS Code extension
-        run: .\build.ps1 -Preview $false
+        run: .\build.ps1 -PreRelease $false
 
       - name: Publish VS Code extension
         run: |

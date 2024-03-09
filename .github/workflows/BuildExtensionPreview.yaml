@@ -38,7 +38,7 @@ jobs:
           cd ".."
      
       - name: Build VS Code extension
-        run: .\build.ps1 -Preview $true
+        run: .\build.ps1 -PreRelease $true
 
       - name: Upload VS Code extension to artifacts
         uses: actions/upload-artifact@v3
