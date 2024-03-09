@@ -133,6 +133,11 @@ namespace AZALDevToolsTestConsoleApp
             ALSymbolInfoSyntaxTreeReader syntaxTreeReader = new(true);
             ALSymbol symbols = syntaxTreeReader.ProcessSourceFile(filePath, project);
 
+            ALProjectSymbolsLibrarySource symbolsSource = new ALProjectSymbolsLibrarySource(project);
+            ALSymbol symbol = new ALSymbol(ALSymbolKind.TableObject, "Data Privacy Entities");
+            var location = symbolsSource.GetSymbolSourceProjectLocation(symbol);
+
+
             //pm.Add("dependencyName0", "Microsoft - System");
             //pm.Add("dependencyName1", "Microsoft - Application");
             //pm.Add("dependencyName2", "Microsoft - System Application");

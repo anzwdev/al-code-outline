@@ -38,7 +38,7 @@ namespace AnZwDev.ALTools.Workspace
                 if (this.Project.Symbols != null)
                 {
                     var alAppObject = this.Project.Symbols.AllObjects
-                        .GetObjectsCollection(objectTypeInformation.ALObjectType)
+                        .GetObjectsCollection(objectTypeInformation.ALObjectType)?
                         .FindFirst(symbol.namespaceName, symbol.name);
                     if (alAppObject != null)
                     {
@@ -52,7 +52,7 @@ namespace AnZwDev.ALTools.Workspace
                         if (dependency.Symbols != null)
                         {
                             var alAppObject = dependency.Symbols.AllObjects
-                                .GetObjectsCollection(objectTypeInformation.ALObjectType)
+                                .GetObjectsCollection(objectTypeInformation.ALObjectType)?
                                 .FindFirst(symbol.namespaceName, symbol.name);
                             if (alAppObject != null)
                             {

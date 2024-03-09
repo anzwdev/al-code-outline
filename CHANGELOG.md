@@ -1,5 +1,11 @@
 # Change Log
 
+## 3.0.59
+ - Issue #545 - Object Definition not available
+
+Thank you
+ - mjelle9 and DomKaz for reporting issue #545
+
 ## 3.0.58
  - Issue #548 - AL Page Wizard for Cust. Ledger Entry
 
