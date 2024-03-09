@@ -1,5 +1,15 @@
 # Change Log
 
+## 12.0.59
+ - Issue #545 - Object Definition not available
+ - Issues #526 and #549 - AL Extension Preview support
+   - Version number changed to match AL Compiler versions
+   - Build process updated to support preview versions of the compiler
+
+Thank you
+ - mjelle9 and DomKaz for reporting issue #545
+ - guidorobben, rvanbekkum, horstoeko for reporting issues #526 and #549
+
 ## 3.0.58
  - Issue #548 - AL Page Wizard for Cust. Ledger Entry
 

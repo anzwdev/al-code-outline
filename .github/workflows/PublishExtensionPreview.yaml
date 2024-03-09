@@ -37,12 +37,12 @@ jobs:
           cd ".."
      
       - name: Build VS Code extension
-        run: .\build.ps1 -Preview $false
+        run: .\build.ps1 -Preview $true
 
       - name: Publish VS Code extension
         run: |
           cd "vscode-extension"
-          vsce publish
+          vsce publish --pre-release
         env:
           VSCE_PAT: ${{ secrets.VSCEPUBLISH }}
 
