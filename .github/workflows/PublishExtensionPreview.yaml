@@ -1,5 +1,5 @@
-name: Publish Extension
-run-name: Publish Extension
+name: Publish Extension Preview
+run-name: Publish Extension Preview
 on:
   workflow_dispatch:
 jobs:
@@ -37,7 +37,7 @@ jobs:
           cd ".."
      
       - name: Build VS Code extension
-        run: .\build.ps1 -Preview $true
+        run: .\build.ps1 -PreRelease $true
 
       - name: Publish VS Code extension
         run: |

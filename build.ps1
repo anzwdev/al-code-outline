@@ -248,6 +248,7 @@ $msBuildPath = &"${env:ProgramFiles(x86)}\Microsoft Visual Studio\Installer\vswh
 cd ".."
 Copy-Item -Path ".\CHANGELOG.md" -Destination ".\vscode-extension\CHANGELOG.md" -Force
 Copy-Item -Path ".\README.md" -Destination ".\vscode-extension\README.md" -Force
+Copy-Item -Path ".\LICENSE" -Destination ".\vscode-extension\LICENSE" -Force
 
 # Build vscode extension
 cd "vscode-extension"
