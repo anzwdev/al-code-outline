@@ -1,7 +1,8 @@
-name: Publish Extension
-run-name: Publish Extension
+name: Build Extension Preview
+run-name: Build Extension Preview
 on:
   workflow_dispatch:
+
 jobs:
   build:
     runs-on: windows-latest
@@ -37,12 +38,10 @@ jobs:
           cd ".."
      
       - name: Build VS Code extension
-        run: .\build.ps1 -Preview $false
+        run: .\build.ps1 -Preview $true
 
-      - name: Publish VS Code extension
-        run: |
-          cd "vscode-extension"
-          vsce publish
-        env:
-          VSCE_PAT: ${{ secrets.VSCEPUBLISH }}
-
+      - name: Upload VS Code extension to artifacts
+        uses: actions/upload-artifact@v3
+        with:
+          name: vscode-extension
+          path: "vscode-extension/*.vsix"

@@ -1,3 +1,7 @@
+param (
+    $PreRelease
+)
+
 function Clear-Folder {
     param (
         [string] $Path
@@ -9,26 +13,27 @@ function Clear-Folder {
     New-Item $Path -ItemType Directory | Out-Null
 }
 
-function Get-ALCompilerPath {
+function Get-ALCompiler {
     param (
         [string] $Type,
         [string] $Nav,
         [string] $CU,
-        [string] $CompilerCachePath = "C:\ALCompiler"
+        [string] $CompilerCachePath = "C:\ALCompiler",
+        $PreRelease
     )
 
     if ($Type -eq "Marketplace") {
-        return Get-MarketplaceALCompilerPath -CompilerCachePath $CompilerCachePath
+        return Get-MarketplaceALCompiler -CompilerCachePath $CompilerCachePath -PreRelease $PreRelease
     }
 
     if ($Type -eq "Nav") {
-        return Get-NavALCompilerPath -Nav $Nav -CU $CU -CompilerCachePath $CompilerCachePath
+        return Get-NavALCompiler -Nav $Nav -CU $CU -CompilerCachePath $CompilerCachePath
     }
 
     return $null
 }
 
-function Get-NavALCompilerPath {
+function Get-NavALCompiler {
     param (
         [string] $Nav,
         [string] $CU,
@@ -49,7 +54,12 @@ function Get-NavALCompilerPath {
         Expand-ALCompilerVSIX -Path $vsixPath -Destination $extensionFolder
     }
 
-    return $compilerPath
+    $data = @{
+        Path = $compilerPath
+        Version = [System.Version]::new(0, 0, 0)
+    }
+
+    return $data
 }
 
 function Get-NavCompilerVSIX {
@@ -70,18 +80,33 @@ function Get-NavCompilerVSIX {
     return $null
 }
 
-
-
-function Get-MarketplaceALCompilerPath {
+function Get-MarketplaceALCompilerVersion {
     param (
-        [string] $CompilerCachePath
+        [string] $Url
+    )
+
+    $urlParts = $Url.Split("/")
+    $version = [System.Version]::new($urlParts.Get(6))
+
+    return $version
+}
+
+function Get-MarketplaceALCompiler {
+    param (
+        [string] $CompilerCachePath,
+        $PreRelease
     )
 
     $destPath = Join-Path -Path $CompilerCachePath -ChildPath "Marketplace"
     $extensionFolder = Join-Path -Path $destPath -ChildPath "ext"
     
     try {
-        $url = Get-LatestAlLanguageExtensionUrl
+        if ($PreRelease) {
+            $url = Get-LatestAlLanguageExtensionUrl -allowPrerelease
+        } else {
+            $url = Get-LatestAlLanguageExtensionUrl
+        }
+        
         $lastUrl = Get-LastCompilerUrl -Path $destPath
         if ($url -ne $lastUrl) {
         
@@ -103,7 +128,12 @@ function Get-MarketplaceALCompilerPath {
     catch {        
     }
 
-    return Join-Path -Path $extensionFolder -ChildPath "extension\bin\win32"
+    $data = @{
+        Path = Join-Path -Path $extensionFolder -ChildPath "extension\bin\win32"
+        Version = Get-MarketplaceALCompilerVersion -Url $url
+    }
+
+    return $data
 }
 
 function Get-LastCompilerUrl {
@@ -135,6 +165,20 @@ function Expand-ALCompilerVSIX {
     [System.IO.Compression.ZipFile]::ExtractToDirectory($Path, $Destination)
 }
 
+function Set-ExtensionPackageVersion  {
+    param (
+        [System.Version] $ALCompilerVersion
+    )
+
+    $packageManifest = Get-Content -Raw "package.json" -Encoding UTF8 | ConvertFrom-Json
+    $packageVersion = [System.Version]::new($packageManifest.version)
+
+    $newPackageVersion = [System.Version]::new($ALCompilerVersion.Major, $packageVersion.Minor, $ALCompilerVersion.Build)
+    $newVersionText = $newPackageVersion.ToString()
+
+    npm version $newVersionText --alow-same-version --no-git-tag-version
+}
+
 # Setup BC Container Helper
 $module = Get-Module -ListAvailable -Name BCContainerHelper
 if ($null -eq $module) {
@@ -149,10 +193,12 @@ Import-Module BCContainerhelper
 
 # Download compiler libraries and update dll references
 Write-Host "Downloading Latest AL Compiler from VS Code Marketplace"
-$marketplaceALCompilerPath = Get-ALCompilerPath -Type "Marketplace"
+$marketplaceALCompiler = Get-ALCompiler -Type "Marketplace" -PreRelease $PreRelease
+$marketplaceALCompilerPath = $marketplaceALCompiler.Path
 
 Write-Host "Downloading Nav 2018 AL Compiler from Nav Artifacts"
-$nav2018ALCompilerPath = Get-ALCompilerPath -Type "Nav" -Nav "2018" -CU "cu14"
+$nav2018ALCompiler = Get-ALCompiler -Type "Nav" -Nav "2018" -CU "cu14"
+$nav2018ALCompilerPath = $nav2018ALCompiler.Path
 
 Write-Host "Updating libraries references"
 $oldLibrariesPath = "C:\Projects\MicrosoftALVersions\LatestBC\bin\win32"
@@ -205,7 +251,8 @@ Copy-Item -Path ".\README.md" -Destination ".\vscode-extension\README.md" -Force
 
 # Build vscode extension
 cd "vscode-extension"
+if ($PreRelease) {
+    Set-ExtensionPackageVersion -ALCompilerVersion $marketplaceALCompiler.Version
+}
 vsce package
 cd ".."
-
-
