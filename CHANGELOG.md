@@ -1,5 +1,18 @@
 # Change Log
 
+## 13.0.61
+ - Issues #555 and #556 - AL Compiler update to v13
+
+Thank you
+ - JavierFuentes for reporting issue #555
+ - RadoArvay for reporting issue #556
+
+## 12.0.60
+ - Issue #554 - Cleanup 'uncommitted' files updates a *.http file
+
+Thank you
+ - fvet for reporting issue #554
+
 ## 12.0.59
  - Issue #545 - Object Definition not available
  - Issues #526 and #549 - AL Extension Preview support

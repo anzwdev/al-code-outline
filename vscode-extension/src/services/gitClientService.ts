@@ -24,7 +24,16 @@ export class GitClientService extends DevToolsExtensionService {
 
             if (repository) {
                 const changes = repository.state.workingTreeChanges;
-                return changes.map((change) => change.uri.fsPath);
+                let files: string[] = [];
+                
+                for (let i=0; i<changes.length; i++) {
+                    let filePath = changes[i].uri.fsPath;
+                    if (filePath.toLowerCase().endsWith('.al')) {
+                        files.push(filePath);
+                    }
+                }
+                
+                return files;
             }
         }
 
