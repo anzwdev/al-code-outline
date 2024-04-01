@@ -3,7 +3,6 @@
 import { ALObjectWizard } from "./alObjectWizard";
 import { DevToolsExtensionContext } from "../../devToolsExtensionContext";
 import { ALObjectWizardSettings } from "./alObjectWizardSettings";
-import { ALLangServerProxy } from "../../allanguage/alLangServerProxy";
 import { ALTableWizardData } from "./alTableWizardData";
 import { ALTableWizardPage } from "./alTableWizardPage";
 
