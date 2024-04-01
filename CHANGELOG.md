@@ -1,5 +1,13 @@
 # Change Log
 
+## 13.62.0
+
+ - Issue #566 - AL File Wizard for Tables Enum Handling
+
+Thank you
+ - mjmatthiesen for reporting issue #566
+
+
 ## 13.0.61
  - Issues #555 and #556 - AL Compiler update to v13
 

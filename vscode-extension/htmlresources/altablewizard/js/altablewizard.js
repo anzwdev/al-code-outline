@@ -36,6 +36,9 @@ class TableWizard extends BaseObjectWizard {
             case 'setData':
                 this.setData(message.data);
                 break;
+            case 'setTypes':
+                this.setTypes(message.data);
+                break;
             default:
                 super.onMessage(message);
                 break;
