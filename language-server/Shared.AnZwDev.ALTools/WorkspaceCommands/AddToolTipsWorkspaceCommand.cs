@@ -13,6 +13,7 @@ namespace AnZwDev.ALTools.WorkspaceCommands
     public class AddToolTipsWorkspaceCommand : SyntaxRewriterWorkspaceCommand<ToolTipSyntaxRewriter>
     {
 
+        public static string SortPropertiesParameterName = "sortProperties";
         public static string FieldTooltipParameterName = "toolTipField";
         public static string FieldTooltipCommentParameterName = "toolTipFieldComment";
         public static string ActionTooltipParameterName = "toolTipAction";
@@ -31,6 +32,7 @@ namespace AnZwDev.ALTools.WorkspaceCommands
             this.SyntaxRewriter.PageActionTooltip = parameters.GetStringValue(ActionTooltipParameterName);
             this.SyntaxRewriter.PageFieldTooltipComment = parameters.GetStringValue(FieldTooltipCommentParameterName);
             this.SyntaxRewriter.UseFieldDescription = parameters.GetBoolValue(UseFieldDescriptionParameterName);
+            this.SyntaxRewriter.SortProperties = parameters.GetBoolValue(SortPropertiesParameterName);
 
             bool reuseToolTips = parameters.GetBoolValue(ReuseToolTipsParameterName);
 

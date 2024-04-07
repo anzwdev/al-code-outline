@@ -11,6 +11,9 @@ namespace AnZwDev.ALTools.CodeTransformations
     public class ObjectCaptionSyntaxRewriter : ALCaptionsSyntaxRewriter
     {
 
+        private SortPropertiesSyntaxRewriter _sortPropertiesSyntaxRewriter = new SortPropertiesSyntaxRewriter();
+
+
         public ObjectCaptionSyntaxRewriter()
         {
         }
@@ -24,10 +27,13 @@ namespace AnZwDev.ALTools.CodeTransformations
                 {
                     NoOfChanges++;
                     node = node.AddPropertyListProperties(
-                        this.CreateCaptionPropertyFromName(node, false));
+                        this.CreateCaptionPropertyFromName(node, false, propertySyntax));
                 }
                 else
                     node = UpdateCaptionFromName(node, propertySyntax, false);
+
+                if (SortProperties)
+                    node = node.WithPropertyList(_sortPropertiesSyntaxRewriter.SortPropertyList(node.PropertyList, out _));
             }
             return base.VisitTable(node);
         }
@@ -45,7 +51,7 @@ namespace AnZwDev.ALTools.CodeTransformations
                     {
                         NoOfChanges++;
                         node = node.AddPropertyListProperties(
-                            this.CreateCaptionPropertyFromName(node, false));
+                            this.CreateCaptionPropertyFromName(node, false, propertySyntax));
                     }
                     else
                         node = UpdateCaptionFromName(node, propertySyntax, false);
@@ -63,7 +69,7 @@ namespace AnZwDev.ALTools.CodeTransformations
                 {
                     NoOfChanges++;
                     node = node.AddPropertyListProperties(
-                        this.CreateCaptionPropertyFromName(node, false));
+                        this.CreateCaptionPropertyFromName(node, false, propertySyntax));
                 }
                 else
                     node = UpdateCaptionFromName(node, propertySyntax, false);
@@ -80,7 +86,7 @@ namespace AnZwDev.ALTools.CodeTransformations
                 {
                     NoOfChanges++;
                     node = node.AddPropertyListProperties(
-                        this.CreateCaptionPropertyFromName(node, false));
+                        this.CreateCaptionPropertyFromName(node, false, propertySyntax));
                 }
                 else
                     node = UpdateCaptionFromName(node, propertySyntax, false);
@@ -97,7 +103,7 @@ namespace AnZwDev.ALTools.CodeTransformations
                 {
                     NoOfChanges++;
                     node = node.AddPropertyListProperties(
-                        this.CreateCaptionPropertyFromName(node, false));
+                        this.CreateCaptionPropertyFromName(node, false, propertySyntax));
                 }
                 else
                     node = UpdateCaptionFromName(node, propertySyntax, false);

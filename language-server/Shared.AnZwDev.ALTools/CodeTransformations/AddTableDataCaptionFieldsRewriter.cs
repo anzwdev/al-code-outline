@@ -31,7 +31,7 @@ namespace AnZwDev.ALTools.CodeTransformations
             PropertySyntax propertySyntax = node.GetProperty("DataCaptionFields");
             if (propertySyntax == null)
             {
-                var newProperty = CreateDataCaptionFieldsProperty(node);
+                var newProperty = CreateDataCaptionFieldsProperty(node, propertySyntax);
                 if (newProperty != null)
                 {
                     NoOfChanges++;
@@ -46,7 +46,7 @@ namespace AnZwDev.ALTools.CodeTransformations
                 string valueText = propertySyntax.Value.ToString();
                 if (String.IsNullOrWhiteSpace(valueText))
                 {
-                    var newProperty = CreateDataCaptionFieldsProperty(node);
+                    var newProperty = CreateDataCaptionFieldsProperty(node, propertySyntax);
                     if (newProperty != null)
                     {
                         NoOfChanges++;
@@ -59,25 +59,24 @@ namespace AnZwDev.ALTools.CodeTransformations
         }
 
 
-        protected PropertySyntax CreateDataCaptionFieldsProperty(TableSyntax node)
+        protected PropertySyntax CreateDataCaptionFieldsProperty(TableSyntax node, PropertySyntax existingProperty)
         {
             var propertyValueSyntax = CreateDataCaptionFieldsPropertyValue(node);
             if (propertyValueSyntax != null)
-                return CreateDataCaptionFieldsProperty(node, propertyValueSyntax);
+                return CreateDataCaptionFieldsProperty(node, propertyValueSyntax, existingProperty);
             return null;
         }
 
-        protected PropertySyntax CreateDataCaptionFieldsProperty(SyntaxNode node, PropertyValueSyntax propertyValue)
+        protected PropertySyntax CreateDataCaptionFieldsProperty(SyntaxNode node, PropertyValueSyntax propertyValue, PropertySyntax existingProperty)
         {
             var propertySyntax = SyntaxFactory.Property("DataCaptionFields", propertyValue);
 
-            /*
-            SyntaxTriviaList leadingTriviaList = node.CreateChildNodeIdentTrivia();
-            SyntaxTriviaList trailingTriviaList = SyntaxFactory.ParseTrailingTrivia("\r\n", 0);
-            propertySyntax = propertySyntax
-                .WithLeadingTrivia(leadingTriviaList)
-                .WithTrailingTrivia(trailingTriviaList);
-            */
+            if (existingProperty != null)
+                propertySyntax = propertySyntax.WithTriviaFrom(existingProperty);
+            else
+                propertySyntax = propertySyntax
+                    .WithLeadingTrivia(node.CreateChildNodeIdentTrivia())
+                    .WithTrailingNewLine();
 
             return propertySyntax;
         }

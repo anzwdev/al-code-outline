@@ -27,7 +27,7 @@ namespace AnZwDev.ALTools.CodeTransformations
                 {
                     changed = true;
                     node = node.AddPropertyListProperties(
-                        this.CreateCaptionPropertyFromName(node, false));
+                        this.CreateCaptionPropertyFromName(node, false, propertySyntax));
                 }
                 else
                 {
@@ -35,7 +35,7 @@ namespace AnZwDev.ALTools.CodeTransformations
                     if (String.IsNullOrWhiteSpace(valueText))
                     {
                         changed = true;
-                        node = node.ReplaceNode(propertySyntax, this.CreateCaptionPropertyFromName(node, false));
+                        node = node.ReplaceNode(propertySyntax, this.CreateCaptionPropertyFromName(node, false, propertySyntax));
                     }
                 }
 

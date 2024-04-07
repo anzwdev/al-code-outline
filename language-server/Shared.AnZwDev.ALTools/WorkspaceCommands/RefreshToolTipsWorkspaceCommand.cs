@@ -1,6 +1,7 @@
 ﻿using AnZwDev.ALTools.CodeTransformations;
 using AnZwDev.ALTools.Workspace;
 using AnZwDev.ALTools.Workspace.SymbolsInformation;
+using AnZwDev.ALTools.Extensions;
 using Microsoft.Dynamics.Nav.CodeAnalysis;
 using System;
 using System.Collections.Generic;
@@ -11,6 +12,8 @@ namespace AnZwDev.ALTools.WorkspaceCommands
     public class RefreshToolTipsWorkspaceCommand : SyntaxRewriterWorkspaceCommand<RefreshToolTipsSyntaxRewriter>
     {
 
+        public static string SortPropertiesParameterName = "sortProperties";
+
         public RefreshToolTipsWorkspaceCommand(ALDevToolsServer alDevToolsServer) : base(alDevToolsServer, "refreshToolTips")
         {
         }
@@ -18,6 +21,9 @@ namespace AnZwDev.ALTools.WorkspaceCommands
         protected override void SetParameters(string sourceCode, ALProject project, string filePath, TextSpan span, Dictionary<string, string> parameters)
         {
             base.SetParameters(sourceCode, project, filePath, span, parameters);
+
+            this.SyntaxRewriter.SortProperties = parameters.GetBoolValue(SortPropertiesParameterName);
+
             if (this.SyntaxRewriter.Project?.Symbols?.Tables != null)
             {
                 //collect list of dependencies

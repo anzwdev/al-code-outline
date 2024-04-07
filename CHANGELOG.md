@@ -2,9 +2,13 @@
 
 ## 13.62.0
 
+ - Issue #563 - Add tooltips command does not preserve separating line between properties and triggers
+   - new line trailing trivia added after new property in all commands updating properties
+   - properties sorting in properties commands when "sort properties on save" is enabled
  - Issue #566 - AL File Wizard for Tables Enum Handling
 
 Thank you
+ - ernestasjuska for reporting issue #563
  - mjmatthiesen for reporting issue #566
 
 

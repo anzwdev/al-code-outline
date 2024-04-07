@@ -15,6 +15,7 @@ export class RefreshToolTipsModifier extends WorkspaceCommandSyntaxModifier {
 
     protected getParameters(uri: vscode.Uri): any {
         let parameters = super.getParameters(uri);
+        parameters.sortProperties = this.sortPropertiesOnSave(uri);
         if (this._dependencies)
             for (let i=0; i<this._dependencies.length; i++) {
                 let name = "dependencyName" + i.toString();

@@ -12,6 +12,10 @@ namespace AnZwDev.ALTools.CodeTransformations
     public class BaseToolTipsSyntaxRewriter : BasePageWithSourceSyntaxRewriter
     {
 
+        public bool SortProperties { get; set; }
+
+        private SortPropertiesSyntaxRewriter _sortPropertiesSyntaxRewriter = new SortPropertiesSyntaxRewriter();
+
         public BaseToolTipsSyntaxRewriter()
         {
         }
@@ -36,7 +40,16 @@ namespace AnZwDev.ALTools.CodeTransformations
                     .WithTrailingTrivia(trailingTriviaList);
                 */
 
-                return node.AddPropertyListProperties(newPropertySyntax);
+                newPropertySyntax = newPropertySyntax
+                    .WithLeadingTrivia(node.CreateChildNodeIdentTrivia())
+                    .WithTrailingNewLine();
+
+                node = node.AddPropertyListProperties(newPropertySyntax);
+
+                if (SortProperties)
+                    node = node.WithPropertyList(_sortPropertiesSyntaxRewriter.SortPropertyList(node.PropertyList, out _));
+
+                return node;
             }
             else
             {

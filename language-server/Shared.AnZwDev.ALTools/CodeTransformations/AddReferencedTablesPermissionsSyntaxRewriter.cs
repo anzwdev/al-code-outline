@@ -26,6 +26,9 @@ namespace AnZwDev.ALTools.CodeTransformations
         protected MergedALAppPermissionsCollection RequiredPermissions { get; } = new MergedALAppPermissionsCollection();
         protected bool PermissionsChanged { get; set; }
         protected bool CurrentXmlPortCanImportData { get; set; }
+        public bool SortProperties { get; set; }
+
+        private SortPropertiesSyntaxRewriter _sortPropertiesSyntaxRewriter = new SortPropertiesSyntaxRewriter();
 
         public override SyntaxNode VisitCodeunit(CodeunitSyntax node)
         {
@@ -46,7 +49,7 @@ namespace AnZwDev.ALTools.CodeTransformations
                 if (PermissionsChanged)
                 {
                     var existingPropertySyntax = node.GetProperty("Permissions");
-                    var newPropertySyntax = CreatePermissionsProperty();
+                    var newPropertySyntax = CreatePermissionsProperty(node, existingPropertySyntax);
                     if (existingPropertySyntax == null)
                         node = node.AddPropertyListProperties(newPropertySyntax);
                     else
@@ -85,7 +88,7 @@ namespace AnZwDev.ALTools.CodeTransformations
                 if (PermissionsChanged)
                 {
                     var existingPropertySyntax = node.GetProperty("Permissions");
-                    var newPropertySyntax = CreatePermissionsProperty();
+                    var newPropertySyntax = CreatePermissionsProperty(node, existingPropertySyntax);
                     if (existingPropertySyntax == null)
                         node = node.AddPropertyListProperties(newPropertySyntax);
                     else
@@ -148,7 +151,7 @@ namespace AnZwDev.ALTools.CodeTransformations
                 if (PermissionsChanged)
                 {
                     var existingPropertySyntax = node.GetProperty("Permissions");
-                    var newPropertySyntax = CreatePermissionsProperty();
+                    var newPropertySyntax = CreatePermissionsProperty(node, existingPropertySyntax);
                     if (existingPropertySyntax == null)
                         node = node.AddPropertyListProperties(newPropertySyntax);
                     else
@@ -185,7 +188,7 @@ namespace AnZwDev.ALTools.CodeTransformations
                 if (PermissionsChanged)
                 {
                     var existingPropertySyntax = node.GetProperty("Permissions");
-                    var newPropertySyntax = CreatePermissionsProperty();
+                    var newPropertySyntax = CreatePermissionsProperty(node, existingPropertySyntax);
                     if (existingPropertySyntax == null)
                         node = node.AddPropertyListProperties(newPropertySyntax);
                     else
@@ -222,7 +225,7 @@ namespace AnZwDev.ALTools.CodeTransformations
                 if (PermissionsChanged)
                 {
                     var existingPropertySyntax = node.GetProperty("Permissions");
-                    var newPropertySyntax = CreatePermissionsProperty();
+                    var newPropertySyntax = CreatePermissionsProperty(node, existingPropertySyntax);
                     if (existingPropertySyntax == null)
                         node = node.AddPropertyListProperties(newPropertySyntax);
                     else
@@ -230,6 +233,10 @@ namespace AnZwDev.ALTools.CodeTransformations
                             node.PropertyList.WithProperties(
                                 node.PropertyList.Properties.Replace(
                                     existingPropertySyntax, newPropertySyntax)));
+
+                    if (SortProperties)
+                        node = node.WithPropertyList(_sortPropertiesSyntaxRewriter.SortPropertyList(node.PropertyList, out _));
+
                     NoOfChanges++;
                 }
 
@@ -261,7 +268,7 @@ namespace AnZwDev.ALTools.CodeTransformations
                 if (PermissionsChanged)
                 {
                     var existingPropertySyntax = node.GetProperty("Permissions");
-                    var newPropertySyntax = CreatePermissionsProperty();
+                    var newPropertySyntax = CreatePermissionsProperty(node, existingPropertySyntax);
                     if (existingPropertySyntax == null)
                         node = node.AddPropertyListProperties(newPropertySyntax);
                     else
@@ -386,16 +393,20 @@ namespace AnZwDev.ALTools.CodeTransformations
                 RequiredPermissions.AddRange(permissionsList);
         }
 
-        protected PropertySyntax CreatePermissionsProperty()
+        protected PropertySyntax CreatePermissionsProperty(SyntaxNode node, PropertySyntax existingProperty)
         {
-            SyntaxTriviaList leadingTriviaList = SyntaxFactory.TriviaList(SyntaxFactory.WhiteSpace("    "));
-            SyntaxTriviaList trailingTriviaList = SyntaxFactory.TriviaList(SyntaxFactory.WhiteSpace("\r\n"));
-
             PermissionPropertyValueSyntax propertyValueSyntax = this.CreatePermissionPropertyValue();
-            return SyntaxFactory.Property("Permissions", propertyValueSyntax)
-                .WithEqualsToken(CreateEqualsToken())
-                .WithLeadingTrivia(leadingTriviaList)
-                .WithTrailingTrivia(trailingTriviaList);
+            var propertySyntax = SyntaxFactory.Property("Permissions", propertyValueSyntax)
+                .WithEqualsToken(CreateEqualsToken());
+
+            if (existingProperty != null)
+                propertySyntax = propertySyntax.WithTriviaFrom(existingProperty);
+            else
+                propertySyntax = propertySyntax
+                    .WithLeadingTrivia(node.CreateChildNodeIdentTrivia())
+                    .WithTrailingNewLine();
+
+            return propertySyntax;
         }
 
         protected PropertySyntax UpdatePermissionsProperty(PropertySyntax propertySyntax)

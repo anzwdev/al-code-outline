@@ -20,6 +20,7 @@ export class ToolTipModifier extends WorkspaceCommandSyntaxModifier {
         parameters.toolTipFieldComment = this.getFieldTooltipComment(config);
         parameters.toolTipAction = this.getActionTooltip(config);
         parameters.useFieldDescription = this.getUseFieldDescription(config);
+        parameters.sortProperties = this.sortPropertiesOnSave(uri);
 
         parameters.reuseToolTips = !config.get<boolean>('doNotReuseToolTipsFromOtherPages');
         let toolTipsSource = config.get<string[]>('reuseToolTipsFromDependencies');
