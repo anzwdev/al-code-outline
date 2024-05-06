@@ -33,7 +33,7 @@ export class ALCodeunitSyntaxBuilder {
 
         writer.writeLine("");
 
-        if ((data.interfaceName) && (data.interfaceName != '')) {
+        if ((data.interfaceName) && (data.interfaceName !== '')) {
             let methodsResponse = await this._toolsExtensionContext.toolsLangServerClient.getInterfaceMethodsList(
                 new toolsGetInterfaceMethodsListRequest(destUri?.fsPath, {
                     nameWithNamespaceOrId: data.interfaceName

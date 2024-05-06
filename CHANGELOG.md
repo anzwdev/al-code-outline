@@ -6,9 +6,10 @@
    - new line trailing trivia added after new property in all commands updating properties
    - properties sorting in properties commands when "sort properties on save" is enabled
  - Issue #566 - AL File Wizard for Tables Enum Handling
+ - Issue #574 - Command Remove Unused Variables from Active Editor incorrectly removes adjacent preprocessor directive
 
 Thank you
- - ernestasjuska for reporting issue #563
+ - ernestasjuska for reporting issues #563, #574
  - mjmatthiesen for reporting issue #566
 
 
