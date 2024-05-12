@@ -1672,7 +1672,11 @@ namespace AnZwDev.ALTools.ALSymbolReferences.Compiler
                         AddProperty(list, name, propertyValue as LabelPropertyValueSyntax);
                         break;
                     default:
-                        list.Add(new ALAppProperty(name, ALSyntaxHelper.DecodeStringOrName(node.Value.ToString())));
+                        var value = node.Value.ToString();
+                        //!!! Do not decode strings or names !!!
+                        //if ((value != null) && (value.StartsWith("'")))
+                        //    value = ALSyntaxHelper.DecodeString(value);
+                        list.Add(new ALAppProperty(name, value));
                         break;
                 }
             }

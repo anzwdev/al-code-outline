@@ -29,17 +29,7 @@ namespace AnZwDev.ALTools
         public ALDevToolsServer(string extensionPath)
         {
             //initialize assembly loading
-            AppDomain currentDomain = AppDomain.CurrentDomain;
-            currentDomain.AssemblyResolve += CurrentDomain_AssemblyResolve;
-
             this.ExtensionBinPath = Path.Combine(extensionPath, "bin");
-            this.SymbolsLibraries = new ALSymbolLibrariesCollection();
-            this.SyntaxTrees = new ALSyntaxTreesCollection(new ALSyntaxTreeSymbolsReader());
-            this.RawSyntaxTrees = new ALSyntaxTreesCollection(new ALRawSyntaxTreeSymbolsReader());
-            this.CodeAnalyzersLibraries = new CodeAnalyzersLibrariesCollection(this);
-            this.WorkspaceCommandsManager = new WorkspaceCommandsManager(this);
-            this.Workspace = new ALWorkspace();
-
 #if BC
             if (RuntimeInformation.IsOSPlatform(OSPlatform.OSX))
                 this.PlatformSpecificFolder = "darwin";
@@ -50,6 +40,16 @@ namespace AnZwDev.ALTools
             else
 #endif
                 this.PlatformSpecificFolder = "";
+            AppDomain currentDomain = AppDomain.CurrentDomain;
+            currentDomain.AssemblyResolve += CurrentDomain_AssemblyResolve;
+
+            this.SymbolsLibraries = new ALSymbolLibrariesCollection();
+            this.SyntaxTrees = new ALSyntaxTreesCollection(new ALSyntaxTreeSymbolsReader());
+            this.RawSyntaxTrees = new ALSyntaxTreesCollection(new ALRawSyntaxTreeSymbolsReader());
+            this.CodeAnalyzersLibraries = new CodeAnalyzersLibrariesCollection(this);
+            this.WorkspaceCommandsManager = new WorkspaceCommandsManager(this);
+            this.Workspace = new ALWorkspace();
+
         }
 
 
