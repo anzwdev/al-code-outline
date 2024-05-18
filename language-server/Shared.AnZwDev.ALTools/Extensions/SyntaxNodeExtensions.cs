@@ -154,6 +154,12 @@ namespace AnZwDev.ALTools.Extensions
             return false;
         }
 
+        public static T WithTrailingNewLine<T>(this T node) where T : SyntaxNode
+        {
+            SyntaxTriviaList trailingTriviaList = SyntaxFactory.ParseTrailingTrivia("\r\n", 0);
+            return node.WithTrailingTrivia(trailingTriviaList);          
+        }
+
         public static bool HasNonEmptyTrivia(this SyntaxNode node)
         {
             if ((!node.GetLeadingTrivia().IsNullOrWhiteSpace()) || (!node.GetTrailingTrivia().IsNullOrWhiteSpace()))

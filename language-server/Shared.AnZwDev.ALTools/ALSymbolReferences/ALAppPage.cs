@@ -54,7 +54,7 @@ namespace AnZwDev.ALTools.ALSymbolReferences
                 if ((sourceTable != null) && (!String.IsNullOrWhiteSpace(sourceTable.Value)) && (Int32.TryParse(sourceTable.Value, out id)))
                 {
                     if (idMap.TableIdMap.ContainsKey(id))
-                        sourceTable.Value = idMap.TableIdMap[id].Name;
+                        sourceTable.Value = idMap.TableIdMap[id].GetFullName();
                 }
             }
         }

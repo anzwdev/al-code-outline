@@ -11,6 +11,9 @@ namespace AnZwDev.ALTools.CodeTransformations
     public class RemoveRedundantDataClassificationSyntaxRewriter : ALSyntaxRewriter
     {
 
+        public bool SortProperties { get; set; }
+
+        private SortPropertiesSyntaxRewriter _sortPropertiesSyntaxRewriter = new SortPropertiesSyntaxRewriter();
         private string _tableDataClassification = null;
 
         public RemoveRedundantDataClassificationSyntaxRewriter()
@@ -28,6 +31,10 @@ namespace AnZwDev.ALTools.CodeTransformations
                     NoOfChanges++;
                     node = node.AddPropertyListProperties(
                         this.CreateDataClassificationProperty(node, fieldsDataClassification));
+
+                    if (SortProperties)
+                        node = node.WithPropertyList(_sortPropertiesSyntaxRewriter.SortPropertyList(node.PropertyList, out _));
+
                     _tableDataClassification = fieldsDataClassification;
                 }
             }

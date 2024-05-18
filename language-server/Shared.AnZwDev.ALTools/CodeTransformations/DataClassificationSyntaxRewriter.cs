@@ -30,7 +30,7 @@ namespace AnZwDev.ALTools.CodeTransformations
             {
                 NoOfChanges++;
                 node = node.AddPropertyListProperties(
-                    this.CreateDataClassificationProperty(node));
+                    this.CreateDataClassificationProperty(node, propertySyntax));
                 if (SortProperties)
                     node = node.WithPropertyList(_sortPropertiesSyntaxRewriter.SortPropertyList(node.PropertyList, out _));
                 _tableDataClassification = DataClassification;
@@ -42,7 +42,7 @@ namespace AnZwDev.ALTools.CodeTransformations
                     (_tableDataClassification.Equals("ToBeClassified", StringComparison.OrdinalIgnoreCase)))
                 {
                     NoOfChanges++;
-                    node = node.ReplaceNode(propertySyntax, this.CreateDataClassificationProperty(node));
+                    node = node.ReplaceNode(propertySyntax, this.CreateDataClassificationProperty(node, propertySyntax));
                     _tableDataClassification = DataClassification;
                 }
             }
@@ -69,7 +69,7 @@ namespace AnZwDev.ALTools.CodeTransformations
                     {
                         NoOfChanges++;
                         node = node.AddPropertyListProperties(
-                            this.CreateDataClassificationProperty(node));
+                            this.CreateDataClassificationProperty(node, propertySyntax));
                         if (SortProperties)
                             node = node.WithPropertyList(_sortPropertiesSyntaxRewriter.SortPropertyList(node.PropertyList, out _));
                         return node;
@@ -88,7 +88,7 @@ namespace AnZwDev.ALTools.CodeTransformations
                                 node.PropertyList.WithProperties(
                                     node.PropertyList.Properties.Remove(propertySyntax)));
                         else
-                            return node.ReplaceNode(propertySyntax, this.CreateDataClassificationProperty(node));
+                            return node.ReplaceNode(propertySyntax, this.CreateDataClassificationProperty(node, propertySyntax));
                     }
                 }
             } 
@@ -106,29 +106,21 @@ namespace AnZwDev.ALTools.CodeTransformations
             return base.VisitField(node);
         }
 
-        protected PropertySyntax CreateDataClassificationProperty(SyntaxNode node)
+        protected PropertySyntax CreateDataClassificationProperty(SyntaxNode node, PropertySyntax existingProperty)
         {
             var propertySyntax = SyntaxFactory.Property(
                 "DataClassification",
                 SyntaxFactory.EnumPropertyValue(SyntaxFactory.IdentifierName(this.DataClassification)));
 
-            SyntaxTriviaList leadingTriviaList = node.CreateChildNodeIdentTrivia();
-            SyntaxTriviaList trailingTriviaList = SyntaxFactory.ParseTrailingTrivia("\r\n", 0);
-            propertySyntax = propertySyntax
-                .WithLeadingTrivia(leadingTriviaList)
-                .WithTrailingTrivia(trailingTriviaList);
+
+            if (existingProperty != null)
+                propertySyntax = propertySyntax.WithTriviaFrom(existingProperty);
+            else
+                propertySyntax = propertySyntax
+                    .WithLeadingTrivia(node.CreateChildNodeIdentTrivia())
+                    .WithTrailingNewLine();
 
             return propertySyntax;
-
-            /*
-            return SyntaxFactory.Property(
-                SyntaxFactory.PropertyName(SyntaxFactory.Identifier("DataClassification"))
-                    .WithTrailingTrivia(SyntaxFactory.ParseTrailingTrivia(" ")),
-                SyntaxFactory.EnumPropertyValue(SyntaxFactory.IdentifierName(this.DataClassification))
-                    .WithLeadingTrivia(SyntaxFactory.ParseLeadingTrivia(" ")))
-                .WithLeadingTrivia(leadingTriviaList)                
-                .WithTrailingTrivia(trailingTriviaList);
-            */
         }
 
 

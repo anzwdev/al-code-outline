@@ -74,6 +74,7 @@ export class ReuseSingleFieldToolTipModifier extends WorkspaceCommandSyntaxModif
 
     protected getParameters(uri: vscode.Uri): any {
         let parameters = super.getParameters(uri);
+        parameters.sortProperties = this.sortPropertiesOnSave(uri);
         if (this._toolTip) {
             parameters.toolTip = this._toolTip.value;
             parameters.comment = this._toolTip.comment;

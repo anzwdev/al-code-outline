@@ -21,8 +21,11 @@ namespace AnZwDev.ALTools.CodeTransformations
         public string PageFieldTooltipComment { get; set; }
         public string PageActionTooltip { get; set; }
         public bool UseFieldDescription { get; set; }
-        
+        public bool SortProperties { get; set; }
+
         public Dictionary<int, Dictionary<string, List<LabelInformation>>> ToolTipsCache { get; set; }
+
+        private SortPropertiesSyntaxRewriter _sortPropertiesSyntaxRewriter = new SortPropertiesSyntaxRewriter();
 
         public ToolTipSyntaxRewriter()
         {
@@ -67,7 +70,12 @@ namespace AnZwDev.ALTools.CodeTransformations
                 }
             }
 
-            return node.AddPropertyListProperties(this.CreateToolTipProperty(node, captionInfo.Caption.Value, captionInfo.Caption.Comment, forceToolTipValue));
+            node = node.AddPropertyListProperties(this.CreateToolTipProperty(node, captionInfo.Caption.Value, captionInfo.Caption.Comment, forceToolTipValue));
+
+            if (SortProperties)
+                node = node.WithPropertyList(_sortPropertiesSyntaxRewriter.SortPropertyList(node.PropertyList, out _));
+
+            return node;
         }
 
         public override SyntaxNode VisitPageAction(PageActionSyntax node)
@@ -75,7 +83,12 @@ namespace AnZwDev.ALTools.CodeTransformations
             if ((!CanAddToolTip(node)) || (this.HasToolTip(node)))
                 return base.VisitPageAction(node);
             this.NoOfChanges++;
-            return node.AddPropertyListProperties(this.CreateToolTipProperty(node));
+            node = node.AddPropertyListProperties(this.CreateToolTipProperty(node));
+
+            if (SortProperties)
+                node = node.WithPropertyList(_sortPropertiesSyntaxRewriter.SortPropertyList(node.PropertyList, out _));
+
+            return node;
         }
 
         protected PropertySyntax CreateToolTipProperty(SyntaxNode node, string caption = null, string comment = null, LabelInformation forceToolTipValue = null)
@@ -120,15 +133,12 @@ namespace AnZwDev.ALTools.CodeTransformations
                 toolTipComment = forceToolTipValue.Comment;
             }
 
-            var propertySyntax = SyntaxFactoryHelper.ToolTipProperty(toolTipValue, toolTipComment, false);
+            var propertySyntax =
+                SyntaxFactoryHelper.ToolTipProperty(toolTipValue, toolTipComment, false);
 
-            /*
-            SyntaxTriviaList leadingTriviaList = node.CreateChildNodeIdentTrivia();
-            SyntaxTriviaList trailingTriviaList = SyntaxFactory.ParseTrailingTrivia("\r\n", 0);
             propertySyntax = propertySyntax
-                .WithLeadingTrivia(leadingTriviaList)
-                .WithTrailingTrivia(trailingTriviaList);
-            */
+                .WithLeadingTrivia(node.CreateChildNodeIdentTrivia())
+                .WithTrailingNewLine();
 
             return propertySyntax;
         }

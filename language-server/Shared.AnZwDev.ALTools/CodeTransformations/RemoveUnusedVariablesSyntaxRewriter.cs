@@ -358,6 +358,12 @@ namespace AnZwDev.ALTools.CodeTransformations
 
             if (newVariablesSyntax == null)
             {
+                //include leading directives trivia from node
+                var varSectionDirectives = new List<SyntaxTrivia>();
+                node.CollectLeadingDirectiveTrivias(varSectionDirectives);
+                if (varSectionDirectives.Count > 0)
+                    collectedDirectives.InsertRange(0, varSectionDirectives);
+
                 if (collectedDirectives.Count == 0)
                     return null;
                 newVariablesSyntax = SyntaxFactory.List(new List<VariableDeclarationBaseSyntax>());
@@ -375,7 +381,15 @@ namespace AnZwDev.ALTools.CodeTransformations
         {
             (var newVariablesSyntax, var collectedDirectives) = this.RemoveVarSectionVariables(node.Variables, deleteVariables);
             if (newVariablesSyntax == null)
+            {
+                //include leading directives trivia from node
+                var varSectionDirectives = new List<SyntaxTrivia>();
+                node.CollectLeadingDirectiveTrivias(varSectionDirectives);
+                if (varSectionDirectives.Count > 0)
+                    collectedDirectives.InsertRange(0, varSectionDirectives);
+
                 return (null, collectedDirectives);
+            }
             return (node.WithVariables(newVariablesSyntax.Value), collectedDirectives);
         }
 

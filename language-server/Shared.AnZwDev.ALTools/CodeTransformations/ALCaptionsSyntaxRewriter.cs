@@ -27,25 +27,24 @@ namespace AnZwDev.ALTools.CodeTransformations
             if (String.IsNullOrWhiteSpace(valueText))
             {
                 NoOfChanges++;
-                return node.ReplaceNode(oldCaptionPropertySyntax, this.CreateCaptionPropertyFromName(node, locked));
+                return node.ReplaceNode(oldCaptionPropertySyntax, this.CreateCaptionPropertyFromName(node, locked, oldCaptionPropertySyntax));
             }
             return node;
         }
 
-        protected PropertySyntax CreateCaptionPropertyFromName(SyntaxNode node, bool locked)
+        protected PropertySyntax CreateCaptionPropertyFromName(SyntaxNode node, bool locked, PropertySyntax existingProperty)
         {
             string value = node.GetNameStringValue().RemovePrefixSuffix(
                 this.Project.MandatoryPrefixes, this.Project.MandatorySuffixes, this.Project.MandatoryAffixes, this.Project.AdditionalMandatoryAffixesPatterns);
 
             var propertySyntax = SyntaxFactoryHelper.CaptionProperty(value, null, locked);
 
-            /*
-            SyntaxTriviaList leadingTriviaList = node.CreateChildNodeIdentTrivia();
-            SyntaxTriviaList trailingTriviaList = SyntaxFactory.ParseTrailingTrivia("\r\n", 0);
-            propertySyntax = propertySyntax
-                .WithLeadingTrivia(leadingTriviaList)
-                .WithTrailingTrivia(trailingTriviaList);
-            */
+            if (existingProperty != null)
+                propertySyntax = propertySyntax.WithTriviaFrom(existingProperty);
+            else
+                propertySyntax = propertySyntax
+                    .WithLeadingTrivia(node.CreateChildNodeIdentTrivia())
+                    .WithTrailingNewLine();
 
             return propertySyntax;
         }

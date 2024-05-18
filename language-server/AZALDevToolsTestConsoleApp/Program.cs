@@ -176,14 +176,28 @@ namespace AZALDevToolsTestConsoleApp
                 .SymbolsWithDependencies
                 .Tables;
 
+
+
+            PageInformationProvider pageInformationProvider = new PageInformationProvider();
+            var pageSymbolReference = new SymbolReference()
+            {
+                //id = 50305,
+                //name = "NotWorkingTickets 2TNP"
+                name = "Posted Sales Credit Memo"
+            };
+            var pageFields = pageInformationProvider.GetPageDetails(
+                project,
+                pageSymbolReference.ToALObjectReference(),
+                false, true, false, null);
+
             var pageReference = new ALObjectReference(null, "MyTestPage");
             var page = project
                 .SymbolsWithDependencies
                 .Pages
                 .FindFirst(pageReference);
+
             if (page != null)
             {
-                PageInformationProvider pageInformationProvider = new PageInformationProvider();
                 var toolTipsList = pageInformationProvider.GetPageFieldAvailableToolTips(project, "Page", page.GetIdentifier(), new ALObjectReference(), "Rec.\"No.\"");
                 PageInformation pageInformation = pageInformationProvider.GetPageDetails(project, new ALObjectReference(null, "wqefewf"), true, true, true, null);
             }

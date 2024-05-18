@@ -1,5 +1,18 @@
 # Change Log
 
+## 13.62.0
+ - Issue #532 - Code Action "Add multiple fields" doesn't work when SourceTable includes a dot 
+ - Issue #563 - Add tooltips command does not preserve separating line between properties and triggers
+   - new line trailing trivia added after new property in all commands updating properties
+   - properties sorting in properties commands when "sort properties on save" is enabled
+ - Issue #566 - AL File Wizard for Tables Enum Handling
+ - Issue #574 - Command Remove Unused Variables from Active Editor incorrectly removes adjacent preprocessor directive
+
+Thank you
+ - ernestasjuska for reporting issues #563, #574
+ - mjmatthiesen for reporting issue #566
+ - achim-t and zabcik for reporting issue #532
+
 ## 13.0.61
  - Issues #555 and #556 - AL Compiler update to v13
 

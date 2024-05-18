@@ -9,8 +9,11 @@ export class AddReferencedTablesPermissionsModifier extends WorkspaceCommandSynt
     }
 
     protected getParameters(uri: vscode.Uri): any {
+        let config = vscode.workspace.getConfiguration('alOutline', uri);
         let parameters = super.getParameters(uri);
+        parameters.sortProperties = this.sortPropertiesOnSave(uri);
         parameters.tablePermissionsOnly = false;
         return parameters;
     }
+
 }
