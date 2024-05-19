@@ -73,7 +73,10 @@ export class ToolTipModifier extends WorkspaceCommandSyntaxModifier {
     protected getFieldTooltipComment(config: vscode.WorkspaceConfiguration): string {
         let toolTip = StringHelper.emptyIfNotDef(
             config.get('pageFieldToolTipComment'));
-        if (toolTip == '') {
+        if (toolTip === '') {
+            toolTip = '%Caption.Comment%';
+        }
+        if (toolTip === '%%Caption.Comment%') {
             toolTip = '%Caption.Comment%';
         }
         return toolTip;

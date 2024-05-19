@@ -241,10 +241,12 @@ Write-Host "Building Linux .net core language server"
 dotnet publish ".\AZALDevToolsServer.NetCore\AZALDevToolsServer.NetCore.csproj" -r linux-x64 -f net8.0 -o "..\vscode-extension\bin\netcore\linux" --self-contained false --configuration Release
 
 # Windows - .net framework for Nav2018 extension development
+Write-Host "Building Windows .net framework language server for Nav 2018"
 $msBuildPath = &"${env:ProgramFiles(x86)}\Microsoft Visual Studio\Installer\vswhere.exe" -latest -prerelease -products * -requires Microsoft.Component.MSBuild -find MSBuild\**\Bin\MSBuild.exe
 & $msBuildPath ".\AZALDevToolsServer.NetFrameworkNav2018\AZALDevToolsServer.NetFrameworkNav2018.csproj" -p:Configuration=Release -p:OutputPath="..\..\vscode-extension\bin\netframeworknav2018"
 
 # Update readme and changelog
+Write-Host "Copying readme and changelog to vscode extension folder"
 cd ".."
 Copy-Item -Path ".\CHANGELOG.md" -Destination ".\vscode-extension\CHANGELOG.md" -Force
 Copy-Item -Path ".\README.md" -Destination ".\vscode-extension\README.md" -Force
@@ -253,7 +255,9 @@ Copy-Item -Path ".\LICENSE" -Destination ".\vscode-extension\LICENSE" -Force
 # Build vscode extension
 cd "vscode-extension"
 if ($PreRelease) {
+    Write-Host "Setting extension version to pre-release"
     Set-ExtensionPackageVersion -ALCompilerVersion $marketplaceALCompiler.Version
 }
+write-Host "Packaging extension..."
 vsce package
 cd ".."
