@@ -1,5 +1,11 @@
 # Change Log
 
+## 13.63.0
+ - Issue #553 - AL Report for Cust. Ledger Entry
+
+Thank you
+ - ClairePRA for reporting issue #553
+
 ## 13.62.0
  - Issue #532 - Code Action "Add multiple fields" doesn't work when SourceTable includes a dot 
  - Issue #563 - Add tooltips command does not preserve separating line between properties and triggers

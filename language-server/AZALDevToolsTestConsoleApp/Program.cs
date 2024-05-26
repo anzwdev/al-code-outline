@@ -177,6 +177,19 @@ namespace AZALDevToolsTestConsoleApp
                 .Tables;
 
 
+            var reportSymbolReference = new SymbolReference()
+            {
+                id = 50300,
+                name = "MyReport"
+            };
+
+            ReportInformationProvider reportProvider = new ReportInformationProvider();
+            var reportData = reportProvider.GetReportDataItemInformationDetails(
+                project,
+                reportSymbolReference.ToALObjectReference(),
+                "CustLedgerEntry", false, true);
+
+
 
             PageInformationProvider pageInformationProvider = new PageInformationProvider();
             var pageSymbolReference = new SymbolReference()

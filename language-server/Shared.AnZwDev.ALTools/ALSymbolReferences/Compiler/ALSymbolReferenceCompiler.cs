@@ -558,7 +558,7 @@ namespace AnZwDev.ALTools.ALSymbolReferences.Compiler
             ALAppReportDataItem dataItem = new ALAppReportDataItem();
             dataItem.Name = node.GetNameStringValue();
             if (node.DataItemTable != null)
-                dataItem.RelatedTable = ALSyntaxHelper.DecodeName(node.DataItemTable.ToString());
+                dataItem.RelatedTable = node.DataItemTable.ToString(); //ALSyntaxHelper.DecodeName(node.DataItemTable.ToString());
 
             if ((node.Elements != null) && (node.Elements.Count > 0))
             {
