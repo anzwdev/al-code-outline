@@ -14,9 +14,11 @@ namespace AnZwDev.ALTools.ALSymbols
         public int ObjectId { get; }
         public string NameWithNamespace { get; }
         public bool HasNamespace { get; }
+        public string AppId { get; }
 
         public ALObjectReference(HashSet<string> usings, string nameWithNamespaceOrId)
         {
+            AppId = null;
             Usings = usings;
             NamespaceName = null;
             Name = null;
@@ -26,6 +28,17 @@ namespace AnZwDev.ALTools.ALSymbols
 
             if (!String.IsNullOrWhiteSpace(nameWithNamespaceOrId))
             {
+                //decode appid from name reference
+                if (nameWithNamespaceOrId.StartsWith("#"))
+                {
+                    var appIdEndPos = nameWithNamespaceOrId.IndexOf('#', 1);
+                    if (appIdEndPos > 0)
+                    {
+                        AppId = nameWithNamespaceOrId.Substring(1, appIdEndPos - 1);
+                        nameWithNamespaceOrId = nameWithNamespaceOrId.Substring(appIdEndPos + 1);
+                    }
+                }
+
                 if (Int32.TryParse(nameWithNamespaceOrId, out int objectId))
                     ObjectId = objectId;
                 else
@@ -47,6 +60,7 @@ namespace AnZwDev.ALTools.ALSymbols
 
         public ALObjectReference(HashSet<string> usings, string namespaceName, int id, string name)
         {
+            AppId = null;
             Usings = usings;
             NamespaceName = namespaceName;
             ObjectId = id;

@@ -1,5 +1,23 @@
 # Change Log
 
+## 13.63.0
+ - Issue #541 - RemoveProceduresSemicolon - does not remove semicolon from triggers
+ - Issue #553 - AL Report for Cust. Ledger Entry
+ - Issue #561 - database is not fixed when running "Fix identifiers and keywords"
+ - Issue #567 - Show Code Analyzer Rules: Does not pick up multiple custom code analyzers
+ - Issue #568 - Add multiple fields or New Page Extension Wizard does not suggest existing table or fields 
+ - Issue #572 - Page wizard does not take fields defined in table extensions into account
+ - Issue #579 - Casing on pages created from "New AL File Wizard"
+
+Thank you
+ - ThorstenEngelsGOB, NKarolak and pri-kise for reporting issue #541
+ - ClairePRA for reporting issue #553
+ - guidorobben for reporting issue #561
+ - rvanbekkum for reporting issue #567
+ - thatnavguy and ernestasjuska for reporting issue #568
+ - PeterConijn for reporting issue #572
+ - jwikman for reporting issue #579
+
 ## 13.62.0
  - Issue #532 - Code Action "Add multiple fields" doesn't work when SourceTable includes a dot 
  - Issue #563 - Add tooltips command does not preserve separating line between properties and triggers

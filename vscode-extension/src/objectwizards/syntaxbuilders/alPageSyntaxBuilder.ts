@@ -66,7 +66,7 @@ export class ALPageSyntaxBuilder {
         writer.writeLine("");
         
         writer.writeStartLayout();
-        writer.writeStartGroup("area", "content");
+        writer.writeStartGroup("area", "Content");
         
         if (data.isFastTabsPageType()) {
             if (data.fastTabsData) {

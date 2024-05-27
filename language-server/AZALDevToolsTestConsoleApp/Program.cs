@@ -108,7 +108,7 @@ namespace AZALDevToolsTestConsoleApp
 
             //filePath = "C:\\Projects\\Sandboxes\\al-test-projects\\SmallBC23\\SortProceduresTests.Codeunit.al";
             //filePath = "C:\\Projects\\Sandboxes\\al-test-projects\\SmallBC23\\InterfaceDemo.Interface.al";
-            filePath = "C:\\Projects\\Sandboxes\\al-test-projects\\SmallBC23\\PTEMagic.Codeunit.al";
+            filePath = "C:\\Projects\\Sandboxes\\al-test-projects\\SmallBC23\\DemoPage.Page.al";
 
             string content = FileUtils.SafeReadAllText(filePath);
             Dictionary<string, string> pm = new();
@@ -129,7 +129,7 @@ namespace AZALDevToolsTestConsoleApp
 
             ALProject project = host.ALDevToolsServer.Workspace.Projects[0];
 
-            Helpers.CopyFolder("C:\\Projects\\Sandboxes\\al-test-projects\\SmallBC23.Backup", "C:\\Projects\\Sandboxes\\al-test-projects\\SmallBC23");
+            //Helpers.CopyFolder("C:\\Projects\\Sandboxes\\al-test-projects\\SmallBC23.Backup", "C:\\Projects\\Sandboxes\\al-test-projects\\SmallBC23");
             ALSymbolInfoSyntaxTreeReader syntaxTreeReader = new(true);
             ALSymbol symbols = syntaxTreeReader.ProcessSourceFile(filePath, project);
 
@@ -172,9 +172,26 @@ namespace AZALDevToolsTestConsoleApp
             //WorkspaceCommandResult o = host.ALDevToolsServer.WorkspaceCommandsManager.RunCommand("removeProceduresSemicolon", content, projects[0].folderPath, filePath, null, pm, null);
             //WorkspaceCommandResult o = host.ALDevToolsServer.WorkspaceCommandsManager.RunCommand("addUsingRegion", content, projects[0].folderPath, filePath, null, pm, null);
 
+            TableInformationProvider tableInformationProvider = new();
+            List<TableFieldInformaton> fields = tableInformationProvider.GetTableFields(project, new ALObjectReference(null, "Item"), false, false, true, true, true, false, null);
+            List<TableFieldInformaton> fields2 = fields.Where(p => (p.Name.StartsWith("Description"))).ToList();
+
+
             var allObj = project
                 .SymbolsWithDependencies
                 .Tables;
+
+            var reportSymbolReference = new SymbolReference()
+            {
+                id = 50300,
+                name = "MyReport"
+            };
+
+            ReportInformationProvider reportProvider = new ReportInformationProvider();
+            var reportData = reportProvider.GetReportDataItemInformationDetails(
+                project,
+                reportSymbolReference.ToALObjectReference(),
+                "CustLedgerEntry", false, true);
 
 
 
@@ -203,10 +220,6 @@ namespace AZALDevToolsTestConsoleApp
             }
             ObjectIdInformationProvider objectIdInformationProvider = new();
             long id = objectIdInformationProvider.GetNextObjectId(project, "Page");
-
-            TableInformationProvider tableInformationProvider = new();
-            List<TableFieldInformaton> fields = tableInformationProvider.GetTableFields(project, new ALObjectReference(null, "Sales Line"), false, false, true, true, true, false, null);
-            List<TableFieldInformaton> fields2 = fields.Where(p => (p.Name.StartsWith("Description"))).ToList();
 
             ReportInformationProvider reportInformationProvider = new();
             ReportInformation reportInformation = reportInformationProvider.GetFullReportInformation(project, new ALObjectReference(null, "Sales Order"));
