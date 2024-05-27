@@ -772,7 +772,7 @@ namespace AnZwDev.ALTools.ALSymbolReferences.Compiler
         protected void ProcessXmlPortTableElement(ALAppXmlPortNode alAppXmlPortNode, XmlPortTableElementSyntax node)
         {
             if (node.SourceTable != null)
-                alAppXmlPortNode.Expression = ALSyntaxHelper.DecodeName(node.SourceTable.ToString()).Trim();
+                alAppXmlPortNode.Expression = node.SourceTable.ToString().Trim(); //ALSyntaxHelper.DecodeName(node.SourceTable.ToString()).Trim();
         }
 
 
@@ -810,7 +810,7 @@ namespace AnZwDev.ALTools.ALSymbolReferences.Compiler
 
             dataItem.Name = node.GetNameStringValue();
             if (node.DataItemTable != null)
-                dataItem.RelatedTable = ALSyntaxHelper.DecodeName(node.DataItemTable.ToString());
+                dataItem.RelatedTable = node.DataItemTable.ToString().Trim(); //ALSyntaxHelper.DecodeName(node.DataItemTable.ToString());
 
             if ((node.Elements != null) && (node.Elements.Count > 0))
             {
