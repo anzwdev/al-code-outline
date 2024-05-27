@@ -176,7 +176,6 @@ namespace AZALDevToolsTestConsoleApp
                 .SymbolsWithDependencies
                 .Tables;
 
-
             var reportSymbolReference = new SymbolReference()
             {
                 id = 50300,

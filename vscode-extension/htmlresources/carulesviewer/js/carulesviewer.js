@@ -80,7 +80,7 @@ class CARulesViewer {
                 option.label = data[i].label;
                 option.value = data[i].value;
                 option.innerText = data[i].label;
-                option.selected = data[i].selected
+                option.selected = data[i].selected;
                 this._analyzersSel.appendChild(option);
             }
         }
@@ -196,7 +196,7 @@ class CARulesViewer {
         let options = selElem.options;
         for (let i=0; i<options.length; i++) {
             if (options[i].selected)
-                selList.push(options[i].value);
+                selList.push(options[i].label);
         }
         return selList;
     }

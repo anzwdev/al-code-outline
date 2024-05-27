@@ -34,46 +34,54 @@ export class CARulesCollection {
     }
 
     protected loadCodeAnalyzers() {
-        this.analyzers.push(new CodeAnalyzerInfo('${AppSourceCop}', '${AppSourceCop}', true));
-        this.analyzers.push(new CodeAnalyzerInfo('${CodeCop}', '${CodeCop}', true));
-        this.analyzers.push(new CodeAnalyzerInfo('${PerTenantExtensionCop}', '${PerTenantExtensionCop}', true));
-        this.analyzers.push(new CodeAnalyzerInfo('${UICop}', '${UICop}', true));
-        this.addCustomAnalyzer('${analyzerFolder}BusinessCentral.LinterCop.dll');
-        this.analyzers.push(new CodeAnalyzerInfo('Compiler', 'Compiler', true));
+        this.addAnalyzer('${AppSourceCop}');
+        this.addAnalyzer('${CodeCop}');
+        this.addAnalyzer('${PerTenantExtensionCop}');
+        this.addAnalyzer('${UICop}');
+        this.addAnalyzer('${analyzerFolder}BusinessCentral.LinterCop.dll');
+        this.addAnalyzer('Compiler');
 
         let alConfig = vscode.workspace.getConfiguration('al', undefined);
         let codeAnalyzersSetting = alConfig.get<string[]|undefined>("codeAnalyzers");
         if (codeAnalyzersSetting) {
             for (let i=0; i<codeAnalyzersSetting.length; i++) {
                 let analyzerName = codeAnalyzersSetting[i].trim();
-                if (analyzerName.startsWith('${')) {
-                    let analyzerInfo = this.getAnalyzerInfo(analyzerName);
-                    if (!analyzerInfo)
-                        this.analyzers.push(new CodeAnalyzerInfo(analyzerName, analyzerName, true));
-                } else {
-                    this.analyzers.push(new CodeAnalyzerInfo(path.parse(codeAnalyzersSetting[i]).name,
-                        codeAnalyzersSetting[i], true));
-                }
+                this.addAnalyzer(analyzerName);
             }
+        }
+    }
+
+    protected addAnalyzer(name: string) {
+        let fullName = name;
+
+        //convert to full path
+        if ((name.startsWith('${analyzerFolder}')) && (this._context.alLangProxy.extensionPath)) {
+            let fileName = name.substring('${analyzerFolder}'.length);
+            fullName = path.join(this._context.alLangProxy.extensionPath, 'bin', 'Analyzers', fileName);
+        }
+
+        //check if analyzer file exists and parse name from path
+        if ((!fullName.startsWith('${')) && (fullName !== 'Compiler')) {
+            if (!fs.existsSync(fullName)) {
+                return;
+            }
+            name = path.parse(fullName).name;
+        }
+
+        let analyzerInfo = this.getAnalyzerInfo(fullName);
+        if (!analyzerInfo) {
+            this.analyzers.push(new CodeAnalyzerInfo(name, fullName, true));
         }
     }
 
     protected getAnalyzerInfo(value: string): CodeAnalyzerInfo | undefined {
         value = value.toLowerCase();
         for (let i=0; i<this.analyzers.length; i++) {
-            if (this.analyzers[i].value.toLowerCase() == value)
+            if (this.analyzers[i].value.toLowerCase() === value) {
                 return this.analyzers[i];
+            }
         }
         return undefined;
-    }
-
-    private addCustomAnalyzer(name: string) {
-        if ((name.startsWith('${analyzerFolder}')) && (this._context.alLangProxy.extensionPath)) {
-            let fileName = name.substring('${analyzerFolder}'.length);
-            let fullPath = path.join(this._context.alLangProxy.extensionPath, 'bin', 'Analyzers', fileName);
-            if (fs.existsSync(fullPath))
-                this.analyzers.push(new CodeAnalyzerInfo(name, name, true));        
-        }
     }
 
 }

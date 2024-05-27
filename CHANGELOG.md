@@ -2,13 +2,15 @@
 
 ## 13.63.0
  - Issue #541 - RemoveProceduresSemicolon - does not remove semicolon from triggers
- - Issue #561 - database is not fixed when running "Fix identifiers and keywords"
  - Issue #553 - AL Report for Cust. Ledger Entry
+ - Issue #561 - database is not fixed when running "Fix identifiers and keywords"
+ - Issue #567 - Show Code Analyzer Rules: Does not pick up multiple custom code analyzers
 
 Thank you
  - ThorstenEngelsGOB, NKarolak and pri-kise for reporting issue #541
- - guidorobben for reporting issue #561
  - ClairePRA for reporting issue #553
+ - guidorobben for reporting issue #561
+ - rvanbekkum for reporting issue #567
 
 ## 13.62.0
  - Issue #532 - Code Action "Add multiple fields" doesn't work when SourceTable includes a dot 
