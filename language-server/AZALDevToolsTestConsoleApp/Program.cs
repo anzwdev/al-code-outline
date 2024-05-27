@@ -108,7 +108,7 @@ namespace AZALDevToolsTestConsoleApp
 
             //filePath = "C:\\Projects\\Sandboxes\\al-test-projects\\SmallBC23\\SortProceduresTests.Codeunit.al";
             //filePath = "C:\\Projects\\Sandboxes\\al-test-projects\\SmallBC23\\InterfaceDemo.Interface.al";
-            filePath = "C:\\Projects\\Sandboxes\\al-test-projects\\SmallBC23\\PTEMagic.Codeunit.al";
+            filePath = "C:\\Projects\\Sandboxes\\al-test-projects\\SmallBC23\\DemoPage.Page.al";
 
             string content = FileUtils.SafeReadAllText(filePath);
             Dictionary<string, string> pm = new();
@@ -129,7 +129,7 @@ namespace AZALDevToolsTestConsoleApp
 
             ALProject project = host.ALDevToolsServer.Workspace.Projects[0];
 
-            Helpers.CopyFolder("C:\\Projects\\Sandboxes\\al-test-projects\\SmallBC23.Backup", "C:\\Projects\\Sandboxes\\al-test-projects\\SmallBC23");
+            //Helpers.CopyFolder("C:\\Projects\\Sandboxes\\al-test-projects\\SmallBC23.Backup", "C:\\Projects\\Sandboxes\\al-test-projects\\SmallBC23");
             ALSymbolInfoSyntaxTreeReader syntaxTreeReader = new(true);
             ALSymbol symbols = syntaxTreeReader.ProcessSourceFile(filePath, project);
 

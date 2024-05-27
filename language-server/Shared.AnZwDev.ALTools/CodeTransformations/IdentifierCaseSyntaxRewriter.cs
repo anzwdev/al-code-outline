@@ -301,18 +301,58 @@ namespace AnZwDev.ALTools.CodeTransformations
         {
             SymbolInfo symbolInfo = this.SemanticModel.GetSymbolInfo(node.Parent);
 
-            if ((symbolInfo != null) && (symbolInfo.Symbol != null) && (symbolInfo.Symbol.Kind.ConvertToLocalType() == ConvertedSymbolKind.Option))
+            if (symbolInfo.Symbol != null)
             {
-                IOptionSymbol optionSymbol = symbolInfo.Symbol as IOptionSymbol;
-                if ((optionSymbol != null) && (optionSymbol.Type != null))
+                var kind = symbolInfo.Symbol.Kind.ConvertToLocalType();
+                switch (kind)
                 {
-                    string newName = optionSymbol.Type.Name;
-                    if ((newName != null) && (newName.Equals(memberName, StringComparison.OrdinalIgnoreCase)))
-                    {
-                        memberName = newName;
-                        return true;
-                    }
+                    case ConvertedSymbolKind.Option:
+                        IOptionSymbol optionSymbol = symbolInfo.Symbol as IOptionSymbol;
+                        if ((optionSymbol != null) && (optionSymbol.Type != null))
+                        {
+                            string newName = optionSymbol.Type.Name;
+                            if ((newName != null) && (newName.Equals(memberName, StringComparison.OrdinalIgnoreCase)))
+                            {
+                                memberName = newName;
+                                return true;
+                            }
+                        }
+                        break;
+                    case ConvertedSymbolKind.Table:
+                        if (TryUpdateName(ref memberName, "Database"))
+                            return true;
+                        break;
+                    case ConvertedSymbolKind.Page:
+                        if (TryUpdateName(ref memberName, "Page"))
+                            return true;
+                        break;
+                    case ConvertedSymbolKind.Report:
+                        if (TryUpdateName(ref memberName, "Report"))
+                            return true;
+                        break;
+                    case ConvertedSymbolKind.Codeunit:
+                        if (TryUpdateName(ref memberName, "Codeunit"))
+                            return true;
+                        break;
+                    case ConvertedSymbolKind.Query:
+                        if (TryUpdateName(ref memberName, "Query"))
+                            return true;
+                        break;
+                    case ConvertedSymbolKind.XmlPort:
+                        if (TryUpdateName(ref memberName, "XmlPort"))
+                            return true;
+                        break;
                 }
+            }
+            return false;
+        }
+
+        private bool TryUpdateName(ref string memberName, string suggestedName)
+        {
+            if ((!suggestedName.Equals(memberName, StringComparison.Ordinal)) && (suggestedName.Equals(memberName, StringComparison.OrdinalIgnoreCase)))
+            {
+                memberName = suggestedName;
+                return true;
             }
             return false;
         }
