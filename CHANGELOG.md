@@ -6,6 +6,7 @@
  - Issue #561 - database is not fixed when running "Fix identifiers and keywords"
  - Issue #567 - Show Code Analyzer Rules: Does not pick up multiple custom code analyzers
  - Issue #568 - Add multiple fields or New Page Extension Wizard does not suggest existing table or fields 
+ - Issue #572 - Page wizard does not take fields defined in table extensions into account
 
 Thank you
  - ThorstenEngelsGOB, NKarolak and pri-kise for reporting issue #541
@@ -13,6 +14,7 @@ Thank you
  - guidorobben for reporting issue #561
  - rvanbekkum for reporting issue #567
  - thatnavguy and ernestasjuska for reporting issue #568
+ - PeterConijn for reporting issue #572
 
 ## 13.62.0
  - Issue #532 - Code Action "Add multiple fields" doesn't work when SourceTable includes a dot 
