@@ -1,9 +1,11 @@
 # Change Log
 
 ## 13.63.0
+ - Issue #541 - RemoveProceduresSemicolon - does not remove semicolon from triggers
  - Issue #553 - AL Report for Cust. Ledger Entry
 
 Thank you
+ - ThorstenEngelsGOB, NKarolak and pri-kise for reporting issue #541
  - ClairePRA for reporting issue #553
 
 ## 13.62.0
