@@ -121,7 +121,7 @@ export class ALSymbolsBasedPageWizard extends ALSymbolsBasedWizard {
         writer.writeLine("");
         
         writer.writeStartLayout();
-        writer.writeStartGroup("area", "content");
+        writer.writeStartGroup("area", "Content");
         
         writer.writeStartGroup(fieldGroupType, "General");
         

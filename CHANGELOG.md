@@ -1,6 +1,12 @@
 # Change Log
 
 ## 13.63.0
+ - Issue #582 - Page wizard creates area(content) instead of area(Content)
+
+Thank you
+ - guidorobben for reporting issue #582
+ 
+## 13.63.0
  - Issue #541 - RemoveProceduresSemicolon - does not remove semicolon from triggers
  - Issue #553 - AL Report for Cust. Ledger Entry
  - Issue #561 - database is not fixed when running "Fix identifiers and keywords"

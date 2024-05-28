@@ -111,7 +111,7 @@ export class ALSymbolsBasedReportWizard extends ALSymbolsBasedWizard {
 
         //layout
         writer.writeStartLayout();
-        writer.writeStartGroup("area", "content");
+        writer.writeStartGroup("area", "Content");
         writer.writeStartGroup("group", "GroupName");
         writer.writeEndBlock();
         writer.writeEndBlock();
@@ -119,7 +119,7 @@ export class ALSymbolsBasedReportWizard extends ALSymbolsBasedWizard {
 
         //actions
         writer.writeStartNamedBlock("actions")
-        writer.writeStartGroup("area", "processing");
+        writer.writeStartGroup("area", "Processing");
         writer.writeEndBlock();
         writer.writeEndBlock();
 
