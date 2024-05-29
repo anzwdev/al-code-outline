@@ -1,9 +1,11 @@
 # Change Log
 
 ## 13.63.0
+ - Issue #567 - Show Code Analyzer Rules: Does not pick up multiple custom code analyzers in multi-root workspace projects
  - Issue #582 - Page wizard creates area(content) instead of area(Content)
 
 Thank you
+ - rvanbekkum for reporting issue #567
  - guidorobben for reporting issue #582
  
 ## 13.63.0
