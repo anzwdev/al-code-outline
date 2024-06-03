@@ -19,7 +19,7 @@ namespace AnZwDev.ALTools.Workspace.SymbolsInformation
         public BaseObjectInformation(ALAppObject alAppObject) : base(alAppObject)
         {
             if (alAppObject.Properties != null)
-                Caption = alAppObject.Properties.GetValue("Caption");
+                Caption = alAppObject.Properties.GetStringValue("Caption");
             Namespace = alAppObject.NamespaceName;
         }
     }

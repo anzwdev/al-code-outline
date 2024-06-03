@@ -24,9 +24,9 @@ namespace AnZwDev.ALTools.Workspace.SymbolsInformation
             Namespace = page.NamespaceName;
             if (page.Properties != null)
             {
-                this.Caption = page.Properties.GetValue("Caption");
-                this.Source = page.Properties.GetValue("SourceTable");
-                this.ApplicationArea = page.Properties.GetValue("ApplicationArea");
+                this.Caption = page.Properties.GetStringValue("Caption");
+                this.Source = page.Properties.GetRawValue("SourceTable");
+                this.ApplicationArea = page.Properties.GetRawValue("ApplicationArea");
             }
         }
 

@@ -66,7 +66,7 @@ export class ALXmlPortSyntaxBuilder {
 
         //layout
         writer.writeStartLayout();
-        writer.writeStartGroup("area", "content");
+        writer.writeStartGroup("area", "Content");
         writer.writeStartGroup("group", "GroupName");
         writer.writeEndBlock();
         writer.writeEndBlock();
@@ -74,7 +74,7 @@ export class ALXmlPortSyntaxBuilder {
 
         //actions
         writer.writeStartNamedBlock("actions")
-        writer.writeStartGroup("area", "processing");
+        writer.writeStartGroup("area", "Processing");
         writer.writeEndBlock();
         writer.writeEndBlock();
 

@@ -46,7 +46,7 @@ namespace AnZwDev.ALTools.Workspace.SymbolsInformation.Internal
                     ALAppProperty property = alAppControl.Properties?.GetProperty(this.PropertyName);
                     if (property != null)
                     {
-                        labelInformation = new LabelInformation(PropertyName, property.Value);
+                        labelInformation = new LabelInformation(PropertyName, property.GetStringValue());
                         labelInformation.Update(alAppControl.Properties);
                     }
 
