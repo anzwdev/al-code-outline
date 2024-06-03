@@ -20,7 +20,7 @@ namespace AnZwDev.ALTools.Workspace.SymbolsInformation
         {
             Namespace = query.NamespaceName;
             if (query.Properties != null)
-                this.Caption = query.Properties.GetValue("Caption");
+                this.Caption = query.Properties.GetStringValue("Caption");
         }
 
     }

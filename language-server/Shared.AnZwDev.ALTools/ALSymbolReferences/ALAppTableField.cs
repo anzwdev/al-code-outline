@@ -48,7 +48,7 @@ namespace AnZwDev.ALTools.ALSymbolReferences
                 if ((fieldState == ALAppTableFieldState.ObsoletePending) || (fieldState == ALAppTableFieldState.ObsoleteRemoved))
                 {
                     string obsoleteReasonText = "";
-                    string obsoleteReason = this.Properties.GetValue("ObsoleteReason");
+                    string obsoleteReason = this.Properties.GetRawValue("ObsoleteReason");
                     if (!String.IsNullOrWhiteSpace(obsoleteReason))
                         obsoleteReasonText = ": " + obsoleteReason.Trim();
 
@@ -71,11 +71,11 @@ namespace AnZwDev.ALTools.ALSymbolReferences
         {
             if (this.Properties != null)
             {
-                string enabledState = this.Properties.GetValue("Enabled");
+                string enabledState = this.Properties.GetNameValue("Enabled");
                 if ((enabledState != null) && (enabledState.Equals("0") || enabledState.Equals("false", StringComparison.OrdinalIgnoreCase)))
                     return ALAppTableFieldState.Disabled;
 
-                string obsoleteState = this.Properties.GetValue("ObsoleteState");
+                string obsoleteState = this.Properties.GetNameValue("ObsoleteState");
                 if (!String.IsNullOrWhiteSpace(obsoleteState))
                 {
                     if (obsoleteState.Equals("Pending", StringComparison.OrdinalIgnoreCase))
@@ -91,7 +91,7 @@ namespace AnZwDev.ALTools.ALSymbolReferences
         {
             if (this.Properties != null)
             {
-                string fieldClass = this.Properties.GetValue("FieldClass");
+                string fieldClass = this.Properties.GetNameValue("FieldClass");
                 if (!String.IsNullOrWhiteSpace(fieldClass))
                 {
                     if (fieldClass.Equals("FlowField", StringComparison.OrdinalIgnoreCase))

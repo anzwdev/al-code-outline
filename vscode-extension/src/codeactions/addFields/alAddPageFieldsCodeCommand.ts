@@ -66,7 +66,7 @@ export class ALAddPageFieldsCodeCommand extends ALBaseAddFieldsCodeCommand {
         };
 
         //get available fields from the language server
-        let response = await this._toolsExtensionContext.toolsLangServerClient.getPageDetails(
+        let response = await this. _toolsExtensionContext.toolsLangServerClient.getPageDetails(
             new ToolsGetPageDetailsRequest(document.uri.fsPath, pageReference, false, true, reuseToolTips, toolTipsSource));
         if ((!response) || (!response.symbol) || (!response.symbol.availableTableFields))
             return;

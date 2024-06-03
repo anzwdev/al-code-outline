@@ -38,10 +38,14 @@ namespace AnZwDev.ALTools.Workspace.SymbolsInformation
             if (propertiesCollection != null)
             {
                 ALAppProperty labelProperty = propertiesCollection.GetProperty(this._propertyName);
-                if ((labelProperty != null) && (!String.IsNullOrWhiteSpace(labelProperty.Value)))
+                if (labelProperty != null)
                 {
-                    this.Value = labelProperty.Value;
-                    this.Comment = propertiesCollection.GetValue(this._propertyName + ".Comment");
+                    var value = labelProperty.GetStringValue();
+                    if (!string.IsNullOrWhiteSpace(value))
+                    {
+                        this.Value = value;
+                        this.Comment = propertiesCollection.GetStringValue(this._propertyName + ".Comment");
+                    }
                 }
             }
         }

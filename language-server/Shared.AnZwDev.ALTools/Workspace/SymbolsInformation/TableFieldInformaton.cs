@@ -54,8 +54,8 @@ namespace AnZwDev.ALTools.Workspace.SymbolsInformation
             this.Name = symbolReference.Name;
             if (symbolReference.Properties != null)
             {
-                this.Caption = symbolReference.Properties.GetValue("Caption");
-                this.Description = symbolReference.Properties.GetValue("Description");
+                this.Caption = symbolReference.Properties.GetStringValue("Caption");
+                this.Description = symbolReference.Properties.GetStringValue("Description");
                 this.CaptionLabel.Update(symbolReference.Properties);
                 this.FieldClass = symbolReference.GetFieldClass();
                 this.State = symbolReference.GetFieldState();
@@ -86,13 +86,13 @@ namespace AnZwDev.ALTools.Workspace.SymbolsInformation
                 //function is called from properties update in table extension,
                 //so if Properties.GetValue returns null, it means that
                 //property has not been changed and should not be updated here
-                string caption = propertiesCollection.GetValue("Caption");
+                string caption = propertiesCollection.GetStringValue("Caption");
                 if (!String.IsNullOrWhiteSpace(caption))
                 {
                     this.Caption = caption;
                     this.CaptionLabel.Update(propertiesCollection);
                 }
-                string description = propertiesCollection.GetValue("Description");
+                string description = propertiesCollection.GetStringValue("Description");
                 if (!String.IsNullOrWhiteSpace(description))
                     this.Description = description;
             }

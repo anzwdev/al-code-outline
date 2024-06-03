@@ -51,7 +51,7 @@ namespace AnZwDev.ALTools.ALSymbolReferences
         {
             if (this.Properties != null)
             {
-                string access = this.Properties.GetValue("Access");
+                string access = this.Properties.GetNameValue("Access");
                 if (!String.IsNullOrWhiteSpace(access))
                 {
                     ALAppAccessMode accessModeValue;
@@ -70,14 +70,14 @@ namespace AnZwDev.ALTools.ALSymbolReferences
                     .Where(p => ((p.Name != null) && (p.Name.Equals("Access", StringComparison.OrdinalIgnoreCase))))
                     .FirstOrDefault();
                 if (internalProperty != null)
-                    return ((internalProperty.Value != null) && (internalProperty.Value.Equals("Internal", StringComparison.OrdinalIgnoreCase)));
+                    return internalProperty.Equals("Internal");
             }
             return false;
         }
 
         public string GetInherentPermissions()
         {
-            return Properties?.GetValue("InherentPermissions");
+            return Properties?.GetRawValue("InherentPermissions");
         }
 
         public virtual bool HasFullInherentPermissions()

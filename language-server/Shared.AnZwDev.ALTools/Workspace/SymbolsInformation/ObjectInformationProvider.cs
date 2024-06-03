@@ -33,7 +33,7 @@ namespace AnZwDev.ALTools.Workspace.SymbolsInformation
                     bool validObject = true;
                     if (!includeObsolete)
                     {
-                        string obsoleteState = alAppObject?.Properties?.GetValue("ObsoleteState");
+                        string obsoleteState = alAppObject?.Properties?.GetNameValue("ObsoleteState");
                         validObject = ((String.IsNullOrWhiteSpace(obsoleteState)) || (!obsoleteState.Equals("Removed", StringComparison.OrdinalIgnoreCase)));
                     }
                     if (validObject)

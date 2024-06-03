@@ -1,4 +1,5 @@
-﻿using System;
+﻿using AnZwDev.ALTools.ALSymbols;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -20,6 +21,25 @@ namespace AnZwDev.ALTools.ALSymbolReferences
         {
             this.Name = newName;
             this.Value = newValue;
+        }
+
+        public bool Equals(string compareWith)
+        {
+            return (Value != null) && (Value.Equals(compareWith, StringComparison.OrdinalIgnoreCase));
+        }
+
+        public string GetStringValue()
+        {
+            if (Value != null)
+                return ALSyntaxHelper.DecodeString(Value);
+            return null;
+        }
+
+        public string GetNameValue()
+        {
+            if (Value != null)
+                return ALSyntaxHelper.DecodeName(Value);
+            return null;
         }
 
     }

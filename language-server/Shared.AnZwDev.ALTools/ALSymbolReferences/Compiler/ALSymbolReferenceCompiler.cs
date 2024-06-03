@@ -900,7 +900,7 @@ namespace AnZwDev.ALTools.ALSymbolReferences.Compiler
 
             this.ProcessApplicationObject(alObject, node);
 
-            alObject.TargetObject = ALSyntaxHelper.DecodeName(node.BaseObject.ToString());
+            alObject.TargetObject = node.BaseObject.ToString().Trim();
 
             if (node.Layout != null)
                 alObject.ControlChanges = this.CreatePageExtensionControlChangesList(node.Layout.Changes);
@@ -1024,7 +1024,7 @@ namespace AnZwDev.ALTools.ALSymbolReferences.Compiler
 
             this.ProcessApplicationObject(alObject, node);
 
-            alObject.TargetObject = ALSyntaxHelper.DecodeName(node.BaseObject.ToString());
+            alObject.TargetObject = node.BaseObject.ToString().Trim();
 
             if (node.Fields != null)
             {
@@ -1213,7 +1213,7 @@ namespace AnZwDev.ALTools.ALSymbolReferences.Compiler
 
             this.ProcessApplicationObject(alObject, node);
 
-            alObject.TargetObject = ALSyntaxHelper.DecodeName(node.BaseObject.ToString());
+            alObject.TargetObject = node.BaseObject.ToString().Trim();
 
             alObject.Values = this.CreateEnumValuesList(node.Values);
 

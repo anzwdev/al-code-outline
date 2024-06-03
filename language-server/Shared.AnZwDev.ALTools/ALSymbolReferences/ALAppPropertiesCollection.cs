@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Text;
+using System.Xml.Linq;
 
 namespace AnZwDev.ALTools.ALSymbolReferences
 {
@@ -21,13 +22,27 @@ namespace AnZwDev.ALTools.ALSymbolReferences
             return null;
         }
 
-        public string GetValue(string name)
+        public string GetRawValue(string name)
         {
-            for (int i = 0; i < this.Count; i++)
-            {
-                if (name.Equals(this[i].Name, StringComparison.OrdinalIgnoreCase))
-                    return this[i].Value;
-            }
+            var property = GetProperty(name);
+            if (property != null)
+                return property.Value;
+            return null;
+        }
+
+        public string GetStringValue(string name)
+        {
+            var property = GetProperty(name);
+            if (property != null)
+                return property.GetStringValue();
+            return null;
+        }
+
+        public string GetNameValue(string name)
+        {
+            var property = GetProperty(name);
+            if (property != null)
+                return property.GetNameValue();
             return null;
         }
 
