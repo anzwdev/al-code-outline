@@ -1,6 +1,6 @@
 # Change Log
 
-## 13.63.0
+## 13.64.0
  - Issue #567 - Show Code Analyzer Rules: Does not pick up multiple custom code analyzers in multi-root workspace projects
  - Issue #582 - Page wizard creates area(content) instead of area(Content)
  - Issue #583 - "Add Multiple Fields" adding extra stuff to the tooltip
