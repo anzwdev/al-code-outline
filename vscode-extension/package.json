@@ -1785,6 +1785,16 @@
 						},
 						"description": "List of commands run by the Code Cleanup"
 					},
+					"alOutline.namespacesSortOrder": {
+						"type": "array",
+						"items": {
+							"type": "string"
+						},
+						"default": [],
+						"uniqueItems": true,
+						"description": "Specifies order of beginnings of namespace names for SortUsings commands. Namespaces prefixes not listed will be sorted after those specified",
+						"scope": "resource"
+					},
 					"alOutline.codeActionsOnSaveIgnoreFiles": {
 						"type": "array",
 						"items": {

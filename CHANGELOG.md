@@ -2,9 +2,11 @@
 
 ## 13.65.0
  - Issue #567 - Show Code Analyzer Rules: Does not pick up multiple custom code analyzers in multi-root workspace projects - case sensitive check fix
+ - Issue #586 - Code Cleanup: Sort Usings
 
 Thank you
  - rvanbekkum for reporting issue #567
+ - ChrisBlankDe for reporting issue/idea #586
 
 ## 13.64.0
  - Issue #567 - Show Code Analyzer Rules: Does not pick up multiple custom code analyzers in multi-root workspace projects
