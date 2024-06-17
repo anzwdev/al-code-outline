@@ -2,7 +2,7 @@
 	"name": "al-code-outline",
 	"displayName": "AZ AL Dev Tools/AL Code Outline",
 	"description": "AZ AL Development Tools: AL code outline, object browser, object creators",
-	"version": "13.64.0",
+	"version": "13.65.0",
 	"publisher": "andrzejzwierzchowski",
 	"engines": {
 		"vscode": "^1.85.0"
@@ -1784,6 +1784,16 @@
 							]
 						},
 						"description": "List of commands run by the Code Cleanup"
+					},
+					"alOutline.namespacesSortOrder": {
+						"type": "array",
+						"items": {
+							"type": "string"
+						},
+						"default": [],
+						"uniqueItems": true,
+						"description": "Specifies order of beginnings of namespace names for SortUsings commands. Namespaces prefixes not listed will be sorted after those specified",
+						"scope": "resource"
 					},
 					"alOutline.codeActionsOnSaveIgnoreFiles": {
 						"type": "array",

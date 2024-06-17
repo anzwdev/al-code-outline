@@ -1,5 +1,14 @@
 # Change Log
 
+## 13.65.0
+ - Issue #567 - Show Code Analyzer Rules: Does not pick up multiple custom code analyzers in multi-root workspace projects - case sensitive check fix
+ - Issue #586 - Code Cleanup: Sort Usings
+ - Fix Identifiers case command incorrectly detected object IDs
+
+Thank you
+ - rvanbekkum for reporting issue #567
+ - ChrisBlankDe for reporting issue/idea #586
+
 ## 13.64.0
  - Issue #567 - Show Code Analyzer Rules: Does not pick up multiple custom code analyzers in multi-root workspace projects
  - Issue #582 - Page wizard creates area(content) instead of area(Content)

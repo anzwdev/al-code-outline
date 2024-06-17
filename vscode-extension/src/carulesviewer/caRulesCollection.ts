@@ -8,8 +8,9 @@ import { ToolsGetCodeAnalyzersRulesRequest } from '../langserver/toolsGetCodeAna
 
 export class CARulesCollection {
     protected _context: DevToolsExtensionContext;
+    protected _analyzerFolderPrefix: string = '${analyzerFolder}';
     rules: CARuleInfo[] | undefined;
-    analyzers: CodeAnalyzerInfo[];
+    analyzers: CodeAnalyzerInfo[];    
 
     constructor(devToolsContext : DevToolsExtensionContext) {
         this._context = devToolsContext;
@@ -38,7 +39,7 @@ export class CARulesCollection {
         this.addAnalyzer('${CodeCop}');
         this.addAnalyzer('${PerTenantExtensionCop}');
         this.addAnalyzer('${UICop}');
-        this.addAnalyzer('${analyzerFolder}BusinessCentral.LinterCop.dll');
+        this.addAnalyzer(this._analyzerFolderPrefix + 'BusinessCentral.LinterCop.dll');
         this.addAnalyzer('Compiler');
 
         let folders = vscode.workspace.workspaceFolders;
@@ -61,8 +62,8 @@ export class CARulesCollection {
         let fullName = name;
 
         //convert to full path
-        if ((name.startsWith('${analyzerFolder}')) && (this._context.alLangProxy.extensionPath)) {
-            let fileName = name.substring('${analyzerFolder}'.length);
+        if ((name.toLowerCase().startsWith(this._analyzerFolderPrefix.toLowerCase())) && (this._context.alLangProxy.extensionPath)) {
+            let fileName = name.substring(this._analyzerFolderPrefix.length);
             fullName = path.join(this._context.alLangProxy.extensionPath, 'bin', 'Analyzers', fileName);
         }
 

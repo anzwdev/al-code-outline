@@ -17,26 +17,25 @@ namespace AnZwDev.ALTools.CodeTransformations.Namespaces
 
         #region Usings comparer
 
-        protected class UsingComparer : IComparer<SyntaxNodeSortInfo<UsingDirectiveSyntax>>
+        protected class UsingsComparer : IComparer<SyntaxNodeSortInfo<UsingDirectiveSyntax>>
         {
-            protected static IComparer<string> _stringComparer = new SyntaxNodeNameComparer();
+            protected IComparer<string> _comparer;
 
-            public UsingComparer()
+            public UsingsComparer(string[] prefixSortOrder)
             {
+                _comparer = new FullyQualifiedNameComparer(prefixSortOrder);
             }
 
             public int Compare(SyntaxNodeSortInfo<UsingDirectiveSyntax> x, SyntaxNodeSortInfo<UsingDirectiveSyntax> y)
             {
-                int val = _stringComparer.Compare(x.Name, y.Name);
-                if (val != 0)
-                    return val;
-                return x.Index - y.Index;
+                return _comparer.Compare(x.Name, y.Name);
             }
         }
 
         #endregion
 
         public bool SortSingleNodeRegions { get; set; } = false;
+        public String[] PrefixesSortOrder { get; set; }
 
         public SortUsingsSyntaxRewriter()
         {
@@ -44,10 +43,13 @@ namespace AnZwDev.ALTools.CodeTransformations.Namespaces
 
         public override SyntaxNode VisitCompilationUnit(CompilationUnitSyntax node)
         {
-            if ((node.Usings != null) && (node.Usings.Count > 1) && (!node.Usings.Any(p => p.ContainsDiagnostics)))
+            if ((node.Usings != null) && (node.Usings.Count > 1))
+                //Disabled diagnostics check because it might contain warning that using is not used
+                //which would block the command
+                //&& (!node.Usings.Any(p => p.ContainsDiagnostics)))
             {
                 var newUsings = SyntaxNodesGroupsTree<UsingDirectiveSyntax>.SortSyntaxListWithSortInfo(
-                    node.Usings, new UsingComparer(), SortSingleNodeRegions, out bool sorted);
+                    node.Usings, new UsingsComparer(PrefixesSortOrder), SortSingleNodeRegions, out bool sorted);
                 if (sorted)
                 {
                     NoOfChanges++;
@@ -56,12 +58,6 @@ namespace AnZwDev.ALTools.CodeTransformations.Namespaces
             }
 
             return base.VisitCompilationUnit(node);
-        }
-
-        public SyntaxList<UsingDirectiveSyntax> SortUsingsList(SyntaxList<UsingDirectiveSyntax> usingsSyntaxList, out bool sorted)
-        {
-            return SyntaxNodesGroupsTree<UsingDirectiveSyntax>.SortSyntaxListWithSortInfo(
-                usingsSyntaxList, new UsingComparer(), SortSingleNodeRegions, out sorted);
         }
 
     }

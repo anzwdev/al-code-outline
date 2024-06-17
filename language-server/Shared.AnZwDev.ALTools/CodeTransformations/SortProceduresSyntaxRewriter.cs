@@ -61,6 +61,8 @@ namespace AnZwDev.ALTools.CodeTransformations
                         }
 #endif
                         return ALSymbolKind.MethodDeclaration;
+//                    case ConvertedSyntaxKind.GlobalVarSection:
+//                        return ALSymbolKind.GlobalVarSection;
                 }
                 return ALSymbolKind.Undefined;
             }

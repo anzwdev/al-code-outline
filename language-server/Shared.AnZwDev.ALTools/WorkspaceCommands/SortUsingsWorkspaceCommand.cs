@@ -14,6 +14,7 @@ namespace AnZwDev.ALTools.WorkspaceCommands
     {
 
         public static string SortSingleNodeRegionsParameterName = "sortSingleNodeRegions";
+        public static string NamespacesOrderParameterName = "namespacesOrder";
 
         public SortUsingsWorkspaceCommand(ALDevToolsServer alDevToolsServer) : base(alDevToolsServer, "sortUsings")
         {
@@ -23,6 +24,7 @@ namespace AnZwDev.ALTools.WorkspaceCommands
         {
             base.SetParameters(sourceCode, project, filePath, span, parameters);
             this.SyntaxRewriter.SortSingleNodeRegions = parameters.GetBoolValue(SortSingleNodeRegionsParameterName);
+            this.SyntaxRewriter.PrefixesSortOrder = parameters.GetSeparatedStringArray(NamespacesOrderParameterName, ';');
         }
 
     }

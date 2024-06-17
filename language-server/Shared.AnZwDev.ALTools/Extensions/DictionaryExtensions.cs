@@ -23,6 +23,15 @@ namespace AnZwDev.ALTools.Extensions
             return ((value.ToLower() == "true") || (value == "1"));
         }
 
+        public static string[] GetSeparatedStringArray(this Dictionary<string, string> dictionary, string key, char separator, string[] defaultValue = null)
+        {
+            string value = dictionary.GetStringValue(key);
+            if (String.IsNullOrWhiteSpace(value))
+                return defaultValue;
+            char[] separatorsList = { separator };
+            return value.Split(separatorsList, StringSplitOptions.RemoveEmptyEntries);
+        }
+
         public static T GetJsonValue<T>(this Dictionary<string, string> dictionary, string key, T defaultValue = null) where T : class
         {
             string value = dictionary.GetStringValue(key);

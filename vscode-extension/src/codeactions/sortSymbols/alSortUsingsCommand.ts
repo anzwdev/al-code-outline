@@ -18,9 +18,11 @@ export class ALSortUsingsCommand extends ALCodeAction {
             //collect list of objects in selection range
             if ((symbol) && 
                 (symbol.kind === AZSymbolKind.UsingDirective) && 
-                (!symbol.containsDiagnostics) &&
+                //Disabled diagnostics check because it might contain warning that using is not used
+                //which would block the command
+                //(!symbol.containsDiagnostics) &&
                 (symbol.selectionRange) &&
-                (symbol.selectionRange.start.line == range.start.line)) {
+                (symbol.selectionRange.start.line === range.start.line)) {
 
                 let action = new vscode.CodeAction("Sort usings (AZ AL Dev Tools)", vscode.CodeActionKind.QuickFix);
                 action.command = {
