@@ -133,6 +133,42 @@ namespace AnZwDev.ALTools.CodeTransformations
             return name;
         }
 
+        public override SyntaxNode VisitSubtypedDataType(SubtypedDataTypeSyntax node)
+        {
+            var typeName = node.TypeName.ValueText;
+            var subtypeName = node.Subtype.Identifier.ToString();
+            var newName = subtypeName;
+
+            //try to decode number and convert to int
+            var decodedSubtypeName = ALSyntaxHelper.DecodeName(subtypeName);
+            if (Int32.TryParse(decodedSubtypeName, out int objectId))
+            {
+                SymbolInfo info = this.SemanticModel.GetSymbolInfo(node.Subtype.Identifier);
+                if ((info != null) && (info.Symbol != null))
+                {
+                    ConvertedSymbolKind symbolKind = info.Symbol.Kind.ConvertToLocalType();
+
+                    if ((symbolKind != ConvertedSymbolKind.NamedType) &&
+                        (symbolKind != ConvertedSymbolKind.DotNetAssembly) &&
+                        (symbolKind != ConvertedSymbolKind.DotNetPackage) &&
+                        (symbolKind != ConvertedSymbolKind.DotNetTypeDeclaration) &&
+                        (symbolKind != ConvertedSymbolKind.DotNet))
+                    {
+                        NoOfChanges++;
+
+                        newName = info.Symbol.Name;
+                        var newIdentifier = SyntaxFactory.IdentifierName(newName).WithTriviaFrom(node.Subtype.Identifier);
+                        var newSubtype = node.Subtype.WithIdentifier(newIdentifier);
+                        var newNode = node.WithSubtype(newSubtype);
+                        return newNode;
+                    }
+                }
+            }
+
+            return base.VisitSubtypedDataType(node);
+        }
+
+
         public override SyntaxNode VisitIdentifierName(IdentifierNameSyntax node)
         {
             if (!node.ContainsDiagnostics)
