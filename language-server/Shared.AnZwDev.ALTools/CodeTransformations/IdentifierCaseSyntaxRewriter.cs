@@ -10,6 +10,7 @@ using AnZwDev.ALTools.ALLanguageInformation;
 using AnZwDev.ALTools.Workspace.SymbolsInformation;
 using AnZwDev.ALTools.ALSymbols;
 using System.Runtime.CompilerServices;
+using AnZwDev.ALTools.Workspace;
 
 namespace AnZwDev.ALTools.CodeTransformations
 {
@@ -143,26 +144,50 @@ namespace AnZwDev.ALTools.CodeTransformations
             var decodedSubtypeName = ALSyntaxHelper.DecodeName(subtypeName);
             if (Int32.TryParse(decodedSubtypeName, out int objectId))
             {
-                SymbolInfo info = this.SemanticModel.GetSymbolInfo(node.Subtype.Identifier);
-                if ((info != null) && (info.Symbol != null))
+                var updated = false;
+                var objectReference = new ALObjectReference(null, null, objectId, null);
+                var objectTypeInformation = ALObjectTypesInformationCollection.GetForVariableTypeName(typeName);
+                if (objectTypeInformation != null)
                 {
-                    ConvertedSymbolKind symbolKind = info.Symbol.Kind.ConvertToLocalType();
-
-                    if ((symbolKind != ConvertedSymbolKind.NamedType) &&
-                        (symbolKind != ConvertedSymbolKind.DotNetAssembly) &&
-                        (symbolKind != ConvertedSymbolKind.DotNetPackage) &&
-                        (symbolKind != ConvertedSymbolKind.DotNetTypeDeclaration) &&
-                        (symbolKind != ConvertedSymbolKind.DotNet))
+                    var alObject = Project
+                        .SymbolsWithDependencies
+                        .GetObjectsCollection(objectTypeInformation.ALObjectType)?
+                        .FindFirst(objectReference);
+                    if (!String.IsNullOrWhiteSpace(alObject?.Name))
                     {
-                        NoOfChanges++;
-
-                        newName = info.Symbol.Name;
-                        var newIdentifier = SyntaxFactory.IdentifierName(newName).WithTriviaFrom(node.Subtype.Identifier);
-                        var newSubtype = node.Subtype.WithIdentifier(newIdentifier);
-                        var newNode = node.WithSubtype(newSubtype);
-                        return newNode;
+                        newName = alObject.Name;
+                        updated = true;
                     }
                 }
+
+                if (!updated)
+                {
+                    SymbolInfo info = this.SemanticModel.GetSymbolInfo(node.Subtype.Identifier);
+                    if ((info != null) && (info.Symbol != null))
+                    {
+                        ConvertedSymbolKind symbolKind = info.Symbol.Kind.ConvertToLocalType();
+
+                        if ((symbolKind != ConvertedSymbolKind.NamedType) &&
+                            (symbolKind != ConvertedSymbolKind.DotNetAssembly) &&
+                            (symbolKind != ConvertedSymbolKind.DotNetPackage) &&
+                            (symbolKind != ConvertedSymbolKind.DotNetTypeDeclaration) &&
+                            (symbolKind != ConvertedSymbolKind.DotNet))
+                        {
+                            newName = info.Symbol.Name;
+                            updated = true;
+                        }
+                    }
+                }
+
+                if (updated)
+                {
+                    NoOfChanges++;
+                    var newIdentifier = SyntaxFactory.IdentifierName(newName).WithTriviaFrom(node.Subtype.Identifier);
+                    var newSubtype = node.Subtype.WithIdentifier(newIdentifier);
+                    var newNode = node.WithSubtype(newSubtype);
+                    return newNode;
+                }
+
             }
 
             return base.VisitSubtypedDataType(node);
