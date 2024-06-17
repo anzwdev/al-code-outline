@@ -1,5 +1,8 @@
 # Change Log
 
+## 13.66.0
+ - Fix Identifiers case command incorrectly detected object IDs
+
 ## 13.65.0
  - Issue #567 - Show Code Analyzer Rules: Does not pick up multiple custom code analyzers in multi-root workspace projects - case sensitive check fix
  - Issue #586 - Code Cleanup: Sort Usings
