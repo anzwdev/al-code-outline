@@ -2,7 +2,7 @@
 	"name": "al-code-outline",
 	"displayName": "AZ AL Dev Tools/AL Code Outline",
 	"description": "AZ AL Development Tools: AL code outline, object browser, object creators",
-	"version": "13.66.0",
+	"version": "13.67.0",
 	"publisher": "andrzejzwierzchowski",
 	"engines": {
 		"vscode": "^1.85.0"
@@ -2019,6 +2019,12 @@
 						"type": "boolean",
 						"default": false,
 						"description": "Set to true to sort regions containing single element (e.g. regions with single procedures by `Sort Procedures` command).",
+						"scope": "resource"
+					},
+					"alOutline.sortMembersPutGlobalVariablesAfterTriggers": {
+						"type": "boolean",
+						"default": true,
+						"description": "Set to true to put global variables after triggers in `Sort Procedures` commands. Set to false to put them before triggers.",
 						"scope": "resource"
 					},
 					"alOutline.dropDownGroupFieldsNamesPatterns": {

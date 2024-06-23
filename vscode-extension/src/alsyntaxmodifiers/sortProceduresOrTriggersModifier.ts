@@ -14,6 +14,7 @@ export class SortProceduresOrTriggersModifier extends WorkspaceCommandSyntaxModi
         parameters.triggersSortMode = settings.get<string>('triggersSortMode');
         parameters.triggersNaturalOrder = JSON.stringify(settings.get('triggersNaturalOrder'));
         parameters.sortSingleNodeRegions = !!settings.get<boolean>('sortSingleNodeRegions');
+        parameters.globalVariablesAfterTriggers = !!settings.get<boolean>('sortMembersPutGlobalVariablesAfterTriggers');
         return parameters;
     }
 
