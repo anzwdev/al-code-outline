@@ -1396,6 +1396,12 @@
 			{
 				"title": "AZ AL Dev Tools/AL Code Outline",
 				"properties": {
+					"alOutline.limitEnumNameLength" : {
+						"type": "boolean",
+						"default": false,
+						"scope": "resource",
+						"description": "Limit length of enum names to 30 characters in the enum wizard"
+					},
 					"alOutline.docCommentsType": {
 						"type": "string",
 						"default": "xml",

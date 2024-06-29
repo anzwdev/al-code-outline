@@ -8,7 +8,13 @@ class EnumWizard extends BaseObjectWizard {
         super.setData(data);
         //initialize fields
         document.getElementById("objectid").value = this._data.objectId;
-        document.getElementById("objectname").value = this._data.objectName;
+        
+        let objectNameFld = document.getElementById("objectname");        
+        objectNameFld.value = this._data.objectName;
+        if (this._data.limitNameLength) {
+            objectNameFld.maxLength = 30;
+        }
+
         document.getElementById("valuelist").value = this._data.valueList;
         document.getElementById("captionlist").value = this._data.captionList;
         document.getElementById("extensible").checked = this._data.extensible;
