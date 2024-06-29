@@ -2,9 +2,11 @@
 
 ## 13.67.0
  - Issue #535 - Separate 'Sort Triggers' action - sorting fixes and improvements
+ - Issue #592 - Remove redundant ApplicationArea adds unnecessary quotes
 
 Thank you
  - fvet and TKapitan for testing and adding comments to the issue #535
+ - dannoe for reporting issue #592
 
 ## 13.66.0
  - Fix Identifiers case command incorrectly detected object IDs

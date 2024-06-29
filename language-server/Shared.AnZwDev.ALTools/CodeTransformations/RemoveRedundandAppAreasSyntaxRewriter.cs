@@ -8,14 +8,15 @@ using AnZwDev.ALTools.Extensions;
 using System.Linq;
 using System.Xml.Linq;
 using AnZwDev.ALTools.Workspace;
+using AnZwDev.ALTools.Core;
 
 namespace AnZwDev.ALTools.CodeTransformations
 {
     public class RemoveRedundandAppAreasSyntaxRewriter : ALSyntaxRewriter
     {
 
-        private string _pageAppArea = null;
-        private string _pageMembersAppArea = null;
+        private UniqueStringList _pageAppArea = null;
+        private UniqueStringList _pageMembersAppArea = null;
         private ValueCheckState _pageMembersAppAreaState = ValueCheckState.NotChecked;
         private bool _pageAppAreaProcessingActive = false;
 
@@ -37,7 +38,7 @@ namespace AnZwDev.ALTools.CodeTransformations
             var newNode = base.VisitPage(node);
 
             node = newNode as PageSyntax;
-            if ((node != null) && (String.IsNullOrWhiteSpace(_pageAppArea)) && (!String.IsNullOrWhiteSpace(_pageMembersAppArea)) && (_pageMembersAppAreaState == ValueCheckState.Equal))
+            if ((node != null) && (UniqueStringList.IsNullOrEmpty(_pageAppArea)) && (!UniqueStringList.IsNullOrEmpty(_pageMembersAppArea)) && (_pageMembersAppAreaState == ValueCheckState.Equal))
             {
                 NoOfChanges++;
                 node = node.AddPropertyListProperties(this.CreateApplicationAreaProperty(node, _pageMembersAppArea));
@@ -52,33 +53,9 @@ namespace AnZwDev.ALTools.CodeTransformations
             return newNode;
         }
 
-        /*
-        public override SyntaxNode VisitReport(ReportSyntax node)
-        {
-            InitProcessingVariables(node);
-
-            var newNode = base.VisitReport(node);
-
-            node = newNode as ReportSyntax;
-            if ((node != null) && (String.IsNullOrWhiteSpace(_pageAppArea)) && (!String.IsNullOrWhiteSpace(_pageMembersAppArea)) && (_pageMembersAppAreaState == PageMembersAppAreaState.Equal))
-            {
-                NoOfChanges++;
-                node = node.AddPropertyListProperties(this.CreateApplicationAreaProperty(node, _pageMembersAppArea));
-                _pageAppArea = _pageMembersAppArea;
-
-                //run processing again to remove redundant application areas
-                newNode = base.VisitReport(node);
-            }
-
-            ClearProcessingVariables();
-
-            return newNode;
-        }
-        */
-
         private void InitProcessingVariables(SyntaxNode node)
         {
-            _pageAppArea = GetApplicationAreaValue(node);
+            (_, _pageAppArea) = GetApplicationArea(node);
             _pageMembersAppArea = null;
             _pageMembersAppAreaState = ValueCheckState.NotChecked;
             _pageAppAreaProcessingActive = true;
@@ -154,8 +131,7 @@ namespace AnZwDev.ALTools.CodeTransformations
         {
             if (_pageAppAreaProcessingActive)
             {
-                PropertySyntax appAreaProperty = node.GetProperty("ApplicationArea");
-                string memberAppArea = ALSyntaxHelper.DecodeName(appAreaProperty?.Value?.ToString());
+                (PropertySyntax appAreaProperty, UniqueStringList memberAppArea) = GetApplicationArea(node);
 
                 CheckIfMemberAppAreasAreTheSame(memberAppArea);
 
@@ -166,12 +142,12 @@ namespace AnZwDev.ALTools.CodeTransformations
             return (propertyList, false);
         }
 
-        private bool ShouldRemoveAppArea(string memberAppArea)
+        private bool ShouldRemoveAppArea(UniqueStringList memberAppArea)
         {
             return
-                (!String.IsNullOrWhiteSpace(_pageAppArea)) &&
-                (!String.IsNullOrWhiteSpace(memberAppArea)) &&
-                (memberAppArea.Equals(_pageAppArea, StringComparison.OrdinalIgnoreCase));
+                (!UniqueStringList.IsNullOrEmpty(_pageAppArea)) &&
+                (!UniqueStringList.IsNullOrEmpty(memberAppArea)) &&
+                (memberAppArea.Equals(_pageAppArea));
         }
 
         private PropertyListSyntax RemoveProperty(PropertyListSyntax propertyList, PropertySyntax property)
@@ -181,7 +157,7 @@ namespace AnZwDev.ALTools.CodeTransformations
                     propertyList.Properties.Remove(property));
         }
 
-        private void CheckIfMemberAppAreasAreTheSame(string memberAppArea)
+        private void CheckIfMemberAppAreasAreTheSame(UniqueStringList memberAppArea)
         {
             switch (_pageMembersAppAreaState)
             {
@@ -192,7 +168,7 @@ namespace AnZwDev.ALTools.CodeTransformations
                 case ValueCheckState.Equal:
                     var equal =
                         ((memberAppArea == null) && (_pageMembersAppArea == null)) ||
-                        ((memberAppArea != null) && (_pageMembersAppArea != null) && (memberAppArea.Equals(_pageMembersAppArea, StringComparison.OrdinalIgnoreCase)));
+                        ((memberAppArea != null) && (_pageMembersAppArea != null) && (memberAppArea.Equals(_pageMembersAppArea)));
                     if (!equal)
                     {
                         _pageMembersAppArea = null;
@@ -202,15 +178,7 @@ namespace AnZwDev.ALTools.CodeTransformations
             }
         }
 
-        protected string GetApplicationAreaValue(SyntaxNode node)
-        {
-            PropertySyntax appAreaProperty = node.GetProperty("ApplicationArea");
-            if (appAreaProperty != null)
-                return ALSyntaxHelper.DecodeName(appAreaProperty.Value?.ToString());
-            return null;
-        }
-
-        protected PropertySyntax CreateApplicationAreaProperty(SyntaxNode node, string value)
+        protected PropertySyntax CreateApplicationAreaProperty(SyntaxNode node, UniqueStringList valuesList)
         {
             //calculate indent
             int indentLength = 4;
@@ -230,7 +198,8 @@ namespace AnZwDev.ALTools.CodeTransformations
             SyntaxTriviaList trailingTriviaList = SyntaxFactory.ParseTrailingTrivia("\r\n", 0);
 
             SeparatedSyntaxList<IdentifierNameSyntax> values = new SeparatedSyntaxList<IdentifierNameSyntax>();
-            values = values.Add(SyntaxFactory.IdentifierName(value));
+            for (int i=0; i < valuesList.Count; i++)           
+                values = values.Add(SyntaxFactory.IdentifierName(valuesList[i]));
 
             //try to convert from string to avoid issues with enum ids changed between AL compiler versions
             PropertyKind propertyKind;
@@ -246,6 +215,26 @@ namespace AnZwDev.ALTools.CodeTransformations
             return SyntaxFactory.Property(propertyKind, SyntaxFactory.CommaSeparatedPropertyValue(values))
                 .WithLeadingTrivia(leadingTriviaList)
                 .WithTrailingTrivia(trailingTriviaList);
+        }
+
+
+        private (PropertySyntax, UniqueStringList) GetApplicationArea(SyntaxNode node)
+        {
+            PropertySyntax appAreaProperty = node.GetProperty("ApplicationArea");
+
+            if (appAreaProperty != null)
+            {
+                CommaSeparatedPropertyValueSyntax appAreaValue = appAreaProperty.Value as CommaSeparatedPropertyValueSyntax;
+                if (appAreaValue != null)
+                {
+                    UniqueStringList appAreas = new UniqueStringList();
+                    foreach (IdentifierNameSyntax value in appAreaValue.Values)
+                        appAreas.Add(ALSyntaxHelper.DecodeName(value.Identifier.ValueText).Trim());
+                    return (appAreaProperty, appAreas);
+                }
+            }
+
+            return (appAreaProperty, null);
         }
 
 
