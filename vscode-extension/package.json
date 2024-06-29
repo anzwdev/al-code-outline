@@ -1579,6 +1579,10 @@
 								"type": "boolean",
 								"description": "Remove global variables"
 							},
+							"removeProtectedGlobalVariables": {
+								"type": "boolean",
+								"description": "Remove protected global variables"
+							},
 							"removeLocalVariables": {
 								"type": "boolean",
 								"description": "Remove local variables"

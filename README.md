@@ -339,6 +339,7 @@ This extension contributes the following settings:
   * `setLabelsCaptions`: set labels captions
 * `alOutline.defaultRemoveUnusedVariablesSettings`: default settings for the RemoveUnusedVariables command when run by the Code Cleanup, these properties can be set:
   * `removeGlobalVariables`: remove global variables
+  * `removeProtectedGlobalVariables`: remove protected global variables
   * `removeLocalVariables`: remove local variables
   * `removeLocalMethodParameters`: remove local methods parameters
 * `alOutline.defaultRemoveEmptyTriggersSettings`: default settings for the RemoveEmptyTriggers command when run by the Code Cleanup, these properties can be set:

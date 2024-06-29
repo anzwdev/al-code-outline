@@ -2,10 +2,18 @@
 
 ## 13.67.0
  - Issue #535 - Separate 'Sort Triggers' action - sorting fixes and improvements
- - Issue #592 - Remove redundant ApplicationArea adds unnecessary quotes
+ - Issue #590 - Delete unused variables with obsolete tag 
+   - "Remove global variables" settings split into separate "Remove global variables" and "Remove protected global variables" settings
+     - `removeProtectedGlobalVariables` property added to the `defaultRemoveUnusedVariablesSetting` setting
+ - Issue #592 - Remove redundant ApplicationArea adds unnecessary quotes 
+
+ `alOutline.defaultRemoveUnusedVariablesSettings`: default settings for the RemoveUnusedVariables command when run by the Code Cleanup, these properties can be set:
+  * `removeGlobalVariables`: remove global variables
+  * `removeProtectedGlobalVariables`: remove protected global variables
 
 Thank you
  - fvet and TKapitan for testing and adding comments to the issue #535
+ - ThorstenEngelsGOB for reporting issue #590
  - dannoe for reporting issue #592
 
 ## 13.66.0

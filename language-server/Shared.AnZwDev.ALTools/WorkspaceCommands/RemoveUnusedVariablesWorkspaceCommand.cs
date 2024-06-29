@@ -16,6 +16,7 @@ namespace AnZwDev.ALTools.WorkspaceCommands
     {
 
         public static string RemoveGlobalVariablesParameterName = "removeGlobalVariables";
+        public static string RemoveProtectedGlobalVariablesParameterName = "removeProtectedGlobalVariables";
         public static string RemoveLocalVariablesParameterName = "removeLocalVariables";
         public static string RemoveLocalMethodParametersParameterName = "removeLocalMethodParameters";
 
@@ -27,6 +28,8 @@ namespace AnZwDev.ALTools.WorkspaceCommands
         {
             base.SetParameters(syntaxTree, node, semanticModel, project, span, parameters);
             this.SyntaxRewriter.RemoveGlobalVariables = parameters.GetBoolValue(RemoveGlobalVariablesParameterName);
+            this.SyntaxRewriter.RemoveProtectedGlobalVariables = parameters.GetBoolValue(RemoveProtectedGlobalVariablesParameterName);
+
             this.SyntaxRewriter.RemoveLocalVariables = parameters.GetBoolValue(RemoveLocalVariablesParameterName);
             this.SyntaxRewriter.RemoveLocalMethodParameters = parameters.GetBoolValue(RemoveLocalMethodParametersParameterName);
         }
