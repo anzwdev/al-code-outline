@@ -1925,6 +1925,22 @@
 						"description": "Specifies how variables are sorted by `Sort Variables` commands.",
 						"scope": "resource"
 					},
+					"alOutline.sortMembersGlobalVariablesSortMode": {
+						"type": "string",
+						"enum": [
+							"First",
+							"AfterTriggers",
+							"Last"
+						],
+						"enumDescriptions": [
+							"First",
+							"Between triggers and procedures",
+							"Last"
+						],
+						"default": "AfterTriggers",
+						"description": "Specifies how global variables sections are sorted by `Sort Procedures` commands.",
+						"scope": "resource"
+					},
 					"alOutline.triggersSortMode": {
 						"type": "string",
 						"enum": [
@@ -2019,12 +2035,6 @@
 						"type": "boolean",
 						"default": false,
 						"description": "Set to true to sort regions containing single element (e.g. regions with single procedures by `Sort Procedures` command).",
-						"scope": "resource"
-					},
-					"alOutline.sortMembersPutGlobalVariablesAfterTriggers": {
-						"type": "boolean",
-						"default": true,
-						"description": "Set to true to put global variables after triggers in `Sort Procedures` commands. Set to false to put them before triggers.",
 						"scope": "resource"
 					},
 					"alOutline.dropDownGroupFieldsNamesPatterns": {

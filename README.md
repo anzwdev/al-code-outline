@@ -364,7 +364,10 @@ This extension contributes the following settings:
 * `alOutline.additionalMandatoryAffixesPatterns`: Additional list of name affixes patterns, '?' can be used for matching any character. These values are used to remove affixes from names in code actions, commands and code completion
 * `alOutline.dropDownGroupFieldsNamesPatterns`: array of string patters for table DropDown group fields created by "Add DropDown FieldGroups..." commands, you can use "*" for partial name matching, first found field for each setting entry will be used
 * `alOutline.tableDataCaptionFieldsNamesPatterns`: array of string patters for field names for table DataCaptionFields property created by "Add Table DataCaptionFields..." commands, you can use "*" for partial name matching, first found field for each setting entry will be used
-* `alOutline.sortMembersPutGlobalVariablesAfterTriggers` - defines how global variables section is sorted by "Sort Procedures" command. If set to `true` (default), global variables section is put after triggers, if set to `false` it will be first.
+* `alOutline.sortMembersGlobalVariablesSortMode` - defines how "sort procedures" and "sort triggers" commands are sorting global variables sections, one of these values can be used:
+  * `First` - global variables sections are first
+  * `AfterTriggers` - global variables sections are after triggers and before procedures, this is the default value
+  * `Last` - global variables sections are at the bottom of the file
 * `alOutline.triggersSortMode` - defines how "sort procedures" and "sort triggers" commands are sorting triggers, one of these values can be used:
   * `None` - triggers won't be sorted, this is the default value for sort procedures
   * `Name` - triggers will be sorted by name

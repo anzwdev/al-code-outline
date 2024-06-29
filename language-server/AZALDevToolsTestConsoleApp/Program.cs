@@ -122,6 +122,7 @@ namespace AZALDevToolsTestConsoleApp
             pm.Add("removeLocalMethodParameters", "true");
 
             pm.Add("triggersSortMode", "NaturalOrder");
+            pm.Add("globalVariablesSortMode", "First");
             pm.Add("triggersNaturalOrder", "[]");
 
             pm.Add("includeInterfaces", "true");
