@@ -12,6 +12,7 @@ export class SortProceduresOrTriggersModifier extends WorkspaceCommandSyntaxModi
         let parameters = super.getParameters(uri);
         let settings = vscode.workspace.getConfiguration('alOutline', uri);                
         parameters.triggersSortMode = settings.get<string>('triggersSortMode');
+        parameters.globalVariablesSortMode = settings.get<string>('sortMembersGlobalVariablesSortMode');
         parameters.triggersNaturalOrder = JSON.stringify(settings.get('triggersNaturalOrder'));
         parameters.sortSingleNodeRegions = !!settings.get<boolean>('sortSingleNodeRegions');
         return parameters;

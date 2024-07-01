@@ -2,7 +2,7 @@
 	"name": "al-code-outline",
 	"displayName": "AZ AL Dev Tools/AL Code Outline",
 	"description": "AZ AL Development Tools: AL code outline, object browser, object creators",
-	"version": "13.66.0",
+	"version": "13.67.0",
 	"publisher": "andrzejzwierzchowski",
 	"engines": {
 		"vscode": "^1.85.0"
@@ -1396,6 +1396,12 @@
 			{
 				"title": "AZ AL Dev Tools/AL Code Outline",
 				"properties": {
+					"alOutline.limitEnumNameLength" : {
+						"type": "boolean",
+						"default": false,
+						"scope": "resource",
+						"description": "Limit length of enum names to 30 characters in the enum wizard"
+					},
 					"alOutline.docCommentsType": {
 						"type": "string",
 						"default": "xml",
@@ -1578,6 +1584,10 @@
 							"removeGlobalVariables": {
 								"type": "boolean",
 								"description": "Remove global variables"
+							},
+							"removeProtectedGlobalVariables": {
+								"type": "boolean",
+								"description": "Remove protected global variables"
 							},
 							"removeLocalVariables": {
 								"type": "boolean",
@@ -1923,6 +1933,22 @@
 						],
 						"default": "fullTypeName",
 						"description": "Specifies how variables are sorted by `Sort Variables` commands.",
+						"scope": "resource"
+					},
+					"alOutline.sortMembersGlobalVariablesSortMode": {
+						"type": "string",
+						"enum": [
+							"First",
+							"AfterTriggers",
+							"Last"
+						],
+						"enumDescriptions": [
+							"First",
+							"Between triggers and procedures",
+							"Last"
+						],
+						"default": "AfterTriggers",
+						"description": "Specifies how global variables sections are sorted by `Sort Procedures` commands.",
 						"scope": "resource"
 					},
 					"alOutline.triggersSortMode": {

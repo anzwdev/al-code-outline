@@ -15,6 +15,7 @@ namespace AnZwDev.ALTools.CodeTransformations
     public class RemoveUnusedVariablesSyntaxRewriter : ALSemanticModelSyntaxRewriter
     {
         public bool RemoveGlobalVariables { get; set; }
+        public bool RemoveProtectedGlobalVariables { get; set; }
         public bool RemoveLocalVariables { get; set; }
         public bool RemoveLocalMethodParameters { get; set; }
         public bool IgnoreCodeAnalysisRules { get; set; }
@@ -27,6 +28,7 @@ namespace AnZwDev.ALTools.CodeTransformations
             this.RemoveGlobalVariables = true;
             this.RemoveLocalVariables = true;
             this.RemoveLocalMethodParameters = true;
+            this.RemoveProtectedGlobalVariables = true;
         }
 
         public override SyntaxNode Visit(SyntaxNode node)
@@ -42,7 +44,10 @@ namespace AnZwDev.ALTools.CodeTransformations
 
         public override SyntaxNode VisitGlobalVarSection(GlobalVarSectionSyntax node)
         {
-            if (this.RemoveGlobalVariables)
+            var accessModifier = node.AccessModifier.ValueText;
+            var isProtected = (accessModifier != null) && (accessModifier.Trim().ToLower() == "protected");
+           
+            if ((this.RemoveGlobalVariables && (!isProtected)) || (this.RemoveProtectedGlobalVariables && isProtected))
             {
                 var appObject = node.FindParentApplicationObject();
                 if (appObject != null)

@@ -1,5 +1,19 @@
 # Change Log
 
+## 13.67.0
+ - Issue #535 - Separate 'Sort Triggers' action - sorting fixes and improvements
+ - Issue #590 - Delete unused variables with obsolete tag 
+   - "Remove global variables" settings split into separate "Remove global variables" and "Remove protected global variables" settings
+     - `removeProtectedGlobalVariables` property added to the `defaultRemoveUnusedVariablesSetting` setting
+ - Issue #591 - Limit Enum Object Names to 30 Chars in AL File Wizard
+ - Issue #592 - Remove redundant ApplicationArea adds unnecessary quotes 
+
+Thank you
+ - fvet and TKapitan for testing and adding comments to the issue #535
+ - ThorstenEngelsGOB for reporting issue #590
+ - mjmatthiesen for reporting issue #591
+ - dannoe for reporting issue #592
+
 ## 13.66.0
  - Fix Identifiers case command incorrectly detected object IDs
 

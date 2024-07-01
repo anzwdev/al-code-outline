@@ -339,6 +339,7 @@ This extension contributes the following settings:
   * `setLabelsCaptions`: set labels captions
 * `alOutline.defaultRemoveUnusedVariablesSettings`: default settings for the RemoveUnusedVariables command when run by the Code Cleanup, these properties can be set:
   * `removeGlobalVariables`: remove global variables
+  * `removeProtectedGlobalVariables`: remove protected global variables
   * `removeLocalVariables`: remove local variables
   * `removeLocalMethodParameters`: remove local methods parameters
 * `alOutline.defaultRemoveEmptyTriggersSettings`: default settings for the RemoveEmptyTriggers command when run by the Code Cleanup, these properties can be set:
@@ -364,6 +365,10 @@ This extension contributes the following settings:
 * `alOutline.additionalMandatoryAffixesPatterns`: Additional list of name affixes patterns, '?' can be used for matching any character. These values are used to remove affixes from names in code actions, commands and code completion
 * `alOutline.dropDownGroupFieldsNamesPatterns`: array of string patters for table DropDown group fields created by "Add DropDown FieldGroups..." commands, you can use "*" for partial name matching, first found field for each setting entry will be used
 * `alOutline.tableDataCaptionFieldsNamesPatterns`: array of string patters for field names for table DataCaptionFields property created by "Add Table DataCaptionFields..." commands, you can use "*" for partial name matching, first found field for each setting entry will be used
+* `alOutline.sortMembersGlobalVariablesSortMode` - defines how "sort procedures" and "sort triggers" commands are sorting global variables sections, one of these values can be used:
+  * `First` - global variables sections are first
+  * `AfterTriggers` - global variables sections are after triggers and before procedures, this is the default value
+  * `Last` - global variables sections are at the bottom of the file
 * `alOutline.triggersSortMode` - defines how "sort procedures" and "sort triggers" commands are sorting triggers, one of these values can be used:
   * `None` - triggers won't be sorted, this is the default value for sort procedures
   * `Name` - triggers will be sorted by name

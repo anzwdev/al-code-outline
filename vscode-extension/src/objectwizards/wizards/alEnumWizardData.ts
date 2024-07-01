@@ -5,6 +5,7 @@ export class ALEnumWizardData extends ALObjectWizardData {
     valueList : string;
     captionList : string;
     extensible : boolean;
+    limitNameLength : boolean;
     
     constructor() {
         super();
@@ -12,6 +13,7 @@ export class ALEnumWizardData extends ALObjectWizardData {
         this.valueList = "";
         this.captionList = "";
         this.extensible = true;
+        this.limitNameLength = false;
     }
 
 } 

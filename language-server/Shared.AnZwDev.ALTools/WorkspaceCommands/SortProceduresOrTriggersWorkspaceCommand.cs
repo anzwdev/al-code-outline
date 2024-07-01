@@ -1,4 +1,5 @@
-﻿using AnZwDev.ALTools.CodeTransformations;
+﻿using AnZwDev.ALTools.ALSymbols;
+using AnZwDev.ALTools.CodeTransformations;
 using AnZwDev.ALTools.Extensions;
 using AnZwDev.ALTools.Workspace;
 using AnZwDev.ALTools.WorkspaceCommands.Parameters;
@@ -13,6 +14,7 @@ namespace AnZwDev.ALTools.WorkspaceCommands
     {
 
         public static string TriggersSortModeParameterName = "triggersSortMode";
+        public static string GlobalVariablesSortModeParameterName = "globalVariablesSortMode";
         public static string TriggersNaturalOrderParameterName = "triggersNaturalOrder";
         public static string SortSingleNodeRegionsParameterName = "sortSingleNodeRegions";
 
@@ -26,6 +28,9 @@ namespace AnZwDev.ALTools.WorkspaceCommands
 
             if (parameters.ContainsKey(TriggersSortModeParameterName))
                 this.SyntaxRewriter.TriggerSortMode = parameters.GetEnumValue(TriggersSortModeParameterName, SortProceduresTriggerSortMode.None);
+
+            if (parameters.ContainsKey(GlobalVariablesSortModeParameterName))
+                this.SyntaxRewriter.GlobalVariablesSortMode = parameters.GetEnumValue(GlobalVariablesSortModeParameterName, SortProceduresGlobalVariablesSortMode.AfterTriggers);
 
             if (parameters.ContainsKey(TriggersNaturalOrderParameterName))
             {

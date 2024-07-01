@@ -61,8 +61,10 @@ namespace AnZwDev.ALTools.CodeTransformations
                         }
 #endif
                         return ALSymbolKind.MethodDeclaration;
-//                    case ConvertedSyntaxKind.GlobalVarSection:
-//                        return ALSymbolKind.GlobalVarSection;
+                    case ConvertedSyntaxKind.GlobalVarSection:
+                        return ALSymbolKind.GlobalVarSection;
+                    case ConvertedSyntaxKind.VarSection:
+                        return ALSymbolKind.GlobalVarSection;
                 }
                 return ALSymbolKind.Undefined;
             }
@@ -115,70 +117,90 @@ namespace AnZwDev.ALTools.CodeTransformations
         #region Method info comparer
 
         protected class MethodSortInfoComparer<T> : IComparer<MethodSortInfo<T>> where T : SyntaxNode
-        {            
-            private static Dictionary<ALSymbolKind, int> _typePriority;
-            private static IComparer<string> _stringComparer = new SyntaxNodeNameComparer();
+        {
             private static int UndefinedPriority = -1;
 
+            private Dictionary<ALSymbolKind, int> _typePriority;
+            private IComparer<string> _stringComparer = new SyntaxNodeNameComparer();
             private TriggersOrderCollection _triggerNaturalOrder;
             private ConvertedSyntaxKind _parentKind;
             private bool _sortProcedures;
             private SortProceduresTriggerSortMode _triggerSortMode;
+            private SortProceduresGlobalVariablesSortMode _globalVariablesSortMode;
 
-            public MethodSortInfoComparer(SortProceduresTriggerSortMode triggerSortMode, bool sortProcedures, TriggersOrderCollection triggersNaturalOrder, ConvertedSyntaxKind parentKind)
+            public MethodSortInfoComparer(SortProceduresTriggerSortMode triggerSortMode, bool sortProcedures, TriggersOrderCollection triggersNaturalOrder, ConvertedSyntaxKind parentKind, SortProceduresGlobalVariablesSortMode globalVariablesSortMode)
             {
                 _triggerSortMode = triggerSortMode;
                 _sortProcedures = sortProcedures;
                 _parentKind = parentKind;
                 _triggerNaturalOrder = triggersNaturalOrder;
+                _globalVariablesSortMode = globalVariablesSortMode;
                 InitTypePriority();
             }
 
             private void InitTypePriority()
             {
-                if (_typePriority == null)
-                {
-                    ALSymbolKind[] types = {
-                        ALSymbolKind.TriggerDeclaration,
-                        ALSymbolKind.TestDeclaration,
-                        ALSymbolKind.ConfirmHandlerDeclaration,
-                        ALSymbolKind.FilterPageHandlerDeclaration,
-                        ALSymbolKind.HyperlinkHandlerDeclaration,
-                        ALSymbolKind.MessageHandlerDeclaration,
-                        ALSymbolKind.ModalPageHandlerDeclaration,
-                        ALSymbolKind.PageHandlerDeclaration,
-                        //ALSymbolKind.RecallNotificationHandler, // is missing
-                        ALSymbolKind.ReportHandlerDeclaration,
-                        ALSymbolKind.RequestPageHandlerDeclaration,
-                        ALSymbolKind.SendNotificationHandlerDeclaration,
-                        ALSymbolKind.SessionSettingsHandlerDeclaration,
-                        ALSymbolKind.StrMenuHandlerDeclaration,
-                        ALSymbolKind.MethodDeclaration,
-                        ALSymbolKind.InternalMethodDeclaration,
-                        ALSymbolKind.ProtectedMethodDeclaration,
-                        ALSymbolKind.LocalMethodDeclaration,
-                        ALSymbolKind.EventSubscriberDeclaration,
-                        ALSymbolKind.EventDeclaration,
-                        ALSymbolKind.BusinessEventDeclaration,
-                        ALSymbolKind.IntegrationEventDeclaration
-                    };
-                    _typePriority = new Dictionary<ALSymbolKind, int>();
+                ALSymbolKind[] types = {
+                    ALSymbolKind.TestDeclaration,
+                    ALSymbolKind.ConfirmHandlerDeclaration,
+                    ALSymbolKind.FilterPageHandlerDeclaration,
+                    ALSymbolKind.HyperlinkHandlerDeclaration,
+                    ALSymbolKind.MessageHandlerDeclaration,
+                    ALSymbolKind.ModalPageHandlerDeclaration,
+                    ALSymbolKind.PageHandlerDeclaration,
+                    //ALSymbolKind.RecallNotificationHandler, // is missing
+                    ALSymbolKind.ReportHandlerDeclaration,
+                    ALSymbolKind.RequestPageHandlerDeclaration,
+                    ALSymbolKind.SendNotificationHandlerDeclaration,
+                    ALSymbolKind.SessionSettingsHandlerDeclaration,
+                    ALSymbolKind.StrMenuHandlerDeclaration,
+                    ALSymbolKind.MethodDeclaration,
+                    ALSymbolKind.InternalMethodDeclaration,
+                    ALSymbolKind.ProtectedMethodDeclaration,
+                    ALSymbolKind.LocalMethodDeclaration,
+                    ALSymbolKind.EventSubscriberDeclaration,
+                    ALSymbolKind.EventDeclaration,
+                    ALSymbolKind.BusinessEventDeclaration,
+                    ALSymbolKind.IntegrationEventDeclaration
+                };
+                _typePriority = new Dictionary<ALSymbolKind, int>();
 
-                    for (int i = 0; i < types.Length; i++)
-                    {
-                        if (_sortProcedures)
-                            _typePriority.Add(types[i], i);
-                        else if (types[i] == ALSymbolKind.TriggerDeclaration)
-                            _typePriority.Add(types[i], 0);
-                        else
-                            _typePriority.Add(types[i], 1);
-                    }
+                var priorityValue = 0;
+                if (_globalVariablesSortMode == SortProceduresGlobalVariablesSortMode.First)
+                {
+                    _typePriority.Add(ALSymbolKind.GlobalVarSection, priorityValue);
+                    priorityValue++;
                 }
+
+                _typePriority.Add(ALSymbolKind.TriggerDeclaration, priorityValue);
+                priorityValue++;
+
+                if (_globalVariablesSortMode == SortProceduresGlobalVariablesSortMode.AfterTriggers)
+                {
+                    _typePriority.Add(ALSymbolKind.GlobalVarSection, priorityValue);
+                    priorityValue++;
+                }
+
+                for (int i = 0; i < types.Length; i++)
+                {
+                    _typePriority.Add(types[i], priorityValue);
+                    if (_sortProcedures)
+                        priorityValue++;
+                }
+                if (!_sortProcedures)
+                    priorityValue++;
+
+                if (_globalVariablesSortMode == SortProceduresGlobalVariablesSortMode.Last)
+                {
+                    _typePriority.Add(ALSymbolKind.GlobalVarSection, priorityValue);
+                    priorityValue++;
+                }
+
             }
 
-            protected int GetTypePriority(ALSymbolKind kind)
+            protected int GetTypePriority(ALSymbolKind kind, ALSymbolKind otherSymbolKind)
             {
-                if ((kind == ALSymbolKind.TriggerDeclaration) && (_triggerSortMode == SortProceduresTriggerSortMode.None))
+                if ((kind == ALSymbolKind.TriggerDeclaration) && (_triggerSortMode == SortProceduresTriggerSortMode.None) && (otherSymbolKind != ALSymbolKind.GlobalVarSection))
                     return UndefinedPriority;
                 if (_typePriority.ContainsKey(kind))
                     return _typePriority[kind];
@@ -201,8 +223,8 @@ namespace AnZwDev.ALTools.CodeTransformations
                         return CompareTriggersByNaturalOrder(x, y);
 
                     //check type
-                    int xTypePriority = this.GetTypePriority(x.Kind);
-                    int yTypePriority = this.GetTypePriority(y.Kind);
+                    int xTypePriority = this.GetTypePriority(x.Kind, y.Kind);
+                    int yTypePriority = this.GetTypePriority(y.Kind, x.Kind);
                     if (xTypePriority != yTypePriority)
                         return xTypePriority - yTypePriority;
 
@@ -232,6 +254,7 @@ namespace AnZwDev.ALTools.CodeTransformations
 
         public bool SortSingleNodeRegions { get; set; } = false;
         public SortProceduresTriggerSortMode TriggerSortMode { get; set; } = SortProceduresTriggerSortMode.None;
+        public SortProceduresGlobalVariablesSortMode GlobalVariablesSortMode { get; set; } = SortProceduresGlobalVariablesSortMode.AfterTriggers;
         public bool SortProcedures {  get; set; } = true;
         internal TriggersOrderCollection TriggersOrder { get; } = new TriggersOrderCollection();
 
@@ -590,12 +613,12 @@ namespace AnZwDev.ALTools.CodeTransformations
             if (nodesGroupsTree.Root == null)
                 return (members, closingToken, false);
 
-            MethodSortInfoComparer<T> comparer = new MethodSortInfoComparer<T>(TriggerSortMode, SortProcedures, TriggersOrder, parent.Kind.ConvertToLocalType());
+            MethodSortInfoComparer<T> comparer = new MethodSortInfoComparer<T>(TriggerSortMode, SortProcedures, TriggersOrder, parent.Kind.ConvertToLocalType(), GlobalVariablesSortMode);
 
             //does not have any child groups
             if (!nodesGroupsTree.Root.HasChildGroups)
             {
-                List<MethodSortInfo<T>> list = MethodSortInfo<T>.FromSyntaxList(members);
+                List<MethodSortInfo<T>> list = MethodSortInfo<T>.FromNodesList(nodesGroupsTree.Root.SyntaxNodes); //MethodSortInfo<T>.FromSyntaxList(members);
                 if (!list.IsOrdered(comparer))
                     this.NoOfChanges++;
                 list.Sort(comparer);

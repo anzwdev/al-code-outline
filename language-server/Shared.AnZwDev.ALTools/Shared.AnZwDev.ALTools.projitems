@@ -241,6 +241,7 @@
     <Compile Include="$(MSBuildThisFileDirectory)CodeTransformations\RemoveEventPublishersSyntaxRewriter.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)CodeTransformations\RemoveRedundantDataClassificationSyntaxRewriter.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)CodeTransformations\OneStatementPerLineSyntaxRewriter.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)CodeTransformations\SortProceduresGlobalVariablesSortMode.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)CodeTransformations\SortProceduresTriggerSortMode.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)CodeTransformations\TriggersOrder.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)CodeTransformations\TriggersOrderCollection.cs" />
@@ -249,6 +250,7 @@
     <Compile Include="$(MSBuildThisFileDirectory)Core\FullyQualifiedNameComparer.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Core\NullableStringComparer.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Core\StringArrayComparer.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Core\UniqueStringList.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Extensions\CompilationUnitSyntaxExtensions.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Extensions\ConvertedSyntaxKindExtensions.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Extensions\ListExtensions.cs" />
