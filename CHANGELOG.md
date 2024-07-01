@@ -8,10 +8,6 @@
  - Issue #591 - Limit Enum Object Names to 30 Chars in AL File Wizard
  - Issue #592 - Remove redundant ApplicationArea adds unnecessary quotes 
 
- `alOutline.defaultRemoveUnusedVariablesSettings`: default settings for the RemoveUnusedVariables command when run by the Code Cleanup, these properties can be set:
-  * `removeGlobalVariables`: remove global variables
-  * `removeProtectedGlobalVariables`: remove protected global variables
-
 Thank you
  - fvet and TKapitan for testing and adding comments to the issue #535
  - ThorstenEngelsGOB for reporting issue #590
