@@ -10,6 +10,7 @@ import { TableFieldInformation } from '../../symbolsinformation/tableFieldInform
 import { TableFieldsSelector } from './tableFieldsSelector';
 import { AppAreaMode } from '../../alsyntaxmodifiers/appAreaMode';
 import { ToolsSymbolReference } from '../../langserver/symbolsinformation/toolsSymbolReference';
+import { ALFieldToolTipsLocation } from '../../allanguage/alFieldToolTipsLocation';
 
 export class ALAddPageFieldsCodeCommand extends ALBaseAddFieldsCodeCommand {
     constructor(context : DevToolsExtensionContext) {
@@ -37,13 +38,15 @@ export class ALAddPageFieldsCodeCommand extends ALBaseAddFieldsCodeCommand {
     protected async runAsync(docSymbols: AZDocumentSymbolsLibrary, document: vscode.TextDocument, range: vscode.Range) {
         //get required details from document source code
         let symbol = this._toolsExtensionContext.activeDocumentSymbols.findSymbolInRange(range);
-        if (!symbol)
+        if (!symbol) {
             return;
+        }
         let config = vscode.workspace.getConfiguration('alOutline', document.uri);
         let parentKind: AZSymbolKind[] = [AZSymbolKind.PageObject, AZSymbolKind.PageExtensionObject];
         let pageSymbol = symbol.findParentByKindList(parentKind);
-        let isFieldSymbol = ((symbol.kind == AZSymbolKind.PageField) || (symbol.kind == AZSymbolKind.PageUserControl));
-        let addToolTips = !!config.get<boolean>('addToolTipsToPageFields');
+        let isFieldSymbol = ((symbol.kind === AZSymbolKind.PageField) || (symbol.kind === AZSymbolKind.PageUserControl));       
+        let fieldToolTipsLocation = this._toolsExtensionContext.alLangProxy.fieldToolTipsLocation(document.uri);
+        let addToolTips = (!!config.get<boolean>('addToolTipsToPageFields')) && (fieldToolTipsLocation === ALFieldToolTipsLocation.page);
         let useTableFieldCaptionsInApi = !!config.get<boolean>('useTableFieldCaptionsInApiFields');
         let reuseToolTips = !config.get<boolean>('doNotReuseToolTipsFromOtherPages');
         let toolTipsSource = config.get<string[]>('reuseToolTipsFromDependencies');
@@ -51,10 +54,11 @@ export class ALAddPageFieldsCodeCommand extends ALBaseAddFieldsCodeCommand {
         if ((!pageSymbol) || 
             ((!isFieldSymbol) && (!symbol.contentRange)) || 
             ((isFieldSymbol) && (!symbol.range)) || 
-            ((!pageSymbol.source) && (!pageSymbol.extends)))           
+            ((!pageSymbol.source) && (!pageSymbol.extends))) {
             return;
+        }
 
-        let isApiPage : boolean = ((!!pageSymbol.subtype) && (pageSymbol.subtype.toLowerCase() == 'api'));
+        let isApiPage : boolean = ((!!pageSymbol.subtype) && (pageSymbol.subtype.toLowerCase() === 'api'));
 
         let pageReference: ToolsSymbolReference = (pageSymbol.kind === AZSymbolKind.PageExtensionObject)?{
             usings: pageSymbol.usings,

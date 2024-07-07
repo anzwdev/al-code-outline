@@ -4,6 +4,7 @@ import { NumberHelper } from '../tools/numberHelper';
 import { StringHelper } from '../tools/stringHelper';
 import { ToolsWorkspaceCommandResponse } from '../langserver/toolsWorkspaceCommandResponse';
 import { WorkspaceCommandSyntaxModifier } from './workspaceCommandSyntaxModifier';
+import { ALFieldToolTipsLocation } from '../allanguage/alFieldToolTipsLocation';
 
 export class ToolTipModifier extends WorkspaceCommandSyntaxModifier {
 
@@ -21,14 +22,17 @@ export class ToolTipModifier extends WorkspaceCommandSyntaxModifier {
         parameters.toolTipAction = this.getActionTooltip(config);
         parameters.useFieldDescription = this.getUseFieldDescription(config);
         parameters.sortProperties = this.sortPropertiesOnSave(uri);
+        parameters.createFieldToolTips = this.createFieldToolTips(uri);
+        parameters.createActionToolTips = true;
 
         parameters.reuseToolTips = !config.get<boolean>('doNotReuseToolTipsFromOtherPages');
         let toolTipsSource = config.get<string[]>('reuseToolTipsFromDependencies');
-        if (toolTipsSource)
+        if (toolTipsSource) {
             for (let i=0; i<toolTipsSource.length; i++) {
                 let name = "toolTipDependency" + i.toString();
                 parameters[name] = toolTipsSource[i];
             }
+        }
 
         return parameters;
     }
@@ -85,6 +89,11 @@ export class ToolTipModifier extends WorkspaceCommandSyntaxModifier {
     protected getUseFieldDescription(config: vscode.WorkspaceConfiguration): boolean {
         let value : boolean = !!config.get<boolean>('useTableFieldDescriptionAsToolTip');
         return value;
+    }
+
+    protected createFieldToolTips(uri: vscode.Uri | undefined): boolean {
+        let location = this._context.alLangProxy.fieldToolTipsLocation(uri);
+        return (location === ALFieldToolTipsLocation.page);
     }
 
 }

@@ -45,15 +45,19 @@ export class CARulesCollection {
         let folders = vscode.workspace.workspaceFolders;
         if (folders) {
             for (let folderIdx=0; folderIdx<folders.length; folderIdx++) {
-                let folder = folders[folderIdx];
-                let alConfig = vscode.workspace.getConfiguration('al', folder.uri);
-                let codeAnalyzersSetting = alConfig.get<string[]|undefined>("codeAnalyzers");
-                if (codeAnalyzersSetting) {
-                    for (let analyzerIdx=0; analyzerIdx<codeAnalyzersSetting.length; analyzerIdx++) {
-                        let analyzerName = codeAnalyzersSetting[analyzerIdx].trim();
-                        this.addAnalyzer(analyzerName);
-                    }
-                }
+                this.loadCodeAnalyzersForUri(folders[folderIdx].uri);
+            }
+        }
+        this.loadCodeAnalyzersForUri(undefined);
+    }
+
+    protected loadCodeAnalyzersForUri(uri: vscode.Uri | undefined) {
+        let alConfig = vscode.workspace.getConfiguration('al', uri);
+        let codeAnalyzersSetting = alConfig.get<string[]|undefined>("codeAnalyzers");
+        if (codeAnalyzersSetting) {
+            for (let analyzerIdx=0; analyzerIdx<codeAnalyzersSetting.length; analyzerIdx++) {
+                let analyzerName = codeAnalyzersSetting[analyzerIdx].trim();
+                this.addAnalyzer(analyzerName);
             }
         }
     }

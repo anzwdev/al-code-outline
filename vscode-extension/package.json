@@ -2,7 +2,7 @@
 	"name": "al-code-outline",
 	"displayName": "AZ AL Dev Tools/AL Code Outline",
 	"description": "AZ AL Development Tools: AL code outline, object browser, object creators",
-	"version": "13.67.0",
+	"version": "13.68.0",
 	"publisher": "andrzejzwierzchowski",
 	"engines": {
 		"vscode": "^1.85.0"
@@ -1854,6 +1854,16 @@
 						"default": true,
 						"scope": "resource",
 						"description": "Add tooltips to page fields"
+					},
+					"alOutline.fieldToolTipsLocation": {
+						"type": "string",
+						"default": "page",
+						"scope": "resource",
+						"description": "Location of field tooltips",
+						"enum": [
+							"page",
+							"table"
+						]
 					},
 					"alOutline.createApiFieldsCaptions": {
 						"type": "boolean",

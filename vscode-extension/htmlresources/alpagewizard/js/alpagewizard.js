@@ -151,6 +151,12 @@ class PageWizard extends TableBasedObjectWizard {
     updateControls() {
         super.updateControls();
 
+        if ((this._data.pageType == "API") || (!this._data.showCreateTooltips)) {
+            htmlHelper.hideById("createtooltipsline");
+        } else {
+            htmlHelper.showById("createtooltipsline");
+        }
+
         if (this.hasFastTabs())
             htmlHelper.showById("fasttabsline");
         else
@@ -162,7 +168,6 @@ class PageWizard extends TableBasedObjectWizard {
             htmlHelper.hideById("usagecatline");
 
         if (this._data.pageType == "API") {
-            htmlHelper.hideById("createtooltipsline");
             htmlHelper.showById("apipublisherline");
             htmlHelper.showById("apigroupline");
             htmlHelper.showById("apiversionline");
@@ -174,7 +179,6 @@ class PageWizard extends TableBasedObjectWizard {
             htmlHelper.hideById("apiversionline");
             htmlHelper.hideById("entitynameline");
             htmlHelper.hideById("entitysetnameline");
-            htmlHelper.showById("createtooltipsline");
         }
     }
 
