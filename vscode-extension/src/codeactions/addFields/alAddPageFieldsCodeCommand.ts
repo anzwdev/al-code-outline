@@ -24,7 +24,7 @@ export class ALAddPageFieldsCodeCommand extends ALBaseAddFieldsCodeCommand {
              (symbol.kind == AZSymbolKind.PageArea) ||
              (symbol.kind == AZSymbolKind.ControlAddChange) ||
              (symbol.kind == AZSymbolKind.PageField) ||
-             (symbol.kind == AZSymbolKind.PageUserControl))) {                
+             (symbol.kind == AZSymbolKind.PageUserControl))) {
             let action : vscode.CodeAction = new vscode.CodeAction("Add multiple fields (AZ AL Dev Tools)", vscode.CodeActionKind.QuickFix);
             action.command = { 
                 command: this.name, 
@@ -41,6 +41,7 @@ export class ALAddPageFieldsCodeCommand extends ALBaseAddFieldsCodeCommand {
         if (!symbol) {
             return;
         }
+
         let config = vscode.workspace.getConfiguration('alOutline', document.uri);
         let parentKind: AZSymbolKind[] = [AZSymbolKind.PageObject, AZSymbolKind.PageExtensionObject];
         let pageSymbol = symbol.findParentByKindList(parentKind);
@@ -112,7 +113,7 @@ export class ALAddPageFieldsCodeCommand extends ALBaseAddFieldsCodeCommand {
         }
         let source = writer.toString();
 
-        await this.insertSymbolContentAsync(symbol, source);
+        await this.insertSymbolContentAsync(symbol, source, range);
     }
 
 }

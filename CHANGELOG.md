@@ -5,9 +5,11 @@
    - Status bar button to switch between configurations
    - Naming rules for app.json files defined in `alOutline.buildConfigurationNaming` setting
  - Issue #567 - Show Code Analyzer Rules - error handling fixes
+ - Issue #596 - Codeaction "Add multiple fields" does not respect cursor for insertion
 
 Thank you
  - rvanbekkum for reporting problems with issue #567
+ - zabcik for reporting problems with issue #596
 
 ## 13.68.0
  - ToolTips functionality changes
