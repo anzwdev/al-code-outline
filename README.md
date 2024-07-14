@@ -20,6 +20,7 @@ This extension was originally named 'AL Code Outline' because it started as AL c
 - Code analyzers rules viewer
 - Document syntax visualizer
 - Code completion
+- Multiple build configurations (app.json) support
 
 ### AL objects wizards
 
@@ -254,6 +255,14 @@ Document syntax visualizer shows syntax tree created by the AL compiler for the 
 
 ![Document Syntax Visualizer](resources/screen2-syntaxtree.png)
 
+### Multiple build configurations support
+
+It is possible to enable support for multiple app.json files in the workspace folder and then use a button on the status bar to switch between them. When active configuration is selected, all changes made to the app.json file are copied to the corresponing configuration file. Naming rules for the configuration files can be selected using `alOutline.buildConfigurationNaming` setting. These values are available:
+* `none` - default, build configurations support disabled
+* `appNameJson` - "app.\<configuration name\>.json", i.e. "app.SaaS.json" for "SaaS" configuration
+* `nameAppJson` - "\<configuration name\>.app.json", i.e. "SaaS.app.json" for "SaaS" configuration
+* `appJsonName` - "app.json.\<configuration name\>", i.e. "app.json.SaaS" for "SaaS" configuration
+
 ## Contributors
 
 - rvanbekkum: 
@@ -279,6 +288,12 @@ This extension has originally been inspired by "Code Outline" extension created 
 
 This extension contributes the following settings:
 
+* `alOutline.activeBuildConfiguration`: setting used to save active build configuration (app.json) for the workspace folder. It is automatically updated when active configuration is changed using visual studio status bar button.
+* `alOutline.buildConfigurationNaming`: naming rules for build configuration files (app.json) files. Available values are:
+  * `none` - default, build configurations support disabled
+  * `appNameJson` - "app.\<configuration name\>.json", i.e. "app.SaaS.json" for "SaaS" configuration
+  * `nameAppJson` - "\<configuration name\>.app.json", i.e. "SaaS.app.json" for "SaaS" configuration
+  * `appJsonName` - "app.json.\<configuration name\>", i.e. "app.json.SaaS" for "SaaS" configuration
 * `alOutline.addDataItemToReportColumnName`: include data set name in report columns names
 * `alOutline.docCommentsType`: enable documention comments, available values: none, xml 
 * `alOutline.autorefresh`: refresh code outline tree automatically
