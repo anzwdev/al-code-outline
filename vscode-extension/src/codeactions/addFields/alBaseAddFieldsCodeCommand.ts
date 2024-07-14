@@ -74,11 +74,11 @@ export class ALBaseAddFieldsCodeCommand extends ALCodeCommand {
         return -1;
     }
 
-    protected async insertSymbolContentAsync(symbol: AZSymbolInformation, content: string) {
+    protected async insertSymbolContentAsync(symbol: AZSymbolInformation, content: string, range: vscode.Range) {
         if (!vscode.window.activeTextEditor)
             return;
         
-        let eol = vscode.window.activeTextEditor.document.eol;
+        let eol = vscode.window.activeTextEditor.document.eol === vscode.EndOfLine.CRLF ? "\r\n" : "\n";
 
         let line : number = 0;
         let column : number = 0;
@@ -91,8 +91,19 @@ export class ALBaseAddFieldsCodeCommand extends ALCodeCommand {
             (symbol.kind == AZSymbolKind.XmlPortFieldAttribute)) {
 
             if (symbol.range) {
-                line = symbol.range.end.line;
-                column = symbol.range.end.character;
+                //check if position before first token - insert before
+                if ((symbol.tokensRange) && (range) && 
+                    ((symbol.tokensRange.start.line > range.start.line) ||
+                    ((symbol.tokensRange.start.line === range.start.line) && (symbol.tokensRange.start.character > range.start.character)))) {
+
+                    line = symbol.range.start.line;
+                    column = symbol.range.start.character;
+                    //content = eol + content; 
+
+                } else {
+                    line = symbol.range.end.line;
+                    column = symbol.range.end.character;
+                }
             }
         } else if (symbol.contentRange) {
             line = symbol.contentRange.end.line;

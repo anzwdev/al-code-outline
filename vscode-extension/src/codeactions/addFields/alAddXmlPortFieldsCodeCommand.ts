@@ -81,7 +81,7 @@ export class ALAddXmlPortFieldsCodeCommand extends ALBaseAddFieldsCodeCommand {
         }
         let source = writer.toString();
 
-        await this.insertSymbolContentAsync(symbol, source);
+        await this.insertSymbolContentAsync(symbol, source, range);
     }
 
 

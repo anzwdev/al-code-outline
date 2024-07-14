@@ -31,17 +31,20 @@ namespace AnZwDev.ALTools.WorkspaceCommands
 
         public override void CollectCodeActions(SyntaxTree syntaxTree, SyntaxNode node, TextRange range, List<WorkspaceCommandCodeAction> actions)
         {
-            var caseStatement = node as CaseStatementSyntax;
-            if (caseStatement == null)
+            if (node != null)
             {
-                caseStatement = node.Parent as CaseStatementSyntax;
-            }
+                var caseStatement = node as CaseStatementSyntax;
+                if (caseStatement == null)
+                {
+                    caseStatement = node.Parent as CaseStatementSyntax;
+                }
 
-            if (caseStatement != null)
-            {
-                var nodeLineSpan = syntaxTree.GetLineSpan(caseStatement.FullSpan);
-                var nodeRange = new TextRange(nodeLineSpan);
-                actions.Add(new WorkspaceCommandCodeAction(this.Name, nodeRange, "Add missing case lines"));
+                if (caseStatement != null)
+                {
+                    var nodeLineSpan = syntaxTree.GetLineSpan(caseStatement.FullSpan);
+                    var nodeRange = new TextRange(nodeLineSpan);
+                    actions.Add(new WorkspaceCommandCodeAction(this.Name, nodeRange, "Add missing case lines"));
+                }
             }
         }
 

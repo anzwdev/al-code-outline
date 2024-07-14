@@ -20,6 +20,8 @@ namespace AnZwDev.ALTools.WorkspaceCommands
         public static string UseFieldDescriptionParameterName = "useFieldDescription";
         public static string ReuseToolTipsParameterName = "reuseToolTips";
         public static string DependencyNameParameterName = "toolTipDependency";
+        public static string CreateFieldToolTipsParameterName = "createFieldToolTips";
+        public static string CreateActionToolTipsParameterName = "createActionToolTips";
 
         public AddToolTipsWorkspaceCommand(ALDevToolsServer alDevToolsServer) : base(alDevToolsServer, "addToolTips")
         {
@@ -33,6 +35,10 @@ namespace AnZwDev.ALTools.WorkspaceCommands
             this.SyntaxRewriter.PageFieldTooltipComment = parameters.GetStringValue(FieldTooltipCommentParameterName);
             this.SyntaxRewriter.UseFieldDescription = parameters.GetBoolValue(UseFieldDescriptionParameterName);
             this.SyntaxRewriter.SortProperties = parameters.GetBoolValue(SortPropertiesParameterName);
+
+            this.SyntaxRewriter.CreateFieldToolTips = parameters.GetBoolValue(CreateFieldToolTipsParameterName);
+            this.SyntaxRewriter.CreateActionToolTips = parameters.GetBoolValue(CreateActionToolTipsParameterName);
+
 
             bool reuseToolTips = parameters.GetBoolValue(ReuseToolTipsParameterName);
 

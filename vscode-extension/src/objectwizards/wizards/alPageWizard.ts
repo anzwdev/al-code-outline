@@ -7,6 +7,7 @@ import { ALPageWizardPage } from "./alPageWizardPage";
 import { DevToolsExtensionContext } from "../../devToolsExtensionContext";
 import { ALObjectWizardSettings } from "./alObjectWizardSettings";
 import { StringHelper } from '../../tools/stringHelper';
+import { ALFieldToolTipsLocation } from '../../allanguage/alFieldToolTipsLocation';
 
 export class ALPageWizard extends ALObjectWizard {
     
@@ -20,12 +21,14 @@ export class ALPageWizard extends ALObjectWizard {
     }
 
     protected async runAsync(settings: ALObjectWizardSettings) {
-        let config = vscode.workspace.getConfiguration('alOutline', settings.getDestDirectoryUri());
-
+        let uri = settings.getDestDirectoryUri();
+        let fieldToolTipsLocation = this._toolsExtensionContext.alLangProxy.fieldToolTipsLocation(uri);
+        let config = vscode.workspace.getConfiguration('alOutline', uri);
         let wizardData : ALPageWizardData = new ALPageWizardData();
         await this.initObjectIdFieldsAsync(wizardData, settings, "Page");
         wizardData.objectName = '';//settings.getInputNameVariable();
-        wizardData.createTooltips = !!config.get<boolean>('addToolTipsToPageFields');
+        wizardData.showCreateTooltips = (fieldToolTipsLocation === ALFieldToolTipsLocation.page);
+        wizardData.createTooltips = (wizardData.showCreateTooltips) && (!!config.get<boolean>('addToolTipsToPageFields'));
         wizardData.reuseToolTips = !config.get<boolean>('doNotReuseToolTipsFromOtherPages');
         wizardData.toolTipsSource = config.get<string[]>('reuseToolTipsFromDependencies');
         wizardData.applicationArea = StringHelper.defaultIfEmpty(config.get<string>('defaultAppArea'), wizardData.applicationArea);

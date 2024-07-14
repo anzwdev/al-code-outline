@@ -2,7 +2,7 @@
 	"name": "al-code-outline",
 	"displayName": "AZ AL Dev Tools/AL Code Outline",
 	"description": "AZ AL Development Tools: AL code outline, object browser, object creators",
-	"version": "13.67.0",
+	"version": "13.69.0",
 	"publisher": "andrzejzwierzchowski",
 	"engines": {
 		"vscode": "^1.85.0"
@@ -94,6 +94,11 @@
 			]
 		},
 		"commands": [
+			{
+				"command": "azALDevTools.selectBuildConfiguration",
+				"title": "Select active build configuration",
+				"icon": "$(gear)"
+			},
 			{
 				"category": "AZ AL Dev Tools",
 				"command": "azALDevTools.showWarningDirectives",
@@ -711,6 +716,10 @@
 		],
 		"menus": {
 			"commandPalette": [
+				{
+					"command": "azALDevTools.selectBuildConfiguration",
+					"when": "false"
+				},
 				{
 					"command": "azALDevTools.viewALApp",
 					"when": "false"
@@ -1396,6 +1405,30 @@
 			{
 				"title": "AZ AL Dev Tools/AL Code Outline",
 				"properties": {
+					"alOutline.activeBuildConfiguration" : {
+						"type": "string",
+						"default": "",
+						"scope": "resource",
+						"description": "Name of the active build configuration (active app.json file) for the workspace folder"
+					},
+					"alOutline.buildConfigurationNaming" : {
+						"type": "string",
+						"default": "none",
+						"scope": "resource",
+						"description": "Naming convention for build configuration files (app.json)",
+						"enum": [
+							"none",
+							"appNameJson",
+							"nameAppJson",
+							"appJsonName"
+						],
+						"enumDescriptions": [
+							"None - build configurations support disabled",
+							"app.<configuration name>.json",
+							"<configuration name>.app.json",
+							"app.json.<configuration name>"
+						]
+					},
 					"alOutline.limitEnumNameLength" : {
 						"type": "boolean",
 						"default": false,
@@ -1854,6 +1887,16 @@
 						"default": true,
 						"scope": "resource",
 						"description": "Add tooltips to page fields"
+					},
+					"alOutline.fieldToolTipsLocation": {
+						"type": "string",
+						"default": "page",
+						"scope": "resource",
+						"description": "Location of field tooltips",
+						"enum": [
+							"page",
+							"table"
+						]
 					},
 					"alOutline.createApiFieldsCaptions": {
 						"type": "boolean",

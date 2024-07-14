@@ -1,5 +1,24 @@
 # Change Log
 
+## 13.69.0
+ - Multiple build configurations support (multiple app.json files)
+   - Status bar button to switch between configurations
+   - Naming rules for app.json files defined in `alOutline.buildConfigurationNaming` setting
+ - Issue #567 - Show Code Analyzer Rules - error handling fixes
+ - Issue #596 - Codeaction "Add multiple fields" does not respect cursor for insertion
+
+Thank you
+ - rvanbekkum for reporting problems with issue #567
+ - zabcik for reporting problems with issue #596
+
+## 13.68.0
+ - ToolTips functionality changes
+   - new `alOutline.fieldToolTipsLocation` setting, avaliable values are
+     - `page` (default) - field tooltips are added to pages
+     - `table` - field tooltips are added to tables, works for BC runtime 13 and newer
+   - "Add tooltips to editor/project" and "Add fields" commands are using the setting value from above
+   - Page wizard not showing "Add tooltips" checkbox if setting set to `table`
+
 ## 13.67.0
  - Issue #535 - Separate 'Sort Triggers' action - sorting fixes and improvements
  - Issue #590 - Delete unused variables with obsolete tag 

@@ -7,6 +7,7 @@ import { ALSyntaxHelper } from './alSyntaxHelper';
 import { Version } from '../tools/version';
 import { TextEditorHelper } from '../tools/textEditorHelper';
 import { AppAreaMode } from '../alsyntaxmodifiers/appAreaMode';
+import { ALFieldToolTipsLocation } from './alFieldToolTipsLocation';
 
 export class ALLangServerProxy {
     //!!!private langClient : vscodelangclient.LanguageClient | undefined;
@@ -252,8 +253,9 @@ export class ALLangServerProxy {
     getRuntimeVersion(resourceUri: vscode.Uri | undefined): Version {
         let version = new Version();
         let appData = this.getAppManifest(resourceUri);
-        if ((appData) && (appData.runtime))
+        if ((appData) && (appData.runtime)) {
             version.parse(appData.runtime);
+        }
         return version;
     }
 
@@ -308,6 +310,20 @@ export class ALLangServerProxy {
         }
        
         return AppAreaMode.inheritFromMainObject;
+    }
+
+    fieldToolTipsLocation(resourceUri: vscode.Uri | undefined) : ALFieldToolTipsLocation {
+        let settings = vscode.workspace.getConfiguration('alOutline', resourceUri);
+        let locationValue = settings.get<string>('fieldToolTipsLocation');
+        let location = ALFieldToolTipsLocation.page;
+        if ((locationValue) && (locationValue === 'table')) {
+            let runtimeVersion = this.getRuntimeVersion(resourceUri);
+            let tableToolTipsMinVersion = Version.create("13.0");
+            if (runtimeVersion.isGreaterOrEqual(tableToolTipsMinVersion)) {
+                location = ALFieldToolTipsLocation.table;
+            }
+        }
+        return location;
     }
 
 }

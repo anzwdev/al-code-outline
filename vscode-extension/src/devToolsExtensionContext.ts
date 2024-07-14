@@ -27,6 +27,7 @@ import { ReferencesService } from './services/referencesService';
 import { IdReservationService } from './services/idReservationService';
 import { ALDecorationService } from './services/alDecorationService';
 import { GitClientService } from './services/gitClientService';
+import { ALBuildConfigurationService } from './configmanager/ALBuildConfigurationService';
 
 export class DevToolsExtensionContext implements vscode.Disposable {
     alLangProxy : ALLangServerProxy;    
@@ -53,6 +54,7 @@ export class DevToolsExtensionContext implements vscode.Disposable {
     idReservationService: IdReservationService;
     alDecorationService: ALDecorationService;
     gitService: GitClientService;
+    buildConfigurationService: ALBuildConfigurationService;
 
     constructor(context : vscode.ExtensionContext) {
         this.alLangProxy = new ALLangServerProxy();
@@ -85,6 +87,7 @@ export class DevToolsExtensionContext implements vscode.Disposable {
         this.idReservationService = new IdReservationService(this);
         this.alDecorationService = new ALDecorationService(this);
         this.gitService = new GitClientService(this);
+        this.buildConfigurationService = new ALBuildConfigurationService(this);
     }
 
     getUseSymbolsBrowser() : boolean {

@@ -1,4 +1,5 @@
-﻿using AnZwDev.ALTools.Workspace;
+﻿using AnZwDev.ALTools.Logging;
+using AnZwDev.ALTools.Workspace;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -37,8 +38,10 @@ namespace AnZwDev.ALTools.CodeAnalysis
                 this.LibrariesCache.Add(name, library);
                 return library;
             }
-            catch (Exception)
+            catch (Exception ex)
             {
+                string errorMessage = $"Error loading code analyzers library '{name}': ";
+                MessageLog.LogError(ex, errorMessage + ": ");
                 return null;
             }
         }

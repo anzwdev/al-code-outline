@@ -50,7 +50,7 @@ namespace AnZwDev.ALTools.ALSymbols.SymbolReaders
             lineSpan = syntaxTree.GetLineSpan(node.Span);
             symbolInfo.selectionRange = new TextRange(lineSpan.StartLinePosition.Line, lineSpan.StartLinePosition.Character,
                 lineSpan.StartLinePosition.Line, lineSpan.StartLinePosition.Character);
-            
+
             IEnumerable<SyntaxNode> list = node.ChildNodes();
             if (list != null)
             {

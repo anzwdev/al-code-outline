@@ -58,6 +58,9 @@ namespace AnZwDev.ALTools.ALSymbols
         public TextRange contentRange { get; set; }
 
         [JsonProperty(NullValueHandling = NullValueHandling.Ignore)]
+        public TextRange tokensRange { get; set; }
+
+        [JsonProperty(NullValueHandling = NullValueHandling.Ignore)]
         public bool? containsDiagnostics { get; set; }
 
         [JsonIgnore]

@@ -22,6 +22,8 @@ namespace AnZwDev.ALTools.CodeTransformations
         public string PageActionTooltip { get; set; }
         public bool UseFieldDescription { get; set; }
         public bool SortProperties { get; set; }
+        public bool CreateFieldToolTips { get; set; }
+        public bool CreateActionToolTips { get; set; }
 
         public Dictionary<int, Dictionary<string, List<LabelInformation>>> ToolTipsCache { get; set; }
 
@@ -33,6 +35,8 @@ namespace AnZwDev.ALTools.CodeTransformations
             this.PageFieldTooltip = "Specifies the value of %1 field.";
             this.PageFieldTooltipComment = "%Caption.Comment%";
             this.UseFieldDescription = false;
+            this.CreateFieldToolTips = true;
+            this.CreateActionToolTips = true;
             this.ToolTipsCache = null;
         }
 
@@ -45,7 +49,7 @@ namespace AnZwDev.ALTools.CodeTransformations
 
         public override SyntaxNode VisitPageField(PageFieldSyntax node)
         {
-            if ((!CanAddToolTip(node)) || (this.HasToolTip(node)) || (this.ToolTipDisabled(node)))
+            if ((!this.CreateFieldToolTips) || (!CanAddToolTip(node)) || (this.HasToolTip(node)) || (this.ToolTipDisabled(node)))
                 return base.VisitPageField(node);
             this.NoOfChanges++;
 
@@ -80,7 +84,7 @@ namespace AnZwDev.ALTools.CodeTransformations
 
         public override SyntaxNode VisitPageAction(PageActionSyntax node)
         {
-            if ((!CanAddToolTip(node)) || (this.HasToolTip(node)))
+            if ((!this.CreateActionToolTips) || (!CanAddToolTip(node)) || (this.HasToolTip(node)))
                 return base.VisitPageAction(node);
             this.NoOfChanges++;
             node = node.AddPropertyListProperties(this.CreateToolTipProperty(node));

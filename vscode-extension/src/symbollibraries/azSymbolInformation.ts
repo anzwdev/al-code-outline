@@ -20,6 +20,7 @@ export class AZSymbolInformation {
     //smaller symbol range, usual symbol name
     selectionRange : TextRange | undefined;
     contentRange: TextRange | undefined;
+    tokensRange: TextRange | undefined;
     containsDiagnostics: boolean | undefined;
     source: string | undefined;
     extends: string | undefined;
@@ -40,6 +41,7 @@ export class AZSymbolInformation {
         this.range = undefined;
         this.selectionRange = undefined;
         this.contentRange = undefined;
+        this.tokensRange = undefined;
         this.source = undefined;
         this.extends = undefined;
         this.format = undefined;
@@ -79,6 +81,8 @@ export class AZSymbolInformation {
             obj.selectionRange = TextRange.fromAny(source.selectionRange);
         if (source.contentRange)
             obj.contentRange = TextRange.fromAny(source.contentRange);
+        if (source.tokensRange)
+            obj.tokensRange = TextRange.fromAny(source.tokensRange);
         if (source.source)
             obj.source = source.source;
         if (source.extends)

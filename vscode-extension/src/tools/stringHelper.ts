@@ -10,8 +10,9 @@ export class StringHelper {
     }
    
     static emptyIfNotDef(value: string | undefined) {
-        if (value)
+        if (value !== undefined) {
             return value;
+        }
         return "";
     }
 

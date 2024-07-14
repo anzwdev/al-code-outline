@@ -9,6 +9,7 @@ import { DevToolsExtensionContext } from '../../devToolsExtensionContext';
 import { ALObjectWizardSettings } from './alObjectWizardSettings';
 import { ToolsGetNewFileRequiredInterfacesRequest } from '../../langserver/toolsGetNewFileRequiredInterfacesRequest';
 import { ToolsSymbolReference } from '../../langserver/symbolsinformation/toolsSymbolReference';
+import { ALFieldToolTipsLocation } from '../../allanguage/alFieldToolTipsLocation';
 
 export class ALPageWizardPage extends ALTableBasedWizardPage {
     protected _pageWizardData : ALPageWizardData;
@@ -30,6 +31,7 @@ export class ALPageWizardPage extends ALTableBasedWizardPage {
 
     protected async finishWizard(data : any) : Promise<boolean> {
         let destDirectoryUri = this._settings.getDestDirectoryUri();
+        let fieldToolTipsLocation = this._toolsExtensionContext.alLangProxy.fieldToolTipsLocation(destDirectoryUri);
 
         //build parameters
         this._pageWizardData.objectId = data.objectId;
@@ -46,7 +48,7 @@ export class ALPageWizardPage extends ALTableBasedWizardPage {
         this._pageWizardData.apiVersion = data.apiVersion;
         this._pageWizardData.entityName = data.entityName;
         this._pageWizardData.entitySetName = data.entitySetName;
-        this._pageWizardData.createTooltips = data.createTooltips;
+        this._pageWizardData.createTooltips = (!!data.createTooltips) && (fieldToolTipsLocation === ALFieldToolTipsLocation.page);
     
         //information about selected fields
         this._pageWizardData.selectedFieldList = [];

@@ -86,7 +86,9 @@ namespace AnZwDev.ALTools.ALSymbols.SymbolReaders
         protected (ALSymbol, ALRegionDirective) ProcessChildSyntaxNodesCollection(ALSymbol symbol, ALSymbol parentSymbolOrRegion, ALRegionDirective currentRegion, SyntaxTree syntaxTree, SyntaxNode node, IEnumerable<SyntaxNode> childNodesCollection)
         {
             foreach (var childNode in childNodesCollection)
+            {
                 (parentSymbolOrRegion, currentRegion) = ProcessChildSyntaxNode(symbol, parentSymbolOrRegion, currentRegion, syntaxTree, node, childNode);
+            }
             return (parentSymbolOrRegion, currentRegion);
         }
 
@@ -224,11 +226,20 @@ namespace AnZwDev.ALTools.ALSymbols.SymbolReaders
                 kind = alSymbolKind,
                 name = node.GetNameStringValue(),
                 range = syntaxTree.GetLineRange(node.FullSpan),
-                selectionRange = syntaxTree.GetLineRange(node.Span)
+                selectionRange = syntaxTree.GetLineRange(node.Span)                
             };
+
+            var firstToken = node.GetFirstToken();
+            var lastToken = node.GetLastToken();
+            if ((firstToken != null) && (lastToken != null))
+            {
+                var tokenSpan = new TextSpan(firstToken.Span.Start, lastToken.Span.End - firstToken.Span.Start);
+                symbol.tokensRange = syntaxTree.GetLineRange(tokenSpan);
+            }   
+
             if (node.ContainsDiagnostics)
                 symbol.containsDiagnostics = true;
-            
+
             ProcessNodeTypeSpecificProperties(symbol, syntaxTree, parentNode, node);
 
             //update namespaces details

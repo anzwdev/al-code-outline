@@ -20,6 +20,7 @@ This extension was originally named 'AL Code Outline' because it started as AL c
 - Code analyzers rules viewer
 - Document syntax visualizer
 - Code completion
+- Multiple build configurations (app.json) support
 
 ### AL objects wizards
 
@@ -254,6 +255,14 @@ Document syntax visualizer shows syntax tree created by the AL compiler for the 
 
 ![Document Syntax Visualizer](resources/screen2-syntaxtree.png)
 
+### Multiple build configurations support
+
+It is possible to enable support for multiple app.json files in the workspace folder and then use a button on the status bar to switch between them. When active configuration is selected, all changes made to the app.json file are copied to the corresponing configuration file. Naming rules for the configuration files can be selected using `alOutline.buildConfigurationNaming` setting. These values are available:
+* `none` - default, build configurations support disabled
+* `appNameJson` - "app.\<configuration name\>.json", i.e. "app.SaaS.json" for "SaaS" configuration
+* `nameAppJson` - "\<configuration name\>.app.json", i.e. "SaaS.app.json" for "SaaS" configuration
+* `appJsonName` - "app.json.\<configuration name\>", i.e. "app.json.SaaS" for "SaaS" configuration
+
 ## Contributors
 
 - rvanbekkum: 
@@ -279,6 +288,12 @@ This extension has originally been inspired by "Code Outline" extension created 
 
 This extension contributes the following settings:
 
+* `alOutline.activeBuildConfiguration`: setting used to save active build configuration (app.json) for the workspace folder. It is automatically updated when active configuration is changed using visual studio status bar button.
+* `alOutline.buildConfigurationNaming`: naming rules for build configuration files (app.json) files. Available values are:
+  * `none` - default, build configurations support disabled
+  * `appNameJson` - "app.\<configuration name\>.json", i.e. "app.SaaS.json" for "SaaS" configuration
+  * `nameAppJson` - "\<configuration name\>.app.json", i.e. "SaaS.app.json" for "SaaS" configuration
+  * `appJsonName` - "app.json.\<configuration name\>", i.e. "app.json.SaaS" for "SaaS" configuration
 * `alOutline.addDataItemToReportColumnName`: include data set name in report columns names
 * `alOutline.docCommentsType`: enable documention comments, available values: none, xml 
 * `alOutline.autorefresh`: refresh code outline tree automatically
@@ -319,6 +334,9 @@ This extension contributes the following settings:
 * `alOutline.pageFieldToolTipComment`: tooltip comment template for page fields. Use %1 or %Caption% as placeholder for field caption or name and %Caption.Comment% for field caption comment. The default value is "%Caption.Comment%". If these default values of pageFieldToolTip and pageFieldToolTipComment settings are used then if table field caption is defined as ```Caption = 'Customer No.', Comment = 'Comment Text'``` then created ToolTip will be defined as ```ToolTip = 'Specifies the value of  the Customer No. field', Comment = 'Comment Text'```
 * `alOutline.useTableFieldDescriptionAsToolTip`: If set to true, table field description will be used as tooltip by commands adding missing captions to pages and page wizard
 * `alOutline.addToolTipsToPageFields`: set to true to add tooltips to page fields when 'Add multiple fields' action is used
+* `alOutline.fieldToolTipsLocation`: used for BC runtime 13.0 or newer, allows to specify where tooltips are created for the project. Available values are:
+  * `page` (default) - field tooltips are added to pages
+  * `table` - field tooltips are added to tables, this value removes "Create tooltips" checkbox from page wizard, page field tooltips are not created by "Add fields" page code action and "Add tooltips to the active editor/project" commands
 * `alOutline.createApiFieldsCaptions`: set to true to add Captions to fields added to the API pages
 * `alOutline.useTableFieldCaptionsInApiFields`: set to true, to use table field captions in API pages fields like in standard BC APIs v 2.0 (i.e. ```Caption='Customer No.';```), set to false to use camelCase api page field name in api page field caption together with Locked property like in standard BC APIs v 1.0 (i.e. ```Caption='customerNo', Locked = true;```). Default value is true
 * `alOutline.apiFieldNamesConversion`: array of regular expression replacements used to replace parts of api pages field names. Each entry in this array is an object with 2 properties:
