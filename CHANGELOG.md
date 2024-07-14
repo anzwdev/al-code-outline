@@ -4,6 +4,10 @@
  - Multiple build configurations support (multiple app.json files)
    - Status bar button to switch between configurations
    - Naming rules for app.json files defined in `alOutline.buildConfigurationNaming` setting
+ - Issue #567 - Show Code Analyzer Rules - error handling fixes
+
+Thank you
+ - rvanbekkum for reporting problems with issue #567
 
 ## 13.68.0
  - ToolTips functionality changes
