@@ -1,5 +1,11 @@
 # Change Log
 
+## 13.70.0
+ - Issue #603 - Fields selection is not working anymore
+
+Thank you
+  mihaivalceaCPS, barandeniz, pri-kise and erikrijn for reporting issue #603
+
 ## 13.69.0
  - Multiple build configurations support (multiple app.json files)
    - Status bar button to switch between configurations
