@@ -89,6 +89,9 @@ export class TableFieldsSelector {
             for (let i=0; i<this._quickPick.items.length; i++) {
                 if (newSelItems.indexOf(this._quickPick.items[i]) < 0) {
                     notSelItems.push(this._quickPick.items[i]);
+                    this._quickPick.items[i].picked = false;
+                } else {
+                    this._quickPick.items[i].picked = true;
                 }
             }
             //sort and merge selected and not selected items
