@@ -12,8 +12,10 @@ export class TableFieldsSelector {
     protected _sortBy: string;
     protected _quickPick: vscode.QuickPick<TableFieldQuickPickItem>;
     protected _selectedItems: TableFieldQuickPickItem[];
+    protected _skipEmptyUpdate: boolean;
 
     constructor(context : DevToolsExtensionContext) {
+        this._skipEmptyUpdate = false;
         this._sortNameImage = 'ico-sorttext.svg';
         this._sortIdImage = 'ico-sortnumeric.svg';
         this._sortNameText = 'Sort by Name';
@@ -80,6 +82,13 @@ export class TableFieldsSelector {
     }
 
     protected updateItems(newSelItems: TableFieldQuickPickItem[], forceUpdate: boolean) {
+        if (this._skipEmptyUpdate) {
+            this._skipEmptyUpdate = false;
+            if ((!newSelItems) || (newSelItems.length === 0)) {
+                return;
+            }
+        }
+
         let selectionOrder = this.isInSelectionOrderMode();
         let listChanged = !this.isListEqual(newSelItems, this._selectedItems);
         
@@ -104,6 +113,8 @@ export class TableFieldsSelector {
                 this.sortItems(newItems);
 
             //update members and quick pick
+
+            this._skipEmptyUpdate = true;
             this._selectedItems = newSelItems;
             this._quickPick.items = newItems;
             this._quickPick.selectedItems = newSelItems;
