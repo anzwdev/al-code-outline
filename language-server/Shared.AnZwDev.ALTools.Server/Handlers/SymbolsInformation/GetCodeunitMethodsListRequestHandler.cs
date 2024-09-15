@@ -16,6 +16,8 @@ namespace AnZwDev.ALTools.Server.Handlers.SymbolsInformation
         [JsonRpcMethod("al/getcodeunitmethodslist", UseSingleObjectParameterDeserialization = true)]
         public GetCodeunitMethodsListResponse GetCodeunitMethodsList(GetCodeunitMethodsListRequest parameters)
         {
+            RebuildModifiedSymbols();
+
             GetCodeunitMethodsListResponse response = new GetCodeunitMethodsListResponse();
 
             ALProject project = this.Server.Workspace.FindProject(parameters.path, true);

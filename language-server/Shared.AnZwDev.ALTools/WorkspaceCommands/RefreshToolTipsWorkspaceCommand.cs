@@ -14,7 +14,7 @@ namespace AnZwDev.ALTools.WorkspaceCommands
 
         public static string SortPropertiesParameterName = "sortProperties";
 
-        public RefreshToolTipsWorkspaceCommand(ALDevToolsServer alDevToolsServer) : base(alDevToolsServer, "refreshToolTips")
+        public RefreshToolTipsWorkspaceCommand(ALDevToolsServer alDevToolsServer) : base(alDevToolsServer, "refreshToolTips", true)
         {
         }
 

@@ -16,14 +16,16 @@ namespace AnZwDev.ALTools.WorkspaceCommands
 
         public static string NoOfChangesParameterName = "noOfChanges";
         public static string NoOfChangedFilesParameterName = "noOfChangedFiles";
-
+        
         public ALDevToolsServer ALDevToolsServer { get; }
-        public string Name { get; set; }
+        public string Name { get; }
+        public bool ModifiedSymbolsRebuildRequired { get; }
 
-        public WorkspaceCommand(ALDevToolsServer alDevToolsServer, string newName)
+        public WorkspaceCommand(ALDevToolsServer alDevToolsServer, string newName, bool modifiedSymbolsRebuildRequired)
         {
             this.ALDevToolsServer = alDevToolsServer;
             this.Name = newName;
+            this.ModifiedSymbolsRebuildRequired = modifiedSymbolsRebuildRequired;
         }
 
         public virtual (WorkspaceCommandResult, bool) CanRun(string sourceCode, ALProject alProject, string filePath, TextRange range, Dictionary<string, string> parameters, List<string> excludeFiles, List<string> includeFiles)

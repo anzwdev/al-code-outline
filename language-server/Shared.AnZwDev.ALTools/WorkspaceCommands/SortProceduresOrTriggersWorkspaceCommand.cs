@@ -18,7 +18,7 @@ namespace AnZwDev.ALTools.WorkspaceCommands
         public static string TriggersNaturalOrderParameterName = "triggersNaturalOrder";
         public static string SortSingleNodeRegionsParameterName = "sortSingleNodeRegions";
 
-        public SortProceduresOrTriggersWorkspaceCommand(ALDevToolsServer alDevToolsServer, string name) : base(alDevToolsServer, name)
+        public SortProceduresOrTriggersWorkspaceCommand(ALDevToolsServer alDevToolsServer, string name) : base(alDevToolsServer, name, false)
         {
         }
 

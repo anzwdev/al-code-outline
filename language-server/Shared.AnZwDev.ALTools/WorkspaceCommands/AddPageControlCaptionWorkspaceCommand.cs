@@ -21,7 +21,7 @@ namespace AnZwDev.ALTools.WorkspaceCommands
         public static string SetLabelsCaptionsParameterName = "setLabelsCaptions";
         public static string SortPropertiesParameterName = "sortProperties";
 
-        public AddPageControlCaptionWorkspaceCommand(ALDevToolsServer alDevToolsServer) : base(alDevToolsServer, "addPageControlCaptions")
+        public AddPageControlCaptionWorkspaceCommand(ALDevToolsServer alDevToolsServer) : base(alDevToolsServer, "addPageControlCaptions", true)
         {
         }
 

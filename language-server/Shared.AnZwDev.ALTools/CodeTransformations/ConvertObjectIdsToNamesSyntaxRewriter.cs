@@ -345,7 +345,7 @@ namespace AnZwDev.ALTools.CodeTransformations
             ALSymbolKind alSymbolKind = this.TypeNameToSymbolKind(objectType);
             if (alSymbolKind == ALSymbolKind.Undefined)
                 return null;
-            ALAppObject alAppObject = this.Project.Symbols.FindObjectById(alSymbolKind, objectId, false);
+            ALAppObject alAppObject = this.Project.Symbols.AllObjects.GetObjectsCollection(alSymbolKind).FindFirst(objectId);
             if (alAppObject != null)
                 return alAppObject;
             if (this.Project.Dependencies != null)
@@ -354,7 +354,7 @@ namespace AnZwDev.ALTools.CodeTransformations
                 {
                     if (this.Project.Dependencies[i].Symbols != null)
                     {
-                        alAppObject = this.Project.Dependencies[i].Symbols.FindObjectById(alSymbolKind, objectId, false);
+                        alAppObject = this.Project.Dependencies[i].Symbols.AllObjects.GetObjectsCollection(alSymbolKind).FindFirst(objectId);
                         if (alAppObject != null)
                             return alAppObject;
                     }

@@ -16,6 +16,8 @@ namespace AnZwDev.ALTools.Server.Handlers.SymbolsInformation
         [JsonRpcMethod("al/getxmlportslist", UseSingleObjectParameterDeserialization = true)]
         public GetXmlPortsListResponse GetXmlPortsList(GetXmlPortsListRequest parameters)
         {
+            RebuildModifiedSymbols();
+
             GetXmlPortsListResponse response = new GetXmlPortsListResponse();
 
             ALProject project = this.Server.Workspace.FindProject(parameters.path, true);

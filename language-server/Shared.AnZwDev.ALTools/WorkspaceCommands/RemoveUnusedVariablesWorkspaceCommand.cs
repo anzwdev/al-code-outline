@@ -20,7 +20,7 @@ namespace AnZwDev.ALTools.WorkspaceCommands
         public static string RemoveLocalVariablesParameterName = "removeLocalVariables";
         public static string RemoveLocalMethodParametersParameterName = "removeLocalMethodParameters";
 
-        public RemoveUnusedVariablesWorkspaceCommand(ALDevToolsServer alDevToolsServer) : base(alDevToolsServer, "removeUnusedVariables")
+        public RemoveUnusedVariablesWorkspaceCommand(ALDevToolsServer alDevToolsServer) : base(alDevToolsServer, "removeUnusedVariables", false)
         {
         }
 

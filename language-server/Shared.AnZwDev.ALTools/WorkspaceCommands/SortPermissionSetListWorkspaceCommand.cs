@@ -14,7 +14,7 @@ namespace AnZwDev.ALTools.WorkspaceCommands
 
         public static string SortSingleNodeRegionsParameterName = "sortSingleNodeRegions";
 
-        public SortPermissionSetListWorkspaceCommand(ALDevToolsServer alDevToolsServer) : base(alDevToolsServer, "sortPermissionSetList")
+        public SortPermissionSetListWorkspaceCommand(ALDevToolsServer alDevToolsServer) : base(alDevToolsServer, "sortPermissionSetList", false)
         {
         }
 

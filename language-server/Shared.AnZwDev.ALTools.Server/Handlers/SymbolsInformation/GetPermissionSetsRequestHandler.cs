@@ -16,6 +16,8 @@ namespace AnZwDev.ALTools.Server.Handlers.SymbolsInformation
         [JsonRpcMethod("al/getpermissionsetslist", UseSingleObjectParameterDeserialization = true)]
         public GetPermissionSetsResponse GetPermissionSets(GetPermissionSetsRequest parameters)
         {
+            RebuildModifiedSymbols();
+
             GetPermissionSetsResponse response = new GetPermissionSetsResponse();
 
             ALProject project = this.Server.Workspace.FindProject(parameters.path, true);

@@ -14,7 +14,7 @@ namespace AnZwDev.ALTools.WorkspaceCommands
     public class RemoveStrSubstNoFromErrorWorkspaceCommand : SemanticModelSyntaxRewriterWorkspaceCommand<RemoveStrSubstNoFromErrorSyntaxRewriter>
     {
 
-        public RemoveStrSubstNoFromErrorWorkspaceCommand(ALDevToolsServer alDevToolsServer) : base(alDevToolsServer, "removeStrSubstNoFromError")
+        public RemoveStrSubstNoFromErrorWorkspaceCommand(ALDevToolsServer alDevToolsServer) : base(alDevToolsServer, "removeStrSubstNoFromError", true)
         {
         }
 

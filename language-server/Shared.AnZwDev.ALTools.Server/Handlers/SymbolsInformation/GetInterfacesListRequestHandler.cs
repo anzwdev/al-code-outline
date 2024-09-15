@@ -16,6 +16,8 @@ namespace AnZwDev.ALTools.Server.Handlers.SymbolsInformation
         [JsonRpcMethod("al/getinterfaceslist", UseSingleObjectParameterDeserialization = true)]
         public GetInterfacesListResponse GetInterfacesList(GetInterfacesListRequest parameters)
         {
+            RebuildModifiedSymbols();
+
             GetInterfacesListResponse response = new GetInterfacesListResponse();
 
             ALProject project = this.Server.Workspace.FindProject(parameters.path, true);

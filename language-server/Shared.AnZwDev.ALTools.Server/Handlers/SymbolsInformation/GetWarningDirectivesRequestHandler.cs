@@ -15,6 +15,8 @@ namespace AnZwDev.ALTools.Server.Handlers.SymbolsInformation
         [JsonRpcMethod("al/getwarningdirectives", UseSingleObjectParameterDeserialization = true)]
         public GetWarningDirectivesResponse GetWarningDirectives(GetWarningDirectivesRequest parameters)
         {
+            RebuildModifiedSymbols();
+
             GetWarningDirectivesResponse response = new GetWarningDirectivesResponse();
 
             WarningDirectivesInformationProvider provider = new WarningDirectivesInformationProvider(this.Server);

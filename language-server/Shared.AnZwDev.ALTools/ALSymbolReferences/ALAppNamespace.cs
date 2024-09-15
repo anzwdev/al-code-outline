@@ -16,7 +16,7 @@ namespace AnZwDev.ALTools.ALSymbolReferences
         public ALAppObjectsCollection<ALAppReport> Reports { get; set; }
         public ALAppObjectsCollection<ALAppXmlPort> XmlPorts { get; set; }
         public ALAppObjectsCollection<ALAppQuery> Queries { get; set; }
-        public ALAppObjectsCollection<ALAppCodeunit> Codeunits { get; set; }
+        public ALAppObjectsCollection<ALAppCodeunit> Codeunits { get; set; } 
         public ALAppObjectsCollection<ALAppControlAddIn> ControlAddIns { get; set; }
         public ALAppObjectsCollection<ALAppPageExtension> PageExtensions { get; set; }
         public ALAppObjectsCollection<ALAppTableExtension> TableExtensions { get; set; }
@@ -29,7 +29,6 @@ namespace AnZwDev.ALTools.ALSymbolReferences
         public ALAppObjectsCollection<ALAppReportExtension> ReportExtensions { get; set; }
         public ALAppObjectsCollection<ALAppPermissionSet> PermissionSets { get; set; }
         public ALAppObjectsCollection<ALAppPermissionSetExtension> PermissionSetExtensions { get; set; }
-
 
         public void Process(ALAppSymbolReference symbolReference, string parentNamespace)
         {
@@ -44,24 +43,24 @@ namespace AnZwDev.ALTools.ALSymbolReferences
 
         private void ProcessObjectsCollection(ALAppSymbolReference symbolReference)
         {
-            symbolReference.Tables = ProcessObjectsCollection(symbolReference.Tables, Tables);
-            symbolReference.Pages = ProcessObjectsCollection(symbolReference.Pages, Pages);
-            symbolReference.Reports = ProcessObjectsCollection(symbolReference.Reports, Reports);
-            symbolReference.XmlPorts = ProcessObjectsCollection(symbolReference.XmlPorts, XmlPorts);
-            symbolReference.Queries = ProcessObjectsCollection(symbolReference.Queries, Queries);
-            symbolReference.Codeunits = ProcessObjectsCollection(symbolReference.Codeunits, Codeunits);
-            symbolReference.ControlAddIns = ProcessObjectsCollection(symbolReference.ControlAddIns, ControlAddIns);
-            symbolReference.PageExtensions = ProcessObjectExtensionsCollection(symbolReference.PageExtensions, PageExtensions);
-            symbolReference.TableExtensions = ProcessObjectExtensionsCollection(symbolReference.TableExtensions, TableExtensions);
-            symbolReference.Profiles = ProcessObjectsCollection(symbolReference.Profiles, Profiles);
-            symbolReference.PageCustomizations = ProcessObjectsCollection(symbolReference.PageCustomizations, PageCustomizations);
-            symbolReference.DotNetPackages = ProcessObjectsCollection(symbolReference.DotNetPackages, DotNetPackages);
-            symbolReference.EnumTypes = ProcessObjectsCollection(symbolReference.EnumTypes, EnumTypes);
-            symbolReference.EnumExtensionTypes = ProcessObjectExtensionsCollection(symbolReference.EnumExtensionTypes, EnumExtensionTypes);
-            symbolReference.Interfaces = ProcessObjectsCollection(symbolReference.Interfaces, Interfaces);
-            symbolReference.ReportExtensions = ProcessObjectExtensionsCollection(symbolReference.ReportExtensions, ReportExtensions);
-            symbolReference.PermissionSets = ProcessObjectsCollection(symbolReference.PermissionSets, PermissionSets);
-            symbolReference.PermissionSetExtensions = ProcessObjectExtensionsCollection(symbolReference.PermissionSetExtensions, PermissionSetExtensions);
+            ProcessObjectsCollection(symbolReference.Tables, Tables);
+            ProcessObjectsCollection(symbolReference.Pages, Pages);
+            ProcessObjectsCollection(symbolReference.Reports, Reports);
+            ProcessObjectsCollection(symbolReference.XmlPorts, XmlPorts);
+            ProcessObjectsCollection(symbolReference.Queries, Queries);
+            ProcessObjectsCollection(symbolReference.Codeunits, Codeunits);
+            ProcessObjectsCollection(symbolReference.ControlAddIns, ControlAddIns);
+            ProcessObjectExtensionsCollection(symbolReference.PageExtensions, PageExtensions);
+            ProcessObjectExtensionsCollection(symbolReference.TableExtensions, TableExtensions);
+            ProcessObjectsCollection(symbolReference.Profiles, Profiles);
+            ProcessObjectsCollection(symbolReference.PageCustomizations, PageCustomizations);
+            ProcessObjectsCollection(symbolReference.DotNetPackages, DotNetPackages);
+            ProcessObjectsCollection(symbolReference.EnumTypes, EnumTypes);
+            ProcessObjectExtensionsCollection(symbolReference.EnumExtensionTypes, EnumExtensionTypes);
+            ProcessObjectsCollection(symbolReference.Interfaces, Interfaces);
+            ProcessObjectExtensionsCollection(symbolReference.ReportExtensions, ReportExtensions);
+            ProcessObjectsCollection(symbolReference.PermissionSets, PermissionSets);
+            ProcessObjectExtensionsCollection(symbolReference.PermissionSetExtensions, PermissionSetExtensions);
         }
 
         private void ProcessChildNamespaces(ALAppSymbolReference symbolReference)
@@ -71,34 +70,24 @@ namespace AnZwDev.ALTools.ALSymbolReferences
                     Namespaces[i].Process(symbolReference, FullName);
         }
 
-        private ALAppObjectsCollection<T> ProcessObjectsCollection<T>(ALAppObjectsCollection<T> allObjectsCollection, ALAppObjectsCollection<T> namespaceObjectsCollection) where T : ALAppObject
+        private void ProcessObjectsCollection<T>(ALAppObjectsCollection<T> allObjectsCollection, ALAppObjectsCollection<T> namespaceObjectsCollection) where T : ALAppObject
         {
             if ((namespaceObjectsCollection != null) && (namespaceObjectsCollection.Count > 0))
             {
-                if (allObjectsCollection == null)
-                    allObjectsCollection = new ALAppObjectsCollection<T>();
-
                 for (int i = 0; i < namespaceObjectsCollection.Count; i++)
                     namespaceObjectsCollection[i].NamespaceName = FullName;
                 allObjectsCollection.AddRange(namespaceObjectsCollection);
             }
-
-            return allObjectsCollection;
         }
 
-        private ALAppObjectExtensionsCollection<T> ProcessObjectExtensionsCollection<T>(ALAppObjectExtensionsCollection<T> allObjectsCollection, ALAppObjectsCollection<T> namespaceObjectsCollection) where T : ALAppObject, IALAppObjectExtension
+        private void ProcessObjectExtensionsCollection<T>(ALAppObjectExtensionsCollection<T> allObjectsCollection, ALAppObjectsCollection<T> namespaceObjectsCollection) where T : ALAppObject, IALAppObjectExtension
         {
             if ((namespaceObjectsCollection != null) && (namespaceObjectsCollection.Count > 0))
             {
-                if (allObjectsCollection == null)
-                    allObjectsCollection = new ALAppObjectExtensionsCollection<T>();
-
                 for (int i = 0; i < namespaceObjectsCollection.Count; i++)
                     namespaceObjectsCollection[i].NamespaceName = FullName;
                 allObjectsCollection.AddRange(namespaceObjectsCollection);
             }
-
-            return allObjectsCollection;
         }
 
 

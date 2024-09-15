@@ -10,7 +10,7 @@ namespace AnZwDev.ALTools.WorkspaceCommands
     internal class GenerateCSVXmlPortHeadersWorkspaceCommand : SyntaxRewriterWorkspaceCommand<GenerateCSVXmlPortHeadersSyntaxRewriter>
     {
 
-        public GenerateCSVXmlPortHeadersWorkspaceCommand(ALDevToolsServer alDevToolsServer) : base(alDevToolsServer, "generateCSVXmlPortHeaders")
+        public GenerateCSVXmlPortHeadersWorkspaceCommand(ALDevToolsServer alDevToolsServer) : base(alDevToolsServer, "generateCSVXmlPortHeaders", true)
         {
         }
 

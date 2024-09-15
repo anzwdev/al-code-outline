@@ -21,6 +21,8 @@ namespace AnZwDev.ALTools.Server.Handlers
         [JsonRpcMethod("al/codecompletion", UseSingleObjectParameterDeserialization = true)]
         public CodeCompletionResponse GetCodeCompletion(CodeCompletionRequest parameters)
         {
+            RebuildModifiedSymbols();
+
             CodeCompletionResponse response = new CodeCompletionResponse();
             try
             {

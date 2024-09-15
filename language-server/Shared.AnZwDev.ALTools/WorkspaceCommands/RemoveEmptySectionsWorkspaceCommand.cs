@@ -18,7 +18,7 @@ namespace AnZwDev.ALTools.WorkspaceCommands
         public static string IgnoreCommentsParameterName = "ignoreComments";
         public static string IncludeObsoleteParameterName = "includeObsolete";
 
-        public RemoveEmptySectionsWorkspaceCommand(ALDevToolsServer alDevToolsServer) : base(alDevToolsServer, "removeEmptySections")
+        public RemoveEmptySectionsWorkspaceCommand(ALDevToolsServer alDevToolsServer) : base(alDevToolsServer, "removeEmptySections", false)
         {
         }
 

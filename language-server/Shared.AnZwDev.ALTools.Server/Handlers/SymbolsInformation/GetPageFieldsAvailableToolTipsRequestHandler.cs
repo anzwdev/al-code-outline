@@ -15,6 +15,8 @@ namespace AnZwDev.ALTools.Server.Handlers.SymbolsInformation
         [JsonRpcMethod("al/getpagefieldtooltips", UseSingleObjectParameterDeserialization = true)]
         public GetPageFieldAvailableToolTipsResponse GetPageFieldAvailableToolTips(GetPageFieldAvailableToolTipsRequest parameters)
         {
+            RebuildModifiedSymbols();
+
             GetPageFieldAvailableToolTipsResponse response = new GetPageFieldAvailableToolTipsResponse();
 
             ALProject project = this.Server.Workspace.FindProject(parameters.path, true);

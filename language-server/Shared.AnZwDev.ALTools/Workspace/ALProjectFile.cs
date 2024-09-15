@@ -37,23 +37,26 @@ namespace AnZwDev.ALTools.Workspace
                     _symbols = value;
                     if (_symbols != null)
                         this.Project.Symbols.AllObjects.AddRange(_symbols);
+                    SymbolsNeedRebuild = false;
                 }
             }
         }
 
         public List<ALAppDirective> Directives { get; private set; }
 
-        private bool _isDirty;
-        public bool IsDirty 
+        private bool _sourceChangedInMemory;
+        public bool SourceChangedInMemory 
         { 
-            get { return _isDirty; }
+            get { return _sourceChangedInMemory; }
             set
             {
-                _isDirty = value;
-                if (!_isDirty)
+                _sourceChangedInMemory = value;
+                if (!_sourceChangedInMemory)
                     _syntaxTree = null;
             }
         }
+
+        public bool SymbolsNeedRebuild { get; private set; }
 
         #endregion
 
@@ -69,7 +72,8 @@ namespace AnZwDev.ALTools.Workspace
         {
             this.Project = project;
             this.RelativePath = relativePath;
-            this.IsDirty = false;
+            this.SourceChangedInMemory = false;
+            this.SymbolsNeedRebuild = false;
             _syntaxTree = null;
         }
 
@@ -91,13 +95,19 @@ namespace AnZwDev.ALTools.Workspace
 
         #region Symbols compilation
 
-        public void CompileSymbolReferences(bool cleanDirtyState)
+        public void RebuildModifiedSymbols()
         {
-            if ((this.IsDirty) && (_syntaxTree != null))
+            if (this.SymbolsNeedRebuild)
+                CompileSymbolReferences(false);
+        }
+
+        public void CompileSymbolReferences(bool clearSourceChangedInMemory)
+        {
+            if ((this.SourceChangedInMemory) && (_syntaxTree != null))
             {
                 (this.Symbols, this.Directives) = this.Project.Workspace.SymbolReferenceCompiler.CreateObjectsAndDirectivesList(this.FullPath, _syntaxTree);
-                if (cleanDirtyState)
-                    this.IsDirty = false;
+                if (clearSourceChangedInMemory)
+                    this.SourceChangedInMemory = false;
             }
             else
                 this.CompileSymbolReferences(this.ReadAllText());
@@ -106,14 +116,14 @@ namespace AnZwDev.ALTools.Workspace
         public void CompileSymbolReferences(string source)
         {
             (this.Symbols, this.Directives) = this.Project.Workspace.SymbolReferenceCompiler.CreateObjectsAndDirectivesList(this.FullPath, source);
-            this.IsDirty = false;
+            this.SourceChangedInMemory = false;
         }
 
         #endregion
 
         public void OnAdd()
         {
-            this.IsDirty = false;
+            this.SourceChangedInMemory = false;
             this.CompileSymbolReferences(true);
         }
 
@@ -123,13 +133,14 @@ namespace AnZwDev.ALTools.Workspace
 
         public void OnClose()
         {
-            this.IsDirty = false;
+            this.SourceChangedInMemory = false;
             this.CompileSymbolReferences(true);
         }
 
         public ALSymbol OnChange(string content, bool returnSymbols)
         {
-            this.IsDirty = true;
+            SourceChangedInMemory = true;
+            SymbolsNeedRebuild = true;
             if (content == null)
                 content = this.ReadAllText();
 #if BC
@@ -138,12 +149,18 @@ namespace AnZwDev.ALTools.Workspace
             _syntaxTree = SyntaxTree.ParseObjectText(content);
 #endif
 
-            this.CompileSymbolReferences(false);
+            //this.CompileSymbolReferences(false);
 
             if (returnSymbols)
                 return this.CreateSymbols();
 
             return null;
+        }
+
+        public void RebuildSymbolsIfNeeded()
+        {
+            if (SymbolsNeedRebuild)
+                this.CompileSymbolReferences(false);
         }
 
         public ALSymbol CreateSymbols()
@@ -170,13 +187,13 @@ namespace AnZwDev.ALTools.Workspace
 
         public void OnSave()
         {
-            this.IsDirty = false;
+            this.SourceChangedInMemory = false;
             this.CompileSymbolReferences(true);
         }
 
         public void OnDelete()
         {
-            this.IsDirty = false;
+            this.SourceChangedInMemory = false;
             this.Symbols = null;
             this.Directives = null;
         }

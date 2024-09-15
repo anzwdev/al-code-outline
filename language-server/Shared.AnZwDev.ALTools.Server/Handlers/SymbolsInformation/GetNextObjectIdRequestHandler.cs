@@ -17,6 +17,8 @@ namespace AnZwDev.ALTools.Server.Handlers.SymbolsInformation
         [JsonRpcMethod("al/getnextobjectid", UseSingleObjectParameterDeserialization = true)]
         public GetNextObjectIdResponse GetNextObjectId(GetNextObjectIdRequest parameters)
         {
+            RebuildModifiedSymbols();
+
             GetNextObjectIdResponse response = new GetNextObjectIdResponse
             {
                 id = 0

@@ -14,7 +14,7 @@ namespace AnZwDev.ALTools.WorkspaceCommands
         public static string SortModeParameterName = "variablesSortMode";
         public static string SortSingleNodeRegionsParameterName = "sortSingleNodeRegions";
 
-        public SortVariablesWorkspaceCommand(ALDevToolsServer alDevToolsServer) : base(alDevToolsServer, "sortVariables")
+        public SortVariablesWorkspaceCommand(ALDevToolsServer alDevToolsServer) : base(alDevToolsServer, "sortVariables", false)
         {
         }
 

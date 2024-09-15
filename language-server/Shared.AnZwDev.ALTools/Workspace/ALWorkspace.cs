@@ -185,9 +185,13 @@ namespace AnZwDev.ALTools.Workspace
         public void RebuildSymbolReferences()
         { 
             foreach (ALProject project in this.Projects)
-            {
                 project.RebuildSymbolReferences();
-            }
+        }
+
+        public void RebuildModifiedSymbols()
+        {
+            foreach (ALProject project in this.Projects)
+                project.RebuildModifiedSymbols();
         }
 
         #region Change tracking

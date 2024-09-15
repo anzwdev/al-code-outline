@@ -13,7 +13,7 @@ namespace AnZwDev.ALTools.WorkspaceCommands
         protected int _totalNoOfChanges = 0;
         protected int _noOfChangedFiles = 0;
 
-        public TrimTrailingWhitespaceWorkspaceCommand(ALDevToolsServer alDevToolsServer) : base(alDevToolsServer, "trimTrailingWhitespace")
+        public TrimTrailingWhitespaceWorkspaceCommand(ALDevToolsServer alDevToolsServer) : base(alDevToolsServer, "trimTrailingWhitespace", false)
         {
         }
 

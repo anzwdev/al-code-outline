@@ -12,7 +12,7 @@ namespace AnZwDev.ALTools.ALSymbolReferences
         {
         }
 
-        protected void SetSource(ALSymbolSourceLocation location, ALAppSymbolReference symbolReference, ALAppObject alAppObject)
+        protected void SetSource(ALSymbolSourceLocation location, ALBaseSymbolReference symbolReference, ALAppObject alAppObject)
         {
             if (String.IsNullOrWhiteSpace(alAppObject.ReferenceSourceFileName))
             {

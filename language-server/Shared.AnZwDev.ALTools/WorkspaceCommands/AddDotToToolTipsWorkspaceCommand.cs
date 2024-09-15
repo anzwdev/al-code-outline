@@ -10,7 +10,7 @@ namespace AnZwDev.ALTools.WorkspaceCommands
     public class AddDotToToolTipsWorkspaceCommand : SyntaxRewriterWorkspaceCommand<AddDotToToolTipsSyntaxRewriter>
     {
 
-        public AddDotToToolTipsWorkspaceCommand(ALDevToolsServer alDevToolsServer) : base(alDevToolsServer, "addTooTipsEndingDots")
+        public AddDotToToolTipsWorkspaceCommand(ALDevToolsServer alDevToolsServer) : base(alDevToolsServer, "addTooTipsEndingDots", false)
         {
         }
 

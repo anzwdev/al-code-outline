@@ -11,7 +11,7 @@ namespace AnZwDev.ALTools.WorkspaceCommands
     public class RemoveEventPublishersWorkspaceCommand : SemanticModelSyntaxRewriterWorkspaceCommand<RemoveEventPublishersSyntaxRewriter>
     {
 
-        public RemoveEventPublishersWorkspaceCommand(ALDevToolsServer alDevToolsServer) : base(alDevToolsServer, "removeEventPublishers")
+        public RemoveEventPublishersWorkspaceCommand(ALDevToolsServer alDevToolsServer) : base(alDevToolsServer, "removeEventPublishers", true)
         {
         }
 

@@ -16,7 +16,7 @@ namespace AnZwDev.ALTools.WorkspaceCommands
     public class AddParenthesesWorkspaceCommand : SemanticModelSyntaxRewriterWorkspaceCommand<AddParenthesesSyntaxRewriter>
     {
 
-        public AddParenthesesWorkspaceCommand(ALDevToolsServer alDevToolsServer) : base(alDevToolsServer, "addParentheses")
+        public AddParenthesesWorkspaceCommand(ALDevToolsServer alDevToolsServer) : base(alDevToolsServer, "addParentheses", true)
         {
         }
 

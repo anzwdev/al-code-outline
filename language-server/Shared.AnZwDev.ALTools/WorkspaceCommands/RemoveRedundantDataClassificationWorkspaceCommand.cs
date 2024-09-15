@@ -13,7 +13,7 @@ namespace AnZwDev.ALTools.WorkspaceCommands
 
         public static string SortPropertiesParameterName = "sortProperties";
 
-        public RemoveRedundantDataClassificationWorkspaceCommand(ALDevToolsServer alDevToolsServer) : base(alDevToolsServer, "removeRedundantDataClassification")
+        public RemoveRedundantDataClassificationWorkspaceCommand(ALDevToolsServer alDevToolsServer) : base(alDevToolsServer, "removeRedundantDataClassification", false)
         {
         }
 

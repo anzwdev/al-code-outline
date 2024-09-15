@@ -34,7 +34,10 @@
     <Compile Include="$(MSBuildThisFileDirectory)ALSymbolReferences\ALAppObjectExtensionsCollection.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)ALSymbolReferences\ALAppObjectIdMap.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)ALSymbolReferences\ALAppObjectsCollection.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)ALSymbolReferences\ALAppPagesCollection.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)ALSymbolReferences\ALAppSymbolReferenceDependency.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)ALSymbolReferences\ALProjectSymbolReference.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)ALSymbolReferences\ALBaseSymbolReference.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)ALSymbolReferences\Search\ALAppObjectsEnumerationExtensions.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)ALSymbolReferences\Search\ALAppObjectsFilteringExtensions.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)ALSymbols\ALObjectIdentifier.cs" />

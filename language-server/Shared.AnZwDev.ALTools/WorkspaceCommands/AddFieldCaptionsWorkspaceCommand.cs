@@ -15,7 +15,7 @@ namespace AnZwDev.ALTools.WorkspaceCommands
         public static string LockRemovedFieldsParameterName = "lockRemovedFields";
         public static string SortPropertiesParameterName = "sortProperties";
 
-        public AddFieldCaptionsWorkspaceCommand(ALDevToolsServer alDevToolsServer) : base(alDevToolsServer, "addFieldCaptions")
+        public AddFieldCaptionsWorkspaceCommand(ALDevToolsServer alDevToolsServer) : base(alDevToolsServer, "addFieldCaptions", true)
         {
         }
 

@@ -19,6 +19,8 @@ namespace AnZwDev.ALTools.Server.Handlers
         [JsonRpcMethod("al/references", UseSingleObjectParameterDeserialization = true)]
         public ReferencesResponse GetReferences(ReferencesRequest parameters)
         {
+            RebuildModifiedSymbols();
+
             ReferencesResponse response = new ReferencesResponse();
             try
             {

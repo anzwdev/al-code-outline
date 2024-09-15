@@ -21,7 +21,7 @@ namespace AnZwDev.ALTools.WorkspaceCommands
         private int _noOfChangedFiles = 0;
         private int _totalNoOfChanges = 0;
 
-        public CollapseEmptyBracketsWorkspaceCommand(ALDevToolsServer alDevToolsServer) : base(alDevToolsServer, "collapseEmptyBrackets")
+        public CollapseEmptyBracketsWorkspaceCommand(ALDevToolsServer alDevToolsServer) : base(alDevToolsServer, "collapseEmptyBrackets", false)
         {
         }
 

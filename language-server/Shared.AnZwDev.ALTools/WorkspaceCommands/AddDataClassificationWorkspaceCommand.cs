@@ -14,7 +14,7 @@ namespace AnZwDev.ALTools.WorkspaceCommands
         public static string SortPropertiesParameterName = "sortProperties";
         public static string DataClassificationParameterName = "dataClassification";
         
-        public AddDataClassificationWorkspaceCommand(ALDevToolsServer alDevToolsServer) : base(alDevToolsServer, "addDataClassification")
+        public AddDataClassificationWorkspaceCommand(ALDevToolsServer alDevToolsServer) : base(alDevToolsServer, "addDataClassification", false)
         {
         }
 

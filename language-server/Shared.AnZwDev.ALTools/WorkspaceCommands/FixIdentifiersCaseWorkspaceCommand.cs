@@ -23,7 +23,7 @@ namespace AnZwDev.ALTools.WorkspaceCommands
         protected int _totalNoOfChanges = 0;
         protected int _noOfChangedFiles = 0;
 
-        public FixIdentifiersCaseWorkspaceCommand(ALDevToolsServer alDevToolsServer) : base(alDevToolsServer, "fixIdentifiersCase")
+        public FixIdentifiersCaseWorkspaceCommand(ALDevToolsServer alDevToolsServer) : base(alDevToolsServer, "fixIdentifiersCase", true)
         {
         }
 

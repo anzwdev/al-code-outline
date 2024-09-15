@@ -17,6 +17,8 @@ namespace AnZwDev.ALTools.Server.Handlers.SymbolsInformation
         [JsonRpcMethod("al/getquerieslist", UseSingleObjectParameterDeserialization = true)]
         public GetQueriesListResponse GetQueriesList(GetQueriesListRequest parameters)
         {
+            RebuildModifiedSymbols();
+
             GetQueriesListResponse response = new GetQueriesListResponse();
 
             ALProject project = this.Server.Workspace.FindProject(parameters.path, true);

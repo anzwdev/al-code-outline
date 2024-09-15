@@ -16,7 +16,7 @@ namespace AnZwDev.ALTools.WorkspaceCommands
         public static string RemoveUnusedUsingsParameterName = "removeUnusedUsings";
         public static string AddMissingUsingsParameterName = "addMissingUsings";
 
-        public UpdateUsingsListWorkspaceCommand(ALDevToolsServer alDevToolsServer) : base(alDevToolsServer, "updateUsingsList")
+        public UpdateUsingsListWorkspaceCommand(ALDevToolsServer alDevToolsServer) : base(alDevToolsServer, "updateUsingsList", true)
         {
         }
 

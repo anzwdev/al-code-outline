@@ -16,6 +16,8 @@ namespace AnZwDev.ALTools.Server.Handlers.SymbolsInformation
         [JsonRpcMethod("al/gettableslist", UseSingleObjectParameterDeserialization = true)]
         public GetTablesListResponse GetTablesList(GetTablesListRequest parameters)
         {
+            RebuildModifiedSymbols();
+
             GetTablesListResponse response = new GetTablesListResponse();
 
             ALProject project = this.Server.Workspace.FindProject(parameters.path, true);

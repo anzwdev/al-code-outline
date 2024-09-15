@@ -27,7 +27,7 @@ namespace AnZwDev.ALTools.Workspace.SymbolsInformation
         {
             if (appSymbolReference != null)
             {
-                IEnumerable<ALAppObject> alAppObjectsEnumerable = appSymbolReference.GetAllALAppObjectsEnumerable(includeObjects);
+                IEnumerable<ALAppObject> alAppObjectsEnumerable = appSymbolReference.AllObjects.GetObjects(includeObjects);
                 foreach (ALAppObject alAppObject in alAppObjectsEnumerable)
                 {
                     bool validObject = true;

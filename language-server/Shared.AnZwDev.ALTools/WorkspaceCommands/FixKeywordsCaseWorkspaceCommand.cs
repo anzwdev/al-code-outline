@@ -8,7 +8,7 @@ namespace AnZwDev.ALTools.WorkspaceCommands
     public class FixKeywordsCaseWorkspaceCommand : SyntaxRewriterWorkspaceCommand<KeywordCaseSyntaxRewriter>
     {
 
-        public FixKeywordsCaseWorkspaceCommand(ALDevToolsServer alDevToolsServer) : base(alDevToolsServer, "fixKeywordsCase")
+        public FixKeywordsCaseWorkspaceCommand(ALDevToolsServer alDevToolsServer) : base(alDevToolsServer, "fixKeywordsCase", false)
         {
         }
 

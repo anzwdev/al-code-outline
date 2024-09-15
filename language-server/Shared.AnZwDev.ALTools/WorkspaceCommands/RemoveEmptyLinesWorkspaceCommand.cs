@@ -13,7 +13,7 @@ namespace AnZwDev.ALTools.WorkspaceCommands
     public class RemoveEmptyLinesWorkspaceCommand : SyntaxRewriterWorkspaceCommand<RemoveEmptyLinesSyntaxRewriter>
     {
 
-        public RemoveEmptyLinesWorkspaceCommand(ALDevToolsServer alDevToolsServer) : base(alDevToolsServer, "removeEmptyLines")
+        public RemoveEmptyLinesWorkspaceCommand(ALDevToolsServer alDevToolsServer) : base(alDevToolsServer, "removeEmptyLines", false)
         {
         }
 

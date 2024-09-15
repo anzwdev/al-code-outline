@@ -13,7 +13,7 @@ namespace AnZwDev.ALTools.WorkspaceCommands
 
         public static string FieldNamesPatternsParameterName = "fieldsNamesPatterns";
 
-        public AddDropDownFieldGroupsWorkspaceCommand(ALDevToolsServer alDevToolsServer) : base(alDevToolsServer, "addDropDownFieldGroups")
+        public AddDropDownFieldGroupsWorkspaceCommand(ALDevToolsServer alDevToolsServer) : base(alDevToolsServer, "addDropDownFieldGroups", true)
         {
         }
 

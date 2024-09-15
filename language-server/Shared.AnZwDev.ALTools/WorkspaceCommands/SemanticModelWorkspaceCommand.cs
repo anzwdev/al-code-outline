@@ -21,7 +21,7 @@ namespace AnZwDev.ALTools.WorkspaceCommands
     public class SemanticModelWorkspaceCommand: WorkspaceCommand
     {
 
-        public SemanticModelWorkspaceCommand(ALDevToolsServer alDevToolsServer, string name) : base(alDevToolsServer, name)
+        public SemanticModelWorkspaceCommand(ALDevToolsServer alDevToolsServer, string name, bool modifiedSymbolsRebuildRequired) : base(alDevToolsServer, name, modifiedSymbolsRebuildRequired)
         {
         }
 

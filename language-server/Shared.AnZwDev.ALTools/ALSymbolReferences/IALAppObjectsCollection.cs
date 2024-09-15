@@ -12,6 +12,10 @@ namespace AnZwDev.ALTools.ALSymbolReferences
 
         ALAppObject FindFirst(string namespaceName, string name);
         ALAppObject FindFirst(ALObjectReference objectReference);
+        ALAppObject FindFirst(int id, bool includeInternal);
+        ALAppObject FindFirst(int id);
+        void AddCollectionToALSymbol(ALSymbol symbol, ALSymbolKind collectionKind);
+        IEnumerable<long> GetIdsEnumerable();
 
         bool UsesNamespaces();
 

@@ -17,6 +17,8 @@ namespace AnZwDev.ALTools.Server.Handlers
         [JsonRpcMethod("al/collectworkspacecodeactions", UseSingleObjectParameterDeserialization = true)]
         public CollectWorkspaceCommandCodeActionsResponse CollectWorkspaceCodeActions(CollectWorkspaceCommandCodeActionsRequest parameters)
         {
+            RebuildModifiedSymbols();
+
             CollectWorkspaceCommandCodeActionsResponse response = new CollectWorkspaceCommandCodeActionsResponse();
             try
             {

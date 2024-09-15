@@ -13,7 +13,7 @@ namespace AnZwDev.ALTools.WorkspaceCommands
 
         public static string SortSingleNodeRegionsParameterName = "sortSingleNodeRegions";
 
-        public SortPropertiesWorkspaceCommand(ALDevToolsServer alDevToolsServer) : base(alDevToolsServer, "sortProperties")
+        public SortPropertiesWorkspaceCommand(ALDevToolsServer alDevToolsServer) : base(alDevToolsServer, "sortProperties", false)
         {
         }
 

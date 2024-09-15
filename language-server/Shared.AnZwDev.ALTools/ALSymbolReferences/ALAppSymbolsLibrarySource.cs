@@ -9,9 +9,9 @@ namespace AnZwDev.ALTools.ALSymbolReferences
     public class ALAppSymbolsLibrarySource : ALAppBaseSymbolsLibrarySource
     {
 
-        public ALAppSymbolReference SymbolReference { get; private set; }
+        public ALBaseSymbolReference SymbolReference { get; private set; }
 
-        public ALAppSymbolsLibrarySource(ALAppSymbolReference symbolReference)
+        public ALAppSymbolsLibrarySource(ALBaseSymbolReference symbolReference)
         {
             this.SymbolReference = symbolReference;
         }

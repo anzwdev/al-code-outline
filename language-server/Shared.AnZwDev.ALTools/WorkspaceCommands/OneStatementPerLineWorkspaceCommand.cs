@@ -9,7 +9,7 @@ namespace AnZwDev.ALTools.WorkspaceCommands
     public class OneStatementPerLineWorkspaceCommand : SyntaxRewriterWorkspaceCommand<OneStatementPerLineSyntaxRewriter>
     {
 
-        public OneStatementPerLineWorkspaceCommand(ALDevToolsServer alDevToolsServer) : base(alDevToolsServer, "oneStatementPerLine")
+        public OneStatementPerLineWorkspaceCommand(ALDevToolsServer alDevToolsServer) : base(alDevToolsServer, "oneStatementPerLine", false)
         {
         }
 

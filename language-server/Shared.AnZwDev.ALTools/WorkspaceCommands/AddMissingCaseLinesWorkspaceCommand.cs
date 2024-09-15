@@ -19,7 +19,7 @@ namespace AnZwDev.ALTools.WorkspaceCommands
 
         public static string IgnoreElseParameterName = "ignoreElse";
 
-        public AddMissingCaseLinesWorkspaceCommand(ALDevToolsServer alDevToolsServer) : base(alDevToolsServer, "addMissingCaseLines")
+        public AddMissingCaseLinesWorkspaceCommand(ALDevToolsServer alDevToolsServer) : base(alDevToolsServer, "addMissingCaseLines", true)
         {
         }
 

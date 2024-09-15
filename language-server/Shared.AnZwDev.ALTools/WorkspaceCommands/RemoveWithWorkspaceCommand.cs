@@ -18,7 +18,7 @@ namespace AnZwDev.ALTools.WorkspaceCommands
         protected int _totalNoOfChanges = 0;
         protected int _noOfChangedFiles = 0;
 
-        public RemoveWithWorkspaceCommand(ALDevToolsServer alDevToolsServer) : base(alDevToolsServer, "removeWith")
+        public RemoveWithWorkspaceCommand(ALDevToolsServer alDevToolsServer) : base(alDevToolsServer, "removeWith", true)
         {
         }
 

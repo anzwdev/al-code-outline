@@ -17,6 +17,8 @@ namespace AnZwDev.ALTools.Server.Handlers
         [JsonRpcMethod("al/packagesymbols", UseSingleObjectParameterDeserialization = true)]
         public AppPackageSymbolsResponse GetPackageSymbols(AppPackageSymbolsRequest parameters)
         {
+            RebuildModifiedSymbols();
+
             AppPackageSymbolsResponse response = new AppPackageSymbolsResponse();
             try
             {

@@ -14,7 +14,7 @@ namespace AnZwDev.ALTools.WorkspaceCommands
         public static string ExcludePermissionsFromIncludedPermissionSetsParameterName = "excludeIncludedPermissionSetsPermissions";
         public static string ExcludePermissionsFromExcludedPermissionSetsParameterName = "excludeExcludedPermissionSetsPermissions";
 
-        public AddObjectsPermissionsWorkspaceCommand(ALDevToolsServer alDevToolsServer) : base(alDevToolsServer, "addAllObjectsPermissions")
+        public AddObjectsPermissionsWorkspaceCommand(ALDevToolsServer alDevToolsServer) : base(alDevToolsServer, "addAllObjectsPermissions", true)
         {
         }
 
