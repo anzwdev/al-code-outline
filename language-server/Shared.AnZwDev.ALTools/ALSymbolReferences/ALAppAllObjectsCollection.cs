@@ -108,10 +108,11 @@ namespace AnZwDev.ALTools.ALSymbolReferences
         {
             foreach (var objectType in _objectsByType.Keys)
             {
-                _objectsByType[objectType].AddCollectionToALSymbol(symbol, ALObjectTypesInformationCollection.Get(objectType).ALSymbolKind);
+                _objectsByType[objectType].AddCollectionToALSymbol(symbol, ALObjectTypesInformationCollection.Get(objectType).ALSymbolsListKind);
             }
-
         }
 
     }
 }
+
+

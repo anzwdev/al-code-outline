@@ -1,0 +1,26 @@
+{
+  "id": "31f926ba-7141-4957-a754-83adcd2407fb",
+  "name": "ALOutlineTests Dependency 01",
+  "publisher": "anzwdev",
+  "version": "1.0.0.0",
+  "brief": "",
+  "description": "",
+  "privacyStatement": "",
+  "EULA": "",
+  "help": "",
+  "url": "",
+  "logo": "",
+  "dependencies": [],
+  "screenshots": [],
+  "platform": "1.0.0.0",
+  "application": "18.0.0.0",
+  "idRanges": [
+    {
+      "from": 51000,
+      "to": 51999
+    }
+  ],
+  "showMyCode": true,
+  "runtime": "7.0",
+  "features": []
+}
