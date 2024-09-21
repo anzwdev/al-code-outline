@@ -33,23 +33,7 @@ namespace AnZwDev.Tests
             if (_hostsCache.ContainsKey(path))
                 return _hostsCache[path];
 
-            //_workspacePath = path;
-
-            List<ALProjectSource> projectSources = new List<ALProjectSource>();
-
-            if (File.Exists(Path.Join(path, "app.json")))
-                projectSources.Add(new ALProjectSource(path, null, null, null));
-            else
-            {
-                var folders = Directory.GetDirectories(path);
-                foreach (var folder in folders)
-                    projectSources.Add(new ALProjectSource(folder, null, null, null));
-            }
-
-            var languageServerHost = LanguageServerHostFactory.CreateLanguageServerHost();
-            languageServerHost.ALDevToolsServer.Workspace.LoadProjects(projectSources.ToArray());
-            languageServerHost.ALDevToolsServer.Workspace.ResolveDependencies();
-
+            var languageServerHost = WorkspaceLoader.LoadWorkspace(path);
             _hostsCache.Add(path, languageServerHost);           
 
             return languageServerHost;

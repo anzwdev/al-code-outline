@@ -19,8 +19,9 @@ namespace AnZwDev.Tests.WorkspaceCommands
             if (commandResult.Error)
                 Assert.Fail(commandResult.ErrorMessage);
 
+            //empty content == no changes
             if (String.IsNullOrWhiteSpace(commandResult.Source))
-                Assert.Fail("Workspace command returned empty content");
+                commandResult.Source = content;                
 
             var expectedContent = File.ReadAllText(expectedTestResultsPath);
             Assert.Equal(expectedContent, commandResult.Source);

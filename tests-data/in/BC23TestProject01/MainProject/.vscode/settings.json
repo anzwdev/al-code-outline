@@ -39,5 +39,6 @@
     ],
     "al.enableCodeActions": true,
     "al.enableCodeAnalysis": false,
-    "alOutline.activeBuildConfiguration": ""
+    "alOutline.activeBuildConfiguration": "",
+
 }

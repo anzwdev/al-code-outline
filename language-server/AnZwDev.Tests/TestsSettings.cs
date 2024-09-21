@@ -28,6 +28,17 @@ namespace AnZwDev.Tests
         public const string BC23TestProject02Dependency1 = "BC23TestProject02\\Dependency1";
         public const string BC23TestProject02Dependency2 = "BC23TestProject02\\Dependency2";
 
+        public const string BC23TestEditsProject03Folder = "BC23TestProject03-EditorTests";
+        public const string BC23TestEditsProject03Main = "BC23TestProject03-EditorTests\\MainProject";
+        public const string BC23TestEditsProject03Dependency1 = "BC23TestProject03-EditorTests\\Dependency1";
+        public const string BC23TestEditsProject03Dependency2 = "BC23TestProject03-EditorTests\\Dependency2";
+
+        public const string BC23TestEditsProject03SrcFileTest1 = "BC23TestProject03-EditorTests\\MainProject\\MAppDep1Table1Ext.TableExt.al";
+        public const string BC23TestEditsProject03EditTest1 = "BC23TestProject03-EditorTests\\ModifiedFiles\\Test01-MAppDep1Table1Ext.TableExt.al";
+
+
+
+
         public const string BC23TestProject01TestResults = "BC23TestProject01";
     }
 }
