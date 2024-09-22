@@ -1,0 +1,37 @@
+{
+  "id": "32f926ba-7141-4957-a754-83adcd2407fb",
+  "name": "ALOutlineTests Dependency 02",
+  "publisher": "anzwdev",
+  "version": "1.0.0.0",
+  "brief": "",
+  "description": "",
+  "privacyStatement": "",
+  "EULA": "",
+  "help": "",
+  "url": "",
+  "logo": "",
+  "dependencies": [
+    {
+      "id": "31f926ba-7141-4957-a754-83adcd2407fb",
+      "name": "ALOutlineTests Dependency 01",
+      "publisher": "anzwdev",
+      "version": "1.0.0.0"    
+    }
+  ],
+  "screenshots": [],
+  "platform": "1.0.0.0",
+  "application": "24.0.0.0",
+  "idRanges": [
+    {
+      "from": 52000,
+      "to": 52999
+    }
+  ],
+  "resourceExposurePolicy": {
+    "allowDebugging": true,
+    "allowDownloadingSource": true,
+    "includeSourceInSymbolFile": true
+  },
+  "runtime": "13.0",
+  "features": []
+}

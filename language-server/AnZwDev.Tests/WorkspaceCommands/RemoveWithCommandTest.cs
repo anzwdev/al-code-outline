@@ -10,8 +10,8 @@ namespace AnZwDev.Tests.WorkspaceCommands
     {
 
         [Theory]
-        [InlineData(TestsSettings.BC23TestProject01Main, "src\\commandtests\\RemoveWithPage1.Page.al", TestsSettings.BC23TestProject01TestResults, "RemoveWith_RemoveWithPage1.Page.al")]
-        [InlineData(TestsSettings.BC23TestProject01Main, "src\\commandtests\\RemoveWithCodeunit1.Codeunit.al", TestsSettings.BC23TestProject01TestResults, "RemoveWith_RemoveWithCodeunit1.Codeunit.al")]
+        [InlineData(TestsSettings.BC24TestProject01Main, "src\\commandtests\\RemoveWithPage1.Page.al", TestsSettings.BC24TestProject01TestResults, "RemoveWith_RemoveWithPage1.Page.al")]
+        [InlineData(TestsSettings.BC24TestProject01Main, "src\\commandtests\\RemoveWithCodeunit1.Codeunit.al", TestsSettings.BC24TestProject01TestResults, "RemoveWith_RemoveWithCodeunit1.Codeunit.al")]
         public void TestRemoveWith(string workspacePath, string testFilePath, string outputFolderPath, string expectedTestResultsPath)
         {
             workspacePath = Path.Join(TestsSettings.InDataPath, workspacePath);

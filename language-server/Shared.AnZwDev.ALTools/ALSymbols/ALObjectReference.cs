@@ -126,7 +126,7 @@ namespace AnZwDev.ALTools.ALSymbols
             if ((NamespaceName != null) && (namespaceName.Equals(NamespaceName, StringComparison.OrdinalIgnoreCase)))
                 return true;
 
-            if ((Usings != null) && (Usings.Contains(namespaceName)))
+            if ((!HasNamespace) && (Usings != null) && (Usings.Contains(namespaceName)))
                 return true;
 
             return false;

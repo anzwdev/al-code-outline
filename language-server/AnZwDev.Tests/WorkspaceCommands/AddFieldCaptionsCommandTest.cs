@@ -10,7 +10,7 @@ namespace AnZwDev.Tests.WorkspaceCommands
     {
 
         [Theory]
-        [InlineData(TestsSettings.BC23TestProject01Main, "src\\commandtests\\TableWithoutCaptions.Table.al", TestsSettings.BC23TestProject01TestResults, "AddTableFieldCaptions_TableWithoutCaptions.Table.al")]
+        [InlineData(TestsSettings.BC24TestProject01Main, "src\\commandtests\\TableWithoutCaptions.Table.al", TestsSettings.BC24TestProject01TestResults, "AddTableFieldCaptions_TableWithoutCaptions.Table.al")]
         public void TestTableCaptions(string workspacePath, string testFilePath, string outputFolderPath, string expectedTestResultsPath)
         {
             workspacePath = Path.Join(TestsSettings.InDataPath, workspacePath);

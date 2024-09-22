@@ -12,7 +12,7 @@ namespace AnZwDev.Tests.Editor
     {
 
         [Theory]
-        [InlineData(TestsSettings.BC23TestEditsProject03Folder, TestsSettings.BC23TestEditsProject03Main, TestsSettings.BC23TestEditsProject03SrcFileTest1, TestsSettings.BC23TestEditsProject03EditTest1, "\"Dep1 Table 1\"", "MainApp Field2")]
+        [InlineData(TestsSettings.BC24TestEditsProject03Folder, TestsSettings.BC24TestEditsProject03Main, TestsSettings.BC24TestEditsProject03SrcFileTest1, TestsSettings.BC24TestEditsProject03EditTest1, "\"Dep1 Table 1\"", "MainApp Field2")]
 
         public void TestTableFileEdit(string workspacePath, string projectPath, string filePath, string modifiedFilePath, string tableName, string fieldName)
         {
