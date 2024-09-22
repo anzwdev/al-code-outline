@@ -8,7 +8,7 @@ namespace AnZwDev.ALTools.WorkspaceCommands
     public class LockRemovedFieldsCaptionsWorkspaceCommand : SyntaxRewriterWorkspaceCommand<LockRemovedFieldsCaptionsSyntaxRewriter>
     {
 
-        public LockRemovedFieldsCaptionsWorkspaceCommand(ALDevToolsServer alDevToolsServer) : base(alDevToolsServer, "lockRemovedFieldsCaptions")
+        public LockRemovedFieldsCaptionsWorkspaceCommand(ALDevToolsServer alDevToolsServer) : base(alDevToolsServer, "lockRemovedFieldsCaptions", true)
         {
         }
 

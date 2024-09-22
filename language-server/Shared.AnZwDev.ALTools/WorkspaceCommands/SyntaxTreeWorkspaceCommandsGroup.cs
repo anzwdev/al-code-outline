@@ -13,8 +13,7 @@ namespace AnZwDev.ALTools.WorkspaceCommands
 
         private Dictionary<string, SyntaxTreeWorkspaceCommand> _commands;
 
-
-        public SyntaxTreeWorkspaceCommandsGroup(ALDevToolsServer alDevToolsServer, string name) : base(alDevToolsServer, name)
+        public SyntaxTreeWorkspaceCommandsGroup(ALDevToolsServer alDevToolsServer, string name) : base(alDevToolsServer, name, true)
         {
             this._commands = new Dictionary<string, SyntaxTreeWorkspaceCommand>();
         }

@@ -14,7 +14,7 @@ namespace AnZwDev.ALTools.WorkspaceCommands
         public static string FieldNamesPatternsParameterName = "fieldsNamesPatterns";
         public static string SortPropertiesParameterName = "sortProperties";
 
-        public AddTableDataCaptionFieldsWorkspaceCommand(ALDevToolsServer alDevToolsServer) : base(alDevToolsServer, "addTableDataCaptionFields")
+        public AddTableDataCaptionFieldsWorkspaceCommand(ALDevToolsServer alDevToolsServer) : base(alDevToolsServer, "addTableDataCaptionFields", true)
         {
         }
 

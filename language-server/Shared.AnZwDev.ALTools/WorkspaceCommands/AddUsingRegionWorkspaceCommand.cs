@@ -16,7 +16,7 @@ namespace AnZwDev.ALTools.WorkspaceCommands
 
         public static string TitleParameterName = "title";
 
-        public AddUsingRegionWorkspaceCommand(ALDevToolsServer alDevToolsServer) : base(alDevToolsServer, "addUsingRegion")
+        public AddUsingRegionWorkspaceCommand(ALDevToolsServer alDevToolsServer) : base(alDevToolsServer, "addUsingRegion", true)
         {
         }
 

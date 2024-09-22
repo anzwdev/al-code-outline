@@ -16,6 +16,8 @@ namespace AnZwDev.ALTools.Server.Handlers.SymbolsInformation
         [JsonRpcMethod("al/getenumslist", UseSingleObjectParameterDeserialization = true)]
         public GetEnumsListResponse GetEnumsList(GetEnumsListRequest parameters)
         {
+            RebuildModifiedSymbols();
+
             GetEnumsListResponse response = new GetEnumsListResponse();
 
             ALProject project = this.Server.Workspace.FindProject(parameters.path, true);

@@ -15,7 +15,7 @@ namespace AnZwDev.ALTools.WorkspaceCommands
 
         public static string SortPropertiesParameterName = "sortProperties";
 
-        public AddObjectCaptionsWorkspaceCommand(ALDevToolsServer alDevToolsServer) : base(alDevToolsServer, "addObjectCaptions")
+        public AddObjectCaptionsWorkspaceCommand(ALDevToolsServer alDevToolsServer) : base(alDevToolsServer, "addObjectCaptions", true)
         {
         }
 

@@ -19,18 +19,20 @@ namespace AnZwDev.ALTools.Workspace
 
         public IEnumerable<T> GetObjectExtensions(ALObjectIdentifier extendedObjectIdentifier, HashSet<string> dependenciesFilter = null, bool includeInaccessible = false)
         {
-            var objectExtension = _objectExtensionsCollection(Project.Symbols)?.FindFirstObjectExtension(extendedObjectIdentifier);
-            if (objectExtension != null)
-                yield return objectExtension;
+            var objectExtensionsEnumerable = _objectExtensionsCollection(Project.Symbols)?.FindObjectExtensions(extendedObjectIdentifier);
+            if (objectExtensionsEnumerable != null)
+                foreach (var objectExtension in objectExtensionsEnumerable)
+                    yield return objectExtension;
 
             for (int depIdx = 0; depIdx < Project.Dependencies.Count; depIdx++)
             {
                 if ((dependenciesFilter == null) || (dependenciesFilter.Contains(Project.Dependencies[depIdx].Symbols.GetNameWithPublisher())))
                 {
                     var includeInternal = includeInaccessible || Project.Dependencies[depIdx].InternalsVisible;
-                    objectExtension = _objectExtensionsCollection(Project.Dependencies[depIdx].Symbols)?.FindFirstObjectExtension(extendedObjectIdentifier, includeInternal);
-                    if (objectExtension != null)
-                        yield return objectExtension;
+                    objectExtensionsEnumerable = _objectExtensionsCollection(Project.Dependencies[depIdx].Symbols)?.FindObjectExtensions(extendedObjectIdentifier, includeInternal);
+                    if (objectExtensionsEnumerable != null)
+                        foreach (var objectExtension in objectExtensionsEnumerable)
+                            yield return objectExtension;
                 }
             }
         }
@@ -42,18 +44,20 @@ namespace AnZwDev.ALTools.Workspace
                 var extendedObjectIdentifier = extendedObjectIdentifiersList[idIdx];
 
                 //code copied from function above to avoid creation of multiple enumerators
-                var objectExtension = _objectExtensionsCollection(Project.Symbols)?.FindFirstObjectExtension(extendedObjectIdentifier);
-                if (objectExtension != null)
-                    yield return (extendedObjectIdentifier, objectExtension);
+                var objectExtensionsEnumerable = _objectExtensionsCollection(Project.Symbols)?.FindObjectExtensions(extendedObjectIdentifier);
+                if (objectExtensionsEnumerable != null)
+                    foreach (var objectExtension in objectExtensionsEnumerable)
+                        yield return (extendedObjectIdentifier, objectExtension);
 
                 for (int depIdx = 0; depIdx < Project.Dependencies.Count; depIdx++)
                 {
                     if ((dependenciesFilter == null) || (dependenciesFilter.Contains(Project.Dependencies[depIdx].Symbols.GetNameWithPublisher())))
                     {
                         var includeInternal = includeInaccessible || Project.Dependencies[depIdx].InternalsVisible;
-                        objectExtension = _objectExtensionsCollection(Project.Dependencies[depIdx].Symbols)?.FindFirstObjectExtension(extendedObjectIdentifier, includeInternal);
-                        if (objectExtension != null)
-                            yield return (extendedObjectIdentifier, objectExtension);
+                        objectExtensionsEnumerable = _objectExtensionsCollection(Project.Dependencies[depIdx].Symbols)?.FindObjectExtensions(extendedObjectIdentifier, includeInternal);
+                        if (objectExtensionsEnumerable != null)
+                            foreach (var objectExtension in objectExtensionsEnumerable)
+                                yield return (extendedObjectIdentifier, objectExtension);
                     }
                 }
             }

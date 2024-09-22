@@ -12,7 +12,7 @@ namespace AnZwDev.ALTools.WorkspaceCommands
     public class SourceTextWorkspaceCommand : WorkspaceCommand
     {
 
-        public SourceTextWorkspaceCommand(ALDevToolsServer alDevToolsServer, string name) : base(alDevToolsServer, name)
+        public SourceTextWorkspaceCommand(ALDevToolsServer alDevToolsServer, string name, bool modifiedSymbolsRebuildRequired) : base(alDevToolsServer, name, modifiedSymbolsRebuildRequired)
         {
         }
 

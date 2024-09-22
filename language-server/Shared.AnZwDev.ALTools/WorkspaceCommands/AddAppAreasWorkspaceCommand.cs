@@ -16,7 +16,7 @@ namespace AnZwDev.ALTools.WorkspaceCommands
         public static string AppAreaParameterName = "appArea";
         public static string AppAreaModeParameterName = "appAreaMode";
 
-        public AddAppAreasWorkspaceCommand(ALDevToolsServer alDevToolsServer) : base(alDevToolsServer, "addAppAreas")
+        public AddAppAreasWorkspaceCommand(ALDevToolsServer alDevToolsServer) : base(alDevToolsServer, "addAppAreas", false)
         {
         }
 

@@ -17,7 +17,9 @@ namespace AnZwDev.ALTools.Server.Handlers.SymbolsInformation
         [JsonRpcMethod("al/getpagedetails", UseSingleObjectParameterDeserialization = true)]
         public GetPageDetailsResponse GetPageDetails(GetPageDetailsRequest parameters)
         {
-                GetPageDetailsResponse response = new GetPageDetailsResponse();
+            RebuildModifiedSymbols();
+
+            GetPageDetailsResponse response = new GetPageDetailsResponse();
 
             try
             {

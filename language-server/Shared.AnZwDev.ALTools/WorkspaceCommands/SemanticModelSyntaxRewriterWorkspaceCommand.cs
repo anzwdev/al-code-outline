@@ -16,7 +16,7 @@ namespace AnZwDev.ALTools.WorkspaceCommands
     {
         public T SyntaxRewriter { get; }
 
-        public SemanticModelSyntaxRewriterWorkspaceCommand(ALDevToolsServer alDevToolsServer, string name) : base(alDevToolsServer, name)
+        public SemanticModelSyntaxRewriterWorkspaceCommand(ALDevToolsServer alDevToolsServer, string name, bool modifiedSymbolsRebuildRequired) : base(alDevToolsServer, name, modifiedSymbolsRebuildRequired)
         {
             this.SyntaxRewriter = new T();
         }

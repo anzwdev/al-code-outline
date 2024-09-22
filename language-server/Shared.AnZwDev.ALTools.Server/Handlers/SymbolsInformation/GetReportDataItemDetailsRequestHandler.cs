@@ -17,6 +17,8 @@ namespace AnZwDev.ALTools.Server.Handlers.SymbolsInformation
         [JsonRpcMethod("al/getreportdataitemdetails", UseSingleObjectParameterDeserialization = true)]
         public GetReportDataItemDetailsResponse GetReportDataItemDetails(GetReportDataItemDetailsRequest parameters)
         {
+            RebuildModifiedSymbols();
+
             GetReportDataItemDetailsResponse response = new GetReportDataItemDetailsResponse();
 
             try

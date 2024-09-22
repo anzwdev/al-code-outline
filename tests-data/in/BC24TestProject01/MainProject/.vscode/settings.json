@@ -1,0 +1,44 @@
+{
+    "CRS.FileNamePattern": "<ObjectNameShort>.<ObjectTypeShortPascalCase>.al",
+    "CRS.FileNamePatternExtensions": "<ObjectNameShort>.<ObjectTypeShortPascalCase>.al",
+    "CRS.FileNamePatternPageCustomizations": "<ObjectNameShort>.<ObjectTypeShortPascalCase>.al",
+    "CRS.OnSaveAlFileAction": "Rename",
+    "alOutline.completionProviders": [
+        "VariableNamesWithType",
+        "VariableNames"
+    ],
+
+    "alOutline.defaultRemoveUnusedVariablesSettings": {
+        "removeGlobalVariables": true,
+        "removeLocalMethodParameters": true,
+        "removeLocalVariables": true,
+        "removeProtectedGlobalVariables": false
+    },
+
+    "editor.codeActionsOnSave": {
+        "source.fixAll": "explicit"
+    },
+    "alOutline.codeActionsOnSave": [
+        "OneStatementPerLine2"
+    ],
+    "alOutline.namespacesSortOrder": [
+        "System.", "Microsoft."
+    ],
+    "alOutline.sortMembersGlobalVariablesSortMode": "First",
+
+    "alOutline.useTableFieldDescriptionAsToolTip": true,
+    "alOutline.sortSingleNodeRegions": true,
+    "alOutline.codeCleanupActions" : [
+        "RemoveUnusedVariables"
+    ],
+    "alOutline.addToolTipsToPageFields": true,
+    "alOutline.fieldToolTipsLocation": "page",
+    "alOutline.buildConfigurationNaming": "nameAppJson",
+
+    "al.codeAnalyzers": [
+    ],
+    "al.enableCodeActions": true,
+    "al.enableCodeAnalysis": false,
+    "alOutline.activeBuildConfiguration": "",
+
+}

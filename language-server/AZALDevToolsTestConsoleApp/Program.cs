@@ -69,6 +69,24 @@ namespace AZALDevToolsTestConsoleApp
             DCDuplicateCodeAnalyzer duplicateAnalyzer = new DCDuplicateCodeAnalyzer(3, AnZwDev.ALTools.ALSymbols.Internal.ConvertedObsoleteState.None);
             var duplicatesList = duplicateAnalyzer.FindDuplicates(host.ALDevToolsServer.Workspace, null);
 
+
+
+            var libraryPath = "C:\\Projects\\Sandboxes\\al-test-projects\\SmallBC23\\.alpackages\\Microsoft_Base Application_23.0.12034.12747.app";
+            ALAppSymbolReference symbolReference = host.ALDevToolsServer.Workspace.SymbolReferencesCache.GetSymbolReference(libraryPath);
+            ALSymbolsLibrary library;
+            if (symbolReference != null)
+                library = symbolReference.ToALSymbolsLibrary();
+            else
+                library = new ALSymbolsLibrary();
+
+            //ALPackageSymbolsLibrary library = this.Server.AppPackagesCache.GetSymbols(parameters.path, false);
+            if (library != null)
+            {
+                var libraryId = host.ALDevToolsServer.SymbolsLibraries.AddLibrary(library);
+                var librarySymbols = library.GetObjectsTree(); // .Root;
+            }
+
+
             /*
             Helpers.CopyFolder("C:\\Projects\\Sandboxes\\al-test-projects\\SmallBC23.Backup", "C:\\Projects\\Sandboxes\\al-test-projects\\SmallBC23");
             AddProjectNamespacesConverter projectNamespacesConverter = new AddProjectNamespacesConverter();

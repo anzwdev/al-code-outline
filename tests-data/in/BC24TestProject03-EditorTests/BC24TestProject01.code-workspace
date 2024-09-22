@@ -1,0 +1,14 @@
+{
+	"folders": [
+		{
+			"path": "MainProject"
+		},
+		{
+			"path": "Dependency1"
+		},
+		{
+			"path": "Dependency2"
+		}
+	],
+	"settings": {}
+}

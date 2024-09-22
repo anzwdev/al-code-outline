@@ -18,6 +18,8 @@ namespace AnZwDev.ALTools.Server.Handlers.SymbolsInformation
         [JsonRpcMethod("al/getxmlporttableelementdetails", UseSingleObjectParameterDeserialization = true)]
         public GetXmlPortTableElementDetailsResponse GetXmlPortTableElementDetails(GetXmlPortTableElementDetailsRequest parameters)
         {
+            RebuildModifiedSymbols();
+
             GetXmlPortTableElementDetailsResponse response = new GetXmlPortTableElementDetailsResponse();
 
             try

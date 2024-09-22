@@ -30,13 +30,13 @@ namespace AnZwDev.ALTools.Workspace.SymbolsInformation
             //collect object ids
             ObjectIdRangeIdInformationCollection rangesInformationCollection = new ObjectIdRangeIdInformationCollection(project.Properties.Ranges);
             if (project.Symbols != null)
-                rangesInformationCollection.AddIds(project.Symbols.GetIdsEnumerable(symbolKind));
+                rangesInformationCollection.AddIds(project.Symbols.AllObjects.GetObjectsCollection(symbolKind).GetIdsEnumerable());
             if (project.Dependencies != null)
             {
                 foreach (ALProjectDependency dependency in project.Dependencies)
                 {
                     if (dependency.Symbols != null)
-                        rangesInformationCollection.AddIds(dependency.Symbols.GetIdsEnumerable(symbolKind));
+                        rangesInformationCollection.AddIds(dependency.Symbols.AllObjects.GetObjectsCollection(symbolKind).GetIdsEnumerable());
                 }
             }
 

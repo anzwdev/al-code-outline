@@ -16,7 +16,7 @@ namespace AnZwDev.ALTools.WorkspaceCommands
         public static string SortSingleNodeRegionsParameterName = "sortSingleNodeRegions";
         public static string NamespacesOrderParameterName = "namespacesOrder";
 
-        public SortUsingsWorkspaceCommand(ALDevToolsServer alDevToolsServer) : base(alDevToolsServer, "sortUsings")
+        public SortUsingsWorkspaceCommand(ALDevToolsServer alDevToolsServer) : base(alDevToolsServer, "sortUsings", false)
         {
         }
 

@@ -17,6 +17,8 @@ namespace AnZwDev.ALTools.Server.Handlers.SymbolsInformation
         [JsonRpcMethod("al/getquerydataitemdetails", UseSingleObjectParameterDeserialization = true)]
         public GetQueryDataItemDetailsResponse GetQueryDataItemDetails(GetQueryDataItemDetailsRequest parameters)
         {
+            RebuildModifiedSymbols();
+
             GetQueryDataItemDetailsResponse response = new GetQueryDataItemDetailsResponse();
 
             try

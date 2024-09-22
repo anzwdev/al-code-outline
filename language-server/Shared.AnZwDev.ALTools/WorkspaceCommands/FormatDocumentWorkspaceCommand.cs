@@ -10,7 +10,7 @@ namespace AnZwDev.ALTools.WorkspaceCommands
     public class FormatDocumentWorkspaceCommand : SyntaxTreeWorkspaceCommand
     {
 
-        public FormatDocumentWorkspaceCommand(ALDevToolsServer alDevToolsServer) : base(alDevToolsServer, "formatDocument")
+        public FormatDocumentWorkspaceCommand(ALDevToolsServer alDevToolsServer) : base(alDevToolsServer, "formatDocument", false)
         {
         }
 

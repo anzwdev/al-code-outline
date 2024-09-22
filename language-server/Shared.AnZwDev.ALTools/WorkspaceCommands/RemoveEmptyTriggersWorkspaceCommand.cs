@@ -15,7 +15,7 @@ namespace AnZwDev.ALTools.WorkspaceCommands
         public static string RemoveSubscribersParameterName = "removeSubscribers";
         public static string IgnoreCommentsParameterName = "ignoreComments";
 
-        public RemoveEmptyTriggersWorkspaceCommand(ALDevToolsServer alDevToolsServer) : base(alDevToolsServer, "removeEmptyTriggers")
+        public RemoveEmptyTriggersWorkspaceCommand(ALDevToolsServer alDevToolsServer) : base(alDevToolsServer, "removeEmptyTriggers", false)
         {
         }
 

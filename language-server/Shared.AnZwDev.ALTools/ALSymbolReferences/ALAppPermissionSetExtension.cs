@@ -36,12 +36,5 @@ namespace AnZwDev.ALTools.ALSymbolReferences
             return new ALObjectReference(Usings, this.TargetObject);
         }
 
-        public override void ReplaceIdReferences(ALAppObjectIdMap idMap)
-        {
-            if (this.Permissions != null)
-                for (int i=0; i<this.Permissions.Count; i++)
-                    this.Permissions[i].ReplaceIdReferences(idMap);
-        }
-
     }
 }

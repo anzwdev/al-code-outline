@@ -16,7 +16,7 @@ namespace AnZwDev.ALTools.WorkspaceCommands
 
         public static string SortPropertiesParameterName = "sortProperties";
 
-        public AddEnumCaptionsWorkspaceCommand(ALDevToolsServer alDevToolsServer) : base(alDevToolsServer, "addEnumCaptions")
+        public AddEnumCaptionsWorkspaceCommand(ALDevToolsServer alDevToolsServer) : base(alDevToolsServer, "addEnumCaptions", false)
         {
         }
 

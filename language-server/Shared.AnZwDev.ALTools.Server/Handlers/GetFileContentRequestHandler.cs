@@ -16,7 +16,7 @@ namespace AnZwDev.ALTools.Server.Handlers
         }
 
         [JsonRpcMethod("al/getfilecontent", UseSingleObjectParameterDeserialization = true)]
-        public GetFileContentResponse FindDuplicateCode(GetFileContentRequest parameters)
+        public GetFileContentResponse GetFileContent(GetFileContentRequest parameters)
         {
             GetFileContentResponse response = new GetFileContentResponse();
             if ((!String.IsNullOrWhiteSpace(parameters.path)) && (File.Exists(parameters.path)))

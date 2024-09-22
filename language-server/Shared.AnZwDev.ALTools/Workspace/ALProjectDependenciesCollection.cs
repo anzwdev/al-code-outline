@@ -110,37 +110,5 @@ namespace AnZwDev.ALTools.Workspace
             return null;
         }
 
-        #region Replace id references with names
-
-        public bool IdReferencesReplaced()
-        {
-            for (int i = 0; i < this.Count; i++)
-                if (!this[i].IdReferencesReplaced())
-                    return false;
-            return true;
-        }
-
-        public ALAppObjectIdMap CreateALAppObjectIdMap()
-        {
-            ALAppObjectIdMap idMap = new ALAppObjectIdMap();
-            for (int i=0; i<this.Count; i++)
-            {
-                if (this[i].Symbols != null)
-                    this[i].Symbols.AddToObjectsIdMap(idMap);
-            }
-            return idMap;
-        }
-
-        public void ReplaceIdReferences(ALAppObjectIdMap idMap)
-        {
-            for (int i = 0; i < this.Count; i++)
-            {
-                if (!this[i].IdReferencesReplaced())
-                    this[i].Symbols.ReplaceIdReferences(idMap);
-            }
-        }
-
-        #endregion
-
     }
 }

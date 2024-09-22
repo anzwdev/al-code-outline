@@ -16,6 +16,8 @@ namespace AnZwDev.ALTools.Server.Handlers.SymbolsInformation
         [JsonRpcMethod("al/getpageslist", UseSingleObjectParameterDeserialization = true)]
         public GetPagesListResponse GetPagesList(GetPagesListRequest parameters)
         {
+            RebuildModifiedSymbols();
+
             GetPagesListResponse response = new GetPagesListResponse();
 
             ALProject project = this.Server.Workspace.FindProject(parameters.path, true);

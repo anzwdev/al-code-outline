@@ -9,7 +9,7 @@ namespace AnZwDev.ALTools.WorkspaceCommands
     public class MakeFlowFieldsReadOnlyWorkspaceCommand : SyntaxRewriterWorkspaceCommand<MakeFlowFieldsReadOnlySyntaxRewriter>
     {
 
-        public MakeFlowFieldsReadOnlyWorkspaceCommand(ALDevToolsServer alDevToolsServer) : base(alDevToolsServer, "makeFlowFieldsReadOnly")
+        public MakeFlowFieldsReadOnlyWorkspaceCommand(ALDevToolsServer alDevToolsServer) : base(alDevToolsServer, "makeFlowFieldsReadOnly", false)
         {
         }
 

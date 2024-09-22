@@ -15,7 +15,7 @@ namespace AnZwDev.ALTools.WorkspaceCommands
         public static string CommentParameterName = "comment";
         public static string SortPropertiesParameterName = "sortProperties";
 
-        public SetPageFieldToolTipWorkspaceCommand(ALDevToolsServer alDevToolsServer) : base(alDevToolsServer, "setPageFieldToolTip")
+        public SetPageFieldToolTipWorkspaceCommand(ALDevToolsServer alDevToolsServer) : base(alDevToolsServer, "setPageFieldToolTip", false)
         {
         }
 

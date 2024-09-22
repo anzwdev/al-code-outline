@@ -1,3 +1,7 @@
+# Igore AL app files
+
+*.app
+
 # Ignore TypeScript files
 
 out

@@ -21,6 +21,8 @@ namespace AnZwDev.ALTools.Server.Handlers.SymbolsInformation
         [JsonRpcMethod("al/getnewfilerequiredinterfaces", UseSingleObjectParameterDeserialization = true)]
         public GetNewFileRequiredInterfacesResponse GetNewFileRequiredInterfaces(GetNewFileRequiredInterfacesRequest parameters)
         {
+            RebuildModifiedSymbols();
+
             GetNewFileRequiredInterfacesResponse response = new GetNewFileRequiredInterfacesResponse();
 
             ALProject project = this.Server.Workspace.FindProject(parameters.path, true);

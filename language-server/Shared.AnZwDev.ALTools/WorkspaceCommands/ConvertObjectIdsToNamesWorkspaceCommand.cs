@@ -14,7 +14,7 @@ namespace AnZwDev.ALTools.WorkspaceCommands
 #endif
     {
 
-        public ConvertObjectIdsToNamesWorkspaceCommand(ALDevToolsServer alDevToolsServer) : base(alDevToolsServer, "convertObjectIdsToNames")
+        public ConvertObjectIdsToNamesWorkspaceCommand(ALDevToolsServer alDevToolsServer) : base(alDevToolsServer, "convertObjectIdsToNames", true)
         {
         }
 

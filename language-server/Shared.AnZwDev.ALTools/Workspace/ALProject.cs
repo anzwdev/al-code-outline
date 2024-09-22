@@ -182,14 +182,6 @@ namespace AnZwDev.ALTools.Workspace
                 this.ResolveDependency(this.Dependencies[index], appPackagesCollection);
                 index++;
             }
-
-            //change internal references from ids to names
-            if (!this.Dependencies.IdReferencesReplaced())
-            {
-                ALAppObjectIdMap objectIdMap = this.Dependencies.CreateALAppObjectIdMap();
-                this.Dependencies.ReplaceIdReferences(objectIdMap);
-            }
-
         }
 
         protected void ResolveDependency(ALProjectDependency dependency, AppPackageInformationsCollection appPackagesCollection)
@@ -240,22 +232,14 @@ namespace AnZwDev.ALTools.Workspace
         public void RebuildSymbolReferences()
         {
             foreach (ALProjectFile file in this.Files)
-            {
                 file.CompileSymbolReferences(true);
-            }
         }
 
-        public void UpdateDirtySymbolReferences()
+        public void RebuildModifiedSymbols()
         {
             foreach (ALProjectFile file in this.Files)
-            {
-                if (file.IsDirty)
-                {
-                    file.CompileSymbolReferences(true);
-                }
-            }
+                file.RebuildModifiedSymbols();
         }
-
 
         #endregion
 

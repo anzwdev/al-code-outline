@@ -19,5 +19,10 @@ namespace AnZwDev.ALTools.Server.Handlers
             MessageLog.LogError(exception);   
         }
 
+        protected void RebuildModifiedSymbols()
+        {
+            this.Server.Workspace.RebuildModifiedSymbols();
+        }
+
     }
 }

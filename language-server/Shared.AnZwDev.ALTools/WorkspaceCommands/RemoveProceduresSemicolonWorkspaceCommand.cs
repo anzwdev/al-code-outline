@@ -13,7 +13,7 @@ namespace AnZwDev.ALTools.WorkspaceCommands
 
         public static string IncludeInterfacesParameterName = "includeInterfaces";
 
-        public RemoveProceduresSemicolonWorkspaceCommand(ALDevToolsServer alDevToolsServer) : base(alDevToolsServer, "removeProceduresSemicolon")
+        public RemoveProceduresSemicolonWorkspaceCommand(ALDevToolsServer alDevToolsServer) : base(alDevToolsServer, "removeProceduresSemicolon", true)
         {
         }
 

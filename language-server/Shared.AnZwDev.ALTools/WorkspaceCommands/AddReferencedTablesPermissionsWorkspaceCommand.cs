@@ -17,7 +17,7 @@ namespace AnZwDev.ALTools.WorkspaceCommands
 
         public static string SortPropertiesParameterName = "sortProperties";
 
-        public AddReferencedTablesPermissionsWorkspaceCommand(ALDevToolsServer alDevToolsServer) : base(alDevToolsServer, "addReferencedTablesPermissions")
+        public AddReferencedTablesPermissionsWorkspaceCommand(ALDevToolsServer alDevToolsServer) : base(alDevToolsServer, "addReferencedTablesPermissions", true)
         {
         }
 

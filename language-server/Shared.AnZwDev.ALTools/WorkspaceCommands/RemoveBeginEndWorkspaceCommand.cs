@@ -8,7 +8,7 @@ namespace AnZwDev.ALTools.WorkspaceCommands
     public class RemoveBeginEndWorkspaceCommandd : SyntaxRewriterWorkspaceCommand<RemoveBeginEndSyntaxRewriter>
     {
 
-        public RemoveBeginEndWorkspaceCommandd(ALDevToolsServer alDevToolsServer) : base(alDevToolsServer, "removeBeginEnd")
+        public RemoveBeginEndWorkspaceCommandd(ALDevToolsServer alDevToolsServer) : base(alDevToolsServer, "removeBeginEnd", false)
         {
         }
 

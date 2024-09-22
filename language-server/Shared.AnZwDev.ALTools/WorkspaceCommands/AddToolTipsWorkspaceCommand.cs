@@ -23,7 +23,7 @@ namespace AnZwDev.ALTools.WorkspaceCommands
         public static string CreateFieldToolTipsParameterName = "createFieldToolTips";
         public static string CreateActionToolTipsParameterName = "createActionToolTips";
 
-        public AddToolTipsWorkspaceCommand(ALDevToolsServer alDevToolsServer) : base(alDevToolsServer, "addToolTips")
+        public AddToolTipsWorkspaceCommand(ALDevToolsServer alDevToolsServer) : base(alDevToolsServer, "addToolTips", true)
         {
         }
 

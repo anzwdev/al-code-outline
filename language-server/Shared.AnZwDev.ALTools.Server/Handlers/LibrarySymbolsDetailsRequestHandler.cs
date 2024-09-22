@@ -16,6 +16,8 @@ namespace AnZwDev.ALTools.Server.Handlers
         [JsonRpcMethod("al/librarysymbolsdetails", UseSingleObjectParameterDeserialization = true)]
         public LibrarySymbolsDetailsResponse LibrarySymbolsDetails(LibrarySymbolsDetailsRequest parameters)
         {
+            RebuildModifiedSymbols();
+
             LibrarySymbolsDetailsResponse response = new LibrarySymbolsDetailsResponse();
             try
             {

@@ -8,7 +8,7 @@ namespace AnZwDev.ALTools.WorkspaceCommands
     public class RemoveRedundantAppAreasWorkspaceCommand : SyntaxRewriterWorkspaceCommand<RemoveRedundandAppAreasSyntaxRewriter>
     {
 
-        public RemoveRedundantAppAreasWorkspaceCommand(ALDevToolsServer alDevToolsServer) : base(alDevToolsServer, "removeRedundantAppAreas")
+        public RemoveRedundantAppAreasWorkspaceCommand(ALDevToolsServer alDevToolsServer) : base(alDevToolsServer, "removeRedundantAppAreas", false)
         {
         }
     }

@@ -16,6 +16,8 @@ namespace AnZwDev.ALTools.Server.Handlers
         [JsonRpcMethod("al/librarysymbollocation", UseSingleObjectParameterDeserialization = true)]
         public GetLibrarySymbolLocationResponse GetLibrarySymbolLocation(GetLibrarySymbolLocationRequest parameters)
         {
+            RebuildModifiedSymbols();
+
             GetLibrarySymbolLocationResponse response = new GetLibrarySymbolLocationResponse();
             try
             {

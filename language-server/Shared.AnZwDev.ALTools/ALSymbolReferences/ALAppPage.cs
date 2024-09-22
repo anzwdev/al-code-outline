@@ -45,19 +45,5 @@ namespace AnZwDev.ALTools.ALSymbolReferences
             return new ALObjectReference();
         }
 
-        public override void ReplaceIdReferences(ALAppObjectIdMap idMap)
-        {
-            if (this.Properties != null)
-            {
-                ALAppProperty sourceTable = this.Properties.GetProperty("SourceTable");
-                int id;
-                if ((sourceTable != null) && (!String.IsNullOrWhiteSpace(sourceTable.Value)) && (Int32.TryParse(sourceTable.Value, out id)))
-                {
-                    if (idMap.TableIdMap.ContainsKey(id))
-                        sourceTable.Value = idMap.TableIdMap[id].GetFullName();
-                }
-            }
-        }
-
     }
 }

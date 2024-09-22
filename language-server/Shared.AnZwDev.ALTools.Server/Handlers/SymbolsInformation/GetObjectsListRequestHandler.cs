@@ -20,6 +20,8 @@ namespace AnZwDev.ALTools.Server.Handlers.SymbolsInformation
         [JsonRpcMethod("al/getobjectslist", UseSingleObjectParameterDeserialization = true)]
         public GetObjectsListResponse GetObjectsList(GetObjectsListRequest parameters)
         {
+            RebuildModifiedSymbols();
+
             GetObjectsListResponse response = new GetObjectsListResponse();
 
             try

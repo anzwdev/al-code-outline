@@ -13,7 +13,7 @@ namespace AnZwDev.ALTools.WorkspaceCommands
     public class SyntaxTreeWorkspaceCommand : SourceTextWorkspaceCommand
     {
 
-        public SyntaxTreeWorkspaceCommand(ALDevToolsServer alDevToolsServer, string name) : base(alDevToolsServer, name)
+        public SyntaxTreeWorkspaceCommand(ALDevToolsServer alDevToolsServer, string name, bool modifiedSymbolsRebuildRequired) : base(alDevToolsServer, name, modifiedSymbolsRebuildRequired)
         {
         }
 

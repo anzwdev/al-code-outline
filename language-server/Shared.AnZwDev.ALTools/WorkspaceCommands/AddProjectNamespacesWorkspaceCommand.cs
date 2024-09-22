@@ -17,7 +17,7 @@ namespace AnZwDev.ALTools.WorkspaceCommands
         public static string RootNamespaceParameterName = "rootNamespace";
         public static string UseFolderStructureParameterName = "useFolderStructure";
 
-        public AddProjectNamespacesWorkspaceCommand(ALDevToolsServer alDevToolsServer) : base(alDevToolsServer, "enableNamespacesSupport")
+        public AddProjectNamespacesWorkspaceCommand(ALDevToolsServer alDevToolsServer) : base(alDevToolsServer, "enableNamespacesSupport", true)
         {
         }
 

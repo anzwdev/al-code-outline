@@ -12,11 +12,18 @@ namespace AnZwDev.ALTools.ALSymbolReferences
     public class ALAppObjectsCollection<T> : ALAppSymbolsCollection<T>, IALAppObjectsCollection where T : ALAppObject
     {
 
+        public ALBaseSymbolReference SymbolReference { get; }
+
         private readonly DictionaryWithDuplicates<int, T> _objectsById = new DictionaryWithDuplicates<int, T>();
         private readonly DictionaryWithDuplicates<string, T> _objectsByName = new DictionaryWithDuplicates<string, T>(StringComparer.OrdinalIgnoreCase);
 
-        public ALAppObjectsCollection()
+        public ALAppObjectsCollection() : this(null)
         {
+        }
+
+        public ALAppObjectsCollection(ALBaseSymbolReference symbolReference)
+        {
+            SymbolReference = symbolReference;
         }
 
         protected override void OnItemAdded(T item)
@@ -26,6 +33,8 @@ namespace AnZwDev.ALTools.ALSymbolReferences
             if (item.Name != null)
                 _objectsByName.Add(item.Name, item);
             _usesNamespacesInitialized = false;
+            if (SymbolReference != null)
+                SymbolReference.OnObjectAdded(item);
         }
 
         protected override void OnItemRemoved(T item)
@@ -35,6 +44,8 @@ namespace AnZwDev.ALTools.ALSymbolReferences
             if (item.Name != null)
                 _objectsByName.Remove(item.Name, item);
             _usesNamespacesInitialized = false;
+            if (SymbolReference != null)
+                SymbolReference.OnObjectRemoved(item);
         }
 
         protected override void OnClear()
@@ -43,6 +54,8 @@ namespace AnZwDev.ALTools.ALSymbolReferences
             _objectsById.Clear();
             _objectsByName.Clear();
             _usesNamespacesInitialized = false;
+            if (SymbolReference != null)
+                SymbolReference.OnObjectsClear();
         }
 
         public T FindFirst(int id, bool includeInternal = true)
@@ -247,6 +260,16 @@ namespace AnZwDev.ALTools.ALSymbolReferences
         ALAppObject IALAppObjectsCollection.FindFirst(ALObjectReference objectReference)
         {
             return FindFirst(objectReference);
+        }
+
+        ALAppObject IALAppObjectsCollection.FindFirst(int id)
+        {
+            return FindFirst(id);
+        }
+
+        ALAppObject IALAppObjectsCollection.FindFirst(int id, bool includeInternal)
+        {
+            return FindFirst(id, includeInternal);
         }
 
         #endregion
