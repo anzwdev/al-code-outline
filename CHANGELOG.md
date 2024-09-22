@@ -1,5 +1,13 @@
 # Change Log
 
+## 13.72.0
+ - Issue #603 and #610 - Fields selection is not working anymore - namespaces fixes
+ - Issue #609 - VS Code - General slowness / high memory consumption - performance fixes
+ 
+Thank you
+ - fvet for reporting issue #609
+ - horstoeko, NKarolak and erikrijn for reports of issue #610
+
 ## 13.71.0
  - Issue #603 - Fields selection is not working anymore
 
