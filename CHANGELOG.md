@@ -1,5 +1,8 @@
 # Change Log
 
+## 14.73.0
+ - Extension recompiled for BC25
+
 ## 13.72.0
  - Issue #603 and #610 - Fields selection is not working anymore - namespaces fixes
  - Issue #609 - VS Code - General slowness / high memory consumption - performance fixes
