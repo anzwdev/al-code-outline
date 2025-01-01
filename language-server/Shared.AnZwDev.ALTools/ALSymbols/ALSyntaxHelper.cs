@@ -160,6 +160,10 @@ namespace AnZwDev.ALTools.ALSymbols
                 return ALSymbolKind.IntegrationEventDeclaration;
             if (name.Equals("BusinessEvent", StringComparison.OrdinalIgnoreCase))
                 return ALSymbolKind.BusinessEventDeclaration;
+            if (name.Equals("InternalEvent", StringComparison.OrdinalIgnoreCase))
+                return ALSymbolKind.InternalEventDeclaration;
+            if (name.Equals("ExternalBusinessEvent", StringComparison.OrdinalIgnoreCase))
+                return ALSymbolKind.ExternalBusinessEventDeclaration;
             if (name.Equals("EventSubscriber", StringComparison.OrdinalIgnoreCase))
                 return ALSymbolKind.EventSubscriberDeclaration;
             //tests

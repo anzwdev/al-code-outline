@@ -1,5 +1,11 @@
 # Change Log
 
+## 14.74.0
+ - Issue #618 - Sort Procedures does not properly sort InternalEvent event publisher declarations 
+
+Thank you
+ - rvanbekkum for reporting issue #618
+
 ## 14.73.0
  - Extension recompiled for BC25
 

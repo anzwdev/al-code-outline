@@ -161,7 +161,9 @@ namespace AnZwDev.ALTools.CodeTransformations
                     ALSymbolKind.EventSubscriberDeclaration,
                     ALSymbolKind.EventDeclaration,
                     ALSymbolKind.BusinessEventDeclaration,
-                    ALSymbolKind.IntegrationEventDeclaration
+                    ALSymbolKind.ExternalBusinessEventDeclaration,
+                    ALSymbolKind.IntegrationEventDeclaration,
+                    ALSymbolKind.InternalEventDeclaration
                 };
                 _typePriority = new Dictionary<ALSymbolKind, int>();
 
