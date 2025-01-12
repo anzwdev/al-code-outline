@@ -22,11 +22,18 @@ namespace AnZwDev.ALTools.Server.Handlers
             GetProjectSymbolLocationResponse response = new GetProjectSymbolLocationResponse();
             try
             {
+                ALSymbol symbol = new ALSymbol(parameters.kind, parameters.name);
                 ALProject project = this.Server.Workspace.FindProject(parameters.projectPath);
                 if (project != null)
                 {
                     ALProjectSymbolsLibrarySource symbolsSource = new ALProjectSymbolsLibrarySource(project);
-                    ALSymbol symbol = new ALSymbol(parameters.kind, parameters.name);
+                    response.location = symbolsSource.GetSymbolSourceProjectLocation(symbol);
+                }
+
+                for (int i = 0; (String.IsNullOrWhiteSpace(response.location?.sourcePath)) && (i < this.Server.Workspace.Projects.Count); i++)
+                {
+                    project = this.Server.Workspace.Projects[i];
+                    ALProjectSymbolsLibrarySource symbolsSource = new ALProjectSymbolsLibrarySource(project);
                     response.location = symbolsSource.GetSymbolSourceProjectLocation(symbol);
                 }
             }

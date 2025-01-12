@@ -282,18 +282,23 @@ export class ALSymbolsBrowser extends BaseWebViewEditor {
             //try to find symbol location
             let workspaceFolder: vscode.WorkspaceFolder | undefined = undefined;
             let libraryUri = this._library.getUri();
-            if (libraryUri)
+            let libraryPath: string | undefined = undefined;
+            if (libraryUri) {
                 workspaceFolder = vscode.workspace.getWorkspaceFolder(libraryUri);
-            if ((!workspaceFolder) && (vscode.workspace.workspaceFolders) && (vscode.workspace.workspaceFolders.length > 0))
+                libraryPath = libraryUri.fsPath;
+            }
+            if ((!workspaceFolder) && (vscode.workspace.workspaceFolders) && (vscode.workspace.workspaceFolders.length > 0)) {
                 workspaceFolder = vscode.workspace.workspaceFolders[0];
+            }
 
             //get location from extension language server
             if (workspaceFolder) {
                 let projectSymbolResponse = await this._devToolsContext.toolsLangServerClient.getProjectSymbolLocation(
-                    new ToolsGetProjectSymbolLocationRequest(workspaceFolder.uri.fsPath, alSymbol.kind.toString(), alSymbol.name));
+                    new ToolsGetProjectSymbolLocationRequest(workspaceFolder.uri.fsPath, libraryPath, alSymbol.kind.toString(), alSymbol.name));
                 if ((projectSymbolResponse) && (projectSymbolResponse.location)) {
-                    if (this.openALSymbolSourceLocation(projectSymbolResponse.location, workspaceFolder.name))
+                    if (this.openALSymbolSourceLocation(projectSymbolResponse.location, workspaceFolder.name)) {
                         return;
+                    }
                 }
             }
 

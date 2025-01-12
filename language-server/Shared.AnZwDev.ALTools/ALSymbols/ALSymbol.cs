@@ -81,7 +81,7 @@ namespace AnZwDev.ALTools.ALSymbols
             this.containsDiagnostics = null;
             this.access = null;
         }
-
+        
         public ALSymbol(ALSymbolKind kindValue, string nameValue) : this()
         {
             this.kind = kindValue;
@@ -93,6 +93,8 @@ namespace AnZwDev.ALTools.ALSymbols
         {
             if (Enum.TryParse<ALSymbolKind>(kindTextValue, out ALSymbolKind kindValue))
                 this.kind = kindValue;
+            else if ((!String.IsNullOrWhiteSpace(kindTextValue)) && (Int32.TryParse(kindTextValue, out int kindIntValue)))
+                this.kind = (ALSymbolKind)kindIntValue;
         }
 
         public ALSymbol(ALSymbolKind kindValue, string nameValue, int? idValue) : this(kindValue, nameValue)
