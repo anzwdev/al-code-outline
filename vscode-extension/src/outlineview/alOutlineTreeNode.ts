@@ -103,7 +103,9 @@ export class ALOutlineTreeItem extends vscode.TreeItem {
                 case AZSymbolKind.EventTriggerDeclaration:
                 case AZSymbolKind.EventSubscriberDeclaration:
                 case AZSymbolKind.BusinessEventDeclaration:
+                case AZSymbolKind.ExternalBusinessEventDeclaration:
                 case AZSymbolKind.IntegrationEventDeclaration:
+                case AZSymbolKind.InternalEventDeclaration:
                 case AZSymbolKind.PageHandlerDeclaration:
                 case AZSymbolKind.ReportHandlerDeclaration:
                 case AZSymbolKind.ConfirmHandlerDeclaration:

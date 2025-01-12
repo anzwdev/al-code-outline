@@ -154,7 +154,9 @@ export class AZSymbolInformation {
             (this.kind == AZSymbolKind.InternalMethodDeclaration) ||
             (this.kind == AZSymbolKind.EventSubscriberDeclaration) ||
             (this.kind == AZSymbolKind.EventDeclaration) ||
+            (this.kind == AZSymbolKind.InternalEventDeclaration) ||
             (this.kind == AZSymbolKind.BusinessEventDeclaration) ||
+            (this.kind == AZSymbolKind.ExternalBusinessEventDeclaration) ||
             (this.kind == AZSymbolKind.IntegrationEventDeclaration));
     }
 
@@ -271,7 +273,9 @@ export class AZSymbolInformation {
 
             //events
             case AZSymbolKind.IntegrationEventDeclaration: return 'integrationevent';
+            case AZSymbolKind.InternalEventDeclaration: return 'integrationevent';
             case AZSymbolKind.BusinessEventDeclaration: return 'businessevent';
+            case AZSymbolKind.ExternalBusinessEventDeclaration: return 'businessevent';
             case AZSymbolKind.EventSubscriberDeclaration: return 'eventsubscriber';
             //tests
             case AZSymbolKind.TestDeclaration: return 'test';

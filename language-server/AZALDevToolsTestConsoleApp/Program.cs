@@ -128,7 +128,8 @@ namespace AZALDevToolsTestConsoleApp
             //filePath = "C:\\Projects\\Sandboxes\\al-test-projects\\SmallBC23\\InterfaceDemo.Interface.al";
             //filePath = "C:\\Projects\\Sandboxes\\al-test-projects\\SmallBC23\\DemoPage.Page.al";
             //filePath = "C:\\Projects\\Sandboxes\\al-test-projects\\SmallBC23\\SortingTestPage.Page.al";
-            filePath = "C:\\Projects\\Sandboxes\\al-test-projects\\SmallBC23\\MyTestPage.Page.al";
+            //filePath = "C:\\Projects\\Sandboxes\\al-test-projects\\SmallBC23\\MyTestPage.Page.al";
+            filePath = "C:\\Projects\\Sandboxes\\al-test-projects\\SmallBC23\\CustomerLabel.Table.al";
 
             string content = FileUtils.SafeReadAllText(filePath);
             Dictionary<string, string> pm = new();
@@ -183,13 +184,13 @@ namespace AZALDevToolsTestConsoleApp
             //WorkspaceCommandResult o = host.ALDevToolsServer.WorkspaceCommandsManager.RunCommand("removeEmptyLines", content, projects[0].folderPath, filePath, null, pm, null);
             //WorkspaceCommandResult o = host.ALDevToolsServer.WorkspaceCommandsManager.RunCommand("removeEmptySections", content, projects[0].folderPath, filePath, null, pm, null);
             //WorkspaceCommandResult o = host.ALDevToolsServer.WorkspaceCommandsManager.RunCommand("removeStrSubstNoFromError", content, projects[0].folderPath, filePath, null, pm, null);
-            WorkspaceCommandResult o = host.ALDevToolsServer.WorkspaceCommandsManager.RunCommand("removeRedundantAppAreas", content, projects[0].folderPath, filePath, null, pm, null, null);
+            //WorkspaceCommandResult o = host.ALDevToolsServer.WorkspaceCommandsManager.RunCommand("removeRedundantAppAreas", content, projects[0].folderPath, filePath, null, pm, null, null);
             //WorkspaceCommandResult o = host.ALDevToolsServer.WorkspaceCommandsManager.RunCommand("addTableDataCaptionFields", content, projects[0].folderPath, filePath, null, pm, null);
             //WorkspaceCommandResult o = host.ALDevToolsServer.WorkspaceCommandsManager.RunCommand("addDropDownFieldGroups", content, projects[0].folderPath, filePath, null, pm, null);
             //WorkspaceCommandResult o = host.ALDevToolsServer.WorkspaceCommandsManager.RunCommand("addReferencedTablesPermissions", content, projects[0].folderPath, filePath, null, pm, null);
             //WorkspaceCommandResult o = host.ALDevToolsServer.WorkspaceCommandsManager.RunCommand("generateCSVXmlPortHeaders", content, projects[0].folderPath, filePath, null, pm, null);
             //WorkspaceCommandResult o = host.ALDevToolsServer.WorkspaceCommandsManager.RunCommand("removeRedundantDataClassification", content, projects[0].folderPath, filePath, null, pm, null);
-            //WorkspaceCommandResult o = host.ALDevToolsServer.WorkspaceCommandsManager.RunCommand("sortProcedures", content, projects[0].folderPath, filePath, null, pm, null, null);
+            WorkspaceCommandResult o = host.ALDevToolsServer.WorkspaceCommandsManager.RunCommand("sortProcedures", content, projects[0].folderPath, filePath, null, pm, null, null);
             //WorkspaceCommandResult o = host.ALDevToolsServer.WorkspaceCommandsManager.RunCommand("fixIdentifiersCase", content, projects[0].folderPath, filePath, null, pm, null, null);
             //WorkspaceCommandResult o = host.ALDevToolsServer.WorkspaceCommandsManager.RunCommand("oneStatementPerLine", content, projects[0].folderPath, filePath, null, pm, null);
             //WorkspaceCommandResult o = host.ALDevToolsServer.WorkspaceCommandsManager.RunCommand("addMissingCaseLines", content, projects[0].folderPath, filePath, null, pm, null);

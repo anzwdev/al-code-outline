@@ -1,5 +1,15 @@
 # Change Log
 
+## 14.74.0
+ - Issue #615 - Can't find the references. AZ AL Dev Tools/AL Code Outline
+ - Issue #616 - Different packageCachePath Object definitions are not available
+ - Issue #618 - Sort Procedures does not properly sort InternalEvent event publisher declarations 
+
+Thank you
+ - HennieBink, bartkraai and AlanNguyen99 for reporting issue #615
+ - LucaRoesnick for reporting issue #616
+ - rvanbekkum for reporting issue #618
+
 ## 14.73.0
  - Extension recompiled for BC25
 

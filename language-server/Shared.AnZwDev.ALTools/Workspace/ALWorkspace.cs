@@ -102,6 +102,17 @@ namespace AnZwDev.ALTools.Workspace
             return this.Projects.Where(p => (p.RootPath == path)).FirstOrDefault();
         }
 
+        public ALProject FindProject(ALSymbol symbol)
+        {
+            for (int i = 0; i < this.Projects.Count; i++)
+                if (this.Projects[i].DefinesSymbol(symbol))
+                    return this.Projects[i];
+            for (int i = 0; i < this.Projects.Count; i++)
+                if (this.Projects[i].ReferencesSymbol(symbol))
+                    return this.Projects[i];
+            return null;
+        }
+
         public ALProject FindProject(string id, string name, string publisher, VersionNumber version)
         {
             bool emptyId = String.IsNullOrWhiteSpace(id);
@@ -143,6 +154,14 @@ namespace AnZwDev.ALTools.Workspace
         public ALProject FindProject(string path)
         {
             return this.FindProject(path, false);
+        }
+
+        public ALProject FindProjectByDependencyPath(string path)
+        {
+            for (int i=0; i < this.Projects.Count; i++)
+                if (this.Projects[i].ReferencesLibrary(path))
+                    return this.Projects[i];
+            return null;
         }
 
         public ALProject FindProject(string filePath, string projectPath, bool selectFirstIfNotFound)

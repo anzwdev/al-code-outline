@@ -37,24 +37,24 @@ namespace AnZwDev.ALTools.Workspace
             _allObjects = new Dictionary<ALObjectType, IALProjectAllALAppObjectsCollection>();
 
             Project = project;
-            Tables = CreateObjectsCollection<ALAppTable>(Project, ALObjectType.Table, x => x.Tables);
-            Pages = CreateObjectsCollection<ALAppPage>(Project, ALObjectType.Page, x => x.Pages);
-            Reports = CreateObjectsCollection<ALAppReport>(Project, ALObjectType.Report, x => x.Reports);
-            XmlPorts = CreateObjectsCollection<ALAppXmlPort>(Project, ALObjectType.XmlPort, x => x.XmlPorts);
-            Queries = CreateObjectsCollection<ALAppQuery>(Project, ALObjectType.Query, x => x.Queries);
-            Codeunits = CreateObjectsCollection<ALAppCodeunit>(Project, ALObjectType.Codeunit, x => x.Codeunits);
-            ControlAddIns = CreateObjectsCollection<ALAppControlAddIn>(Project, ALObjectType.ControlAddIn, x => x.ControlAddIns);
-            PageExtensions = CreateObjectsExtensionsCollection<ALAppPageExtension>(Project, ALObjectType.PageExtension, x => x.PageExtensions);
-            TableExtensions = CreateObjectsExtensionsCollection<ALAppTableExtension>(Project, ALObjectType.TableExtension, x => x.TableExtensions);
-            Profiles = CreateObjectsCollection<ALAppProfile>(Project, ALObjectType.Profile, x => x.Profiles);
-            PageCustomizations = CreateObjectsCollection<ALAppPageCustomization>(Project, ALObjectType.PageCustomization, x => x.PageCustomizations);
-            DotNetPackages = CreateObjectsCollection<ALAppDotNetPackage>(Project, ALObjectType.DotNetPackage, x => x.DotNetPackages);
-            EnumTypes = CreateObjectsCollection<ALAppEnum>(Project, ALObjectType.EnumType, x => x.EnumTypes);
-            EnumExtensionTypes = CreateObjectsExtensionsCollection<ALAppEnumExtension>(Project, ALObjectType.EnumExtensionType, x => x.EnumExtensionTypes);
-            Interfaces = CreateObjectsCollection<ALAppInterface>(Project, ALObjectType.Interface, x => x.Interfaces);
-            ReportExtensions = CreateObjectsExtensionsCollection<ALAppReportExtension>(Project, ALObjectType.ReportExtension, x => x.ReportExtensions);
-            PermissionSets = CreateObjectsCollection<ALAppPermissionSet>(Project, ALObjectType.PermissionSet, x => x.PermissionSets);
-            PermissionSetExtensions = CreateObjectsExtensionsCollection<ALAppPermissionSetExtension>(Project, ALObjectType.PermissionSetExtension, x => x.PermissionSetExtensions);
+            Tables = CreateObjectsCollection<ALAppTable>(Project, ALObjectType.Table, x => x?.Tables);
+            Pages = CreateObjectsCollection<ALAppPage>(Project, ALObjectType.Page, x => x?.Pages);
+            Reports = CreateObjectsCollection<ALAppReport>(Project, ALObjectType.Report, x => x?.Reports);
+            XmlPorts = CreateObjectsCollection<ALAppXmlPort>(Project, ALObjectType.XmlPort, x => x?.XmlPorts);
+            Queries = CreateObjectsCollection<ALAppQuery>(Project, ALObjectType.Query, x => x?.Queries);
+            Codeunits = CreateObjectsCollection<ALAppCodeunit>(Project, ALObjectType.Codeunit, x => x?.Codeunits);
+            ControlAddIns = CreateObjectsCollection<ALAppControlAddIn>(Project, ALObjectType.ControlAddIn, x => x?.ControlAddIns);
+            PageExtensions = CreateObjectsExtensionsCollection<ALAppPageExtension>(Project, ALObjectType.PageExtension, x => x?.PageExtensions);
+            TableExtensions = CreateObjectsExtensionsCollection<ALAppTableExtension>(Project, ALObjectType.TableExtension, x => x?.TableExtensions);
+            Profiles = CreateObjectsCollection<ALAppProfile>(Project, ALObjectType.Profile, x => x?.Profiles);
+            PageCustomizations = CreateObjectsCollection<ALAppPageCustomization>(Project, ALObjectType.PageCustomization, x => x?.PageCustomizations);
+            DotNetPackages = CreateObjectsCollection<ALAppDotNetPackage>(Project, ALObjectType.DotNetPackage, x => x?.DotNetPackages);
+            EnumTypes = CreateObjectsCollection<ALAppEnum>(Project, ALObjectType.EnumType, x => x?.EnumTypes);
+            EnumExtensionTypes = CreateObjectsExtensionsCollection<ALAppEnumExtension>(Project, ALObjectType.EnumExtensionType, x => x?.EnumExtensionTypes);
+            Interfaces = CreateObjectsCollection<ALAppInterface>(Project, ALObjectType.Interface, x => x?.Interfaces);
+            ReportExtensions = CreateObjectsExtensionsCollection<ALAppReportExtension>(Project, ALObjectType.ReportExtension, x => x?.ReportExtensions);
+            PermissionSets = CreateObjectsCollection<ALAppPermissionSet>(Project, ALObjectType.PermissionSet, x => x?.PermissionSets);
+            PermissionSetExtensions = CreateObjectsExtensionsCollection<ALAppPermissionSetExtension>(Project, ALObjectType.PermissionSetExtension, x => x?.PermissionSetExtensions);
         }
 
         private ALProjectAllALAppObjectsCollection<T> CreateObjectsCollection<T>(ALProject project, ALObjectType objectType, Func<ALAppSymbolReference, ALAppObjectsCollection<T>> objectsCollection) where T : ALAppObject

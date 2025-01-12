@@ -258,6 +258,33 @@ namespace AnZwDev.ALTools.Workspace
 #endif
         }
 
+        public bool DefinesSymbol(ALSymbol symbol)
+        {
+            var symbolsList = Symbols.AllObjects.GetObjectsCollection(symbol.kind);
+            return (symbolsList?.FindFirst(null, symbol.name) != null);
+        }
+
+        public bool ReferencesSymbol(ALSymbol symbol)
+        {
+            if (Dependencies != null)
+                for (int i=0; i<Dependencies.Count; i++)
+                    if (Dependencies[i].Symbols?.AllObjects?.GetObjectsCollection(symbol.kind)?.FindFirst(null, symbol.name) != null)
+                        return true;
+            return false;
+        }
+
+        public bool ReferencesLibrary(string path)
+        {
+            if (path != null)
+                for (int i=0; i<Dependencies.Count; i++)
+                {
+                    var dependencyPath = Dependencies[i].SourceAppFile?.FullPath;
+                    if ((dependencyPath != null) && (dependencyPath.Equals(path, StringComparison.OrdinalIgnoreCase)))
+                        return true;
+                }
+            return false;
+        }
+
         #region Path and file names methods
 
         public bool ContainsPath(string path)

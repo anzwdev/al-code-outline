@@ -8,6 +8,7 @@ namespace AnZwDev.ALTools.Server.Contracts
     {
 
         public string projectPath { get; set; }
+        public string appFilePath { get; set; }
         public string kind { get; set; }
         public string name { get; set; }
 

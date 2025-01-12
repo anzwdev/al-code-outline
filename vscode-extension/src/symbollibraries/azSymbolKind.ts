@@ -189,6 +189,9 @@ export enum AZSymbolKind {
     IntegrationEventDeclaration = 50035,
     BusinessEventDeclaration = 50036,
     EventSubscriberDeclaration = 50037,
+    InternalEventDeclaration = 50068,
+    ExternalBusinessEventDeclaration = 50069,
+
     //tests
     TestDeclaration = 50038,
     ConfirmHandlerDeclaration = 50039,
@@ -219,6 +222,6 @@ export enum AZSymbolKind {
     Region = 50066,
     UsingDirective = 50067
 
-    //Next available id 50068
+    //Next available id 50070
 
 }
