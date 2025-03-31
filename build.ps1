@@ -238,7 +238,7 @@ dotnet publish ".\AZALDevToolsServer.NetCore\AZALDevToolsServer.NetCore.csproj" 
 
 # Linux - .net core
 Write-Host "Building Linux .net core language server"
-dotnet publish ".\AZALDevToolsServer.NetCore\AZALDevToolsServer.NetCore.csproj" -r linux-x64 -f net8.0 -o "..\vscode-extension\bin\netcore\linux" --self-contained false --configuration Release
+dotnet publish ".\AZALDevToolsServer.NetCore\AZALDevToolsServer.NetCore.csproj" -r linux-x64 -f net8.0 -o "..\vscode-extension\bin\netcore\linux" --self-contained true --configuration Release
 
 # Windows - .net framework for Nav2018 extension development
 Write-Host "Building Windows .net framework language server for Nav 2018"
