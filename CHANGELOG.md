@@ -1,5 +1,13 @@
 # Change Log
 
+## 14.75.0
+ - Issue #625 - Self-contained build for Linux to avoid missing framework errors
+ - Issue #627 - Setting Use BCLinter Cop Case Rules is now obsolete 
+
+Thank you
+ - StefanMaron for reporting issue #625
+ - Pazzakara for reporting issue #627
+
 ## 14.74.0
  - Issue #615 - Can't find the references. AZ AL Dev Tools/AL Code Outline
  - Issue #616 - Different packageCachePath Object definitions are not available

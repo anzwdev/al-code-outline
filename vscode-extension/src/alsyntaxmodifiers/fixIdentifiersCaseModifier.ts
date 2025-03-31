@@ -13,7 +13,6 @@ export class FixIdentifiersCaseModifier extends WorkspaceCommandSyntaxModifier {
         let config = vscode.workspace.getConfiguration('alOutline', uri);
         parameters.removeQuotesFromDataTypeIdentifiers = !!config.get<boolean>('fixCaseRemovesQuotesFromDataTypeIdentifiers');
         parameters.removeQuotesFromNonDataTypeIdentifiers = !!config.get<boolean>('fixCaseRemovesQuotesFromNonDataTypeIdentifiers');
-        parameters.useBCLinterCopCaseRules = !!config.get<boolean>('useBCLinterCopCaseRules');
         return parameters;
     }
 

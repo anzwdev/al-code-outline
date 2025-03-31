@@ -2,7 +2,7 @@
 	"name": "al-code-outline",
 	"displayName": "AZ AL Dev Tools/AL Code Outline",
 	"description": "AZ AL Development Tools: AL code outline, object browser, object creators",
-	"version": "14.74.0",
+	"version": "14.75.0",
 	"publisher": "andrzejzwierzchowski",
 	"engines": {
 		"vscode": "^1.85.0"
@@ -1953,12 +1953,6 @@
 						"default": true,
 						"scope": "resource",
 						"description": "Set to true to remove quotes around identifiers having names that are not al data types when running 'Fix Identifiers and Keywords Case' commands"
-					},
-					"alOutline.useBCLinterCopCaseRules": {
-						"type": "boolean",
-						"default": false,
-						"scope": "resource",
-						"description": "Set to true to use case BCLinterCop case rules instead of Microsoft ones in 'Fix Identifiers and Keywords Case' commands"
 					},
 					"alOutline.variablesSortMode": {
 						"type": "string",
