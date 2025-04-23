@@ -1,5 +1,8 @@
 # Change Log
 
+## 15.76.0
+ - Extension upgraded to BC26
+
 ## 14.75.0
  - Issue #625 - Self-contained build for Linux to avoid missing framework errors
  - Issue #627 - Setting Use BCLinter Cop Case Rules is now obsolete 
