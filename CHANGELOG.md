@@ -1,5 +1,8 @@
 # Change Log
 
+## 16.77.0
+ - Extension upgraded to BC27
+
 ## 15.76.0
  - Extension upgraded to BC26
 
