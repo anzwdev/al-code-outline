@@ -1,5 +1,12 @@
 # Change Log
 
+## 16.78.0
+
+ - Issues #652, #653, #654, #655 -  BC27 fixes
+
+ Thank you
+  - OseChris, DevHarmonize, NicklasBrobergLarsson, LucVanDyck, Stefangur, ajkauffmann and gergozakar for your issue reports
+
 ## 16.77.0
  - Extension upgraded to BC27
 
