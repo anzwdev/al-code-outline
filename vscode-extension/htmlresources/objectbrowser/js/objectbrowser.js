@@ -16,11 +16,12 @@ class ObjectBrowser {
 
         this._objList.setOnDblClickHandler(() => {
             let sel = this._objList.getSelected();
-            if ((sel) && (sel.length > 0))
+            if ((sel) && (sel.length > 0)) {
                 this.sendMessage({
                     command : 'definition',
-                    path : sel[0].path,
-                    selpaths: [sel[0].path]}); 
+                    uid : sel[0].uid,
+                    seluids : [sel[0].uid]}); 
+                }
         });
 
         this.updateModeButtonStyle(true);
@@ -94,7 +95,7 @@ class ObjectBrowser {
         this._objList.onCurrRowChanged = function(data) {
             me.sendMessage({
                 command: 'currRowChanged',
-                path: data.path
+                uid: data.uid
             });
         }
 
@@ -132,25 +133,27 @@ class ObjectBrowser {
     }
 
     setMode(newMode) {
-        if (this._mode != newMode) {
+        if (this._mode !== newMode) {
             this.updateModeButtonStyle(false);
             this._mode = newMode;
             this.updateModeButtonStyle(true)
 
-            if (this._mode == "All")
+            if (this._mode === "All") {
                 this._objList._columns[0].appFilter = undefined;
-            else
+            } else {
                 this._objList._columns[0].appFilter = this._mode;
+            }
             this._objList.renderData();
         }
     }
 
     updateModeButtonStyle(selected) {
         if (this._mode) {
-            if (selected)
+            if (selected) {
                 $("div[data-mode='" + this._mode + "']").attr('class', 'btn btnsel');    
-            else
+            } else {
                 $("div[data-mode='" + this._mode + "']").attr('class', 'btn btnstd');
+            }
         }
     }
 
@@ -195,18 +198,24 @@ class ObjectBrowser {
 
         if ((this._data) && (this._data.length > 1)) {
             this._data.sort(function(a,b) {
-                if (typeSort[a.kind] < typeSort[b.kind])
+                if (typeSort[a.kind] < typeSort[b.kind]) {
                     return -1;
-                if (typeSort[a.kind] > typeSort[b.kind])
+                }
+                if (typeSort[a.kind] > typeSort[b.kind]) {
                     return 1;
-                if (a.id < b.id)
+                }
+                if (a.id < b.id) {
                     return -1;
-                if (a.id > b.id)
+                }
+                if (a.id > b.id) {
                     return 1;
-                if (a.name < b.name)
+                }
+                if (a.name < b.name) {
                     return -1;
-                if (a.name > b.name)
+                }
+                if (a.name > b.name) {
                     return 1;
+                }
                 return 0;                    
             });
         }
@@ -265,8 +274,9 @@ class ObjectBrowser {
                 selector: 'tr', 
                 callback: function(key, options) {
                     let kind = $(this).data("objt");
-                    if (key == "copysel")
+                    if (key === "copysel") {
                         kind = ALSymbolKind.Undefined;
+                    }
                     me.execObjCommand(key, $(this)[0], kind);
                 },
                 items: {
@@ -346,8 +356,9 @@ class ObjectBrowser {
         let typeElem = document.getElementById('searchtype');
         let options = typeElem.options;
         for (let i=0; i<options.length; i++) {
-            if (options[i].selected)
+            if (options[i].selected) {
                 typeList.push(options[i].value);
+            }
         }
 
         this._objList._columns[0].userFilterArray = typeList;

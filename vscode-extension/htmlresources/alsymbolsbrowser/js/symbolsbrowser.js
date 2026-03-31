@@ -12,8 +12,9 @@ class ObjectBrowser {
         //prevent standard Ctrl+A inside tree elements
         $('body').on('keydown', '.symbolscont', function(evt)
         {
-            if ((!evt.ctrlKey) || (evt.keyCode !== 65))
+            if ((!evt.ctrlKey) || (evt.keyCode !== 65)) {
                 return;
+            }
             evt.preventDefault();
             return false;
         });
@@ -41,7 +42,7 @@ class ObjectBrowser {
                 command: 'symTreeShowIdsChanged',
                 value: newVal 
             });
-        }
+        };
 
         this.initializeContextMenu();
 
@@ -49,12 +50,12 @@ class ObjectBrowser {
         Split(['#olpanel', '#odpanel'], {
             minSize: 0,
             gutter: function (index, direction) {
-                var gutter = document.createElement('div')
-                gutter.className = 'gutter gutter-' + direction
-                return gutter
+                var gutter = document.createElement('div');
+                gutter.className = 'gutter gutter-' + direction;
+                return gutter;
             },
             gutterSize: 6
-        })
+        });
 
         // Handle messages sent from the extension to the webview
         window.addEventListener('message', event => {
@@ -97,8 +98,7 @@ class ObjectBrowser {
                 else {
                     browser.sendMessage({
                         command : key,
-                        path : browser._objTree.getNodePath(this),
-                        selpaths : browser._objTree.getSelectedPaths(this),
+                        seluids : browser._objTree.getSelectedUids(this),
                         uid : $(this).data('uid'),
                         kind : $(this).data('kind')
                     });
@@ -113,50 +113,50 @@ class ObjectBrowser {
                     name: "Run in Web Client",
                     disabled: function(key, opt) {
                         let kind = Number($(this).data("kind")); 
-                        return ((kind != ALSymbolKind.TableObject) && (kind != ALSymbolKind.PageObject) && (kind != ALSymbolKind.ReportObject));
+                        return ((kind !== ALSymbolKind.TableObject) && (kind !== ALSymbolKind.PageObject) && (kind !== ALSymbolKind.ReportObject));
                     }},
                 "sep2": "---------",
                 "newcardpage": {
                     name: "New Card Page",
                     disabled: function(key, opt) {
-                        return (Number($(this).data("kind")) != ALSymbolKind.TableObject);
+                        return (Number($(this).data("kind")) !== ALSymbolKind.TableObject);
                     }},
                 "newlistpage": {
                     name: "New List Page",
                     disabled: function(key, opt) {
-                        return (Number($(this).data("kind")) != ALSymbolKind.TableObject);
+                        return (Number($(this).data("kind")) !== ALSymbolKind.TableObject);
                     }},
                 "newreport": {
                     name: "New Report",
                     disabled: function(key, opt) {
-                        return (Number($(this).data("kind")) != ALSymbolKind.TableObject);
+                        return (Number($(this).data("kind")) !== ALSymbolKind.TableObject);
                     }},
                 "newxmlport": {
                     name: "New Xml Port",
                     disabled: function(key, opt) {
-                        return (Number($(this).data("kind")) != ALSymbolKind.TableObject);
+                        return (Number($(this).data("kind")) !== ALSymbolKind.TableObject);
                     }},
                 "newquery": {
                     name: "New Query",
                     disabled: function(key, opt) {
-                        return (Number($(this).data("kind")) != ALSymbolKind.TableObject);
+                        return (Number($(this).data("kind")) !== ALSymbolKind.TableObject);
                     }},
                 "sep3": "---------",
                 // New Extension Objects
                 "extendtable": {
                     name: "New Table Extension",
                     disabled: function(key, opt) {
-                        return (Number($(this).data("kind")) != ALSymbolKind.TableObject);
+                        return (Number($(this).data("kind")) !== ALSymbolKind.TableObject);
                     }},
                 "extendpage": {
                     name: "New Page Extension",
                     disabled: function(key, opt) {
-                        return (Number($(this).data("kind")) != ALSymbolKind.PageObject);
+                        return (Number($(this).data("kind")) !== ALSymbolKind.PageObject);
                     }},
                 "extendreport": {
                     name: "New Report Extension",
                     disabled: function(key, opt) {
-                        return (Number($(this).data("kind")) != ALSymbolKind.ReportObject);
+                        return (Number($(this).data("kind")) !== ALSymbolKind.ReportObject);
                     }},
                 "sep4": "---------",
                 "expandcollapse": {name: "Expand/collapse child nodes"},
@@ -201,26 +201,15 @@ class ObjectBrowser {
     onNodeSelected(node) {        
         if (node) {
             var uid = $(node).data('uid');
-            if ((uid === undefined) || (Number(uid) < 0))
+            if ((uid === undefined) || (Number(uid) < 0)) {
                 this._symTree.setData(undefined);
-            else
+            } else {
                 this.sendMessage({
                     command: 'objselected',
-                    path: this.getNodePath(node),
-                    uid: uid
+                    uid: Number(uid)
                 });
-        }
-    }
-
-    getNodePath(node) {
-        let items = $(node).parents('.treeitem');
-        let path = [];
-        if ((items) && (items.length)) {
-            for (let pid = 0; pid<items.length;pid++) {
-                path.push($(items[pid]).data('idx'));
             }
         }
-        return path;
     }
 
     search() {        
@@ -228,10 +217,10 @@ class ObjectBrowser {
         let typeElem = document.getElementById('searchtype');
         let options = typeElem.options;
         for (let i=0; i<options.length; i++) {
-            if (options[i].selected)
+            if (options[i].selected) {
                 typeList.push(this.objectTypeToSymbolKind(options[i].value));
+            }
         }
-
 
         this._objTree.filterData(typeList, $('#searchid').val(), $('#searchname').val());
     }
@@ -271,7 +260,6 @@ class ObjectBrowser {
             	return ALSymbolKind.Undefined;
         }
     }
-
 
     onSearchKeyDown(e) {
         let handled = false;

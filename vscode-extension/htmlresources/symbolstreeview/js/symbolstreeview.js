@@ -10,13 +10,14 @@ class SymbolsTreeView {
         this._symTree.enableSimpleFilter('filter', 'filterbtn');
         this._symTree.nodeDefaultAction = function(node) {
             me.onNodeDefaultAction(node);
-        }
+        };
 
         //prevent standard Ctrl+A inside tree elements
         $('body').on('keydown', '.symbolscont', function(evt)
         {
-            if ((!evt.ctrlKey) || (evt.keyCode !== 65))
+            if ((!evt.ctrlKey) || (evt.keyCode !== 65)) {
                 return;
+            }
             evt.preventDefault();
             return false;
         });
@@ -45,13 +46,15 @@ class SymbolsTreeView {
         switch (message.command) {
             case 'setData':
                 this.setData(message.data);
-                if (message.selected)
-                    this._symTree.selectNodeByPath(message.selected);               
+                if (message.selected) {
+                    this._symTree.selectNodeByUid(message.selected);               
+                }
                 break;
             case 'selectSymbol':
-                if (message.selected)
-                    this._symTree.selectNodeByPath(message.selected);               
-                break
+                if (message.selected) {
+                    this._symTree.selectNodeByUid(message.selected);               
+                }
+                break;
         }
     }
 
@@ -60,8 +63,9 @@ class SymbolsTreeView {
     }
 
     setData(data) {
-        if (data)
+        if (data) {
             this._symTree.applyTreeItemState(data);
+        }
         this._symTree.setData(data);
     }
 
@@ -77,8 +81,7 @@ class SymbolsTreeView {
                 else {
                     me.sendMessage({
                         command : key,
-                        path : me._symTree.getNodePath(this),
-                        selpaths : me._symTree.getSelectedPaths(this),
+                        seluids : me._symTree.getSelectedUids(this),
                         uid : $(this).data('uid'),
                         kind : $(this).data('kind')
                     });
@@ -92,14 +95,14 @@ class SymbolsTreeView {
     }
 
     onNodeDefaultAction(node) {
-        if (node)
+        if (node) {
             this.sendMessage({
                 command : 'definition',
-                path : this._symTree.getNodePath(node),
-                selpaths : this._symTree.getSelectedPaths(node),
+                seluids : this._symTree.getSelectedUids(node),
                 uid : $(node).data('uid'),
                 kind : $(node).data('kind')
             });
+        }
     }
 
 }

@@ -7,7 +7,8 @@ import { DevToolsExtensionContext } from './devToolsExtensionContext';
 // Your extension is activated the very first time the command is executed
 export function activate(context: vscode.ExtensionContext) {
     const toolsExtensionContext: DevToolsExtensionContext = new DevToolsExtensionContext(context);
-    toolsExtensionContext.activeDocumentSymbols.initializeContent();
+    //!!!TODO: document symbols service disabled for now
+	//!!!toolsExtensionContext.activeDocumentSymbols.initializeContent();
     context.subscriptions.push(toolsExtensionContext);
     vscode.commands.executeCommand('setContext', 'azALDevTools.extensionActive', true);
     return toolsExtensionContext;

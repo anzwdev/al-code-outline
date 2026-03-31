@@ -41,16 +41,17 @@ class ImageBrowser {
 
     initializeContextMenu() {
         let items;
-        if (this._withActions)
+        if (this._withActions) {
             items = {
                 "copyname": {name: "Copy name"},
                 "copyaction": {name: "Copy as action"},
                 "copypromotedaction": {name: "Copy as promoted action"}
             };
-        else
+        } else {
             items = {
                 "copyname": {name: "Copy name"}
             };
+        }
 
         let browser = this;
         $('#' + this._controlId).contextMenu({
@@ -93,10 +94,12 @@ class ImageBrowser {
         this._data = data;
         this._withActions = withActions;
         this._imageStyleType = imageStyleType;
-        if (!this._contextMenuInitialized)
+        if (!this._contextMenuInitialized) {
             this.initializeContextMenu();
-        if (!this._stylesInitialized)
+        }
+        if (!this._stylesInitialized) {
             this.initializeStyles();
+        }
         this.renderData();
     }
 
@@ -116,8 +119,9 @@ class ImageBrowser {
                     item.className = this._itemStyle;
                     item.dataset['idx'] = i;
                     item.dataset['visidx'] = visualIdx;
-                    if (i == this._selectedDataIndex)
+                    if (i === this._selectedDataIndex) {
                         newSelectedIndex = visualIdx;
+                    }
 
                     let img = document.createElement('img');
                     img.src = this._data[i].content;
@@ -138,13 +142,16 @@ class ImageBrowser {
 
     setCurrItem(index) {
         let maxIndex = this._content.children.length - 1;
-        if (index < 0)
+        if (index < 0) {
             index = 0;
-        if (index >= maxIndex)
-            index = maxIndex;            
+        }
+        if (index >= maxIndex) {
+            index = maxIndex;   
+        }         
 
-        if ((this._selectedIndex >= 0) && (this._selectedIndex <= maxIndex))
+        if ((this._selectedIndex >= 0) && (this._selectedIndex <= maxIndex)) {
             this._content.children[this._selectedIndex].className = this._itemStyle;
+        }
 
         this._selectedIndex = index;
 
@@ -153,46 +160,51 @@ class ImageBrowser {
             this._selectedDataIndex = parseInt(item.dataset['idx']);
             item.className = this._selItemStyle;
             this.scrollToElement(item);
-        } else
+        } else {
             this._selectedDataIndex = -1;
-        
+        }
     }
 
     nextPageOrLineItemIndex(nextLineOnly) {
-        if (this._selectedIndex < 0)
+        if (this._selectedIndex < 0) {
             return 0;
-        if (this._selectedIndex >= (this._content.children.length - 1))
+        }
+        if (this._selectedIndex >= (this._content.children.length - 1)) {
             return this._content.children.length - 1;
-
+        }
         let item = this._content.children[this._selectedIndex];
         let idx = this._selectedIndex;
         
         let targetTop = item.offsetTop - item.offsetHeight + this._content.clientHeight;
         for (let i = this._selectedIndex + 1; i<this._content.children.length; i++) {
-            if (this._content.children[i].offsetLeft == item.offsetLeft) {
+            if (this._content.children[i].offsetLeft === item.offsetLeft) {
                 idx = i;
-                if ((nextLineOnly) || (this._content.children[i].offsetTop >= targetTop))
+                if ((nextLineOnly) || (this._content.children[i].offsetTop >= targetTop)) {
                     return i;
+                }
             }
         }
         return idx;
     }
 
     prevPageOrLineItemIndex(prevLineOnly) {
-        if (this._selectedIndex <= 0)
+        if (this._selectedIndex <= 0) {
             return 0;
-        if (this._selectedIndex >= this._content.children.length)
+        }
+        if (this._selectedIndex >= this._content.children.length) {
             return this._content.children.length - 1;
+        }
 
         let item = this._content.children[this._selectedIndex];
         let idx = this._selectedIndex;
 
         let targetTop = item.offsetTop + item.offsetHeight - this._content.clientHeight;
         for (let i = this._selectedIndex - 1; i >= 0; i--) {
-            if (this._content.children[i].offsetLeft == item.offsetLeft) {
+            if (this._content.children[i].offsetLeft === item.offsetLeft) {
                 idx = i;
-                if ((prevLineOnly) || (this._content.children[i].offsetTop <= targetTop))
+                if ((prevLineOnly) || (this._content.children[i].offsetTop <= targetTop)) {
                     return i;
+                }
             }
         }
         return idx;
@@ -201,15 +213,17 @@ class ImageBrowser {
 
     compileFilters() {
         let nameFilterText = document.getElementById('searchname').value;
-        if (nameFilterText)
+        if (nameFilterText) {
             this._nameFilter = compileFilter('text', nameFilterText);
-        else
+        } else {
             this._nameFilter = undefined;
+        }
     }
 
     validItem(item) {
-        if ((this._nameFilter) && (!this._nameFilter({TEXT: item.name})))
+        if ((this._nameFilter) && (!this._nameFilter({TEXT: item.name}))) {
             return false;
+        }
         return true;
     }
 
@@ -302,10 +316,11 @@ class ImageBrowser {
         let elementTop = element.offsetTop - mainTop;
         let elementBottom = elementTop + element.offsetHeight;
 
-        if (elementTop < viewTop)
+        if (elementTop < viewTop) {
             element.scrollIntoView(true);
-        else if (elementBottom > viewBottom)
+        } else if (elementBottom > viewBottom) {
             element.scrollIntoView(false);
+        }
     }
 
     copyName() {

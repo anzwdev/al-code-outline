@@ -2,6 +2,7 @@ class PageExtWizard extends BaseObjectWizard {
 
     constructor() {
         super(1);
+        this._basePageChanged = false;
     }
 
     onMessage(message) {
@@ -19,9 +20,9 @@ class PageExtWizard extends BaseObjectWizard {
        
         if (this._data) {
             //initialize inputs
-            document.getElementById("objectid").value = this._data.objectId;
+            this.updateObjectIdControl();
             document.getElementById("objectname").value = this._data.objectName;
-            document.getElementById("basepage").value = this._data.basePage;
+            document.getElementById("basepage").value = this._data.basePage?.name ?? "";
             this.updateControls();
         }
 
@@ -49,20 +50,21 @@ class PageExtWizard extends BaseObjectWizard {
 			input: document.getElementById('basepage'),
 			minLength: 1,
 			onSelect: function (item, inputfield) {
-				inputfield.value = item;
+				inputfield.value = item.name;
+                me.selectBasePageByObject(item);
 			},
 			fetch: function (text, callback) {
 				let match = text.toLowerCase();
-				callback(me._data.pageList.filter(function(n) { return n.toLowerCase().indexOf(match) !== -1; }));
+				callback(me._data.pageList.filter(function(n) { return n.name.toLowerCase().indexOf(match) !== -1; }));
 			},
 			render: function(item, value) {
 				let itemElement = document.createElement("div");
 				if (allowedChars.test(value)) {
 					let regex = new RegExp(value, 'gi');
-					let inner = item.replace(regex, function(match) { return "<strong>" + match + "</strong>"; });
+					let inner = item.name.replace(regex, function(match) { return "<strong>" + match + "</strong>"; });
 					itemElement.innerHTML = inner;
 				} else {
-					itemElement.textContent = item;
+					itemElement.textContent = item.name;
 				}
 				return itemElement;
 			},
@@ -89,16 +91,17 @@ class PageExtWizard extends BaseObjectWizard {
     }
 
     collectStepData(finishSelected) {
-        this._data.objectId = document.getElementById("objectid").value;
+        this.selectBasePageByName(pageNamedocument.getElementById("basepage").value);
+        this.saveObjectIdControl();
         this._data.objectName = document.getElementById("objectname").value;
-        this._data.basePage = document.getElementById("basepage").value;
     }
 
     canFinish() {
-        if (!super.canFinish())
+        if (!super.canFinish()) {
             return false;
+        }
 
-        if ((!this._data.basePage) || (this._data.basePage == '')) {
+        if ((!this._data.basePage) || (this._data.basePage === "")) {
             this.sendMessage({
                 command: 'showError',
                 message: 'Please enter a target object name.'
@@ -106,6 +109,18 @@ class PageExtWizard extends BaseObjectWizard {
             return false;
         }
         return true;
+    }
+
+
+    selectBasePageByName(name) {
+        if (this._data.basePage?.name !== name) {
+            this.selectBasePageByObject(this.findObjectListItemByName(this._data.pageList, name));
+        }
+    }
+
+    selectBasePageByObject(obj) {
+        this._basePageChanged = (this._data.basePage?.uid !== obj?.uid);
+        this._data.basePage = obj;
     }
 
 }

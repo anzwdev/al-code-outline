@@ -13,9 +13,9 @@ class QueryWizard extends TableBasedObjectWizard {
     setData(data) {
         super.setData(data);
         //initialize fields
-        document.getElementById("objectid").value = this._data.objectId;
+        this.updateObjectIdControl();
         document.getElementById("objectname").value = this._data.objectName;
-        document.getElementById("srctable").value = this._data.selectedTable;
+        document.getElementById("srctable").value = this._data.selectedTable?.name ?? "";
         document.getElementById("querytype").value = this._data.queryType;
         document.getElementById("apipublisher").value = this._data.apiPublisher;
         document.getElementById("apigroup").value = this._data.apiGroup;
@@ -54,10 +54,9 @@ class QueryWizard extends TableBasedObjectWizard {
     }
 
     collectStep1Data(finishSelected) {
-        var prevTableName = this._data.selectedTable;
-        this._data.objectId = document.getElementById("objectid").value;
+        this.selectTableByName(document.getElementById("srctable").value);
+        this.saveObjectIdControl();
         this._data.objectName = document.getElementById("objectname").value;
-        this._data.selectedTable = document.getElementById("srctable").value;
         this._data.queryType = document.getElementById("querytype").value;
         this._data.apiPublisher = document.getElementById("apipublisher").value;
         this._data.apiGroup = document.getElementById("apigroup").value;
@@ -65,15 +64,18 @@ class QueryWizard extends TableBasedObjectWizard {
         this._data.entityName = document.getElementById("entityname").value;
         this._data.entitySetName = document.getElementById("entitysetname").value;    
 
-        if (prevTableName !== this._data.selectedTable) {
+        if (this._selectedTableChanged) {
+            this._selectedTableChanged = false;
+
             htmlHelper.clearChildrenById("srcfields");
             htmlHelper.clearChildrenById("destfields");
 
-            if (!finishSelected)
+            if (!finishSelected) {
                 this.sendMessage({
                     command: 'selectTable',
-                    tableName: document.getElementById('srctable').value
+                    selectedTable: this._data.selectedTable
                 });    
+            }
         }
     }
 
@@ -89,7 +91,7 @@ class QueryWizard extends TableBasedObjectWizard {
     updateControls() {
         super.updateControls();
 
-        if (this._data.queryType == "API") {
+        if (this._data.queryType === "API") {
             htmlHelper.showById("apipublisherline");
             htmlHelper.showById("apigroupline");
             htmlHelper.showById("apiversionline");

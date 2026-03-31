@@ -7,7 +7,7 @@ class EnumWizard extends BaseObjectWizard {
     setData(data) {
         super.setData(data);
         //initialize fields
-        document.getElementById("objectid").value = this._data.objectId;
+        this.updateObjectIdControl();
         
         let objectNameFld = document.getElementById("objectname");        
         objectNameFld.value = this._data.objectName;
@@ -34,7 +34,7 @@ class EnumWizard extends BaseObjectWizard {
     }
 
     collectStepData(finishSelected) {
-        this._data.objectId = document.getElementById("objectid").value;
+        this.saveObjectIdControl();
         this._data.objectName = document.getElementById("objectname").value;
         this._data.valueList = document.getElementById("valuelist").value;
         this._data.captionList = document.getElementById("captionlist").value;

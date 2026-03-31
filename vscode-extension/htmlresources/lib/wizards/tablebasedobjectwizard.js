@@ -3,6 +3,7 @@ class TableBasedObjectWizard extends BaseObjectWizard {
     constructor(maxStepNo, flowFiltersSupported) {
         super(maxStepNo);
 
+        this._selectedTableChanged = false;
         this._flowFiltersSupported = !!flowFiltersSupported;
 
         this._srcFields = new FilteredList('srcfieldsfilter', 'srcfields');
@@ -130,28 +131,40 @@ class TableBasedObjectWizard extends BaseObjectWizard {
         }
     }
 
+    selectTableByName(name) {
+        if (this._data.selectedTable?.name !== name) {
+            this.selectTableByObject(this.findObjectListItemByName(this._data.tableList, name));
+        }
+    }
+
+    selectTableByObject(tableObject) {
+        this._selectedTableChanged = (this._data.selectedTable?.uid !== tableObject?.uid);
+        this._data.selectedTable = tableObject;
+    }
+
     initAutoComplete() {
         let me = this;
-        let allowedChars = new RegExp(/^[a-zA-Z\s]+$/)
+        let allowedChars = new RegExp(/^[a-zA-Z\s]+$/);
 
         autocomplete({
 			input: document.getElementById('srctable'),
 			minLength: 1,
 			onSelect: function (item, inputfield) {
-				inputfield.value = item;
+				inputfield.value = item.name;
+                me.selectTableByObject(item);
 			},
 			fetch: function (text, callback) {
 				var match = text.toLowerCase();
-				callback(me._data.tableList.filter(function(n) { return n.toLowerCase().indexOf(match) !== -1; }));
+				callback(me._data.tableList.filter(function(n) { return n.name.toLowerCase().indexOf(match) !== -1; }));
 			},
 			render: function(item, value) {
 				var itemElement = document.createElement("div");
 				if (allowedChars.test(value)) {
 					var regex = new RegExp(value, 'gi');
-					var inner = item.replace(regex, function(match) { return "<strong>" + match + "</strong>" });
+					var inner = item.name.replace(regex, function(match) { return "<strong>" + match + "</strong>"; });
 					itemElement.innerHTML = inner;
 				} else {
-					itemElement.textContent = item;
+					itemElement.textContent = item.name;
 				}
 				return itemElement;
 			},

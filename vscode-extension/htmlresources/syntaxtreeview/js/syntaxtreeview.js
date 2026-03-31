@@ -30,8 +30,9 @@ class SyntaxTreeView {
         //prevent standard Ctrl+A inside tree elements
         $('body').on('keydown', '.symbolscont', function(evt)
         {
-            if ((!evt.ctrlKey) || (evt.keyCode !== 65))
+            if ((!evt.ctrlKey) || (evt.keyCode !== 65)) {
                 return;
+            }
             evt.preventDefault();
             return false;
         });
@@ -71,9 +72,9 @@ class SyntaxTreeView {
         Split(['#symbols', '#proppanel'], {
             minSize: 0,
             gutter: function (index, direction) {
-                var gutter = document.createElement('div')
-                gutter.className = 'gutter gutter-' + direction
-                return gutter
+                var gutter = document.createElement('div');
+                gutter.className = 'gutter gutter-' + direction;
+                return gutter;
             },
             gutterSize: 6,
             direction: 'vertical'
@@ -89,15 +90,17 @@ class SyntaxTreeView {
             case 'setData':
                 this.setData(message.data);
                 this.updateViewMode(message.viewMode);                
-                if (message.selected)
-                    this._symTree.selectNodeByPath(message.selected);               
+                if (message.selected) {
+                    this._symTree.selectNodeByUid(message.selected?.uid);
+                }
                 break;
             case 'setSymbolInfo':
                 this.setSymbolInfo(message.data);
                 break;
             case 'selectSymbol':
-                if (message.selected)
-                    this._symTree.selectNodeByPath(message.selected);               
+                if (message.selected) {
+                    this._symTree.selectNodeByUid(message.selected?.uid);
+                }
                 break;
         }
     }
@@ -107,8 +110,9 @@ class SyntaxTreeView {
     }
 
     setData(data) {
-        if (data)
+        if (data) {
             this._symTree.applyTreeItemState(data);
+        }
         this._symTree.setData(data);
     }
 
@@ -126,7 +130,7 @@ class SyntaxTreeView {
     onNodeSelected(node) {
         this.sendMessage({
             command: 'symbolselected',
-            path: this._symTree.getNodePath(node)
+            uid: this._symTree.getNodeUid(node)
         });
     }
 

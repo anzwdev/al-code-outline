@@ -1,0 +1,27 @@
+import { ALObjectWizard } from "./alObjectWizard";
+import { ALObjectWizardSettings } from "./alObjectWizardSettings";
+import { ALCodeunitWizardData } from "./alCodeunitWizardData";
+import { ALCodeunitWizardPage } from "./alCodeunitWizardPage";
+import { DevToolsExtensionContext } from "../../../devToolsExtensionContext";
+
+export class ALCodeunitWizard extends ALObjectWizard {
+
+    constructor(toolsExtensionContext : DevToolsExtensionContext, newLabel: string, newDescription : string, newDetails: string) {
+        super(toolsExtensionContext, newLabel, newDescription, newDetails);
+    }
+
+    run(settings: ALObjectWizardSettings) {
+        super.run(settings);
+        this.runAsync(settings);
+    }
+
+    protected async runAsync(settings: ALObjectWizardSettings) {
+        let wizardData : ALCodeunitWizardData = new ALCodeunitWizardData();
+        await this.initObjectIdFieldsAsync(wizardData, settings, "Codeunit");
+        wizardData.objectName = '';//settings.getInputNameVariable();
+        this.onInitWizardData(wizardData);
+        let wizardPage : ALCodeunitWizardPage = new ALCodeunitWizardPage(this._toolsExtensionContext, settings, wizardData);
+        wizardPage.show();
+    }
+
+}

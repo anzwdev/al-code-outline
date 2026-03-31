@@ -1,0 +1,47 @@
+<Solution>
+  <Folder Name="/Tests/">
+    <Project Path="AnZwDev.AL.Symbols.Tests/AnZwDev.AL.Symbols.Tests.csproj" Id="f008d711-6899-4f20-a4bf-454bfca94cad" />
+    <Project Path="AnZwDev.AL.Views.SyntaxTreeSymbolsTreeViews.Tests/AnZwDev.AL.Views.SyntaxTreeSymbolsTreeViews.Tests.csproj" Id="fbce35c9-3228-47d0-b5ad-033ad652970f" />
+  </Folder>
+  <Project Path="AnZwDev.AL.CodeAnalysis.Formatting/AnZwDev.AL.CodeAnalysis.Formatting.csproj" Id="2b9676c8-c8b3-4d61-9054-61a33278a277" />
+  <Project Path="AnZwDev.AL.CodeAnalysis.Sorting/AnZwDev.AL.CodeAnalysis.Sorting.csproj" Id="99745c09-525b-4c18-a648-a98c893c3e7d" />
+  <Project Path="AnZwDev.AL.CodeAnalysis.SystemSymbols/AnZwDev.AL.CodeAnalysis.SystemSymbols.csproj" Id="ce313a80-4342-406d-9775-deaf02ca6f78" />
+  <Project Path="AnZwDev.AL.CodeAnalysis/AnZwDev.AL.CodeAnalysis.csproj" Id="1e54d029-da6a-4a31-9e25-73ffdb601abd" />
+  <Project Path="AnZwDev.AL.LanguageServer.Modules.ProjectInformationProvider/AnZwDev.AL.LanguageServer.Modules.ProjectInformationProvider.csproj" Id="4c5ea2aa-729f-4699-acd6-c651064e3f2b" />
+  <Project Path="AnZwDev.AL.LanguageServer.Modules.SymbolsSourceProvider/AnZwDev.AL.LanguageServer.Modules.SymbolsSourceProvider.csproj" Id="81945689-24b4-4290-8c50-9d6e598d9ee4" />
+  <Project Path="AnZwDev.AL.LanguageServer.Modules.SymbolsViewer/AnZwDev.AL.LanguageServer.Modules.SymbolsViewer.csproj" Id="4ebed27b-73bf-416a-9b6a-bccd7ad2bbbd" />
+  <Project Path="AnZwDev.AL.LanguageServer.Modules.SyntaxTreeSymbolsTreeViewProvider/AnZwDev.AL.LanguageServer.Modules.SyntaxTreeSymbolsTreeViewProvider.csproj" Id="584bf8d6-371f-4782-957c-1f25b0bf59c8" />
+  <Project Path="AnZwDev.AL.LanguageServer.Modules.SyntaxTreeTreeViewProvider/AnZwDev.AL.LanguageServer.Modules.SyntaxTreeTreeViewProvider.csproj" Id="37e894b0-25dc-4730-a6b9-7eeb6017d21b" />
+  <Project Path="AnZwDev.AL.LanguageServer.Modules.SyntaxTreeViewer/AnZwDev.AL.LanguageServer.Modules.SyntaxTreeViewer.csproj" Id="400a9767-78ad-4955-9725-80dc5860be4d" />
+  <Project Path="AnZwDev.AL.LanguageServer.Modules.WorkspaceChangeTracking/AnZwDev.AL.LanguageServer.Modules.WorkspaceChangeTracking.csproj" Id="d099eaaa-1439-40f0-b372-ac2161f3ec64" />
+  <Project Path="AnZwDev.AL.LanguageServer.Runner/AnZwDev.AL.LanguageServer.Runner.csproj" Id="e4ab040b-2f26-4528-8f41-d574d2d0657b" />
+  <Project Path="AnZwDev.AL.LanguageServer/AnZwDev.AL.LanguageServer.csproj" Id="0a41eea9-e00d-479a-a0ad-c692a573c5b4" />
+  <Project Path="AnZwDev.AL.Symbols.CodeAnalysis/AnZwDev.AL.Symbols.CodeAnalysis.csproj" Id="e79a7826-4612-40a9-9cb9-7da88a265b5f" />
+  <Project Path="AnZwDev.AL.Symbols.Formatters/AnZwDev.AL.Symbols.Formatters.csproj" Id="cf18373e-8ae9-4bae-9e90-e8ebbd4b5a4b" />
+  <Project Path="AnZwDev.AL.Symbols.Parsing/AnZwDev.AL.Symbols.Parsing.csproj" Id="d992bfcc-851a-480c-a276-f412326b5738" />
+  <Project Path="AnZwDev.AL.Symbols.Providers.AppPackages/AnZwDev.AL.Symbols.Providers.AppPackages.csproj" Id="8f9be8eb-c8fd-4bbd-ad49-f683865fb4ad" />
+  <Project Path="AnZwDev.AL.Symbols.Providers.SourceCode/AnZwDev.AL.Symbols.Providers.SourceCode.csproj" Id="3d089b95-e3b0-48aa-86f7-d12dec75fbe3" />
+  <Project Path="AnZwDev.AL.Symbols/AnZwDev.AL.Symbols.csproj" Id="5f11f396-d14d-4433-b679-8bd2a89c7f8e" />
+  <Project Path="AnZwDev.AL.Syntax/AnZwDev.AL.Syntax.csproj" Id="8034d2cd-4a80-4625-8d5c-2202f27e4a11" />
+  <Project Path="AnZwDev.AL.Views.SymbolsTreeViews/AnZwDev.AL.Views.SymbolsTreeViews.csproj" Id="7aab151d-9495-4607-95ea-cc6a54c539b1" />
+  <Project Path="AnZwDev.AL.Views.SyntaxTreeSymbolsTreeViews/AnZwDev.AL.Views.SyntaxTreeSymbolsTreeViews.csproj" Id="0192227e-4f6e-41e3-ad23-c5a19a52e434" />
+  <Project Path="AnZwDev.AL.Views.SyntaxTreeTreeViews/AnZwDev.AL.Views.SyntaxTreeTreeViews.csproj" Id="77fa4751-1a99-4638-b0e7-206fad695935" />
+  <Project Path="AnZwDev.AL.Views.SyntaxTreeViewerTreeViews/AnZwDev.AL.Views.SyntaxTreeViewerTreeViews.csproj" Id="125bab1a-dd31-46f4-94f1-778dbfec3b6f" />
+  <Project Path="AnZwDev.AL.Workspaces.AttachedData.SyntaxTrees/AnZwDev.AL.Workspaces.AttachedData.SyntaxTrees.csproj" Id="335f0a0b-a4b9-4c93-800b-89966737c615" />
+  <Project Path="AnZwDev.AL.Workspaces.AttachedData.SyntaxTreeSymbolsTreeViews/AnZwDev.AL.Workspaces.AttachedData.SyntaxTreeSymbolsTreeViews.csproj" Id="bc567315-9f82-4c17-81ab-812535423c25" />
+  <Project Path="AnZwDev.AL.Workspaces.AttachedData.SyntaxTreeTreeViews/AnZwDev.AL.Workspaces.AttachedData.SyntaxTreeTreeViews.csproj" Id="f5b92c34-dbfd-44aa-8a72-f702501a0f18" />
+  <Project Path="AnZwDev.AL.Workspaces.AttachedData.SyntaxTreeViewersStates/AnZwDev.AL.Workspaces.AttachedData.SyntaxTreeViewersStates.csproj" Id="0b564461-f246-487c-9f5c-67188caef21b" />
+  <Project Path="AnZwDev.AL.Workspaces.CodeAnalysis/AnZwDev.AL.Workspaces.CodeAnalysis.csproj" Id="36de3121-1bb8-4e0e-96ec-ddcc84b24e40" />
+  <Project Path="AnZwDev.AL.Workspaces.Compiler/AnZwDev.AL.Workspaces.Compiler.csproj" Id="aa4496eb-bb74-48b3-ae06-2abc42aece57" />
+  <Project Path="AnZwDev.AL.Workspaces.Documents.SymbolsViewers/AnZwDev.AL.Workspaces.Documents.SymbolsViewers.csproj" Id="8961a140-d653-4b78-88bb-7b8330dbd1d5" />
+  <Project Path="AnZwDev.AL.Workspaces.Documents/AnZwDev.AL.Workspaces.Documents.csproj" Id="01d16e1a-c405-4962-91be-e5411309fae5" />
+  <Project Path="AnZwDev.AL.Workspaces.InformationProviders/AnZwDev.AL.Workspaces.InformationProviders.csproj" Id="59f0669a-dbea-4e97-8f78-0ba8b65dd42b" />
+  <Project Path="AnZwDev.AL.Workspaces/AnZwDev.AL.Workspaces.csproj" Id="20c7284a-8ccc-48be-bcee-d41d68e36856" />
+  <Project Path="AnZwDev.AL/AnZwDev.AL.csproj" Id="67e33736-548f-4568-9b59-f7a8c72259ab" />
+  <Project Path="AnZwDev.LanguageServer/AnZwDev.LanguageServer.csproj" Id="9659911a-2f27-4641-9e2d-e76969c2efb4" />
+  <Project Path="AnZwDev.System.Collections/AnZwDev.System.Collections.csproj" />
+  <Project Path="AnZwDev.System.IO/AnZwDev.System.IO.csproj" />
+  <Project Path="AnZwDev.System.Logging/AnZwDev.System.Logging.csproj" />
+  <Project Path="AnZwDev.System.ServiceModel/AnZwDev.System.ServiceModel.csproj" />
+  <Project Path="AnZwDev.System/AnZwDev.System.csproj" />
+</Solution>

@@ -1,0 +1,26 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net10.0</TargetFramework>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>enable</Nullable>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Newtonsoft.Json" Version="13.0.4" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\AnZwDev.AL.Symbols.Formatters\AnZwDev.AL.Symbols.Formatters.csproj" />
+    <ProjectReference Include="..\AnZwDev.AL.Symbols\AnZwDev.AL.Symbols.csproj" />
+    <ProjectReference Include="..\AnZwDev.AL.Syntax\AnZwDev.AL.Syntax.csproj" />
+    <ProjectReference Include="..\AnZwDev.AL.Workspaces.InformationProviders\AnZwDev.AL.Workspaces.InformationProviders.csproj" />
+    <ProjectReference Include="..\AnZwDev.AL.Workspaces\AnZwDev.AL.Workspaces.csproj" />
+    <ProjectReference Include="..\AnZwDev.LanguageServer\AnZwDev.LanguageServer.csproj" />
+    <ProjectReference Include="..\AnZwDev.System.Collections\AnZwDev.System.Collections.csproj" />
+    <ProjectReference Include="..\AnZwDev.System.Logging\AnZwDev.System.Logging.csproj" />
+    <ProjectReference Include="..\AnZwDev.System.ServiceModel\AnZwDev.System.ServiceModel.csproj" />
+    <ProjectReference Include="..\AnZwDev.System\AnZwDev.System.csproj" />
+  </ItemGroup>
+
+</Project>

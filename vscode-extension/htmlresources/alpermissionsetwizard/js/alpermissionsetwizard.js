@@ -25,13 +25,14 @@ class PermissionSetWizard extends BaseObjectWizard {
         if (this._data) {
 
             //initialize inputs
-            document.getElementById("objectid").value = this._data.objectId;
+            this.updateObjectIdControl();
             document.getElementById("objectname").value = this._data.objectName;
             document.getElementById("inclallobjects").checked = this._data.inclAllObjects;
 
             let ctObjCaption = document.getElementById("objectcaption");
-            if (ctObjCaption)
+            if (ctObjCaption) {
                 ctObjCaption.value = this._data.objectCaption;
+            }
 
             this.updateControls();
         }
@@ -58,12 +59,13 @@ class PermissionSetWizard extends BaseObjectWizard {
     }
 
     collectStep1Data(finishSelected) {
-        this._data.objectId = document.getElementById("objectid").value;
+        this.saveObjectIdControl();
         this._data.objectName = document.getElementById("objectname").value;
 
         let ctObjCaption = document.getElementById("objectcaption");
-        if (ctObjCaption)
+        if (ctObjCaption) {
             this._data.objectCaption = ctObjCaption.value;
+        }
         this._data.inclAllObjects = document.getElementById("inclallobjects").checked;
     }
 
@@ -72,8 +74,9 @@ class PermissionSetWizard extends BaseObjectWizard {
     }
 
     setPermissionSets(permissionSets) {
-        if (!this._data)
+        if (!this._data) {
             this._data = {};
+        }
         this._data.permissionSetList = permissionSets;
         this.loadPermissionSets();
     }

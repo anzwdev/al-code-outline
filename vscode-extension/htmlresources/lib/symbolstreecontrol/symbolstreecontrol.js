@@ -46,24 +46,28 @@ class SymbolsTreeControl {
         this._filterBtnId = filterBtnId;
         let that = this;
         let element = document.getElementById(this._filterBtnId);
-        if (element)
+        if (element) {
             element.addEventListener('click', function(e) { that.onSimpleFilter(e); });
+        }
         element = document.getElementById(this._filterId);
-        if (element)
+        if (element) {
             element.addEventListener('keydown', function(e) { that.onSimpleFilterKeyDown(e); });
         }
+    }
 
     setShowIds(newShowIds) {        
         this._showIds = newShowIds;
         if (this._idsBtnId) {
-            if (this._showIds)
+            if (this._showIds) {
                 document.getElementById(this._idsBtnId).innerText = "Hide Ids";
-            else
+            } else {
                 document.getElementById(this._idsBtnId).innerText = "Show Ids";
+            }
         }
         this.setData(this._data);
-        if (this.showIdsChanged)
+        if (this.showIdsChanged) {
             this.showIdsChanged(this._showIds);
+        }
     }
 
     setData(data) {
@@ -74,8 +78,9 @@ class SymbolsTreeControl {
         if (this._data) {
             this._alNodes = this.hasALNodes(data);
             this._data.showIds = this._showIds;
-            if (this.sortNodes)
+            if (this.sortNodes) {
                 this.sortData(this._data);
+            }
             //this.resetFilter(this._data);
             this._data.parent = undefined;
             this.prepareData(this._data);
@@ -85,19 +90,23 @@ class SymbolsTreeControl {
     }
 
     hasALNodes(node) {
-        if (this.isObjectSymbol(node))
+        if (this.isObjectSymbol(node)) {
             return true;
+        }
         if (node.childSymbols) {
-            for (let i=0; i < node.childSymbols.length; i++)
-                if (this.hasALNodes(node.childSymbols[i]))
+            for (let i=0; i < node.childSymbols.length; i++) {
+                if (this.hasALNodes(node.childSymbols[i])) {
                     return true;
+                }
+            }
         }
         return false;
     }
 
     prepareData(data) {
-        if (this.resetCollapsedState)
+        if (this.resetCollapsedState) {
             data.collapsed = this._collapsed;
+        }
         data.selected = false;
         if (data.childSymbols) {
             for (let i=0; i<data.childSymbols.length; i++) {
@@ -115,10 +124,11 @@ class SymbolsTreeControl {
             element.removeChild(element.firstChild);
         }
         this._visibleSymbolList = [];
-        if (this._data)
+        if (this._data) {
             this.appendDataHtml(element, this._data);
-        else
+        } else {
             element.innerText = this.emptyContent;
+        }
     }
 
     appendDataHtml(parent, data) {
@@ -145,18 +155,20 @@ class SymbolsTreeControl {
 
                 let cap = document.createElement('div');
                 cap.className = "cap";
-                if ((this._showIds) && ((data.id) || (data.kind == 315)))   //!!!TO-DO!!! enumvalue - dirty hack
+                if ((this._showIds) && ((data.id) || (data.kind === 315))) {  //!!!TO-DO!!! enumvalue - dirty hack
                     cap.innerText  = data.id + ' ' + data.fullName;
-                else
+                } else {
                     cap.innerText = data.fullName;
+                }
                 shead.appendChild(cap);
 
                 main.appendChild(shead);
                 
                 let treeList = document.createElement('div');
                 treeList.className = "treelist";
-                if (data.collapsed)
+                if (data.collapsed) {
                     treeList.style = 'display:none';
+                }
 
                 if (data.childSymbols) {
                     for (let i=0; i<data.childSymbols.length; i++) {
@@ -173,10 +185,12 @@ class SymbolsTreeControl {
     }
 
     getSymbolCssClass(symbol) {
-        if ((!symbol) || (!symbol.childSymbols) || (symbol.childSymbols.length == 0))
+        if ((!symbol) || (!symbol.childSymbols) || (symbol.childSymbols.length === 0)) {
             return  "shead sheadnoexp";
-        if (symbol.collapsed)
+        }
+        if (symbol.collapsed) {
             return "shead sheadcol";
+        }
         return "shead sheadexp";        
     }
 
@@ -192,25 +206,25 @@ class SymbolsTreeControl {
     //#endregion
 
     isObjectSymbol(symbol) {
-        return ((symbol) && ((symbol.kind == ALSymbolKind.TableObject) ||
-            (symbol.kind == ALSymbolKind.CodeunitObject) ||
-            (symbol.kind == ALSymbolKind.PageObject) ||
-            (symbol.kind == ALSymbolKind.ReportObject) ||
-            (symbol.kind == ALSymbolKind.QueryObject) ||
-            (symbol.kind == ALSymbolKind.XmlPortObject) ||
-            (symbol.kind == ALSymbolKind.TableExtensionObject) ||
-            (symbol.kind == ALSymbolKind.PageExtensionObject) ||
-            (symbol.kind == ALSymbolKind.ControlAddInObject) ||
-            (symbol.kind == ALSymbolKind.ProfileObject) ||
-            (symbol.kind == ALSymbolKind.PageCustomizationObject) ||
-            (symbol.kind == ALSymbolKind.EnumType) ||
-            (symbol.kind == ALSymbolKind.EnumExtensionType) ||
-            (symbol.kind == ALSymbolKind.DotNetPackage) ||
-            (symbol.kind == ALSymbolKind.ReportExtensionObject) ||
-            (symbol.kind == ALSymbolKind.PermissionSet) ||
-            (symbol.kind == ALSymbolKind.PermissionSetExtension) ||
-            (symbol.kind == ALSymbolKind.Entitlement) ||
-            (symbol.kind == ALSymbolKind.Interface)));
+        return ((symbol) && ((symbol.kind === ALSymbolKind.TableObject) ||
+            (symbol.kind === ALSymbolKind.CodeunitObject) ||
+            (symbol.kind === ALSymbolKind.PageObject) ||
+            (symbol.kind === ALSymbolKind.ReportObject) ||
+            (symbol.kind === ALSymbolKind.QueryObject) ||
+            (symbol.kind === ALSymbolKind.XmlPortObject) ||
+            (symbol.kind === ALSymbolKind.TableExtensionObject) ||
+            (symbol.kind === ALSymbolKind.PageExtensionObject) ||
+            (symbol.kind === ALSymbolKind.ControlAddInObject) ||
+            (symbol.kind === ALSymbolKind.ProfileObject) ||
+            (symbol.kind === ALSymbolKind.PageCustomizationObject) ||
+            (symbol.kind === ALSymbolKind.EnumType) ||
+            (symbol.kind === ALSymbolKind.EnumExtensionType) ||
+            (symbol.kind === ALSymbolKind.DotNetPackage) ||
+            (symbol.kind === ALSymbolKind.ReportExtensionObject) ||
+            (symbol.kind === ALSymbolKind.PermissionSet) ||
+            (symbol.kind === ALSymbolKind.PermissionSetExtension) ||
+            (symbol.kind === ALSymbolKind.Entitlement) ||
+            (symbol.kind === ALSymbolKind.Interface)));
     }
 
     //#region Node scrolling
@@ -223,10 +237,11 @@ class SymbolsTreeControl {
         let nodeTop = node.offsetTop - mainTop;
         let nodeBottom = nodeTop + node.offsetHeight;
 
-        if (nodeTop < viewTop)
+        if (nodeTop < viewTop) {
             node.scrollIntoView(true);
-        else if (nodeBottom > viewBottom)
+        } else if (nodeBottom > viewBottom) {
             node.scrollIntoView(false);
+        }
     }
 
     //#endregion
@@ -236,37 +251,46 @@ class SymbolsTreeControl {
     sortData(data) {       
         if (data && data.childSymbols && (!this.syntaxTreeMode)) {
             //only table objects can have sortable child elements
-            if ((this.isObjectSymbol(data)) && (data.kind != ALSymbolKind.Table))
+            if ((this.isObjectSymbol(data)) && (data.kind !== ALSymbolKind.Table)) {
                 return;
+            }
             
             //check if node child items are sortable - only objects and table fields can be sorted by name or id
-            if ((data.childSymbols.length > 1) && ((this.isObjectSymbol(data.childSymbols[0])) || (data.childSymbols[0].kind == ALSymbolKind.Field))) {
+            if ((data.childSymbols.length > 1) && ((this.isObjectSymbol(data.childSymbols[0])) || (data.childSymbols[0].kind === ALSymbolKind.Field))) {
                 //sort child symbols            
-                if (this._showIds)
+                if (this._showIds) {
                     data.childSymbols.sort(function(a,b) {
-                        if (a.id < b.id)
+                        if (a.id < b.id) {
                             return -1;
-                        if (a.id > b.id)
+                        }
+                        if (a.id > b.id) {
                             return 1;
-                        if (a.fullName < b.fullName)
+                        }
+                        if (a.fullName < b.fullName) {
                             return -1;
-                        if (a.fullName > b.fullName)
+                        }
+                        if (a.fullName > b.fullName) {
                             return 1;
+                        }
                         return 0;                    
                     });
-                else
+                } else {
                     data.childSymbols.sort(function(a,b) {
-                        if (a.fullName < b.fullName)
+                        if (a.fullName < b.fullName) {
                             return -1;
-                        if (a.fullName > b.fullName)
+                        }
+                        if (a.fullName > b.fullName) {
                             return 1;
+                        }
                         return 0;
-                    });                  
+                    }); 
+                }                 
             }
 
             //sort each child symbol child nodes
-            for (var i=0; i<data.childSymbols.length; i++)
+            for (var i=0; i<data.childSymbols.length; i++) {
                 this.sortData(data.childSymbols[i]);
+            }
         }
 
     }
@@ -278,15 +302,17 @@ class SymbolsTreeControl {
     onSimpleFilter(e) {
         let element = document.getElementById(this._filterId);
         let filterValue = undefined;
-        if (element)
+        if (element) {
             filterValue = element.value;
-        if (filterValue)
+        }
+        if (filterValue) {
             filterValue = filterValue.replace(/"/g, "");
+        }
         this.filterDataAdv(undefined, undefined, undefined, filterValue);
     }
 
     onSimpleFilterKeyDown(e) {
-        if (e.which == 13) {
+        if (e.which === 13) {
             this.onSimpleFilter(undefined);
             e.preventDefault();
             return false;
@@ -299,14 +325,14 @@ class SymbolsTreeControl {
     }
 
     filterData(typeList, idFilter, nameFilter) {
-        this.filterDataAdv(typeList, idFilter, nameFilter, undefined)
+        this.filterDataAdv(typeList, idFilter, nameFilter, undefined);
     }
 
     filterDataAdv(typeList, idFilter, nameFilter, fullNameFilter) {
         //set type filter
         this._typeFilter = typeList;        
         //compile id filter
-        if (this._idFilterText != idFilter) {
+        if (this._idFilterText !== idFilter) {
             this._idFilterText = idFilter;
             this._idFilter = undefined;
             if (this._idFilterText) {
@@ -323,7 +349,7 @@ class SymbolsTreeControl {
             }
         }
         //compile name filter
-        if (this._nameFilterText != nameFilter) {
+        if (this._nameFilterText !== nameFilter) {
             this._nameFilterText = nameFilter;
             this._nameFilter = undefined;
             if (this._nameFilterText) {
@@ -340,7 +366,7 @@ class SymbolsTreeControl {
             }
         }
         //compile full name filter
-        if (this._fullNameFilterText != fullNameFilter) {
+        if (this._fullNameFilterText !== fullNameFilter) {
             this._fullNameFilterText = fullNameFilter;
             this._fullNameFilter = undefined;
             if (this._fullNameFilterText) {
@@ -362,14 +388,18 @@ class SymbolsTreeControl {
             this.resetFilter(this._data);
 
             if (!this.syntaxTreeMode) {
-                if ((this._typeFilter) && (this._typeFilter.length > 0))
+                if ((this._typeFilter) && (this._typeFilter.length > 0)) {
                     this.applyTypeFilter(this._data);
-                if (this._idFilter)
+                }
+                if (this._idFilter) {
                     this.applyIdFilter(this._data);
-                if (this._nameFilter)
+                }
+                if (this._nameFilter) {
                     this.applyNameFilter(this._data);
-                if (this._fullNameFilter)
-                    this.applyFullNameFilter(this._data);
+                }
+                if (this._fullNameFilter) {
+                    this.applyfullNameFilter(this._data);
+                }
 
                 this.hideEmptyGroups(this._data);
             }
@@ -384,8 +414,9 @@ class SymbolsTreeControl {
         if (data) {
             data.visible = true;
             if (data.childSymbols) {
-                for (let i=0; i<data.childSymbols.length;i++)
+                for (let i=0; i<data.childSymbols.length;i++) {
                     this.resetFilter(data.childSymbols[i]);
+                }
             }
         }
     }
@@ -393,12 +424,14 @@ class SymbolsTreeControl {
     applyTypeFilter(data) {
         if ((data) && (!this.syntaxTreeMode) && (this._alNodes)) {
             if ((this.isObjectSymbol(data)) && (data.kind)) {
-                if (this._typeFilter.indexOf(data.kind) < 0)
+                if (this._typeFilter.indexOf(data.kind) < 0) {
                     data.visible = false;
+                }
             }
             if (data.childSymbols) {
-                for (let i=0; i<data.childSymbols.length;i++)
+                for (let i=0; i<data.childSymbols.length;i++) {
                     this.applyTypeFilter(data.childSymbols[i]);
+                }
             }
         }
     }
@@ -406,12 +439,14 @@ class SymbolsTreeControl {
     applyIdFilter(data) {
         if ((data) && (!this.syntaxTreeMode) && (this._alNodes)) {
             if ((this.isObjectSymbol(data)) && (data.id)) {
-                if (!this._idFilter({INT: data.id}))
+                if (!this._idFilter({INT: data.id})) {
                     data.visible = false;
+                }
             }
             if (data.childSymbols) {
-                for (let i=0; i<data.childSymbols.length;i++)
+                for (let i=0; i<data.childSymbols.length;i++) {
                     this.applyIdFilter(data.childSymbols[i]);
+                }
             }
         }
     }
@@ -419,28 +454,32 @@ class SymbolsTreeControl {
     applyNameFilter(data) {
         if ((data) && (!this.syntaxTreeMode) && (this._alNodes)) {
             if (this.isObjectSymbol(data)) {
-                if (!this._nameFilter({TEXT: data.name}))
+                if (!this._nameFilter({TEXT: data.name})) {
                     data.visible = false;
+                }
             }
             if (data.childSymbols) {
-                for (let i=0; i<data.childSymbols.length;i++)
+                for (let i=0; i<data.childSymbols.length;i++) {
                     this.applyNameFilter(data.childSymbols[i]);
+                }
             }
         }
     }
 
-    applyFullNameFilter(data) {
+    applyfullNameFilter(data) {
         let visible = false;
         if (data) {
             if (data.childSymbols) {
                 for (let i=0; i<data.childSymbols.length;i++) {
-                    if (this.applyFullNameFilter(data.childSymbols[i]))
+                    if (this.applyfullNameFilter(data.childSymbols[i])) {
                         visible = true;
+                    }
                 }
             }
         
-            if ((!visible) && (this._fullNameFilter({TEXT: data.fullName.replace(/"/g, "")})))
+            if ((!visible) && (this._fullNameFilter({TEXT: data.fullName.replace(/"/g, "")}))) {
                 visible = true;
+            }
             
             data.visible = visible;
         }
@@ -453,11 +492,13 @@ class SymbolsTreeControl {
             if (data.childSymbols) {
                 for (let i=0; i<data.childSymbols.length;i++) {
                     this.hideEmptyGroups(data.childSymbols[i]);
-                    if (data.childSymbols[i].visible)
+                    if (data.childSymbols[i].visible) {
                         visibleChild = true;
+                    }
                 }                
-            } else if (!this._alNodes)
+            } else if (!this._alNodes) {
                 visibleChild = data.visible;
+            }
             data.visible = visibleChild;
         }
 
@@ -503,10 +544,11 @@ class SymbolsTreeControl {
         if (symbol) {
             if ((symbol.childSymbols) && (symbol.childSymbols.length > 0)) {
                 symbol.collapsed = collapse;
-                if (symbol.collapsed)
+                if (symbol.collapsed) {
                     $(node).next('.treelist').hide();
-                else
+                } else {
                     $(node).next('.treelist').show();
+                }
                 node.className = this.getSymbolCssClass(symbol);
             }
         } 
@@ -521,35 +563,40 @@ class SymbolsTreeControl {
 
     getVisualIdx(node) {
         let symbol = this.getNodeSymbol(node);
-        if (symbol)
+        if (symbol) {
             return symbol.visualidx;
+        }
         return -1;
     }
 
     getNodeSymbol(node) {
-        if (node)
+        if (node) {
             return $(node)[0].alsymbolnode;
+        }
         return undefined;
     }
 
     setSelectionState(symbol, selected) {
-        if (symbol.selected != selected) {        
+        if (symbol.selected !== selected) {        
             symbol.selected = selected;
             let hasClass = $(symbol.htmlNode).hasClass('selected');        
-            if ((selected) && (!hasClass))
+            if ((selected) && (!hasClass)) {
                 $(symbol.htmlNode).addClass('selected');
-            else if ((!selected) && (hasClass))
+            } else if ((!selected) && (hasClass)) {
                 $(symbol.htmlNode).removeClass('selected');
+            }
         }
     }
 
     clearSelection(skipMain) {
         let skipIdx = -1;
-        if ((skipMain) && (this._selNode))
+        if ((skipMain) && (this._selNode)) {
             skipIdx = this._selNode.visualidx;
+        }
         for (let i=0; i<this._visibleSymbolList.length; i++) {
-            if (i != skipIdx)
+            if (i !== skipIdx) {
                 this.setSelectionState(this._visibleSymbolList[i], false);    
+            }
         }
     }
 
@@ -586,14 +633,16 @@ class SymbolsTreeControl {
 
         let symbol = this.getNodeSymbol(node);
 
-        if ((this._selSymbol) && (symbol) && (this._selSymbol.visualidx == symbol.visualidx))
+        if ((this._selSymbol) && (symbol) && (this._selSymbol.visualidx === symbol.visualidx)) {
             return;
+        }
 
         if (rangeMode) {
             if (symbol) {
                 let fromIdx = 0;
-                if (this._selSymbol)
+                if (this._selSymbol) {
                     fromIdx = this._selSymbol.visualidx;
+                }
                 this.selectRange(fromIdx, symbol.visualidx, true);
                 if (keyboardEvent) {
                     this._selSymbol = symbol;
@@ -604,18 +653,22 @@ class SymbolsTreeControl {
             this._selSymbol = symbol;
             this._selNode = node;   
 
-            if (!toggleMode)
+            if (!toggleMode) {
                 this.clearSelection(true);
+            }
 
-            if (this._selSymbol)
+            if (this._selSymbol) {
                 this.setSelectionState(this._selSymbol, true);
+            }
         }
 
-        if (node)
+        if (node) {
             this.scrollToNode(node);
+        }
 
-        if (this.nodeSelected)
+        if (this.nodeSelected) {
             this.nodeSelected(this._selNode);
+        }
     }
 
     selectSingleNode(node) {
@@ -624,8 +677,9 @@ class SymbolsTreeControl {
 
         //remove previous selection
         if (this._selSymbol) {
-            if (this._selSymbol.visualidx == symbol.visualidx)
+            if (this._selSymbol.visualidx === symbol.visualidx) {
                 return;
+            }
             $(this._selSymbol.htmlNode).removeClass('selected');
         }
 
@@ -637,56 +691,56 @@ class SymbolsTreeControl {
         $(this._selNode).addClass('selected');
     }
 
-    selectNodeByPath(path) {
-        if ((path) && (path.length > 0) && (this._data)) {            
+    selectNodeByUid(uid) {
+        if ((uid) && (uid !== "") && (this._data)) {            
             let node = this._data;
-            //expand parents and select node
-            for (let i=0; ((node) && (i<path.length)); i++) {
-                if (node.collapsed)
-                    this.toggleNode(node);
-
-                let idx = path.length - (i + 1);
-
-                if ((node.childSymbols) && (path[idx] < node.childSymbols.length) && (path[idx] >= 0))
-                    node = node.childSymbols[path[idx]];
-                else
-                    node = undefined;
-
-                if ((i == (path.length - 1)) && (node) && (node.htmlNode)) {
-                    this.selectNode(node.htmlNode, false, false, false);
-                    return;
-                }
+            let selectedNode = this.findAndExpandChildNodeByUid(node, uid);
+            if (selectedNode) {
+                this.selectNode(selectedNode.htmlNode, false, false, false);
             }
         }
     }
 
+    findAndExpandChildNodeByUid(node, uid) {
+        if (node.uid === uid) {
+            return node;
+        }
+        
+        if (node.childSymbols) {
+            for (let i=0; i<node.childSymbols.length; i++) {
+                let foundNode = this.findAndExpandChildNodeByUid(node.childSymbols[i], uid);
+                if (foundNode) {
+                    if (node.collapsed) {
+                        this.toggleNode(node);
+                    }
+                    return foundNode;
+                }
+            }
+        }
+
+        return undefinded;
+    }
+
     //#endregion
 
-    //#region Path function
+    //#region Uid function
 
-    getNodePath(node) {
-        return this.getSymbolPath(this.getNodeSymbol(node));
+    getNodeUid(node) {
+        return this.getNodeSymbol(node)?.uid;
     }
 
-    getSymbolPath(symbol) {
-        let path = [];
-        while (symbol) {
-            path.push(symbol.idx);
-            symbol = symbol.parent;
-        }
-        return path;
-    }
-
-    getSelectedPaths(inclNode) {
+    getSelectedUids(inclNode) {
         let list = [];
         for (let i=0; i<this._visibleSymbolList.length; i++) {
-            if (this._visibleSymbolList[i].selected)
-                list.push(this.getSymbolPath(this._visibleSymbolList[i]));
+            if (this._visibleSymbolList[i].selected) {
+                list.push(this._visibleSymbolList[i].uid);
+            }
         }
         if (inclNode) {
             let inclSymbol = this.getNodeSymbol(inclNode);
-            if ((inclSymbol) && (!inclSymbol.selected))
-                list.push(this.getSymbolPath(inclSymbol));
+            if ((inclSymbol) && (!inclSymbol.selected)) {
+                list.push(inclSymbol.uid);
+            }
         }
         return list;
     }
@@ -698,8 +752,9 @@ class SymbolsTreeControl {
     parentNode(node) {
         if (node) {
             let nodeList = $(node).parent('.treeitem').parents('.treeitem:first').children('.shead');
-            if (nodeList.length > 0)
+            if (nodeList.length > 0) {
                 return nodeList[0];
+            }
             return node;
         }
         return this.firstNode();
@@ -709,13 +764,14 @@ class SymbolsTreeControl {
         if (node) {
             //prev sibling
             let nodeList = $(node).parent('.treeitem').prev('.treeitem').find('.shead:visible:last');
-            if (nodeList.length > 0)
+            if (nodeList.length > 0) {
                 return nodeList[0];
-            else {
+            } else {
                 //parent node
                 nodeList = $(node).parent('.treeitem').parents('.treeitem:first').children('.shead');
-                if (nodeList.length > 0)
+                if (nodeList.length > 0) {
                     return nodeList[0];
+                }
             }
             return node;
         }
@@ -726,27 +782,30 @@ class SymbolsTreeControl {
         if (node) {
             //first visible child node
             let nodeList = $(node).next('.treelist:visible').children('.treeitem:first').children('.shead');
-            if (nodeList.length > 0)
-                return nodeList[0];            
+            if (nodeList.length > 0) {
+                return nodeList[0];   
+            }         
             
             //next sibling
             nodeList = $(node).parent('.treeitem').next('.treeitem').children('.shead');
-            if (nodeList.length > 0)
+            if (nodeList.length > 0) {
                 return nodeList[0];
+            }
 
             //next parent
             nodeList = $(node).parent('.treeitem').parents('.treeitem:first');
             let siblingNodeList = nodeList.next('.treeitem');
 
-            while ((nodeList.length > 0) && (siblingNodeList.length == 0)) {
+            while ((nodeList.length > 0) && (siblingNodeList.length === 0)) {
                 nodeList = nodeList.parents('.treeitem:first');
                 siblingNodeList = nodeList.next('.treeitem');
             }
 
             if (siblingNodeList.length > 0) {
                 nodeList = siblingNodeList.children('.shead');
-                if (nodeList.length > 0)
+                if (nodeList.length > 0) {
                     return nodeList[0];
+                }
             }
 
             return node;
@@ -756,15 +815,17 @@ class SymbolsTreeControl {
 
     firstNode() {
         let nodeList = $(this._controlSelector).find('.shead:first');
-        if (nodeList.length > 0)
+        if (nodeList.length > 0) {
             return nodeList[0];
+        }
         return undefined;
     }
 
     lastNode() {
         let nodeList = $(this._controlSelector).find('.shead:visible:last');
-        if (nodeList.length > 0)
+        if (nodeList.length > 0) {
             return nodeList[0];
+        }
         return undefined;
     }
 
@@ -774,8 +835,9 @@ class SymbolsTreeControl {
         do {
             let currIdx = node.alsymbolnode.visualidx;
             node = this.nextNode(node);
-            if (node.alsymbolnode.visualidx == currIdx)
+            if (node.alsymbolnode.visualidx === currIdx) {
                 return node;
+            }
         } while (node.offsetTop < targetTop);
         return node;
     }
@@ -786,8 +848,9 @@ class SymbolsTreeControl {
         do {
             let currIdx = node.alsymbolnode.visualidx;
             node = this.prevNode(node);
-            if (node.alsymbolnode.visualidx == currIdx)
+            if (node.alsymbolnode.visualidx === currIdx) {
                 return node;
+            }
         } while (node.offsetTop > targetTop);
         return node;
     }
@@ -801,16 +864,18 @@ class SymbolsTreeControl {
     }
 
     onNodeClick(node, ctrlKey, shiftKey) {
-        if ((!ctrlKey) && (!shiftKey))
+        if ((!ctrlKey) && (!shiftKey)) {
             this.toggleNode(node);
+        }
         this.selectNode(node, ctrlKey, shiftKey, false);
     }
 
     onClick(e) {
         let node = e.target;
         let nodeList = $(node).closest('.shead');
-        if (nodeList.length > 0)
+        if (nodeList.length > 0) {
             this.onNodeClick(nodeList[0], e.ctrlKey, e.shiftKey);
+        }
     }
 
     onKeyDown(e) {
@@ -828,19 +893,22 @@ class SymbolsTreeControl {
                 //has visible child
                 if (this._selNode) {
                     nodeList = $(this._selNode).next('.treelist:visible');
-                    if (nodeList.length > 0)
+                    if (nodeList.length > 0) {
                         nodeList.hide();
-                    else 
+                    } else {
                         this.selectNode(this.parentNode(this._selNode), e.ctrlKey, e.shiftKey, true);
-                } else
+                    }
+                } else {
                     this.selectNode(this.firstNode(), e.ctrlKey, e.shiftKey, true);
+                }
                 handled = true;
                 break;
             case 39:    //right
                 if (this._selNode) {
                     nodeList = $(this._selNode).next('.treelist:hidden');
-                    if (nodeList.length > 0)
+                    if (nodeList.length > 0) {
                         nodeList.show();
+                    }
                 }
                 handled = true;
                 break;
@@ -889,13 +957,15 @@ class SymbolsTreeControl {
     //#region Merge data stat
 
     applyTreeItemState(data) {
-        if ((data) && (this._data))
+        if ((data) && (this._data)) {
             this.applyTreeItemStateInternal(data, this._data);
+        }
     }
 
     applyTreeItemStateInternal(data, stateSource) {
-        if (stateSource.collapsed)
+        if (stateSource.collapsed) {
             data.collapsed = stateSource.collapsed;
+        }
         if ((data.childSymbols) && (stateSource.childSymbols)) {
             for (let i=0; i<data.childSymbols.length; i++) {
                 let childStateSource = this.findChildStateSource(data.childSymbols[i].fullName, stateSource);
@@ -909,8 +979,9 @@ class SymbolsTreeControl {
 
     findChildStateSource(fullName, stateSource) {
         for (let i=0; i<stateSource.childSymbols.length; i++) {
-            if ((!stateSource.childSymbols[i].processed) && (stateSource.childSymbols[i].fullName == fullName))
+            if ((!stateSource.childSymbols[i].processed) && (stateSource.childSymbols[i].fullName === fullName)) {
                 return stateSource.childSymbols[i];
+            }
         } 
         return undefined;
     }

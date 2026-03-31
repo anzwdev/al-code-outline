@@ -1,0 +1,26 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net10.0</TargetFramework>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>enable</Nullable>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Newtonsoft.Json" Version="13.0.4" />
+    <PackageReference Include="StreamJsonRpc" Version="2.24.84" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\AnZwDev.AL.LanguageServer.Modules.ProjectInformationProvider\AnZwDev.AL.LanguageServer.Modules.ProjectInformationProvider.csproj" />
+    <ProjectReference Include="..\AnZwDev.AL.LanguageServer.Modules.SymbolsSourceProvider\AnZwDev.AL.LanguageServer.Modules.SymbolsSourceProvider.csproj" />
+    <ProjectReference Include="..\AnZwDev.AL.LanguageServer.Modules.SymbolsViewer\AnZwDev.AL.LanguageServer.Modules.SymbolsViewer.csproj" />
+    <ProjectReference Include="..\AnZwDev.AL.LanguageServer.Modules.SyntaxTreeSymbolsTreeViewProvider\AnZwDev.AL.LanguageServer.Modules.SyntaxTreeSymbolsTreeViewProvider.csproj" />
+    <ProjectReference Include="..\AnZwDev.AL.LanguageServer.Modules.SyntaxTreeTreeViewProvider\AnZwDev.AL.LanguageServer.Modules.SyntaxTreeTreeViewProvider.csproj" />
+    <ProjectReference Include="..\AnZwDev.AL.LanguageServer.Modules.SyntaxTreeViewer\AnZwDev.AL.LanguageServer.Modules.SyntaxTreeViewer.csproj" />
+    <ProjectReference Include="..\AnZwDev.AL.LanguageServer.Modules.WorkspaceChangeTracking\AnZwDev.AL.LanguageServer.Modules.WorkspaceChangeTracking.csproj" />
+    <ProjectReference Include="..\AnZwDev.AL.Workspaces\AnZwDev.AL.Workspaces.csproj" />
+    <ProjectReference Include="..\AnZwDev.LanguageServer\AnZwDev.LanguageServer.csproj" />
+  </ItemGroup>
+
+</Project>

@@ -11,16 +11,19 @@ class ReportExtWizard extends BaseObjectWizard {
 
         let fldSortName = document.getElementById('srcfldsortname');
         let fldSortId = document.getElementById('srcfldsortid');
-        if (fldSortName)
+        if (fldSortName) {
             fldSortName.className = "mselcaptb mseltbbtnsel";
-        if (fldSortId)
+        }
+        if (fldSortId) {
             fldSortId.addEventListener('click', event => {
                 this.sortSrcFieldsBy("id");
             });
-        if (fldSortName)
+        }
+        if (fldSortName) {
             fldSortName.addEventListener('click', event => {
                 this.sortSrcFieldsBy("name");
             });
+        }
     }
 
     onMessage(message) {
@@ -42,7 +45,7 @@ class ReportExtWizard extends BaseObjectWizard {
 
         if (this._data) {
             //initialize inputs
-            document.getElementById("objectid").value = this._data.objectId;
+            this.updateObjectIdControl();
             document.getElementById("objectname").value = this._data.objectName;
             document.getElementById("basereport").value = this._data.baseReport;
 
@@ -52,15 +55,17 @@ class ReportExtWizard extends BaseObjectWizard {
     }
 
     setBaseReport(data) {
-        if (!this._data)
+        if (!this._data) {
             this._data = {};
+        }
         this._data.report = data;
         this.loadBaseReport();
     }
 
     setReports(data) {
-        if (!this._data)
+        if (!this._data) {
             this._data = {};
+        }
         this._data.reportList = data;
         this.loadReports();
     }
@@ -112,11 +117,12 @@ class ReportExtWizard extends BaseObjectWizard {
         if ((this._data.report) && (this._data.report.dataItems)) {
             for (let i=0; i<this._data.report.dataItems.length; i++) {
                 let selFields = this._data.report.dataItems[i].selFields;
-                if ((selFields) && (selFields.length > 0))
+                if ((selFields) && (selFields.length > 0)) {
                     dataItems.push({
                         name: this._data.report.dataItems[i].name,
                         fields: selFields
                     });
+                }
             }
         }
 
@@ -141,18 +147,19 @@ class ReportExtWizard extends BaseObjectWizard {
     collectStep1Data(finishSelected) {
         let prevBaseReport = this._data.baseReport;
 
-        this._data.objectId = document.getElementById("objectid").value;
+        this.saveObjectIdControl();
         this._data.objectName = document.getElementById("objectname").value;
         this._data.baseReport = document.getElementById("basereport").value;
 
-        if (prevBaseReport != this._data.baseReport) {
+        if (prevBaseReport !== this._data.baseReport) {
             htmlHelper.clearChildrenById("srcfields");
             htmlHelper.clearChildrenById("destfields");
-            if (!finishSelected)
+            if (!finishSelected) {
                 this.sendMessage({
                     command: 'selectReport',
                     baseReport: this._data.baseReport
                 });    
+            }
         }
     }
 
@@ -161,10 +168,11 @@ class ReportExtWizard extends BaseObjectWizard {
     }
 
     canFinish() {
-        if (!super.canFinish())
+        if (!super.canFinish()) {
             return false;
+        }
 
-        if ((!this._data.baseReport) || (this._data.baseReport == '')) {
+        if ((!this._data.baseReport) || (this._data.baseReport === '')) {
             this.sendMessage({
                 command: 'showError',
                 message: 'Please enter a target object name.'
@@ -219,15 +227,17 @@ class ReportExtWizard extends BaseObjectWizard {
     }
 
     loadBaseReport() {
-        if (!this._data.report)
+        if (!this._data.report) {
             return;
+        }
 
         this._data.dataItemNames = [];
         if (this._data.report.dataItems) {
             for (let i=0; i<this._data.report.dataItems.length; i++) {
                 let diName = this.getIndentText(this._data.report.dataItems[i].indent) + this._data.report.dataItems[i].name;
-                if (this._data.report.dataItems[i].source)
+                if (this._data.report.dataItems[i].source) {
                     diName = diName + " (" + this._data.report.dataItems[i].source + ")";
+                }
 
                 this._data.dataItemNames.push(diName);
                 this._data.report.dataItems[i].selFields = [];
@@ -244,8 +254,9 @@ class ReportExtWizard extends BaseObjectWizard {
     }
 
     getIndentText(indent) {
-        if ((indent) && (indent > 0))
+        if ((indent) && (indent > 0)) {
             return "".padStart(indent, "-");
+        }
         return "";
     }    
 
@@ -279,8 +290,9 @@ class ReportExtWizard extends BaseObjectWizard {
     }
 
     getCurrDataItem() {
-        if ((this._data) && (this._data.report) && (this._data.report.dataItems) && (this._activeDataItem >= 0) && (this._activeDataItem < this._data.report.dataItems.length))
+        if ((this._data) && (this._data.report) && (this._data.report.dataItems) && (this._activeDataItem >= 0) && (this._activeDataItem < this._data.report.dataItems.length)) {
             return this._data.report.dataItems[this._activeDataItem];
+        }
         return undefined;
     }
 
@@ -290,8 +302,8 @@ class ReportExtWizard extends BaseObjectWizard {
         //if (name == 'id')
         //    dispField = 'idname';
         this._srcFields.sortBy(name, dispField);
-        document.getElementById('srcfldsortid').className = (name == 'id')?"mselcaptb mseltbbtnsel":"mselcaptb mseltbbtn";
-        document.getElementById('srcfldsortname').className = (name == 'name')?"mselcaptb mseltbbtnsel":"mselcaptb mseltbbtn";
+        document.getElementById('srcfldsortid').className = (name === 'id')?"mselcaptb mseltbbtnsel":"mselcaptb mseltbbtn";
+        document.getElementById('srcfldsortname').className = (name === 'name')?"mselcaptb mseltbbtnsel":"mselcaptb mseltbbtn";
     }
 
 }

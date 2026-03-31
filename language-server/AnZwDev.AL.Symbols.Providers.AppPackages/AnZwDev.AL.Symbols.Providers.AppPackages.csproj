@@ -1,0 +1,30 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net10.0</TargetFramework>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>enable</Nullable>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\AnZwDev.AL.Symbols.CodeAnalysis\AnZwDev.AL.Symbols.CodeAnalysis.csproj" />
+    <ProjectReference Include="..\AnZwDev.AL.Symbols.Parsing\AnZwDev.AL.Symbols.Parsing.csproj" />
+    <ProjectReference Include="..\AnZwDev.AL.Symbols\AnZwDev.AL.Symbols.csproj" />
+    <ProjectReference Include="..\AnZwDev.AL.Syntax\AnZwDev.AL.Syntax.csproj" />
+    <ProjectReference Include="..\AnZwDev.System.Collections\AnZwDev.System.Collections.csproj" />
+    <ProjectReference Include="..\AnZwDev.System.IO\AnZwDev.System.IO.csproj" />
+    <ProjectReference Include="..\AnZwDev.System.Logging\AnZwDev.System.Logging.csproj" />
+    <ProjectReference Include="..\AnZwDev.System\AnZwDev.System.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="Parsers\" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Reference Include="Microsoft.Dynamics.Nav.CodeAnalysis">
+      <HintPath>..\..\..\..\MicrosoftALVersions\LatestBC\bin\win32\Microsoft.Dynamics.Nav.CodeAnalysis.dll</HintPath>
+    </Reference>
+  </ItemGroup>
+
+</Project>

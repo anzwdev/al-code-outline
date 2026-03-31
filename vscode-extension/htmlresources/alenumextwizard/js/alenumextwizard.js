@@ -2,6 +2,8 @@ class EnumExtWizard extends BaseObjectWizard {
 
     constructor() {
         super(1);
+
+        this._selectedBaseEnumChanged = false;
     }
 
     onMessage(message) {
@@ -18,9 +20,9 @@ class EnumExtWizard extends BaseObjectWizard {
         super.setData(data);
 
         //initialize fields
-        document.getElementById("objectid").value = this._data.objectId;
+        this.updateObjectIdControl();
         document.getElementById("objectname").value = this._data.objectName;
-        document.getElementById("baseenum").value = this._data.baseEnum;
+        document.getElementById("baseenum").value = this._data.baseEnum?.name ?? "";
         document.getElementById("firstvalueid").value = this._data.firstValueId;
         document.getElementById("valuelist").value = this._data.valueList;
         document.getElementById("captionlist").value = this._data.captionList;
@@ -28,39 +30,42 @@ class EnumExtWizard extends BaseObjectWizard {
     }
    
     setEnums(data) {
-        if (!this._data)
+        if (!this._data) {
             this._data = {};
+        }
         this._data.baseEnumList = data;
         this.loadEnums();
     }
 
     loadEnums() {
-        if (this._data)
+        if (this._data) {
             this.initAutoComplete();
+        }
     }
 
     initAutoComplete() {
         let me = this;
-        let allowedChars = new RegExp(/^[a-zA-Z\s]+$/)
+        let allowedChars = new RegExp(/^[a-zA-Z\s]+$/);
 
         autocomplete({
 			input: document.getElementById('baseenum'),
 			minLength: 1,
 			onSelect: function (item, inputfield) {
-				inputfield.value = item
+				inputfield.value = item.name;
+                me.selectBaseEnumByObject(item);
 			},
 			fetch: function (text, callback) {
 				let match = text.toLowerCase();
-				callback(me._data.baseEnumList.filter(function(n) { return n.toLowerCase().indexOf(match) !== -1; }));
+				callback(me._data.baseEnumList.filter(function(n) { return n.name.toLowerCase().indexOf(match) !== -1; }));
 			},
 			render: function(item, value) {
 				let itemElement = document.createElement("div");
 				if (allowedChars.test(value)) {
 					let regex = new RegExp(value, 'gi');
-					let inner = item.replace(regex, function(match) { return "<strong>" + match + "</strong>" });
+					let inner = item.name.replace(regex, function(match) { return "<strong>" + match + "</strong>"; });
 					itemElement.innerHTML = inner;
 				} else {
-					itemElement.textContent = item;
+					itemElement.textContent = item.name;
 				}
 				return itemElement;
 			},
@@ -72,7 +77,7 @@ class EnumExtWizard extends BaseObjectWizard {
 					container.style.maxHeight = "140px";
 				}
 			}
-		})
+		});
     }
 
     sendFinishMessage() {
@@ -90,12 +95,24 @@ class EnumExtWizard extends BaseObjectWizard {
     }
 
     collectStepData(finishSelected) {
-        this._data.objectId = document.getElementById("objectid").value;
+        this.selectBaseEnumByName(document.getElementById("baseenum").value);
+
+        this.saveObjectIdControl();
         this._data.objectName = document.getElementById("objectname").value;
-        this._data.baseEnum = document.getElementById("baseenum").value;
         this._data.firstValueId = document.getElementById("firstvalueid").value;
         this._data.valueList = document.getElementById("valuelist").value;
         this._data.captionList = document.getElementById("captionlist").value;
+    }
+
+    selectBaseEnumByName(name) {
+        if (this._data.baseEnum?.name !== name) {
+            this.selectBaseEnumByObject(this.findObjectListItemByName(this._data.baseEnumList, name));
+        }       
+    }
+
+    selectBaseEnumByObject(baseEnumObject) {
+        this._selectedBaseEnumChanged = (this._data.baseEnum?.uid !== baseEnumObject?.uid);
+        this._data.baseEnum = baseEnumObject;
     }
 }
 

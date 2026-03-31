@@ -10,10 +10,12 @@ class TableExtWizard extends TableBasedObjectWizard {
             let newId = prevId;
             if (idx < data.length) {
                 newId = Math.round((prevId + this.getId(data, idx)) / 2);
-                if (newId == prevId)
+                if (newId === prevId) {
                     newId++;
-            } else
+                }
+            } else {
                 newId += 1;
+            }
 
             item.id = newId.toString();
         };
@@ -40,9 +42,9 @@ class TableExtWizard extends TableBasedObjectWizard {
         super.setData(data);
 
         //initialize inputs
-        document.getElementById("objectid").value = this._data.objectId;
+        this.updateObjectIdControl();
         document.getElementById("objectname").value = this._data.objectName;
-        document.getElementById("srctable").value = this._data.selectedTable;
+        document.getElementById("srctable").value = this._data.selectedTable?.name ?? "";
         //initialize field list
         if (this._data.fields) {
             this._fieldsgrid.setData(this._data.fields);
@@ -70,9 +72,9 @@ class TableExtWizard extends TableBasedObjectWizard {
     }
 
     collectStepData(finishSelected) {
-        this._data.objectId = document.getElementById("objectid").value;
+        this.selectTableByName(document.getElementById("srctable").value);
+        this.saveObjectIdControl();
         this._data.objectName = document.getElementById("objectname").value;
-        this._data.selectedTable = document.getElementById("srctable").value;
         this._data.fields = this._fieldsgrid.getData();
     }
 
@@ -94,14 +96,16 @@ class TableExtWizard extends TableBasedObjectWizard {
     getId(data, idx) {
         if ((idx >=0) && (idx < data.length) && (data[idx].id)) {
             let val = Number.parseInt(data[idx].id);
-            if (!isNaN(val))
+            if (!isNaN(val)) {
                 return val;
+            }
         }
 
         if (this._data.idRangeStart) {
             let val = Number.parseInt(this._data.idRangeStart);
-            if (!isNaN(val))
+            if (!isNaN(val)) {
                 return val - 1;
+            }
         }
 
         return 0;

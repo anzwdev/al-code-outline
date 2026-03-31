@@ -2,6 +2,8 @@ class InterfaceWizard extends BaseObjectWizard {
 
     constructor() {
         super(1);
+
+        this._selectedBaseCodeunitChanged = false;
     }
 
     onMessage(message) {
@@ -18,43 +20,46 @@ class InterfaceWizard extends BaseObjectWizard {
         super.setData(data);
         //initialize fields
         document.getElementById("objectname").value = this._data.objectName;
-        document.getElementById("srccodeunit").value = this._data.baseCodeunitName;
+        document.getElementById("srccodeunit").value = this._data.baseCodeunit?.name ?? "";
     }
 
     setCodeunits(data) {
-        if (!this._data)
+        if (!this._data) {
             this._data = {};
+        }
         this._data.codeunitList = data;        
         this.loadCodeunits();
     }
 
     loadCodeunits() {
-        if (this._data)        
-            this.initCodeunitAutoComplete()
+        if (this._data) {
+            this.initCodeunitAutoComplete();
+        }
     }
 
     initCodeunitAutoComplete() {
         let me = this;
-        let allowedChars = new RegExp(/^[a-zA-Z\s]+$/)
+        let allowedChars = new RegExp(/^[a-zA-Z\s]+$/);
 
         autocomplete({
 			input: document.getElementById('srccodeunit'),
 			minLength: 1,
 			onSelect: function (item, inputfield) {
-				inputfield.value = item
+				inputfield.value = item.name;
+                me.selectBaseCodeunitByObject(item);
 			},
 			fetch: function (text, callback) {
 				let match = text.toLowerCase();
-				callback(me._data.codeunitList.filter(function(n) { return n.toLowerCase().indexOf(match) !== -1; }));
+				callback(me._data.codeunitList.filter(function(n) { return n.name.toLowerCase().indexOf(match) !== -1; }));
 			},
 			render: function(item, value) {
 				let itemElement = document.createElement("div");
 				if (allowedChars.test(value)) {
 					let regex = new RegExp(value, 'gi');
-					let inner = item.replace(regex, function(match) { return "<strong>" + match + "</strong>" });
+					let inner = item.name.replace(regex, function(match) { return "<strong>" + match + "</strong>"; });
 					itemElement.innerHTML = inner;
 				} else {
-					itemElement.textContent = item;
+					itemElement.textContent = item.name;
 				}
 				return itemElement;
 			},
@@ -66,7 +71,7 @@ class InterfaceWizard extends BaseObjectWizard {
 					container.style.maxHeight = "140px";
 				}
 			}
-		})
+		});
     }
    
     sendFinishMessage() {
@@ -74,14 +79,26 @@ class InterfaceWizard extends BaseObjectWizard {
             command: "finishClick",
             data: {
                 objectName : this._data.objectName,
-                baseCodeunitName : this._data.baseCodeunitName
+                baseCodeunit : this._data.baseCodeunit
             }
         });
     }
 
     collectStepData(finishSelected) {
+        this.selectBaseCodeunitByName(document.getElementById("srccodeunit").value);
+
         this._data.objectName = document.getElementById("objectname").value;
-        this._data.baseCodeunitName = document.getElementById("srccodeunit").value;
+    }
+
+    selectBaseCodeunitByName(name) {
+        if (this._data.baseCodeunit?.name !== name) {
+            this.selectBaseCodeunitByObject(this.findObjectListItemByName(this._data.codeunitList, name));
+        }
+    }
+
+    selectBaseCodeunitByObject(obj) {
+        this._selectedBaseCodeunitChanged = (this._data.baseCodeunit?.uid !== obj?.uid);
+        this._data.baseCodeunit = obj;
     }
 
 }

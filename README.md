@@ -1,5 +1,16 @@
 # AZ AL Dev Tools/AL Code Outline for Visual Studio Code
 
+# AI Enabled Next Version of the extension
+
+This branch contains new, refactored version of the extension. The plan for changes is:
+- Split .net language server into small, separate libraries for each functionality and layer
+- Separate language server communication, workspace level processing and syntax level processing into separate libraries
+- Carefully design dependencies between layers and functionality parts. Using small libraries is a way to avoid 2-way dependencies between layers.
+- Expose functionality to both VSCode (language server), GitHub copilot in VS Code (language server) and other AI tools - MCP server (separate project in the solution)
+- Remove obsolete functionality
+
+# Extension functionality
+
 This extension was originally named 'AL Code Outline' because it started as AL code outline panel from which it was possible to run different code generators on AL syntax nodes. Each new version has been adding new features, some of them were no longer related to the AL code outline panel. Current version of the extension is a collection of different al development tools and al outline panel is just one of them, so it seems that the name should be updated to reflect functionality changes.
 
 ## Features

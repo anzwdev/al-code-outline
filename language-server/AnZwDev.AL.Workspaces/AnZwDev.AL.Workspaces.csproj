@@ -1,0 +1,18 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net10.0</TargetFramework>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>enable</Nullable>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\AnZwDev.AL.Symbols.Providers.AppPackages\AnZwDev.AL.Symbols.Providers.AppPackages.csproj" />
+    <ProjectReference Include="..\AnZwDev.AL.Symbols.Providers.SourceCode\AnZwDev.AL.Symbols.Providers.SourceCode.csproj" />
+    <ProjectReference Include="..\AnZwDev.AL.Symbols\AnZwDev.AL.Symbols.csproj" />
+    <ProjectReference Include="..\AnZwDev.System.Collections\AnZwDev.System.Collections.csproj" />
+    <ProjectReference Include="..\AnZwDev.System.IO\AnZwDev.System.IO.csproj" />
+    <ProjectReference Include="..\AnZwDev.System\AnZwDev.System.csproj" />
+  </ItemGroup>
+
+</Project>

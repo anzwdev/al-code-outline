@@ -97,16 +97,17 @@ class CARulesViewer {
     }
 
     setRules(rules) {
-        if (!rules)
+        if (!rules) {
             rules = [];
+        }
         //keep item source index
         for (let i=0; i<rules.length; i++) {
             rules[i].idx = i;
         }
         //sort items
         rules.sort((a,b) => {
-            if (a.id < b.id) return -1;
-            if (a.id > b.id) return 1;
+            if (a.id < b.id) { return -1; }
+            if (a.id > b.id) { return 1; }
             return 0;
         });
         //filter items
@@ -136,23 +137,27 @@ class CARulesViewer {
         
         let items = this._rulesTab.getSelected();
         let selRules = [];
-        if (selectedrow)
+        if (selectedrow) {
             mainItem = selectedrow.tabData;        
+        }
 
         if ((items) && (items.length > 0)) {
-            if (!mainItem)
+            if (!mainItem) {
                 mainItem = items[0];
+            }
 
             for (let i=0; i<items.length; i++) {
-                if (items[i].idx == mainItem.idx)
+                if (items[i].idx === mainItem.idx) {
                     selFound = true;
+                }
                 selRules.push(items[i].idx);
             }            
         }    
 
         if (mainItem) {
-            if (!selFound)
+            if (!selFound) {
                 selRules.push(mainItem.idx);
+            }
 
             this.sendMessage({
                 command : cmdname,
@@ -186,8 +191,9 @@ class CARulesViewer {
         this._rulesTab._columns[2].userFilterArray = sevList;
         this._rulesTab._columns[3].userFilterArray = analyzersList;
         this._rulesTab.compileFilters();
-        if (render)
+        if (render) {
             this._rulesTab.renderData();
+        }
     }
 
     getSelOptionsList(id) {
@@ -195,8 +201,9 @@ class CARulesViewer {
         let selElem = document.getElementById(id);
         let options = selElem.options;
         for (let i=0; i<options.length; i++) {
-            if (options[i].selected)
+            if (options[i].selected) {
                 selList.push(options[i].label);
+            }
         }
         return selList;
     }

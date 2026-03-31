@@ -22,7 +22,7 @@ class FormEditor {
     }
 
     setError(hasError, message) {
-        if (this._hasError != hasError) {
+        if (this._hasError !== hasError) {
             this._hasError = hasError;
             if (this._hasError) {
                 this._form.hide();
@@ -42,17 +42,20 @@ class FormEditor {
         switch (message.command) {
             case 'setData':
                 this.setError(false, undefined);
-                if (message.fields)
+                if (message.fields) {
                     this._form.setFields(message.fields);
+                }
                 this._form.setData(message.data);
                 break;
             case 'setAutocomplete':
-                if ((message.path) && (message.data))
+                if ((message.path) && (message.data)) {
                     this._form.setAutocomplete(message.path, message.data);
+                }
                 break;
             case 'dataError':
-                if (message.fields)
+                if (message.fields) {
                     this._form.setFields(message.fields);
+                }
                 this.setError(true, message.message);                
                 break;
         }

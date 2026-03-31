@@ -1,0 +1,28 @@
+import { ALObjectWizard } from "./alObjectWizard";
+import { ALObjectWizardSettings } from "./alObjectWizardSettings";
+import { ALReportExtWizardPage } from "./alReportExtWizardPage";
+import { ALReportExtWizardData } from "./alReportExtWizardData";
+import { DevToolsExtensionContext } from "../../../devToolsExtensionContext";
+
+export class ALReportExtWizard extends ALObjectWizard {
+
+    constructor(toolsExtensionContext : DevToolsExtensionContext, newLabel: string, newDescription : string, newDetails: string) {
+        super(toolsExtensionContext, newLabel, newDescription, newDetails);
+    }
+
+    run(settings: ALObjectWizardSettings) {
+        super.run(settings);
+        this.runAsync(settings);
+    }
+
+    protected async runAsync(settings: ALObjectWizardSettings) {
+        let wizardData : ALReportExtWizardData = new ALReportExtWizardData();
+        await this.initObjectIdFieldsAsync(wizardData, settings, "reportextension");
+        wizardData.objectName = '';
+        wizardData.baseReport = undefined;
+        this.onInitWizardData(wizardData);
+        let wizardPage : ALReportExtWizardPage = new ALReportExtWizardPage(this._toolsExtensionContext, settings, wizardData);
+        wizardPage.show();
+    }
+
+}

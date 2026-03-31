@@ -10,9 +10,9 @@ class ReportWizard extends TableBasedObjectWizard {
         super.setData(data);
 
         //initialize fields
-        document.getElementById("objectid").value = this._data.objectId;
+        this.updateObjectIdControl();
         document.getElementById("objectname").value = this._data.objectName;
-        document.getElementById("srctable").value = this._data.selectedTable;
+        document.getElementById("srctable").value = this._data.selectedTable?.name ?? "";
         document.getElementById("apparea").value = this._data.applicationArea;
         document.getElementById("usagecat").value = this._data.usageCategory;
         this.updateMainButtons();
@@ -42,19 +42,20 @@ class ReportWizard extends TableBasedObjectWizard {
     }
 
     collectStep1Data() {
-        var prevTableName = this._data.selectedTable;  
-        this._data.objectId = document.getElementById("objectid").value;
+        this.selectTableByName(document.getElementById("srctable").value);
+        this.saveObjectIdControl();
         this._data.objectName = document.getElementById("objectname").value;
-        this._data.selectedTable = document.getElementById("srctable").value;
         this._data.applicationArea = document.getElementById("apparea").value;
         this._data.usageCategory = document.getElementById("usagecat").value;
         
-        if (prevTableName !== this._data.selectedTable) {
+        if (this._selectedTableChanged) {
+            this._selectedTableChanged = false;
+
             htmlHelper.clearChildrenById("srcfields");
             htmlHelper.clearChildrenById("destfields");
             this.sendMessage({
                 command: 'selectTable',
-                tableName: document.getElementById('srctable').value
+                selectedTable: this._data.selectedTable
             });    
         }
     }

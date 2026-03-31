@@ -28,9 +28,9 @@ class PageWizard extends TableBasedObjectWizard {
         super.setData(data);
 
         //initialize fields
-        document.getElementById("objectid").value = this._data.objectId;
+        this.updateObjectIdControl();
         document.getElementById("objectname").value = this._data.objectName;
-        document.getElementById("srctable").value = this._data.selectedTable;
+        document.getElementById("srctable").value = this._data.selectedTable?.name ?? "";
         document.getElementById("pagetype").value = this._data.pageType;
         document.getElementById("fasttabs").value = this._data.fastTabs;
         document.getElementById("apparea").value = this._data.applicationArea;
@@ -82,12 +82,13 @@ class PageWizard extends TableBasedObjectWizard {
     }
 
     collectStep1Data(finishSelected) {
-        var prevTableName = this._data.selectedTable;   
+        //table switch
+        this.selectTableByName(document.getElementById("srctable").value);
+
         var prevFastTab = this._data.fastTabs;
         
-        this._data.objectId = document.getElementById("objectid").value;
+        this.saveObjectIdControl();
         this._data.objectName = document.getElementById("objectname").value;
-        this._data.selectedTable = document.getElementById("srctable").value;
         this._data.pageType = document.getElementById("pagetype").value;
         this._data.fastTabs = document.getElementById("fasttabs").value;
         this._data.applicationArea = document.getElementById("apparea").value;
@@ -100,34 +101,39 @@ class PageWizard extends TableBasedObjectWizard {
         this._data.entitySetName = document.getElementById("entitysetname").value;    
        
         let prevSelectFlowFilters = this._selectFlowFilters;
-        this._selectFlowFilters = ((this._data.pageType) && (this._data.pageType == "API"));
+        this._selectFlowFilters = ((this._data.pageType) && (this._data.pageType === "API"));
 
-        if (prevTableName !== this._data.selectedTable) {
+        if (this._selectedTableChanged) {
+            this._selectedTableChanged = false;
+            
             htmlHelper.clearChildrenById("srcfields");
             htmlHelper.clearChildrenById("destfields");
             htmlHelper.clearChildrenById("srcflowfilters");
             htmlHelper.clearChildrenById("destflowfilters");
             
             //clear selected fields
-            if (this._data.selectedFieldList)
+            if (this._data.selectedFieldList) {
                 this._data.selectedFieldList = [];
-            if (this._data.fastTabsData)
-                this._data.fastTabsData.forEach(item => {item.fields = []});
-            if (this._data.selectedFlowFilterList)
+            }
+            if (this._data.fastTabsData) {
+                this._data.fastTabsData.forEach(item => {item.fields = [];});
+            }
+            if (this._data.selectedFlowFilterList) {
                 this._data.selectedFlowFilterList = [];
+            }
 
             if (!finishSelected) {
                 this.sendMessage({
                     command: 'selectTable',
-                    tableName: this._data.selectedTable,
+                    selectedTable: this._data.selectedTable,
                     includeFlowFilters: true
                 });
             }
-        } else if (prevSelectFlowFilters != this._selectFlowFilters) {
+        } else if (prevSelectFlowFilters !== this._selectFlowFilters) {
             this.loadFlowFilters();
         }
 
-        if ((prevFastTab != this._data.fastTabs) || (!this._data.fastTabsData) || (this._data.fastTabsData.length == 0)) {
+        if ((prevFastTab !== this._data.fastTabs) || (!this._data.fastTabsData) || (this._data.fastTabsData.length === 0)) {
             this.rebuildFastTabs();
         }
     }
@@ -144,30 +150,33 @@ class PageWizard extends TableBasedObjectWizard {
         let prevHasTabs = this.hasFastTabs();        
         this._data.pageType = document.getElementById("pagetype").value;
         this.updateControls();
-        if (prevHasTabs != this.hasFastTabs())
+        if (prevHasTabs = this.hasFastTabs()) {
             this.rebuildFastTabs();
+        }
     }
 
     updateControls() {
         super.updateControls();
 
-        if ((this._data.pageType == "API") || (!this._data.showCreateTooltips)) {
+        if ((this._data.pageType === "API") || (!this._data.showCreateTooltips)) {
             htmlHelper.hideById("createtooltipsline");
         } else {
             htmlHelper.showById("createtooltipsline");
         }
 
-        if (this.hasFastTabs())
+        if (this.hasFastTabs()) {
             htmlHelper.showById("fasttabsline");
-        else
+        } else {
             htmlHelper.hideById("fasttabsline");            
-        
-        if (this._data.pageType == "List")
-            htmlHelper.showById("usagecatline");
-        else
-            htmlHelper.hideById("usagecatline");
+        }
 
-        if (this._data.pageType == "API") {
+        if (this._data.pageType === "List") {
+            htmlHelper.showById("usagecatline");
+        } else {
+            htmlHelper.hideById("usagecatline");
+        }
+
+        if (this._data.pageType === "API") {
             htmlHelper.showById("apipublisherline");
             htmlHelper.showById("apigroupline");
             htmlHelper.showById("apiversionline");
@@ -183,12 +192,12 @@ class PageWizard extends TableBasedObjectWizard {
     }
 
     hasFastTabs() {
-        return ((this._data.pageType == "Card") || (this._data.pageType == "Document") || (this._data.pageType == "CardPart") ||
-            (this._data.pageType == "ConfirmationDialog") || (this._data.pageType == "NavigatePage"));
+        return ((this._data.pageType === "Card") || (this._data.pageType === "Document") || (this._data.pageType === "CardPart") ||
+            (this._data.pageType === "ConfirmationDialog") || (this._data.pageType === "NavigatePage"));
     }
 
     hasFields () {
-        return ((this._data.pageType != "RoleCenter") && (this._data.pageType != "StandardDialog"));
+        return ((this._data.pageType !== "RoleCenter") && (this._data.pageType !== "StandardDialog"));
     }
 
     saveSelectedFields() {
@@ -228,10 +237,11 @@ class PageWizard extends TableBasedObjectWizard {
     }
 
     findTabByName(name) {
-        if (this._data.fastTabsData)
+        if (this._data.fastTabsData) {
             return this._data.fastTabsData.find(item => {
-                return (item.name == name);
+                return (item.name === name);
             });
+        }
         return undefined;
     }
 
@@ -239,20 +249,23 @@ class PageWizard extends TableBasedObjectWizard {
         let selFlds = [];
         if (this.hasFastTabs()) {
             //get list of fast tabs
-            if ((!this._data.fastTabs) || (this._data.fastTabs.trim() == ""))
+            if ((!this._data.fastTabs) || (this._data.fastTabs.trim() === "")) {
                 this._data.fastTabs = "General";
+            }
             var fastTabsNames = this._data.fastTabs.split(",");
             var fastTabList = [];
             for (var i=0; i<fastTabsNames.length; i++) {
                 let tab = this.findTabByName(fastTabsNames[i]);
                 if (tab) {
-                    if (tab.fields.length > 0)
+                    if (tab.fields.length > 0) {
                         selFlds.push(...tab.fields);
-                } else
+                    }
+                } else {
                     tab = {
                         name : fastTabsNames[i],
                         fields : []
                     };
+                }
                 fastTabList.push(tab);
             }
             this._data.fastTabsData = fastTabList;

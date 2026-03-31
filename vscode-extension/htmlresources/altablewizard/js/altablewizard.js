@@ -6,17 +6,20 @@ class TableWizard extends BaseObjectWizard {
         //initialize controls
         this._fieldsgrid = new TableFieldsGridView(true);
         this._fieldsgrid.onCreateDataEntry = (data, idx, item) => {
-            if ((idx == 0) && (data.length == 0))
+            if ((idx === 0) && (data.length === 0)) {
                 item.pk = true;
+            }
 
             let prevId = this.getId(data, idx - 1); 
             let newId = prevId;
             if (idx < data.length) {
                 newId = Math.round((prevId + this.getId(data, idx)) / 2);
-                if (newId == prevId)
+                if (newId === prevId) {
                     newId++;
-            } else
+                }
+            } else {
                 newId += 1;
+            }
 
             item.id = newId.toString();
         };
@@ -25,8 +28,9 @@ class TableWizard extends BaseObjectWizard {
     getId(data, idx) {
         if ((idx >=0) && (idx < data.length) && (data[idx].id)) {
             let val = Number.parseInt(data[idx].id);
-            if (!isNaN(val))
+            if (!isNaN(val)) {
                 return val;
+            }
         }
         return 0;
     }
@@ -50,16 +54,17 @@ class TableWizard extends BaseObjectWizard {
        
         if (this._data) {
             //initialize inputs
-            document.getElementById("objectid").value = this._data.objectId;
+            this.updateObjectIdControl();
             document.getElementById("objectname").value = this._data.objectName;
             document.getElementById("dataclassification").value = this._data.dataClassification;
             document.getElementById("datapercompany").checked = this._data.dataPerCompany;
 
             //initialize fields list
-            if (this._data.fields)
+            if (this._data.fields) {
                 this._fieldsgrid.setData(this._data.fields);
-            else
+            } else {
                 this._fieldsgrid.setData([]);
+            }
         }
 
     }
@@ -82,7 +87,7 @@ class TableWizard extends BaseObjectWizard {
     }
 
     collectStepData(finishSelected) {
-        this._data.objectId = document.getElementById("objectid").value;
+        this.saveObjectIdControl();
         this._data.objectName = document.getElementById("objectname").value;
         this._data.dataClassification = document.getElementById("dataclassification").value;
         this._data.dataPerCompany = document.getElementById("datapercompany").checked;

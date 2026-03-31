@@ -1,0 +1,69 @@
+import * as vscode from 'vscode';
+import { ALQueryWizardData } from "../wizards/alQueryWizardData";
+import { ALSyntaxHelper } from '../../../al_syntax/alSyntaxHelper';
+import { ALSyntaxWriter } from '../../../al_syntax/alSyntaxWriter';
+import { LSPIProjectProfile } from '../../../langserver/project_information/profile/lspiProjectProfile';
+
+export class ALQuerySyntaxBuilder {
+
+    constructor() {
+    }
+
+    buildFromQueryWizardData(destUri: vscode.Uri | undefined, data : ALQueryWizardData, projectProfile: LSPIProjectProfile | undefined) : string {
+        //generate file content
+        let writer : ALSyntaxWriter = new ALSyntaxWriter(destUri);
+        let isApi : boolean = (data.queryType.toLowerCase() === "api");
+
+        writer.writeNamespace(data.objectNamespace);
+        writer.writeUsings(data.objectUsings);
+
+        writer.writeStartObject("query", data.objectId, data.objectName);
+        writer.addProperty("QueryType", data.queryType);
+
+        if (isApi) {
+            writer.addProperty("APIPublisher", writer.encodeString(data.apiPublisher));
+            writer.addProperty("APIGroup", writer.encodeString(data.apiGroup));
+            writer.addProperty("APIVersion", writer.encodeString(data.apiVersion));
+            writer.addProperty("EntityName", writer.encodeString(data.entityName));
+            writer.addProperty("EntitySetName", writer.encodeString(data.entitySetName));
+        } else {
+            writer.addProperty("Caption", writer.encodeString(ALSyntaxHelper.removePrefixSuffix(data.objectName, projectProfile?.affixes)));
+        }
+
+        writer.writeProperties();
+
+        writer.writeLine("");
+
+        //write dataset
+        this.writeDataSet(writer, data, isApi);
+
+        //write triggers
+        writer.writeLine("");
+        writer.writeLine("trigger OnBeforeOpen()");
+        writer.writeLine("begin");
+        writer.writeLine("");                
+        writer.writeLine("end;");
+        
+        writer.writeEndObject();
+        
+        return writer.toWizardGeneratedString();
+
+    }
+
+    private writeDataSet(writer : ALSyntaxWriter, data : ALQueryWizardData, isApi: boolean) {
+        let dataItemName = isApi?writer.createApiName(data.selectedTable!.name!):writer.createName(data.selectedTable!.name);
+
+        writer.writeStartNamedBlock("elements");
+        writer.writeStartNameSourceBlock("dataitem", writer.encodeName(dataItemName), writer.encodeName(data.selectedTable!.name));
+        if (data.selectedFieldList) {
+            for (let i=0; i<data.selectedFieldList.length; i++) {
+                let columnName = isApi?writer.createApiName(data.selectedFieldList[i].name!):writer.createName(data.selectedFieldList[i].name!);
+                writer.writeNameSourceBlock("column", writer.encodeName(columnName), 
+                    writer.encodeName(data.selectedFieldList[i].name!));
+            }
+        }
+        writer.writeEndBlock();
+        writer.writeEndBlock();
+    }
+
+} 

@@ -40,10 +40,11 @@ class BaseObjectWizard {
         let noOfSteps = this._maxStepNo + 10;
         for (let i=2; i<=noOfSteps; i++) {
             let stepctl = document.getElementById("wizardstep" + i.toString());
-            if (stepctl)
+            if (stepctl) {
                 htmlHelper.hide(stepctl);
-            else
+            } else {
                 return;
+            }
         }
     }
 
@@ -85,8 +86,9 @@ class BaseObjectWizard {
 
     onFinish() {
         this.collectStepData(true);
-        if (this.canFinish())
+        if (this.canFinish()) {
             this.sendFinishMessage();
+        }
     }
 
     sendFinishMessage() {
@@ -95,7 +97,7 @@ class BaseObjectWizard {
     onCancel() {
         this.sendMessage({
             command : "cancelClick"
-        })
+        });
     }
 
     onPrev() {
@@ -116,7 +118,7 @@ class BaseObjectWizard {
     }
 
     canFinish() {
-        if ((!this._data.objectName) || (this._data.objectName == '')) {
+        if ((!this._data.objectName) || (this._data.objectName === '')) {
             this.sendMessage({
                 command: 'showError',
                 message: 'Please enter object name.'
@@ -164,19 +166,21 @@ class BaseObjectWizard {
                     idprovctl.value = this._data.idResProviderName;
                     idprovctl.disabled = !editable;
                 }
-            } else
+            } else {
                 htmlHelper.hideById("idproviderline");
+            }
         }
     }
 
     onIdProviderChanged() {
         let name = document.getElementById("idprovider").value;
-        if (name)
+        if (name) {
             this.sendMessage({
                 command: "idProviderChanged",
                 data: {
                     idResProviderName: name
                 }});
+        }
     }
 
     setIdProvider(data) {
@@ -186,12 +190,39 @@ class BaseObjectWizard {
             this._data.idResProviderName = data.idResProviderName;
             this._data.objectId = data.objectId;
             
-            if ((providerChanged) && (this._data.idResProviderName))
+            if ((providerChanged) && (this._data.idResProviderName)) {
                 document.getElementById("idprovider").value = this._data.idResProviderName;
-            if (this._data.objectId)
-                document.getElementById("objectid").value = this._data.objectId;
-            
+            }
+            if (this._data.objectId) {
+                this.updateObjectIdControl();
+            }            
         }
+    }
+
+    findObjectListItemByName(list, name) {
+        if ((list) && (name) && (name !== "")) {
+            for (let idx = 0; idx < this._data.tableList.length; idx++) {
+                if (this._data.tableList[idx].name === name) {
+                    return this._data.tableList[idx];
+                }
+            }
+        }
+        return undefined;
+    }
+
+    updateObjectIdControl() {
+        if (this._data.objectId === undefined) {
+            this._data.objectId = 0;
+        }
+        document.getElementById("objectid").value = this._data.objectId.toString();
+    }
+
+    saveObjectIdControl() {
+        let objectIdText = document.getElementById("objectid").value;
+        let objectId = parseInt(objectIdText) || 0;
+
+        this._data.objectId = objectId;
+        document.getElementById("objectid").value = objectId.toString();
     }
 
 }

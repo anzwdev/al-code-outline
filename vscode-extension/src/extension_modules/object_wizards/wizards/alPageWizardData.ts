@@ -1,0 +1,47 @@
+import { ALTableBasedWizardData } from "./alTableBasedWizardData";
+import { ALPageWizardFastTabData } from "./alPageWizardFastTabData";
+
+export class ALPageWizardData extends ALTableBasedWizardData {
+    pageType : string;
+    fastTabs : string;
+    usageCategory : string;
+    caption : string;
+    apiPublisher : string;
+    apiGroup : string;
+    apiVersion : string;
+    entityName : string;
+    entitySetName : string;
+    createTooltips: boolean;
+    showCreateTooltips: boolean;
+    reuseToolTips: boolean;
+    toolTipsSource: string[] | undefined;
+    fastTabsData : ALPageWizardFastTabData[];
+
+    constructor() {
+        super();
+        this.pageType = "Card";
+        this.fastTabs = "General";
+        this.applicationArea = "All";
+        this.usageCategory = "";
+        this.createTooltips = false;
+        this.showCreateTooltips = true;
+        //api fields
+        this.caption = "";
+        this.apiPublisher = "publisherName";
+        this.apiGroup = "apiGroup";
+        this.apiVersion = "v1.0";
+        this.entityName = "entityName";
+        this.entitySetName = "entitySetName";
+        //tooltips
+        this.reuseToolTips = true;
+        this.toolTipsSource = undefined;
+        //fast tabs
+        this.fastTabsData = [];
+    }
+
+    isFastTabsPageType() : boolean {
+        return ((this.pageType === "Card") || (this.pageType === "Document") || (this.pageType === "CardPart") ||
+            (this.pageType === "ConfirmationDialog") || (this.pageType === "NavigatePage"));
+    }
+
+}

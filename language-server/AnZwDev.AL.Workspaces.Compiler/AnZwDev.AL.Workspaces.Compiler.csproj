@@ -1,0 +1,21 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net10.0</TargetFramework>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>enable</Nullable>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\AnZwDev.AL.Workspaces.AttachedData.SyntaxTrees\AnZwDev.AL.Workspaces.AttachedData.SyntaxTrees.csproj" />
+    <ProjectReference Include="..\AnZwDev.AL.Workspaces\AnZwDev.AL.Workspaces.csproj" />
+    <ProjectReference Include="..\AnZwDev.System.IO\AnZwDev.System.IO.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Reference Include="Microsoft.Dynamics.Nav.CodeAnalysis">
+      <HintPath>..\..\..\..\MicrosoftALVersions\LatestBC\bin\win32\Microsoft.Dynamics.Nav.CodeAnalysis.dll</HintPath>
+    </Reference>
+  </ItemGroup>
+
+</Project>

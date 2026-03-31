@@ -1,0 +1,503 @@
+import * as vscode from 'vscode';
+import { ALSyntaxHelper } from './alSyntaxHelper';
+import { ALAppAreaMode } from '../extension_modules/extension_settings/alAppAreaMode';
+import { StringHelper } from '../core/stringHelper';
+import { NameValue } from '../core/nameValue';
+import { ApiFieldNameConversion } from './alApiFieldNameConversion';
+import { DevToolsExtensionSettings } from '../extension_modules/extension_settings/devToolsExtensionSettings';
+import { LSPILabel } from '../langserver/project_information/symbols/lspiLabel';
+
+export class ALSyntaxWriter {
+    private content : string;
+    private indentText : string;
+    private indentPart : string;  
+    public applicationArea : string;
+    public applicationAreaMode : ALAppAreaMode;
+    private propertiesCache : NameValue[];
+    private fieldToolTip: string;
+    private fieldToolTipComment: string;
+    private useTableFieldDescriptionAsToolTip: boolean;
+    private noEmptyLinesAtTheEndOfWizardGeneratedFiles: boolean;
+    private eol: string;
+    private apiFieldNamesConversion: ApiFieldNameConversion[];
+    private createApiFieldsCaptions: boolean;
+
+    constructor(destUri: vscode.Uri | undefined) {
+        let extensionConfig = new DevToolsExtensionSettings(destUri);
+
+       
+        this.content = "";
+        this.indentText = "";
+        this.indentPart = "    ";
+        this.applicationArea = extensionConfig.getDefaultAppArea() ?? "";
+        this.applicationAreaMode = ALAppAreaMode.addToAllControls; //do not use settings, runtime version might override these settings
+        this.fieldToolTip = extensionConfig.getPageFieldToolTip() ?? "";
+        this.fieldToolTipComment = extensionConfig.getPageFieldToolTipComment() ?? "";
+        this.useTableFieldDescriptionAsToolTip = extensionConfig.getUseTableFieldDescriptionAsToolTip();
+        this.noEmptyLinesAtTheEndOfWizardGeneratedFiles = extensionConfig.getNoEmptyLinesAtTheEndOfWizardGeneratedFiles();
+        this.createApiFieldsCaptions = extensionConfig.getCreateApiFieldsCaptions();
+        this.propertiesCache = [];        
+        this.eol = StringHelper.getDefaultEndOfLine(destUri);
+        this.apiFieldNamesConversion = [];
+
+        this.prepareApiFieldNamesConversions(extensionConfig.getApiFieldNamesConversion());
+    }
+
+    private prepareApiFieldNamesConversions(apiConv: any[] | undefined) {
+        if (apiConv) {
+            for (let i = 0; i<apiConv.length; i++) {
+                if ((apiConv[i].searchRegExp) && (apiConv[i].newValue)) {
+                    try {
+                        let item = new ApiFieldNameConversion(apiConv[i].searchRegExp!, apiConv[i].newValue!);
+                        this.apiFieldNamesConversion.push(item);
+                    }
+                    catch (e) {                        
+                    }
+                }
+            }
+        }
+    }
+
+    public toString() : string {
+        return this.content;
+    }
+
+    public toWizardGeneratedString() {
+        if (this.noEmptyLinesAtTheEndOfWizardGeneratedFiles) {
+            return this.removeEndingEmptyLines();
+        }
+        return this.content;
+    }
+
+    protected removeEndingEmptyLines(): string {
+        let len = this.content.length;
+        let eolen = this.eol.length;        
+        while ((len > 0) && (this.content.substring(len-eolen, len) === this.eol)) {
+            len -= eolen;
+        }
+        if (len > 0) {
+            return this.content.substring(0, len);
+        }
+        return '';
+    }
+
+    public incIndent() {
+        this.indentText += this.indentPart;
+    }
+
+    public decIndent() {
+        if (this.indentText.length > this.indentPart.length) {
+            this.indentText = this.indentText.substr(0, this.indentText.length - this.indentPart.length);
+        } else {
+            this.indentText = "";
+        }
+    }
+
+    public setIndent(value : number) {
+        let text : string = " ";
+        this.indentText = text.repeat(value);
+    }
+
+    public writeLine(line : string) {
+        this.content += (this.indentText + line + this.eol);
+    }
+
+    public writeStartBlock() {
+        this.writeLine("{");
+        this.incIndent();
+    }
+
+    public writeEndBlock() {
+        this.decIndent();
+        this.writeLine("}");
+    }
+
+    public writeStartNamedBlock(name : string) {
+        this.writeLine(name);
+        this.writeStartBlock();
+    }
+
+    public writeStartNameSourceBlock(blockName : string, propertyName : string, propertySource : string) {
+        this.writeLine(blockName + "(" + propertyName + "; " + propertySource + ")");
+        this.writeStartBlock();
+    }
+
+    public writeNameSourceBlock(blockName : string, propertyName : string, propertySource : string) {
+        this.writeStartNameSourceBlock(blockName, propertyName, propertySource);
+        this.writeEndBlock();
+    }
+
+    public writeNamespace(namespaceName: string | undefined) {
+        if ((namespaceName) && (namespaceName !== "")) {
+            this.writeLine("namespace " + namespaceName + ";");
+            this.writeLine("");
+        }
+    }    
+
+    public writeUsings(usings: string[] | undefined) {
+        if ((usings) && (usings.length > 0)) {
+            for (let i=0; i<usings.length; i++) {
+                this.writeLine("using " + usings[i] + ";");
+            }
+            this.writeLine("");
+        }
+    }
+
+    public writeStartObject(type : string, id : number, name : string) {
+        var objectIdText : string;
+        if (id === 0) {
+            objectIdText = 'id';
+        } else {
+            objectIdText = id.toString();
+        }
+        
+        name = ALSyntaxHelper.toNameText(name);
+
+        this.writeLine(type + " " + objectIdText + " " + name);
+        this.writeStartBlock();
+    }
+
+    public writeStartInterface(name: string) {
+        name = ALSyntaxHelper.toNameText(name);
+        this.writeLine("interface " + name);
+        this.writeStartBlock();
+    }
+
+    public writeStartCodeunit(id : number, name : string, interfaceName: string | undefined) {
+        var objectIdText : string;
+        if (id === 0) {
+            objectIdText = 'id';
+        } else {
+            objectIdText = id.toString();
+        }
+        
+        name = ALSyntaxHelper.toNameText(name);
+
+        let interfaceText = "";
+        if ((interfaceName) && (interfaceName.length > 0)) {
+            interfaceText = " implements " + ALSyntaxHelper.toNameText(interfaceName);
+        }
+
+        this.writeLine("codeunit " + objectIdText + " " + name + interfaceText);
+        this.writeStartBlock();
+    }
+
+
+    public writeStartExtensionObject(type : string, id : number, extname : string, targetName : string) {
+        var objectIdText : string;
+        if (id === 0) {
+            objectIdText = 'id';
+        } else {
+            objectIdText = id.toString();
+        }
+        
+        extname = ALSyntaxHelper.toNameText(extname);
+        targetName = ALSyntaxHelper.toNameText(targetName);
+
+        this.writeLine(type + " " + objectIdText + " " + extname + " extends " + targetName);
+        
+        this.writeStartBlock();
+    }
+
+    public writeEndObject() {
+        this.writeEndBlock();
+    }
+
+    public writeStartLayout() {
+        this.writeLine("layout");
+        this.writeStartBlock();
+    }
+
+    public writeEndLayout() {
+        this.writeEndBlock();
+    }
+
+    public writeStartActions() {
+        this.writeLine("actions");
+        this.writeStartBlock();
+    }
+
+    public writeEndActions() {
+        this.writeEndBlock();
+    }
+
+    public writeStartDataset() {
+        this.writeLine("dataset");
+        this.writeStartBlock();
+    }
+
+    public writeEndDataset() {
+        this.writeEndBlock();
+    }
+
+    public writeStartRequestPage() {
+        this.writeLine("requestpage");
+        this.writeStartBlock();
+    }
+
+    public writeEndRequestPage() {
+        this.writeEndBlock();
+    }
+
+    public writeStartFields() {
+        this.writeLine("fields");
+        this.writeStartBlock();
+    }
+
+    public writeEndFields() {
+        this.writeEndBlock();
+    }
+
+    public writeStartAdd(name: string) {
+        this.writeStartGroup("add", name);
+    }
+
+    public writeStartGroup(type : string, name : string) {
+        this.writeLine(type + "(" + name + ")");
+        this.writeStartBlock();
+    }
+
+    public writeProperty(name : string, value : string) {
+        this.writeLine(name + " = " + value + ";");
+    }
+
+    public writeStartProperty(name : string) {
+        this.writeLine(name + " =");
+        this.incIndent();
+    }
+    
+    public writePropertyValue(value: string, lastValue: boolean) {
+        if (lastValue) {
+            this.writeLine(value + ";");
+            this.decIndent();
+        } else {
+            this.writeLine(value + ",");
+        }
+    }
+
+    public addProperty(name : string, value : string) {
+        this.propertiesCache.push(new NameValue(name, value));
+    }
+
+    public writeProperties() {
+        if (this.propertiesCache.length > 0) {
+            
+            this.propertiesCache.sort((propA, propB) => {
+                return propA.name.localeCompare(propB.name, undefined, { numeric: true, sensitivity: 'base' });
+            });
+
+            for (let i=0; i<this.propertiesCache.length; i++) {
+                this.writeProperty(this.propertiesCache[i].name, this.propertiesCache[i].value);
+            }
+            
+            this.propertiesCache = [];
+        }
+    }
+
+    public writeReportColumn(dataSetName: string, source: string, addDataItemName: boolean) {
+        let columnName = this.createName(source);
+        if (addDataItemName) {
+            columnName = columnName + "_" + this.createName(dataSetName);
+        }
+        
+        this.writeNameSourceBlock("column", columnName, 
+            this.encodeName(source));        
+    }
+
+    public writeTableField(fieldId: string, fieldName: string, fieldDataType: string, fieldLength: string, dataClassification: string | undefined, tableDataClassification: string | undefined) {
+        let dataType = fieldDataType.toLowerCase();
+        if ((fieldLength) && ((dataType === 'text') || (dataType === 'code'))) {
+            fieldDataType = fieldDataType + '[' + fieldLength + ']';
+        }
+
+        if ((dataType.startsWith("enum ")) && (dataType.length > 5)) {
+            let enumType = fieldDataType.substr(5).trim();
+            if (!enumType.startsWith('"')) {
+                enumType = ALSyntaxHelper.toNameText(enumType);
+            }
+            fieldDataType = "Enum " + enumType;
+        }
+
+        this.writeLine("field(" + fieldId + "; " + ALSyntaxHelper.toNameText(fieldName) + "; " + fieldDataType + ")");
+        this.writeStartBlock();
+        this.writeProperty('Caption', ALSyntaxHelper.toStringText(fieldName));
+
+        
+        if (tableDataClassification) {
+            if ((dataClassification) && (dataClassification === tableDataClassification)) {
+                dataClassification = undefined;
+            }
+        } else if (!dataClassification) {
+            dataClassification = 'ToBeClassified';
+        }
+
+        if (dataClassification) {
+            this.writeProperty("DataClassification", dataClassification);
+        }
+            
+        this.writeEndBlock();
+    }
+
+    public writePageField(fieldName : string, fieldCaption: string | undefined, fieldCaptionComment: string | undefined, fieldDescription: string | undefined, createToolTip: boolean, existingToolTips: LSPILabel[] | undefined) {
+        this.writeStartNameSourceBlock("field", this.encodeName(fieldName), 'Rec.' + this.encodeName(fieldName));
+        if (this.applicationAreaMode === ALAppAreaMode.addToAllControls) {
+            this.writeApplicationArea();
+        }
+        if (createToolTip) {
+            this.writeTooltip(this.fieldToolTip, this.fieldToolTipComment, fieldCaption, fieldCaptionComment, fieldDescription, existingToolTips);
+        }
+        this.writeEndBlock();
+    }
+
+    public writeApiPageField(fieldName : string, fieldCaption: string | undefined, fieldCaptionComment: string | undefined, useTableFieldCaption: boolean) {
+        let name : string = this.createApiName(fieldName);
+        this.writeStartNameSourceBlock("field", this.encodeName(name), 'Rec.' + this.encodeName(fieldName));
+        
+        if (this.createApiFieldsCaptions) {
+            if (useTableFieldCaption) {
+                if ((!fieldCaption) || (fieldCaption === '')) {
+                    fieldCaption = fieldName;
+                }
+                if ((fieldCaptionComment) && (fieldCaptionComment !== '')) {
+                    this.addProperty("Caption", this.encodeString(fieldCaption) + ', Comment = ' + this.encodeString(fieldCaptionComment));
+                } else {
+                    this.addProperty("Caption", this.encodeString(fieldCaption));
+                }
+            } else {
+                this.addProperty("Caption", this.encodeString(name) + ', Locked = true');
+            }
+        }
+        
+        this.writeProperties();
+        this.writeEndBlock();
+    }
+
+    public writeApplicationArea() {
+        if ((this.applicationArea) && (this.applicationArea !== "")) {
+            this.writeProperty("ApplicationArea", this.applicationArea);
+        }
+    }
+
+    public writeTooltip(captionTemplate: string, commentTemplate: string, value: string | undefined, comment: string | undefined, fieldDescription: string | undefined, existingToolTips: LSPILabel[] | undefined) {
+        let textValue: string | undefined = undefined;
+
+        if ((this.useTableFieldDescriptionAsToolTip) && (fieldDescription) && (fieldDescription !== "")) {
+            textValue = this.encodeString(fieldDescription);
+        }
+        else if ((existingToolTips) && (existingToolTips.length > 0) && (existingToolTips[0].value) && (existingToolTips[0].value !== "")) {
+            textValue = this.encodeString(existingToolTips[0].value);
+            if ((existingToolTips[0].comment) && (existingToolTips[0].comment !== "")) {
+                textValue = textValue + ", Comment = " + this.encodeString(existingToolTips[0].comment);
+            }
+        }
+        else if ((captionTemplate) && (captionTemplate !== "") && (value) && (value !== "")) {
+            textValue = this.applyCaptionTemplate(captionTemplate, value, comment);
+            let commentValue = this.applyCaptionTemplate(commentTemplate, value, comment);
+            textValue = this.encodeString(textValue);
+            if ((commentValue) && (commentValue !== "")) {
+                textValue = textValue + ", Comment = " + this.encodeString(commentValue);            
+            }
+        }
+        if ((textValue) && (textValue !== "")) {
+            this.writeProperty("ToolTip", textValue);
+        }
+    }
+
+    protected applyCaptionTemplate(template: string, value: string | undefined, comment: string | undefined) {
+        if ((template) && (template !== "")) {
+            if (!value) {
+                value = "";
+            }
+            if (!comment) {
+                comment = "";
+            }
+            template = template.replace(new RegExp("%1", "g"), value);
+            template = template.replace(new RegExp("%Caption%", "g"), value);
+            template = template.replace(new RegExp("%Caption.Comment%", "g"), comment);
+        }
+        return template;
+    }
+
+    public addApplicationAreaProperty() {
+        if ((this.applicationArea) && (this.applicationArea !== "")) {
+            this.addProperty("ApplicationArea", this.applicationArea);
+        }
+    }
+
+    public encodeString(text : string) : string {
+        return ALSyntaxHelper.toStringText(text); 
+    }
+
+    public encodeName(name : string) : string {
+        return ALSyntaxHelper.toNameText(name);
+    }
+
+    public createName(source : string) : string {
+        return source.replace(/\W/g, '');
+    }
+
+    public createApiName(source : string) : string {
+        let text = '';
+        let toLower = true;
+        let toUpper = false;
+        source = source.trim();        
+        for (let i=0; i<source.length; i++) {
+            let character = source[i];
+            let isLowerCaseLetterChar = ((character >= 'a') && (character <= 'z'));
+            let isUpperCaseLetterChar = ((character >= 'A') && (character <= 'Z'));
+            let isDigitChar = ((character >= '0') && (character <= '9'));
+            let validCharacter = ((isLowerCaseLetterChar) || (isUpperCaseLetterChar) || ((isDigitChar) && (text !== '')));            
+
+            if ((text !== '') || (validCharacter)) {
+                //if text starts with upperCase, conver all these characters to lowerCase
+                if (isUpperCaseLetterChar) {
+                    toUpper = false;
+
+                    //do not convert to lowerCase if next character is lowerCase (i.e. EDIDocument => ediDocument), but only if it is not first character in the name (i.e. MyField => myField)
+                    if ((text !== '') && (toLower) && (i < (source.length - 1))) {
+                        let nextCharacter = source[i + 1];
+                        if (((nextCharacter >= 'a') && (nextCharacter <= 'z'))) {
+                            toLower = false;
+                        }
+                    }
+
+                    if (toLower) {
+                        character = character.toLowerCase();
+                    }
+                } else {
+                    toLower = false;
+                    if ((isLowerCaseLetterChar) && (toUpper)) {
+                        character = character.toUpperCase();
+                        toUpper = false;
+                    }
+                    //if current character is not lowerCase letter, then convert next lowerCase letter to upperCase
+                    if (!isLowerCaseLetterChar) {
+                        toUpper = true;
+                    }
+                }
+
+                //append letters to text
+                if (validCharacter) {
+                    text = text + character;
+                }
+            }
+        }
+
+        text = this.convertApiName(text);
+
+        return text;
+    }
+
+    private convertApiName(name: string) {
+        if ((name) && (this.apiFieldNamesConversion)) {
+            for (let i=0; i<this.apiFieldNamesConversion.length; i++) {
+                let newValue = name.replace(this.apiFieldNamesConversion[i].searchRegExp, this.apiFieldNamesConversion[i].newValue);
+                if (newValue !== name) {
+                    return newValue;
+                }
+            }
+        }
+        return name;
+    }
+
+}

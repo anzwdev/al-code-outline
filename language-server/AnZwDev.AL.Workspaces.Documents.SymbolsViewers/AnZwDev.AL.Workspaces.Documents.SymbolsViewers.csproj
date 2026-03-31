@@ -1,0 +1,17 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net10.0</TargetFramework>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>enable</Nullable>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\AnZwDev.AL.Symbols.Providers.AppPackages\AnZwDev.AL.Symbols.Providers.AppPackages.csproj" />
+    <ProjectReference Include="..\AnZwDev.AL.Symbols\AnZwDev.AL.Symbols.csproj" />
+    <ProjectReference Include="..\AnZwDev.AL.Views.SymbolsTreeViews\AnZwDev.AL.Views.SymbolsTreeViews.csproj" />
+    <ProjectReference Include="..\AnZwDev.AL.Workspaces.Documents\AnZwDev.AL.Workspaces.Documents.csproj" />
+    <ProjectReference Include="..\AnZwDev.AL.Workspaces\AnZwDev.AL.Workspaces.csproj" />
+  </ItemGroup>
+
+</Project>
