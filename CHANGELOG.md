@@ -2,6 +2,9 @@
 
 ## 16.78.0
 
+ - New AL Symbols Browser language model tool for GitHub Copilot integration - allows AI assistants to search and browse AL project symbols (tables, pages, codeunits, etc.) with filtering, dependency inclusion, and source code resolution
+ - VS Code engine minimum version bumped to 1.95.0
+ - Tree view icon paths fixed to use vscode.Uri (warning directives, duplicate code, AL outline)
  - Issues #652, #653, #654, #655 -  BC27 fixes
 
  Thank you

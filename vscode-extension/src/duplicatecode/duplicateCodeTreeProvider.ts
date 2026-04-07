@@ -92,7 +92,7 @@ export class DuplicateCodeTreeProvider implements vscode.TreeDataProvider<Duplic
         return 'Code';
     }
 
-    protected getGroupIcon(info: DuplicateInfo): { light: string, dark: string } {
+    protected getGroupIcon(info: DuplicateInfo): { light: vscode.Uri, dark: vscode.Uri } {
         switch (info.codeBlockType) {
             case CodeBlockType.Method:
                 return this.getIcon('tree-method.svg');
@@ -152,10 +152,10 @@ export class DuplicateCodeTreeProvider implements vscode.TreeDataProvider<Duplic
         return undefined;
     }
 
-    private getIcon(fileName: string) : { light: string, dark: string } {
+    private getIcon(fileName: string) : { light: vscode.Uri, dark: vscode.Uri } {
         return {
-            light: this._toolsExtensionContext.vscodeExtensionContext.asAbsolutePath(path.join("resources", "images", "light", fileName)),
-            dark: this._toolsExtensionContext.vscodeExtensionContext.asAbsolutePath(path.join("resources", "images", "dark", fileName))
+            light: vscode.Uri.file(this._toolsExtensionContext.vscodeExtensionContext.asAbsolutePath(path.join("resources", "images", "light", fileName))),
+            dark: vscode.Uri.file(this._toolsExtensionContext.vscodeExtensionContext.asAbsolutePath(path.join("resources", "images", "dark", fileName)))
         };
     }
 

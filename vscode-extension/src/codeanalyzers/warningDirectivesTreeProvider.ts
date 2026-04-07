@@ -53,7 +53,7 @@ export class WarningDirectivesTreeProvider implements vscode.TreeDataProvider<Wa
         return directives;
     }
 
-    private getNodeIcon(info: WarningDirectiveInfo) : { light: string, dark: string } | undefined {
+    private getNodeIcon(info: WarningDirectiveInfo) : { light: vscode.Uri, dark: vscode.Uri } | undefined {
         switch (info.kind) {
             case WarningDirectiveInfoKind.Project:
                 return this.getIcon("tree-project.svg");
@@ -70,10 +70,10 @@ export class WarningDirectivesTreeProvider implements vscode.TreeDataProvider<Wa
         return undefined;
     }
 
-    private getIcon(fileName: string) : { light: string, dark: string } {
+    private getIcon(fileName: string) : { light: vscode.Uri, dark: vscode.Uri } {
         return {
-            light: this._toolsExtensionContext.vscodeExtensionContext.asAbsolutePath(path.join("resources", "images", "light", fileName)),
-            dark: this._toolsExtensionContext.vscodeExtensionContext.asAbsolutePath(path.join("resources", "images", "dark", fileName))
+            light: vscode.Uri.file(this._toolsExtensionContext.vscodeExtensionContext.asAbsolutePath(path.join("resources", "images", "light", fileName))),
+            dark: vscode.Uri.file(this._toolsExtensionContext.vscodeExtensionContext.asAbsolutePath(path.join("resources", "images", "dark", fileName)))
         };
     }
 
