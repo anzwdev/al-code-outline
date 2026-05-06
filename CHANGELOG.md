@@ -1,5 +1,8 @@
 # Change Log
 
+## 17.79.0
+ - Extension upgraded to BC28
+
 ## 16.78.0
 
  - Issues #652, #653, #654, #655 -  BC27 fixes
