@@ -84,8 +84,8 @@ export class ALOutlineTreeItem extends vscode.TreeItem {
     private updateIcon(context: vscode.ExtensionContext) {
         let icon = "tree-" + this.symbol.icon + ".svg";
         this.iconPath = {
-            light: context.asAbsolutePath(path.join("resources", "images", "light", icon)),
-            dark: context.asAbsolutePath(path.join("resources", "images", "dark", icon))
+            light: vscode.Uri.file(context.asAbsolutePath(path.join("resources", "images", "light", icon))),
+            dark: vscode.Uri.file(context.asAbsolutePath(path.join("resources", "images", "dark", icon)))
         }
     }
 

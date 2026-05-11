@@ -28,6 +28,7 @@ import { IdReservationService } from './services/idReservationService';
 import { ALDecorationService } from './services/alDecorationService';
 import { GitClientService } from './services/gitClientService';
 import { ALBuildConfigurationService } from './configmanager/ALBuildConfigurationService';
+import { ALSymbolsBrowserTool } from './services/alSymbolsBrowserTool';
 
 export class DevToolsExtensionContext implements vscode.Disposable {
     alLangProxy : ALLangServerProxy;    
@@ -88,6 +89,10 @@ export class DevToolsExtensionContext implements vscode.Disposable {
         this.alDecorationService = new ALDecorationService(this);
         this.gitService = new GitClientService(this);
         this.buildConfigurationService = new ALBuildConfigurationService(this);
+
+        if (vscode.lm && vscode.lm.registerTool) {
+            context.subscriptions.push(vscode.lm.registerTool('azALDevTools_symbolsBrowser', new ALSymbolsBrowserTool(this)));
+        }
     }
 
     getUseSymbolsBrowser() : boolean {

@@ -5,7 +5,7 @@
 	"version": "17.79.0",
 	"publisher": "andrzejzwierzchowski",
 	"engines": {
-		"vscode": "^1.85.0"
+		"vscode": "^1.95.0"
 	},
 	"author": {
 		"name": "Andrzej Zwierzchowski",
@@ -1401,17 +1401,86 @@
 				]
 			}
 		],
+		"languageModelTools": [
+			{
+				"name": "azALDevTools_symbolsBrowser",
+				"displayName": "AL Symbols Browser",
+				"toolReferenceName": "alSymbolsBrowser",
+				"icon": "$(symbol-class)",
+				"canBeReferencedInPrompt": true,
+				"modelDescription": "Search and browse AL (Business Central) project symbols such as tables, pages, codeunits, reports, queries, xmlports, enums, interfaces, and extensions. Supports wildcard name filtering (e.g. *Customer*), filtering by symbol kind, and optionally including dependency symbols and child members. Returns a formatted list of matching AL objects with their kind, id, name, source, and optionally their fields, methods, triggers, and other child elements.",
+				"inputSchema": {
+					"type": "object",
+					"properties": {
+						"query": {
+							"type": "string",
+							"description": "Wildcard name filter to match symbol names, e.g. '*Customer*', '*Item*', 'Sales*'. Use * for any characters, ? for a single character."
+						},
+						"symbolKind": {
+							"type": "string",
+							"description": "Filter by AL object kind. Use 'all' or omit to return all kinds.",
+							"enum": [
+								"all",
+								"table",
+								"page",
+								"codeunit",
+								"report",
+								"query",
+								"xmlport",
+								"enum",
+								"interface",
+								"tableExtension",
+								"pageExtension",
+								"enumExtension",
+								"reportExtension",
+								"permissionSet",
+								"permissionSetExtension",
+								"profile",
+								"pageCustomization",
+								"controlAddIn",
+								"dotNetPackage",
+								"entitlement"
+							]
+						},
+						"includeDependencies": {
+							"type": "boolean",
+							"default": true,
+							"description": "Whether to include symbols from dependency apps. Defaults to true."
+						},
+						"includeBody": {
+							"type": "boolean",
+							"default": false,
+							"description": "Whether to include child members (fields, methods, triggers, etc.) in the output. Defaults to false."
+						},
+						"includeSourceCode": {
+							"type": "boolean",
+							"default": false,
+							"description": "Whether to resolve and return the full AL source code for each matched symbol. Works for project files and dependency .app packages. Defaults to false."
+						},
+						"maxResults": {
+							"type": "number",
+							"default": 50,
+							"description": "Maximum number of symbols to return. Defaults to 50."
+						},
+						"workspaceFolderPath": {
+							"type": "string",
+							"description": "Absolute path to the AL workspace folder. If omitted, uses the current active workspace folder."
+						}
+					}
+				}
+			}
+		],
 		"configuration": [
 			{
 				"title": "AZ AL Dev Tools/AL Code Outline",
 				"properties": {
-					"alOutline.activeBuildConfiguration" : {
+					"alOutline.activeBuildConfiguration": {
 						"type": "string",
 						"default": "",
 						"scope": "resource",
 						"description": "Name of the active build configuration (active app.json file) for the workspace folder"
 					},
-					"alOutline.buildConfigurationNaming" : {
+					"alOutline.buildConfigurationNaming": {
 						"type": "string",
 						"default": "none",
 						"scope": "resource",
@@ -1429,7 +1498,7 @@
 							"app.json.<configuration name>"
 						]
 					},
-					"alOutline.limitEnumNameLength" : {
+					"alOutline.limitEnumNameLength": {
 						"type": "boolean",
 						"default": false,
 						"scope": "resource",
@@ -2184,7 +2253,7 @@
 	"devDependencies": {
 		"@types/mocha": "^10.0.6",
 		"@types/node": "18.x",
-		"@types/vscode": "^1.85.0",
+		"@types/vscode": "^1.95.0",
 		"@typescript-eslint/eslint-plugin": "^6.15.0",
 		"@typescript-eslint/parser": "^6.15.0",
 		"@vscode/test-cli": "^0.0.4",
