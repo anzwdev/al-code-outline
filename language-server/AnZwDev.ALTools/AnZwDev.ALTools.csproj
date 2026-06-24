@@ -33,10 +33,6 @@
       <HintPath>C:\Projects\MicrosoftALVersions\LatestBC\bin\win32\Microsoft.Dynamics.Nav.EditorServices.Protocol.dll</HintPath>
       <Private>false</Private>
     </Reference>
-    <Reference Include="System.Collections.Immutable">
-      <HintPath>C:\Projects\MicrosoftALVersions\LatestBC\bin\win32\System.Collections.Immutable.dll</HintPath>
-      <Private>false</Private>
-    </Reference>
   </ItemGroup>
 
   <Import Project="..\Shared.AnZwDev.ALTools\Shared.AnZwDev.ALTools.projitems" Label="Shared" />

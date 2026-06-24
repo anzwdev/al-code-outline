@@ -230,15 +230,15 @@ cd ".\language-server\"
 
 # Windows - .net core
 Write-Host "Building Windows .net core language server"
-dotnet publish ".\AZALDevToolsServer.NetCore\AZALDevToolsServer.NetCore.csproj" -r win-x64 -f net8.0 -o "..\vscode-extension\bin\netcore\win32" --self-contained true --configuration Release
+dotnet publish ".\AZALDevToolsServer.NetCore\AZALDevToolsServer.NetCore.csproj" -r win-x64 -f net10.0 -o "..\vscode-extension\bin\netcore\win32" --self-contained true --configuration Release
 
 # MacOS - .net core
 Write-Host "Building MacOS .net core language server"
-dotnet publish ".\AZALDevToolsServer.NetCore\AZALDevToolsServer.NetCore.csproj" -r osx-x64 -f net8.0 -o "..\vscode-extension\bin\netcore\darwin" --self-contained true --configuration Release
+dotnet publish ".\AZALDevToolsServer.NetCore\AZALDevToolsServer.NetCore.csproj" -r osx-x64 -f net10.0 -o "..\vscode-extension\bin\netcore\darwin" --self-contained true --configuration Release
 
 # Linux - .net core
 Write-Host "Building Linux .net core language server"
-dotnet publish ".\AZALDevToolsServer.NetCore\AZALDevToolsServer.NetCore.csproj" -r linux-x64 -f net8.0 -o "..\vscode-extension\bin\netcore\linux" --self-contained true --configuration Release
+dotnet publish ".\AZALDevToolsServer.NetCore\AZALDevToolsServer.NetCore.csproj" -r linux-x64 -f net10.0 -o "..\vscode-extension\bin\netcore\linux" --self-contained true --configuration Release
 
 # Windows - .net framework for Nav2018 extension development
 Write-Host "Building Windows .net framework language server for Nav 2018"
