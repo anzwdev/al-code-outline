@@ -1,5 +1,8 @@
 # Change Log
 
+## 17.80.0
+ - Extension upgraded to Net 10
+
 ## 17.79.0
  - Extension upgraded to BC28
 
