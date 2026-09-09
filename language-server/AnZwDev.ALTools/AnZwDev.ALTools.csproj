@@ -1,7 +1,7 @@
 <Project Sdk="Microsoft.NET.Sdk">
 
 	<PropertyGroup>
-		<TargetFramework>net8.0</TargetFramework>
+		<TargetFramework>net10.0</TargetFramework>
 		<ImplicitUsings>enable</ImplicitUsings>
 	</PropertyGroup>
 
@@ -22,15 +22,15 @@
 
   <ItemGroup>
     <Reference Include="Microsoft.Dynamics.Nav.CodeAnalysis">
-      <HintPath>C:\Projects\MicrosoftALVersions\LatestBC\bin\win32\Microsoft.Dynamics.Nav.CodeAnalysis.dll</HintPath>
+      <HintPath>C:\Projects\MicrosoftALVersions\LatestBC\bin\Microsoft.Dynamics.Nav.CodeAnalysis.dll</HintPath>
       <Private>false</Private>
     </Reference>
     <Reference Include="Microsoft.Dynamics.Nav.CodeAnalysis.Workspaces">
-      <HintPath>C:\Projects\MicrosoftALVersions\LatestBC\bin\win32\Microsoft.Dynamics.Nav.CodeAnalysis.Workspaces.dll</HintPath>
+      <HintPath>C:\Projects\MicrosoftALVersions\LatestBC\bin\Microsoft.Dynamics.Nav.CodeAnalysis.Workspaces.dll</HintPath>
       <Private>false</Private>
     </Reference>
     <Reference Include="Microsoft.Dynamics.Nav.EditorServices.Protocol">
-      <HintPath>C:\Projects\MicrosoftALVersions\LatestBC\bin\win32\Microsoft.Dynamics.Nav.EditorServices.Protocol.dll</HintPath>
+      <HintPath>C:\Projects\MicrosoftALVersions\LatestBC\bin\Microsoft.Dynamics.Nav.EditorServices.Protocol.dll</HintPath>
       <Private>false</Private>
     </Reference>
   </ItemGroup>

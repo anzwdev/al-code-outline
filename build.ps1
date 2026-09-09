@@ -129,7 +129,7 @@ function Get-MarketplaceALCompiler {
     }
 
     $data = @{
-        Path = Join-Path -Path $extensionFolder -ChildPath "extension\bin\win32"
+        Path = Join-Path -Path $extensionFolder -ChildPath "extension\bin"
         Version = Get-MarketplaceALCompilerVersion -Url $url
     }
 
@@ -201,7 +201,7 @@ $nav2018ALCompiler = Get-ALCompiler -Type "Nav" -Nav "2018" -CU "cu14"
 $nav2018ALCompilerPath = $nav2018ALCompiler.Path
 
 Write-Host "Updating libraries references"
-$oldLibrariesPath = "C:\Projects\MicrosoftALVersions\LatestBC\bin\win32"
+$oldLibrariesPath = "C:\Projects\MicrosoftALVersions\LatestBC\bin"
 $newLibrariesPath = $marketplaceALCompilerPath
 $oldNav2018LibrariesPath = "C:\Projects\MicrosoftALVersions\Nav2018\microsoft.al-0.13.82793\bin"
 $newNav2018LibrariesPath = $nav2018ALCompilerPath
