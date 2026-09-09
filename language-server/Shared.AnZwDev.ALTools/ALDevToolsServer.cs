@@ -30,16 +30,16 @@ namespace AnZwDev.ALTools
         {
             //initialize assembly loading
             this.ExtensionBinPath = Path.Combine(extensionPath, "bin");
-#if BC
-            if (RuntimeInformation.IsOSPlatform(OSPlatform.OSX))
-                this.PlatformSpecificFolder = "darwin";
-            else if (RuntimeInformation.IsOSPlatform(OSPlatform.Linux))
-                this.PlatformSpecificFolder = "linux";
-            else if (RuntimeInformation.IsOSPlatform(OSPlatform.Windows))
-                this.PlatformSpecificFolder = "win32";
-            else
-#endif
-                this.PlatformSpecificFolder = "";
+//# if BC
+//            if (RuntimeInformation.IsOSPlatform(OSPlatform.OSX))
+//                this.PlatformSpecificFolder = "darwin";
+//            else if (RuntimeInformation.IsOSPlatform(OSPlatform.Linux))
+//                this.PlatformSpecificFolder = "linux";
+//            else if (RuntimeInformation.IsOSPlatform(OSPlatform.Windows))
+//                this.PlatformSpecificFolder = "win32";
+//            else
+//# endif
+            this.PlatformSpecificFolder = "";
             AppDomain currentDomain = AppDomain.CurrentDomain;
             currentDomain.AssemblyResolve += CurrentDomain_AssemblyResolve;
 
