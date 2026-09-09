@@ -30,16 +30,17 @@ namespace AnZwDev.ALTools
         {
             //initialize assembly loading
             this.ExtensionBinPath = Path.Combine(extensionPath, "bin");
-//# if BC
-//            if (RuntimeInformation.IsOSPlatform(OSPlatform.OSX))
-//                this.PlatformSpecificFolder = "darwin";
-//            else if (RuntimeInformation.IsOSPlatform(OSPlatform.Linux))
-//                this.PlatformSpecificFolder = "linux";
-//            else if (RuntimeInformation.IsOSPlatform(OSPlatform.Windows))
-//                this.PlatformSpecificFolder = "win32";
-//            else
-//# endif
-            this.PlatformSpecificFolder = "";
+#if BC
+            if (RuntimeInformation.IsOSPlatform(OSPlatform.OSX))
+                this.PlatformSpecificFolder = "darwin";
+            else if (RuntimeInformation.IsOSPlatform(OSPlatform.Linux))
+                this.PlatformSpecificFolder = "linux";
+            else if (RuntimeInformation.IsOSPlatform(OSPlatform.Windows))
+                this.PlatformSpecificFolder = "win32";
+            else
+#endif
+                this.PlatformSpecificFolder = "";
+
             AppDomain currentDomain = AppDomain.CurrentDomain;
             currentDomain.AssemblyResolve += CurrentDomain_AssemblyResolve;
 
@@ -73,13 +74,19 @@ namespace AnZwDev.ALTools
 
             Assembly assembly = null;
 
-            string path;
+            string path = "";
 
-            //load file from platform specific location, for windows we will take it from root .net framework folder
-            if (String.IsNullOrWhiteSpace(this.PlatformSpecificFolder))
+            //load file from platform specific location first
+            //if it does not exist there, try to load it from the main folder
+            var fileExists = false;
+            if (!String.IsNullOrWhiteSpace(this.PlatformSpecificFolder))
+            {
+                path = System.IO.Path.Combine(this.ExtensionBinPath, this.PlatformSpecificFolder, assemblyName.Trim() + ".dll");
+                fileExists = File.Exists(path);
+            }
+            if (!fileExists)
                 path = System.IO.Path.Combine(this.ExtensionBinPath, assemblyName.Trim() + ".dll");
-            else
-                path = System.IO.Path.Combine(this.ExtensionBinPath, this.PlatformSpecificFolder, assemblyName.Trim() + ".dll");            
+
             if (File.Exists(path))           
                 assembly = Assembly.LoadFrom(path);
 
