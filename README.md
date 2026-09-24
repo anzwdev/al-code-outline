@@ -71,7 +71,7 @@ It also supports other document types, so it can be used instead of standard out
 
 This view shows symbols tree looking similar to content of "AL symbols outline panel", but uses WebView to display it and can be opened on one of the editor tabs. If there is an editor in which user changes definition of the object displayed in the tree view, tree content will be updated, but switching active editor to other file does not change the tree. It can be used to display table symbols when user edits page object or page symbols when developers edits page extension. View can be opened from:
 - AL Symbols Browser by using object list context menu and selecting "Open symbol in new tab" option
-- "Show Document Symbols Tree" command from "Command Palette" when there is an acive text editor with AL file
+- "Show Document Symbols Tree" command from "Command Palette" when there is an active text editor with AL file
 - Editor context menu by selecting "Show Definition in the Symbols Tree" menu item
 
 ![Symbols tree view](resources/screen2-symbolstree1.gif)
@@ -97,7 +97,7 @@ Extension adds VS Code editor code actions to some of al elements to help develo
   - `Sort customizations` available when cursor is at the first line of Customizations property. It will sort all entries in this property.
  - Code generation actions
   - `Create interface` action available on the first line of codeunit declaration, it creates a new interface with all public functions from the codeunit
- - `Add all extension objects permissions` available on the first line of Permissions property. It adds all objects from the current extension to this property. If permissions are added to PermissionSet or PermisionSetExtension object, `table`, `tabledata`, `page`, `report`, `xmlport`, `query` and `codeunit` entries will be added. For all other object types, only `tabledata` entries will be created.
+ - `Add all extension objects permissions` available on the first line of Permissions property. It adds all objects from the current extension to this property. If permissions are added to PermissionSet or PermissionSetExtension object, `table`, `tabledata`, `page`, `report`, `xmlport`, `query` and `codeunit` entries will be added. For all other object types, only `tabledata` entries will be created.
  - `Add permissions to all tables used by this object` action available on the first line of object declaration and permissions property. It scans the object, detects operation types and adds permissions to tabledata of all non-temporary tables used inside.
  - `Reuse tooltip from other pages` action available on the first line of page/page extension field and `ToolTip` property, it allows to select tooltip value from a list of tooltips defined for this table field on other pages in the current project and all dependencies
  - `Add multiple fields` when cursor is at these elements in the editor:
@@ -231,7 +231,7 @@ Extension adds new custom editors for app.json, rulesets (*.ruleset.json) and Ap
 
 ### Documentation comments support
 
-When developer types "///" in a line above a symbol declaration (i.e. variable, procedure, field), extension can add "Xml Documentation Comments" to the list of available completion items. When it is selected, xml documentation snippet will be inserted into the code editor. If symbol below cursor is a procedure declaration, inserted snippet will contail all procedure parameters. This functionality can be turned off and on by changing "alOutline.docCommentsType" setting to "none" or "xml".
+When developer types "///" in a line above a symbol declaration (i.e. variable, procedure, field), extension can add "Xml Documentation Comments" to the list of available completion items. When it is selected, xml documentation snippet will be inserted into the code editor. If symbol below cursor is a procedure declaration, inserted snippet will contain all procedure parameters. This functionality can be turned off and on by changing "alOutline.docCommentsType" setting to "none" or "xml".
 
 ![Xml Documentation Comments](resources/screen2-xmldoccomments.gif)
 
@@ -247,7 +247,7 @@ Duplicate code search panel can be opened by running "AZ AL Dev Tools: Find dupl
 
 ### Warning directives panel
 
-Warning directives parel can be opened by running "AZ AL Dev Tools: Show warning directives" command. It shows list of location of "pragma warning" directives grouped by rule id and file.
+Warning directives panel can be opened by running "AZ AL Dev Tools: Show warning directives" command. It shows list of location of "pragma warning" directives grouped by rule id and file.
 
 ### Document syntax visualizer
 
@@ -257,7 +257,7 @@ Document syntax visualizer shows syntax tree created by the AL compiler for the 
 
 ### Multiple build configurations support
 
-It is possible to enable support for multiple app.json files in the workspace folder and then use a button on the status bar to switch between them. When active configuration is selected, all changes made to the app.json file are copied to the corresponing configuration file. Naming rules for the configuration files can be selected using `alOutline.buildConfigurationNaming` setting. These values are available:
+It is possible to enable support for multiple app.json files in the workspace folder and then use a button on the status bar to switch between them. When active configuration is selected, all changes made to the app.json file are copied to the corresponding configuration file. Naming rules for the configuration files can be selected using `alOutline.buildConfigurationNaming` setting. These values are available:
 * `none` - default, build configurations support disabled
 * `appNameJson` - "app.\<configuration name\>.json", i.e. "app.SaaS.json" for "SaaS" configuration
 * `nameAppJson` - "\<configuration name\>.app.json", i.e. "SaaS.app.json" for "SaaS" configuration
@@ -295,7 +295,7 @@ This extension contributes the following settings:
   * `nameAppJson` - "\<configuration name\>.app.json", i.e. "SaaS.app.json" for "SaaS" configuration
   * `appJsonName` - "app.json.\<configuration name\>", i.e. "app.json.SaaS" for "SaaS" configuration
 * `alOutline.addDataItemToReportColumnName`: include data set name in report columns names
-* `alOutline.docCommentsType`: enable documention comments, available values: none, xml 
+* `alOutline.docCommentsType`: enable documentation comments, available values: none, xml 
 * `alOutline.autorefresh`: refresh code outline tree automatically
 * `alOutline.autoGenerateFiles`: automatically generate files for newly created objects
 * `alOutline.autoGenerateFileDirectory`: the default directory to create files in, relative to the root directory (e.g., \"Source\<ObjectType\>\")
