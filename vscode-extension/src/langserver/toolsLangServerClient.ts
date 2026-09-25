@@ -127,8 +127,10 @@ export class ToolsLangServerClient implements vscode.Disposable {
                 langServerPath = this._context.asAbsolutePath("bin/netframeworknav2018/AZALDevToolsServer.NetFrameworkNav2018.exe");
                 this.errorLogUri = vscode.Uri.file(this._context.asAbsolutePath("bin/netframeworknav2018/log.txt"));
             } else {                
-                langServerPath = this._context.asAbsolutePath("bin/netcore/" + platform + "/AZALDevToolsServer.NetCore");
-                this.errorLogUri = vscode.Uri.file(this._context.asAbsolutePath("bin/netcore/" + platform + "/log.txt"));
+                //use native Apple Silicon binaries when VS Code runs as arm64 process
+                let binFolder = ((platform === "darwin") && (os.arch() === "arm64")) ? "darwin-arm64" : platform;
+                langServerPath = this._context.asAbsolutePath("bin/netcore/" + binFolder + "/AZALDevToolsServer.NetCore");
+                this.errorLogUri = vscode.Uri.file(this._context.asAbsolutePath("bin/netcore/" + binFolder + "/log.txt"));
                 if ((platform === "darwin") || (platform === "linux")) {
                     let fs = require('fs');
                     fs.chmodSync(langServerPath, 0o755);
