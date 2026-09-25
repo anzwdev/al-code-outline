@@ -216,11 +216,13 @@ foreach ($projectFile in $projectFilesList) {
 
 # Prepare target language server folders in the vscode extension bin folder
 $darwinBinPath = ".\vscode-extension\bin\netcore\darwin"
+$darwinArm64BinPath = ".\vscode-extension\bin\netcore\darwin-arm64"
 $winBinPath = ".\vscode-extension\bin\netcore\win32"
 $linuxBinPath = ".\vscode-extension\bin\netcore\linux"
 $netframeworkBinPath = ".\vscode-extension\bin\netframeworknav2018"
 
 Clear-Folder -Path $darwinBinPath
+Clear-Folder -Path $darwinArm64BinPath
 Clear-Folder -Path $winBinPath
 Clear-Folder -Path $linuxBinPath
 Clear-Folder -Path $netframeworkBinPath
@@ -235,6 +237,10 @@ dotnet publish ".\AZALDevToolsServer.NetCore\AZALDevToolsServer.NetCore.csproj" 
 # MacOS - .net core
 Write-Host "Building MacOS .net core language server"
 dotnet publish ".\AZALDevToolsServer.NetCore\AZALDevToolsServer.NetCore.csproj" -r osx-x64 -f net10.0 -o "..\vscode-extension\bin\netcore\darwin" --self-contained true --configuration Release
+
+# MacOS Apple Silicon - .net core
+Write-Host "Building MacOS Apple Silicon .net core language server"
+dotnet publish ".\AZALDevToolsServer.NetCore\AZALDevToolsServer.NetCore.csproj" -r osx-arm64 -f net10.0 -o "..\vscode-extension\bin\netcore\darwin-arm64" --self-contained true --configuration Release
 
 # Linux - .net core
 Write-Host "Building Linux .net core language server"
